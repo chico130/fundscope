@@ -610,80 +610,114 @@ tbody td:first-child {
   margin-top: 8px;
 }
 
-/* NEWS TAB */
-.news-notice {
-  background: var(--bg3);
-  border: 1px solid var(--yellow-border);
-  border-radius: 6px;
-  padding: 20px;
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.news-notice-icon {
-  font-size: 28px;
-  margin-bottom: 10px;
-}
-
-.news-notice h3 {
-  font-family: var(--mono);
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--yellow);
-  margin-bottom: 6px;
-}
-
-.news-notice p {
-  font-size: 12px;
-  color: var(--text2);
-  line-height: 1.7;
-  max-width: 480px;
-  margin: 0 auto;
-}
-
-.news-prompt-box {
-  background: var(--bg3);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 16px;
-}
-
-.npb-title {
+/* NEWS UNIFIED LIST */
+.news-updated-bar {
   font-family: var(--mono);
   font-size: 11px;
   color: var(--text3);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  margin-bottom: 10px;
+  letter-spacing: 0.06em;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 12px;
 }
 
-.npb-code {
-  background: var(--bg);
+.news-unified-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.news-row {
+  padding: 10px 14px;
+  border-radius: 6px;
+  background: var(--bg3);
   border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 12px;
-  font-family: var(--mono);
-  font-size: 11px;
-  color: var(--text2);
-  line-height: 1.7;
-  white-space: pre-wrap;
-  word-break: break-word;
+  border-left: 3px solid var(--border);
+  transition: background 0.1s;
 }
 
-.copy-btn {
-  margin-top: 10px;
+.news-row:hover {
   background: var(--bg4);
-  border: 1px solid var(--border2);
-  color: var(--text2);
-  font-family: var(--mono);
-  font-size: 11px;
-  padding: 6px 14px;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.15s;
 }
 
-.copy-btn:hover { background: var(--green-dim); color: var(--green); border-color: var(--green-border); }
+.news-row.material {
+  border-left: 3px solid var(--yellow);
+  background: var(--bg3);
+}
+
+.news-row.other {
+  border-left: 3px solid var(--border);
+  opacity: 0.8;
+}
+
+.news-row-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 5px;
+}
+
+.news-ticker-badge {
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 12px;
+  color: var(--green);
+  background: var(--green-dim);
+  border: 1px solid var(--green-border);
+  padding: 1px 7px;
+  border-radius: 3px;
+  letter-spacing: 0.05em;
+}
+
+.news-company-name {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text3);
+}
+
+.news-date-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--green);
+}
+
+.news-source-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--text3);
+  margin-left: auto;
+}
+
+.news-headline-link {
+  display: block;
+  font-size: 12px;
+  color: var(--text);
+  text-decoration: none;
+  line-height: 1.5;
+}
+
+.news-headline-link:hover {
+  color: var(--yellow);
+  text-decoration: underline;
+}
+
+.news-section-separator {
+  font-family: var(--mono);
+  font-size: 10px;
+  text-align: center;
+  color: var(--text3);
+  padding: 10px 0;
+  letter-spacing: 0.1em;
+}
+
+.news-empty {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text3);
+  padding: 20px 0;
+  text-align: center;
+}
 
 /* FOOTER */
 .footer {
@@ -1600,14 +1634,17 @@ tbody td:first-child {
 
 <!-- ===== NEWS TAB ===== -->
 <div class="tab-panel" id="tab-news">
-  <div class="news-notice">
-    <div class="news-notice-icon">◉</div>
-    <h3>Feed de Notícias — Actualização Manual</h3>
-    <p>Esta aba é actualizada usando o <strong>Bloco 1</strong> no Perplexity. Cola o prompt abaixo numa sessão nova (Sonnet chega para notícias) e substitui o conteúdo desta secção com o output.</p>
+
+  <div class="update-banner">
+    <div class="ub-text">Feed de notícias · Atualização automática via RSS · <strong>Yahoo Finance + Google News</strong></div>
+    <div class="ub-date">Atualizado automaticamente pelo GitHub Actions</div>
   </div>
-  <div class="news-prompt-box">
-    <div class="npb-title">◈ Prompt Pronto — Notícias Filtradas (cola no Perplexity)</div>
-    <div class="npb-code" id="news-prompt">You are a rigorous financial news filter. No opinion, no speculation.
+
+  <!-- NEWS-START -->
+  <!-- NEWS-END -->
+
+</div>
+
 
 WATCHLIST: MU, NVDA, AVGO, ANET, GOOGL, ETN, ISRG, VST, CCJ, CRT, RKLB, OUST, SUUN
 
