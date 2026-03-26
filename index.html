@@ -1,0 +1,1708 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Watchlist · Fundamental Analysis</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #080c10;
+  --bg2: #0d1117;
+  --bg3: #161b22;
+  --bg4: #1c2430;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.12);
+  --text: #e6edf3;
+  --text2: #8b949e;
+  --text3: #484f58;
+  --green: #3fb950;
+  --green-dim: rgba(63,185,80,0.12);
+  --green-border: rgba(63,185,80,0.3);
+  --red: #f85149;
+  --red-dim: rgba(248,81,73,0.12);
+  --red-border: rgba(248,81,73,0.3);
+  --yellow: #d29922;
+  --yellow-dim: rgba(210,153,34,0.12);
+  --yellow-border: rgba(210,153,34,0.3);
+  --blue: #58a6ff;
+  --blue-dim: rgba(88,166,255,0.1);
+  --purple: #bc8cff;
+  --mono: 'IBM Plex Mono', monospace;
+  --sans: 'IBM Plex Sans', sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+/* SCANLINE subtle effect */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px);
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* TOP BAR */
+.topbar {
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 52px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo {
+  font-family: var(--mono);
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--text);
+  letter-spacing: 0.05em;
+}
+
+.logo span {
+  color: var(--green);
+}
+
+.badge {
+  font-family: var(--mono);
+  font-size: 10px;
+  background: var(--green-dim);
+  color: var(--green);
+  border: 1px solid var(--green-border);
+  padding: 2px 8px;
+  border-radius: 3px;
+  letter-spacing: 0.08em;
+}
+
+.topbar-right {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text3);
+}
+
+.topbar-right span {
+  color: var(--text2);
+}
+
+/* TABS */
+.tabs {
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  padding: 0 20px;
+  display: flex;
+  gap: 0;
+  position: sticky;
+  top: 52px;
+  z-index: 99;
+}
+
+.tab {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text3);
+  padding: 12px 18px;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  letter-spacing: 0.05em;
+  transition: color 0.15s, border-color 0.15s;
+  user-select: none;
+  text-transform: uppercase;
+}
+
+.tab:hover { color: var(--text2); }
+.tab.active { color: var(--green); border-bottom-color: var(--green); }
+
+/* CONTENT */
+.content {
+  padding: 24px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* SUMMARY ROW */
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 8px;
+  margin-bottom: 28px;
+}
+
+.summary-card {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  position: relative;
+  overflow: hidden;
+}
+
+.summary-card::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  border-radius: 3px 0 0 3px;
+}
+
+.summary-card.green::before { background: var(--green); }
+.summary-card.yellow::before { background: var(--yellow); }
+.summary-card.red::before { background: var(--red); }
+.summary-card.gray::before { background: var(--text3); }
+
+.summary-card:hover { border-color: var(--border2); background: var(--bg4); }
+
+.sc-ticker {
+  font-family: var(--mono);
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+
+.sc-name {
+  font-size: 10px;
+  color: var(--text3);
+  margin-bottom: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sc-price {
+  font-family: var(--mono);
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.sc-signal {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.sc-signal.green { color: var(--green); }
+.sc-signal.yellow { color: var(--yellow); }
+.sc-signal.red { color: var(--red); }
+.sc-signal.gray { color: var(--text3); }
+
+/* SECTION */
+.section-title {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text3);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* TABLE */
+.tbl-wrap {
+  overflow-x: auto;
+  margin-bottom: 28px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--mono);
+  font-size: 12px;
+}
+
+thead tr {
+  background: var(--bg3);
+  border-bottom: 1px solid var(--border);
+}
+
+thead th {
+  padding: 10px 14px;
+  text-align: right;
+  color: var(--text3);
+  font-weight: 500;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+thead th:first-child { text-align: left; }
+
+tbody tr {
+  border-bottom: 1px solid var(--border);
+  transition: background 0.1s;
+}
+
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: var(--bg4); }
+
+tbody td {
+  padding: 10px 14px;
+  text-align: right;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+tbody td:first-child {
+  text-align: left;
+  font-weight: 600;
+}
+
+.ticker-cell {
+  display: flex;
+  flex-direction: column;
+}
+
+.ticker-cell .t { color: var(--text); font-weight: 600; font-size: 13px; }
+.ticker-cell .n { color: var(--text3); font-size: 10px; font-weight: 400; }
+
+.tag {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+.tag-growth { background: var(--blue-dim); color: var(--blue); border: 1px solid rgba(88,166,255,0.2); }
+.tag-value { background: var(--green-dim); color: var(--green); border: 1px solid var(--green-border); }
+.tag-cyclical { background: var(--yellow-dim); color: var(--yellow); border: 1px solid var(--yellow-border); }
+.tag-util { background: rgba(188,140,255,0.1); color: var(--purple); border: 1px solid rgba(188,140,255,0.2); }
+.tag-spec { background: var(--red-dim); color: var(--red); border: 1px solid var(--red-border); }
+.tag-pre { background: rgba(88,166,255,0.06); color: #79c0ff; border: 1px solid rgba(88,166,255,0.15); }
+
+.up { color: var(--green); }
+.down { color: var(--red); }
+.neutral { color: var(--text2); }
+.na { color: var(--text3); }
+
+.signal-pill {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: 10px;
+}
+
+.signal-pill.under { background: var(--green-dim); color: var(--green); border: 1px solid var(--green-border); }
+.signal-pill.fair { background: var(--yellow-dim); color: var(--yellow); border: 1px solid var(--yellow-border); }
+.signal-pill.over { background: var(--red-dim); color: var(--red); border: 1px solid var(--red-border); }
+.signal-pill.na { background: var(--bg4); color: var(--text3); border: 1px solid var(--border); }
+
+/* DETAIL CARDS */
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+@media (max-width: 600px) {
+  .detail-grid { grid-template-columns: 1fr; }
+  .summary-grid { grid-template-columns: repeat(3, 1fr); }
+  .sc-price { font-size: 15px; }
+}
+
+.detail-card {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 16px;
+}
+
+.detail-card.full { grid-column: 1 / -1; }
+
+.dc-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.dc-title {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.dc-ticker {
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--text);
+}
+
+.dc-name {
+  font-size: 11px;
+  color: var(--text2);
+}
+
+.dc-price-block {
+  text-align: right;
+}
+
+.dc-price {
+  font-family: var(--mono);
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.dc-range {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text3);
+  margin-top: 2px;
+}
+
+.dc-metrics {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.metric {
+  background: var(--bg2);
+  border-radius: 4px;
+  padding: 8px 10px;
+}
+
+.metric-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-bottom: 2px;
+}
+
+.metric-value {
+  font-family: var(--mono);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.valuation-bar {
+  margin-top: 14px;
+}
+
+.vb-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-bottom: 6px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.vb-track {
+  background: var(--bg2);
+  border-radius: 4px;
+  height: 28px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.vb-fill {
+  position: absolute;
+  top: 4px;
+  height: 20px;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.vb-fill.range {
+  background: linear-gradient(90deg, rgba(63,185,80,0.15), rgba(63,185,80,0.25));
+  border: 1px solid var(--green-border);
+  color: var(--green);
+}
+
+.vb-marker {
+  position: absolute;
+  top: 0;
+  width: 2px;
+  height: 100%;
+  background: var(--text);
+  opacity: 0.8;
+}
+
+.vb-marker-label {
+  position: absolute;
+  bottom: -16px;
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--text2);
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
+.verdict {
+  margin-top: 12px;
+  padding: 10px 12px;
+  background: var(--bg2);
+  border-radius: 4px;
+  border-left: 3px solid var(--text3);
+  font-size: 12px;
+  color: var(--text2);
+  line-height: 1.6;
+}
+
+.verdict.under { border-left-color: var(--green); }
+.verdict.fair { border-left-color: var(--yellow); }
+.verdict.over { border-left-color: var(--red); }
+.verdict.na { border-left-color: var(--text3); }
+
+/* ANALYSTS TAB */
+.analyst-card {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  margin-bottom: 8px;
+  overflow: hidden;
+}
+
+.analyst-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.analyst-header:hover { background: var(--bg4); }
+
+.ah-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ah-ticker {
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--text);
+  min-width: 50px;
+}
+
+.ah-consensus {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.ah-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-family: var(--mono);
+  font-size: 12px;
+}
+
+.ah-pt {
+  text-align: right;
+}
+
+.ah-pt-label { color: var(--text3); font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; }
+.ah-pt-val { color: var(--text); font-weight: 600; font-size: 15px; }
+.ah-upside { font-size: 12px; }
+
+.analyst-body {
+  display: none;
+  padding: 0 16px 16px;
+  border-top: 1px solid var(--border);
+}
+
+.analyst-body.open { display: block; }
+
+.bhs-bar {
+  display: flex;
+  height: 8px;
+  border-radius: 4px;
+  overflow: hidden;
+  margin: 12px 0 6px;
+  gap: 2px;
+}
+
+.bhs-buy { background: var(--green); border-radius: 4px 0 0 4px; }
+.bhs-hold { background: var(--yellow); }
+.bhs-sell { background: var(--red); border-radius: 0 4px 4px 0; }
+
+.bhs-labels {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text3);
+  margin-bottom: 12px;
+}
+
+.pt-range {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text2);
+  margin-bottom: 8px;
+}
+
+.pt-range-label { color: var(--text3); min-width: 40px; font-size: 10px; }
+
+.analyst-note {
+  font-size: 12px;
+  color: var(--text2);
+  line-height: 1.6;
+  padding: 10px 12px;
+  background: var(--bg2);
+  border-radius: 4px;
+  border-left: 3px solid var(--border2);
+  margin-top: 8px;
+}
+
+/* NEWS TAB */
+.news-notice {
+  background: var(--bg3);
+  border: 1px solid var(--yellow-border);
+  border-radius: 6px;
+  padding: 20px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.news-notice-icon {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+.news-notice h3 {
+  font-family: var(--mono);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--yellow);
+  margin-bottom: 6px;
+}
+
+.news-notice p {
+  font-size: 12px;
+  color: var(--text2);
+  line-height: 1.7;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.news-prompt-box {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 16px;
+}
+
+.npb-title {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 10px;
+}
+
+.npb-code {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 12px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text2);
+  line-height: 1.7;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.copy-btn {
+  margin-top: 10px;
+  background: var(--bg4);
+  border: 1px solid var(--border2);
+  color: var(--text2);
+  font-family: var(--mono);
+  font-size: 11px;
+  padding: 6px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.copy-btn:hover { background: var(--green-dim); color: var(--green); border-color: var(--green-border); }
+
+/* FOOTER */
+.footer {
+  text-align: center;
+  padding: 24px 20px;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text3);
+  border-top: 1px solid var(--border);
+  margin-top: 40px;
+  line-height: 1.8;
+}
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg2); }
+::-webkit-scrollbar-thumb { background: var(--bg4); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text3); }
+
+/* UPDATE BANNER */
+.update-banner {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ub-text { font-size: 12px; color: var(--text2); }
+.ub-text strong { color: var(--text); font-weight: 600; }
+.ub-date { font-family: var(--mono); font-size: 11px; color: var(--text3); }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-left">
+    <div class="logo">FUND<span>.</span>SCOPE</div>
+    <div class="badge">FUNDAMENTAL ONLY</div>
+  </div>
+  <div class="topbar-right">Última actualização: <span>26 Mar 2026 21:19 UTC</span></div>
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="showTab('valuation')">▦ Valuation</div>
+  <div class="tab" onclick="showTab('analysts')">◈ Analistas</div>
+  <div class="tab" onclick="showTab('news')">◉ Notícias</div>
+</div>
+
+<div class="content">
+
+<!-- ===== VALUATION TAB ===== -->
+<div class="tab-panel active" id="tab-valuation">
+
+  <div class="update-banner">
+    <div class="ub-text">Dados extraídos via <strong>Perplexity Opus</strong> · Modelos aplicados por tipo de empresa · Sem análise técnica</div>
+    <div class="ub-date">FY Statements + Consensus Estimates · Mar 2026</div>
+  </div>
+
+  <div class="section-title">Snapshot · 13 Tickers</div>
+  <div class="summary-grid">
+    <div class="summary-card yellow" onclick="scrollTo('MU')">
+      <div class="sc-ticker">MU</div><div class="sc-name">Micron Technology</div>
+      <div class="sc-price">$355.62</div><div class="sc-signal yellow">Fair (HBM)</div>
+    </div>
+    <div class="summary-card yellow" onclick="scrollTo('NVDA')">
+      <div class="sc-ticker">NVDA</div><div class="sc-name">NVIDIA Corp.</div>
+      <div class="sc-price">$171.24</div><div class="sc-signal yellow">Fair</div>
+    </div>
+    <div class="summary-card green" onclick="scrollTo('AVGO')">
+      <div class="sc-ticker">AVGO</div><div class="sc-name">Broadcom Inc.</div>
+      <div class="sc-price">$309.42</div><div class="sc-signal green">Undervalued</div>
+    </div>
+    <div class="summary-card yellow" onclick="scrollTo('ANET')">
+      <div class="sc-ticker">ANET</div><div class="sc-name">Arista Networks</div>
+      <div class="sc-price">$122.55</div><div class="sc-signal yellow">Fair Entry</div>
+    </div>
+    <div class="summary-card green" onclick="scrollTo('GOOGL')">
+      <div class="sc-ticker">GOOGL</div><div class="sc-name">Alphabet Inc.</div>
+      <div class="sc-price">$280.92</div><div class="sc-signal green">Undervalued</div>
+    </div>
+    <div class="summary-card yellow" onclick="scrollTo('ETN')">
+      <div class="sc-ticker">ETN</div><div class="sc-name">Eaton Corp.</div>
+      <div class="sc-price">$357.35</div><div class="sc-signal yellow">Fairly Valued</div>
+    </div>
+    <div class="summary-card yellow" onclick="scrollTo('ISRG')">
+      <div class="sc-ticker">ISRG</div><div class="sc-name">Intuitive Surgical</div>
+      <div class="sc-price">$468.55</div><div class="sc-signal yellow">Fair</div>
+    </div>
+    <div class="summary-card yellow" onclick="scrollTo('VST')">
+      <div class="sc-ticker">VST</div><div class="sc-name">Vistra Corp.</div>
+      <div class="sc-price">$152.30</div><div class="sc-signal yellow">Fair (~10x EBITDA)</div>
+    </div>
+    <div class="summary-card gray" onclick="scrollTo('CCJ')">
+      <div class="sc-ticker">CCJ</div><div class="sc-name">Cameco Corp.</div>
+      <div class="sc-price">$104.67</div><div class="sc-signal gray">Thesis Dep.</div>
+    </div>
+    <div class="summary-card yellow" onclick="scrollTo('CRT')">
+      <div class="sc-ticker">CRT</div><div class="sc-name">Cross Timbers Trust</div>
+      <div class="sc-price">$9.99</div><div class="sc-signal yellow">Fair/Income</div>
+    </div>
+    <div class="summary-card red" onclick="scrollTo('RKLB')">
+      <div class="sc-ticker">RKLB</div><div class="sc-name">Rocket Lab USA</div>
+      <div class="sc-price">$65.94</div><div class="sc-signal red">Overvalued</div>
+    </div>
+    <div class="summary-card green" onclick="scrollTo('OUST')">
+      <div class="sc-ticker">OUST</div><div class="sc-name">Ouster Inc.</div>
+      <div class="sc-price">$19.31</div><div class="sc-signal green">Undervalued</div>
+    </div>
+    <div class="summary-card red" onclick="scrollTo('SUUN')">
+      <div class="sc-ticker">SUUN</div><div class="sc-name">PowerBank Corp.</div>
+      <div class="sc-price">$0.60</div><div class="sc-signal red">Not Ratable</div>
+    </div>
+  </div>
+
+  <div class="section-title">Tabela Comparativa</div>
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Ticker</th>
+          <th>Tipo</th>
+          <th>Preço</th>
+          <th>Mkt Cap</th>
+          <th>P/E (TTM)</th>
+          <th>Fwd P/E</th>
+          <th>FCF Yield</th>
+          <th>EV/EBITDA</th>
+          <th>Analyst PT</th>
+          <th>Upside PT</th>
+          <th>FV Low</th>
+          <th>FV High</th>
+          <th>Sinal</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><div class="ticker-cell"><span class="t">MU</span><span class="n">Micron</span></div></td>
+          <td><span class="tag tag-cyclical">Cyclical/Growth</span></td>
+          <td>$355.62</td><td>$401B</td><td>16.8x</td>
+          <td class="up">5.0x</td><td>0.4%</td><td>21.8x</td>
+          <td>$530</td><td class="up">+49%</td>
+          <td>$107</td><td>$128</td>
+          <td><span class="signal-pill fair">Fair (HBM)</span></td>
+        </tr>
+        <tr>
+          <td><div class="ticker-cell"><span class="t">NVDA</span><span class="n">NVIDIA</span></div></td>
+          <td><span class="tag tag-growth">Growth</span></td>
+          <td>$171.24</td><td>$4,161B</td><td>35.1x</td>
+          <td>23.0x</td><td>2.3%</td><td>37.0x</td>
+          <td>$279</td><td class="up">+63%</td>
+          <td class="na">Implied</td><td class="na">31.7% CAGR</td>
+          <td><span class="signal-pill fair">Fair</span></td>
+        </tr>
+        <tr>
+          <td><div class="ticker-cell"><span class="t">AVGO</span><span class="n">Broadcom</span></div></td>
+          <td><span class="tag tag-growth">Growth</span></td>
+          <td>$309.42</td><td>$1,468B</td><td>60.6x</td>
+          <td class="up">21.4x</td><td>1.8%</td><td>42.3x</td>
+          <td>$485</td><td class="up">+57%</td>
+          <td class="up">$175</td><td class="up">$422</td>
+          <td><span class="signal-pill under">Undervalued</span></td>
+        </tr>
+        <tr>
+          <td><div class="ticker-cell"><span class="t">ANET</span><span class="n">Arista</span></div></td>
+          <td><span class="tag tag-growth">Growth</span></td>
+          <td>$122.55</td><td>$154B</td><td>43.5x</td>
+          <td>34.0x</td><td>2.7%</td><td>15.9x</td>
+          <td>$183</td><td class="up">+49%</td>
+          <td>$98</td><td>$116</td>
+          <td><span class="signal-pill fair">Fair Entry</span></td>
+        </tr>
+        <tr>
+          <td><div class="ticker-cell"><span class="t">GOOGL</span><span class="n">Alphabet</span></div></td>
+          <td><span class="tag tag-value">Compounder</span></td>
+          <td>$280.92</td><td>$3,398B</td><td>26.0x</td>
+          <td class="up">18.8x</td><td>2.2%</td><td>24.8x</td>
+          <td>$383</td><td class="up">+36%</td>
+          <td class="up">$267</td><td class="up">$324</td>
+          <td><span class="signal-pill under">Undervalued</span></td>
+        </tr>
+        <tr>
+          <td><div class="ticker-cell"><span class="t">ETN</span><span class="n">Eaton</span></div></td>
+          <td><span class="tag tag-value">Compounder</span></td>
+          <td>$357.35</td><td>$139B</td><td>34.4x</td>
+          <td>30.6x</td><td>3.2%</td><td>23.4x</td>
+          <td>$391</td><td class="up">+9%</td>
+          <td>$225</td><td>$324</td>
+          <td><span class="signal-pill fair">Fairly Valued</span></td>
+        </tr>
+        <tr>
+          <td><div class="ticker-cell"><span class="t">ISRG</span><span class="n">Intuitive</span></div></td>
+          <td><span class="tag tag-growth">Growth</span></td>
+          <td>$468.55</td><td>$166B</td><td>59.6x</td>
+          <td class="up">38.8x</td><td>1.5%</td><td>57.6x</td>
+          <td>$626</td><td class="up">+34%</td>
+          <td>$263</td><td class="up">$584</td>
+          <td><span class="signal-pill fair">Fair</span></td>
+        </tr>
+        <tr>
+          <td><div class="ticker-cell"><span class="t">VST</span><span class="n">Vistra</span></div></td>
+          <td><span class="tag tag-util">Utility/IPP</span></td>
+          <td>$152.30</td><td>$51B</td><td>69.5x</td>
+          <td class="up">9.3x</td><td>0.3%</td><td>3.9x</td>
+          <td>$238</td><td class="up">+56%</td>
+          <td>$112</td><td>$197</td>
+          <td><span class="signal-pill fair">Fair (~10x)</span></td>
+        </tr>
+        <tr>
+          <td><div class="ticker-cell"><span class="t">CCJ</span><span class="n">Cameco</span></div></td>
+          <td><span class="tag tag-cyclical">Cyclical</span></td>
+          <td>$104.67</td><td>$45.6B</td><td>104.7x</td>
+          <td class="na">N/A</td><td>2.2%</td><td>71x</td>
+          <td>$147</td><td class="up">+40%</td>
+          <td class="down">$37</td><td class="na">$57</td>
+          <td><span class="signal-pill na">Thesis</span></td>
+        </tr>
+        <tr>
+          <td><div class="ticker-cell"><span class="t">CRT</span><span class="n">Cross Timbers</span></div></td>
+          <td><span class="tag tag-cyclical">Royalty Trust</span></td>
+          <td>$9.99</td><td>$60M</td><td>13.4x</td>
+          <td class="na">N/A</td><td>7.4%</td><td>10.1x</td>
+          <td class="na">N/A</td><td class="na">—</td>
+          <td>$8.22</td><td>$10.57</td>
+          <td><span class="signal-pill fair">Income Play</span></td>
+        </tr>
+        <tr>
+          <td><div class="ticker-cell"><span class="t">RKLB</span><span class="n">Rocket Lab</span></div></td>
+          <td><span class="tag tag-pre">Pre-Profit</span></td>
+          <td>$65.94</td><td>$37.5B</td><td class="down">Neg.</td>
+          <td class="na">Neg.</td><td class="down">-0.9%</td><td class="na">61x EV/Rev</td>
+          <td>$95</td><td class="up">+44%</td>
+          <td class="down">$19</td><td class="down">$30</td>
+          <td><span class="signal-pill over">Overvalued</span></td>
+        </tr>
+        <tr>
+          <td><div class="ticker-cell"><span class="t">OUST</span><span class="n">Ouster</span></div></td>
+          <td><span class="tag tag-pre">Pre-Profit</span></td>
+          <td>$19.31</td><td>$1.2B</td><td class="down">Neg.</td>
+          <td class="na">Neg.</td><td class="down">-5.4%</td><td class="na">6.9x EV/Rev</td>
+          <td>$41</td><td class="up">+112%</td>
+          <td class="up">$26</td><td class="up">$35</td>
+          <td><span class="signal-pill under">Undervalued</span></td>
+        </tr>
+        <tr>
+          <td><div class="ticker-cell"><span class="t">SUUN</span><span class="n">PowerBank</span></div></td>
+          <td><span class="tag tag-spec">Speculative</span></td>
+          <td>$0.60</td><td>$21M</td><td class="down">Neg.</td>
+          <td class="na">—</td><td class="down">-120%</td><td class="na">—</td>
+          <td class="na">—</td><td class="na">—</td>
+          <td class="na">—</td><td class="na">—</td>
+          <td><span class="signal-pill na">Not Ratable</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- DETAIL CARDS -->
+  <div class="section-title">Análise Detalhada por Empresa</div>
+  <div class="detail-grid">
+
+    <!-- MU -->
+    <div class="detail-card" id="MU">
+      <div class="dc-header">
+        <div class="dc-title">
+          <div class="dc-ticker">MU <span style="font-size:11px;color:var(--text3);font-weight:400;">· Micron Technology</span></div>
+          <div style="display:flex;gap:6px;margin-top:4px;"><span class="tag tag-cyclical">Cyclical/Growth</span><span class="tag tag-value" style="font-size:9px;">HBM Supercycle</span></div>
+        </div>
+        <div class="dc-price-block">
+          <div class="dc-price">$355.62</div>
+          <div class="dc-range">52w: $61.54 — $471.34</div>
+        </div>
+      </div>
+      <div class="dc-metrics">
+        <div class="metric"><div class="metric-label">TTM Revenue</div><div class="metric-value">$58.1B</div></div>
+        <div class="metric"><div class="metric-label">TTM FCF</div><div class="metric-value">$11.3B</div></div>
+        <div class="metric"><div class="metric-label">Gross Margin (Q2 FY26)</div><div class="metric-value">74.4%</div></div>
+        <div class="metric"><div class="metric-label">Net Cash</div><div class="metric-value">$3.8B</div></div>
+      </div>
+      <div class="valuation-bar">
+        <div class="vb-label"><span>Intrínseco Norm. 10–12x EV/EBITDA</span><span>$107–$128 (norm.) | $781 (FY26E)</span></div>
+        <div class="vb-track" style="position:relative;">
+          <div class="vb-fill" style="left:2%;width:20%;background:rgba(210,153,34,0.2);border:1px solid rgba(210,153,34,0.3);color:var(--yellow);font-family:var(--mono);font-size:10px;font-weight:600;display:flex;align-items:center;padding:0 8px;">$107–$128</div>
+          <div class="vb-fill" style="left:75%;width:23%;background:rgba(88,166,255,0.1);border:1px solid rgba(88,166,255,0.2);color:var(--blue);font-family:var(--mono);font-size:10px;font-weight:600;display:flex;align-items:center;padding:0 8px;">$781 FY26E</div>
+          <div class="vb-marker" style="left:46%;"></div>
+        </div>
+      </div>
+      <div class="verdict fair">TTM P/E 16.8x parece barato mas reflete peak-cycle HBM. Reverse DCF implica 22.3% CAGR 5Y — alcançável a curto prazo (FY26E rev $108.7B, +191%) mas exigente num ciclo completo. EV/EBITDA normalizado (5Y avg $11.9B) a 33.5x — caro vs. histórico. P/B 5.53x em máximo cíclico. A valorização depende de o HBM mudar estruturalmente o earning power.</div>
+    </div>
+
+    <!-- NVDA -->
+    <div class="detail-card" id="NVDA">
+      <div class="dc-header">
+        <div class="dc-title">
+          <div class="dc-ticker">NVDA <span style="font-size:11px;color:var(--text3);font-weight:400;">· NVIDIA Corp.</span></div>
+          <div style="display:flex;gap:6px;margin-top:4px;"><span class="tag tag-growth">Growth</span><span class="tag tag-growth" style="font-size:9px;">AI Compute</span></div>
+        </div>
+        <div class="dc-price-block">
+          <div class="dc-price">$171.24</div>
+          <div class="dc-range">52w: $86.62 — $212.19</div>
+        </div>
+      </div>
+      <div class="dc-metrics">
+        <div class="metric"><div class="metric-label">TTM Revenue</div><div class="metric-value">$215.9B</div></div>
+        <div class="metric"><div class="metric-label">TTM FCF</div><div class="metric-value">$96.7B</div></div>
+        <div class="metric"><div class="metric-label">Gross Margin</div><div class="metric-value">71.1%</div></div>
+        <div class="metric"><div class="metric-label">Net Cash</div><div class="metric-value">$51.1B</div></div>
+      </div>
+      <div class="valuation-bar">
+        <div class="vb-label"><span>Implied Growth vs Consenso</span><span>FY27E $369B (+71%) | FY28E $480B (+30%)</span></div>
+        <div class="vb-track">
+          <div class="vb-fill" style="left:2%;width:30%;background:rgba(63,185,80,0.15);border:1px solid rgba(63,185,80,0.3);color:var(--green);font-family:var(--mono);font-size:10px;font-weight:600;display:flex;align-items:center;padding:0 8px;">31.7% CAGR</div>
+          <div class="vb-fill" style="left:40%;width:28%;background:rgba(88,166,255,0.1);border:1px solid rgba(88,166,255,0.2);color:var(--blue);font-family:var(--mono);font-size:10px;font-weight:600;display:flex;align-items:center;padding:0 8px;">FY27 $369B</div>
+          <div class="vb-fill" style="left:72%;width:26%;background:rgba(88,166,255,0.07);border:1px solid rgba(88,166,255,0.15);color:var(--blue);font-family:var(--mono);font-size:10px;font-weight:600;display:flex;align-items:center;padding:0 8px;">FY28 $480B</div>
+          <div class="vb-marker" style="left:20%;"></div>
+        </div>
+      </div>
+      <div class="verdict fair">Reverse DCF implica 31.7% CAGR 5Y — exigente mas suportado pelo consenso (FY27 $369B +71%, FY28 $480B +30%). EV/Sales 19x comprime para 11x no FY27E. Rule of 40 = 132 (excecional). Riscos: concentração em hyperscalers, erosão de margem bruta por AMD/ASICs custom, ciclicalidade do capex AI.</div>
+    </div>
+
+    <!-- AVGO -->
+    <div class="detail-card" id="AVGO">
+      <div class="dc-header">
+        <div class="dc-title">
+          <div class="dc-ticker">AVGO <span style="font-size:11px;color:var(--text3);font-weight:400;">· Broadcom</span></div>
+          <div style="display:flex;gap:6px;margin-top:4px;"><span class="tag tag-growth">Growth/Compounder</span><span class="tag tag-value" style="font-size:9px;">AI ASIC + SW</span></div>
+        </div>
+        <div class="dc-price-block">
+          <div class="dc-price">$309.42</div>
+          <div class="dc-range">52w: $138.10 — $414.61</div>
+        </div>
+      </div>
+      <div class="dc-metrics">
+        <div class="metric"><div class="metric-label">TTM Revenue</div><div class="metric-value">$68.3B</div></div>
+        <div class="metric"><div class="metric-label">TTM FCF</div><div class="metric-value">$28.9B</div></div>
+        <div class="metric"><div class="metric-label">FCF Margin</div><div class="metric-value">42.3%</div></div>
+        <div class="metric"><div class="metric-label">Net Debt</div><div class="metric-value down">$51.9B</div></div>
+      </div>
+      <div class="valuation-bar">
+        <div class="vb-label"><span>DCF Owner Earnings (3 cenários)</span><span class="up">$175 — $422 — $632</span></div>
+        <div class="vb-track">
+          <div class="vb-fill" style="left:2%;width:18%;background:rgba(210,153,34,0.15);border:1px solid rgba(210,153,34,0.3);color:var(--yellow);font-family:var(--mono);font-size:10px;font-weight:600;display:flex;align-items:center;padding:0 8px;">$175 cons.</div>
+          <div class="vb-fill range" style="left:28%;width:28%;">$422 base</div>
+          <div class="vb-fill" style="left:65%;width:33%;background:rgba(88,166,255,0.1);border:1px solid rgba(88,166,255,0.2);color:var(--blue);font-family:var(--mono);font-size:10px;font-weight:600;display:flex;align-items:center;padding:0 8px;">$632 bull</div>
+          <div class="vb-marker" style="left:23%;"></div>
+        </div>
+      </div>
+      <div class="verdict under">DCF base case $422/ação (+36% upside). FY26E rev $104.7B, FY27E $155.6B. EV/EBITDA forward 21.4x — acima do histórico 18–22x mas defensível para o perfil de crescimento. FCF margin 42.3% é excecionalmentee forte. Risco: ciclos de capex AI e competição em silicon custom.</div>
+    </div>
+
+    <!-- ANET -->
+    <div class="detail-card" id="ANET">
+      <div class="dc-header">
+        <div class="dc-title">
+          <div class="dc-ticker">ANET <span style="font-size:11px;color:var(--text3);font-weight:400;">· Arista Networks</span></div>
+          <div style="display:flex;gap:6px;margin-top:4px;"><span class="tag tag-growth">Growth</span><span class="tag tag-value" style="font-size:9px;">Zero Dívida</span></div>
+        </div>
+        <div class="dc-price-block">
+          <div class="dc-price">$122.55</div>
+          <div class="dc-range">52w: $59.43 — $164.94</div>
+        </div>
+      </div>
+      <div class="dc-metrics">
+        <div class="metric"><div class="metric-label">TTM Revenue</div><div class="metric-value">$9.0B</div></div>
+        <div class="metric"><div class="metric-label">FCF Margin</div><div class="metric-value">47.2%</div></div>
+        <div class="metric"><div class="metric-label">Op Margin</div><div class="metric-value">42.8%</div></div>
+        <div class="metric"><div class="metric-label">Net Cash</div><div class="metric-value">$10.7B</div></div>
+      </div>
+      <div class="valuation-bar">
+        <div class="vb-label"><span>Fair Value (10–12x FY26E Rev)</span><span>$98 — $116</span></div>
+        <div class="vb-track">
+          <div class="vb-fill range" style="left:20%;width:35%;">$98–$116</div>
+          <div class="vb-marker" style="left:59%;"></div>
+        </div>
+      </div>
+      <div class="verdict fair">Negócio excecional — zero dívida, FCF margin 47.2%, Rule of 40 = 72. Reverse DCF implica 23% CAGR (alinhado com consenso ~21–27%). A 15.9x EV/Sales, prémio significativo vs peers de networking (CSCO 3–4x). Fair value estimado $98–$116 a 10–12x FY26E rev. Margem de segurança limitada.</div>
+    </div>
+
+    <!-- GOOGL -->
+    <div class="detail-card" id="GOOGL">
+      <div class="dc-header">
+        <div class="dc-title">
+          <div class="dc-ticker">GOOGL <span style="font-size:11px;color:var(--text3);font-weight:400;">· Alphabet Inc.</span></div>
+          <div style="display:flex;gap:6px;margin-top:4px;"><span class="tag tag-value">Compounder</span><span class="tag tag-value" style="font-size:9px;">$73B FCF/ano</span></div>
+        </div>
+        <div class="dc-price-block">
+          <div class="dc-price">$280.92</div>
+          <div class="dc-range">52w: $140.53 — $349.00</div>
+        </div>
+      </div>
+      <div class="dc-metrics">
+        <div class="metric"><div class="metric-label">Receita FY25</div><div class="metric-value">$403B</div></div>
+        <div class="metric"><div class="metric-label">FCF FY25</div><div class="metric-value">$73.3B</div></div>
+        <div class="metric"><div class="metric-label">Op Margin</div><div class="metric-value">32.0%</div></div>
+        <div class="metric"><div class="metric-label">Capex FY25</div><div class="metric-value">$91.4B</div></div>
+      </div>
+      <div class="valuation-bar">
+        <div class="vb-label"><span>DCF Owner Earnings (3 cenários)</span><span class="up">$267 — $324 — $394</span></div>
+        <div class="vb-track">
+          <div class="vb-fill" style="left:2%;width:22%;background:rgba(210,153,34,0.15);border:1px solid rgba(210,153,34,0.3);color:var(--yellow);font-family:var(--mono);font-size:10px;font-weight:600;display:flex;align-items:center;padding:0 8px;">$267 cons.</div>
+          <div class="vb-fill range" style="left:32%;width:26%;">$324 base</div>
+          <div class="vb-fill" style="left:65%;width:33%;background:rgba(88,166,255,0.1);border:1px solid rgba(88,166,255,0.2);color:var(--blue);font-family:var(--mono);font-size:10px;font-weight:600;display:flex;align-items:center;padding:0 8px;">$394 bull</div>
+          <div class="vb-marker" style="left:20%;"></div>
+        </div>
+      </div>
+      <div class="verdict under">DCF base case $324 (+15.4% upside). A mega-cap mais barata em termos fundamentais. Capex triplicou para $91B (AI infra) mas FCF manteve-se em $73B — qualidade financeira excecional. EV/EBITDA 24.8x vs histórico 17.5x reflete repricing por AI. FY28E P/E ~13.2x. Risco chave: ROI do investimento AI de $91B+.</div>
+    </div>
+
+    <!-- ETN -->
+    <div class="detail-card" id="ETN">
+      <div class="dc-header">
+        <div class="dc-title">
+          <div class="dc-ticker">ETN <span style="font-size:11px;color:var(--text3);font-weight:400;">· Eaton Corporation</span></div>
+          <div style="display:flex;gap:6px;margin-top:4px;"><span class="tag tag-value">Compounder</span><span class="tag tag-util" style="font-size:9px;">Electrification</span></div>
+        </div>
+        <div class="dc-price-block">
+          <div class="dc-price">$357.35</div>
+          <div class="dc-range">52w: $231.85 — $408.45</div>
+        </div>
+      </div>
+      <div class="dc-metrics">
+        <div class="metric"><div class="metric-label">Receita FY25</div><div class="metric-value">$27.4B</div></div>
+        <div class="metric"><div class="metric-label">FCF FY25</div><div class="metric-value">$4.5B</div></div>
+        <div class="metric"><div class="metric-label">FCF Yield</div><div class="metric-value">3.2%</div></div>
+        <div class="metric"><div class="metric-label">D/E</div><div class="metric-value">0.57x</div></div>
+      </div>
+      <div class="valuation-bar">
+        <div class="vb-label"><span>DCF vs Histórico</span><span>$225 (DCF) | $324–$405 (hist. multiples)</span></div>
+        <div class="vb-track">
+          <div class="vb-fill" style="left:2%;width:18%;background:rgba(248,81,73,0.12);border:1px solid rgba(248,81,73,0.3);color:var(--red);font-family:var(--mono);font-size:10px;font-weight:600;display:flex;align-items:center;padding:0 8px;">$225 DCF</div>
+          <div class="vb-fill range" style="left:28%;width:40%;">$324–$405 hist.</div>
+          <div class="vb-marker" style="left:66%;"></div>
+        </div>
+      </div>
+      <div class="verdict fair">DCF base case $225 (−37% vs preço atual). Histórico EV/EBITDA 23x suporta $324. EPS CAGR 5Y ~18% ($5.34→$10.46) justifica prémio. Totalmente valorizado na intersecção DCF/múltiplos históricos. Tese depende de crescimento secular em electrificação/data centers. UBS recentemente fez downgrade para Neutral.</div>
+    </div>
+
+    <!-- ISRG -->
+    <div class="detail-card" id="ISRG">
+      <div class="dc-header">
+        <div class="dc-title">
+          <div class="dc-ticker">ISRG <span style="font-size:11px;color:var(--text3);font-weight:400;">· Intuitive Surgical</span></div>
+          <div style="display:flex;gap:6px;margin-top:4px;"><span class="tag tag-growth">Growth</span><span class="tag tag-value" style="font-size:9px;">Razor/Blade Monopoly</span></div>
+        </div>
+        <div class="dc-price-block">
+          <div class="dc-price">$468.55</div>
+          <div class="dc-range">52w: $425.00 — $603.88</div>
+        </div>
+      </div>
+      <div class="dc-metrics">
+        <div class="metric"><div class="metric-label">Receita FY25</div><div class="metric-value">$10.1B</div></div>
+        <div class="metric"><div class="metric-label">Gross Margin</div><div class="metric-value">66.0%</div></div>
+        <div class="metric"><div class="metric-label">Net Cash</div><div class="metric-value">$3.1B</div></div>
+        <div class="metric"><div class="metric-label">FY26E EPS</div><div class="metric-value">$12.06</div></div>
+      </div>
+      <div class="valuation-bar">
+        <div class="vb-label"><span>DCF vs Histórico</span><span>$263 (DCF) | $584 (hist. EV/EBITDA)</span></div>
+        <div class="vb-track">
+          <div class="vb-fill" style="left:2%;width:20%;background:rgba(248,81,73,0.12);border:1px solid rgba(248,81,73,0.3);color:var(--red);font-family:var(--mono);font-size:10px;font-weight:600;display:flex;align-items:center;padding:0 8px;">$263 DCF</div>
+          <div class="vb-fill range" style="left:65%;width:30%;">$584 hist.</div>
+          <div class="vb-marker" style="left:48%;"></div>
+        </div>
+      </div>
+      <div class="verdict fair">Monopólio em cirurgia robótica com modelo razor/blade. DCF base $263 (−44%) mas histórico EV/EBITDA 57.6x suporta $584 (+25%). FY25 FCF $2.5B (+91% YoY) demonstra operating leverage significativo. FY28E fwd P/E ~31x razoável para 24% EPS CAGR. Requer horizonte de investimento longo para justificar.</div>
+    </div>
+
+    <!-- VST -->
+    <div class="detail-card" id="VST">
+      <div class="dc-header">
+        <div class="dc-title">
+          <div class="dc-ticker">VST <span style="font-size:11px;color:var(--text3);font-weight:400;">· Vistra Corp.</span></div>
+          <div style="display:flex;gap:6px;margin-top:4px;"><span class="tag tag-util">Utility/IPP</span><span class="tag tag-spec" style="font-size:9px;">D/E 3.8x</span></div>
+        </div>
+        <div class="dc-price-block">
+          <div class="dc-price">$152.30</div>
+          <div class="dc-range">52w: $90.51 — $219.82</div>
+        </div>
+      </div>
+      <div class="dc-metrics">
+        <div class="metric"><div class="metric-label">EBITDA FY25</div><div class="metric-value">$5.3B</div></div>
+        <div class="metric"><div class="metric-label">Dívida Líquida</div><div class="metric-value">$19.6B</div></div>
+        <div class="metric"><div class="metric-label">Debt/EBITDA</div><div class="metric-value down">3.9x</div></div>
+        <div class="metric"><div class="metric-label">FY26E EBITDA</div><div class="metric-value">$7.2B</div></div>
+      </div>
+      <div class="valuation-bar">
+        <div class="vb-label"><span>EV/EBITDA FY26E</span><span>$112 (8x) — $155 (10x) — $197 (12x)</span></div>
+        <div class="vb-track">
+          <div class="vb-fill" style="left:2%;width:22%;background:rgba(63,185,80,0.1);border:1px solid rgba(63,185,80,0.2);color:var(--green);font-family:var(--mono);font-size:10px;font-weight:600;display:flex;align-items:center;padding:0 8px;">$112 (8x)</div>
+          <div class="vb-fill range" style="left:32%;width:26%;">$155 (10x)</div>
+          <div class="vb-fill" style="left:65%;width:28%;background:rgba(88,166,255,0.1);border:1px solid rgba(88,166,255,0.2);color:var(--blue);font-family:var(--mono);font-size:10px;font-weight:600;display:flex;align-items:center;padding:0 8px;">$197 (12x)</div>
+          <div class="vb-marker" style="left:44%;"></div>
+        </div>
+      </div>
+      <div class="verdict fair">A 10x FY26E EBITDA ($7.22B), ~$155/ação — aproximadamente fair value. DDM inapropriado (payout ratio &lt;15%). FY25 EBITDA $5.25B muito abaixo de FY24 $7.19B — volatilidade inerente ao IPP merchant. Debt/EBITDA 3.9x aceitável, melhora para ~2.8x se FY26E se concretizar. Gap trailing/forward enorme reflete confiança em PPAs com data centers ainda não demonstrada.</div>
+    </div>
+
+    <!-- CCJ -->
+    <div class="detail-card" id="CCJ">
+      <div class="dc-header">
+        <div class="dc-title">
+          <div class="dc-ticker">CCJ <span style="font-size:11px;color:var(--text3);font-weight:400;">· Cameco Corp.</span></div>
+          <div style="display:flex;gap:6px;margin-top:4px;"><span class="tag tag-cyclical">Cyclical</span><span class="tag tag-cyclical" style="font-size:9px;">Uranium Thesis</span></div>
+        </div>
+        <div class="dc-price-block">
+          <div class="dc-price">$104.67</div>
+          <div class="dc-range">52w: $35.00 — $135.24</div>
+        </div>
+      </div>
+      <div class="dc-metrics">
+        <div class="metric"><div class="metric-label">Receita FY25 (CAD)</div><div class="metric-value">C$3.5B</div></div>
+        <div class="metric"><div class="metric-label">P/E (TTM)</div><div class="metric-value down">104.7x</div></div>
+        <div class="metric"><div class="metric-label">EV/EBITDA</div><div class="metric-value down">71x</div></div>
+        <div class="metric"><div class="metric-label">Net Cash</div><div class="metric-value">≈$0</div></div>
+      </div>
+      <div class="valuation-bar">
+        <div class="vb-label"><span>Fundamentals vs Analyst PT</span><span class="na">Não mensurável</span></div>
+        <div class="vb-track">
+          <div class="vb-fill" style="left:2%;width:25%;background:rgba(210,153,34,0.2);border:1px solid rgba(210,153,34,0.3);color:var(--yellow);font-family:var(--mono);font-size:10px;font-weight:600;display:flex;align-items:center;padding:0 8px;">Fundamentals $37–57</div>
+          <div class="vb-fill" style="left:60%;width:38%;background:rgba(88,166,255,0.1);border:1px solid rgba(88,166,255,0.2);color:var(--blue);font-family:var(--mono);font-size:10px;font-weight:600;display:flex;align-items:center;padding:0 8px;">Analyst PT $147</div>
+          <div class="vb-marker" style="left:50%;"></div>
+        </div>
+      </div>
+      <div class="verdict na" style="border-left-color:var(--red);">EV/EBITDA 71x e P/B 9.2x em extremos históricos (range típico: EV/EBITDA 15–30x, P/B 1–5x). A 25x EV/EBITDA normalizado → $37/ação (−65%). Balanço impecável (net cash, 12x cobertura de juros). Preço requer EBITDA normalizado de C$2.5–3.0B+ (~3x vs FY25). Tese nuclear (AI + descarbonização) é o único suporte — frameworks cíclicos tradicionais não validam o preço atual.</div>
+    </div>
+
+    <!-- CRT -->
+    <div class="detail-card" id="CRT">
+      <div class="dc-header">
+        <div class="dc-title">
+          <div class="dc-ticker">CRT <span style="font-size:11px;color:var(--text3);font-weight:400;">· Cross Timbers Trust</span></div>
+          <div style="display:flex;gap:6px;margin-top:4px;"><span class="tag tag-cyclical">Royalty Trust</span><span class="tag tag-value" style="font-size:9px;">~7.4% yield</span></div>
+        </div>
+        <div class="dc-price-block">
+          <div class="dc-price">$9.99</div>
+          <div class="dc-range">52w: $7.07 — $13.31</div>
+        </div>
+      </div>
+      <div class="dc-metrics">
+        <div class="metric"><div class="metric-label">Receita TTM</div><div class="metric-value">$5.6M</div></div>
+        <div class="metric"><div class="metric-label">Dívida</div><div class="metric-value up">Zero</div></div>
+        <div class="metric"><div class="metric-label">Yield (310bps spread)</div><div class="metric-value">7.4%</div></div>
+        <div class="metric"><div class="metric-label">PV Distribuições</div><div class="metric-value">$4.42–$6.87</div></div>
+      </div>
+      <div class="valuation-bar">
+        <div class="vb-label"><span>Fair Value (Yield 7–9%)</span><span>$8.22 — $10.57</span></div>
+        <div class="vb-track">
+          <div class="vb-fill range" style="left:20%;width:45%;">$8.22–$10.57</div>
+          <div class="vb-marker" style="left:60%;"></div>
+        </div>
+      </div>
+      <div class="verdict fair">Yield 7.4% = spread de 310bps sobre Treasuries — no low end do range justo para royalty trusts depletantes. PV das distribuições (10–30 anos) = $4.42–$6.87, abaixo do preço atual. Revenue caiu 47% desde FY2022. Valorização = pura aposta em preço do petróleo. Se oil −20%, distribuições ≈ metade → preço ~$5.</div>
+    </div>
+
+    <!-- RKLB -->
+    <div class="detail-card" id="RKLB">
+      <div class="dc-header">
+        <div class="dc-title">
+          <div class="dc-ticker">RKLB <span style="font-size:11px;color:var(--text3);font-weight:400;">· Rocket Lab USA</span></div>
+          <div style="display:flex;gap:6px;margin-top:4px;"><span class="tag tag-pre">Pre-Profit</span><span class="tag tag-spec" style="font-size:9px;">61x EV/Rev</span></div>
+        </div>
+        <div class="dc-price-block">
+          <div class="dc-price">$65.94</div>
+          <div class="dc-range">52w: $14.71 — $99.58</div>
+        </div>
+      </div>
+      <div class="dc-metrics">
+        <div class="metric"><div class="metric-label">Receita FY25</div><div class="metric-value">$601.8M</div></div>
+        <div class="metric"><div class="metric-label">FCF FY25</div><div class="metric-value down">-$321.8M</div></div>
+        <div class="metric"><div class="metric-label">Net Cash</div><div class="metric-value up">$574.7M</div></div>
+        <div class="metric"><div class="metric-label">FY27E Rev</div><div class="metric-value">$1.23B</div></div>
+      </div>
+      <div class="valuation-bar">
+        <div class="vb-label"><span>Fundamentals vs Current Price</span><span class="down">$19–$30 (fundam.) | CAGR implica 70.2%</span></div>
+        <div class="vb-track">
+          <div class="vb-fill" style="left:2%;width:22%;background:rgba(63,185,80,0.1);border:1px solid rgba(63,185,80,0.2);color:var(--green);font-family:var(--mono);font-size:10px;font-weight:600;display:flex;align-items:center;padding:0 8px;">$19–$30</div>
+          <div class="vb-fill" style="left:50%;width:25%;background:rgba(88,166,255,0.1);border:1px solid rgba(88,166,255,0.2);color:var(--blue);font-family:var(--mono);font-size:10px;font-weight:600;display:flex;align-items:center;padding:0 8px;">PT $95</div>
+          <div class="vb-marker" style="left:38%;"></div>
+        </div>
+      </div>
+      <div class="verdict over">Reverse DCF implica 70.2% CAGR 7Y — muito acima do consenso (~41%). A $66, 61x EV/Rev TTM é extremo. Para justificar: ~$24.9B rev em ~2032 a 15% FCF margin. EBITDA breakeven FY2027E ($165M). Gross margin melhorou para 34.4%. Risco: Neutron, concentração de clientes, competição. Do ponto fundamental: overvalued. Tese depende de execução binária do Neutron.</div>
+    </div>
+
+    <!-- OUST -->
+    <div class="detail-card" id="OUST">
+      <div class="dc-header">
+        <div class="dc-title">
+          <div class="dc-ticker">OUST <span style="font-size:11px;color:var(--text3);font-weight:400;">· Ouster Inc.</span></div>
+          <div style="display:flex;gap:6px;margin-top:4px;"><span class="tag tag-pre">Pre-Profit</span><span class="tag tag-growth" style="font-size:9px;">LiDAR</span></div>
+        </div>
+        <div class="dc-price-block">
+          <div class="dc-price">$19.31</div>
+          <div class="dc-range">52w: $6.34 — $41.65</div>
+        </div>
+      </div>
+      <div class="dc-metrics">
+        <div class="metric"><div class="metric-label">Receita FY25</div><div class="metric-value">$169.4M</div></div>
+        <div class="metric"><div class="metric-label">Gross Margin</div><div class="metric-value">49.3%</div></div>
+        <div class="metric"><div class="metric-label">Net Cash</div><div class="metric-value up">$50.3M</div></div>
+        <div class="metric"><div class="metric-label">FY27E Rev</div><div class="metric-value">$304.5M</div></div>
+      </div>
+      <div class="valuation-bar">
+        <div class="vb-label"><span>Fair Value (FY27E 6–8x EV/Rev)</span><span class="up">$26 — $35</span></div>
+        <div class="vb-track">
+          <div class="vb-fill range" style="left:35%;width:45%;">$26–$35</div>
+          <div class="vb-marker" style="left:26%;"></div>
+        </div>
+      </div>
+      <div class="verdict under">Implied CAGR 41.4% alinhado com consenso. EV/Rev 6.9x razoável vs peers LiDAR (5–10x). Gross margin de 10% (FY23) para 49.3% (FY25) — o sinal mais positivo. Q4 2025 já EBITDA-positivo. Risco: cash runway limitado ($67M, ~1 ano), possível diluição, timing de adoção LiDAR.</div>
+    </div>
+
+    <!-- SUUN -->
+    <div class="detail-card" id="SUUN">
+      <div class="dc-header">
+        <div class="dc-title">
+          <div class="dc-ticker">SUUN <span style="font-size:11px;color:var(--text3);font-weight:400;">· PowerBank Corp.</span></div>
+          <div style="display:flex;gap:6px;margin-top:4px;"><span class="tag tag-spec">Especulativo</span><span class="tag tag-spec" style="font-size:9px;">Micro-cap</span></div>
+        </div>
+        <div class="dc-price-block">
+          <div class="dc-price">$0.60</div>
+          <div class="dc-range">52w: $0.58 — $3.53</div>
+        </div>
+      </div>
+      <div class="dc-metrics">
+        <div class="metric"><div class="metric-label">Mkt Cap</div><div class="metric-value">$21M</div></div>
+        <div class="metric"><div class="metric-label">Net Loss FY25</div><div class="metric-value down">-C$31M</div></div>
+        <div class="metric"><div class="metric-label">D/E</div><div class="metric-value down">3.9x</div></div>
+        <div class="metric"><div class="metric-label">Cobertura</div><div class="metric-value na">Nenhuma</div></div>
+      </div>
+      <div class="verdict na" style="border-left-color:var(--red);">Micro-cap sem cobertura. EBITDA negativo, FCF negativo, D/E 3.9x sobre equity de C$19M. Dívida de C$75M vs market cap de ~C$29M levanta risco existencial. Modelos de valorização tradicionais não aplicáveis. POSIÇÃO DE ALTO RISCO.</div>
+    </div>
+
+  </div><!-- end detail-grid -->
+</div><!-- end valuation tab -->
+
+
+<!-- ===== ANALYSTS TAB ===== -->
+<div class="tab-panel" id="tab-analysts">
+  <div class="update-banner">
+    <div class="ub-text">Consenso sell-side · Price targets e ratings conforme <strong>Mar 2026</strong></div>
+    <div class="ub-date">Fonte: Perplexity Opus · Finance API</div>
+  </div>
+
+  <div class="section-title">Consenso por Ticker (clica para expandir)</div>
+
+  <!-- MU -->
+  <div class="analyst-card">
+    <div class="analyst-header" onclick="toggleAnalyst(this)">
+      <div class="ah-left">
+        <div class="ah-ticker">MU</div>
+        <span class="signal-pill under">Strong Buy</span>
+        <span style="font-size:11px;color:var(--text3);font-family:var(--mono);">Micron Technology</span>
+      </div>
+      <div class="ah-right">
+        <div class="ah-pt"><div class="ah-pt-label">Avg PT</div><div class="ah-pt-val">$530</div></div>
+        <div class="ah-upside up">+49%</div>
+        <div style="color:var(--text3);font-size:16px;">▸</div>
+      </div>
+    </div>
+    <div class="analyst-body">
+      <div class="bhs-bar"><div class="bhs-buy" style="width:85%"></div><div class="bhs-hold" style="width:12%"></div><div class="bhs-sell" style="width:3%"></div></div>
+      <div class="bhs-labels"><span class="up">Buy ~85%</span><span style="color:var(--yellow)">Hold ~12%</span><span class="down">Sell ~3%</span></div>
+      <div class="pt-range"><span class="pt-range-label">Range</span>Goldman Sachs (baixa): <strong>$400</strong> · Barclays (alta): <strong>$675</strong></div>
+      <div class="pt-range"><span class="pt-range-label">Avg</span><strong>$530</strong> · ~28 analistas com cobertura activa</div>
+      <div class="analyst-note">Tese bullish: HBM3E/HBM4 market share gains, DRAM pricing recovery, FY26E EPS $71. Tese bearish: ciclo de memória tem precedentes de queda rápida — Goldman mantém cautela sobre peak-cycle timing.</div>
+    </div>
+  </div>
+
+  <!-- NVDA -->
+  <div class="analyst-card">
+    <div class="analyst-header" onclick="toggleAnalyst(this)">
+      <div class="ah-left">
+        <div class="ah-ticker">NVDA</div>
+        <span class="signal-pill under">Strong Buy</span>
+        <span style="font-size:11px;color:var(--text3);font-family:var(--mono);">NVIDIA Corporation</span>
+      </div>
+      <div class="ah-right">
+        <div class="ah-pt"><div class="ah-pt-label">Avg PT</div><div class="ah-pt-val">$279</div></div>
+        <div class="ah-upside up">+62%</div>
+        <div style="color:var(--text3);font-size:16px;">▸</div>
+      </div>
+    </div>
+    <div class="analyst-body">
+      <div class="bhs-bar"><div class="bhs-buy" style="width:100%"></div></div>
+      <div class="bhs-labels"><span class="up">Buy 100%</span><span style="color:var(--yellow)">Hold 0%</span><span class="down">Sell 0%</span></div>
+      <div class="pt-range"><span class="pt-range-label">Range</span>TD Cowen: <strong>$235</strong> · Rosenblatt: <strong>$325</strong></div>
+      <div class="pt-range"><span class="pt-range-label">Avg</span><strong>$279</strong> · 8 analistas acompanhados</div>
+      <div class="analyst-note">Unanimidade rara. FY27E EPS $9.27 impulsionado por Blackwell/GB200 ramp. Principal risco identificado pelos analistas: regulação de exportações para China, que já custou ~$18B em receitas restritas.</div>
+    </div>
+  </div>
+
+  <!-- AVGO -->
+  <div class="analyst-card">
+    <div class="analyst-header" onclick="toggleAnalyst(this)">
+      <div class="ah-left">
+        <div class="ah-ticker">AVGO</div>
+        <span class="signal-pill under">Strong Buy</span>
+        <span style="font-size:11px;color:var(--text3);font-family:var(--mono);">Broadcom Inc.</span>
+      </div>
+      <div class="ah-right">
+        <div class="ah-pt"><div class="ah-pt-label">Avg PT</div><div class="ah-pt-val">$485</div></div>
+        <div class="ah-upside up">+56%</div>
+        <div style="color:var(--text3);font-size:16px;">▸</div>
+      </div>
+    </div>
+    <div class="analyst-body">
+      <div class="bhs-bar"><div class="bhs-buy" style="width:89%"></div><div class="bhs-hold" style="width:11%"></div></div>
+      <div class="bhs-labels"><span class="up">Buy 89%</span><span style="color:var(--yellow)">Hold 11%</span><span class="down">Sell 0%</span></div>
+      <div class="pt-range"><span class="pt-range-label">Range</span>RBC: <strong>$360</strong> · Evercore ISI: <strong>$582</strong></div>
+      <div class="pt-range"><span class="pt-range-label">Avg</span><strong>$485</strong></div>
+      <div class="analyst-note">O FY27E EPS $22.32 é o driver — implica que o AI ASIC (XPU para Google TPU, Meta MTIA) continua a escalar. VMware integration concluída; custos normalizados. Leverage ($65B dívida) é a principal preocupação dos bears.</div>
+    </div>
+  </div>
+
+  <!-- ANET -->
+  <div class="analyst-card">
+    <div class="analyst-header" onclick="toggleAnalyst(this)">
+      <div class="ah-left">
+        <div class="ah-ticker">ANET</div>
+        <span class="signal-pill under">Strong Buy</span>
+        <span style="font-size:11px;color:var(--text3);font-family:var(--mono);">Arista Networks</span>
+      </div>
+      <div class="ah-right">
+        <div class="ah-pt"><div class="ah-pt-label">Avg PT</div><div class="ah-pt-val">$183</div></div>
+        <div class="ah-upside up">+48%</div>
+        <div style="color:var(--text3);font-size:16px;">▸</div>
+      </div>
+    </div>
+    <div class="analyst-body">
+      <div class="bhs-bar"><div class="bhs-buy" style="width:87%"></div><div class="bhs-hold" style="width:13%"></div></div>
+      <div class="bhs-labels"><span class="up">Buy 87.5%</span><span style="color:var(--yellow)">Hold 12.5%</span><span class="down">Sell 0%</span></div>
+      <div class="pt-range"><span class="pt-range-label">Range</span>Rosenblatt: <strong>$165</strong> · Evercore: <strong>$200</strong></div>
+      <div class="analyst-note">Zero dívida, expansão consistente de margens, dominância em data center networking de alta velocidade. Risco: dependência da Microsoft (≈25% receitas) e desaceleração de AI capex.</div>
+    </div>
+  </div>
+
+  <!-- GOOGL -->
+  <div class="analyst-card">
+    <div class="analyst-header" onclick="toggleAnalyst(this)">
+      <div class="ah-left">
+        <div class="ah-ticker">GOOGL</div>
+        <span class="signal-pill under">Strong Buy</span>
+        <span style="font-size:11px;color:var(--text3);font-family:var(--mono);">Alphabet Inc.</span>
+      </div>
+      <div class="ah-right">
+        <div class="ah-pt"><div class="ah-pt-label">Avg PT</div><div class="ah-pt-val">$383</div></div>
+        <div class="ah-upside up">+36%</div>
+        <div style="color:var(--text3);font-size:16px;">▸</div>
+      </div>
+    </div>
+    <div class="analyst-body">
+      <div class="bhs-bar"><div class="bhs-buy" style="width:88%"></div><div class="bhs-hold" style="width:12%"></div></div>
+      <div class="bhs-labels"><span class="up">Buy 88%</span><span style="color:var(--yellow)">Hold 12%</span><span class="down">Sell 0%</span></div>
+      <div class="pt-range"><span class="pt-range-label">Range</span>Piper Sandler: <strong>$340</strong> · Truist: <strong>$430</strong></div>
+      <div class="analyst-note">Processo antitruste DOJ é o principal risco acompanhado por analistas. Cloud + Search AI monetization ainda em rampa. Valuation mais barata das mega-caps é ponto recorrente nos relatórios.</div>
+    </div>
+  </div>
+
+  <!-- ETN -->
+  <div class="analyst-card">
+    <div class="analyst-header" onclick="toggleAnalyst(this)">
+      <div class="ah-left">
+        <div class="ah-ticker">ETN</div>
+        <span class="signal-pill fair">Buy / Neutral</span>
+        <span style="font-size:11px;color:var(--text3);font-family:var(--mono);">Eaton Corp.</span>
+      </div>
+      <div class="ah-right">
+        <div class="ah-pt"><div class="ah-pt-label">Avg PT</div><div class="ah-pt-val">$391</div></div>
+        <div class="ah-upside up">+9%</div>
+        <div style="color:var(--text3);font-size:16px;">▸</div>
+      </div>
+    </div>
+    <div class="analyst-body">
+      <div class="bhs-bar"><div class="bhs-buy" style="width:55%"></div><div class="bhs-hold" style="width:45%"></div></div>
+      <div class="bhs-labels"><span class="up">Buy 55%</span><span style="color:var(--yellow)">Hold 45%</span><span class="down">Sell 0%</span></div>
+      <div class="pt-range"><span class="pt-range-label">Range</span>UBS Neutral: <strong>$360</strong> · Citi Buy: <strong>$435</strong></div>
+      <div class="analyst-note">Divisão no consenso: bulls focam no tailwind secular de electrificação e data center power. Bears argumentam que o prémio de avaliação (34x P/E) já incorpora o crescimento. UBS downgrade recente para Neutral.</div>
+    </div>
+  </div>
+
+  <!-- ISRG -->
+  <div class="analyst-card">
+    <div class="analyst-header" onclick="toggleAnalyst(this)">
+      <div class="ah-left">
+        <div class="ah-ticker">ISRG</div>
+        <span class="signal-pill under">Buy</span>
+        <span style="font-size:11px;color:var(--text3);font-family:var(--mono);">Intuitive Surgical</span>
+      </div>
+      <div class="ah-right">
+        <div class="ah-pt"><div class="ah-pt-label">Avg PT</div><div class="ah-pt-val">$626</div></div>
+        <div class="ah-upside up">+33%</div>
+        <div style="color:var(--text3);font-size:16px;">▸</div>
+      </div>
+    </div>
+    <div class="analyst-body">
+      <div class="bhs-bar"><div class="bhs-buy" style="width:78%"></div><div class="bhs-hold" style="width:22%"></div></div>
+      <div class="bhs-labels"><span class="up">Buy 78%</span><span style="color:var(--yellow)">Hold 22%</span><span class="down">Sell 0%</span></div>
+      <div class="pt-range"><span class="pt-range-label">Range</span>UBS: <strong>$550</strong> · Bernstein: <strong>$750</strong></div>
+      <div class="analyst-note">Pullback de $604 para $470 considerado oportunidade pela maioria. da Vinci 5 e Ion expansion são catalisadores. Modelo razor/blade com 97% procedure retention justifica prémio histórico de avaliação.</div>
+    </div>
+  </div>
+
+  <!-- VST -->
+  <div class="analyst-card">
+    <div class="analyst-header" onclick="toggleAnalyst(this)">
+      <div class="ah-left">
+        <div class="ah-ticker">VST</div>
+        <span class="signal-pill under">Strong Buy</span>
+        <span style="font-size:11px;color:var(--text3);font-family:var(--mono);">Vistra Corp.</span>
+      </div>
+      <div class="ah-right">
+        <div class="ah-pt"><div class="ah-pt-label">Avg PT</div><div class="ah-pt-val">$238</div></div>
+        <div class="ah-upside up">+57%</div>
+        <div style="color:var(--text3);font-size:16px;">▸</div>
+      </div>
+    </div>
+    <div class="analyst-body">
+      <div class="bhs-bar"><div class="bhs-buy" style="width:100%"></div></div>
+      <div class="bhs-labels"><span class="up">Buy 100%</span><span style="color:var(--yellow)">Hold 0%</span><span class="down">Sell 0%</span></div>
+      <div class="pt-range"><span class="pt-range-label">Avg</span><strong>$238</strong> · 7 analistas · unanimidade</div>
+      <div class="analyst-note">Unanimidade assente no fwd P/E de 9.3x com data center nuclear thesis. Foco no FY26E $16.29 EPS como catalisador. Risco chave: gap entre TTM earnings ($944M NI) e forward estimates.</div>
+    </div>
+  </div>
+
+  <!-- CCJ -->
+  <div class="analyst-card">
+    <div class="analyst-header" onclick="toggleAnalyst(this)">
+      <div class="ah-left">
+        <div class="ah-ticker">CCJ</div>
+        <span class="signal-pill under">Strong Buy</span>
+        <span style="font-size:11px;color:var(--text3);font-family:var(--mono);">Cameco Corp.</span>
+      </div>
+      <div class="ah-right">
+        <div class="ah-pt"><div class="ah-pt-label">Avg PT</div><div class="ah-pt-val">$147</div></div>
+        <div class="ah-upside up">+40%</div>
+        <div style="color:var(--text3);font-size:16px;">▸</div>
+      </div>
+    </div>
+    <div class="analyst-body">
+      <div class="bhs-bar"><div class="bhs-buy" style="width:82%"></div><div class="bhs-hold" style="width:18%"></div></div>
+      <div class="bhs-labels"><span class="up">Buy 82%</span><span style="color:var(--yellow)">Hold 18%</span><span class="down">Sell 0%</span></div>
+      <div class="pt-range"><span class="pt-range-label">Range</span><strong>$109</strong> (baixa) · <strong>$171</strong> (alta)</div>
+      <div class="analyst-note">Tese de analistas: défice estrutural de urânio com contratos de longo prazo a repriciar para $80-120/lb. Westinghouse fuel services como diversificação. Valuation fundada em projeções de preço de urânio para FY27-28, não em earnings actuais.</div>
+    </div>
+  </div>
+
+  <!-- RKLB -->
+  <div class="analyst-card">
+    <div class="analyst-header" onclick="toggleAnalyst(this)">
+      <div class="ah-left">
+        <div class="ah-ticker">RKLB</div>
+        <span class="signal-pill under">Strong Buy</span>
+        <span style="font-size:11px;color:var(--text3);font-family:var(--mono);">Rocket Lab USA</span>
+      </div>
+      <div class="ah-right">
+        <div class="ah-pt"><div class="ah-pt-label">Avg PT</div><div class="ah-pt-val">$95</div></div>
+        <div class="ah-upside up">+44%</div>
+        <div style="color:var(--text3);font-size:16px;">▸</div>
+      </div>
+    </div>
+    <div class="analyst-body">
+      <div class="bhs-bar"><div class="bhs-buy" style="width:90%"></div><div class="bhs-hold" style="width:10%"></div></div>
+      <div class="bhs-labels"><span class="up">Buy ~90%</span><span style="color:var(--yellow)">Hold ~10%</span><span class="down">Sell 0%</span></div>
+      <div class="pt-range"><span class="pt-range-label">Nota</span>PT analistas ($95) vs fundamentals ($19–$30) = prémio Neutron especulativo</div>
+      <div class="analyst-note">Consenso de analistas embute sucesso do Neutron (lançamento comercial ~2026-2027). Fundamental gap é real — sem Neutron, o preço é insustentável. Com Neutron a capturar mercado medium-lift, o upside é real. Posição binária.</div>
+    </div>
+  </div>
+
+  <!-- OUST -->
+  <div class="analyst-card">
+    <div class="analyst-header" onclick="toggleAnalyst(this)">
+      <div class="ah-left">
+        <div class="ah-ticker">OUST</div>
+        <span class="signal-pill under">Strong Buy</span>
+        <span style="font-size:11px;color:var(--text3);font-family:var(--mono);">Ouster Inc.</span>
+      </div>
+      <div class="ah-right">
+        <div class="ah-pt"><div class="ah-pt-label">Avg PT</div><div class="ah-pt-val">$41</div></div>
+        <div class="ah-upside up">+113%</div>
+        <div style="color:var(--text3);font-size:16px;">▸</div>
+      </div>
+    </div>
+    <div class="analyst-body">
+      <div class="bhs-bar"><div class="bhs-buy" style="width:100%"></div></div>
+      <div class="bhs-labels"><span class="up">Buy 100%</span><span style="color:var(--yellow)">Hold 0%</span><span class="down">Sell 0%</span></div>
+      <div class="pt-range"><span class="pt-range-label">Range</span>Cantor: <strong>$33</strong> · WestPark: <strong>$50</strong></div>
+      <div class="analyst-note">3 analistas, todos bullish. Foco na melhoria de gross margin (32%→49%) e path to breakeven FY2028. Risco: LiDAR adoption mais lento que esperado, concorrência Hesai/Velodyne.</div>
+    </div>
+  </div>
+
+  <!-- CRT + SUUN -->
+  <div class="analyst-card">
+    <div class="analyst-header" onclick="toggleAnalyst(this)">
+      <div class="ah-left">
+        <div class="ah-ticker">CRT / SUUN</div>
+        <span class="signal-pill na">Sem Cobertura</span>
+      </div>
+      <div class="ah-right">
+        <div class="ah-pt"><div class="ah-pt-label">Avg PT</div><div class="ah-pt-val na">N/A</div></div>
+        <div class="ah-upside na">—</div>
+        <div style="color:var(--text3);font-size:16px;">▸</div>
+      </div>
+    </div>
+    <div class="analyst-body">
+      <div class="analyst-note">Ambos sem cobertura sell-side activa. CRT é um royalty trust de pequena capitalização; SUUN é micro-cap sem histórico relevante. Decisões baseadas exclusivamente em análise fundamental própria.</div>
+    </div>
+  </div>
+</div><!-- end analysts tab -->
+
+
+<!-- ===== NEWS TAB ===== -->
+<div class="tab-panel" id="tab-news">
+  <div class="news-notice">
+    <div class="news-notice-icon">◉</div>
+    <h3>Feed de Notícias — Actualização Manual</h3>
+    <p>Esta aba é actualizada usando o <strong>Bloco 1</strong> no Perplexity. Cola o prompt abaixo numa sessão nova (Sonnet chega para notícias) e substitui o conteúdo desta secção com o output.</p>
+  </div>
+  <div class="news-prompt-box">
+    <div class="npb-title">◈ Prompt Pronto — Notícias Filtradas (cola no Perplexity)</div>
+    <div class="npb-code" id="news-prompt">You are a rigorous financial news filter. No opinion, no speculation.
+
+WATCHLIST: MU, NVDA, AVGO, ANET, GOOGL, ETN, ISRG, VST, CCJ, CRT, RKLB, OUST, SUUN
+
+For each ticker, return ONLY material events. 
+INCLUDE: earnings releases, guidance changes, M&A, regulatory decisions, 
+CEO/CFO changes, credit rating changes, dividend announcements, 
+macro news DIRECTLY affecting the specific business.
+EXCLUDE: price movements, analyst opinion without new data, general market commentary.
+
+FORMAT (exact):
+---
+[TICKER] — [Company] — Last 72h:
+• [Date] [Source] — [1 sentence, factual]
+Last 7d:
+• ...
+Last 30d:
+• ...
+---
+If no material news: "Sem eventos materiais."</div>
+    <button class="copy-btn" onclick="copyPrompt()">Copiar Prompt</button>
+  </div>
+
+  <div style="margin-top:24px;" id="news-placeholder">
+    <div class="section-title">Eventos Materiais Recentes · Aguarda Actualização</div>
+    <div style="font-family:var(--mono);font-size:12px;color:var(--text3);padding:20px;text-align:center;border:1px dashed var(--border);border-radius:6px;">
+      Corre o prompt acima no Perplexity e cola o output aqui.<br>
+      Actualização recomendada: 1–2x por semana.
+    </div>
+  </div>
+</div><!-- end news tab -->
+
+</div><!-- end content -->
+
+<div class="footer">
+  FUND.SCOPE · Análise Fundamentalista Pura · Sem análise técnica · Sem momentum · Sem especulação<br>
+  Modelos: DCF · Reverse DCF · Fwd P/E · EV/EBITDA · EV/Rev · Normalized Earnings · DDM<br>
+  Dados: Perplexity Opus · Finance API · Company 10-K/20-F Filings · Sell-side consensus<br>
+  ⚠ Não constitui recomendação de investimento. Valores a título informativo e educativo.
+</div>
+
+<script>
+function showTab(name) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event.target.classList.add('active');
+}
+
+function toggleAnalyst(header) {
+  const body = header.nextElementSibling;
+  const arrow = header.querySelector('div:last-child');
+  body.classList.toggle('open');
+  arrow.textContent = body.classList.contains('open') ? '▾' : '▸';
+}
+
+function copyPrompt() {
+  const text = document.getElementById('news-prompt').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.querySelector('.copy-btn');
+    btn.textContent = '✓ Copiado!';
+    btn.style.color = 'var(--green)';
+    btn.style.borderColor = 'var(--green-border)';
+    setTimeout(() => {
+      btn.textContent = 'Copiar Prompt';
+      btn.style.color = '';
+      btn.style.borderColor = '';
+    }, 2000);
+  });
+}
+
+function scrollTo(id) {
+  showTab('valuation');
+  document.querySelectorAll('.tab').forEach((t, i) => {
+    if(i === 0) t.classList.add('active');
+    else t.classList.remove('active');
+  });
+  setTimeout(() => {
+    const el = document.getElementById(id);
+    if(el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, 100);
+}
+
+// Animate cards on load
+document.addEventListener('DOMContentLoaded', () => {
+  const cards = document.querySelectorAll('.summary-card, .detail-card, .analyst-card');
+  cards.forEach((card, i) => {
+    card.style.opacity = '0';
+    card.style.transform = 'translateY(8px)';
+    card.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+    setTimeout(() => {
+      card.style.opacity = '1';
+      card.style.transform = 'translateY(0)';
+    }, i * 30);
+  });
+});
+</script>
+</body>
+</html>
