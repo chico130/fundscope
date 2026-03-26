@@ -1,0 +1,40 @@
+# .github/workflows/update-prices.yml
+# Este ficheiro diz ao GitHub para correr o script Python todos os dias.
+
+name: Atualizar Preços
+
+on:
+  schedule:
+    # Corre todos os dias às 22:00 UTC (23:00 em Lisboa no inverno, 23:00 no verão)
+    - cron: '0 22 * * 1-5'  # Segunda a Sexta apenas (mercados fechados ao fim de semana)
+  workflow_dispatch:  # Permite correr manualmente a qualquer momento
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write  # Permissão para fazer push de volta ao repositório
+    
+    steps:
+      - name: Fazer checkout do repositório
+        uses: actions/checkout@v4
+
+      - name: Instalar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Instalar yfinance
+        run: pip install yfinance
+
+      - name: Correr script de preços
+        run: python update_prices.py
+
+      - name: Fazer commit e push das alterações
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git diff --staged --quiet || git commit -m "Preços atualizados $(date -u '+%Y-%m-%d %H:%M UTC')"
+          git push
