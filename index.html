@@ -1458,7 +1458,6 @@ tbody td:first-child {
   </div><!-- end detail-grid -->
 </div><!-- end valuation tab -->
 
-
 <!-- ===== ANALYSTS TAB ===== -->
 <div class="tab-panel" id="tab-analysts">
   <div class="update-banner">
@@ -1732,7 +1731,533 @@ tbody td:first-child {
   </div>
 </div><!-- end analysts tab -->
 
+<!-- ===== THESIS TAB ===== -->
+<div class="tab-panel" id="tab-thesis">
 
+  <div class="update-banner">
+    <div class="ub-text">Tese de Investimento · <strong>Por empresa</strong> · Moat · Catalisadores · Riscos</div>
+    <div class="ub-date">Actualizado manualmente · Mar 2026</div>
+  </div>
+
+  <div class="section-title">Tese por Ticker — clica para expandir</div>
+
+  <!-- MU -->
+  <div class="analyst-card">
+    <div class="analyst-header" onclick="toggleAnalyst(this)">
+      <div class="ah-left">
+        <div class="ah-ticker">MU</div>
+        <span class="tag tag-cyclical">CyclicalGrowth</span>
+        <span style="font-size:11px;color:var(--text3);font-family:var(--mono)">Micron Technology</span>
+      </div>
+      <div class="ah-right">
+        <div class="ah-pt"><div class="ah-pt-label">Conviction</div><div class="ah-pt-val" style="color:var(--yellow)">MÉDIO</div></div>
+        <div style="color:var(--text3);font-size:16px;">▸</div>
+      </div>
+    </div>
+    <div class="analyst-body">
+      <div class="analyst-note" style="border-left-color:var(--yellow)">
+        <strong style="color:var(--text)">Tese Central:</strong> A Micron não é a empresa cíclica de memória de 2019. O HBM3E/HBM4 para NVIDIA H200/B200/Blackwell Ultra representa uma mudança estrutural no earning power — gross margin sustentada acima de 70% vs. ciclos históricos de 22–40%. O diferencial é que a HBM é encomendada 12–18 meses antes de ser produzida, eliminando a volatilidade de preços spot que destruía margens anteriormente.
+        <br><br><strong style="color:var(--text)">Moat:</strong> Duopólio DRAM (Samsung/SK Hynix/Micron). HBM3E: única empresa com stack de 12 camadas aprovado pela NVIDIA em volume. Switching costs altíssimos — mudar de supplier de memória HBM durante um ciclo de produção GPU é praticamente impossível.
+        <br><br><strong style="color:var(--text)">Catalisadores:</strong> (1) HBM4 ramp com Blackwell Ultra FY27; (2) DRAM pricing recovery em PC/servidor H2 2026; (3) guidance FY27E $130B+ em receitas confirma novo patamar estrutural.
+        <br><br><strong style="color:var(--text)">Riscos:</strong> Normalização mais rápida do ciclo DRAM convencional; Samsung recupera quota de HBM com stack de 16 camadas; recessão macro colapsa capex de data centers; EV/EBITDA normalizado a 33.5x ainda caro vs. histórico.
+        <br><br><strong style="color:var(--text)">Invalidação da Tese:</strong> Gross margin cair abaixo de 60% durante 2 trimestres consecutivos ou NVIDIA anunciar redução de HBM per GPU em próxima geração.
+      </div>
+    </div>
+  </div>
+
+  <!-- NVDA -->
+  <div class="analyst-card">
+    <div class="analyst-header" onclick="toggleAnalyst(this)">
+      <div class="ah-left">
+        <div class="ah-ticker">NVDA</div>
+        <span class="tag tag-growth">Growth</span>
+        <span style="font-size:11px;color:var(--text3);font-family:var(--mono)">NVIDIA Corporation</span>
+      </div>
+      <div class="ah-right">
+        <div class="ah-pt"><div class="ah-pt-label">Conviction</div><div class="ah-pt-val" style="color:var(--green)">ALTO</div></div>
+        <div style="color:var(--text3);font-size:16px;">▸</div>
+      </div>
+    </div>
+    <div class="analyst-body">
+      <div class="analyst-note" style="border-left-color:var(--green)">
+        <strong style="color:var(--text)">Tese Central:</strong> A NVIDIA não vende GPUs — vende o único sistema operativo de AI que os hyperscalers não conseguem replicar a tempo. O CUDA ecosystem (15+ anos, 4M+ programadores, 3.000+ bibliotecas) é o moat mais defensável em tecnologia desde o Windows. Blackwell/GB200 é um sistema de computação completo — hardware + NVLink + software — que os concorrentes estão 2–3 gerações atrás de replicar.
+        <br><br><strong style="color:var(--text)">Moat:</strong> CUDA lock-in estrutural. ROCm (AMD) e compiladores custom (Google/Meta) existem mas requerem anos de re-optimização de modelos existentes. Gross margin 73%+ em hardware demonstra pricing power sem precedentes em semicondutores.
+        <br><br><strong style="color:var(--text)">Catalisadores:</strong> (1) GB300/Blackwell Ultra FY27 com HBM4 — mais FLOPS por dólar; (2) NIM (NVIDIA Inference Microservices) — monetização de software ainda não precificada; (3) Sovereign AI — $10B+ de contratos governamentais emergentes.
+        <br><br><strong style="color:var(--text)">Riscos:</strong> Regulação de exportações China ($18B impacto identificado); custom ASICs (Google TPU, AWS Trainium, Meta MTIA) ganham quota em inference; AMD MI300X competitivo em preço; recessão de capex AI se LLM ROI decepcionar.
+        <br><br><strong style="color:var(--text)">Invalidação da Tese:</strong> Gross margin cair abaixo de 65% (indica perda de pricing power) ou hyperscaler major anunciar eliminação de NVIDIA para novo workload AI.
+      </div>
+    </div>
+  </div>
+
+  <!-- AVGO -->
+  <div class="analyst-card">
+    <div class="analyst-header" onclick="toggleAnalyst(this)">
+      <div class="ah-left">
+        <div class="ah-ticker">AVGO</div>
+        <span class="tag tag-growth">GrowthCompounder</span>
+        <span style="font-size:11px;color:var(--text3);font-family:var(--mono)">Broadcom Inc.</span>
+      </div>
+      <div class="ah-right">
+        <div class="ah-pt"><div class="ah-pt-label">Conviction</div><div class="ah-pt-val" style="color:var(--green)">ALTO</div></div>
+        <div style="color:var(--text3);font-size:16px;">▸</div>
+      </div>
+    </div>
+    <div class="analyst-body">
+      <div class="analyst-note" style="border-left-color:var(--green)">
+        <strong style="color:var(--text)">Tese Central:</strong> Dual-engine único no mercado: (1) AI ASICs customizados para Google (TPUv5/v6) e Meta (MTIA) — contratos plurianuais não canceláveis que crescem 77% YoY; (2) VMware software recorrente com 85%+ gross margin — $51B em receitas de subscription já contratadas para os próximos 3 anos. Nenhum outro semicondutor tem esta combinação de crescimento AI + receita recorrente defensiva.
+        <br><br><strong style="color:var(--text)">Moat:</strong> Switching cost máximo em ASICs customizados — cada chip é co-designed com o cliente durante 2–3 anos; abandonar a meio do ciclo é impossível. VMware: 80% das Fortune 500 dependem de vSphere para virtualização crítica de missão.
+        <br><br><strong style="color:var(--text)">Catalisadores:</strong> (1) Terceiro hyperscaler anunciado para ASIC custom (rumores Apple/Amazon); (2) VMware subscription churn confirmar <15%; (3) AI revenue superar $20B em FY26E.
+        <br><br><strong style="color:var(--text)">Riscos:</strong> Concentração em 3 clientes para AI (Google, Meta, ByteDance — este bloqueado por sanções); dívida de $51.9B amplifica risco se crescimento abrandar; Google desenvolver ASIC internamente sem Broadcom.
+        <br><br><strong style="color:var(--text)">Invalidação da Tese:</strong> Google ou Meta anunciam internalização do design de ASICs (sem Broadcom) para próxima geração de TPU/MTIA.
+      </div>
+    </div>
+  </div>
+
+  <!-- ANET -->
+  <div class="analyst-card">
+    <div class="analyst-header" onclick="toggleAnalyst(this)">
+      <div class="ah-left">
+        <div class="ah-ticker">ANET</div>
+        <span class="tag tag-growth">Growth</span>
+        <span style="font-size:11px;color:var(--text3);font-family:var(--mono)">Arista Networks</span>
+      </div>
+      <div class="ah-right">
+        <div class="ah-pt"><div class="ah-pt-label">Conviction</div><div class="ah-pt-val" style="color:var(--green)">ALTO</div></div>
+        <div style="color:var(--text3);font-size:16px;">▸</div>
+      </div>
+    </div>
+    <div class="analyst-body">
+      <div class="analyst-note" style="border-left-color:var(--green)">
+        <strong style="color:var(--text)">Tese Central:</strong> A Arista é a única empresa de networking que cresce a 20%+ com FCF margin de 47% e zero dívida. O switch para 800G/1.6T em data centers AI é obrigatório — 400G é insuficiente para os clusters de 100.000+ GPUs que os hyperscalers estão a construir. EOS (Extensible Operating System) é o segundo moat: programável, open-source API, integra com todos os clouds — Cisco e Juniper não têm equivalente.
+        <br><br><strong style="color:var(--text)">Moat:</strong> EOS software — uma vez adoptado, o custo de migração para Cisco é estimado em 18–24 meses de re-configuração. Net cash de $10.7B (7% da market cap) como buffer de segurança e capacidade de M&A.
+        <br><br><strong style="color:var(--text)">Catalisadores:</strong> (1) Ciclo de upgrade 800G→1.6T ainda em início (2026–2028); (2) expansão em campus enterprise como segundo motor; (3) qualquer anúncio de novo hyperscaler cliente além de Microsoft.
+        <br><br><strong style="color:var(--text)">Riscos:</strong> Concentração ~25% receitas em Microsoft — qualquer sinal de corte de ordens MSFT move o preço -15%; Cisco a tentar competir com Silicon One; avaliação 15.9x EV/Sales deixa margem limitada.
+        <br><br><strong style="color:var(--text)">Invalidação da Tese:</strong> Microsoft cortar ordens de networking Arista por mais de um trimestre consecutivo ou FCF margin cair abaixo de 35%.
+      </div>
+    </div>
+  </div>
+
+  <!-- GOOGL -->
+  <div class="analyst-card">
+    <div class="analyst-header" onclick="toggleAnalyst(this)">
+      <div class="ah-left">
+        <div class="ah-ticker">GOOGL</div>
+        <span class="tag tag-value">Compounder</span>
+        <span style="font-size:11px;color:var(--text3);font-family:var(--mono)">Alphabet Inc.</span>
+      </div>
+      <div class="ah-right">
+        <div class="ah-pt"><div class="ah-pt-label">Conviction</div><div class="ah-pt-val" style="color:var(--green)">ALTO</div></div>
+        <div style="color:var(--text3);font-size:16px;">▸</div>
+      </div>
+    </div>
+    <div class="analyst-body">
+      <div class="analyst-note" style="border-left-color:var(--green)">
+        <strong style="color:var(--text)">Tese Central:</strong> A empresa mais subavaliada entre as mega-caps (Fwd P/E 18.8x) com o maior portfólio de assets de AI do mundo: Search (91% quota mundial), YouTube (2.7B MAU), GCP (3º maior cloud), Waymo (líder autónomo), DeepMind (AlphaFold, Gemini). O mercado desconta o negócio como se o AI fosse destrui-lo — mas cada nova funcionalidade de AI no Search aumenta o tempo de utilização e a monetização por sessão.
+        <br><br><strong style="color:var(--text)">Moat:</strong> Dados — 8.5B pesquisas/dia durante 25 anos cria um dataset de intenção de compra impossível de replicar. GCP beneficia do mesmo efeito flywheel. FCF de $73B/ano permite $91B de capex AI sem comprometer o balanço.
+        <br><br><strong style="color:var(--text)">Catalisadores:</strong> (1) Waymo comercial — já >$500M receita, IPO potencial 2027; (2) GCP cresce >30% e ultrapassa Azure em quota de AI workloads; (3) resolução favorável do caso antitruste DOJ (menos provável mas desbloquearia re-rating).
+        <br><br><strong style="color:var(--text)">Riscos:</strong> Antitruste DOJ — remédio de desinvestimento do Chrome/Search seria o pior cenário; AI Overviews canibaliza cliques monetizáveis; OpenAI/Perplexity capturam quota de Search entre utilizadores jovens.
+        <br><br><strong style="color:var(--text)">Invalidação da Tese:</strong> Perda estrutural de quota de Search acima de 5 pontos percentuais ao longo de 4 trimestres, confirmada por dados de Statcounter.
+      </div>
+    </div>
+  </div>
+
+  <!-- ETN -->
+  <div class="analyst-card">
+    <div class="analyst-header" onclick="toggleAnalyst(this)">
+      <div class="ah-left">
+        <div class="ah-ticker">ETN</div>
+        <span class="tag tag-value">Compounder</span>
+        <span style="font-size:11px;color:var(--text3);font-family:var(--mono)">Eaton Corporation</span>
+      </div>
+      <div class="ah-right">
+        <div class="ah-pt"><div class="ah-pt-label">Conviction</div><div class="ah-pt-val" style="color:var(--yellow)">MÉDIO</div></div>
+        <div style="color:var(--text3);font-size:16px;">▸</div>
+      </div>
+    </div>
+    <div class="analyst-body">
+      <div class="analyst-note" style="border-left-color:var(--yellow)">
+        <strong style="color:var(--text)">Tese Central:</strong> O Eaton está no ponto de convergência de duas mega-tendências de 20 anos: electrificação (veículos, redes, renováveis) e AI data centers (cada $1B de data center precisa de ~$200M em equipamento Eaton). Backlog recorde de $12.8B com visibilidade de 18–24 meses é o activo mais valioso — significa que o crescimento está pré-vendido independente do ciclo macro.
+        <br><br><strong style="color:var(--text)">Moat:</strong> Portfolio de produtos críticos (switchgear, PDUs, UPS) onde o custo de falha é catastrófico para o cliente — switching costs funcionam por confiança/reputação, não por contrato. D/E de apenas 0.57x dá flexibilidade para M&A em electrificação.
+        <br><br><strong style="color:var(--text)">Catalisadores:</strong> (1) Confirmação de backlog crescente >$13B em Q1 2026; (2) IRA (Inflation Reduction Act) — $369B em incentivos à electrificação com execução 2026–2030; (3) qualquer aquisição em grid storage ou EV charging.
+        <br><br><strong style="color:var(--text)">Riscos:</strong> Avaliação P/E 34x para uma empresa industrial é o principal risco — qualquer abrandamento de 2pp no crescimento colapsa o múltiplo; UBS downgrade para Neutral é sinal de que o smart money vê o topo próximo.
+        <br><br><strong style="color:var(--text)">Invalidação da Tese:</strong> Book-to-bill cair abaixo de 1.0x durante dois trimestres consecutivos (indica que as encomendas não repõem a receita consumida).
+      </div>
+    </div>
+  </div>
+
+  <!-- ISRG -->
+  <div class="analyst-card">
+    <div class="analyst-header" onclick="toggleAnalyst(this)">
+      <div class="ah-left">
+        <div class="ah-ticker">ISRG</div>
+        <span class="tag tag-growth">Growth</span>
+        <span style="font-size:11px;color:var(--text3);font-family:var(--mono)">Intuitive Surgical</span>
+      </div>
+      <div class="ah-right">
+        <div class="ah-pt"><div class="ah-pt-label">Conviction</div><div class="ah-pt-val" style="color:var(--green)">ALTO</div></div>
+        <div style="color:var(--text3);font-size:16px;">▸</div>
+      </div>
+    </div>
+    <div class="analyst-body">
+      <div class="analyst-note" style="border-left-color:var(--green)">
+        <strong style="color:var(--text)">Tese Central:</strong> O modelo razor/blade da ISRG é o mais defensável em medtech: cada da Vinci instalado gera 10–15 anos de receita de instrumentos recorrentes (~$1.800/procedimento). Com 97% de retenção de procedimentos e 9.000+ sistemas instalados, a ISRG tem uma anuidade de receita que cresce automaticamente com o envelhecimento da população e a difusão global da cirurgia robótica.
+        <br><br><strong style="color:var(--text)">Moat:</strong> Aprovações FDA para cada procedimento específico criam barreiras regulatórias impossíveis de contornar rapidamente. Da Vinci 5 (5ª geração) tem 10.000 horas de treino de cirurgiões acumuladas — recertificar para Hugo (Medtronic) requer 200+ horas adicionais por cirurgião.
+        <br><br><strong style="color:var(--text)">Catalisadores:</strong> (1) Da Vinci 5 expansão na Europa — aprovação CE Mark 2024 com ramp em 2025–2026; (2) Ion (biópsia pulmonar) a crescer 40%+ YoY de base baixa; (3) aprovação de procedimento colorectal nos EUA expande TAM em $3B.
+        <br><br><strong style="color:var(--text)">Riscos:</strong> Compressão de reembolsos hospitalares (UnitedHealth em dificuldades); Hugo da Medtronic aprovado na Europa — primeiro concorrente real em 20 anos; P/E 59x não perdoa nenhum miss de crescimento de procedimentos.
+        <br><br><strong style="color:var(--text)">Invalidação da Tese:</strong> Crescimento de procedimentos cair abaixo de 10% YoY durante dois trimestres (indicaria saturação do mercado ou perda de quota para Hugo).
+      </div>
+    </div>
+  </div>
+
+  <!-- VST -->
+  <div class="analyst-card">
+    <div class="analyst-header" onclick="toggleAnalyst(this)">
+      <div class="ah-left">
+        <div class="ah-ticker">VST</div>
+        <span class="tag tag-util">Utility/IPP</span>
+        <span style="font-size:11px;color:var(--text3);font-family:var(--mono)">Vistra Corp.</span>
+      </div>
+      <div class="ah-right">
+        <div class="ah-pt"><div class="ah-pt-label">Conviction</div><div class="ah-pt-val" style="color:var(--yellow)">MÉDIO</div></div>
+        <div style="color:var(--text3);font-size:16px;">▸</div>
+      </div>
+    </div>
+    <div class="analyst-body">
+      <div class="analyst-note" style="border-left-color:var(--yellow)">
+        <strong style="color:var(--text)">Tese Central:</strong> O Vistra é a única empresa listed com nuclear + gás + storage em escala que pode fornecer energia 24/7 para data centers AI com zero emissões (nuclear). A procura de energia dos data centers nos EUA vai crescer de 4% para 12% do consumo total até 2030. O VST tem a capacidade instalada que vai demorar 10+ anos a ser replicada por qualquer concorrente.
+        <br><br><strong style="color:var(--text)">Moat:</strong> Activos nucleares (Comanche Peak, 2.3GW) com licenças estendidas até 2053 — estes activos não se constroem de novo. Posição dominante no ERCOT (Texas) com 41GW de capacidade instalada.
+        <br><br><strong style="color:var(--text)">Catalisadores:</strong> (1) PPA com hyperscaler (Microsoft/Google/Amazon) — seria re-rating event imediato de +30–50%; (2) extensão de vida de Comanche Peak Unit 1 (aprovação NRC pendente); (3) FY26E EBITDA de $7.2B confirmado.
+        <br><br><strong style="color:var(--text)">Riscos:</strong> Dívida de $19.6B (D/EBITDA 3.9x) amplifica qualquer miss de EBITDA; volatilidade do ERCOT — invernos/verões moderados colapsam o preço spot; FY25 EBITDA ficou $2B abaixo do FY24 demonstrando esta volatilidade.
+        <br><br><strong style="color:var(--text)">Invalidação da Tese:</strong> FY26E EBITDA guidance reduzido para abaixo de $6B ou D/EBITDA ultrapassar 5x sem plano credível de redução.
+      </div>
+    </div>
+  </div>
+
+  <!-- CCJ -->
+  <div class="analyst-card">
+    <div class="analyst-header" onclick="toggleAnalyst(this)">
+      <div class="ah-left">
+        <div class="ah-ticker">CCJ</div>
+        <span class="tag tag-cyclical">Cyclical</span>
+        <span style="font-size:11px;color:var(--text3);font-family:var(--mono)">Cameco Corp.</span>
+      </div>
+      <div class="ah-right">
+        <div class="ah-pt"><div class="ah-pt-label">Conviction</div><div class="ah-pt-val" style="color:var(--text3)">TESE</div></div>
+        <div style="color:var(--text3);font-size:16px;">▸</div>
+      </div>
+    </div>
+    <div class="analyst-body">
+      <div class="analyst-note" style="border-left-color:var(--text3)">
+        <strong style="color:var(--text)">Tese Central:</strong> A CCJ não é uma posição fundamental — é uma posição macro no renascimento nuclear. 50+ reactores em construção globalmente, défice estrutural de urânio (produção ~140M lb/ano vs. consumo ~190M lb/ano), e data centers AI a precisar de energia 24/7 sem emissões. A Westinghouse (parcialmente detida pela CCJ) é a única empresa ocidental capaz de construir reactores SMR em escala.
+        <br><br><strong style="color:var(--text)">Moat:</strong> A Cameco controla ~15% da produção mundial de urânio. Cigar Lake e McArthur River são dois dos maiores depósitos de alta graduação do mundo — custo de extracção $20/lb vs. preço de venda $56/lb nos contratos actuais.
+        <br><br><strong style="color:var(--text)">Catalisadores:</strong> (1) Preço spot urânio >$80/lb — re-rating imediato; (2) aprovação de SMR da NRC para TerraPower/X-energy — valida a narrativa nuclear AI; (3) contrato directo com hyperscaler para nuclear power 24/7.
+        <br><br><strong style="color:var(--text)">Riscos:</strong> EV/EBITDA 71x — qualquer abrandamento da tese nuclear colapsa o múltiplo para 25–30x (downside de 60%+); Kazakhstan (Kazatomprom) pode inundar mercado com oferta; DOGE cortes a programas nucleares federais nos EUA.
+        <br><br><strong style="color:var(--text)">Invalidação da Tese:</strong> Preço spot urânio cair e sustentar-se abaixo de $50/lb durante 6 meses, ou atraso significativo (>2 anos) nas aprovações de SMR na América do Norte.
+      </div>
+    </div>
+  </div>
+
+  <!-- CRT -->
+  <div class="analyst-card">
+    <div class="analyst-header" onclick="toggleAnalyst(this)">
+      <div class="ah-left">
+        <div class="ah-ticker">CRT</div>
+        <span class="tag tag-cyclical">Royalty Trust</span>
+        <span style="font-size:11px;color:var(--text3);font-family:var(--mono)">Cross Timbers Trust</span>
+      </div>
+      <div class="ah-right">
+        <div class="ah-pt"><div class="ah-pt-label">Conviction</div><div class="ah-pt-val" style="color:var(--yellow)">INCOME</div></div>
+        <div style="color:var(--text3);font-size:16px;">▸</div>
+      </div>
+    </div>
+    <div class="analyst-body">
+      <div class="analyst-note" style="border-left-color:var(--yellow)">
+        <strong style="color:var(--text)">Tese Central:</strong> O CRT não é uma tese de crescimento — é uma tese de income com risco de commodity. A yield de 7.4% oferece um spread de 310bps sobre Treasuries que compensa o risco de depleção (~10% ao ano) e a volatilidade do petróleo. Adequado para quem quer exposição a energy income sem gestão activa ou risco operacional.
+        <br><br><strong style="color:var(--text)">Moat:</strong> Não existe moat — é um trust sem gestão. O "moat" é o contrato legal que obriga à distribuição de 100% do cash flow líquido. Zero overhead, zero capex, zero salários de gestão.
+        <br><br><strong style="color:var(--text)">Catalisadores:</strong> Preço do petróleo >$80/barril — aumentaria distribuições para ~$0.08/mês (+30%); qualquer contraction de supply OPEC+; inflação persistente que valoriza commodities.
+        <br><br><strong style="color:var(--text)">Riscos:</strong> Petróleo <$65 reduz distribuições para ~$0.04/mês (yield cai para 4.8%); depleção natural acelera para >15%/ano; OPEC+ decide aumentar produção em 2026Q2 (sinal negativo).
+        <br><br><strong style="color:var(--text)">Regra Simples:</strong> Petróleo >$75 → hold/acumular. Petróleo $65–75 → hold com cautela. Petróleo <$65 → reavaliar. Não há tese de capital appreciation — só cash flow decrescente a taxa previsível.
+      </div>
+    </div>
+  </div>
+
+  <!-- RKLB -->
+  <div class="analyst-card">
+    <div class="analyst-header" onclick="toggleAnalyst(this)">
+      <div class="ah-left">
+        <div class="ah-ticker">RKLB</div>
+        <span class="tag tag-pre">Pre-Profit</span>
+        <span style="font-size:11px;color:var(--text3);font-family:var(--mono)">Rocket Lab USA</span>
+      </div>
+      <div class="ah-right">
+        <div class="ah-pt"><div class="ah-pt-label">Conviction</div><div class="ah-pt-val" style="color:var(--red)">ESPECULATIVO</div></div>
+        <div style="color:var(--text3);font-size:16px;">▸</div>
+      </div>
+    </div>
+    <div class="analyst-body">
+      <div class="analyst-note" style="border-left-color:var(--red)">
+        <strong style="color:var(--text)">Tese Central:</strong> A RKLB é a única empresa besides SpaceX com um lançador operacional, uma plataforma de satélites (Photon), e uma divisão de componentes space (space systems) integrada verticalmente. O Electron tem 55+ lançamentos com 97% de sucesso rate — fiabilidade demonstrada que a maioria dos concorrentes não tem. A tese binária é o Neutron: se voa comercialmente em 2026–2027, a RKLB captura o mercado de medium-lift onde SpaceX tem capacidade limitada.
+        <br><br><strong style="color:var(--text)">Moat:</strong> Electron: único lançador dedicado para small satellites com cadência de 24/ano. Mahia (Nova Zelândia): única plataforma de lançamento privada no hemisfério sul com aprovação FAA. Integração vertical (motores Rutherford, estruturas, aviónica) dá controlo de custo único no sector.
+        <br><br><strong style="color:var(--text)">Catalisadores:</strong> (1) Primeiro voo Neutron — catalisador binário que valida $25B+ de avaliação; (2) contrato DoD para medium-lift (NSSL Phase 3); (3) receita Space Systems ultrapassar $600M com margem >40%.
+        <br><br><strong style="color:var(--text)">Riscos:</strong> 61x EV/Rev fundamental overvaluation sem Neutron; cash burn de $89M/quarter com $574M em caixa (6 quarters runway); SpaceX Falcon 9 pode competir directamente no medium-lift se libertar capacidade.
+        <br><br><strong style="color:var(--text)">Invalidação da Tese:</strong> Neutron atrasa para além de 2028 sem contrato DoD âncora, forçando diluição significativa para financiar o programa.
+      </div>
+    </div>
+  </div>
+
+  <!-- OUST -->
+  <div class="analyst-card">
+    <div class="analyst-header" onclick="toggleAnalyst(this)">
+      <div class="ah-left">
+        <div class="ah-ticker">OUST</div>
+        <span class="tag tag-pre">Pre-Profit</span>
+        <span style="font-size:11px;color:var(--text3);font-family:var(--mono)">Ouster Inc.</span>
+      </div>
+      <div class="ah-right">
+        <div class="ah-pt"><div class="ah-pt-label">Conviction</div><div class="ah-pt-val" style="color:var(--yellow)">MÉDIO</div></div>
+        <div style="color:var(--text3);font-size:16px;">▸</div>
+      </div>
+    </div>
+    <div class="analyst-body">
+      <div class="analyst-note" style="border-left-color:var(--yellow)">
+        <strong style="color:var(--text)">Tese Central:</strong> A Ouster tem a única arquitectura de LiDAR baseada em CMOS digital que escala como um chip de consumo — custo de produção reduz 50% a cada duplicação de volume (Lei de Moore aplicada a LiDAR). Com gross margin já em 49.3% e primeiro EBITDA positivo em Q4 2025, a Ouster está a sair do "vale da morte" das hardware startups. O mercado endereçável são smart infrastructure, robotics, e industrial — não apenas automotive onde a adopção é lenta.
+        <br><br><strong style="color:var(--text)">Moat:</strong> Arquitectura CMOS digital vs. VCSEL/APD dos concorrentes (Velodyne/Hesai/Luminar) — estruturalmente mais barata a produzir em volume. REV7 sensor: 50% mais resolução que geração anterior ao mesmo preço — o melhor tradeoff performance/custo do mercado.
+        <br><br><strong style="color:var(--text)">Catalisadores:</strong> (1) Contrato de smart infrastructure em escala (porto, aeroporto, smart city) >$10M; (2) gross margin ultrapassar 55% — confirmaria pricing power estrutural; (3) qualquer anúncio de financing/linha de crédito que elimine risco de diluição.
+        <br><br><strong style="color:var(--text)">Riscos:</strong> Cash de $50.3M (~4 quarters) com risco real de diluição; Hesai (chinesa, mais barata) ganha quota em mercados preço-sensíveis; adopção de LiDAR em automotive continua mais lenta que as projecções dos analistas.
+        <br><br><strong style="color:var(--text)">Invalidação da Tese:</strong> Gross margin cair abaixo de 40% (indicaria guerra de preços com Hesai que a Ouster não consegue ganhar) ou necessidade de capital dilutivo acima de 15% das acções existentes.
+      </div>
+    </div>
+  </div>
+
+  <!-- SUUN -->
+  <div class="analyst-card">
+    <div class="analyst-header" onclick="toggleAnalyst(this)">
+      <div class="ah-left">
+        <div class="ah-ticker">SUUN</div>
+        <span class="tag tag-spec">Speculative</span>
+        <span style="font-size:11px;color:var(--text3);font-family:var(--mono)">PowerBank Corp.</span>
+      </div>
+      <div class="ah-right">
+        <div class="ah-pt"><div class="ah-pt-label">Conviction</div><div class="ah-pt-val" style="color:var(--red)">ALTO RISCO</div></div>
+        <div style="color:var(--text3);font-size:16px;">▸</div>
+      </div>
+    </div>
+    <div class="analyst-body">
+      <div class="analyst-note" style="border-left-color:var(--red)">
+        <strong style="color:var(--text)">Tese Central:</strong> A PowerBank fornece micro-redes híbridas (solar + bateria + gerador) para sites remotos de mineração, telecomunicações e comunidades off-grid no Canadá e EUA. O mercado é real e crescente — electrificação off-grid é necessária independente do ciclo macro. A tese especulativa é que a empresa consegue refinanciar a sua dívida de C$75M e atingir EBITDA positivo antes de 2027 com os contratos actuais em execução.
+        <br><br><strong style="color:var(--text)">Moat:</strong> Não existe moat formal. A vantagem competitiva é operacional: know-how de instalação e manutenção de micro-redes em condições remotas extremas (Ártico canadiano). Aggreko e Caterpillar competem no mesmo espaço mas focam em contratos maiores.
+        <br><br><strong style="color:var(--text)">Catalisadores:</strong> (1) Refinanciamento da dívida de C$75M a taxa aceitável — eliminaria risco de sobrevivência; (2) contrato de micro-rede >C$20M com mineradora major; (3) parceria estratégica com utility canadiana para electrificação de comunidades indígenas (financiamento federal disponível).
+        <br><br><strong style="color:var(--text)">Riscos:</strong> C$4.2M em cash com net loss de C$31M/ano — runway <6 meses sem refinanciamento; D/E de 3.9x sobre equity de C$19M é estrutura de capital extremamente frágil; sem cobertura de analistas ou liquidez institucional.
+        <br><br><strong style="color:var(--text)">Regra de Gestão:</strong> Posição máxima de 1–2% do portfolio. Monitorizar anúncios de refinanciamento em Q1/Q2 2026. Se não houver sinal de resolução da dívida até Junho 2026, reavaliar a saída.
+      </div>
+    </div>
+  </div>
+
+</div><!-- end thesis tab -->
+<!-- ===== EARNINGS TAB ===== -->
+<style>
+.eq-filter{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:3px;border:1px solid var(--border2);background:var(--bg3);color:var(--text3);cursor:pointer;transition:all .15s}
+.eq-filter:hover{color:var(--text2)}
+.eq-filter.active{background:var(--green-dim);color:var(--green);border-color:var(--green-border)}
+.eq-card{background:var(--bg3);border:1px solid var(--border);border-radius:6px;margin-bottom:8px;overflow:hidden;transition:border-color .15s}
+.eq-card:hover{border-color:var(--border2)}
+.eq-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;cursor:pointer;user-select:none;gap:12px}
+.eq-header:hover{background:var(--bg4)}
+.eq-header-left{display:flex;align-items:center;gap:10px;flex-wrap:wrap;flex:1;min-width:0}
+.eq-ticker{font-family:var(--mono);font-weight:700;font-size:15px;color:var(--text);min-width:50px}
+.eq-name{font-family:var(--mono);font-size:11px;color:var(--text3)}
+.eq-header-right{display:flex;align-items:center;gap:12px;flex-shrink:0}
+.eq-date-label{font-family:var(--mono);font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.07em}
+.eq-date-val{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--text2)}
+.eq-body{display:none;border-top:1px solid var(--border)}
+.eq-body.open{display:block}
+.eq-verdict-strip{display:flex;gap:0;border-bottom:1px solid var(--border)}
+.eq-phase{flex:1;padding:12px 14px;border-right:1px solid var(--border)}
+.eq-phase:last-child{border-right:none}
+.eq-phase-label{font-family:var(--mono);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px}
+.eq-phase-text{font-size:12px;color:var(--text2);line-height:1.6}
+.eq-phase.intro{border-left:3px solid var(--text3)}
+.eq-phase.intro.positive{border-left-color:var(--green)}
+.eq-phase.intro.mixed{border-left-color:var(--yellow)}
+.eq-phase.intro.negative{border-left-color:var(--red)}
+.eq-phase.dev,.eq-phase.conc{background:var(--bg2)}
+.eq-metrics-row{display:flex;flex-wrap:wrap;gap:6px;padding:12px 14px;border-bottom:1px solid var(--border);background:var(--bg4)}
+.eq-metric{display:flex;flex-direction:column;background:var(--bg3);border-radius:4px;padding:6px 10px;min-width:100px}
+.eq-metric-label{font-family:var(--mono);font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:2px}
+.eq-metric-val{font-family:var(--mono);font-size:13px;font-weight:600}
+.eq-metric-vs{font-family:var(--mono);font-size:9px;color:var(--text3);margin-top:1px}
+.eq-type-ctx{padding:10px 14px;background:var(--bg2);border-top:1px solid var(--border);display:flex;align-items:flex-start;gap:10px;font-size:11px;color:var(--text3);line-height:1.5}
+.eq-pending{padding:14px;text-align:center;font-family:var(--mono);font-size:11px;color:var(--text3);background:var(--bg2)}
+.cal-chip{display:flex;flex-direction:column;align-items:center;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px 12px;min-width:70px;cursor:pointer;transition:all .15s;text-align:center}
+.cal-chip:hover{border-color:var(--border2);background:var(--bg4)}
+.cal-chip.upcoming{border-color:var(--yellow-border);background:var(--yellow-dim)}
+.cal-chip.reported{opacity:.6}
+.cal-chip-ticker{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--text);margin-bottom:2px}
+.cal-chip-date{font-family:var(--mono);font-size:9px;color:var(--text3);margin-bottom:2px}
+.cal-chip-q{font-family:var(--mono);font-size:9px;font-weight:600;color:var(--text2)}
+@media(max-width:600px){.eq-verdict-strip{flex-direction:column}.eq-phase{border-right:none;border-bottom:1px solid var(--border)}.eq-phase:last-child{border-bottom:none}}
+</style>
+
+<div class="tab-panel" id="tab-earnings">
+  <div class="update-banner">
+    <div class="ub-text">Análise de Resultados · <strong>Introdução → Desenvolvimento → Conclusão</strong> · Por tipo de empresa</div>
+    <div class="ub-date">Actualizado manualmente após cada reporting · Mar 2026</div>
+  </div>
+
+  <div class="section-title">Calendário · Próximos &amp; Recentes</div>
+  <div id="eq-cal" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:24px;"></div>
+
+  <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;align-items:center;">
+    <span style="font-family:var(--mono);font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-right:4px;">Filtrar:</span>
+    <button class="eq-filter active" onclick="filterEq('all',this)">Todos</button>
+    <button class="eq-filter" onclick="filterEq('growth',this)">Growth</button>
+    <button class="eq-filter" onclick="filterEq('compounder',this)">Compounder</button>
+    <button class="eq-filter" onclick="filterEq('cyclical',this)">Cyclical</button>
+    <button class="eq-filter" onclick="filterEq('utility',this)">Utility/IPP</button>
+    <button class="eq-filter" onclick="filterEq('pre-profit',this)">Pre-Profit</button>
+    <button class="eq-filter" onclick="filterEq('trust',this)">Trust/Income</button>
+    <button class="eq-filter" onclick="filterEq('speculative',this)">Speculative</button>
+  </div>
+
+  <div id="eq-cards"></div>
+</div>
+
+<script>
+// ============================================================
+// EARNINGS_DATA — adiciona/remove entradas aqui
+// Tipos: growth | compounder | cyclical | utility | pre-profit | trust | speculative
+// status: 'reported' | 'upcoming'
+// verdict: 'positive' | 'mixed' | 'negative' | 'na'
+// ============================================================
+const EARNINGS_DATA = [
+  {
+    ticker:'NVDA', name:'NVIDIA Corporation', type:'growth',
+    quarter:'Q4 FY26', date:'28 Mai 2026', status:'upcoming', verdict:'na',
+    typeCtx:'Empresa de crescimento acelerado. Métricas-chave: receita Data Center, gross margin, guidance FY27. Earnings não são apenas resultados — são actualizações da tese de crescimento do CUDA ecosystem.',
+    metrics:[
+      {label:'Rev Estimada', val:'$43.1B', vs:'Consenso FY26 Q4'},
+      {label:'Gross Margin Est.', val:'73–75%', vs:'vs 73.5% Q3'},
+      {label:'EPS Est.', val:'$0.89', vs:'Fwd FY26E'},
+    ],
+    intro:'Resultados ainda não reportados. Expectativas máximas: Blackwell ramp em curso, guidance FY27 acima de $140B em receitas totais.',
+    dev:'Analistas focam em: (1) velocidade de ramp do GB200/NVL72; (2) evolução da gross margin com Blackwell (esperada compressão temporária para 70–72%); (3) guidance China — DeepSeek criou pressão adicional. O mercado vai penalizar qualquer sinal de abrandamento nos hyperscalers. A aceleração de capex Meta ($65B) e Microsoft ($80B) é sinal positivo.',
+    conc:'Para NVDA, o que importa não é o Q4 em si — é o guidance. Qualquer guidance abaixo de $43B no próximo trimestre seria catalisador negativo mesmo com Q4 forte. A aceleração secular do AI capex continua a suportar a tese, mas o prémio de avaliação deixa margem zero para decepções.'
+  },
+  {
+    ticker:'AVGO', name:'Broadcom Inc.', type:'growth',
+    quarter:'Q2 FY26', date:'Jun 2026', status:'upcoming', verdict:'na',
+    typeCtx:'Empresa de crescimento com componente software recorrente. Dual-engine: semicondutores AI (cíclico-crescimento) + VMware (recorrente). Gross margin e AI revenue são os indicadores primários.',
+    metrics:[
+      {label:'Rev Est.', val:'$14.9B', vs:'Consenso Q2 FY26'},
+      {label:'AI Rev Est.', val:'$4.9B+', vs:'vs $4.1B Q1 FY26'},
+      {label:'EPS Est.', val:'$1.58', vs:'Adj. Non-GAAP'},
+    ],
+    intro:'Ainda por reportar. Q1 FY26 foi forte com AI segment em $4.1B (+77% YoY). Continuação depende do ramp de ASICs customizados para Google (TPUv5) e Meta.',
+    dev:'Pontos de atenção: (1) crescimento do AI revenue — guiado para $4.7B+ em Q2, qualquer miss seria materialmente negativo; (2) VMware subscription churn — ano 2 do ciclo é o mais crítico; (3) gross margin: meta 79%+ non-GAAP. A dependência de 3 clientes (Google, Meta, ByteDance) é concentração real.',
+    conc:'AVGO é o caso onde earnings confirmam ou negam a tese dual-engine. Se AI crescer >$4.7B e VMware mostrar retenção acima de 85%, o DCF base de $422 mantém-se. Um miss em qualquer dos dois reequaciona o modelo.'
+  },
+  {
+    ticker:'ANET', name:'Arista Networks', type:'growth',
+    quarter:'Q1 2026', date:'Mai 2026', status:'upcoming', verdict:'na',
+    typeCtx:'Growth puro com balanço fortaleza (zero dívida). Earnings avaliam: expansão de margens operacionais e diversificação de clientes. Qualquer sinal de abrandamento Microsoft pode ser amplificado pelo mercado.',
+    metrics:[
+      {label:'Rev Est.', val:'$2.1B', vs:'Consenso Q1 2026'},
+      {label:'Op Margin Est.', val:'44–46%', vs:'vs 44.9% Q4 2025'},
+      {label:'Backlog Signal', val:'Crítico', vs:'Concentração MSFT'},
+    ],
+    intro:'Ainda por reportar. Q4 2025 bateu consenso mas guidance Q1 foi conservador. Mercado vai focar em sinais de diversificação de clientes além da Microsoft.',
+    dev:'O risco estrutural: ~25% das receitas vêm da Microsoft. Qualquer comentário no earnings call sobre timing de ordens MSFT move o preço 10–15%. O ciclo de infra 800G para data centers AI é longo e predictível — o backlog é real. A Arista está a expandir para enterprise campus networking como segundo motor que os resultados devem confirmar.',
+    conc:'Empresa de altíssima qualidade cujo risco principal é a concentração de clientes. Earnings são relevantes para confirmar diversificação. Zero dívida e FCF margin 47% criam uma base de segurança que outras growth companies não têm.'
+  },
+  {
+    ticker:'GOOGL', name:'Alphabet Inc.', type:'compounder',
+    quarter:'Q1 2026', date:'Abr 2026', status:'upcoming', verdict:'na',
+    typeCtx:'Compounder de alta qualidade. Earnings avaliam: (1) saúde do negócio core (Search); (2) velocidade de aceleração dos motores secundários (Cloud, YouTube); (3) disciplina de capital. ROI do capex AI ($91B) é a questão existencial dos próximos 4 trimestres.',
+    metrics:[
+      {label:'Search Rev Est.', val:'$56B+', vs:'vs $54B Q1 2025'},
+      {label:'GCP Growth Est.', val:'+28–30% YoY', vs:'vs +28% Q4 2025'},
+      {label:'FCF Est.', val:'$20–22B', vs:'com capex $22B/quarter'},
+    ],
+    intro:'Q4 2025 forte mas abaixo das expectativas máximas em Cloud — o mercado penalizou. Q1 2026 será o primeiro teste real de como o AI Overviews afecta a monetização de Search.',
+    dev:'A questão central não é se vai bater o consenso — é se o AI Overviews está a canibalizar cliques de Search monetizáveis. Dados preliminares de tráfego Q1 sugerem queries cresceram mas com menos cliques por query. GCP crescendo >30% seria re-rating positivo. O processo antitruste DOJ é o wildcard.',
+    conc:'O GOOGL está numa posição única: a empresa mais subavaliada entre mega-caps (Fwd P/E 18.8x) com o maior risco narrativo. Resultados operacionais provavelmente sólidos. O que moverá o preço são os comentários sobre AI Overviews e Waymo.'
+  },
+  {
+    ticker:'ETN', name:'Eaton Corporation', type:'compounder',
+    quarter:'Q1 2026', date:'Abr 2026', status:'upcoming', verdict:'na',
+    typeCtx:'Compounder industrial de alta qualidade. Para industriais, os indicadores-chave são: book-to-bill ratio, backlog evolution e guidance de organic growth. EPS isolado pode ser enganador em empresas com mix de negócios.',
+    metrics:[
+      {label:'Rev Est.', val:'$6.8B', vs:'Consenso Q1 2026'},
+      {label:'Backlog', val:'$12.8B', vs:'vs record Q4 2025'},
+      {label:'Organic Growth Est.', val:'+8–10%', vs:'vs +9% FY25 guided'},
+    ],
+    intro:'Q4 2025 foi o décimo trimestre consecutivo de beat. Backlog atingiu máximo histórico de $12.8B. Questão para Q1: mantém-se o ritmo de encomendas data center ou há sinais de abrandamento?',
+    dev:'O Eaton está no cruzamento exacto de duas mega-tendências: electrificação e AI data centers. Cada data center de $1B precisa de ~$200M em equipamento Eaton. Com $280B+ de capex combinado anunciado pelos hyperscalers em 2026, o Eaton está a converter backlog em receita a ritmo crescente. O book-to-bill Q1 vai ditar a direcção.',
+    conc:'Para o Eaton, a questão não é se o negócio é bom — é se o preço já incorporou tudo. Com backlog de $12.8B e visibilidade de 18–24 meses, os resultados de Q1 são normalmente uma confirmação. O risco de múltiplo (P/E 34x para industrial) é mais relevante do que o risco de execução.'
+  },
+  {
+    ticker:'ISRG', name:'Intuitive Surgical', type:'growth',
+    quarter:'Q1 2026', date:'Abr 2026', status:'upcoming', verdict:'na',
+    typeCtx:'Crescimento compounding com modelo razor/blade. Para a ISRG, o indicador mais relevante não é receita — é o crescimento de procedimentos (YoY %). Se os procedimentos crescem, o resto segue automaticamente.',
+    metrics:[
+      {label:'Procedimentos Est.', val:'+16–18% YoY', vs:'vs +18% Q4 2025'},
+      {label:'Rev Est.', val:'$2.6B', vs:'Consenso Q1 2026'},
+      {label:'Novas Instalações', val:'350–400', vs:'da Vinci 5 ramp'},
+    ],
+    intro:'Q4 2025 excepcionalmente forte: FCF +91% YoY. O Q1 2026 tem base comparativa difícil. Expectativa de crescimento de procedimentos >16%, puxado pelo da Vinci 5 na Europa.',
+    dev:'A ISRG beneficia de um efeito secular claro: cada nova instalação gera procedimentos recorrentes pelos próximos 10–15 anos. O da Vinci 5 está a substituir sistemas mais antigos a ritmo acelerado. A plataforma Ion (biópsia pulmonar) está a crescer 40%+ YoY. Risco: Hugo (Medtronic) ganhou aprovação europeia — primeiro earnings post-competição para verificar impacto.',
+    conc:'Para ISRG, resultados confirmam ou negam a defensibilidade do moat. 97% de retenção de procedimentos é a métrica mais robusta do mercado. O risco é de múltiplo, não de negócio. Resultados negativos precisam de vir de breakdown do modelo razor/blade — improvável no curto prazo.'
+  },
+  {
+    ticker:'VST', name:'Vistra Corp.', type:'utility',
+    quarter:'Q1 2026', date:'Mai 2026', status:'upcoming', verdict:'na',
+    typeCtx:'IPP (Independent Power Producer) — não é utility regulada. A métrica primária é EBITDA (não EPS) e a evolução do guidance de EBITDA anual. O preço spot de energia no ERCOT e o progresso de PPAs com data centers são os catalisadores mais importantes.',
+    metrics:[
+      {label:'EBITDA Est.', val:'$1.6–1.8B', vs:'Q1 sazonalmente fraco'},
+      {label:'FY26E EBITDA', val:'$7.2B', vs:'guidance da empresa'},
+      {label:'PPA Progress', val:'Crítico', vs:'AI data center deals'},
+    ],
+    intro:'FY25 EBITDA de $5.25B ficou bem abaixo do FY24 ($7.19B) — demonstrando a volatilidade inerente dos IPPs. Q1 2026 vai revelar se o FY26E de $7.2B está no caminho certo.',
+    dev:'O VST não se avalia como utility tradicional — avalia-se como infraestrutura de energia com exposição a AI. O Q1 é sazonalmente o mais fraco (inverno moderado reduz procura de AC no Texas). O que importa: (1) actualização da guidance FY26 EBITDA; (2) qualquer anúncio de PPA com hyperscaler — seria re-rating event imediato; (3) evolução da capacidade nuclear Comanche Peak. A dívida de $19.6B significa que qualquer miss no EBITDA tem impacto amplificado no equity.',
+    conc:'O VST é um caso onde os earnings em si são menos importantes do que os comentários do management. Um PPA anunciado com um hyperscaler seria catalisador positivo imediato. Um downgrade do guidance FY26 seria catalisador severamente negativo dado o nível de alavancagem.'
+  },
+  {
+    ticker:'MU', name:'Micron Technology', type:'cyclical',
+    quarter:'Q3 FY26', date:'Jun 2026', status:'upcoming', verdict:'na',
+    typeCtx:'Empresa cíclica de semicondutores. Para cyclicals, o que importa não é apenas beat/miss — é onde estamos no ciclo. Margem bruta e guidance de preço de DRAM/HBM são os indicadores mais relevantes, não o EPS isolado.',
+    metrics:[
+      {label:'Rev Est. Q3', val:'$8.8B±300M', vs:'Guidance da empresa'},
+      {label:'Gross Margin Est.', val:'~75%', vs:'vs 74.4% Q2 FY26'},
+      {label:'HBM Rev Est.', val:'$1.5B+', vs:'Q2 FY26 ~$1.1B'},
+    ],
+    intro:'Q2 FY26 já reportado: revenue $8.05B (+38% YoY), gross margin 74.4% — ambos beats. Guidance Q3 de $8.8B ± $300M. Ciclo HBM ainda em aceleração.',
+    dev:'O Q2 FY26 confirmou: a Micron não é a Micron de 2019. HBM3E está em volume para NVIDIA H200/B200, com HBM4 a seguir para Blackwell Ultra. A gross margin de 74.4% demonstra structural change. O risco negativo imediato é DRAM convencional — PC/mobile em excesso de inventário. O dado-chave não é a receita total mas a percentagem HBM na receita total.',
+    conc:'Para a Micron, cada earnings é um teste de se o HBM mudou estruturalmente o earning power ou se é um pico cíclico. Com gross margin >70% e HBM capex comprometido pela NVIDIA para FY27, a probabilidade de sustentação é superior ao histórico. Mas a normalização do DRAM convencional é real.'
+  },
+  {
+    ticker:'CCJ', name:'Cameco Corp.', type:'cyclical',
+    quarter:'Q1 2026', date:'Mai 2026', status:'upcoming', verdict:'na',
+    typeCtx:'Empresa cíclica de commodities (urânio). Para commodities, os earnings em si têm pouco valor preditivo — o preço spot e a evolução dos contratos de longo prazo são os drivers reais. EV/EBITDA 71x significa que qualquer dado operacional é secundário face ao preço do urânio.',
+    metrics:[
+      {label:'Preço Urânio', val:'~$65/lb', vs:'Contratos CCJ $56/lb'},
+      {label:'Produção Est.', val:'6–7M lb', vs:'Cigar Lake + McArthur'},
+      {label:'Westinghouse', val:'Rev C$350M+', vs:'Q1 2025 ~C$320M'},
+    ],
+    intro:'FY25 reportado: resultados operacionais sólidos mas EV/EBITDA 71x significa que os números em si são irrelevantes para a avaliação. O mercado precifica a tese nuclear, não os resultados actuais.',
+    dev:'A CCJ é um caso raro onde os earnings de curto prazo têm correlação fraca com o preço da acção. O que move o CCJ: (1) preço spot de urânio — se ultrapassar $80/lb, o sentimento muda; (2) anúncios de novos reactores nucleares (aprovações SMR nos EUA); (3) evolução do défice de oferta estrutural. O Q1 vai reportar produção e Westinghouse revenue — confirmam a operação mas não a tese.',
+    conc:'A Cameco é uma posição macroeconómica, não fundamental tradicional. Os earnings confirmam que a operação funciona mas não justificam o prémio de avaliação. O catalisador real é exógeno: preço do urânio >$80, aprovação de SMRs em massa, ou contrato nuclear para data centers. Até lá, os earnings são informativos mas não catalisadores.'
+  },
+  {
+    ticker:'CRT', name:'Cross Timbers Trust', type:'trust',
+    quarter:'Mensal', date:'Mensal', status:'reported', verdict:'mixed',
+    typeCtx:'Royalty Trust sem gestão activa. Não existem "earnings" tradicionais — existem distribuições mensais ligadas directamente ao preço da commodity e ao volume de produção. O "resultado" é o nível de distribuição e a sua sustentabilidade.',
+    metrics:[
+      {label:'Yield Actual', val:'7.4%', vs:'vs Treasury 4.3%'},
+      {label:'Distribuição Mar', val:'~$0.062/acção', vs:'vol. produção'},
+      {label:'Produção Declínio', val:'~10% YoY', vs:'activos depletantes'},
+    ],
+    intro:'O CRT não tem earnings no sentido tradicional. Análise mensal: petróleo >$75 → distribuição sustentável; petróleo <$65 → distribuição em risco. Actualmente: yield 7.4% a preços correntes (~$69 WTI).',
+    dev:'A CRT é um instrumento de income puro com exposição directa ao petróleo e gás. Em Mar 2026, WTI em ~$69/barril — zona de cautela para as distribuições. Produção declina ~
 <!-- ===== NEWS TAB ===== -->
 <div class="tab-panel" id="tab-news">
 
