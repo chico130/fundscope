@@ -11309,7 +11309,11 @@ function showTab(name) {
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.getElementById('tab-' + name).classList.add('active');
-  event.currentTarget.classList.add('active');
+  document.querySelectorAll('.tab').forEach(t => {
+    if (t.getAttribute('onclick') && t.getAttribute('onclick').includes("'" + name + "'")) {
+      t.classList.add('active');
+    }
+  });
 }
 
 // ── Analyst / Thesis toggle ───────────────────────────────
@@ -11357,7 +11361,7 @@ function copyPrompt() {
 function scrollTo(id) {
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab').forEach((t, i) => {
-    t.classList.toggle('active', i === 1);
+    t.classList.toggle('active', i === 0);
   });
   document.getElementById('tab-valuation').classList.add('active');
   setTimeout(() => {
