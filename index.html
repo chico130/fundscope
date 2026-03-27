@@ -11307,7 +11307,7 @@ If no material news: "Sem eventos materiais."</div>
 </div>
 
 <script>
-// ── Tab navigation ──────────────────────────────────────────
+// ── Tab navigation ───────────────────────────────────────────
 function showTab(name) {
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -11315,7 +11315,7 @@ function showTab(name) {
   event.target.classList.add('active');
 }
 
-// ── Analyst / Thesis cards toggle ───────────────────────────
+// ── Analyst / Thesis cards ───────────────────────────────────
 function toggleAnalyst(header) {
   const body = header.nextElementSibling;
   const arrow = header.querySelector('div:last-child');
@@ -11323,7 +11323,7 @@ function toggleAnalyst(header) {
   arrow.textContent = body.classList.contains('open') ? '▾' : '▸';
 }
 
-// ── Earnings cards toggle ────────────────────────────────────
+// ── Earnings cards ───────────────────────────────────────────
 function toggleEq(header) {
   const body = header.nextElementSibling;
   const arrow = header.querySelector('.eq-arrow');
@@ -11336,11 +11336,7 @@ function filterEq(type, btn) {
   document.querySelectorAll('.eq-filter').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   document.querySelectorAll('.eq-card').forEach(card => {
-    if (type === 'all' || card.dataset.type === type) {
-      card.style.display = '';
-    } else {
-      card.style.display = 'none';
-    }
+    card.style.display = (type === 'all' || card.dataset.type === type) ? '' : 'none';
   });
 }
 
@@ -11362,20 +11358,16 @@ function copyPrompt() {
 
 // ── Scroll to detail card ────────────────────────────────────
 function scrollTo(id) {
-  showTabValuation();
-  setTimeout(() => {
-    const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }, 100);
-}
-
-function showTabValuation() {
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab').forEach((t, i) => {
     if (i === 1) t.classList.add('active');
     else t.classList.remove('active');
   });
   document.getElementById('tab-valuation').classList.add('active');
+  setTimeout(() => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, 100);
 }
 
 // ── Card entrance animation ──────────────────────────────────
