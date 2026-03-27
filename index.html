@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>">
 <title>Watchlist · Fundamental Analysis</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -340,6 +341,35 @@ tbody td:first-child {
   .detail-grid { grid-template-columns: 1fr; }
   .summary-grid { grid-template-columns: repeat(3, 1fr); }
   .sc-price { font-size: 15px; }
+
+  /* Tabela: esconde colunas menos críticas em mobile */
+  thead th:nth-child(4),  /* Mkt Cap */
+  thead th:nth-child(6),  /* Fwd P/E */
+  thead th:nth-child(7),  /* FCF Yield */
+  thead th:nth-child(8),  /* EV/EBITDA */
+  thead th:nth-child(11), /* FV Low */
+  thead th:nth-child(12), /* FV High */
+  tbody td:nth-child(4),
+  tbody td:nth-child(6),
+  tbody td:nth-child(7),
+  tbody td:nth-child(8),
+  tbody td:nth-child(11),
+  tbody td:nth-child(12) {
+    display: none;
+  }
+
+  /* Tabela: texto mais pequeno */
+  table { font-size: 11px; }
+  thead th, tbody td { padding: 8px 8px; }
+
+  /* Tabs: texto mais pequeno para caber */
+  .tab { font-size: 10px; padding: 10px 12px; }
+
+  /* Topbar: esconde a data */
+  .topbar-right { display: none; }
+
+  /* Detail cards: métricas em coluna única */
+  .dc-metrics { grid-template-columns: 1fr 1fr; }
 }
 
 .detail-card {
