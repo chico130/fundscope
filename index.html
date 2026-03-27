@@ -2258,8 +2258,57 @@ const EARNINGS_DATA = [
     ],
     intro:'O CRT não tem earnings no sentido tradicional. Análise mensal: petróleo >$75 → distribuição sustentável; petróleo <$65 → distribuição em risco. Actualmente: yield 7.4% a preços correntes (~$69 WTI).',
     dev:'A CRT é um instrumento de income puro com exposição directa ao petróleo e gás. Em Mar 2026, WTI em ~$69/barril — zona de cautela para as distribuições. Produção declina ~10% YoY — activos depletantes por natureza.',
-<script>
-      
+    conc:'Instrumento de income puro. Regra simples: petróleo >$75 → hold/acumular; $65–$75 → cautela; <$65 → reavaliar. Não há tese de capital appreciation — só cash flow decrescente a taxa previsível.'
+  }
+];
+
+function buildEarningsCalendar() {
+  const cal = document.getElementById('eq-cal');
+  if (!cal) return;
+  const sorted = [...EARNINGS_DATA].sort((a,b) => a.date.localeCompare(b.date));
+  cal.innerHTML = sorted.map(e => `
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px 12px;font-family:var(--mono);font-size:11px;">
+      <div style="font-weight:700;color:var(--text);">${e.ticker}</div>
+      <div style="color:var(--text3);font-size:10px;">${e.date}</div>
+      <div style="color:${e.status==='reported'?'var(--green)':'var(--text2)'};font-size:10px;">${e.status==='reported'?'✓ Reportado':'Upcoming'}</div>
+    </div>`).join('');
+}
+
+function buildEarningsCards() {
+  const container = document.getElementById('eq-cards');
+  if (!container) return;
+  container.innerHTML = EARNINGS_DATA.map(e => `
+    <div class="eq-card" data-type="${e.type}" style="background:var(--bg3);border:1px solid var(--border);border-radius:6px;margin-bottom:8px;overflow:hidden;">
+      <div class="eq-header" onclick="toggleEq(this)" style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;cursor:pointer;">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <span style="font-family:var(--mono);font-weight:700;font-size:15px;color:var(--text);">${e.ticker}</span>
+          <span style="font-size:11px;color:var(--text3);font-family:var(--mono);">${e.name}</span>
+          <span style="font-size:9px;font-weight:600;padding:2px 6px;border-radius:3px;background:var(--bg4);color:var(--text3);text-transform:uppercase;">${e.type}</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;font-family:var(--mono);font-size:11px;">
+          <span style="color:var(--text3);">${e.quarter} · ${e.date}</span>
+          <span style="color:${e.status==='reported'?'var(--green)':'var(--text2)'};">${e.status==='reported'?'✓ Reportado':'Upcoming'}</span>
+          <span class="eq-arrow">▸</span>
+        </div>
+      </div>
+      <div style="display:none;padding:0 16px 16px;border-top:1px solid var(--border);">
+        <div style="font-size:11px;color:var(--text3);background:var(--bg2);padding:8px 12px;border-radius:4px;margin:12px 0;font-family:var(--mono);">${e.typeCtx}</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;">
+          ${e.metrics.map(m=>`<div style="background:var(--bg2);border-radius:4px;padding:8px 10px;"><div style="font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:2px;">${m.label}</div><div style="font-family:var(--mono);font-size:13px;font-weight:600;color:var(--text);">${m.val}</div><div style="font-size:9px;color:var(--text3);">${m.vs}</div></div>`).join('')}
+        </div>
+        <div style="font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:8px;"><strong style="color:var(--text);">Introdução</strong><br>${e.intro}</div>
+        <div style="font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:8px;"><strong style="color:var(--text);">Desenvolvimento</strong><br>${e.dev}</div>
+        <div style="font-size:12px;color:var(--text2);line-height:1.6;padding:10px 12px;background:var(--bg2);border-radius:4px;border-left:3px solid var(--${e.verdict==='positive'?'green':e.verdict==='negative'?'red':'yellow'});"><strong style="color:var(--text);">Conclusão</strong><br>${e.conc}</div>
+      </div>
+    </div>`).join('');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  buildEarningsCalendar();
+  buildEarningsCards();
+});
+</script>
+
 <!-- ===== NEWS TAB ===== -->
 <div class="tab-panel" id="tab-news">
 
