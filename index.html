@@ -2122,7 +2122,7 @@ tbody td:first-child {
   <div id="eq-cards"></div>
 </div>
 
-<script>
+
 // ============================================================
 // EARNINGS_DATA — adiciona/remove entradas aqui
 // Tipos: growth | compounder | cyclical | utility | pre-profit | trust | speculative
@@ -11302,6 +11302,7 @@ If no material news: "Sem eventos materiais."</div>
 </div>
 
 <script>
+// ── Tab navigation ──────────────────────────────────────────
 function showTab(name) {
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -11309,6 +11310,7 @@ function showTab(name) {
   event.target.classList.add('active');
 }
 
+// ── Analyst / Thesis cards toggle ───────────────────────────
 function toggleAnalyst(header) {
   const body = header.nextElementSibling;
   const arrow = header.querySelector('div:last-child');
@@ -11316,11 +11318,33 @@ function toggleAnalyst(header) {
   arrow.textContent = body.classList.contains('open') ? '▾' : '▸';
 }
 
+// ── Earnings cards toggle ────────────────────────────────────
+function toggleEq(header) {
+  const body = header.nextElementSibling;
+  const arrow = header.querySelector('.eq-arrow');
+  body.classList.toggle('open');
+  if (arrow) arrow.textContent = body.classList.contains('open') ? '▾' : '▸';
+}
+
+// ── Earnings filter ──────────────────────────────────────────
+function filterEq(type, btn) {
+  document.querySelectorAll('.eq-filter').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.eq-card').forEach(card => {
+    if (type === 'all' || card.dataset.type === type) {
+      card.style.display = '';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+}
+
+// ── Copy prompt ──────────────────────────────────────────────
 function copyPrompt() {
   const text = document.getElementById('news-prompt').textContent;
   navigator.clipboard.writeText(text).then(() => {
     const btn = document.querySelector('.copy-btn');
-    btn.textContent = '✓ Copiado!';
+    btn.textContent = 'Copiado!';
     btn.style.color = 'var(--green)';
     btn.style.borderColor = 'var(--green-border)';
     setTimeout(() => {
@@ -11331,19 +11355,25 @@ function copyPrompt() {
   });
 }
 
+// ── Scroll to detail card ────────────────────────────────────
 function scrollTo(id) {
-  showTab('valuation');
-  document.querySelectorAll('.tab').forEach((t, i) => {
-    if(i === 0) t.classList.add('active');
-    else t.classList.remove('active');
-  });
+  showTabValuation();
   setTimeout(() => {
     const el = document.getElementById(id);
-    if(el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }, 100);
 }
 
-// Animate cards on load
+function showTabValuation() {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach((t, i) => {
+    if (i === 1) t.classList.add('active');
+    else t.classList.remove('active');
+  });
+  document.getElementById('tab-valuation').classList.add('active');
+}
+
+// ── Card entrance animation ──────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
   const cards = document.querySelectorAll('.summary-card, .detail-card, .analyst-card');
   cards.forEach((card, i) => {
