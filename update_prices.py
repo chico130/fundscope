@@ -1,110 +1,134 @@
 """
 FundScope — Atualização automática de preços via Yahoo Finance
-Actualiza: summary cards, tabela, detail cards E data no topbar.
+Gera: data.json com preços, variações, volume e metadata de todos os tickers.
 """
 
 import yfinance as yf
-import re
+import json
 import sys
 from datetime import datetime, timezone
 
-TICKERS = ["MU", "CRT", "CCJ", "GOOGL", "VST", "NVDA", "AVGO", "ANET", "ETN", "ISRG", "SUUN", "RKLB", "OUST"]
-HTML_FILE = "index.html"
+TICKERS = [
+    "AAPL", "MSFT", "NVDA", "TSLA", "AMZN", "GOOGL", "META", "AMD",
+    "VOO", "IWDA.AS", "QQQ", "SPY", "VT", "CSPX.L", "BRK-B"
+]
 
+TICKER_META = {
+    "AAPL":   {"name": "Apple Inc.",                    "type": "Ação",  "exchange": "NASDAQ",             "sector": "Tecnologia"},
+    "MSFT":   {"name": "Microsoft Corporation",         "type": "Ação",  "exchange": "NASDAQ",             "sector": "Tecnologia"},
+    "NVDA":   {"name": "NVIDIA Corporation",            "type": "Ação",  "exchange": "NASDAQ",             "sector": "Semicondutores"},
+    "TSLA":   {"name": "Tesla Inc.",                    "type": "Ação",  "exchange": "NASDAQ",             "sector": "Automóvel"},
+    "AMZN":   {"name": "Amazon.com Inc.",               "type": "Ação",  "exchange": "NASDAQ",             "sector": "Consumo"},
+    "GOOGL":  {"name": "Alphabet Inc.",                 "type": "Ação",  "exchange": "NASDAQ",             "sector": "Tecnologia"},
+    "META":   {"name": "Meta Platforms",               "type": "Ação",  "exchange": "NASDAQ",             "sector": "Tecnologia"},
+    "AMD":    {"name": "Advanced Micro Devices",        "type": "Ação",  "exchange": "NASDAQ",             "sector": "Semicondutores"},
+    "VOO":    {"name": "Vanguard S&P 500 ETF",          "type": "ETF",   "exchange": "NYSE Arca",          "sector": "ETF — Large Blend"},
+    "IWDA.AS":{"name": "iShares Core MSCI World UCITS", "type": "ETF",   "exchange": "Euronext Amsterdam", "sector": "ETF — Global Blend"},
+    "QQQ":    {"name": "Invesco QQQ Trust",             "type": "ETF",   "exchange": "NASDAQ",             "sector": "ETF — Tech"},
+    "SPY":    {"name": "SPDR S&P 500 ETF",              "type": "ETF",   "exchange": "NYSE Arca",          "sector": "ETF — Large Blend"},
+    "VT":     {"name": "Vanguard Total World ETF",      "type": "ETF",   "exchange": "NYSE Arca",          "sector": "ETF — Global Blend"},
+    "CSPX.L": {"name": "iShares Core S&P 500 UCITS",   "type": "ETF",   "exchange": "LSE",               "sector": "ETF — Large Blend"},
+    "BRK-B":  {"name": "Berkshire Hathaway B",          "type": "Ação",  "exchange": "NYSE",              "sector": "Financeiro"},
+}
 
-def get_prices(tickers):
-    prices = {}
-    for t in tickers:
-        try:
-            stock = yf.Ticker(t)
-            info = stock.fast_info
-            price = info.get("lastPrice", None) or info.get("regularMarketPrice", None)
-            if price:
-                prices[t] = round(price, 2)
-                print(f"  {t}: ${prices[t]}")
-            else:
-                print(f"  {t}: ERRO — sem preço disponível")
-        except Exception as e:
-            print(f"  {t}: ERRO — {e}")
-    return prices
+def fmt_large(n):
+    if n is None: return "—"
+    if n >= 1e12: return f"${n/1e12:.2f}T"
+    if n >= 1e9:  return f"${n/1e9:.2f}B"
+    if n >= 1e6:  return f"${n/1e6:.2f}M"
+    return f"${n:.0f}"
 
+def fmt_vol(n):
+    if n is None: return "—"
+    if n >= 1e6: return f"{n/1e6:.1f}M"
+    if n >= 1e3: return f"{n/1e3:.1f}K"
+    return str(n)
 
-def update_html(prices):
-    with open(HTML_FILE, "r", encoding="utf-8") as f:
-        html = f.read()
+def get_stock_data(ticker):
+    try:
+        t = yf.Ticker(ticker)
+        info = t.info
+        fi = t.fast_info
 
-    changes = 0
+        price      = fi.get("last_price") or info.get("regularMarketPrice")
+        prev_close = fi.get("previous_close") or info.get("previousClose")
+        open_p     = fi.get("open") or info.get("open")
+        day_high   = fi.get("day_high") or info.get("dayHigh")
+        day_low    = fi.get("day_low") or info.get("dayLow")
+        week52h    = fi.get("year_high") or info.get("fiftyTwoWeekHigh")
+        week52l    = fi.get("year_low") or info.get("fiftyTwoWeekLow")
+        volume     = fi.get("three_month_average_volume") or info.get("volume")
+        avg_vol    = info.get("averageVolume")
+        mkt_cap    = fi.get("market_cap") or info.get("marketCap")
+        currency   = info.get("currency", "USD")
+        pe         = info.get("trailingPE")
+        eps        = info.get("trailingEps")
+        beta       = info.get("beta")
+        div_rate   = info.get("dividendRate")
+        div_yield  = info.get("dividendYield")
+        about      = info.get("longBusinessSummary", "")
 
-    for ticker, price in prices.items():
-        price_str = f"${price:,.2f}"
+        if not price:
+            print(f"  {ticker}: sem preço")
+            return None
 
-        # 1. Summary cards — sc-price
-        # Procura o bloco do ticker e substitui o sc-price a seguir
-        pattern_sc = (
-            r'(<div class="sc-ticker">' + re.escape(ticker) + r'</div>'
-            r'.*?<div class="sc-price">)\$[\d,\.]+(<\/div>)'
-        )
-        new_sc = r'\g<1>' + price_str + r'\2'
-        html_new, n = re.subn(pattern_sc, new_sc, html, flags=re.DOTALL)
-        if n:
-            html = html_new
-            changes += n
+        change     = round(price - prev_close, 2) if prev_close else 0
+        change_pct = round((change / prev_close) * 100, 2) if prev_close else 0
+        sym        = "$" if currency == "USD" else ("€" if currency == "EUR" else "£" if currency == "GBP" else currency + " ")
 
-        # 2. Tabela comparativa — coluna Preço
-        # Procura a linha da tabela com o ticker e substitui o $preço
-        pattern_tbl = (
-            r'(<div class="ticker-cell"><span class="t">' + re.escape(ticker) + r'<\/span>'
-            r'.*?<\/div><\/td>\s*<td[^>]*>)\$[\d,\.]+(<\/td>)'
-        )
-        new_tbl = r'\g<1>' + price_str + r'\2'
-        html_new, n = re.subn(pattern_tbl, new_tbl, html, flags=re.DOTALL)
-        if n:
-            html = html_new
-            changes += n
+        div_str = "—"
+        if div_rate and div_yield:
+            div_str = f"{sym}{div_rate:.2f} ({div_yield*100:.2f}%)"
 
-        # 3. Detail cards — dc-price (dentro do id=TICKER)
-        # Procura o card com id="TICKER" e substitui o dc-price
-        pattern_dc = (
-            r'(<div class="detail-card[^"]*"[^>]*id="' + re.escape(ticker) + r'">'
-            r'.*?<div class="dc-price">)\$[\d,\.]+(<\/div>)'
-        )
-        new_dc = r'\g<1>' + price_str + r'\2'
-        html_new, n = re.subn(pattern_dc, new_dc, html, flags=re.DOTALL)
-        if n:
-            html = html_new
-            changes += n
+        display_ticker = ticker.replace(".AS", "").replace(".L", "")
 
-    # 4. Data no topbar — "Última actualização: <span>..."
-    now_str = datetime.now(timezone.utc).strftime("%d %b %Y %H:%M UTC")
-    pattern_date = r'(Última actualização:\s*<span>)[^<]+(</span>)'
-    html_new, n = re.subn(pattern_date, r'\g<1>' + now_str + r'\2', html)
-    if n:
-        html = html_new
-        changes += n
-        print(f"  Topbar atualizado: {now_str}")
-
-    with open(HTML_FILE, "w", encoding="utf-8") as f:
-        f.write(html)
-
-    print(f"  Total de substituições: {changes}")
-    return changes
-
+        return {
+            "ticker":      display_ticker,
+            "yf_ticker":   ticker,
+            "price":       round(price, 2),
+            "prevClose":   round(prev_close, 2) if prev_close else None,
+            "open":        round(open_p, 2) if open_p else None,
+            "high":        round(day_high, 2) if day_high else None,
+            "low":         round(day_low, 2) if day_low else None,
+            "change":      change,
+            "changePct":   change_pct,
+            "volume":      fmt_vol(volume),
+            "avgVolume":   fmt_vol(avg_vol),
+            "marketCap":   fmt_large(mkt_cap),
+            "pe":          round(pe, 1) if pe else "—",
+            "eps":         round(eps, 2) if eps else "—",
+            "beta":        round(beta, 2) if beta else "—",
+            "dividend":    div_str,
+            "week52High":  round(week52h, 2) if week52h else None,
+            "week52Low":   round(week52l, 2) if week52l else None,
+            "currency":    currency,
+            "symbol":      sym,
+            "about":       about[:400] if about else "",
+            **TICKER_META.get(ticker, {"name": ticker, "type": "—", "exchange": "—", "sector": "—"})
+        }
+    except Exception as e:
+        print(f"  {ticker}: ERRO — {e}")
+        return None
 
 def main():
-    print("FundScope — A atualizar preços...")
-    prices = get_prices(TICKERS)
+    print("FundScope — A buscar preços em tempo real...")
+    result = {}
+    for ticker in TICKERS:
+        data = get_stock_data(ticker)
+        if data:
+            display = data["ticker"]
+            result[display] = data
+            print(f"  {display}: {data['symbol']}{data['price']} ({'+' if data['changePct']>=0 else ''}{data['changePct']}%)")
 
-    if not prices:
-        print("  ERRO: Nenhum preço obtido. A abortar.")
-        sys.exit(1)
+    output = {
+        "updated": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "stocks": result
+    }
 
-    changes = update_html(prices)
+    with open("data.json", "w", encoding="utf-8") as f:
+        json.dump(output, f, ensure_ascii=False, indent=2)
 
-    if changes == 0:
-        print("  AVISO: Nenhuma substituição feita. Verifica os padrões no HTML.")
-    else:
-        print(f"  OK: {len(prices)} tickers atualizados com sucesso.")
-
+    print(f"\n  data.json gerado com {len(result)} tickers.")
 
 if __name__ == "__main__":
     main()
