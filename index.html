@@ -116,17 +116,18 @@
       text-align: center;
     }
 
-    /* Mascot */
+    /* Mascot GIF */
     .mascot-wrap {
       margin-bottom: var(--space-8);
-      position: relative; width: 180px; height: 180px;
+      position: relative;
       display: flex; align-items: center; justify-content: center;
     }
-    .mascot-svg {
-      width: 180px; height: 180px;
-      animation: pigFloat 3.2s ease-in-out infinite;
+    .mascot-gif {
+      width: 180px;
+      height: 180px;
+      object-fit: contain;
       filter: drop-shadow(0 14px 28px rgba(230,100,100,0.22));
-      overflow: visible;
+      animation: pigFloat 3.2s ease-in-out infinite;
     }
     @keyframes pigFloat {
       0%, 100% { transform: translateY(0px); }
@@ -261,7 +262,7 @@
       .nav-link { display: none; }
       .cards-row { grid-template-columns: 1fr 1fr; }
       .cards-row .ticker-card:last-child { display: none; }
-      .mascot-svg { width: 140px; height: 140px; }
+      .mascot-gif { width: 140px; height: 140px; }
     }
   </style>
 </head>
@@ -300,115 +301,15 @@
 
   <main class="main">
 
-    <!-- Mascot -->
+    <!-- Mascot GIF -->
     <div class="mascot-wrap" aria-hidden="true">
-      <svg class="mascot-svg" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <radialGradient id="coinOuter" cx="40%" cy="35%" r="65%">
-            <stop offset="0%" stop-color="#ffe97a"/>
-            <stop offset="55%" stop-color="#d4b800"/>
-            <stop offset="100%" stop-color="#9a8000"/>
-          </radialGradient>
-          <radialGradient id="coinInner" cx="42%" cy="38%" r="60%">
-            <stop offset="0%" stop-color="#d4c200"/>
-            <stop offset="100%" stop-color="#7a6200"/>
-          </radialGradient>
-          <radialGradient id="bodyMain" cx="38%" cy="30%" r="70%">
-            <stop offset="0%" stop-color="#f7b5b5"/>
-            <stop offset="55%" stop-color="#f08080"/>
-            <stop offset="100%" stop-color="#e06060"/>
-          </radialGradient>
-          <radialGradient id="bellyShine" cx="50%" cy="50%" r="55%">
-            <stop offset="0%" stop-color="#fce8e8" stop-opacity="0.9"/>
-            <stop offset="100%" stop-color="#fce8e8" stop-opacity="0"/>
-          </radialGradient>
-          <radialGradient id="snoutGrad" cx="50%" cy="40%" r="60%">
-            <stop offset="0%" stop-color="#f5a0a0"/>
-            <stop offset="100%" stop-color="#e87070"/>
-          </radialGradient>
-          <radialGradient id="earInner" cx="50%" cy="50%" r="60%">
-            <stop offset="0%" stop-color="#f9c0c0"/>
-            <stop offset="100%" stop-color="#f08080"/>
-          </radialGradient>
-        </defs>
-
-        <!-- COIN with drop + spin animation -->
-        <g id="coin">
-          <animateTransform attributeName="transform" type="translate"
-            values="0,0; 0,0; 0,16; 0,20; 0,20; 0,0; 0,0"
-            keyTimes="0;0.05;0.40;0.52;0.62;0.74;1"
-            dur="2.8s" repeatCount="indefinite"
-            calcMode="spline"
-            keySplines="0 0 1 1;.42 0 .58 1;.42 0 .58 1;0 0 1 1;.42 0 .58 1;0 0 1 1"/>
-          <!-- Coin outer -->
-          <ellipse cx="124" cy="50" rx="22" ry="26" fill="url(#coinOuter)"/>
-          <ellipse cx="124" cy="50" rx="22" ry="26" fill="none" stroke="#9a8000" stroke-width="2"/>
-          <!-- Coin inner -->
-          <ellipse cx="124" cy="50" rx="14" ry="18" fill="url(#coinInner)"/>
-          <ellipse cx="124" cy="50" rx="14" ry="18" fill="none" stroke="#7a6200" stroke-width="1.5"/>
-          <!-- Coin shine -->
-          <ellipse cx="118" cy="43" rx="6" ry="4" fill="white" opacity="0.38" transform="rotate(-15 118 43)"/>
-          <!-- Coin spin (squish X) -->
-          <animateTransform attributeName="transform" type="scale"
-            values="1,1;0.45,1;1,1;0.45,1;1,1"
-            keyTimes="0;0.20;0.40;0.60;1"
-            dur="2.8s" repeatCount="indefinite" additive="sum"
-            calcMode="spline"
-            keySplines=".42 0 .58 1;.42 0 .58 1;.42 0 .58 1;.42 0 .58 1"/>
-        </g>
-
-        <!-- Tail -->
-        <path d="M148 112 Q162 105 160 120 Q158 132 148 128" stroke="#e06868" stroke-width="5" stroke-linecap="round" fill="none"/>
-        <path d="M148 112 Q162 105 160 120 Q158 132 148 128" stroke="#f5aaaa" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.5"/>
-
-        <!-- Body -->
-        <ellipse cx="95" cy="118" rx="62" ry="55" fill="url(#bodyMain)"/>
-        <ellipse cx="72" cy="94" rx="22" ry="16" fill="url(#bellyShine)" transform="rotate(-20 72 94)"/>
-
-        <!-- Ears -->
-        <ellipse cx="52" cy="72" rx="13" ry="16" fill="#e87070"/>
-        <ellipse cx="52" cy="72" rx="8" ry="10" fill="url(#earInner)" opacity="0.7"/>
-        <ellipse cx="144" cy="68" rx="13" ry="16" fill="#e87070"/>
-        <ellipse cx="144" cy="68" rx="8" ry="10" fill="url(#earInner)" opacity="0.7"/>
-
-        <!-- Head -->
-        <ellipse cx="110" cy="100" rx="50" ry="46" fill="url(#bodyMain)"/>
-        <ellipse cx="94" cy="80" rx="18" ry="12" fill="white" opacity="0.13" transform="rotate(-25 94 80)"/>
-
-        <!-- Coin slot -->
-        <rect x="94" y="66" width="30" height="7" rx="3.5" fill="#8a3a3a"/>
-        <rect x="96" y="67.5" width="26" height="2" rx="1" fill="white" opacity="0.15"/>
-
-        <!-- Left eye -->
-        <circle cx="94" cy="96" r="7" fill="white" opacity="0.97"/>
-        <circle cx="95.5" cy="97" r="4.5" fill="#5a2828"/>
-        <circle cx="93.5" cy="94.5" r="1.8" fill="white" opacity="0.8"/>
-        <!-- Right eye -->
-        <circle cx="126" cy="92" r="7" fill="white" opacity="0.97"/>
-        <circle cx="127.5" cy="93" r="4.5" fill="#5a2828"/>
-        <circle cx="125.5" cy="90.5" r="1.8" fill="white" opacity="0.8"/>
-
-        <!-- Snout -->
-        <ellipse cx="112" cy="112" rx="20" ry="15" fill="url(#snoutGrad)"/>
-        <ellipse cx="112" cy="112" rx="20" ry="15" fill="none" stroke="#e06060" stroke-width="0.8" opacity="0.4"/>
-        <rect x="104" y="112" width="6" height="8" rx="3" fill="#8a3a3a" opacity="0.7"/>
-        <rect x="114" y="112" width="6" height="8" rx="3" fill="#8a3a3a" opacity="0.7"/>
-        <ellipse cx="107" cy="108" rx="5" ry="3" fill="white" opacity="0.2" transform="rotate(-10 107 108)"/>
-
-        <!-- Cheeks -->
-        <ellipse cx="78"  cy="106" rx="10" ry="7" fill="#f9c0c0" opacity="0.7"/>
-        <ellipse cx="146" cy="102" rx="10" ry="7" fill="#f9c0c0" opacity="0.7"/>
-
-        <!-- Legs -->
-        <rect x="58" y="158" width="16" height="20" rx="8" fill="#e87070"/>
-        <ellipse cx="66" cy="178" rx="8" ry="4.5" fill="#d85858"/>
-        <rect x="78" y="160" width="16" height="20" rx="8" fill="#e87070"/>
-        <ellipse cx="86" cy="180" rx="8" ry="4.5" fill="#d85858"/>
-        <rect x="100" y="160" width="16" height="20" rx="8" fill="#f08080"/>
-        <ellipse cx="108" cy="180" rx="8" ry="4.5" fill="#e06060"/>
-        <rect x="120" y="158" width="16" height="20" rx="8" fill="#f08080"/>
-        <ellipse cx="128" cy="178" rx="8" ry="4.5" fill="#e06060"/>
-      </svg>
+      <img
+        class="mascot-gif"
+        src="piggy.gif"
+        alt="Porquinho mealheiro animado"
+        width="180"
+        height="180"
+      />
     </div>
 
     <p class="hero-eyebrow">Stocks &amp; ETFs</p>
@@ -488,7 +389,6 @@
   </div>
 
   <script>
-    // Theme toggle
     (function(){
       const t = document.querySelector('[data-theme-toggle]');
       const r = document.documentElement;
@@ -503,7 +403,6 @@
       if(t) t.addEventListener('click', () => setTheme(d === 'dark' ? 'light' : 'dark'));
     })();
 
-    // Mock data
     const MOCK_DATA = [
       { ticker:'AAPL', name:'Apple Inc.', type:'Ação — NASDAQ', price:'$213.07', chg:'+1.23%', dir:'up' },
       { ticker:'MSFT', name:'Microsoft Corp.', type:'Ação — NASDAQ', price:'$428.63', chg:'+0.67%', dir:'up' },
