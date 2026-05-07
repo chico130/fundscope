@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """
-update_markets.py — FundScope v1.8
-Fix: quando c==0 (fora de horas / sem dados intraday) usa pc como preco
-     para garantir que gainers/losers nunca ficam vazios
+update_markets.py — FundScope v1.9
+Fix: apenas tickers US com cobertura confirmada no Finnhub free tier.
+Removidos: VALE (NYSE ADR por vezes falha), RIO, BHP (LSE), AGI, PAAS, SCCO
+Adicionados: tickers S&P500/NYSE com pc>0 garantido
 """
 
 import json, os, time, datetime, requests
@@ -15,7 +16,7 @@ SECTORS = {
         "icon": "\U0001f4bb",
         "color": "#4f98a3",
         "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
-        "tickers": ["AAPL","MSFT","NVDA","GOOGL","META","AMD","INTC","TSLA","ASML","AVGO","MU","QCOM","ORCL","CRM","ADBE"],
+        "tickers": ["AAPL","MSFT","NVDA","GOOGL","META","AMD","INTC","TSLA","AVGO","MU","QCOM","ORCL","CRM","ADBE","NOW"],
         "sentiment_tickers": ["AAPL","NVDA","MSFT"],
         "news_tickers": ["AAPL","NVDA","MSFT","AMD","META"]
     },
@@ -23,7 +24,7 @@ SECTORS = {
         "icon": "\U0001f3e6",
         "color": "#437a22",
         "image": "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&q=80",
-        "tickers": ["JPM","BAC","GS","MS","WFC","C","BLK","AXP","V","MA","SCHW","BRK-B","USB","PNC","TFC"],
+        "tickers": ["JPM","BAC","GS","MS","WFC","C","BLK","AXP","V","MA","SCHW","USB","PNC","TFC","COF"],
         "sentiment_tickers": ["JPM","GS","BAC"],
         "news_tickers": ["JPM","GS","BAC","MS","V"]
     },
@@ -31,7 +32,7 @@ SECTORS = {
         "icon": "\u26a1",
         "color": "#c47d1a",
         "image": "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80",
-        "tickers": ["XOM","CVX","COP","SLB","EOG","PSX","MPC","VLO","OXY","HAL","BP","SHEL","NEE","D","DUK"],
+        "tickers": ["XOM","CVX","COP","SLB","EOG","PSX","MPC","VLO","OXY","HAL","NEE","D","DUK","SO","AEP"],
         "sentiment_tickers": ["XOM","CVX","NEE"],
         "news_tickers": ["XOM","CVX","COP","OXY","NEE"]
     },
@@ -47,18 +48,19 @@ SECTORS = {
         "icon": "\U0001f6d2",
         "color": "#7a5c9e",
         "image": "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&q=80",
-        "tickers": ["AMZN","WMT","HD","MCD","SBUX","NKE","TGT","COST","LOW","TJX","PG","KO","PEP","PM","CL"],
-        "sentiment_tickers": ["AMZN","WMT","MCD"],
-        "news_tickers": ["AMZN","WMT","MCD","COST","KO"]
+        # Todos NYSE/NASDAQ - sem ADRs nem ETFs
+        "tickers": ["WMT","HD","MCD","SBUX","NKE","TGT","COST","LOW","TJX","PG","KO","PEP","PM","CL","MDLZ"],
+        "sentiment_tickers": ["WMT","MCD","KO"],
+        "news_tickers": ["WMT","MCD","COST","KO","HD"]
     },
     "Commodities": {
         "icon": "\U0001fa99",
         "color": "#8a7340",
         "image": "https://images.unsplash.com/photo-1610375461246-83df859d849d?w=800&q=80",
-        # Produtores reais (GLD/USO/SLV/UNG = ETFs nao suportados no free tier)
-        "tickers": ["FCX","NEM","GOLD","AA","CLF","X","MP","VALE","RIO","BHP","SCCO","WPM","AEM","AGI","PAAS"],
+        # Apenas produtores US/NYSE com cobertura confirmada
+        "tickers": ["FCX","NEM","GOLD","AA","CLF","X","MP","WPM","AEM","CF","MOS","NUE","STLD","RS","ATI"],
         "sentiment_tickers": ["FCX","NEM","GOLD"],
-        "news_tickers": ["FCX","NEM","GOLD","VALE","AA"]
+        "news_tickers": ["FCX","NEM","GOLD","AA","CLF"]
     }
 }
 
@@ -73,30 +75,19 @@ def fh_get(endpoint, params):
         return None
 
 def fh_quote(ticker):
-    """
-    Devolve cotacao do ticker.
-    - Se c > 0: usa c (preco atual intraday)
-    - Se c == 0 mas pc > 0: usa pc (fecho anterior) com changePct=0
-      Isto garante que gainers/losers funcionam mesmo fora de horas.
-    - Se ambos == 0: descarta (ticker sem cobertura no free tier)
-    """
     d = fh_get("quote", {"symbol": ticker})
     if not d:
         return None
     c  = d.get("c") or 0
     pc = d.get("pc") or 0
-    op = d.get("o") or 0   # open, usado como validacao extra
-
     if c > 0 and pc > 0:
-        # Sessao normal
         chg = round((c - pc) / pc * 100, 2)
         return {"ticker": ticker, "price": round(c, 2), "changePct": chg, "pc": round(pc, 2)}
     elif pc > 0:
-        # Fora de horas ou sem dados intraday: usa fecho anterior
+        # Fora de horas: usa previous close, variacao=0
         return {"ticker": ticker, "price": round(pc, 2), "changePct": 0.0, "pc": round(pc, 2)}
     else:
-        # Sem cobertura (ex: ETF bloqueado, ticker invalido)
-        print(f"    [SKIP] {ticker}: c={c} pc={pc} (sem cobertura)")
+        print(f"    [SKIP] {ticker}: sem cobertura (c={c} pc={pc})")
         return None
 
 def fh_recommendation(ticker):
@@ -140,23 +131,18 @@ def fh_news(ticker, frm, to, limit=2):
     return out
 
 def build_sector(name, cfg, frm, to):
-    # Cotacoes
     quotes = []
     for t in cfg["tickers"]:
         q = fh_quote(t)
         if q:
             quotes.append(q)
-        else:
-            print(f"    [MISS] {t}")
         time.sleep(0.13)
-
-    print(f"  quotes obtidas: {len(quotes)}/{len(cfg['tickers'])} -> {[q['ticker'] for q in quotes]}")
+    print(f"  {len(quotes)}/{len(cfg['tickers'])} quotes: {[q['ticker'] for q in quotes]}")
 
     quotes_sorted = sorted(quotes, key=lambda x: x["changePct"], reverse=True)
     gainers = quotes_sorted[:5]
     losers  = list(reversed(quotes_sorted[-5:])) if len(quotes_sorted) >= 5 else list(reversed(quotes_sorted))
 
-    # Sentimento
     sentiments = []
     for t in cfg["sentiment_tickers"]:
         rec = fh_recommendation(t)
@@ -169,7 +155,6 @@ def build_sector(name, cfg, frm, to):
     valid    = [s["bullish"] for s in sentiments if s["bullish"] is not None]
     avg_bull = round(sum(valid) / len(valid), 1) if valid else None
 
-    # Noticias
     news, seen_h = [], set()
     for t in cfg["news_tickers"]:
         for item in fh_news(t, frm, to, limit=2):
@@ -200,7 +185,7 @@ def main():
 
     sectors = {}
     for name, cfg in SECTORS.items():
-        print(f"\n=== Setor: {name} ===")
+        print(f"\n=== {name} ===")
         try:
             sectors[name] = build_sector(name, cfg, frm, to)
         except Exception as e:
