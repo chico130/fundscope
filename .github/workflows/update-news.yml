@@ -2,12 +2,11 @@ name: Update News
 
 on:
   schedule:
-    - cron: '0 */2 * * 1-5'  # cada 2 horas em dias uteis
-    - cron: '0 8,12 * * 0,6' # sab/dom: 08h e 12h UTC
+    - cron: '0 8,12,16 * * 1-5'   # 09:00 / 13:00 / 17:00 WEST (dias uteis)
   workflow_dispatch:
 
 jobs:
-  update:
+  update-news:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -16,19 +15,20 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Install deps
+      - name: Instalar dependencias
         run: pip install requests
 
-      - name: Run update_news.py
+      - name: Correr update_news.py
         env:
-          GNEWS_TOKEN:    ${{ secrets.GNEWS_TOKEN }}
-          FINNHUB_TOKEN:  ${{ secrets.FINNHUB_TOKEN }}
+          GNEWS_TOKEN:   ${{ secrets.GNEWS_TOKEN }}
+          NEWSAPI_TOKEN: ${{ secrets.NEWSAPI_TOKEN }}
+          FINNHUB_TOKEN: ${{ secrets.FINNHUB_TOKEN }}
         run: python update_news.py
 
       - name: Commit news.json
         run: |
-          git config user.name "github-actions[bot]"
+          git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add news.json
-          git diff --staged --quiet || git commit -m "chore: update news.json [skip ci]"
+          git diff --cached --quiet || git commit -m "chore: update news.json [skip ci]"
           git push
