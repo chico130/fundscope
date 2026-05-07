@@ -1,5 +1,5 @@
 {
-  "updated": "2026-05-07T17:15:58.585882Z",
+  "updated": "2026-05-07T18:12:23.998358Z",
   "slot": "fecho",
   "sectors": {
     "Tecnologia": {
@@ -7,69 +7,69 @@
       "icon": "💻",
       "color": "#4f98a3",
       "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
-      "avgChange": 0.16,
+      "avgChange": 0.33,
       "gainers": [
         {
           "ticker": "QCOM",
-          "price": 203.04,
-          "changePct": 5.44,
+          "price": 205.16,
+          "changePct": 6.54,
           "pc": 192.57
         },
         {
-          "ticker": "ADBE",
-          "price": 257.57,
-          "changePct": 2.96,
-          "pc": 250.17
-        },
-        {
           "ticker": "CRM",
-          "price": 186.54,
-          "changePct": 2.95,
+          "price": 186.72,
+          "changePct": 3.05,
           "pc": 181.19
         },
         {
-          "ticker": "MSFT",
-          "price": 422.73,
-          "changePct": 2.12,
-          "pc": 413.96
+          "ticker": "ADBE",
+          "price": 256.61,
+          "changePct": 2.57,
+          "pc": 250.17
         },
         {
           "ticker": "NVDA",
-          "price": 211.96,
-          "changePct": 1.99,
+          "price": 212.68,
+          "changePct": 2.33,
           "pc": 207.83
+        },
+        {
+          "ticker": "TSLA",
+          "price": 407.58,
+          "changePct": 2.22,
+          "pc": 398.73
         }
       ],
       "losers": [
         {
           "ticker": "AMD",
-          "price": 403.37,
-          "changePct": -4.28,
+          "price": 406.82,
+          "changePct": -3.46,
           "pc": 421.39
         },
         {
+          "ticker": "AVGO",
+          "price": 411.29,
+          "changePct": -3.33,
+          "pc": 425.44
+        },
+        {
           "ticker": "MU",
-          "price": 642.37,
-          "changePct": -3.63,
+          "price": 645.23,
+          "changePct": -3.2,
           "pc": 666.59
         },
         {
           "ticker": "INTC",
-          "price": 109.82,
-          "changePct": -2.82,
+          "price": 110.51,
+          "changePct": -2.21,
           "pc": 113.01
         },
         {
           "ticker": "ASML",
-          "price": 1510.02,
-          "changePct": -2.25,
+          "price": 1514.96,
+          "changePct": -1.93,
           "pc": 1544.74
-        },
-        {
-          "ticker": "AVGO",
-          "price": 416.23,
-          "changePct": -2.16,
-          "pc": 425.44
         }
       ],
       "sentiment": {
@@ -92,77 +92,122 @@
           }
         ]
       },
-      "reddit": [],
-      "twits": []
+      "news": [
+        {
+          "source": "Yahoo",
+          "ticker": "NVDA",
+          "headline": "Why Jumia Stock Surged Today",
+          "summary": "Africa is a massive and still largely untapped market.",
+          "url": "https://finnhub.io/api/news?id=4af7ec28f76bfa584ba46c4c80eb09e795683a26c23aea3c8138d1009f39d26b",
+          "datetime": 1778175888,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "ticker": "NVDA",
+          "headline": "SCHD: The Dividend ETF That Delivers",
+          "summary": "The Schwab U.S. Dividend Equity ETF's focus on balance sheet quality, high yield, and dividend growth delivers consistently for investors.",
+          "url": "https://finnhub.io/api/news?id=84b8d7d4d44a40990a0b5de33d50da9240f729bbbea12f64ce9f2fba55f972b1",
+          "datetime": 1778175300,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "ticker": "AAPL",
+          "headline": "New Logitech Rugged Combo 4c Keyboard Cases Deliver Drop-Tested Durability and New USB-C Connectivity to Maximize Classroom Time",
+          "summary": "SAN JOSE, Calif. & LAUSANNE, Switzerland, May 07, 2026--Logitech (SIX: LOGN) (NASDAQ: LOGI) today introduced Rugged Combo 4c and Rugged Combo 4c Touch for iPad (A16) and iPad (10th generation), expanding the best-selling",
+          "url": "https://finnhub.io/api/news?id=af72e856ccee7d308e374afe9e0d16a95d943bb17baa2d7029d11fdb6ddf4c95",
+          "datetime": 1778175120,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "ticker": "MSFT",
+          "headline": "21Shares Lists Canton Network ETF as Retail Signals Catch Up to Institutions",
+          "summary": "21Shares lists Canton Network ETF as TCAN on Nasdaq, with retail signals catching up to the chain's institutional dominance.",
+          "url": "https://finnhub.io/api/news?id=62a36ba2fe76dd8432bbb4a58b9661603d9cc219a016571014d8d12beaed09ed",
+          "datetime": 1778173204,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "ticker": "MSFT",
+          "headline": "Don’t Focus Too Heavily on IREN’s Q3 Today — Look at What Comes Next",
+          "summary": "IREN (NASDAQ: IREN) reports fiscal Q3 results after the close today. The numbers should look strong, but the real story sits behind them: a Microsoft contract ramp, a freshly energized Sweetwater campus, and a just-annou",
+          "url": "https://finnhub.io/api/news?id=71929b1db4caa7dbcfe7578d6fc4dc5664cc3533e91119dd23c066e68c53cacf",
+          "datetime": 1778172515,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        }
+      ]
     },
     "Finanças": {
       "name": "Finanças",
       "icon": "🏦",
       "color": "#437a22",
       "image": "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&q=80",
-      "avgChange": -0.78,
+      "avgChange": -0.95,
       "gainers": [
         {
           "ticker": "C",
-          "price": 129.75,
-          "changePct": 1.68,
+          "price": 129.56,
+          "changePct": 1.54,
           "pc": 127.6
         },
         {
           "ticker": "MA",
-          "price": 500.04,
-          "changePct": 1.66,
+          "price": 499.36,
+          "changePct": 1.52,
           "pc": 491.89
         },
         {
-          "ticker": "BRK-B",
-          "price": 475.11,
-          "changePct": 1.12,
-          "pc": 469.83
-        },
-        {
           "ticker": "V",
-          "price": 321.78,
-          "changePct": 0.93,
+          "price": 321.6,
+          "changePct": 0.88,
           "pc": 318.8
         },
         {
-          "ticker": "BLK",
-          "price": 1063.79,
-          "changePct": -0.91,
-          "pc": 1073.57
+          "ticker": "BRK-B",
+          "price": 473.22,
+          "changePct": 0.72,
+          "pc": 469.83
+        },
+        {
+          "ticker": "GS",
+          "price": 927.27,
+          "changePct": -1.08,
+          "pc": 937.35
         }
       ],
       "losers": [
         {
           "ticker": "SCHW",
-          "price": 89.24,
-          "changePct": -3.16,
+          "price": 89,
+          "changePct": -3.42,
           "pc": 92.15
         },
         {
           "ticker": "JPM",
-          "price": 308.29,
-          "changePct": -2.1,
+          "price": 307.88,
+          "changePct": -2.23,
           "pc": 314.9
         },
         {
-          "ticker": "WFC",
-          "price": 78.93,
-          "changePct": -1.85,
-          "pc": 80.42
-        },
-        {
           "ticker": "TFC",
-          "price": 49.98,
-          "changePct": -1.61,
+          "price": 49.81,
+          "changePct": -1.95,
           "pc": 50.8
         },
         {
-          "ticker": "MS",
-          "price": 190.71,
-          "changePct": -1.37,
-          "pc": 193.35
+          "ticker": "WFC",
+          "price": 79.02,
+          "changePct": -1.74,
+          "pc": 80.42
+        },
+        {
+          "ticker": "USB",
+          "price": 55.26,
+          "changePct": -1.6,
+          "pc": 56.16
         }
       ],
       "sentiment": {
@@ -185,77 +230,122 @@
           }
         ]
       },
-      "reddit": [],
-      "twits": []
+      "news": [
+        {
+          "source": "Yahoo",
+          "ticker": "BAC",
+          "headline": "BofA sees more room for Home Depot shares",
+          "summary": "Home Depot has spent the past few years trying to build a larger business around professional contractors, and Bank of America says that shift could give the home improvement retailer a stronger setup than its peers. Ban",
+          "url": "https://finnhub.io/api/news?id=5d7b2aa46ac2068e78c36baacd3f329c1653c3aedb9394b8d7a8a71d447b4423",
+          "datetime": 1778176020,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "ticker": "BAC",
+          "headline": "BofA Lifts PT on Western Digital Corporation (WDC) Following Q3 Results",
+          "summary": "Western Digital Corporation (NASDAQ:WDC) is one of the top stock giants that were suddenly on fire in April. BofA lifted the price target on Western Digital Corporation (NASDAQ:WDC) to $572 from $495 on May 1, reaffirmin",
+          "url": "https://finnhub.io/api/news?id=f3c9641de27f414541c6adcec032811594b799d22c235f291e0c2058e4e88ed2",
+          "datetime": 1778171954,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "ticker": "JPM",
+          "headline": "Umicore - Transparency notification by JP Morgan Asset Management Holdings Inc.",
+          "summary": "Transparency notification byJP Morgan Asset Management Holdings Inc. In accordance with article 14, § 1 of the law of 2 May 2007 on the disclosure of major holdings, Umicore was recently notified by JP Morgan Asset Manag",
+          "url": "https://finnhub.io/api/news?id=20860077650a21eabfada6bf18a4c5e64cbfcecc09da1552c0d4e97deca160f8",
+          "datetime": 1778171400,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "ticker": "JPM",
+          "headline": "Umicore - Transparency notification by JP Morgan Chase & Co.",
+          "summary": "Transparency notification byJP Morgan Chase & Co. In accordance with article 14, § 1 of the law of 2 May 2007 on the disclosure of major holdings, Umicore was recently notified by JP Morgan Chase & Co. that it has crosse",
+          "url": "https://finnhub.io/api/news?id=25a4acd6b211a414f6c83d844ba08b40b71a78820b9969364ea16b5cd8aa79bc",
+          "datetime": 1778171400,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "ticker": "GS",
+          "headline": "Surveillance Firm Hawkeye 360 Jumps 30% After $416 Million IPO",
+          "summary": "(Bloomberg) -- Hawkeye 360 Inc. soared 30% after the provider of satellite-based signals intelligence for US government agencies raised $416 million in a US initial public offering priced at the top of a marketed range.M",
+          "url": "https://finnhub.io/api/news?id=6a9651c6e6b20ce7b17e6981584cafa24fba2c7d76208c22750557baaa003e5c",
+          "datetime": 1778171041,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        }
+      ]
     },
     "Energia": {
       "name": "Energia",
       "icon": "⚡",
       "color": "#c47d1a",
       "image": "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80",
-      "avgChange": -1.95,
+      "avgChange": -2.05,
       "gainers": [
         {
           "ticker": "D",
-          "price": 61.44,
-          "changePct": -0.32,
+          "price": 61.3,
+          "changePct": -0.55,
           "pc": 61.64
         },
         {
           "ticker": "DUK",
-          "price": 124.74,
-          "changePct": -0.64,
+          "price": 124.47,
+          "changePct": -0.85,
           "pc": 125.54
         },
         {
           "ticker": "VLO",
-          "price": 233.73,
-          "changePct": -1.25,
+          "price": 234.09,
+          "changePct": -1.1,
           "pc": 236.69
         },
         {
           "ticker": "CVX",
-          "price": 182.77,
-          "changePct": -1.29,
+          "price": 182.16,
+          "changePct": -1.62,
           "pc": 185.16
         },
         {
-          "ticker": "PSX",
-          "price": 169.5,
-          "changePct": -1.29,
-          "pc": 171.72
+          "ticker": "OXY",
+          "price": 54.14,
+          "changePct": -1.78,
+          "pc": 55.12
         }
       ],
       "losers": [
         {
-          "ticker": "MPC",
-          "price": 238.02,
-          "changePct": -3.16,
-          "pc": 245.78
-        },
-        {
-          "ticker": "SHEL",
-          "price": 84.53,
-          "changePct": -3.06,
-          "pc": 87.2
-        },
-        {
           "ticker": "SLB",
-          "price": 53.59,
-          "changePct": -2.85,
+          "price": 53.42,
+          "changePct": -3.15,
           "pc": 55.16
         },
         {
+          "ticker": "SHEL",
+          "price": 84.49,
+          "changePct": -3.11,
+          "pc": 87.2
+        },
+        {
+          "ticker": "COP",
+          "price": 115.46,
+          "changePct": -2.89,
+          "pc": 118.9
+        },
+        {
           "ticker": "HAL",
-          "price": 39.29,
-          "changePct": -2.75,
+          "price": 39.27,
+          "changePct": -2.8,
           "pc": 40.4
         },
         {
-          "ticker": "EOG",
-          "price": 130.99,
-          "changePct": -2.75,
-          "pc": 134.69
+          "ticker": "MPC",
+          "price": 238.94,
+          "changePct": -2.78,
+          "pc": 245.78
         }
       ],
       "sentiment": {
@@ -278,77 +368,122 @@
           }
         ]
       },
-      "reddit": [],
-      "twits": []
+      "news": [
+        {
+          "source": "Yahoo",
+          "ticker": "XOM",
+          "headline": "Trump Admits “I Expected Oil to Hit $200” Over Iran— Here’s How Close Investors Came to Disaster",
+          "summary": "Wall Street spent the past several weeks gaming out a scenario most investors hoped would never happen: what if the Iran conflict spiraled into a full-scale energy shock? Oil traders, hedge funds, and economists weren’t ",
+          "url": "https://finnhub.io/api/news?id=f0f59a9679d28b177f4b291a9f18e9f6890783998ffca9e3920e940498e14889",
+          "datetime": 1778170569,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "ticker": "CVX",
+          "headline": "Archrock Q1 Earnings & Revenues Miss Estimates on Higher SG&A Expenses",
+          "summary": "AROC misses Q1 earnings estimates as higher SG&A costs offset growth from strong contract operations and rising compression demand.",
+          "url": "https://finnhub.io/api/news?id=eb6ff3be6d1a226848d2e21094a74c4ad8818a2c733f2fbba0f284f22c2135cb",
+          "datetime": 1778170320,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "ticker": "XOM",
+          "headline": "Oil Supply Shock Worsens amid Plunging Petroleum Inventories",
+          "summary": "Major institutions, including Goldman Sachs and executives from TotalEnergies and ExxonMobil, say commercial inventories are approaching critically low levels, especially for refined fuels like gasoline and jet fuel.",
+          "url": "https://finnhub.io/api/news?id=46b2bdfb0ca7e4e5620749315f2634e281abce9f9e7e9b02e2e5d3b2a3849729",
+          "datetime": 1778169600,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "ticker": "OXY",
+          "headline": "Murphy Q1 Earnings & Sales Beat Estimates on Improved Realized Prices",
+          "summary": "MUR beats Q1 EPS and revenue estimates as realized prices improve, output tops guidance and the annual dividend is lifted 8%.",
+          "url": "https://finnhub.io/api/news?id=6880645d9a9719eac22c54a752edb35944edcbef9fa3724b702cb86864e7dc61",
+          "datetime": 1778163000,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "SeekingAlpha",
+          "ticker": "OXY",
+          "headline": "Berkshire Hathaway: Greg Abel Wins Big In Q1",
+          "summary": "Berkshire Hathaway Q1 2026: Operating earnings strong despite revenue/EPS miss, insurance & BNSF surge, Abel praised by Buffett. Read the full analysis here.",
+          "url": "https://finnhub.io/api/news?id=453545079ff72f6143aa700596452c809a1d66fce6df0e9c2fb13c972cd2eb38",
+          "datetime": 1778161802,
+          "image": "https://static.seekingalpha.com/cdn/s3/uploads/getty_images/2165544505/image_2165544505.jpg?io=getty-c-w1536"
+        }
+      ]
     },
     "Saúde": {
       "name": "Saúde",
       "icon": "🏥",
       "color": "#a13544",
       "image": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80",
-      "avgChange": -0.52,
+      "avgChange": -0.45,
       "gainers": [
         {
           "ticker": "ABT",
-          "price": 87.67,
-          "changePct": 1.59,
+          "price": 87.34,
+          "changePct": 1.21,
           "pc": 86.3
         },
         {
           "ticker": "ISRG",
-          "price": 454.94,
-          "changePct": 0.71,
+          "price": 453.71,
+          "changePct": 0.44,
           "pc": 451.73
         },
         {
           "ticker": "MDT",
-          "price": 78.01,
-          "changePct": 0.53,
+          "price": 77.78,
+          "changePct": 0.23,
           "pc": 77.6
         },
         {
           "ticker": "UNH",
-          "price": 367.64,
-          "changePct": 0.1,
+          "price": 367.81,
+          "changePct": 0.14,
           "pc": 367.28
         },
         {
           "ticker": "CVS",
-          "price": 86.71,
-          "changePct": -0.17,
+          "price": 86.83,
+          "changePct": -0.03,
           "pc": 86.86
         }
       ],
       "losers": [
         {
           "ticker": "MRK",
-          "price": 111.48,
-          "changePct": -1.83,
+          "price": 111.69,
+          "changePct": -1.65,
           "pc": 113.56
         },
         {
           "ticker": "LLY",
-          "price": 971.97,
-          "changePct": -1.53,
+          "price": 975.48,
+          "changePct": -1.17,
           "pc": 987.05
         },
         {
+          "ticker": "GILD",
+          "price": 134.73,
+          "changePct": -1.15,
+          "pc": 136.3
+        },
+        {
           "ticker": "JNJ",
-          "price": 221.63,
-          "changePct": -1.33,
+          "price": 222.09,
+          "changePct": -1.13,
           "pc": 224.62
         },
         {
-          "ticker": "BMY",
-          "price": 55.87,
-          "changePct": -1.27,
-          "pc": 56.59
-        },
-        {
-          "ticker": "GILD",
-          "price": 134.7,
-          "changePct": -1.17,
-          "pc": 136.3
+          "ticker": "ABBV",
+          "price": 203.02,
+          "changePct": -0.98,
+          "pc": 205.03
         }
       ],
       "sentiment": {
@@ -371,8 +506,53 @@
           }
         ]
       },
-      "reddit": [],
-      "twits": []
+      "news": [
+        {
+          "source": "Yahoo",
+          "ticker": "LLY",
+          "headline": "Is Eli Lilly and Company (LLY) One of the Best Strong Buy Growth Stocks to Buy Right Now?",
+          "summary": "Eli Lilly and Company (NYSE:LLY) is one of the best strong buy growth stocks to buy right now. Reuters reported on May 1 that Foundayo, which is Eli Lilly and Company’s (NYSE:LLY) newly launched oral weight-loss drug, hi",
+          "url": "https://finnhub.io/api/news?id=2fdd513cfdefe624a727debd88ae4cf52d0b65f01ecb767112bc0102931302a8",
+          "datetime": 1778175012,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "ticker": "LLY",
+          "headline": "Cantor Fitzgerald Lifts PT on Eli Lilly and Company (LLY) on Q1 Earnings Call",
+          "summary": "Eli Lilly and Company (NYSE:LLY) is one of the best strong buy stocks to invest in according to billionaires. Cantor Fitzgerald lifted the price target on Eli Lilly and Company (NYSE:LLY) to $1,230 from $1,205 on May 1, ",
+          "url": "https://finnhub.io/api/news?id=1ecc857bd0820642f261fe54a26f30ba1e5c62c6d3deda5b99db4f74148d59e1",
+          "datetime": 1778174771,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "ticker": "JNJ",
+          "headline": "Johnson And Johnson Balances Mental Health Push With Mixed Pipeline Outlook",
+          "summary": "Johnson & Johnson (NYSE:JNJ) has launched its global \"Generation Fine\" campaign to address depression care and improve patient conversations. The company reported new FDA approvals and positive Phase 3 data in immunology",
+          "url": "https://finnhub.io/api/news?id=bd3cd0e2c1e7079a27d3fcab526a633a05ac1de94fd858ab1e273223d3276465",
+          "datetime": 1778173981,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "ticker": "JNJ",
+          "headline": "Darzalex, Erleada & New Drugs Keep J&J's Oncology Engine Charged in Q1",
+          "summary": "Darzalex and new launches fuel J&J's 17.8% oncology sales growth in Q1 as the company targets $50B in cancer sales by 2030.",
+          "url": "https://finnhub.io/api/news?id=eb345b0f5708f96be45461f9ff574a131ef648cf26445c1e9ee465ccf1c11022",
+          "datetime": 1778168520,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "ticker": "PFE",
+          "headline": "NVAX Q1 Earnings Beat, Stock Jumps 16% on Matrix-M Deal Momentum",
+          "summary": "Novavax's shares rise 16% after Q1 earnings beat estimates as the company expands Matrix-M partnerships across oncology and infectious diseases.",
+          "url": "https://finnhub.io/api/news?id=7dc5313776db965d09cb55f0b031988e05efa8eaf63d7e82d7af396f932ea2a5",
+          "datetime": 1778166840,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        }
+      ]
     },
     "Consumo": {
       "name": "Consumo",
@@ -402,8 +582,53 @@
           }
         ]
       },
-      "reddit": [],
-      "twits": []
+      "news": [
+        {
+          "source": "Yahoo",
+          "ticker": "WMT",
+          "headline": "Walmart, Target, and Costco make key self-checkout changes",
+          "summary": "Checking out from a grocery store used to be a relatively simple thing. You waited in line, then a person scanned your items, you paid — maybe even by writing a check — and then went on your way. Some stores had 10-items",
+          "url": "https://finnhub.io/api/news?id=692fa4e47d9aa4d574fcfe2644918de02ee340183510b4a7aea6e19e202045d8",
+          "datetime": 1778175900,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "ticker": "WMT",
+          "headline": "Walmart Inc. (WMT) Opens Third Milk Processing Facility in the United States, Reuters Reports",
+          "summary": "Walmart Inc. (NASDAQ:WMT) is one of the best strong buy stocks to invest in according to billionaires. Reuters announced on April 29 that Walmart Inc. (NASDAQ:WMT) has opened its third milk processing facility in the Uni",
+          "url": "https://finnhub.io/api/news?id=380d3a858e3a15ea733ccc12d3d818a4fb9011e87c663fd18d7f20335683cb7a",
+          "datetime": 1778174792,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "ticker": "MCD",
+          "headline": "Shake Shack stumbles as fast‑food demand softens; shares plunge",
+          "summary": "STORY: Shares of Shake Shack plunged as much as 30% on Thursday and were heading for their worst day ever after the restaurant chain reported a quarterly profit loss and missed Wall Street's revenue estimates.Shake Shack",
+          "url": "https://finnhub.io/api/news?id=406fa4f33b818e59c102ce1f81c9722c5a45b7116224fd450e80f184136d6016",
+          "datetime": 1778174707,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "ticker": "MCD",
+          "headline": "After a big win in the burger showdown, Burger King eyes taking on McDonald's Egg McMuffin",
+          "summary": "Game on, Egg McMuffin.",
+          "url": "https://finnhub.io/api/news?id=ea95b10961c2a3863f0aa69bd1e53a76ad30ebf1778adec7077ff8112958a4c7",
+          "datetime": 1778173393,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "ticker": "AMZN",
+          "headline": "Is Amazon.com, Inc. (AMZN) One of the Best Strong Buy Stocks to Invest in According to Billionaires?",
+          "summary": "Amazon.com, Inc. (NASDAQ:AMZN) is one of the best strong buy stocks to invest in according to billionaires. On May 1, Raymond James lifted the price target on Amazon.com, Inc. (NASDAQ:AMZN) to $280 from $225 and maintain",
+          "url": "https://finnhub.io/api/news?id=f8fba709165bd4c36cdcb907c5091ee8589491d3e78f561f236ddb26a782c650",
+          "datetime": 1778172084,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        }
+      ]
     },
     "Commodities": {
       "name": "Commodities",
@@ -433,8 +658,53 @@
           }
         ]
       },
-      "reddit": [],
-      "twits": []
+      "news": [
+        {
+          "source": "Yahoo",
+          "ticker": "FCX",
+          "headline": "DIAMOND INFRASTRUCTURE SOLUTIONS ANNOUNCES RFQ FOR POWER AND STEAM MODERNIZATION IN FREEPORT, TEXAS",
+          "summary": "Diamond Infrastructure Solutions today announced a request for quotes (RFQ) as part of an initiative to modernize its power and steam supply at its Freeport, Texas site. Through the RFQ, Diamond has launched a competitiv",
+          "url": "https://finnhub.io/api/news?id=dbdccb09107afb2ab7a249d6e344ce9d0c42c1ebfc9158599fb749bfec498729",
+          "datetime": 1778166000,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Finnhub",
+          "ticker": "FCX",
+          "headline": "Freeport McMoRan : 2025 U.K. Modern Slavery Act Statement (UK Modern Slavery Act Statement 2025)",
+          "summary": "2025 U.K. Modern Slavery Act Statement Freeport-McMoRan Inc. is a leading international metals company dedicated to the recognition, respect and promotion of human rights...",
+          "url": "https://finnhub.io/api/news?id=3841068876b06c57d0a44fc96d1105c3c45999f7b53538ea1827981ae9dd8bec",
+          "datetime": 1778161692,
+          "image": ""
+        },
+        {
+          "source": "Yahoo",
+          "ticker": "NEM",
+          "headline": "Should You Buy, Sell or Hold Barrick Mining Ahead of Q1 Earnings?",
+          "summary": "B's first-quarter results are expected to reflect higher gold prices amid cost headwinds and production challenges.",
+          "url": "https://finnhub.io/api/news?id=0ef5eff0d6e03213af7ab7d93308fe058b516e7871c446aa0405a2854fc53072",
+          "datetime": 1778157540,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Finnhub",
+          "ticker": "NEM",
+          "headline": "Greenland Mines Just Reported PdEq Grades Up 45-55% in MetalPrice Sensitivity Work at One of the World's Largest Undeveloped Pd-Au-Pt Deposits",
+          "summary": "Issued on behalf of Greenland Mines LtdEquity Insider News CommentaryCHARLOTTE, N.C., May 7, 2026 /PRNewswire/ -- Companies Mentioned: Greenland Mines Ltd Ivanhoe Mines Platinum Group Metals Ltd ...",
+          "url": "https://finnhub.io/api/news?id=959fc6baa4eeb4772fb561b56f47ba12be0fd5e887ba66488ec0e430b246be8e",
+          "datetime": 1778148728,
+          "image": ""
+        },
+        {
+          "source": "ChartMill",
+          "ticker": "GOLD",
+          "headline": "Gold.com Inc (NYSE:GOLD) Soars After Q3 Earnings Crush Estimates",
+          "summary": "Gold.com Q3 earnings beat estimates with $3.06 non-GAAP EPS and $10.35B revenue, sending shares up 7% after hours despite recent stock declines.",
+          "url": "https://finnhub.io/api/news?id=d85cfa1cb7ca65cb23c2561778fdfc16e5b024048fd13d4499019c333c3b22b1",
+          "datetime": 1778110568,
+          "image": "https://www.chartmill.com/images/uploads/THUMBNAILS_CHARTMILL_1000_528_16_065e226ebd.webp"
+        }
+      ]
     }
   }
 }
