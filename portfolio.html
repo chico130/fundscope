@@ -346,7 +346,7 @@
 
   </div>
   <footer class="footer">
-    <p>© 2026 FundScope · <a href="https://github.com/130/fundscope" target="_blank" rel="noopener">GitHub</a> · Dados via Trading 212 &amp; Yahoo Finance</p>
+    <p>© 2026 FundScope · <a href="https://github.com/chico130/fundscope" target="_blank" rel="noopener">GitHub</a> · Dados via Trading 212 &amp; Yahoo Finance</p>
   </footer>
 </div>
 
@@ -383,8 +383,7 @@
 })();
 
 // ── Auth ──
-// NOTA: Muda USERNAME e PASSWORD para as tuas credenciais reais antes de publicar
-const AUTH = { user: '', pass: 'richrich' };
+const AUTH = { user: 'chico', pass: 'richrich' };
 const SESSION_KEY = 'fs-portfolio-auth';
 
 function checkSession() {
@@ -506,7 +505,6 @@ function renderKPIs(s) {
 }
 
 function renderCharts(positions, history) {
-  // Donut
   const top = positions.slice(0, 10);
   const otherVal = positions.slice(10).reduce((a,p) => a + p.value_eur, 0);
   const labels  = top.map(p => p.ticker);
@@ -529,7 +527,6 @@ function renderCharts(positions, history) {
     }
   });
 
-  // Legend
   const legEl = document.getElementById('donutLegend');
   legEl.innerHTML = labels.map((l,i) =>
     `<div class="legend-item">
@@ -539,7 +536,6 @@ function renderCharts(positions, history) {
     </div>`
   ).join('');
 
-  // Performance bars
   const perfEl = document.getElementById('perfList');
   const sorted = [...positions].sort((a,b) => b.change_pct - a.change_pct);
   const maxAbs = Math.max(...sorted.map(p => Math.abs(p.change_pct)), 1);
@@ -553,7 +549,6 @@ function renderCharts(positions, history) {
     </div>`;
   }).join('');
 
-  // History chart
   renderHistoryChart(history, 30);
   document.querySelectorAll('.period-tab').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -667,7 +662,6 @@ function openDrawer(p) {
   const a = p.analysis || {};
   const sent = a.sentiment || 'neutro';
 
-  // Análise Gemini
   const watchHTML = (a.watch_points||[]).map(w => `<li class="watch-item">${w}</li>`).join('');
   const analysisSection = `
     <div class="drawer-section">
@@ -678,7 +672,6 @@ function openDrawer(p) {
       ${watchHTML ? `<ul class="watch-list">${watchHTML}</ul>` : ''}
     </div>`;
 
-  // Notícias
   const newsHTML = (p.news||[]).length
     ? (p.news||[]).map(n => {
         const dt = n.datetime ? new Date(n.datetime*1000).toLocaleDateString('pt-PT',{day:'numeric',month:'short'}) : '';
@@ -692,7 +685,6 @@ function openDrawer(p) {
 
   const newsSection = `<div class="drawer-section"><p class="drawer-section-title">Notícias Recentes</p><div class="news-list">${newsHTML}</div></div>`;
 
-  // Earnings
   let earnSection = '';
   if ((p.earnings||[]).length) {
     const rows = p.earnings.map(e =>
@@ -714,7 +706,6 @@ function openDrawer(p) {
     </div>`;
   }
 
-  // Dividendos
   let divSection = '';
   if ((p.dividends||[]).length) {
     const items = p.dividends.map(d =>
@@ -722,7 +713,6 @@ function openDrawer(p) {
     divSection = `<div class="drawer-section"><p class="drawer-section-title">Dividendos Recentes</p><div class="div-list">${items}</div></div>`;
   }
 
-  // Métricas da posição
   const gainClass = p.gain_eur >= 0 ? 'up' : 'down';
   const metricsSection = `
     <div class="drawer-section">
