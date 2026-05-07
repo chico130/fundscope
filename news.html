@@ -36,8 +36,6 @@
     button{cursor:pointer;background:none;border:none;font:inherit;color:inherit;}
     a{color:inherit;text-decoration:none;}
     :focus-visible{outline:2px solid var(--color-primary);outline-offset:3px;border-radius:var(--radius-sm);}
-
-    /* HEADER */
     .header{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:var(--space-4) var(--space-6);background:color-mix(in oklch,var(--color-bg) 85%,transparent);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(40,37,29,.06);}
     .logo{display:flex;align-items:center;gap:var(--space-2);font-family:var(--font-display);font-size:var(--text-lg);font-weight:400;letter-spacing:-.01em;color:var(--color-text);transition:color var(--transition);}
     .logo:hover{color:var(--color-primary);}
@@ -45,15 +43,11 @@
     .header-actions{display:flex;align-items:center;gap:var(--space-3);}
     .nav-link{font-size:var(--text-sm);color:var(--color-text-muted);padding:var(--space-2) var(--space-3);border-radius:var(--radius-md);transition:color var(--transition),background var(--transition);}
     .nav-link:hover{color:var(--color-text);background:var(--color-surface-offset);}
-    .nav-link.active{color:var(--color-primary);font-weight:500;}
+    .nav-link.active{color:var(--color-primary);font-weight:500;background:var(--color-primary-highlight);}
     .nav-link.disabled{opacity:.35;cursor:default;pointer-events:none;}
     .theme-toggle{width:36px;height:36px;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;color:var(--color-text-muted);transition:color var(--transition),background var(--transition);}
     .theme-toggle:hover{color:var(--color-text);background:var(--color-surface-offset);}
-
-    /* LAYOUT */
     .page{max-width:1200px;margin:0 auto;padding:calc(80px + var(--space-10)) var(--space-6) var(--space-16);width:100%;}
-
-    /* PAGE HEADER */
     .page-header{margin-bottom:var(--space-8);}
     .page-eyebrow{font-size:var(--text-xs);color:var(--color-primary);letter-spacing:.08em;text-transform:uppercase;font-weight:500;margin-bottom:var(--space-2);}
     .page-title{font-family:var(--font-display);font-size:var(--text-xl);font-weight:400;letter-spacing:-.02em;line-height:1.15;margin-bottom:var(--space-3);}
@@ -62,49 +56,35 @@
     .live-dot{width:7px;height:7px;border-radius:50%;background:var(--color-success);animation:pulse 2s ease-in-out infinite;}
     @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.85)}}
     .updated-label{font-size:var(--text-xs);color:var(--color-text-faint);}
-
-    /* FILTROS */
     .filters{display:flex;gap:var(--space-2);flex-wrap:wrap;margin-bottom:var(--space-8);}
     .filter-btn{font-size:var(--text-xs);padding:var(--space-2) var(--space-4);border-radius:var(--radius-full);border:1.5px solid var(--color-border);background:var(--color-surface);color:var(--color-text-muted);font-weight:500;transition:all var(--transition);white-space:nowrap;}
     .filter-btn:hover{border-color:var(--color-primary);color:var(--color-primary);background:var(--color-primary-highlight);}
     .filter-btn.active{border-color:var(--color-primary);color:var(--color-primary);background:var(--color-primary-highlight);font-weight:600;}
-
-    /* GRID PRINCIPAL — capa de jornal */
     .news-grid{display:grid;gap:var(--space-4);grid-template-columns:1fr;}
     @media(min-width:700px){.news-grid{grid-template-columns:repeat(2,1fr);}}
     @media(min-width:1024px){.news-grid{grid-template-columns:repeat(3,1fr);}}
-
-    /* HERO (primeira noticia) */
     .news-hero{grid-column:1/-1;}
     @media(min-width:700px){.news-hero{grid-column:span 2;}}
     @media(min-width:1024px){.news-hero{grid-column:span 2;}}
-
-    /* CARD */
     .news-card{background:var(--color-surface);border:1px solid rgba(40,37,29,.07);border-radius:var(--radius-xl);overflow:hidden;cursor:pointer;transition:border-color var(--transition),box-shadow var(--transition),transform var(--transition);display:flex;flex-direction:column;}
     .news-card:hover{border-color:var(--color-primary);box-shadow:var(--shadow-md);transform:translateY(-2px);}
     .news-card:active{transform:translateY(0);}
-
     .card-img{width:100%;object-fit:cover;background:var(--color-surface-offset);display:block;flex-shrink:0;}
     .news-hero .card-img{height:320px;}
     .news-card:not(.news-hero) .card-img{height:180px;}
-
     .card-body{padding:var(--space-5);flex:1;display:flex;flex-direction:column;gap:var(--space-3);}
-
     .card-top{display:flex;align-items:center;justify-content:space-between;gap:var(--space-2);}
     .cat-badge{display:inline-flex;align-items:center;gap:4px;font-size:var(--text-xs);font-weight:600;letter-spacing:.04em;padding:2px var(--space-2);border-radius:var(--radius-sm);background:var(--color-surface-offset);color:var(--color-text-muted);}
     .heat{display:flex;gap:2px;}
     .heat-dot{width:8px;height:8px;border-radius:50%;background:var(--color-border);}
     .heat-dot.on{background:#c47d1a;}
-
     .card-title{font-family:var(--font-display);font-size:var(--text-lg);font-weight:400;line-height:1.25;color:var(--color-text);letter-spacing:-.01em;}
     .news-hero .card-title{font-size:clamp(1.35rem,1.1rem+1vw,2rem);}
     .card-summary{font-size:var(--text-sm);color:var(--color-text-muted);line-height:1.6;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
-
     .card-footer{margin-top:auto;display:flex;align-items:flex-end;justify-content:space-between;gap:var(--space-3);flex-wrap:wrap;}
     .card-meta{font-size:var(--text-xs);color:var(--color-text-faint);display:flex;align-items:center;gap:var(--space-2);}
     .source-dot{width:4px;height:4px;border-radius:50%;background:var(--color-text-faint);}
-
-    /* IMPACT CHIPS */
+    /* IMPACT CHIPS + TOOLTIP */
     .impact-row{display:flex;align-items:center;gap:var(--space-2);flex-wrap:wrap;}
     .impact-sentiment{font-size:.65rem;font-weight:700;letter-spacing:.06em;padding:2px 6px;border-radius:var(--radius-sm);text-transform:uppercase;}
     .impact-sentiment.positive{background:#e8f5e0;color:#437a22;}
@@ -112,13 +92,25 @@
     .impact-sentiment.neutral{background:var(--color-surface-offset);color:var(--color-text-muted);}
     [data-theme="dark"] .impact-sentiment.positive{background:#1e3316;color:#6daa45;}
     [data-theme="dark"] .impact-sentiment.negative{background:#3a1a1e;color:#dd6974;}
-    .ticker-chip{font-size:.65rem;font-weight:600;letter-spacing:.04em;padding:2px 7px;border-radius:var(--radius-full);background:var(--color-primary-highlight);color:var(--color-primary);border:1px solid color-mix(in oklch,var(--color-primary) 25%,transparent);cursor:pointer;transition:background var(--transition),transform var(--transition);}
+    /* ticker-chip com tooltip via CSS */
+    .ticker-chip{
+      position:relative;
+      font-size:.65rem;font-weight:600;letter-spacing:.04em;padding:2px 7px;
+      border-radius:var(--radius-full);background:var(--color-primary-highlight);
+      color:var(--color-primary);border:1px solid color-mix(in oklch,var(--color-primary) 25%,transparent);
+      cursor:pointer;transition:background var(--transition),transform var(--transition);
+    }
     .ticker-chip:hover{background:var(--color-primary);color:#fff;transform:scale(1.05);}
-
-    /* SKELETON */
+    .ticker-chip[data-name]:hover::after{
+      content:attr(data-name);
+      position:absolute;bottom:calc(100% + 5px);left:50%;transform:translateX(-50%);
+      background:var(--color-text);color:var(--color-bg);
+      font-size:11px;font-weight:500;white-space:nowrap;
+      padding:4px 8px;border-radius:var(--radius-sm);
+      box-shadow:var(--shadow-md);pointer-events:none;z-index:99;
+    }
     .skeleton{background:linear-gradient(90deg,var(--color-surface-offset) 25%,var(--color-surface) 50%,var(--color-surface-offset) 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;border-radius:var(--radius-xl);}
     @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
-
     /* MODAL */
     .modal-overlay{position:fixed;inset:0;z-index:300;background:rgba(20,19,18,.7);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:var(--space-4);opacity:0;pointer-events:none;transition:opacity 240ms ease;}
     .modal-overlay.open{opacity:1;pointer-events:all;}
@@ -130,25 +122,21 @@
     .modal-close{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--color-text-muted);border:1px solid var(--color-border);transition:all var(--transition);flex-shrink:0;}
     .modal-close:hover{color:var(--color-text);background:var(--color-surface-offset);}
     .modal-title{font-family:var(--font-display);font-size:clamp(1.25rem,1rem+1.5vw,1.75rem);font-weight:400;line-height:1.2;letter-spacing:-.02em;color:var(--color-text);margin-bottom:var(--space-5);}
-    .modal-content{font-size:var(--text-sm);color:var(--color-text-muted);line-height:1.75;display:flex;flex-direction:column;gap:var(--space-4);}
-    .modal-content p{max-width:62ch;}
+    .modal-content{font-size:var(--text-sm);color:var(--color-text-muted);line-height:1.8;}
+    .modal-content p{margin-bottom:var(--space-4);max-width:62ch;}
+    .modal-content p:last-child{margin-bottom:0;}
     .modal-divider{height:1px;background:var(--color-divider);margin:var(--space-6) 0;}
     .modal-impact-title{font-size:var(--text-xs);color:var(--color-text-faint);letter-spacing:.07em;text-transform:uppercase;font-weight:500;margin-bottom:var(--space-3);}
     .modal-footer{margin-top:var(--space-6);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--space-3);}
     .modal-source{font-size:var(--text-xs);color:var(--color-text-faint);}
     .modal-link{display:inline-flex;align-items:center;gap:var(--space-2);font-size:var(--text-xs);font-weight:500;color:var(--color-primary);padding:var(--space-2) var(--space-4);border:1.5px solid var(--color-primary);border-radius:var(--radius-full);transition:all var(--transition);}
     .modal-link:hover{background:var(--color-primary);color:#fff;}
-
-    /* EMPTY / ERROR */
     .state-box{text-align:center;padding:var(--space-16);color:var(--color-text-muted);}
     .state-icon{font-size:3rem;margin-bottom:var(--space-4);}
     .state-title{font-family:var(--font-display);font-size:var(--text-lg);color:var(--color-text);margin-bottom:var(--space-2);}
-
-    /* FOOTER */
     .footer{padding:var(--space-6);text-align:center;font-size:var(--text-xs);color:var(--color-text-faint);border-top:1px solid var(--color-divider);}
     .footer a{color:var(--color-text-muted);transition:color var(--transition);}
     .footer a:hover{color:var(--color-primary);}
-
     @media(max-width:640px){
       .header{padding:var(--space-3) var(--space-4);}
       .nav-link{display:none;}
@@ -178,8 +166,8 @@
       FundScope
     </a>
     <nav class="header-actions">
+      <a href="index.html" class="nav-link">Início</a>
       <a href="news.html" class="nav-link active">Notícias</a>
-      <a href="#" class="nav-link disabled">Portfólio</a>
       <a href="markets.html" class="nav-link">Mercados</a>
       <button class="theme-toggle" data-theme-toggle aria-label="Alternar tema">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
@@ -196,20 +184,8 @@
         <span class="updated-label" id="updatedLabel"></span>
       </div>
     </div>
-
-    <div class="filters" id="filters">
-      <button class="filter-btn active" data-filter="all">🌐 Todas</button>
-      <button class="filter-btn" data-filter="Geopolítica">🌍 Geopolítica</button>
-      <button class="filter-btn" data-filter="Macro">📊 Macro</button>
-      <button class="filter-btn" data-filter="Energia">⚡ Energia</button>
-      <button class="filter-btn" data-filter="Comércio">🚢 Comércio</button>
-      <button class="filter-btn" data-filter="Mercados">💰 Mercados</button>
-      <button class="filter-btn" data-filter="Tecnologia">💻 Tecnologia</button>
-      <button class="filter-btn" data-filter="Clima">🌱 Clima</button>
-    </div>
-
+    <div class="filters" id="filters"></div>
     <div class="news-grid" id="newsGrid">
-      <!-- skeletons -->
       <div class="news-card news-hero skeleton" style="height:480px"></div>
       <div class="news-card skeleton" style="height:320px"></div>
       <div class="news-card skeleton" style="height:320px"></div>
@@ -223,7 +199,6 @@
     <p>© 2026 FundScope · <a href="https://github.com/chico130/fundscope">GitHub</a> · Fontes: GNews, Finnhub</p>
   </footer>
 
-  <!-- MODAL -->
   <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true">
     <div class="modal-box" id="modalBox">
       <img class="modal-img" id="modalImg" src="" alt="" />
@@ -251,7 +226,47 @@
   </div>
 
   <script>
-    // TEMA
+    // ── Nomes dos tickers para tooltip ──────────────────────────────────────
+    const TICKER_NAMES = {
+      AAPL:'Apple',MSFT:'Microsoft',NVDA:'NVIDIA',GOOGL:'Alphabet (Google)',META:'Meta',
+      AMD:'AMD',INTC:'Intel',TSLA:'Tesla',AVGO:'Broadcom',MU:'Micron',QCOM:'Qualcomm',
+      ORCL:'Oracle',CRM:'Salesforce',ADBE:'Adobe',NOW:'ServiceNow',
+      JPM:'JPMorgan',BAC:'Bank of America',GS:'Goldman Sachs',MS:'Morgan Stanley',
+      WFC:'Wells Fargo',C:'Citigroup',BLK:'BlackRock',AXP:'Amex',V:'Visa',MA:'Mastercard',
+      SCHW:'Schwab',COF:'Capital One',
+      XOM:'ExxonMobil',CVX:'Chevron',COP:'ConocoPhillips',SLB:'SLB',OXY:'Occidental',
+      EOG:'EOG Resources',HAL:'Halliburton',PSX:'Phillips 66',MPC:'Marathon Petroleum',VLO:'Valero',
+      NEE:'NextEra Energy',ENPH:'Enphase',FSLR:'First Solar',CEG:'Constellation Energy',
+      JNJ:'Johnson & Johnson',UNH:'UnitedHealth',PFE:'Pfizer',ABBV:'AbbVie',MRK:'Merck',
+      LLY:'Eli Lilly',TMO:'Thermo Fisher',AMGN:'Amgen',GILD:'Gilead',ISRG:'Intuitive Surgical',
+      AMZN:'Amazon',WMT:'Walmart',HD:'Home Depot',MCD:"McDonald's",SBUX:'Starbucks',
+      TGT:'Target',COST:'Costco',NKE:'Nike',
+      FCX:'Freeport-McMoRan',NEM:'Newmont',GOLD:'Barrick Gold',WPM:'Wheaton Precious',
+      LMT:'Lockheed Martin',RTX:'RTX Corp.',NOC:'Northrop Grumman',
+      RIVN:'Rivian',GM:'General Motors',
+      TLT:'iShares 20Y Treasury',SPY:'S&P 500 ETF',QQQ:'Nasdaq 100 ETF',
+      VOO:'Vanguard S&P 500',GLD:'SPDR Gold',SLV:'iShares Silver'
+    };
+
+    // ── Imagens fallback por categoria ──────────────────────────────────────
+    const CAT_IMG = {
+      'Geopol\u00edtica':'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80',
+      'Macro':          'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&q=80',
+      'Energia':        'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80',
+      'Com\u00e9rcio':  'https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=800&q=80',
+      'Mercados':       'https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80',
+      'Tecnologia':     'https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80',
+      'Clima':          'https://images.unsplash.com/photo-1569025743873-ea3a9ade89f9?w=800&q=80',
+      'Global':         'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80'
+    };
+    const FALLBACK_IMG = 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80';
+
+    function getImg(a){
+      if(a.image && a.image.startsWith('http') && a.image.length > 12) return a.image;
+      return CAT_IMG[a.category] || FALLBACK_IMG;
+    }
+
+    // ── Tema ────────────────────────────────────────────────────────────────
     (function(){
       const t=document.querySelector('[data-theme-toggle]'),r=document.documentElement;
       let d=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
@@ -260,68 +275,121 @@
         light:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>',
         dark:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>'
       };
-      const setTheme=th=>{d=th;r.setAttribute('data-theme',th);if(t)t.innerHTML=icons[th];};
-      setTheme(d);
-      if(t)t.addEventListener('click',()=>setTheme(d==='dark'?'light':'dark'));
+      const set=th=>{d=th;r.setAttribute('data-theme',th);if(t)t.innerHTML=icons[th];};
+      set(d);
+      if(t)t.addEventListener('click',()=>set(d==='dark'?'light':'dark'));
     })();
 
-    // UTILS
-    function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+    // ── Utils ───────────────────────────────────────────────────────────────
+    function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
     function timeAgo(isoStr){
       if(!isoStr) return '';
       try{
-        const diff = (Date.now() - new Date(isoStr).getTime()) / 1000;
-        if(diff < 60)   return 'agora';
-        if(diff < 3600) return `há ${Math.round(diff/60)}min`;
-        if(diff < 86400)return `há ${Math.round(diff/3600)}h`;
-        return `há ${Math.round(diff/86400)}d`;
+        const diff=(Date.now()-new Date(isoStr).getTime())/1000;
+        if(diff<60)    return 'agora';
+        if(diff<3600)  return `h\u00e1 ${Math.round(diff/60)}min`;
+        if(diff<86400) return `h\u00e1 ${Math.round(diff/3600)}h`;
+        return `h\u00e1 ${Math.round(diff/86400)}d`;
       }catch{return '';}
     }
 
     function heatHTML(n){
-      return '<div class="heat">' +
-        [1,2,3].map(i=>`<span class="heat-dot${i<=n?' on':''}"></span>`).join('') +
-        '</div>';
+      return '<div class="heat">'+[1,2,3].map(i=>`<span class="heat-dot${i<=n?' on':''}"></span>`).join('')+'</div>';
     }
 
     function sentimentHTML(s){
-      const map={positive:'🟢 Positivo',negative:'🔴 Negativo',neutral:'⚪ Neutro'};
-      return `<span class="impact-sentiment ${s}">${map[s]||'⚪'}</span>`;
+      const map={positive:'\uD83D\uDFE2 Positivo',negative:'\uD83D\uDD34 Negativo',neutral:'\u26AA Neutro'};
+      return `<span class="impact-sentiment ${s||'neutral'}">${map[s]||map.neutral}</span>`;
     }
 
-    function impactRowHTML(impact){
-      if(!impact||!impact.tickers||!impact.tickers.length) return '<span style="font-size:var(--text-xs);color:var(--color-text-faint)">Impacto difuso</span>';
-      const chips = impact.tickers.map(t=>`<button class="ticker-chip" onclick="goToMarkets('${t}')">${esc(t)}</button>`).join('');
-      return sentimentHTML(impact.sentiment) + chips;
+    function tickerChip(t, stopProp){
+      const name = TICKER_NAMES[t] || '';
+      const dataN = name ? ` data-name="${esc(name)}"` : '';
+      const click = stopProp
+        ? `onclick="event.stopPropagation();goToMarkets('${t}')"`
+        : `onclick="goToMarkets('${t}')"`;
+      return `<button class="ticker-chip"${dataN} ${click}>${esc(t)}</button>`;
+    }
+
+    function impactRowHTML(impact, stopProp){
+      if(!impact||!impact.tickers||!impact.tickers.length)
+        return '<span style="font-size:var(--text-xs);color:var(--color-text-faint)">Impacto difuso</span>';
+      return sentimentHTML(impact.sentiment) +
+             impact.tickers.map(t=>tickerChip(t,stopProp)).join('');
     }
 
     function goToMarkets(ticker){
       window.location.href = 'markets.html?ticker=' + encodeURIComponent(ticker);
     }
 
-    // STATE
+    // ── Conteudo do modal (parágrafos mais ricos) ────────────────────────────
+    function buildModalContent(a){
+      // Junta title, summary e content, remove duplicados, divide em frases
+      const parts = [];
+      const summary = (a.summary || '').trim();
+      const content = (a.content || '').trim();
+
+      // Adiciona summary se existir e nao for identico ao titulo
+      if(summary && summary.toLowerCase().slice(0,60) !== (a.title||'').toLowerCase().slice(0,60)){
+        parts.push(summary);
+      }
+
+      // Adiciona content se diferente do summary
+      if(content && content.toLowerCase().slice(0,80) !== summary.toLowerCase().slice(0,80)){
+        // divide por \n ou por ". " para criar paragrafos
+        const subs = content.split(/\n+/).filter(s=>s.trim().length > 30);
+        if(subs.length > 1){
+          subs.forEach(s=>parts.push(s.trim()));
+        } else {
+          // divide por frases se o content for um bloco unico
+          const sentences = content.match(/[^.!?]+[.!?]+/g) || [content];
+          const grouped = [];
+          let buf = '';
+          sentences.forEach(s=>{
+            buf += s + ' ';
+            if(buf.length > 180){ grouped.push(buf.trim()); buf = ''; }
+          });
+          if(buf.trim()) grouped.push(buf.trim());
+          grouped.forEach(g=>{ if(!parts.some(p=>p.slice(0,60)===g.slice(0,60))) parts.push(g); });
+        }
+      }
+
+      // Se ainda nao ha conteudo, usa o titulo como unico paragrafo
+      if(!parts.length) parts.push(a.title || '');
+
+      // Remove partes demasiado curtas ou que sejam o titulo repetido
+      const titleLow = (a.title||'').toLowerCase().slice(0,60);
+      const filtered = parts.filter(p=>p.length>40 && p.toLowerCase().slice(0,60)!==titleLow);
+      const final = filtered.length ? filtered : parts;
+
+      return final.slice(0,5).map(p=>`<p>${esc(p)}</p>`).join('');
+    }
+
+    // ── State ───────────────────────────────────────────────────────────────
     let allArticles = [];
     let activeFilter = 'all';
 
-    // RENDER CARD
+    // ── Card HTML ───────────────────────────────────────────────────────────
     function cardHTML(a, isHero){
       const ago = timeAgo(a.publishedAt);
+      const img = getImg(a);
+      const fallback = CAT_IMG[a.category] || FALLBACK_IMG;
       return `
         <article class="news-card${isHero?' news-hero':''}" data-id="${a.id}" tabindex="0" role="button" aria-label="${esc(a.title)}">
-          <img class="card-img" src="${esc(a.image)}" alt="" loading="lazy"
-            onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80'">
+          <img class="card-img" src="${esc(img)}" alt="" loading="lazy"
+            onerror="this.onerror=null;this.src='${esc(fallback)}'">
           <div class="card-body">
             <div class="card-top">
-              <span class="cat-badge">${esc(a.icon)} ${esc(a.category)}</span>
-              ${heatHTML(a.heat)}
+              <span class="cat-badge">${esc(a.icon||'\uD83C\uDF10')} ${esc(a.category)}</span>
+              ${heatHTML(a.heat||1)}
             </div>
             <h2 class="card-title">${esc(a.title)}</h2>
-            <p class="card-summary">${esc(a.summary)}</p>
+            <p class="card-summary">${esc(a.summary||a.content||'')}</p>
             <div class="card-footer">
               <div class="impact-row">
                 ${sentimentHTML(a.impact?.sentiment||'neutral')}
-                ${(a.impact?.tickers||[]).slice(0,3).map(t=>`<button class="ticker-chip" onclick="event.stopPropagation();goToMarkets('${t}')">${esc(t)}</button>`).join('')}
+                ${(a.impact?.tickers||[]).slice(0,3).map(t=>tickerChip(t,true)).join('')}
               </div>
               <div class="card-meta">
                 <span>${esc(a.source)}</span>
@@ -337,14 +405,13 @@
       const grid = document.getElementById('newsGrid');
       if(!articles.length){
         grid.innerHTML = `<div class="state-box" style="grid-column:1/-1">
-          <div class="state-icon">📰</div>
-          <p class="state-title">Sem notícias nesta categoria</p>
+          <div class="state-icon">\uD83D\uDCF0</div>
+          <p class="state-title">Sem not\u00edcias nesta categoria</p>
           <p style="font-size:var(--text-sm);color:var(--color-text-faint);margin-top:var(--space-2)">Tenta outra categoria ou volta mais tarde.</p>
         </div>`;
         return;
       }
       grid.innerHTML = articles.map((a,i)=>cardHTML(a,i===0)).join('');
-      // listeners
       grid.querySelectorAll('.news-card').forEach(card=>{
         const id = Number(card.dataset.id);
         const open = ()=>openModal(allArticles.find(a=>a.id===id));
@@ -359,28 +426,50 @@
       renderGrid(filtered);
     }
 
-    // MODAL
-    const overlay  = document.getElementById('modalOverlay');
-    const modalImg = document.getElementById('modalImg');
-    const modalTitle = document.getElementById('modalTitle');
+    // ── Filtros dinamicos (so mostra categorias com noticias) ───────────────
+    function buildFilters(articles){
+      const cats = ['all', ...new Set(articles.map(a=>a.category))];
+      const icons = {'all':'\uD83C\uDF10','Geopol\u00edtica':'\uD83C\uDF0D','Macro':'\uD83D\uDCCA',
+        'Energia':'\u26A1','Com\u00e9rcio':'\uD83D\uDEA2','Mercados':'\uD83D\uDCB0',
+        'Tecnologia':'\uD83D\uDCBB','Clima':'\uD83C\uDF31','Global':'\uD83C\uDF10'};
+      const labels = {'all':'Todas'};
+      document.getElementById('filters').innerHTML = cats.map(c=>{
+        const label = labels[c] || c;
+        const icon = icons[c] || '\uD83D\uDCCC';
+        return `<button class="filter-btn${c===activeFilter?' active':''}" data-filter="${esc(c)}">${icon} ${esc(label)}</button>`;
+      }).join('');
+      document.getElementById('filters').addEventListener('click', e=>{
+        const btn = e.target.closest('.filter-btn');
+        if(!btn) return;
+        document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        applyFilter(btn.dataset.filter);
+      });
+    }
+
+    // ── Modal ───────────────────────────────────────────────────────────────
+    const overlay   = document.getElementById('modalOverlay');
+    const modalImg  = document.getElementById('modalImg');
+    const modalTitle   = document.getElementById('modalTitle');
     const modalContent = document.getElementById('modalContent');
-    const modalImpact = document.getElementById('modalImpact');
-    const modalSource = document.getElementById('modalSource');
-    const modalLink   = document.getElementById('modalLink');
-    const modalCatRow = document.getElementById('modalCatRow');
+    const modalImpact  = document.getElementById('modalImpact');
+    const modalSource  = document.getElementById('modalSource');
+    const modalLink    = document.getElementById('modalLink');
+    const modalCatRow  = document.getElementById('modalCatRow');
 
     function openModal(a){
       if(!a) return;
-      modalImg.src = a.image || '';
+      const img = getImg(a);
+      const fallback = CAT_IMG[a.category] || FALLBACK_IMG;
+      modalImg.src = img;
+      modalImg.onerror = function(){ this.onerror=null; this.src=fallback; };
       modalImg.alt = a.title;
       modalTitle.textContent = a.title;
-      // conteudo em paragrafos (max 3)
-      const paras = (a.content||a.summary||'').split(/\n+/).filter(Boolean).slice(0,3);
-      modalContent.innerHTML = paras.map(p=>`<p>${esc(p)}</p>`).join('');
-      modalImpact.innerHTML = impactRowHTML(a.impact);
-      modalSource.textContent = a.source + (a.publishedAt ? '  ·  ' + timeAgo(a.publishedAt) : '');
+      modalContent.innerHTML = buildModalContent(a);
+      modalImpact.innerHTML = impactRowHTML(a.impact, false);
+      modalSource.textContent = (a.source||'') + (a.publishedAt ? '  \u00b7  ' + timeAgo(a.publishedAt) : '');
       modalLink.href = a.url || '#';
-      modalCatRow.innerHTML = `<span class="cat-badge">${esc(a.icon)} ${esc(a.category)}</span>${heatHTML(a.heat)}`;
+      modalCatRow.innerHTML = `<span class="cat-badge">${esc(a.icon||'\uD83C\uDF10')} ${esc(a.category)}</span>${heatHTML(a.heat||1)}`;
       overlay.classList.add('open');
       document.body.style.overflow = 'hidden';
     }
@@ -394,16 +483,7 @@
     overlay.addEventListener('click', e=>{ if(e.target===overlay) closeModal(); });
     document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
 
-    // FILTROS
-    document.getElementById('filters').addEventListener('click', e=>{
-      const btn = e.target.closest('.filter-btn');
-      if(!btn) return;
-      document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-      btn.classList.add('active');
-      applyFilter(btn.dataset.filter);
-    });
-
-    // LOAD
+    // ── Load ─────────────────────────────────────────────────────────────────
     async function loadNews(){
       try{
         const r = await fetch('news.json?t='+Date.now());
@@ -413,18 +493,18 @@
         if(data.updated){
           const d = new Date(data.updated);
           document.getElementById('updatedLabel').textContent =
-            'Última atualização: ' + d.toLocaleString('pt',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});
+            '\u00daltima atualiza\u00e7\u00e3o: '+d.toLocaleString('pt',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});
         }
+        buildFilters(allArticles);
         applyFilter(activeFilter);
-      } catch(e){
+      }catch(e){
         document.getElementById('newsGrid').innerHTML = `<div class="state-box" style="grid-column:1/-1">
-          <div class="state-icon">⚠️</div>
-          <p class="state-title">Não foi possível carregar as notícias</p>
+          <div class="state-icon">\u26A0\uFE0F</div>
+          <p class="state-title">N\u00e3o foi poss\u00edvel carregar as not\u00edcias</p>
           <p style="font-size:var(--text-sm);color:var(--color-text-faint);margin-top:var(--space-2)">Corre o workflow <strong>Update News</strong> no GitHub Actions para gerar o news.json.</p>
         </div>`;
       }
     }
-
     loadNews();
   </script>
 </body>
