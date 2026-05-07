@@ -2,11 +2,9 @@ name: Update Portfolio
 
 on:
   schedule:
-    # Corre às 19:00 UTC (20:00 Lisboa hora de verão) — após fecho dos mercados US
     - cron: '0 19 * * 1-5'
-    # E às 09:00 UTC (abertura mercados europeus)
     - cron: '0 9 * * 1-5'
-  workflow_dispatch:  # permite correr manualmente
+  workflow_dispatch:
 
 jobs:
   update:
@@ -36,6 +34,9 @@ jobs:
           T212_API_KEY:  ${{ secrets.T212_API_KEY }}
           FINNHUB_TOKEN: ${{ secrets.FINNHUB_TOKEN }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          # Usar proxy europeu para contornar bloqueio de IP da T212
+          HTTPS_PROXY: ${{ secrets.EU_PROXY_URL }}
+          HTTP_PROXY:  ${{ secrets.EU_PROXY_URL }}
         run: python update_portfolio.py
 
       - name: Commit portfolio.json

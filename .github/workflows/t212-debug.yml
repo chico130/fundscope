@@ -15,4 +15,6 @@ jobs:
       - name: Run T212 debug
         env:
           T212_API_KEY: ${{ secrets.T212_API_KEY }}
+          HTTPS_PROXY: ${{ secrets.EU_PROXY_URL }}
+          HTTP_PROXY:  ${{ secrets.EU_PROXY_URL }}
         run: python t212_debug.py
