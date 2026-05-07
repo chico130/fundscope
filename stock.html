@@ -61,7 +61,7 @@
     .live-badge{display:inline-flex;align-items:center;gap:5px;font-size:var(--text-xs);color:var(--color-success);margin-top:var(--space-2);font-weight:500;}
     .live-dot{width:6px;height:6px;border-radius:50%;background:var(--color-success);animation:pulse 2s ease-in-out infinite;}
     @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.85)}}
-    .finnhub-badge{display:inline-flex;align-items:center;gap:5px;font-size:var(--text-xs);color:var(--color-text-faint);margin-top:var(--space-1);}
+    .finnhub-badge{display:inline-flex;align-items:center;gap:5px;font-size:var(--text-xs);color:var(--color-primary);margin-top:var(--space-1);font-weight:500;}
     .period-tabs{display:flex;gap:var(--space-1);background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-lg);padding:3px;margin-bottom:var(--space-5);width:fit-content;}
     .period-tab{padding:var(--space-2) var(--space-4);border-radius:calc(var(--radius-lg) - 3px);font-size:var(--text-xs);font-weight:600;color:var(--color-text-muted);transition:all var(--transition);}
     .period-tab.active{background:var(--color-bg);color:var(--color-text);box-shadow:var(--shadow-sm);}
@@ -88,6 +88,8 @@
     @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
     .error-state{text-align:center;padding:var(--space-16);color:var(--color-text-muted);}
     .error-state h2{font-size:var(--text-lg);margin-bottom:var(--space-3);color:var(--color-text);}
+    .admin-bar{background:color-mix(in oklch,var(--color-primary) 10%,var(--color-surface));border-bottom:1px solid var(--color-primary-highlight);padding:var(--space-2) var(--space-6);font-size:11px;color:var(--color-text-muted);display:flex;align-items:center;gap:var(--space-3);}
+    .admin-bar span{color:var(--color-primary);font-weight:600;}
     .footer{padding:var(--space-6);text-align:center;font-size:var(--text-xs);color:var(--color-text-faint);border-top:1px solid var(--color-divider);margin-top:var(--space-8);}
     .footer a{color:var(--color-text-muted);transition:color var(--transition);}
     .footer a:hover{color:var(--color-primary);}
@@ -96,6 +98,11 @@
   </style>
 </head>
 <body>
+  <!-- ADMIN BAR -->
+  <div class="admin-bar">
+    🛠️ Deploy admin: <span>07 Mai 2026, 01:17 WEST</span> &nbsp;·;&nbsp; v1.3 — Finnhub fallback + pesquisa em tempo real
+  </div>
+
   <header class="header">
     <a href="index.html" class="logo">
       <svg class="logo-svg" viewBox="0 0 28 28" fill="none">
@@ -139,11 +146,10 @@
   </div>
 
   <footer class="footer">
-    <p id="footerSource">© 2026 FundScope · <a href="https://github.com/chico130/fundscope">GitHub</a> · Preços via Yahoo Finance &amp; Finnhub</p>
+    <p>© 2026 FundScope · <a href="https://github.com/chico130/fundscope">GitHub</a> · Preços via Yahoo Finance &amp; Finnhub</p>
   </footer>
 
   <script>
-    // --- Tema ---
     (function(){
       const t=document.querySelector('[data-theme-toggle]'),r=document.documentElement;
       let d=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
@@ -159,7 +165,6 @@
 
     const FH = 'd7ttd51r01qvtspvodegd7ttd51r01qvtspvodf0';
 
-    // --- Gráfico ---
     function generatePriceData(base,pts,vol){
       const data=[];let p=base*(1-vol*0.5);
       for(let i=0;i<pts;i++){p+=(Math.random()-.48)*base*vol;p=Math.max(p,base*.7);data.push(parseFloat(p.toFixed(2)));}
@@ -189,57 +194,53 @@
       });
     }
 
-    // --- Carregar dados ---
     async function loadAndRender(ticker) {
-      // 1. Tentar data.json primeiro
+      const T = ticker.toUpperCase();
+
+      // 1. Tentar data.json — mas NÃO lançar erro se ticker não existir
+      let localStock = null;
       try {
         const res = await fetch('data.json?t=' + Date.now());
         if (res.ok) {
           const json = await res.json();
-          const stock = (json.stocks || {})[ticker.toUpperCase()];
-          if (stock) {
-            renderStock(stock, json.updated, 'local');
-            return;
+          localStock = (json.stocks || {})[T] || null;
+          if (localStock) {
+            renderStock(localStock, json.updated, 'local');
+            return; // encontrou localmente, termina aqui
           }
         }
-      } catch(e) {}
+      } catch(e) { /* data.json não existe ainda, continuar */ }
 
-      // 2. Fallback: Finnhub /quote
+      // 2. Finnhub /quote — sempre tenta para qualquer ticker
       try {
-        const q = await fetch(`https://finnhub.io/api/v1/quote?symbol=${encodeURIComponent(ticker)}&token=${FH}`).then(r=>r.json());
-        if (!q.c || q.c === 0) throw new Error('Sem cotação disponível para este ticker.');
+        const q = await fetch(`https://finnhub.io/api/v1/quote?symbol=${encodeURIComponent(T)}&token=${FH}`).then(r=>r.json());
+
+        if (!q || !q.c || q.c === 0) {
+          throw new Error(`"${T}" não encontrado. Verifica se o símbolo está correto (ex: ASML, MU, VOO).`);
+        }
 
         const chgPct = q.pc ? ((q.c - q.pc) / q.pc) * 100 : 0;
         const change = q.c - (q.pc || q.c);
 
-        // Tentar obter nome via search
-        let name = ticker;
+        // Tentar obter nome via /search
+        let name = T;
         try {
-          const s = await fetch(`https://finnhub.io/api/v1/search?q=${encodeURIComponent(ticker)}&token=${FH}`).then(r=>r.json());
-          const match = (s.result||[]).find(r => r.symbol.toUpperCase() === ticker.toUpperCase());
-          if (match) name = match.description || ticker;
+          const sr = await fetch(`https://finnhub.io/api/v1/search?q=${encodeURIComponent(T)}&token=${FH}`).then(r=>r.json());
+          const match = (sr.result||[]).find(r => r.symbol.toUpperCase() === T);
+          if (match && match.description) name = match.description;
         } catch(e) {}
 
-        const stock = {
-          ticker: ticker.toUpperCase(),
-          name,
-          price: q.c,
-          changePct: chgPct,
-          change,
-          open: q.o,
-          high: q.h,
-          low: q.l,
-          prevClose: q.pc,
-          week52High: q.h * 1.15, // estimativa
-          week52Low: q.l * 0.85,
-          symbol: '$',
-          exchange: '',
-          type: '',
-          sector: ''
-        };
-        renderStock(stock, new Date().toISOString(), 'finnhub');
+        renderStock({
+          ticker: T, name,
+          price: q.c, changePct: chgPct, change,
+          open: q.o, high: q.h, low: q.l, prevClose: q.pc,
+          week52High: q.h * 1.18,
+          week52Low: q.l * 0.82,
+          symbol: '$', exchange: '', type: '', sector: ''
+        }, new Date().toISOString(), 'finnhub');
+
       } catch(err) {
-        renderError(ticker, err.message || 'Ticker não encontrado. Verifica o símbolo e tenta novamente.');
+        renderError(T, err.message || 'Não foi possível obter dados. Tenta novamente.');
       }
     }
 
@@ -252,12 +253,10 @@
       const w52H = s.week52High || s.price * 1.1;
       const w52L = s.week52Low || s.price * 0.9;
       const rangePos = Math.min(100, Math.max(0, Math.round(((s.price - w52L) / (w52H - w52L)) * 100)));
-      const initials = s.ticker.slice(0,2).toUpperCase();
-      const updLabel = updated
-        ? new Date(updated).toLocaleString('pt',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})
-        : 'agora';
+      const initials = s.ticker.slice(0,2);
+      const updLabel = updated ? new Date(updated).toLocaleString('pt',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}) : 'agora';
       const sourceNote = source === 'finnhub'
-        ? `<div class="finnhub-badge">⚡ Dados em tempo real via Finnhub</div>`
+        ? `<div class="finnhub-badge">⚡ Dados Finnhub — tempo real</div>`
         : `<div class="live-badge"><span class="live-dot"></span>Atualizado ${updLabel}</div>`;
 
       document.getElementById('stockContent').innerHTML = `
@@ -308,7 +307,7 @@
             </div>
           </div>
         </div>
-        ${s.about ? `<div class="card"><div class="card-title">Sobre</div><p style="font-size:var(--text-sm);color:var(--color-text-muted);line-height:1.7">${s.about}</p></div>` : ''}
+        ${s.about?`<div class="card"><div class="card-title">Sobre</div><p style="font-size:var(--text-sm);color:var(--color-text-muted);line-height:1.7">${s.about}</p></div>`:''}
       `;
       requestAnimationFrame(()=>renderChart(s.price,'1D',isUp));
       document.getElementById('periodTabs').addEventListener('click',e=>{
@@ -324,7 +323,7 @@
         <div class="error-state">
           <div style="font-size:2.5rem;margin-bottom:var(--space-4)">🐷</div>
           <h2>Dados indisponíveis</h2>
-          <p>Não foi possível carregar "<strong>${ticker}</strong>".</p>
+          <p>Não foi possível carregar <strong>${ticker}</strong>.</p>
           <p style="margin-top:var(--space-2);font-size:var(--text-sm);color:var(--color-text-faint)">${msg}</p>
           <a href="index.html" class="back-btn" style="margin-top:var(--space-6);justify-content:center;display:inline-flex">← Voltar ao início</a>
         </div>`;
