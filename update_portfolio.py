@@ -14,12 +14,12 @@ except ImportError:
     GEMINI_AVAILABLE = False
     print("[AVISO] google-genai não instalado")
 
-# T212 usa Basic Auth: base64(API_KEY_ID:SECRET)
 T212_KEY_ID  = os.environ.get("T212_API_ID", "")
 T212_SECRET  = os.environ["T212_API_KEY"]
 FH_TOKEN     = os.environ.get("FINNHUB_TOKEN", "")
 GEMINI_KEY   = os.environ.get("GEMINI_API_KEY", "")
 FH_BASE      = "https://finnhub.io/api/v1"
+T212_BASE    = "https://live.trading212.com/api/v0"
 
 _creds      = base64.b64encode(f"{T212_KEY_ID}:{T212_SECRET}".encode()).decode()
 T212_AUTH   = f"Basic {_creds}"
@@ -32,31 +32,13 @@ if GEMINI_AVAILABLE and GEMINI_KEY:
     except Exception as e:
         print(f"[AVISO] Gemini init falhou: {e}")
 
-# ------------------------------------------------------------------ T212
-def t212_get(base, path):
-    r = requests.get(f"{base}{path}", headers={"Authorization": T212_AUTH}, timeout=15)
+def t212_get(path):
+    r = requests.get(f"{T212_BASE}{path}", headers={"Authorization": T212_AUTH}, timeout=15)
     r.raise_for_status()
     return r.json()
 
-def detect_t212_base():
-    for base in [
-        "https://live.trading212.com/api/v0",
-        "https://demo.trading212.com/api/v0"
-    ]:
-        try:
-            t212_get(base, "/equity/portfolio")
-            print(f"    [T212] A usar: {base}")
-            return base
-        except requests.HTTPError as e:
-            code = e.response.status_code
-            print(f"    [T212] {base} → HTTP {code} | {e.response.text[:200]}")
-            if code in (401, 403):
-                continue
-            raise
-    raise RuntimeError("T212: ambos os endpoints falharam. Verifica T212_API_ID e T212_API_KEY.")
-
-def fetch_t212_positions(base):
-    data = t212_get(base, "/equity/portfolio")
+def fetch_t212_positions():
+    data = t212_get("/equity/portfolio")
     positions = []
     for p in data:
         quantity = float(p.get("quantity", 0))
@@ -68,7 +50,7 @@ def fetch_t212_positions(base):
             "avg_price":     round(float(p.get("averagePrice", 0)), 4),
             "current_price": round(float(p.get("currentPrice", 0)), 4),
             "ppl":           round(float(p.get("ppl", 0)), 2),
-            "fx_ppl":        round(float(p.get("fxPpl", 0)), 2),
+            "fx_ppl":        round(float(p.get("fxPpl", 0) or 0), 2),
         })
     return positions
 
@@ -90,7 +72,6 @@ def map_t212_ticker(t212_ticker):
     }
     return eu_etfs.get(ticker, ticker)
 
-# ------------------------------------------------------------------ yfinance
 def fetch_quotes_yf(yf_tickers):
     if not yf_tickers:
         return {}
@@ -103,7 +84,6 @@ def fetch_quotes_yf(yf_tickers):
     except Exception as e:
         print(f"  [ERRO yfinance batch]: {e}")
         data = None
-
     for t in yf_tickers:
         try:
             if data is not None:
@@ -157,7 +137,6 @@ def fetch_dividends(yf_ticker):
     except Exception:
         return []
 
-# ------------------------------------------------------------------ Finnhub
 def fh_news(ticker, frm, to, limit=5):
     base_symbol = ticker.split(".")[0]
     try:
@@ -183,7 +162,6 @@ def fh_news(ticker, frm, to, limit=5):
             break
     return out
 
-# ------------------------------------------------------------------ Gemini
 def gemini_analyze(ticker, name, news_list, earnings_list, ppl, pct_change):
     if not gemini_client:
         return {"sentiment": "neutro", "news_comment": "Gemini indisponível.",
@@ -207,7 +185,6 @@ Responde APENAS JSON: {{"sentiment":"positivo|negativo|neutro","news_comment":".
         return {"sentiment": "neutro", "news_comment": "Indisponível.",
                 "earnings_comment": "Indisponível.", "watch_points": []}
 
-# ------------------------------------------------------------------ main
 def load_history():
     try:
         with open("portfolio.json", "r", encoding="utf-8") as f:
@@ -229,12 +206,9 @@ def main():
 
     print("=== FundScope Portfolio Update ===")
     print(f"UTC: {now.isoformat()}")
-    print(f"T212 Key ID set: {bool(T212_KEY_ID)}")
-    print(f"Gemini disponível: {gemini_client is not None}")
 
-    print("\n[1] A detectar T212...")
-    t212_base = detect_t212_base()
-    positions = fetch_t212_positions(t212_base)
+    print("\n[1] A buscar posições T212 (live)...")
+    positions = fetch_t212_positions()
     print(f"    {len(positions)} posições encontradas")
     if not positions:
         print("    Nenhuma posição — a terminar.")
@@ -287,7 +261,7 @@ def main():
 
     out = {
         "updated":   now.isoformat() + "Z",
-        "t212_mode": "live" if "live" in t212_base else "demo",
+        "t212_mode": "live",
         "summary": {
             "total_value":    round(total_value, 2),
             "total_invested": round(total_invested, 2),
@@ -303,7 +277,7 @@ def main():
         json.dump(out, f, ensure_ascii=False, indent=2)
 
     print(f"\n✅ Concluído!")
-    print(f"   Modo: {out['t212_mode']} | Valor: {total_value:.2f}€ | P&L: {total_gain:+.2f}€ | Posições: {len(positions)}")
+    print(f"   Valor: {total_value:.2f}€ | P&L: {total_gain:+.2f}€ | Posições: {len(positions)}")
 
 if __name__ == "__main__":
     main()
