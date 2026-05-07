@@ -3,7 +3,7 @@
 update_portfolio.py — FundScope Portfolio
 
 Fluxo:
-  1. Puxa posições da Trading 212 API
+  1. Puxa posições da Trading 212 API (auto-detecta live vs demo)
   2. Enriquece com cotações via yfinance (suporte EUR e USD)
   3. Busca 5 notícias por ativo via Finnhub
   4. Busca earnings históricos via yfinance
@@ -13,44 +13,57 @@ Fluxo:
 
 import json, os, time, datetime, requests
 import yfinance as yf
-import google.generativeai as genai
+from google import genai
+from google.genai import types
 
 T212_KEY    = os.environ["T212_API_KEY"]
 FH_TOKEN    = os.environ.get("FINNHUB_TOKEN", "")
 GEMINI_KEY  = os.environ["GEMINI_API_KEY"]
-T212_BASE   = "https://live.trading212.com/api/v0"
 FH_BASE     = "https://finnhub.io/api/v1"
 
-genai.configure(api_key=GEMINI_KEY)
-gemini = genai.GenerativeModel("gemini-1.5-flash")
+gemini_client = genai.Client(api_key=GEMINI_KEY)
 
 # ------------------------------------------------------------------ T212
-def t212_get(path):
+def t212_get(base, path):
     headers = {"Authorization": T212_KEY}
-    r = requests.get(f"{T212_BASE}{path}", headers=headers, timeout=15)
+    r = requests.get(f"{base}{path}", headers=headers, timeout=15)
     r.raise_for_status()
     return r.json()
 
-def fetch_t212_positions():
+def detect_t212_base():
+    """Tenta live primeiro, cai para demo se 401/403."""
+    for base in ["https://live.trading212.com/api/v0", "https://demo.trading212.com/api/v0"]:
+        try:
+            t212_get(base, "/equity/portfolio")
+            print(f"    T212 base: {base}")
+            return base
+        except requests.HTTPError as e:
+            if e.response.status_code in (401, 403):
+                print(f"    {base} → {e.response.status_code}, a tentar próximo...")
+                continue
+            raise
+    raise RuntimeError("T212 API key inválida para live e demo.")
+
+def fetch_t212_positions(base):
     """Devolve lista de posições da T212."""
-    data = t212_get("/equity/portfolio")
+    data = t212_get(base, "/equity/portfolio")
     positions = []
     for p in data:
         ticker_raw = p.get("ticker", "")
         quantity   = float(p.get("quantity", 0))
         avg_price  = float(p.get("averagePrice", 0))
         current    = float(p.get("currentPrice", 0))
-        ppl        = float(p.get("ppl", 0))  # profit/loss em EUR
+        ppl        = float(p.get("ppl", 0))
         fx_ppl     = float(p.get("fxPpl", 0))
         if quantity <= 0:
             continue
         positions.append({
-            "ticker_t212": ticker_raw,
-            "quantity":    round(quantity, 6),
-            "avg_price":   round(avg_price, 4),
+            "ticker_t212":   ticker_raw,
+            "quantity":      round(quantity, 6),
+            "avg_price":     round(avg_price, 4),
             "current_price": round(current, 4),
-            "ppl":         round(ppl, 2),
-            "fx_ppl":      round(fx_ppl, 2),
+            "ppl":           round(ppl, 2),
+            "fx_ppl":        round(fx_ppl, 2),
         })
     return positions
 
@@ -59,23 +72,24 @@ def map_t212_ticker(t212_ticker):
     T212 usa tickers como AAPL_US_EQ, VWCE_EQ, CSPX_EQ.
     Mapeia para tickers yfinance/Finnhub.
     """
-    # Remove sufixos comuns da T212
     ticker = t212_ticker
     for suffix in ["_US_EQ", "_EQ", "_GBX_EQ", "_EUR_EQ"]:
         ticker = ticker.replace(suffix, "")
-    # ETFs europeus — adicionar sufixo de bolsa se necessário
     eu_etfs = {
-        "VWCE": "VWCE.DE", "CSPX": "CSPX.L", "IWDA": "IWDA.AS",
-        "EUNL": "EUNL.DE", "SXR8": "SXR8.DE", "IMAE": "IMAE.AS",
-        "VUSA": "VUSA.AS", "MEUD": "MEUD.PA", "IUSQ": "IUSQ.DE",
-        "SPYY": "SPYY.DE", "XDWD": "XDWD.DE", "EQQQ": "EQQQ.L",
-        "VEUR": "VEUR.AS", "VFEM": "VFEM.AS", "AGGH": "AGGH.L",
+        "VWCE": "VWCE.DE", "CSPX": "CSPX.L",  "IWDA": "IWDA.AS",
+        "EUNL": "EUNL.DE", "SXR8": "SXR8.DE",  "IMAE": "IMAE.AS",
+        "VUSA": "VUSA.AS", "MEUD": "MEUD.PA",  "IUSQ": "IUSQ.DE",
+        "SPYY": "SPYY.DE", "XDWD": "XDWD.DE",  "EQQQ": "EQQQ.L",
+        "VEUR": "VEUR.AS", "VFEM": "VFEM.AS",  "AGGH": "AGGH.L",
+        "VUAA": "VUAA.DE", "VWRA": "VWRA.L",   "IQQQ": "IQQQ.DE",
+        "SPPW": "SPPW.DE", "SPYW": "SPYW.DE",  "EMIM": "EMIM.L",
+        "SMEA": "SMEA.DE", "VHYL": "VHYL.AS",  "VDIV": "VDIV.AS",
     }
     return eu_etfs.get(ticker, ticker)
 
 # ------------------------------------------------------------------ yfinance
 def fetch_quotes_yf(yf_tickers):
-    """Batch download de cotações. Devolve {yf_ticker: {price, changePct, currency}}"""
+    """Batch download de cotações. Devolve {yf_ticker: {price, changePct}}"""
     if not yf_tickers:
         return {}
     print(f"  yfinance: {len(yf_tickers)} tickers...")
@@ -94,9 +108,9 @@ def fetch_quotes_yf(yf_tickers):
     except Exception:
         return {}
 
-    for t in yf_tickers:
+    for t in (yf_tickers if isinstance(yf_tickers, list) else [yf_tickers]):
         try:
-            col = close[t] if t in close.columns else None
+            col = close[t] if hasattr(close, 'columns') and t in close.columns else close
             if col is None:
                 continue
             vals = col.dropna()
@@ -119,8 +133,8 @@ def fetch_earnings(yf_ticker):
             return []
         records = []
         for _, row in hist.tail(8).iterrows():
-            eps_est = row.get("epsEstimate") or row.get("EpsEstimate")
-            eps_act = row.get("epsActual")   or row.get("EpsActual")
+            eps_est  = row.get("epsEstimate")  or row.get("EpsEstimate")
+            eps_act  = row.get("epsActual")    or row.get("EpsActual")
             surprise = row.get("surprisePercent") or row.get("SurprisePercent")
             period   = str(row.get("period") or row.get("Period") or "")
             if eps_act is None:
@@ -154,7 +168,7 @@ def fetch_dividends(yf_ticker):
 # ------------------------------------------------------------------ Finnhub
 def fh_news(ticker, frm, to, limit=5):
     """Busca notícias via Finnhub. Para ETFs europeus usa ticker base."""
-    base = ticker.split(".")[0]  # CSPX.L → CSPX
+    base = ticker.split(".")[0]
     try:
         params = {"symbol": base, "from": frm, "to": to, "token": FH_TOKEN}
         r = requests.get(f"{FH_BASE}/company-news", params=params, timeout=10)
@@ -183,7 +197,7 @@ def fh_news(ticker, frm, to, limit=5):
 
 # ------------------------------------------------------------------ Gemini
 def gemini_analyze(ticker, name, news_list, earnings_list, ppl, pct_change):
-    """Gera análise em PT: sentiment notícias + comentário earnings."""
+    """Gera análise em PT via google.genai (novo SDK)."""
     news_text = "\n".join([f"- {n['headline']}" for n in news_list]) or "Sem notícias recentes."
     earn_text = "\n".join([
         f"- {e['period']}: real={e['actual']} est={e['estimate']} {'BEAT' if e.get('beat') else 'MISS'}"
@@ -209,9 +223,14 @@ Responde em JSON com exatamente este formato:
 }}"""
 
     try:
-        resp = gemini.generate_content(prompt)
-        text = resp.text.strip()
-        # Remove markdown code blocks se presentes
+        response = gemini_client.models.generate_content(
+            model="gemini-2.0-flash",
+            contents=prompt,
+            config=types.GenerateContentConfig(
+                response_mime_type="application/json"
+            )
+        )
+        text = response.text.strip()
         if text.startswith("```"):
             text = text.split("```")[1]
             if text.startswith("json"):
@@ -228,7 +247,6 @@ Responde em JSON com exatamente este formato:
 
 # ------------------------------------------------------------------ histórico
 def load_history():
-    """Carrega histórico de valor do portfólio."""
     try:
         with open("portfolio.json", "r", encoding="utf-8") as f:
             old = json.load(f)
@@ -237,27 +255,26 @@ def load_history():
         return []
 
 def update_history(history, total_value):
-    """Adiciona entrada diária ao histórico (máx 365 dias)."""
     today = datetime.date.today().isoformat()
-    # Não duplicar o mesmo dia
     history = [h for h in history if h["date"] != today]
     history.append({"date": today, "value": round(total_value, 2)})
     history.sort(key=lambda x: x["date"])
-    return history[-365:]  # máx 1 ano
+    return history[-365:]
 
 # ------------------------------------------------------------------ main
 def main():
-    now = datetime.datetime.utcnow()
+    now   = datetime.datetime.utcnow()
     today = now.date()
-    frm = (today - datetime.timedelta(days=5)).isoformat()
-    to  = today.isoformat()
+    frm   = (today - datetime.timedelta(days=5)).isoformat()
+    to    = today.isoformat()
 
     print("=== FundScope Portfolio Update ===")
     print(f"UTC: {now.isoformat()}")
 
-    # 1. Posições T212
-    print("\n[1] A buscar posições T212...")
-    positions = fetch_t212_positions()
+    # 1. Detectar base URL T212 e buscar posições
+    print("\n[1] A detectar T212 (live/demo) e buscar posições...")
+    t212_base = detect_t212_base()
+    positions = fetch_t212_positions(t212_base)
     print(f"    {len(positions)} posições encontradas")
 
     # 2. Mapear tickers e buscar cotações
@@ -270,62 +287,47 @@ def main():
 
     for p in positions:
         q = quotes.get(p["ticker"], {})
-        # Usa cotação yfinance se disponível, senão mantém a da T212
         if q.get("price"):
             p["current_price"] = q["price"]
         p["change_pct"] = q.get("changePct", 0.0)
 
-    # 3. Calcular métricas por posição (em EUR — T212 já devolve em EUR)
+    # 3. Métricas por posição
     for p in positions:
-        invested    = p["avg_price"] * p["quantity"]
-        curr_value  = p["current_price"] * p["quantity"]
-        gain_eur    = p["ppl"]  # P&L real da T212 inclui FX
-        gain_pct    = (gain_eur / invested * 100) if invested > 0 else 0
-        p["invested"]   = round(invested, 2)
-        p["value_eur"]  = round(curr_value, 2)
-        p["gain_eur"]   = round(gain_eur, 2)
-        p["gain_pct"]   = round(gain_pct, 2)
+        invested   = p["avg_price"] * p["quantity"]
+        curr_value = p["current_price"] * p["quantity"]
+        gain_eur   = p["ppl"]
+        gain_pct   = (gain_eur / invested * 100) if invested > 0 else 0
+        p["invested"]  = round(invested, 2)
+        p["value_eur"] = round(curr_value, 2)
+        p["gain_eur"]  = round(gain_eur, 2)
+        p["gain_pct"]  = round(gain_pct, 2)
 
-    # Totais
     total_value    = sum(p["value_eur"] for p in positions)
     total_invested = sum(p["invested"]  for p in positions)
     total_gain     = sum(p["gain_eur"]  for p in positions)
     total_gain_pct = (total_gain / total_invested * 100) if total_invested > 0 else 0
     daily_gain     = sum(p["value_eur"] * p["change_pct"] / 100 for p in positions)
 
-    # Alocação %
     for p in positions:
         p["allocation_pct"] = round(p["value_eur"] / total_value * 100, 2) if total_value > 0 else 0
 
-    # Ordenar por valor
     positions.sort(key=lambda x: x["value_eur"], reverse=True)
 
-    # 4. Notícias + Earnings + Análise Gemini (por ativo)
+    # 4. Notícias + Earnings + Análise Gemini
     print("\n[3] A buscar notícias, earnings e análise Gemini...")
     for p in positions:
         ticker = p["ticker"]
         print(f"  {ticker}...")
-
-        # Notícias
-        p["news"] = fh_news(ticker, frm, to)
+        p["news"]      = fh_news(ticker, frm, to)
         time.sleep(0.3)
-
-        # Earnings (só para stocks, não ETFs simples)
-        p["earnings"] = fetch_earnings(ticker)
-
-        # Dividendos
+        p["earnings"]  = fetch_earnings(ticker)
         p["dividends"] = fetch_dividends(ticker)
-
-        # Análise Gemini
-        p["analysis"] = gemini_analyze(
-            ticker,
-            p.get("ticker_t212", ticker),
-            p["news"],
-            p["earnings"],
-            p["gain_eur"],
-            p["change_pct"]
+        p["analysis"]  = gemini_analyze(
+            ticker, p.get("ticker_t212", ticker),
+            p["news"], p["earnings"],
+            p["gain_eur"], p["change_pct"]
         )
-        time.sleep(1)  # rate limit Gemini
+        time.sleep(1)
 
     # 5. Histórico
     print("\n[4] A atualizar histórico...")
@@ -334,7 +336,8 @@ def main():
 
     # 6. Guardar
     out = {
-        "updated": now.isoformat() + "Z",
+        "updated":   now.isoformat() + "Z",
+        "t212_mode": "live" if "live" in t212_base else "demo",
         "summary": {
             "total_value":    round(total_value, 2),
             "total_invested": round(total_invested, 2),
@@ -351,6 +354,7 @@ def main():
         json.dump(out, f, ensure_ascii=False, indent=2)
 
     print(f"\n✅ portfolio.json guardado")
+    print(f"   Modo T212:   {out['t212_mode']}")
     print(f"   Valor total: {total_value:.2f}€")
     print(f"   P&L total:   {total_gain:+.2f}€ ({total_gain_pct:+.2f}%)")
     print(f"   Posições:    {len(positions)}")
