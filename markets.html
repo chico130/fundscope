@@ -38,11 +38,6 @@
     button{cursor:pointer;background:none;border:none;font:inherit;color:inherit;}
     a{color:inherit;text-decoration:none;}
 
-    /* ADMIN BAR */
-    .admin-bar{background:color-mix(in oklch,var(--color-primary) 10%,var(--color-surface));border-bottom:1px solid var(--color-primary-highlight);padding:var(--space-2) var(--space-6);font-size:11px;color:var(--color-text-muted);display:flex;align-items:center;gap:var(--space-3);}
-    .admin-bar span{color:var(--color-primary);font-weight:600;}
-
-    /* HEADER */
     .header{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:var(--space-4) var(--space-6);background:color-mix(in oklch,var(--color-bg) 88%,transparent);backdrop-filter:blur(16px);border-bottom:1px solid var(--color-divider);}
     .logo{display:flex;align-items:center;gap:var(--space-2);font-family:var(--font-display);font-size:var(--text-lg);transition:color var(--transition);}
     .logo:hover{color:var(--color-primary);}
@@ -50,13 +45,12 @@
     .nav{display:flex;align-items:center;gap:var(--space-1);}
     .nav-link{font-size:var(--text-sm);padding:var(--space-2) var(--space-3);border-radius:var(--radius-md);color:var(--color-text-muted);transition:color var(--transition),background var(--transition);font-weight:500;}
     .nav-link:hover,.nav-link.active{color:var(--color-primary);background:var(--color-primary-highlight);}
+    .nav-link.disabled{opacity:.35;cursor:default;pointer-events:none;}
     .btn-icon{width:36px;height:36px;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;color:var(--color-text-muted);transition:color var(--transition),background var(--transition);}
     .btn-icon:hover{color:var(--color-text);background:var(--color-surface-offset);}
 
-    /* PAGE */
     .page{max-width:1200px;margin:0 auto;padding:var(--space-8) var(--space-6) var(--space-16);}
 
-    /* HERO STRIP */
     .hero-strip{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--space-4);margin-bottom:var(--space-8);}
     .hero-title{font-family:var(--font-display);font-size:var(--text-xl);}
     .hero-meta{font-size:var(--text-xs);color:var(--color-text-faint);margin-top:4px;}
@@ -64,16 +58,13 @@
     .slot-dot{width:7px;height:7px;border-radius:50%;background:var(--color-success);animation:pulse 2s ease-in-out infinite;}
     @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.85)}}
 
-    /* SECTOR OVERVIEW BAR */
     .overview-bar{display:flex;gap:var(--space-3);overflow-x:auto;padding-bottom:var(--space-2);margin-bottom:var(--space-8);scrollbar-width:none;}
     .overview-bar::-webkit-scrollbar{display:none;}
     .overview-pill{flex-shrink:0;display:flex;align-items:center;gap:var(--space-2);padding:var(--space-2) var(--space-4);border-radius:var(--radius-full);border:1px solid var(--color-border);background:var(--color-surface);font-size:var(--text-xs);font-weight:600;cursor:pointer;transition:all var(--transition);white-space:nowrap;}
     .overview-pill:hover{border-color:var(--color-primary);color:var(--color-primary);}
     .overview-pill.up{color:var(--color-success);}
     .overview-pill.down{color:var(--color-notification);}
-    .overview-pill .pill-chg{font-variant-numeric:tabular-nums;}
 
-    /* SECTOR BLOCK */
     .sector-block{margin-bottom:var(--space-12);scroll-margin-top:80px;}
     .sector-header{position:relative;border-radius:var(--radius-2xl);overflow:hidden;height:160px;margin-bottom:var(--space-6);display:flex;align-items:flex-end;padding:var(--space-6);}
     .sector-header-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.45) saturate(.8);}
@@ -85,22 +76,22 @@
     .sector-avg.up{background:rgba(67,122,34,.25);color:#7dcc50;border:1px solid rgba(67,122,34,.4);}
     .sector-avg.down{background:rgba(161,53,68,.25);color:#f08090;border:1px solid rgba(161,53,68,.4);}
 
-    /* MOVERS GRID */
     .movers-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-5);margin-bottom:var(--space-5);}
     .movers-card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-5);box-shadow:var(--shadow-sm);}
-    .movers-card-title{font-size:var(--text-xs);font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--color-text-faint);margin-bottom:var(--space-4);display:flex;align-items:center;gap:6px;}
+    .movers-card-title{font-size:var(--text-xs);font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--color-text-faint);margin-bottom:var(--space-4);}
     .mover-row{display:flex;align-items:center;justify-content:space-between;padding:var(--space-2) 0;border-bottom:1px solid var(--color-divider);}
     .mover-row:last-child{border-bottom:none;}
     .mover-ticker{font-size:var(--text-sm);font-weight:700;letter-spacing:.03em;}
+    .mover-ticker a{transition:color var(--transition);}
+    .mover-ticker a:hover{color:var(--color-primary);}
     .mover-price{font-size:var(--text-xs);color:var(--color-text-muted);margin-left:var(--space-2);}
     .mover-chg{font-size:var(--text-sm);font-weight:700;font-variant-numeric:tabular-nums;padding:2px 8px;border-radius:var(--radius-full);}
     .mover-chg.up{background:var(--color-success-bg);color:var(--color-success);}
     .mover-chg.down{background:var(--color-notification-bg);color:var(--color-notification);}
 
-    /* SENTIMENT + SOCIAL ROW */
-    .bottom-row{display:grid;grid-template-columns:1fr 2fr;gap:var(--space-5);}
+    .bottom-row{display:grid;grid-template-columns:220px 1fr;gap:var(--space-5);}
     .sentiment-card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-5);box-shadow:var(--shadow-sm);}
-    .sentiment-label{font-size:var(--text-xs);font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--color-text-faint);margin-bottom:var(--space-4);}
+    .card-label{font-size:var(--text-xs);font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--color-text-faint);margin-bottom:var(--space-4);}
     .gauge-wrap{margin:var(--space-3) 0;}
     .gauge-bar{height:8px;border-radius:var(--radius-full);background:var(--color-surface-offset);overflow:hidden;margin-bottom:6px;}
     .gauge-fill{height:100%;border-radius:var(--radius-full);background:linear-gradient(90deg,var(--color-notification),#f0c040,var(--color-success));}
@@ -110,28 +101,27 @@
     .gauge-score.bearish{color:var(--color-notification);}
     .gauge-score.neutral{color:var(--color-text-muted);}
     .gauge-sub{text-align:center;font-size:var(--text-xs);color:var(--color-text-faint);}
-    .analyst-row{display:flex;align-items:center;justify-content:space-between;margin-top:var(--space-3);padding-top:var(--space-3);border-top:1px solid var(--color-divider);font-size:var(--text-xs);color:var(--color-text-muted);}
+    .analyst-row{display:flex;align-items:center;justify-content:space-between;margin-top:var(--space-2);padding-top:var(--space-2);border-top:1px solid var(--color-divider);font-size:10px;color:var(--color-text-muted);}
 
-    /* SOCIAL CARD */
-    .social-card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-5);box-shadow:var(--shadow-sm);}
-    .social-tabs{display:flex;gap:4px;margin-bottom:var(--space-4);}
-    .social-tab{font-size:var(--text-xs);font-weight:600;padding:4px 10px;border-radius:var(--radius-full);border:1px solid var(--color-border);color:var(--color-text-muted);transition:all var(--transition);cursor:pointer;}
-    .social-tab.active,.social-tab:hover{background:var(--color-primary-highlight);color:var(--color-primary);border-color:var(--color-primary);}
-    .social-posts{display:flex;flex-direction:column;gap:var(--space-3);}
-    .social-post{padding:var(--space-3);background:var(--color-surface-2);border-radius:var(--radius-lg);border:1px solid var(--color-divider);}
-    .post-source{font-size:10px;font-weight:700;color:var(--color-text-faint);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;display:flex;align-items:center;gap:6px;}
-    .post-body{font-size:var(--text-xs);color:var(--color-text-muted);line-height:1.55;}
-    .post-meta{display:flex;gap:var(--space-3);margin-top:6px;font-size:10px;color:var(--color-text-faint);}
-    .post-link{color:var(--color-primary);font-size:10px;margin-top:4px;display:inline-block;}
-    .twit-bull{color:var(--color-success);font-weight:700;font-size:10px;}
-    .twit-bear{color:var(--color-notification);font-weight:700;font-size:10px;}
-    .empty-social{font-size:var(--text-xs);color:var(--color-text-faint);text-align:center;padding:var(--space-6);}
+    /* NEWS CARD */
+    .news-card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-5);box-shadow:var(--shadow-sm);}
+    .news-list{display:flex;flex-direction:column;gap:var(--space-3);}
+    .news-item{display:flex;gap:var(--space-3);padding:var(--space-3);background:var(--color-surface-2);border-radius:var(--radius-lg);border:1px solid var(--color-divider);transition:border-color var(--transition),box-shadow var(--transition);text-decoration:none;color:inherit;}
+    .news-item:hover{border-color:var(--color-primary);box-shadow:var(--shadow-sm);}
+    .news-thumb{width:56px;height:56px;border-radius:var(--radius-md);object-fit:cover;flex-shrink:0;background:var(--color-surface-offset);}
+    .news-thumb-placeholder{width:56px;height:56px;border-radius:var(--radius-md);flex-shrink:0;background:var(--color-surface-offset);display:flex;align-items:center;justify-content:center;font-size:1.4rem;}
+    .news-body{flex:1;min-width:0;}
+    .news-source-row{display:flex;align-items:center;gap:var(--space-2);margin-bottom:3px;}
+    .news-ticker-badge{font-size:10px;font-weight:700;padding:1px 6px;border-radius:var(--radius-sm);background:var(--color-primary-highlight);color:var(--color-primary);}
+    .news-source{font-size:10px;color:var(--color-text-faint);}
+    .news-headline{font-size:var(--text-xs);font-weight:600;color:var(--color-text);line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+    .news-summary{font-size:10px;color:var(--color-text-muted);margin-top:3px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+    .news-time{font-size:10px;color:var(--color-text-faint);margin-top:4px;}
+    .empty-news{font-size:var(--text-xs);color:var(--color-text-faint);text-align:center;padding:var(--space-6);}
 
-    /* SKELETON */
     .skeleton{background:linear-gradient(90deg,var(--color-surface-offset) 25%,var(--color-surface) 50%,var(--color-surface-offset) 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;border-radius:var(--radius-md);}
     @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
 
-    /* FOOTER */
     .footer{padding:var(--space-6);text-align:center;font-size:var(--text-xs);color:var(--color-text-faint);border-top:1px solid var(--color-divider);margin-top:var(--space-8);}
     .footer a{color:var(--color-text-muted);transition:color var(--transition);}
     .footer a:hover{color:var(--color-primary);}
@@ -141,16 +131,10 @@
       .bottom-row{grid-template-columns:1fr;}
       .nav{display:none;}
     }
-    @media(max-width:480px){
-      .sector-header{height:120px;}
-    }
+    @media(max-width:480px){.sector-header{height:120px;}}
   </style>
 </head>
 <body>
-
-  <div class="admin-bar">
-    🛠️ Deploy admin: <span>07 Mai 2026, 01:35 WEST</span> &nbsp;·&nbsp; v1.5 — Aba Mercados (setores, movers, sentimento, Reddit/StockTwits)
-  </div>
 
   <header class="header">
     <a href="index.html" class="logo">
@@ -174,7 +158,7 @@
     <nav class="nav">
       <a href="index.html" class="nav-link">Início</a>
       <a href="markets.html" class="nav-link active">Mercados</a>
-      <a href="#" class="nav-link" style="opacity:.4;cursor:default">Notícias</a>
+      <a href="#" class="nav-link disabled">Notícias</a>
     </nav>
     <button class="btn-icon" data-theme-toggle aria-label="Alternar tema">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
@@ -189,8 +173,6 @@
       </div>
       <div class="slot-badge"><span class="slot-dot"></span><span id="slotLabel">—</span></div>
     </div>
-
-    <!-- Overview pills -->
     <div class="overview-bar" id="overviewBar">
       <div class="skeleton" style="height:32px;width:120px;border-radius:999px"></div>
       <div class="skeleton" style="height:32px;width:120px;border-radius:999px"></div>
@@ -199,8 +181,6 @@
       <div class="skeleton" style="height:32px;width:120px;border-radius:999px"></div>
       <div class="skeleton" style="height:32px;width:120px;border-radius:999px"></div>
     </div>
-
-    <!-- Sector blocks -->
     <div id="sectorsWrap">
       <div class="skeleton" style="height:160px;border-radius:1.5rem;margin-bottom:1.5rem"></div>
       <div class="skeleton" style="height:160px;border-radius:1.5rem;margin-bottom:1.5rem"></div>
@@ -208,11 +188,10 @@
   </main>
 
   <footer class="footer">
-    <p>© 2026 FundScope · <a href="https://github.com/chico130/fundscope">GitHub</a> · Dados via Finnhub, Reddit & StockTwits · Atualizado 3×/dia</p>
+    <p>© 2026 FundScope · <a href="https://github.com/chico130/fundscope">GitHub</a> · Dados via Finnhub · Atualizado 3×/dia (dias úteis)</p>
   </footer>
 
   <script>
-    // Tema
     (function(){
       const t=document.querySelector('[data-theme-toggle]'),r=document.documentElement;
       let d=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
@@ -226,74 +205,75 @@
       if(t)t.addEventListener('click',()=>setTheme(d==='dark'?'light':'dark'));
     })();
 
-    const SLOT_LABELS = {abertura:'🔔 Abertura',['meio-dia']:'☀️ Meio-dia', fecho:'🔔 Fecho'};
-    const REDDIT_ICON = `<svg width="12" height="12" viewBox="0 0 20 20" fill="currentColor"><circle cx="10" cy="10" r="10" fill="#FF4500"/><path d="M16.67 10a1.46 1.46 0 0 0-2.47-1 7.12 7.12 0 0 0-3.85-1.23l.65-3.08 2.13.45a1 1 0 1 0 1-1 1 1 0 0 0-.95.68l-2.37-.5a.25.25 0 0 0-.29.19l-.73 3.44a7.14 7.14 0 0 0-3.89 1.23 1.46 1.46 0 1 0-1.61 2.39 2.87 2.87 0 0 0 0 .44c0 2.24 2.61 4.06 5.83 4.06s5.83-1.82 5.83-4.06a2.87 2.87 0 0 0 0-.44 1.46 1.46 0 0 0 .72-1.57zM7.27 11a1 1 0 1 1 1 1 1 1 0 0 1-1-1zm5.58 2.71a3.58 3.58 0 0 1-2.85.8 3.58 3.58 0 0 1-2.85-.8.25.25 0 0 1 .35-.35 3.13 3.13 0 0 0 2.5.65 3.13 3.13 0 0 0 2.5-.65.25.25 0 0 1 .35.35zm-.17-1.71a1 1 0 1 1 1-1 1 1 0 0 1-1 1z" fill="#fff"/></svg>`;
-    const TWITS_ICON = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="4" fill="#1DA0F2"/><path d="M4 17l6-6-6-6h3l4.5 4.5L16 5h4l-6 6 6 6h-3l-5-5L8 17H4z" fill="white"/></svg>`;
+    const SLOT_LABELS={abertura:'\uD83D\uDD14 Abertura',['meio-dia']:'\u2600\uFE0F Meio-dia',fecho:'\uD83D\uDD14 Fecho'};
 
-    function renderSentimentGauge(pct) {
-      if (pct === null || pct === undefined) {
-        return `<div class="gauge-score neutral">—</div><div class="gauge-sub">Sem dados</div>`;
-      }
-      const cls = pct >= 55 ? 'bullish' : pct <= 45 ? 'bearish' : 'neutral';
-      const label = pct >= 55 ? '📈 Otimista' : pct <= 45 ? '📉 Pessimista' : '➡️ Neutro';
-      return `
-        <div class="gauge-wrap">
-          <div class="gauge-bar"><div class="gauge-fill" style="width:${pct}%"></div></div>
-          <div class="gauge-labels"><span>Pessimista</span><span>Otimista</span></div>
-        </div>
-        <div class="gauge-score ${cls}">${pct}%</div>
-        <div class="gauge-sub">${label}</div>
-      `;
+    function timeAgo(ts) {
+      const diff = Math.floor((Date.now()/1000) - ts);
+      if(diff < 3600)  return Math.floor(diff/60)+'min';
+      if(diff < 86400) return Math.floor(diff/3600)+'h';
+      return Math.floor(diff/86400)+'d';
     }
 
-    function renderPost(p, type) {
-      if (type === 'reddit') {
-        return `<div class="social-post">
-          <div class="post-source">${REDDIT_ICON} ${p.source} · u/${p.author}</div>
-          <div class="post-body">${p.title}</div>
-          <div class="post-meta"><span>▲ ${p.ups.toLocaleString()}</span><span>💬 ${p.comments}</span></div>
-          <a class="post-link" href="${p.url}" target="_blank" rel="noopener">Ver no Reddit →</a>
-        </div>`;
-      } else {
-        const sentCls = p.sentiment === 'Bullish' ? 'twit-bull' : p.sentiment === 'Bearish' ? 'twit-bear' : '';
-        const sentIcon = p.sentiment === 'Bullish' ? '📈' : p.sentiment === 'Bearish' ? '📉' : '';
-        return `<div class="social-post">
-          <div class="post-source">${TWITS_ICON} StockTwits · @${p.user} <span class="${sentCls}">${sentIcon} ${p.sentiment||''}</span></div>
-          <div class="post-body">${p.body}</div>
-        </div>`;
-      }
+    function renderGauge(pct) {
+      if(pct===null||pct===undefined)
+        return `<div class="gauge-score neutral">—</div><div class="gauge-sub">Sem dados</div>`;
+      const cls = pct>=55?'bullish':pct<=45?'bearish':'neutral';
+      const lbl = pct>=55?'\uD83D\uDCC8 Otimista':pct<=45?'\uD83D\uDCC9 Pessimista':'\u27A1\uFE0F Neutro';
+      return `<div class="gauge-wrap">
+        <div class="gauge-bar"><div class="gauge-fill" style="width:${pct}%"></div></div>
+        <div class="gauge-labels"><span>Pessimista</span><span>Otimista</span></div>
+      </div>
+      <div class="gauge-score ${cls}">${pct}%</div>
+      <div class="gauge-sub">${lbl}</div>`;
+    }
+
+    function renderNews(newsArr) {
+      if(!newsArr||!newsArr.length)
+        return `<div class="empty-news">Sem not\u00edcias recentes</div>`;
+      return newsArr.map(n => {
+        const thumb = n.image
+          ? `<img class="news-thumb" src="${n.image}" alt="" loading="lazy" onerror="this.style.display='none'">`
+          : `<div class="news-thumb-placeholder">${n.ticker?'\uD83D\uDCF0':'\uD83D\uDCF0'}</div>`;
+        const ago = n.datetime ? timeAgo(n.datetime) : '';
+        return `<a class="news-item" href="${n.url||'#'}" target="_blank" rel="noopener">
+          ${thumb}
+          <div class="news-body">
+            <div class="news-source-row">
+              <span class="news-ticker-badge">${n.ticker||''}</span>
+              <span class="news-source">${n.source||''}</span>
+            </div>
+            <div class="news-headline">${n.headline}</div>
+            ${n.summary?`<div class="news-summary">${n.summary}</div>`:''}
+            ${ago?`<div class="news-time">${ago} atr\u00e1s</div>`:''}
+          </div>
+        </a>`;
+      }).join('');
     }
 
     function renderSector(name, s) {
       const isUp = s.avgChange >= 0;
-      const avgSign = isUp ? '+' : '';
+      const sign = isUp ? '+' : '';
       const anchor = name.toLowerCase().replace(/[^a-z]/g,'');
 
-      const gainersHTML = s.gainers.map(g => `
-        <div class="mover-row">
-          <div><span class="mover-ticker"><a href="stock.html?ticker=${g.ticker}">${g.ticker}</a></span><span class="mover-price">$${g.price}</span></div>
-          <span class="mover-chg up">▲ +${g.changePct.toFixed(2)}%</span>
-        </div>`).join('') || '<div style="font-size:var(--text-xs);color:var(--color-text-faint);padding:var(--space-4)">Sem dados</div>';
+      const gainersHTML = s.gainers.length
+        ? s.gainers.map(g=>`
+          <div class="mover-row">
+            <div><span class="mover-ticker"><a href="stock.html?ticker=${g.ticker}">${g.ticker}</a></span><span class="mover-price">$${g.price}</span></div>
+            <span class="mover-chg up">\u25b2 +${g.changePct.toFixed(2)}%</span>
+          </div>`).join('')
+        : '<div style="font-size:var(--text-xs);color:var(--color-text-faint);padding:var(--space-4)">Sem dados</div>';
 
-      const losersHTML = s.losers.map(g => `
-        <div class="mover-row">
-          <div><span class="mover-ticker"><a href="stock.html?ticker=${g.ticker}">${g.ticker}</a></span><span class="mover-price">$${g.price}</span></div>
-          <span class="mover-chg down">▼ ${g.changePct.toFixed(2)}%</span>
-        </div>`).join('') || '<div style="font-size:var(--text-xs);color:var(--color-text-faint);padding:var(--space-4)">Sem dados</div>';
-
-      const allPosts = [
-        ...((s.reddit||[]).map(p=>({...p,_type:'reddit'}))),
-        ...((s.twits||[]).map(p=>({...p,_type:'twits'})))
-      ];
-      const redditPosts = (s.reddit||[]).map(p=>renderPost(p,'reddit')).join('');
-      const twitsPosts  = (s.twits||[]).map(p=>renderPost(p,'twits')).join('');
-      const socialHTML = redditPosts || twitsPosts
-        ? `${redditPosts}${twitsPosts}`
-        : `<div class="empty-social">Sem publicações recentes neste setor</div>`;
+      const losersHTML = s.losers.length
+        ? s.losers.map(g=>`
+          <div class="mover-row">
+            <div><span class="mover-ticker"><a href="stock.html?ticker=${g.ticker}">${g.ticker}</a></span><span class="mover-price">$${g.price}</span></div>
+            <span class="mover-chg down">\u25bc ${g.changePct.toFixed(2)}%</span>
+          </div>`).join('')
+        : '<div style="font-size:var(--text-xs);color:var(--color-text-faint);padding:var(--space-4)">Sem dados</div>';
 
       const bullPct = s.sentiment?.bullishPct;
-      const analystDetails = (s.sentiment?.details||[]).map(d =>
-        `<div class="analyst-row"><span>${d.ticker}</span><span>${d.bullish !== null ? d.bullish+'% bull.' : '—'}</span><span>${d.articles} artigos</span></div>`
+      const analystDetails = (s.sentiment?.details||[]).map(d=>
+        `<div class="analyst-row"><span>${d.ticker}</span><span>${d.bullish!==null?d.bullish+'%':'—'}</span><span>${d.articles} art.</span></div>`
       ).join('');
 
       return `
@@ -304,72 +284,63 @@
             <div class="sector-header-content">
               <span class="sector-icon">${s.icon}</span>
               <span class="sector-title">${name}</span>
-              <span class="sector-avg ${isUp?'up':'down'}">${avgSign}${s.avgChange}% média</span>
+              <span class="sector-avg ${isUp?'up':'down'}">${sign}${s.avgChange}% m\u00e9dia</span>
             </div>
           </div>
-
           <div class="movers-grid">
             <div class="movers-card">
-              <div class="movers-card-title">🟢 Maiores subidas</div>
+              <div class="movers-card-title">\uD83D\uDFE2 Maiores subidas</div>
               ${gainersHTML}
             </div>
             <div class="movers-card">
-              <div class="movers-card-title">🔴 Maiores quedas</div>
+              <div class="movers-card-title">\uD83D\uDD34 Maiores quedas</div>
               ${losersHTML}
             </div>
           </div>
-
           <div class="bottom-row">
             <div class="sentiment-card">
-              <div class="sentiment-label">Sentimento analistas</div>
-              ${renderSentimentGauge(bullPct)}
+              <div class="card-label">Sentimento analistas</div>
+              ${renderGauge(bullPct)}
               ${analystDetails}
             </div>
-            <div class="social-card">
-              <div class="sentiment-label" style="margin-bottom:var(--space-3)">Voz do mercado</div>
-              <div class="social-posts">${socialHTML}</div>
+            <div class="news-card">
+              <div class="card-label">Not\u00edcias do setor</div>
+              <div class="news-list">${renderNews(s.news)}</div>
             </div>
           </div>
-        </div>
-      `;
+        </div>`;
     }
 
     async function init() {
       try {
         const res = await fetch('markets.json?t=' + Date.now());
-        if (!res.ok) throw new Error('markets.json não disponível ainda');
+        if(!res.ok) throw new Error();
         const data = await res.json();
 
         const upd = new Date(data.updated).toLocaleString('pt',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});
-        document.getElementById('heroMeta').textContent = `Última atualização: ${upd} · 3 snapshots diários`;
+        document.getElementById('heroMeta').textContent = `\u00daltima atualiza\u00e7\u00e3o: ${upd} \u00b7 3 snapshots di\u00e1rios`;
         document.getElementById('slotLabel').textContent = SLOT_LABELS[data.slot] || data.slot;
 
-        // Overview pills
-        const bar = document.getElementById('overviewBar');
-        bar.innerHTML = Object.entries(data.sectors).map(([name, s]) => {
-          const isUp = s.avgChange >= 0;
-          const anchor = name.toLowerCase().replace(/[^a-z]/g,'');
-          return `<a href="#${anchor}" class="overview-pill ${isUp?'up':'down'}">
-            ${s.icon} ${name}
-            <span class="pill-chg">${isUp?'+':''}${s.avgChange}%</span>
-          </a>`;
+        document.getElementById('overviewBar').innerHTML = Object.entries(data.sectors).map(([name,s])=>{
+          const isUp=s.avgChange>=0;
+          const anchor=name.toLowerCase().replace(/[^a-z]/g,'');
+          return `<a href="#${anchor}" class="overview-pill ${isUp?'up':'down'}">${s.icon} ${name} <span>${isUp?'+':''}${s.avgChange}%</span></a>`;
         }).join('');
 
-        // Sectors
         document.getElementById('sectorsWrap').innerHTML =
-          Object.entries(data.sectors).map(([name, s]) => renderSector(name, s)).join('');
+          Object.entries(data.sectors).map(([name,s])=>renderSector(name,s)).join('');
 
       } catch(e) {
         document.getElementById('sectorsWrap').innerHTML = `
           <div style="text-align:center;padding:4rem;color:var(--color-text-muted)">
-            <div style="font-size:2.5rem;margin-bottom:1rem">🐷</div>
-            <h2 style="margin-bottom:.5rem">Dados de mercado ainda não disponíveis</h2>
-            <p style="font-size:var(--text-sm)">O GitHub Action corre às 09:00, 13:00 e 16:30 WEST (dias úteis).<br>Podes forçar manualmente em <a href="https://github.com/chico130/fundscope/actions" style="color:var(--color-primary)">GitHub Actions</a>.</p>
+            <div style="font-size:2.5rem;margin-bottom:1rem">\uD83D\uDC37</div>
+            <h2 style="margin-bottom:.5rem">Dados ainda n\u00e3o dispon\u00edveis</h2>
+            <p style="font-size:var(--text-sm)">O workflow corre \u00e0s 09:00, 13:00 e 16:30 WEST (dias \u00fateis).<br>
+            Ou for\u00e7a manualmente em <a href="https://github.com/chico130/fundscope/actions" style="color:var(--color-primary)">GitHub Actions</a>.</p>
           </div>`;
-        document.getElementById('overviewBar').innerHTML = '';
+        document.getElementById('overviewBar').innerHTML='';
       }
     }
-
     init();
   </script>
 </body>

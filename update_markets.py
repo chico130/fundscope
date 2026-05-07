@@ -1,161 +1,137 @@
 #!/usr/bin/env python3
 """
-update_markets.py
-Corre 3x/dia via GitHub Actions: 08:00, 12:00, 16:30 UTC
+update_markets.py — FundScope v1.6
+Corre 3x/dia via GitHub Actions: 08:00, 12:00, 15:30 UTC
 Produz markets.json com:
   - top 5 gainers / losers por setor
-  - sentimento Finnhub por setor
-  - posts Reddit (r/wallstreetbets, r/investing)
-  - posts StockTwits por ticker representativo
+  - sentimento Finnhub (news-sentiment) por setor
+  - notícias recentes Finnhub company-news (substitui Reddit/StockTwits)
 """
 
 import json, os, time, datetime, requests
 
 FH_TOKEN = os.environ.get("FINNHUB_TOKEN", "")
-HEADERS_REDDIT = {"User-Agent": "FundScope/1.0 (educational project)"}
+FH_BASE  = "https://finnhub.io/api/v1"
 
 SECTORS = {
     "Tecnologia": {
-        "icon": "💻",
+        "icon": "\U0001f4bb",
         "color": "#4f98a3",
         "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
         "tickers": ["AAPL","MSFT","NVDA","GOOGL","META","AMD","INTC","TSLA","ASML","AVGO","MU","QCOM","ORCL","CRM","ADBE"],
-        "reddit": ["wallstreetbets","investing","stocks"],
-        "sentiment_tickers": ["AAPL","NVDA","MSFT"]
+        "sentiment_tickers": ["AAPL","NVDA","MSFT"],
+        "news_tickers": ["AAPL","NVDA","MSFT","AMD","META"]
     },
-    "Finanças": {
-        "icon": "🏦",
+    "Finan\u00e7as": {
+        "icon": "\U0001f3e6",
         "color": "#437a22",
         "image": "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&q=80",
         "tickers": ["JPM","BAC","GS","MS","WFC","C","BLK","AXP","V","MA","SCHW","BRK-B","USB","PNC","TFC"],
-        "reddit": ["investing","stocks","ValueInvesting"],
-        "sentiment_tickers": ["JPM","GS","BAC"]
+        "sentiment_tickers": ["JPM","GS","BAC"],
+        "news_tickers": ["JPM","GS","BAC","MS","V"]
     },
     "Energia": {
-        "icon": "⚡",
+        "icon": "\u26a1",
         "color": "#c47d1a",
         "image": "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80",
         "tickers": ["XOM","CVX","COP","SLB","EOG","PSX","MPC","VLO","OXY","HAL","BP","SHEL","NEE","D","DUK"],
-        "reddit": ["investing","energy","stocks"],
-        "sentiment_tickers": ["XOM","CVX","NEE"]
+        "sentiment_tickers": ["XOM","CVX","NEE"],
+        "news_tickers": ["XOM","CVX","COP","OXY","NEE"]
     },
-    "Saúde": {
-        "icon": "🏥",
+    "Sa\u00fade": {
+        "icon": "\U0001f3e5",
         "color": "#a13544",
         "image": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80",
         "tickers": ["JNJ","UNH","PFE","ABBV","MRK","LLY","TMO","ABT","DHR","BMY","AMGN","GILD","MDT","CVS","ISRG"],
-        "reddit": ["investing","biotech","stocks"],
-        "sentiment_tickers": ["JNJ","LLY","PFE"]
+        "sentiment_tickers": ["JNJ","LLY","PFE"],
+        "news_tickers": ["JNJ","LLY","PFE","ABBV","MRK"]
     },
     "Consumo": {
-        "icon": "🛒",
+        "icon": "\U0001f6d2",
         "color": "#7a5c9e",
         "image": "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&q=80",
         "tickers": ["AMZN","WMT","HD","MCD","SBUX","NKE","TGT","COST","LOW","TJX","PG","KO","PEP","PM","CL"],
-        "reddit": ["wallstreetbets","investing","stocks"],
-        "sentiment_tickers": ["AMZN","WMT","MCD"]
+        "sentiment_tickers": ["AMZN","WMT","MCD"],
+        "news_tickers": ["AMZN","WMT","MCD","COST","KO"]
     },
     "Commodities": {
-        "icon": "🪙",
+        "icon": "\U0001fa99",
         "color": "#8a7340",
         "image": "https://images.unsplash.com/photo-1610375461246-83df859d849d?w=800&q=80",
         "tickers": ["GLD","SLV","USO","UNG","CORN","WEAT","FCX","NEM","GOLD","AA","CLF","X","MP","VALE","RIO"],
-        "reddit": ["investing","Gold","Silver"],
-        "sentiment_tickers": ["GLD","USO","FCX"]
+        "sentiment_tickers": ["GLD","USO","FCX"],
+        "news_tickers": ["FCX","NEM","GOLD","VALE","AA"]
     }
 }
 
-def fh_quote(ticker):
+def fh_get(endpoint, params):
+    params["token"] = FH_TOKEN
     try:
-        r = requests.get(
-            f"https://finnhub.io/api/v1/quote?symbol={ticker}&token={FH_TOKEN}",
-            timeout=6
-        )
-        d = r.json()
-        price = d.get("c") or d.get("pc") or 0
-        pc = d.get("pc") or price
-        chg = ((price - pc) / pc * 100) if pc else 0
-        return {"ticker": ticker, "price": round(price, 2), "changePct": round(chg, 2), "pc": round(pc, 2)}
-    except:
+        r = requests.get(f"{FH_BASE}/{endpoint}", params=params, timeout=8)
+        r.raise_for_status()
+        return r.json()
+    except Exception as e:
+        print(f"  [WARN] {endpoint} {params.get('symbol','')}: {e}")
         return None
 
+def fh_quote(ticker):
+    d = fh_get("quote", {"symbol": ticker})
+    if not d:
+        return None
+    price = d.get("c") or d.get("pc") or 0
+    pc    = d.get("pc") or price
+    chg   = ((price - pc) / pc * 100) if pc else 0
+    return {"ticker": ticker, "price": round(price, 2), "changePct": round(chg, 2), "pc": round(pc, 2)}
+
 def fh_sentiment(ticker):
-    try:
-        r = requests.get(
-            f"https://finnhub.io/api/v1/news-sentiment?symbol={ticker}&token={FH_TOKEN}",
-            timeout=6
-        )
-        d = r.json()
-        score = d.get("sentiment", {}).get("bullishPercent", None)
-        buzz = d.get("buzz", {}).get("articlesInLastWeek", 0)
-        return {"bullish": round(score * 100, 1) if score else None, "articles": buzz}
-    except:
+    d = fh_get("news-sentiment", {"symbol": ticker})
+    if not d:
         return {"bullish": None, "articles": 0}
+    score = (d.get("sentiment") or {}).get("bullishPercent")
+    buzz  = (d.get("buzz") or {}).get("articlesInLastWeek", 0)
+    return {"bullish": round(score * 100, 1) if score else None, "articles": buzz}
 
-def reddit_posts(subreddits, keywords, limit=3):
-    posts = []
-    seen = set()
-    for sub in subreddits:
-        try:
-            r = requests.get(
-                f"https://www.reddit.com/r/{sub}/hot.json?limit=25",
-                headers=HEADERS_REDDIT, timeout=8
-            )
-            items = r.json().get("data", {}).get("children", [])
-            for item in items:
-                d = item["data"]
-                title = d.get("title", "")
-                if any(k.lower() in title.lower() for k in keywords):
-                    uid = d.get("id")
-                    if uid in seen:
-                        continue
-                    seen.add(uid)
-                    posts.append({
-                        "source": f"r/{sub}",
-                        "title": title[:120],
-                        "ups": d.get("ups", 0),
-                        "url": "https://reddit.com" + d.get("permalink", ""),
-                        "author": d.get("author", "anonymous"),
-                        "comments": d.get("num_comments", 0)
-                    })
-        except:
-            pass
-        time.sleep(0.5)
-    posts.sort(key=lambda x: x["ups"], reverse=True)
-    return posts[:limit]
-
-def stocktwits_posts(ticker, limit=2):
-    try:
-        r = requests.get(
-            f"https://api.stocktwits.com/api/2/streams/symbol/{ticker}.json",
-            timeout=8
-        )
-        msgs = r.json().get("messages", [])
-        out = []
-        for m in msgs[:limit]:
-            sentiment = m.get("entities", {}).get("sentiment") or {}
-            label = sentiment.get("basic", "") if sentiment else ""
-            body = m.get("body", "")[:140]
-            user = m.get("user", {}).get("username", "?")
-            out.append({"source": "StockTwits", "body": body, "user": user, "sentiment": label})
-        return out
-    except:
+def fh_news(ticker, frm, to, limit=2):
+    """Devolve até `limit` notícias recentes do ticker."""
+    d = fh_get("company-news", {"symbol": ticker, "from": frm, "to": to})
+    if not d or not isinstance(d, list):
         return []
+    out = []
+    seen = set()
+    for item in d[:40]:  # percorrer no máx 40 para evitar duplicados
+        headline = (item.get("headline") or "").strip()
+        if not headline or headline in seen:
+            continue
+        seen.add(headline)
+        out.append({
+            "source":   item.get("source", ticker),
+            "ticker":   ticker,
+            "headline": headline[:160],
+            "summary":  (item.get("summary") or "")[:220],
+            "url":      item.get("url", ""),
+            "datetime": item.get("datetime", 0),
+            "image":    item.get("image", "")
+        })
+        if len(out) >= limit:
+            break
+    return out
 
-def build_sector(name, cfg):
+def build_sector(name, cfg, frm, to):
     tickers = cfg["tickers"]
+
+    # --- Cotações ---
     quotes = []
     for t in tickers:
         q = fh_quote(t)
         if q and q["price"] > 0:
             quotes.append(q)
-        time.sleep(0.15)
+        time.sleep(0.12)
 
     quotes_sorted = sorted(quotes, key=lambda x: x["changePct"], reverse=True)
     gainers = quotes_sorted[:5]
-    losers = quotes_sorted[-5:][::-1]  # piores primeiro, sem IndexError
+    losers  = quotes_sorted[-5:][::-1]
 
-    # Sentimento Finnhub
+    # --- Sentimento ---
     sentiments = []
     for t in cfg["sentiment_tickers"]:
         s = fh_sentiment(t)
@@ -163,71 +139,67 @@ def build_sector(name, cfg):
         sentiments.append(s)
         time.sleep(0.2)
 
-    valid = [s["bullish"] for s in sentiments if s["bullish"] is not None]
+    valid   = [s["bullish"] for s in sentiments if s["bullish"] is not None]
     avg_bull = round(sum(valid) / len(valid), 1) if valid else None
 
-    # Reddit
-    keywords = [t.replace("-", " ") for t in cfg["sentiment_tickers"]] + [name]
-    reddit = reddit_posts(cfg["reddit"], keywords, limit=3)
-
-    # StockTwits: ticker mais movimentado (maior abs changePct), com guarda
-    all_quotes = gainers + losers
-    if all_quotes:
-        top_ticker = max(all_quotes, key=lambda x: abs(x["changePct"]))["ticker"]
-    else:
-        top_ticker = tickers[0]
-    twits = stocktwits_posts(top_ticker, limit=2)
+    # --- Notícias (substitui Reddit/StockTwits) ---
+    news = []
+    seen_headlines = set()
+    for t in cfg["news_tickers"]:
+        for item in fh_news(t, frm, to, limit=2):
+            if item["headline"] not in seen_headlines:
+                seen_headlines.add(item["headline"])
+                news.append(item)
+        time.sleep(0.15)
+        if len(news) >= 5:
+            break
+    # Ordenar por data desc, manter top 5
+    news.sort(key=lambda x: x["datetime"], reverse=True)
+    news = news[:5]
 
     avg_chg = round(sum(q["changePct"] for q in quotes) / len(quotes), 2) if quotes else 0
 
     return {
-        "name": name,
-        "icon": cfg["icon"],
-        "color": cfg["color"],
-        "image": cfg["image"],
+        "name":      name,
+        "icon":      cfg["icon"],
+        "color":     cfg["color"],
+        "image":     cfg["image"],
         "avgChange": avg_chg,
-        "gainers": gainers,
-        "losers": losers,
+        "gainers":   gainers,
+        "losers":    losers,
         "sentiment": {"bullishPct": avg_bull, "details": sentiments},
-        "reddit": reddit,
-        "twits": twits
+        "news":      news
     }
 
 def main():
-    now = datetime.datetime.utcnow()
+    now  = datetime.datetime.utcnow()
     hour = now.hour
-    if hour < 10:
-        slot = "abertura"
-    elif hour < 14:
-        slot = "meio-dia"
-    else:
-        slot = "fecho"
+    slot = "abertura" if hour < 10 else ("meio-dia" if hour < 14 else "fecho")
+
+    today = now.date()
+    frm   = (today - datetime.timedelta(days=4)).isoformat()
+    to    = today.isoformat()
 
     sectors = {}
     for name, cfg in SECTORS.items():
-        print(f"A processar setor: {name}")
+        print(f"Setor: {name}")
         try:
-            sectors[name] = build_sector(name, cfg)
+            sectors[name] = build_sector(name, cfg, frm, to)
         except Exception as e:
-            print(f"ERRO no setor {name}: {e}")
+            print(f"  ERRO: {e}")
             sectors[name] = {
                 "name": name, "icon": cfg["icon"], "color": cfg["color"],
                 "image": cfg["image"], "avgChange": 0,
                 "gainers": [], "losers": [],
                 "sentiment": {"bullishPct": None, "details": []},
-                "reddit": [], "twits": []
+                "news": []
             }
         time.sleep(1)
 
-    out = {
-        "updated": now.isoformat() + "Z",
-        "slot": slot,
-        "sectors": sectors
-    }
-
+    out = {"updated": now.isoformat() + "Z", "slot": slot, "sectors": sectors}
     with open("markets.json", "w", encoding="utf-8") as f:
         json.dump(out, f, ensure_ascii=False, indent=2)
-    print(f"markets.json gerado com sucesso ({slot})")
+    print(f"markets.json OK ({slot})")
 
 if __name__ == "__main__":
     main()
