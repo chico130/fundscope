@@ -157,7 +157,7 @@
     <p class="hero-sub">Pesquisa qualquer ação ou ETF e acompanha o teu portfólio num só lugar.</p>
     <div class="search-container">
       <input type="text" class="search-box" id="mainSearch"
-        placeholder="Pesquisa um ticker ou nome — ex: AAPL, VOO…"
+        placeholder="Pesquisa qualquer ticker — ex: AAPL, ASML, NOVO-B…"
         autocomplete="off" aria-label="Pesquisar stock ou ETF"/>
       <button class="search-btn" id="searchBtn" aria-label="Pesquisar">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -170,7 +170,7 @@
       <button class="chip" role="listitem" data-query="MSFT">MSFT</button>
       <button class="chip" role="listitem" data-query="VOO">VOO</button>
       <button class="chip" role="listitem" data-query="NVDA">NVDA</button>
-      <button class="chip" role="listitem" data-query="IWDA">IWDA</button>
+      <button class="chip" role="listitem" data-query="ASML">ASML</button>
       <button class="chip" role="listitem" data-query="TSLA">TSLA</button>
     </div>
     <div class="live-badge"><span class="live-dot"></span><span id="liveLabel">A carregar preços…</span></div>
@@ -183,20 +183,21 @@
   </main>
 
   <footer class="footer">
-    <p id="footerUpdated">© 2026 FundScope · <a href="https://github.com/chico130/fundscope">GitHub</a> · Preços via Yahoo Finance</p>
+    <p id="footerUpdated">© 2026 FundScope · <a href="https://github.com/chico130/fundscope">GitHub</a> · Preços via Yahoo Finance &amp; Finnhub</p>
   </footer>
 
+  <!-- Painel de pesquisa -->
   <div class="results-panel" id="resultsPanel" role="dialog" aria-modal="true" aria-label="Resultados da pesquisa">
     <div class="results-box">
       <div class="results-search-row">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--color-text-muted)" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-        <input type="text" class="results-search-input" id="resultsInput" placeholder="Pesquisa stock ou ETF…" autocomplete="off"/>
+        <input type="text" class="results-search-input" id="resultsInput" placeholder="Pesquisa qualquer ticker ou nome…" autocomplete="off"/>
         <button class="results-close" id="resultsClose" aria-label="Fechar">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
         </button>
       </div>
       <div class="results-list" id="resultsList">
-        <div class="results-empty">Escreve para pesquisar…</div>
+        <div class="results-empty">Escreve para pesquisar qualquer ação ou ETF…</div>
       </div>
     </div>
   </div>
@@ -213,84 +214,83 @@
       if(t)t.addEventListener('click',()=>setTheme(d==='dark'?'light':'dark'));
     })();
 
-    // --- Dados ---
-    let STOCKS = {};
+    // --- Config ---
+    const FINNHUB_KEY = 'd7ttd51r01qvtspvodegd7ttd51r01qvtspvodf0';
     const FEATURED = ['VOO','AAPL','NVDA'];
     const SPARKLINES = {
       up:  'M0,32 13,28 26,30 39,20 52,18 65,12 80,8',
       down:'M0,10 13,14 26,12 39,18 52,16 65,22 80,26'
     };
 
-    async function loadData() {
+    // --- Cache local de dados (data.json) ---
+    let LOCAL_STOCKS = {};
+
+    async function loadLocalData() {
       try {
         const res = await fetch('data.json?t=' + Date.now());
-        if (!res.ok) throw new Error('sem data.json');
+        if (!res.ok) throw new Error();
         const json = await res.json();
-        STOCKS = json.stocks || {};
+        LOCAL_STOCKS = json.stocks || {};
         const updated = json.updated ? new Date(json.updated) : null;
         if (updated) {
           const label = updated.toLocaleString('pt', {day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});
           document.getElementById('liveLabel').textContent = 'Atualizado ' + label;
           document.getElementById('footerUpdated').innerHTML =
-            '© 2026 FundScope · <a href="https://github.com/chico130/fundscope">GitHub</a> · Preços atualizados: ' + label;
+            '© 2026 FundScope · <a href="https://github.com/chico130/fundscope">GitHub</a> · Atualizado: ' + label;
         } else {
           document.getElementById('liveLabel').textContent = 'Preços em direto';
         }
         renderCards();
       } catch(e) {
-        document.getElementById('liveLabel').textContent = 'Dados em direto indisponíveis';
-        renderCardsFallback();
+        document.getElementById('liveLabel').textContent = 'A usar dados Finnhub';
+        renderCardsFinnhub();
       }
     }
 
-    function fmtPrice(s) {
-      const sym = s.symbol || '$';
-      return sym + s.price.toFixed(2);
-    }
-    function fmtChg(s) {
+    // --- Cards em destaque ---
+    function fmtPrice(s) { return (s.symbol||'$') + s.price.toFixed(2); }
+    function fmtChgPct(s) {
       const sign = s.changePct >= 0 ? '+' : '';
       return (s.changePct >= 0 ? '▲' : '▼') + ' ' + sign + s.changePct.toFixed(2) + '%';
     }
-
+    function cardHTML(ticker, name, priceStr, chgStr, up) {
+      const spk = SPARKLINES[up ? 'up' : 'down'];
+      const spkColor = up ? '#437a22' : '#a13544';
+      return `<article class="ticker-card" role="listitem" tabindex="0" data-ticker="${ticker}">
+        <p class="ticker-symbol">${ticker}</p>
+        <p class="ticker-name">${name}</p>
+        <p class="ticker-price">${priceStr}</p>
+        <p class="ticker-change ${up?'up':'down'}">${chgStr}</p>
+        <svg class="sparkline" width="80" height="40" viewBox="0 0 80 40"><polyline points="${spk}" fill="none" stroke="${spkColor}" stroke-width="2"/></svg>
+      </article>`;
+    }
     function renderCards() {
       const row = document.getElementById('cardsRow');
-      const tickers = FEATURED.filter(t => STOCKS[t]);
-      if (!tickers.length) { renderCardsFallback(); return; }
+      const tickers = FEATURED.filter(t => LOCAL_STOCKS[t]);
+      if (!tickers.length) { renderCardsFinnhub(); return; }
       row.innerHTML = tickers.map(ticker => {
-        const s = STOCKS[ticker];
-        const up = s.changePct >= 0;
-        const spk = SPARKLINES[up ? 'up' : 'down'];
-        const spkColor = up ? '#437a22' : '#a13544';
-        return `
-          <article class="ticker-card" role="listitem" tabindex="0" data-ticker="${ticker}">
-            <p class="ticker-symbol">${ticker}</p>
-            <p class="ticker-name">${s.name}</p>
-            <p class="ticker-price">${fmtPrice(s)}</p>
-            <p class="ticker-change ${up?'up':'down'}">${fmtChg(s)}</p>
-            <svg class="sparkline" width="80" height="40" viewBox="0 0 80 40"><polyline points="${spk}" fill="none" stroke="${spkColor}" stroke-width="2"/></svg>
-          </article>`;
+        const s = LOCAL_STOCKS[ticker];
+        return cardHTML(ticker, s.name, fmtPrice(s), fmtChgPct(s), s.changePct >= 0);
       }).join('');
       addCardListeners();
     }
-
-    function renderCardsFallback() {
-      const FALLBACK = [
-        {ticker:'VOO',name:'Vanguard S&P 500 ETF',price:'$531.42',chg:'+0.84%',up:true},
-        {ticker:'AAPL',name:'Apple Inc.',price:'$213.07',chg:'+1.23%',up:true},
-        {ticker:'NVDA',name:'NVIDIA Corp.',price:'$138.85',chg:'-0.54%',up:false},
-      ];
+    async function renderCardsFinnhub() {
       const row = document.getElementById('cardsRow');
-      row.innerHTML = FALLBACK.map(s => `
-        <article class="ticker-card" role="listitem" tabindex="0" data-ticker="${s.ticker}">
-          <p class="ticker-symbol">${s.ticker}</p>
-          <p class="ticker-name">${s.name}</p>
-          <p class="ticker-price">${s.price}</p>
-          <p class="ticker-change ${s.up?'up':'down'}">${s.up?'▲':'▼'} ${s.chg}</p>
-          <svg class="sparkline" width="80" height="40" viewBox="0 0 80 40"><polyline points="${SPARKLINES[s.up?'up':'down']}" fill="none" stroke="${s.up?'#437a22':'#a13544'}" stroke-width="2"/></svg>
-        </article>`).join('');
+      const results = await Promise.all(FEATURED.map(async ticker => {
+        try {
+          const [q, p] = await Promise.all([
+            fetch(`https://finnhub.io/api/v1/quote?symbol=${ticker}&token=${FINNHUB_KEY}`).then(r=>r.json()),
+            fetch(`https://finnhub.io/api/v1/stock/profile2?symbol=${ticker}&token=${FINNHUB_KEY}`).then(r=>r.json())
+          ]);
+          if (!q.c) return null;
+          const chgPct = ((q.c - q.pc) / q.pc) * 100;
+          const up = chgPct >= 0;
+          return cardHTML(ticker, p.name||ticker, '$'+q.c.toFixed(2), (up?'▲':'▼')+' '+(up?'+':'')+chgPct.toFixed(2)+'%', up);
+        } catch { return null; }
+      }));
+      row.innerHTML = results.filter(Boolean).join('');
       addCardListeners();
     }
-
     function addCardListeners() {
       document.querySelectorAll('.ticker-card').forEach(c => {
         c.addEventListener('click', () => { window.location.href = 'stock.html?ticker=' + c.dataset.ticker; });
@@ -298,64 +298,122 @@
       });
     }
 
-    // --- Painel de pesquisa ---
+    // --- Pesquisa Finnhub ---
     const panel = document.getElementById('resultsPanel');
     const list  = document.getElementById('resultsList');
     const mainInput = document.getElementById('mainSearch');
     const resultsInput = document.getElementById('resultsInput');
     const closeBtn = document.getElementById('resultsClose');
+    let searchTimer = null;
 
     function openPanel(query) {
       panel.classList.add('open');
       resultsInput.value = query || '';
       resultsInput.focus();
-      renderResults(query || '');
+      if (query) doSearch(query);
+      else list.innerHTML = '<div class="results-empty">Escreve para pesquisar qualquer ação ou ETF…</div>';
     }
     function closePanel() { panel.classList.remove('open'); mainInput.focus(); }
     function escHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
-    function renderResults(q) {
-      const term = q.trim().toLowerCase();
+    async function doSearch(q) {
+      const term = q.trim().toUpperCase();
       if (!term) { list.innerHTML = '<div class="results-empty">Escreve para pesquisar…</div>'; return; }
       list.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>';
-      setTimeout(() => {
-        const allStocks = Object.values(STOCKS);
-        const hits = allStocks.filter(s =>
-          s.ticker.toLowerCase().includes(term) ||
-          (s.name||'').toLowerCase().includes(term)
-        );
-        if (!hits.length) {
+
+      // 1. Resultados locais imediatos (data.json)
+      const localHits = Object.values(LOCAL_STOCKS).filter(s =>
+        s.ticker.toUpperCase().includes(term) || (s.name||'').toUpperCase().includes(term)
+      );
+
+      // 2. Pesquisa Finnhub (símbolo + nome)
+      try {
+        const searchRes = await fetch(`https://finnhub.io/api/v1/search?q=${encodeURIComponent(term)}&token=${FINNHUB_KEY}`);
+        const searchData = await searchRes.json();
+        const hits = (searchData.result || []).filter(r => r.type === 'Common Stock' || r.type === 'ETP').slice(0, 8);
+
+        // Para cada hit, buscar cotação
+        const withPrices = await Promise.all(hits.map(async h => {
+          // Se já temos no local, usamos esse
+          const localKey = h.symbol.replace('.AS','').replace('.L','');
+          if (LOCAL_STOCKS[localKey]) {
+            return { ...LOCAL_STOCKS[localKey], ticker: localKey, name: h.description || LOCAL_STOCKS[localKey].name };
+          }
+          try {
+            const qRes = await fetch(`https://finnhub.io/api/v1/quote?symbol=${h.symbol}&token=${FINNHUB_KEY}`);
+            const qData = await qRes.json();
+            if (!qData.c || qData.c === 0) return null;
+            const chgPct = qData.pc ? ((qData.c - qData.pc) / qData.pc) * 100 : 0;
+            return {
+              ticker: h.symbol,
+              name: h.description,
+              type: h.type === 'ETP' ? 'ETF' : 'Ação',
+              exchange: h.displaySymbol,
+              price: qData.c,
+              changePct: chgPct,
+              change: qData.c - (qData.pc||qData.c),
+              symbol: '$'
+            };
+          } catch { return null; }
+        }));
+
+        // Juntar locais + finnhub sem duplicados
+        const finnhubResults = withPrices.filter(Boolean);
+        const seen = new Set(localHits.map(s => s.ticker));
+        const combined = [...localHits, ...finnhubResults.filter(s => !seen.has(s.ticker))];
+
+        if (!combined.length) {
           list.innerHTML = '<div class="results-empty">Sem resultados para "<strong>' + escHtml(q) + '</strong>"</div>';
           return;
         }
-        list.innerHTML = hits.map(s => {
+
+        list.innerHTML = combined.map(s => {
           const up = s.changePct >= 0;
           const sym = s.symbol || '$';
-          return `<a class="result-item" href="stock.html?ticker=${s.ticker}">
-            <span class="result-badge">${s.ticker}</span>
+          const sign = up ? '+' : '';
+          return `<a class="result-item" href="stock.html?ticker=${encodeURIComponent(s.ticker)}">
+            <span class="result-badge">${s.ticker.length > 6 ? s.ticker.slice(0,6) : s.ticker}</span>
             <div class="result-info">
-              <p class="result-name">${s.name}</p>
-              <p class="result-type">${s.type||''} — ${s.exchange||''}</p>
+              <p class="result-name">${escHtml(s.name||s.ticker)}</p>
+              <p class="result-type">${s.type||''} · ${s.exchange||''}</p>
             </div>
             <div>
               <p class="result-price">${sym}${s.price.toFixed(2)}</p>
-              <p class="result-chg ${up?'up':'down'}">${up?'▲':'▼'} ${up?'+':''}${s.changePct.toFixed(2)}%</p>
+              <p class="result-chg ${up?'up':'down'}">${up?'▲':'▼'} ${sign}${s.changePct.toFixed(2)}%</p>
             </div>
           </a>`;
         }).join('');
-      }, 200);
+
+      } catch(e) {
+        // Fallback: só locais
+        if (localHits.length) {
+          list.innerHTML = localHits.map(s => {
+            const up = s.changePct >= 0;
+            return `<a class="result-item" href="stock.html?ticker=${s.ticker}">
+              <span class="result-badge">${s.ticker}</span>
+              <div class="result-info"><p class="result-name">${escHtml(s.name)}</p><p class="result-type">${s.type||''}</p></div>
+              <div><p class="result-price">${s.symbol||'$'}${s.price.toFixed(2)}</p><p class="result-chg ${up?'up':'down'}">${up?'▲':'▼'} ${(up?'+':'')+s.changePct.toFixed(2)}%</p></div>
+            </a>`;
+          }).join('');
+        } else {
+          list.innerHTML = '<div class="results-empty">Erro na pesquisa. Tenta novamente.</div>';
+        }
+      }
     }
 
     document.getElementById('searchBtn').addEventListener('click', () => openPanel(mainInput.value));
     mainInput.addEventListener('keydown', e => { if(e.key==='Enter') openPanel(mainInput.value); });
-    resultsInput.addEventListener('input', () => renderResults(resultsInput.value));
+    resultsInput.addEventListener('input', () => {
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(() => doSearch(resultsInput.value), 400);
+    });
     closeBtn.addEventListener('click', closePanel);
     panel.addEventListener('click', e => { if(e.target===panel) closePanel(); });
     document.addEventListener('keydown', e => { if(e.key==='Escape') closePanel(); });
     document.querySelectorAll('.chip').forEach(c => c.addEventListener('click', () => openPanel(c.dataset.query)));
 
-    // Iniciar
-    loadData();
+    // Arrancar
+    loadLocalData();
   </script>
 </body>
 </html>
