@@ -1,12 +1,8 @@
 #!/usr/bin/env python3
 """
-update_markets.py — FundScope v1.7
-Corre 3x/dia via GitHub Actions: 08:00, 12:00, 15:30 UTC
-
-Fixes v1.7:
-  - Consumo: apenas acoes liquidas (sem ETFs)
-  - Commodities: produtores reais em vez de GLD/USO/UNG (nao suportados no free tier)
-  - Sentimento: /stock/recommendation (free) em vez de news-sentiment (premium)
+update_markets.py — FundScope v1.8
+Fix: quando c==0 (fora de horas / sem dados intraday) usa pc como preco
+     para garantir que gainers/losers nunca ficam vazios
 """
 
 import json, os, time, datetime, requests
@@ -51,7 +47,6 @@ SECTORS = {
         "icon": "\U0001f6d2",
         "color": "#7a5c9e",
         "image": "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&q=80",
-        # Apenas acoes — sem ETFs (AMZN, WMT, etc. suportados no free tier)
         "tickers": ["AMZN","WMT","HD","MCD","SBUX","NKE","TGT","COST","LOW","TJX","PG","KO","PEP","PM","CL"],
         "sentiment_tickers": ["AMZN","WMT","MCD"],
         "news_tickers": ["AMZN","WMT","MCD","COST","KO"]
@@ -60,7 +55,7 @@ SECTORS = {
         "icon": "\U0001fa99",
         "color": "#8a7340",
         "image": "https://images.unsplash.com/photo-1610375461246-83df859d849d?w=800&q=80",
-        # Produtores reais: GLD/USO/SLV/UNG sao ETFs nao suportados no free tier
+        # Produtores reais (GLD/USO/SLV/UNG = ETFs nao suportados no free tier)
         "tickers": ["FCX","NEM","GOLD","AA","CLF","X","MP","VALE","RIO","BHP","SCCO","WPM","AEM","AGI","PAAS"],
         "sentiment_tickers": ["FCX","NEM","GOLD"],
         "news_tickers": ["FCX","NEM","GOLD","VALE","AA"]
@@ -70,7 +65,7 @@ SECTORS = {
 def fh_get(endpoint, params):
     params["token"] = FH_TOKEN
     try:
-        r = requests.get(f"{FH_BASE}/{endpoint}", params=params, timeout=8)
+        r = requests.get(f"{FH_BASE}/{endpoint}", params=params, timeout=10)
         r.raise_for_status()
         return r.json()
     except Exception as e:
@@ -78,22 +73,33 @@ def fh_get(endpoint, params):
         return None
 
 def fh_quote(ticker):
+    """
+    Devolve cotacao do ticker.
+    - Se c > 0: usa c (preco atual intraday)
+    - Se c == 0 mas pc > 0: usa pc (fecho anterior) com changePct=0
+      Isto garante que gainers/losers funcionam mesmo fora de horas.
+    - Se ambos == 0: descarta (ticker sem cobertura no free tier)
+    """
     d = fh_get("quote", {"symbol": ticker})
     if not d:
         return None
-    price = d.get("c") or 0
-    pc    = d.get("pc") or price
-    if price <= 0:
+    c  = d.get("c") or 0
+    pc = d.get("pc") or 0
+    op = d.get("o") or 0   # open, usado como validacao extra
+
+    if c > 0 and pc > 0:
+        # Sessao normal
+        chg = round((c - pc) / pc * 100, 2)
+        return {"ticker": ticker, "price": round(c, 2), "changePct": chg, "pc": round(pc, 2)}
+    elif pc > 0:
+        # Fora de horas ou sem dados intraday: usa fecho anterior
+        return {"ticker": ticker, "price": round(pc, 2), "changePct": 0.0, "pc": round(pc, 2)}
+    else:
+        # Sem cobertura (ex: ETF bloqueado, ticker invalido)
+        print(f"    [SKIP] {ticker}: c={c} pc={pc} (sem cobertura)")
         return None
-    chg = ((price - pc) / pc * 100) if pc else 0
-    return {"ticker": ticker, "price": round(price, 2), "changePct": round(chg, 2), "pc": round(pc, 2)}
 
 def fh_recommendation(ticker):
-    """
-    /stock/recommendation (free tier) -> converte em % bullish (0-100).
-    Pesos: strongBuy=+2, buy=+1, hold=0, sell=-1, strongSell=-2
-    Normalizado: (score + 2*total) / (4*total) * 100
-    """
     d = fh_get("stock/recommendation", {"symbol": ticker})
     if not d or not isinstance(d, list) or not d:
         return {"bullish": None, "articles": 0, "sb": 0, "b": 0, "h": 0, "s": 0, "ss": 0}
@@ -140,22 +146,23 @@ def build_sector(name, cfg, frm, to):
         q = fh_quote(t)
         if q:
             quotes.append(q)
-        time.sleep(0.12)
+        else:
+            print(f"    [MISS] {t}")
+        time.sleep(0.13)
+
+    print(f"  quotes obtidas: {len(quotes)}/{len(cfg['tickers'])} -> {[q['ticker'] for q in quotes]}")
 
     quotes_sorted = sorted(quotes, key=lambda x: x["changePct"], reverse=True)
     gainers = quotes_sorted[:5]
     losers  = list(reversed(quotes_sorted[-5:])) if len(quotes_sorted) >= 5 else list(reversed(quotes_sorted))
 
-    # Sentimento via recommendation trends
+    # Sentimento
     sentiments = []
     for t in cfg["sentiment_tickers"]:
         rec = fh_recommendation(t)
         sentiments.append({
-            "ticker":   t,
-            "bullish":  rec["bullish"],
-            "articles": rec["articles"],
-            "sb": rec["sb"], "b": rec["b"],
-            "h":  rec["h"],  "s": rec["s"], "ss": rec["ss"]
+            "ticker": t, "bullish": rec["bullish"], "articles": rec["articles"],
+            "sb": rec["sb"], "b": rec["b"], "h": rec["h"], "s": rec["s"], "ss": rec["ss"]
         })
         time.sleep(0.2)
 
@@ -193,7 +200,7 @@ def main():
 
     sectors = {}
     for name, cfg in SECTORS.items():
-        print(f"Setor: {name}")
+        print(f"\n=== Setor: {name} ===")
         try:
             sectors[name] = build_sector(name, cfg, frm, to)
         except Exception as e:
@@ -208,7 +215,7 @@ def main():
     out = {"updated": now.isoformat() + "Z", "slot": slot, "sectors": sectors}
     with open("markets.json", "w", encoding="utf-8") as f:
         json.dump(out, f, ensure_ascii=False, indent=2)
-    print(f"markets.json OK ({slot})")
+    print(f"\nmarkets.json OK ({slot})")
 
 if __name__ == "__main__":
     main()
