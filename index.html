@@ -43,6 +43,7 @@
     .header-actions{display:flex;align-items:center;gap:var(--space-3);}
     .nav-link{font-size:var(--text-sm);color:var(--color-text-muted);padding:var(--space-2) var(--space-3);border-radius:var(--radius-md);transition:color var(--transition),background var(--transition);}
     .nav-link:hover{color:var(--color-text);background:var(--color-surface-offset);}
+    .nav-link.disabled{opacity:.35;cursor:default;pointer-events:none;}
     .theme-toggle{width:36px;height:36px;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;color:var(--color-text-muted);transition:color var(--transition),background var(--transition);}
     .theme-toggle:hover{color:var(--color-text);background:var(--color-surface-offset);}
     .main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:var(--space-24) var(--space-6) var(--space-16);text-align:center;}
@@ -120,7 +121,7 @@
 </head>
 <body>
   <header class="header">
-    <a href="#" class="logo">
+    <a href="index.html" class="logo">
       <svg class="logo-svg" viewBox="0 0 28 28" fill="none">
         <ellipse cx="14" cy="15" rx="9" ry="7.5" fill="var(--color-primary)" opacity="0.18"/>
         <ellipse cx="14" cy="14.5" rx="8" ry="6.5" fill="var(--color-primary)"/>
@@ -139,9 +140,9 @@
       FundScope
     </a>
     <nav class="header-actions">
-      <a href="#" class="nav-link">Notícias</a>
-      <a href="#" class="nav-link">Portfólio</a>
-      <a href="#" class="nav-link">Mercados</a>
+      <a href="#" class="nav-link disabled">Notícias</a>
+      <a href="#" class="nav-link disabled">Portfólio</a>
+      <a href="markets.html" class="nav-link">Mercados</a>
       <button class="theme-toggle" data-theme-toggle aria-label="Alternar tema">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
       </button>
@@ -202,7 +203,6 @@
   </div>
 
   <script>
-    // --- Tema ---
     (function(){
       const t=document.querySelector('[data-theme-toggle]'),r=document.documentElement;
       let d=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
@@ -216,16 +216,14 @@
       if(t)t.addEventListener('click',()=>setTheme(d==='dark'?'light':'dark'));
     })();
 
-    // --- Config ---
     const FH = 'd7ttd51r01qvtspvodegd7ttd51r01qvtspvodf0';
     const FEATURED = ['VOO','AAPL','NVDA'];
     const SPK = {
       up:  'M0,32 13,28 26,30 39,20 52,18 65,12 80,8',
       down:'M0,10 13,14 26,12 39,18 52,16 65,22 80,26'
     };
-    let LOCAL = {}; // data.json cache
+    let LOCAL = {};
 
-    // --- Carregar data.json ---
     async function loadLocal() {
       try {
         const r = await fetch('data.json?t='+Date.now());
@@ -246,7 +244,6 @@
       }
     }
 
-    // --- Cards ---
     function mkCard(ticker, name, price, chgPct, sym) {
       const up = chgPct >= 0;
       const sign = up ? '+' : '';
@@ -271,9 +268,10 @@
       const rows = await Promise.all(FEATURED.map(async t => {
         try {
           const q = await fetch(`https://finnhub.io/api/v1/quote?symbol=${t}&token=${FH}`).then(r=>r.json());
-          if(!q.c) return '';
-          const pct = q.pc ? ((q.c-q.pc)/q.pc)*100 : 0;
-          return mkCard(t, t, q.c, pct, '$');
+          const price = q.c || q.pc;
+          if(!price) return '';
+          const pct = q.pc && q.c ? ((q.c-q.pc)/q.pc)*100 : 0;
+          return mkCard(t, t, price, pct, '$');
         } catch { return ''; }
       }));
       document.getElementById('cardsRow').innerHTML = rows.join('');
@@ -286,7 +284,6 @@
       });
     }
 
-    // --- Painel de pesquisa ---
     const panel = document.getElementById('resultsPanel');
     const list  = document.getElementById('resultsList');
     const mainIn = document.getElementById('mainSearch');
@@ -325,17 +322,13 @@
       const term = q.trim();
       if(!term){ list.innerHTML='<div class="results-empty">Escreve para pesquisar…</div>'; return; }
       list.innerHTML='<div class="loading-dots"><span></span><span></span><span></span></div>';
-
       try {
-        // 1. Pesquisa Finnhub por símbolo/nome
         const searchURL = `https://finnhub.io/api/v1/search?q=${encodeURIComponent(term)}&token=${FH}`;
         const searchData = await fetch(searchURL).then(r=>r.json());
         const candidates = (searchData.result||[])
           .filter(r=>r.type==='Common Stock'||r.type==='ETP'||r.type==='ETF')
           .slice(0, 6);
-
         if(!candidates.length){
-          // Tenta busca local como fallback
           const t = term.toUpperCase();
           const localHits = Object.values(LOCAL).filter(s=>s.ticker.includes(t)||(s.name||'').toUpperCase().includes(t));
           if(localHits.length){
@@ -345,38 +338,30 @@
           }
           return;
         }
-
-        // 2. Para cada resultado, buscar cotação
         const withQuotes = await Promise.all(candidates.map(async h=>{
-          // Se está no local, usar esses dados (mais completos)
           const localKey = h.symbol.replace(/\.(AS|L|PA|DE|MI)$/,'');
           if(LOCAL[localKey]){
             const s = LOCAL[localKey];
             return { ticker:localKey, name:h.description||s.name, type:s.type||'Ação', exch:s.exchange||'', price:s.price, chgPct:s.changePct, sym:s.symbol||'$' };
           }
-          // Caso contrário, buscar cotação da Finnhub
           try {
             const q2 = await fetch(`https://finnhub.io/api/v1/quote?symbol=${encodeURIComponent(h.symbol)}&token=${FH}`).then(r=>r.json());
-            if(!q2.c || q2.c===0) return null;
-            const pct = q2.pc ? ((q2.c-q2.pc)/q2.pc)*100 : 0;
+            const price = q2.c || q2.pc;
+            if(!price) return null;
+            const pct = q2.pc && q2.c ? ((q2.c-q2.pc)/q2.pc)*100 : 0;
             const typeLabel = h.type==='ETP'||h.type==='ETF' ? 'ETF' : 'Ação';
-            return { ticker:h.symbol, name:h.description, type:typeLabel, exch:h.displaySymbol||'', price:q2.c, chgPct:pct, sym:'$' };
+            return { ticker:h.symbol, name:h.description, type:typeLabel, exch:h.displaySymbol||'', price, chgPct:pct, sym:'$' };
           } catch { return null; }
         }));
-
         const results = withQuotes.filter(Boolean);
-        // Remover duplicados (preferência para locais)
         const seen = new Set();
         const deduped = results.filter(r=>{ if(seen.has(r.ticker)) return false; seen.add(r.ticker); return true; });
-
         if(!deduped.length){
           list.innerHTML='<div class="results-empty">Sem preços disponíveis para "<strong>'+esc(q)+'</strong>"</div>';
           return;
         }
         list.innerHTML = deduped.map(r=>resultHTML(r.ticker,r.name,r.type,r.exch,r.price,r.chgPct,r.sym)).join('');
-
       } catch(err) {
-        // Fallback: só dados locais
         const t = term.toUpperCase();
         const localHits = Object.values(LOCAL).filter(s=>s.ticker.includes(t)||(s.name||'').toUpperCase().includes(t));
         if(localHits.length){
@@ -387,7 +372,6 @@
       }
     }
 
-    // --- Eventos ---
     document.getElementById('searchBtn').addEventListener('click',()=>openPanel(mainIn.value));
     mainIn.addEventListener('keydown',e=>{ if(e.key==='Enter') openPanel(mainIn.value); });
     mainIn.addEventListener('input',()=>{ if(mainIn.value.trim()) openPanel(mainIn.value); });
