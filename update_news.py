@@ -56,29 +56,36 @@ IMPACT_MAP = [
 
 CATEGORY_MAP = [
     {"keywords":["war","military","nato","iran","ukraine","russia","israel","sanctions","missile","troops","ceasefire","geopolit","conflict","diplomat"],
-     "cat":"Geopol\u00edtica","icon":"\uD83C\uDF0D"},
+     "cat":"Geopol\u00edtica","icon":"\U0001f30d"},
     {"keywords":["fed","ecb","central bank","inflation","gdp","recession","interest rate","cpi","unemployment","monetary policy","fomc","jerome powell","lagarde"],
-     "cat":"Macro","icon":"\uD83D\uDCCA"},
+     "cat":"Macro","icon":"\U0001f4ca"},
     {"keywords":["oil","gas","opec","crude","energy","solar","wind","nuclear","lng","pipeline","petrol"],
-     "cat":"Energia","icon":"\u26A1"},
+     "cat":"Energia","icon":"\u26a1"},
     {"keywords":["tariff","trade","wto","export","import","supply chain","china trade","customs","protectionism","trade deal"],
-     "cat":"Com\u00e9rcio","icon":"\uD83D\uDEA2"},
+     "cat":"Com\u00e9rcio","icon":"\U0001f6a2"},
     {"keywords":["stock market","wall street","nasdaq","s&p","dow jones","bond","yield","earnings","ipo","hedge fund","rally","selloff","shares","dividends"],
-     "cat":"Mercados","icon":"\uD83D\uDCB0"},
+     "cat":"Mercados","icon":"\U0001f4b0"},
     {"keywords":["ai ","artificial intelligence","chip","semiconductor","nvidia","apple","microsoft","google","amazon","tech","software","cyber","quantum","openai","llm"],
-     "cat":"Tecnologia","icon":"\uD83D\uDCBB"},
+     "cat":"Tecnologia","icon":"\U0001f4bb"},
     {"keywords":["climate","carbon","cop","environment","floods","drought","wildfire","global warming","emissions","renewable"],
-     "cat":"Clima","icon":"\uD83C\uDF31"},
+     "cat":"Clima","icon":"\U0001f331"},
 ]
 
-# --- helpers -----------------------------------------------------------------
+# ---------------------------------------------------------------------------
+
+def sanitize(text):
+    """Remove surrogates e caracteres invalidos que quebram json.dump."""
+    if not isinstance(text, str):
+        return str(text) if text is not None else ""
+    # encode com surrogateescape e decode ignorando erros
+    return text.encode('utf-8', errors='replace').decode('utf-8', errors='replace')
 
 def classify(text):
     low = text.lower()
     for rule in CATEGORY_MAP:
         if any(k in low for k in rule["keywords"]):
             return rule["cat"], rule["icon"]
-    return "Global", "\uD83C\uDF10"
+    return "Global", "\U0001f310"
 
 def get_impact(text):
     low = text.lower()
@@ -92,9 +99,8 @@ def get_impact(text):
                 seen.add(t); tickers.append(t)
     neg = ["war","crash","recession","sanction","ban","fall","drop","decline","crisis","threat","attack","loss","default","collapse"]
     pos = ["deal","growth","surge","rise","rally","record","beat","approve","expand","boom","invest","profit","agreement","recovery"]
-    low2 = text.lower()
-    ns = sum(1 for w in neg if w in low2)
-    ps = sum(1 for w in pos if w in low2)
+    ns = sum(1 for w in neg if w in low)
+    ps = sum(1 for w in pos if w in low)
     sent = "negative" if ns > ps else ("positive" if ps > ns else "neutral")
     return {"tickers": tickers[:5], "sector": matches[0]["sector"], "sentiment": sent}
 
@@ -111,9 +117,18 @@ def clean_text(text):
     text = re.sub(r'\[\+\d+ chars\]$', '', text)
     text = re.sub(r'<[^>]+>', ' ', text)
     text = re.sub(r'\s+', ' ', text).strip()
-    return text
+    return sanitize(text)
 
-# --- scraping leve -----------------------------------------------------------
+def now_utc():
+    return datetime.datetime.now(datetime.timezone.utc)
+
+def ts_to_iso(ts):
+    try:
+        return datetime.datetime.fromtimestamp(int(ts), datetime.timezone.utc).isoformat()
+    except:
+        return ""
+
+# --- scraping leve ----------------------------------------------------------
 
 class TextExtractor(HTMLParser):
     def __init__(self):
@@ -147,78 +162,74 @@ def scrape_article(url, existing="", min_len=400):
             "Accept": "text/html"
         }, timeout=7, allow_redirects=True)
         if r.status_code != 200: return existing
-        ct = r.headers.get("Content-Type", "")
-        if "text/html" not in ct: return existing
+        if "text/html" not in r.headers.get("Content-Type", ""): return existing
         parser = TextExtractor()
         parser.feed(r.text[:80000])
         good = [p for p in parser._paras if len(p) > 80][:6]
         if not good: return existing
-        scraped = "\n\n".join(good)
+        scraped = sanitize("\n\n".join(good))
         return scraped if len(scraped) > len(existing) + 100 else existing
     except Exception as ex:
         print(f"    [scrape skip] {str(url)[:60]} — {ex}")
         return existing
 
-# --- GNews -------------------------------------------------------------------
+# --- GNews ------------------------------------------------------------------
+# Plano gratuito: 10 pedidos/dia. Com workflow 3x/dia usa so 1 query por execucao.
 
 def fetch_gnews():
     if not GNEWS_TOKEN:
         print("  [SKIP] GNEWS_TOKEN nao definido")
         return []
-    queries = [
-        "geopolitics war sanctions economy",
-        "federal reserve inflation oil energy markets",
-        "artificial intelligence trade tariffs technology",
-    ]
+    # 1 unica query abrangente para nao exceder o limite diario
+    query = "economy war inflation trade technology energy markets"
     articles, seen = [], set()
-    for q in queries:
-        try:
-            r = requests.get(f"{GN_BASE}/search", params={
-                "q": q, "lang": "en", "max": 10,
-                "token": GNEWS_TOKEN, "sortby": "publishedAt"
-            }, timeout=12)
-            r.raise_for_status()
-            data = r.json()
-            if "errors" in data:
-                print(f"  [GNews error] {data['errors']}")
-                continue
-            for a in data.get("articles", []):
-                title = (a.get("title") or "").strip()
-                if not title or title in seen: continue
-                seen.add(title)
-                desc    = clean_text(a.get("description") or "")
-                content = clean_text(a.get("content") or "")
-                raw = (desc + "\n\n" + content) if (content and content[:80] != desc[:80]) else (desc or content)
-                full_text = title + " " + raw
-                cat, icon = classify(full_text)
-                impact    = get_impact(full_text)
-                img = a.get("image") or ""
-                if not img or len(img) < 12: img = fallback_img(cat)
-                enriched = scrape_article(a.get("url",""), raw)
-                articles.append({
-                    "id": abs(hash(title)) % (10**9),
-                    "source": (a.get("source") or {}).get("name", "GNews"),
-                    "title": title[:200], "summary": desc[:500],
-                    "content": enriched[:3000], "url": a.get("url",""),
-                    "image": img, "publishedAt": a.get("publishedAt",""),
-                    "category": cat, "icon": icon,
-                    "impact": impact, "heat": heat_score(impact), "feed": "gnews"
-                })
-            time.sleep(0.3)
-        except Exception:
-            print(f"  [WARN GNews] {q}:\n{traceback.format_exc()}")
+    try:
+        r = requests.get(f"{GN_BASE}/search", params={
+            "q": query, "lang": "en", "max": 10,
+            "token": GNEWS_TOKEN, "sortby": "publishedAt"
+        }, timeout=12)
+        if r.status_code == 429:
+            print("  [GNews] 429 — limite diario atingido, a saltar")
+            return []
+        r.raise_for_status()
+        data = r.json()
+        if "errors" in data:
+            print(f"  [GNews error] {data['errors']}")
+            return []
+        for a in data.get("articles", []):
+            title = sanitize((a.get("title") or "").strip())
+            if not title or title in seen: continue
+            seen.add(title)
+            desc    = clean_text(a.get("description") or "")
+            content = clean_text(a.get("content") or "")
+            raw = (desc + "\n\n" + content) if (content and content[:80] != desc[:80]) else (desc or content)
+            full_text = title + " " + raw
+            cat, icon = classify(full_text)
+            impact    = get_impact(full_text)
+            img = sanitize(a.get("image") or "")
+            if not img or len(img) < 12: img = fallback_img(cat)
+            enriched = scrape_article(a.get("url",""), raw)
+            articles.append({
+                "id": abs(hash(title)) % (10**9),
+                "source": sanitize((a.get("source") or {}).get("name", "GNews")),
+                "title": title[:200], "summary": desc[:500],
+                "content": enriched[:3000], "url": sanitize(a.get("url","")),
+                "image": img, "publishedAt": sanitize(a.get("publishedAt","")),
+                "category": cat, "icon": icon,
+                "impact": impact, "heat": heat_score(impact), "feed": "gnews"
+            })
+    except Exception:
+        print(f"  [WARN GNews]:\n{traceback.format_exc()}")
     print(f"  GNews: {len(articles)} artigos")
     return articles
 
-# --- NewsAPI -----------------------------------------------------------------
+# --- NewsAPI ----------------------------------------------------------------
 
 def fetch_newsapi():
     if not NEWSAPI_TOKEN:
         print("  [SKIP] NEWSAPI_TOKEN nao definido")
         return []
     articles, seen = [], set()
-
-    # top-headlines business
     try:
         r = requests.get(f"{NA_BASE}/top-headlines", params={
             "category": "business", "language": "en",
@@ -227,22 +238,21 @@ def fetch_newsapi():
         r.raise_for_status()
         resp = r.json()
         if resp.get("status") != "ok":
-            print(f"  [NewsAPI headlines error] {resp.get('message','unknown')}")
+            print(f"  [NewsAPI headlines error] {resp.get('message')}")
         else:
             for a in resp.get("articles", []):
-                _ingest_newsapi(a, articles, seen, "business-headlines")
+                _ingest_newsapi(a, articles, seen, "headlines")
     except Exception:
         print(f"  [WARN NewsAPI headlines]:\n{traceback.format_exc()}")
 
-    # everything queries
     queries_na = [
         "stock market earnings Wall Street",
-        "geopolitics war sanctions diplomacy",
+        "geopolitics war sanctions",
         "inflation Federal Reserve interest rates",
-        "oil OPEC energy commodities",
-        "artificial intelligence semiconductor technology",
-        "trade tariffs China exports",
-        "climate change renewable energy",
+        "oil OPEC energy",
+        "artificial intelligence technology",
+        "trade tariffs China",
+        "climate renewable energy",
     ]
     for q in queries_na:
         if len(articles) >= 80: break
@@ -254,7 +264,7 @@ def fetch_newsapi():
             r.raise_for_status()
             resp = r.json()
             if resp.get("status") != "ok":
-                print(f"  [NewsAPI everything error] {q}: {resp.get('message','unknown')}")
+                print(f"  [NewsAPI error] {q}: {resp.get('message')}")
                 continue
             for a in resp.get("articles", []):
                 _ingest_newsapi(a, articles, seen, "newsapi")
@@ -266,7 +276,7 @@ def fetch_newsapi():
     return articles
 
 def _ingest_newsapi(a, articles, seen, feed):
-    title = (a.get("title") or "").strip()
+    title = sanitize((a.get("title") or "").strip())
     if not title or title in seen or title == "[Removed]": return
     seen.add(title)
     desc    = clean_text(a.get("description") or "")
@@ -275,21 +285,21 @@ def _ingest_newsapi(a, articles, seen, feed):
     full_text = title + " " + raw
     cat, icon = classify(full_text)
     impact    = get_impact(full_text)
-    img = a.get("urlToImage") or ""
+    img = sanitize(a.get("urlToImage") or "")
     if not img or len(img) < 12: img = fallback_img(cat)
-    url = a.get("url", "")
+    url = sanitize(a.get("url", ""))
     enriched = scrape_article(url, raw)
     articles.append({
         "id": abs(hash(title)) % (10**9),
-        "source": (a.get("source") or {}).get("name", "NewsAPI"),
+        "source": sanitize((a.get("source") or {}).get("name", "NewsAPI")),
         "title": title[:200], "summary": desc[:500],
         "content": enriched[:3000], "url": url,
-        "image": img, "publishedAt": a.get("publishedAt", ""),
+        "image": img, "publishedAt": sanitize(a.get("publishedAt", "")),
         "category": cat, "icon": icon,
         "impact": impact, "heat": heat_score(impact), "feed": feed
     })
 
-# --- Finnhub -----------------------------------------------------------------
+# --- Finnhub ----------------------------------------------------------------
 
 def fetch_finnhub():
     if not FH_TOKEN:
@@ -305,22 +315,21 @@ def fetch_finnhub():
         return []
     articles, seen = [], set()
     for a in data[:60]:
-        title   = (a.get("headline") or "").strip()
+        title = sanitize((a.get("headline") or "").strip())
         if not title or title in seen: continue
         seen.add(title)
         summary = clean_text(a.get("summary") or "")
         full_text = title + " " + summary
         cat, icon = classify(full_text)
         impact    = get_impact(full_text)
-        img = a.get("image") or ""
+        img = sanitize(a.get("image") or "")
         if not img or len(img) < 12: img = fallback_img(cat)
-        ts  = a.get("datetime", 0)
-        iso = datetime.datetime.utcfromtimestamp(ts).isoformat() + "Z" if ts else ""
-        url = a.get("url", "")
+        iso = ts_to_iso(a.get("datetime", 0))
+        url = sanitize(a.get("url", ""))
         enriched = scrape_article(url, summary, min_len=200)
         articles.append({
             "id": abs(hash(title)) % (10**9),
-            "source": a.get("source", "Finnhub"),
+            "source": sanitize(a.get("source", "Finnhub")),
             "title": title[:200], "summary": summary[:500],
             "content": enriched[:3000], "url": url,
             "image": img, "publishedAt": iso,
@@ -331,13 +340,15 @@ def fetch_finnhub():
     print(f"  Finnhub: {len(articles)} artigos")
     return articles
 
-# --- merge -------------------------------------------------------------------
+# --- merge ------------------------------------------------------------------
 
 def parse_dt(a):
     try:
-        return datetime.datetime.fromisoformat(a["publishedAt"].replace("Z", "+00:00"))
+        s = a["publishedAt"]
+        if not s: return datetime.datetime.min.replace(tzinfo=datetime.timezone.utc)
+        return datetime.datetime.fromisoformat(s.replace("Z", "+00:00"))
     except:
-        return datetime.datetime.min
+        return datetime.datetime.min.replace(tzinfo=datetime.timezone.utc)
 
 def merge_and_sort(*sources):
     all_a = [a for src in sources for a in src]
@@ -349,42 +360,45 @@ def merge_and_sort(*sources):
     deduped.sort(key=parse_dt, reverse=True)
     return deduped[:50]
 
-# --- main --------------------------------------------------------------------
+# --- main -------------------------------------------------------------------
 
 def main():
     print("=== FundScope News Update ===")
-    try:
-        gnews   = fetch_gnews()
-    except Exception:
-        print(f"[ERRO FATAL GNews]\n{traceback.format_exc()}"); gnews = []
-    try:
-        newsapi = fetch_newsapi()
-    except Exception:
-        print(f"[ERRO FATAL NewsAPI]\n{traceback.format_exc()}"); newsapi = []
-    try:
-        fh      = fetch_finnhub()
-    except Exception:
-        print(f"[ERRO FATAL Finnhub]\n{traceback.format_exc()}"); fh = []
+    try:    gnews   = fetch_gnews()
+    except: print(traceback.format_exc()); gnews = []
+    try:    newsapi = fetch_newsapi()
+    except: print(traceback.format_exc()); newsapi = []
+    try:    fh      = fetch_finnhub()
+    except: print(traceback.format_exc()); fh = []
 
     articles = merge_and_sort(gnews, newsapi, fh)
-
-    if not articles:
-        print("[AVISO] Nenhum artigo obtido. Verifica os tokens nos Secrets.")
-        # Nao falha o workflow — gera um news.json vazio valido
-        articles = []
-
     print(f"\nTotal final: {len(articles)} artigos")
+
     from collections import Counter
     cats = Counter(a["category"] for a in articles)
     for cat, n in sorted(cats.items(), key=lambda x: -x[1]):
-        avg = sum(len(a["content"]) for a in articles if a["category"] == cat) // max(n, 1)
+        avg = sum(len(a["content"]) for a in articles if a["category"] == cat) // max(n,1)
         print(f"  {cat}: {n} artigos (media {avg} chars)")
 
-    out = {"updated": datetime.datetime.utcnow().isoformat() + "Z", "articles": articles}
+    out = {
+        "updated": now_utc().isoformat(),
+        "articles": articles
+    }
+
+    # Serializa com sanitizacao final anti-surrogate
+    try:
+        payload = json.dumps(out, ensure_ascii=True, indent=2)
+    except Exception as e:
+        print(f"[ERRO json.dumps] {e} — a tentar com ensure_ascii=True")
+        # ultimo recurso: substitui tudo que nao e ascii
+        payload = json.dumps(out, ensure_ascii=True, indent=2,
+                             default=lambda o: repr(o))
+
     with open("news.json", "w", encoding="utf-8") as f:
-        json.dump(out, f, ensure_ascii=False, indent=2)
+        f.write(payload)
+
     print("\nnews.json escrito com sucesso.")
-    sys.exit(0)  # sempre sai com sucesso
+    sys.exit(0)
 
 if __name__ == "__main__":
     main()
