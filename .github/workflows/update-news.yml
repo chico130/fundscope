@@ -1,0 +1,34 @@
+name: Update News
+
+on:
+  schedule:
+    - cron: '0 */2 * * 1-5'  # cada 2 horas em dias uteis
+    - cron: '0 8,12 * * 0,6' # sab/dom: 08h e 12h UTC
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install deps
+        run: pip install requests
+
+      - name: Run update_news.py
+        env:
+          GNEWS_TOKEN:    ${{ secrets.GNEWS_TOKEN }}
+          FINNHUB_TOKEN:  ${{ secrets.FINNHUB_TOKEN }}
+        run: python update_news.py
+
+      - name: Commit news.json
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add news.json
+          git diff --staged --quiet || git commit -m "chore: update news.json [skip ci]"
+          git push
