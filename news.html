@@ -44,7 +44,6 @@
     .nav-link{font-size:var(--text-sm);color:var(--color-text-muted);padding:var(--space-2) var(--space-3);border-radius:var(--radius-md);transition:color var(--transition),background var(--transition);}
     .nav-link:hover{color:var(--color-text);background:var(--color-surface-offset);}
     .nav-link.active{color:var(--color-primary);font-weight:500;background:var(--color-primary-highlight);}
-    .nav-link.disabled{opacity:.35;cursor:default;pointer-events:none;}
     .theme-toggle{width:36px;height:36px;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;color:var(--color-text-muted);transition:color var(--transition),background var(--transition);}
     .theme-toggle:hover{color:var(--color-text);background:var(--color-surface-offset);}
     .page{max-width:1200px;margin:0 auto;padding:calc(80px + var(--space-10)) var(--space-6) var(--space-16);width:100%;}
@@ -66,7 +65,7 @@
     .news-hero{grid-column:1/-1;}
     @media(min-width:700px){.news-hero{grid-column:span 2;}}
     @media(min-width:1024px){.news-hero{grid-column:span 2;}}
-    .news-card{background:var(--color-surface);border:1px solid rgba(40,37,29,.07);border-radius:var(--radius-xl);overflow:hidden;cursor:pointer;transition:border-color var(--transition),box-shadow var(--transition),transform var(--transition);display:flex;flex-direction:column;}
+    .news-card{background:var(--color-surface);border:1px solid rgba(40,37,29,.07);border-radius:var(--radius-xl);overflow:hidden;cursor:pointer;transition:border-color var(--transition),box-shadow var(--transition),transform var(--transition);display:flex;flex-direction:column;contain:layout style;}
     .news-card:hover{border-color:var(--color-primary);box-shadow:var(--shadow-md);transform:translateY(-2px);}
     .news-card:active{transform:translateY(0);}
     .card-img{width:100%;object-fit:cover;background:var(--color-surface-offset);display:block;flex-shrink:0;}
@@ -84,7 +83,6 @@
     .card-footer{margin-top:auto;display:flex;align-items:flex-end;justify-content:space-between;gap:var(--space-3);flex-wrap:wrap;}
     .card-meta{font-size:var(--text-xs);color:var(--color-text-faint);display:flex;align-items:center;gap:var(--space-2);}
     .source-dot{width:4px;height:4px;border-radius:50%;background:var(--color-text-faint);}
-    /* IMPACT CHIPS + TOOLTIP */
     .impact-row{display:flex;align-items:center;gap:var(--space-2);flex-wrap:wrap;}
     .impact-sentiment{font-size:.65rem;font-weight:700;letter-spacing:.06em;padding:2px 6px;border-radius:var(--radius-sm);text-transform:uppercase;}
     .impact-sentiment.positive{background:#e8f5e0;color:#437a22;}
@@ -92,7 +90,6 @@
     .impact-sentiment.neutral{background:var(--color-surface-offset);color:var(--color-text-muted);}
     [data-theme="dark"] .impact-sentiment.positive{background:#1e3316;color:#6daa45;}
     [data-theme="dark"] .impact-sentiment.negative{background:#3a1a1e;color:#dd6974;}
-    /* ticker-chip com tooltip via CSS */
     .ticker-chip{
       position:relative;
       font-size:.65rem;font-weight:600;letter-spacing:.04em;padding:2px 7px;
@@ -109,6 +106,7 @@
       padding:4px 8px;border-radius:var(--radius-sm);
       box-shadow:var(--shadow-md);pointer-events:none;z-index:99;
     }
+    /* Skeleton loading */
     .skeleton{background:linear-gradient(90deg,var(--color-surface-offset) 25%,var(--color-surface) 50%,var(--color-surface-offset) 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;border-radius:var(--radius-xl);}
     @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
     /* MODAL */
@@ -196,7 +194,7 @@
   </main>
 
   <footer class="footer">
-    <p>© 2026 FundScope · <a href="https://github.com/chico130/fundscope">GitHub</a> · Fontes: GNews, Finnhub</p>
+    <p>© 2026 FundScope · <a href="https://github.com/chico130/fundscope">GitHub</a> · Fontes: GNews, NewsAPI, Finnhub</p>
   </footer>
 
   <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true">
@@ -226,9 +224,8 @@
   </div>
 
   <script>
-    // ── Nomes dos tickers para tooltip ──────────────────────────────────────
     const TICKER_NAMES = {
-      AAPL:'Apple',MSFT:'Microsoft',NVDA:'NVIDIA',GOOGL:'Alphabet (Google)',META:'Meta',
+      AAPL:'Apple',MSFT:'Microsoft',NVDA:'NVIDIA',GOOGL:'Alphabet',META:'Meta',
       AMD:'AMD',INTC:'Intel',TSLA:'Tesla',AVGO:'Broadcom',MU:'Micron',QCOM:'Qualcomm',
       ORCL:'Oracle',CRM:'Salesforce',ADBE:'Adobe',NOW:'ServiceNow',
       JPM:'JPMorgan',BAC:'Bank of America',GS:'Goldman Sachs',MS:'Morgan Stanley',
@@ -237,27 +234,27 @@
       XOM:'ExxonMobil',CVX:'Chevron',COP:'ConocoPhillips',SLB:'SLB',OXY:'Occidental',
       EOG:'EOG Resources',HAL:'Halliburton',PSX:'Phillips 66',MPC:'Marathon Petroleum',VLO:'Valero',
       NEE:'NextEra Energy',ENPH:'Enphase',FSLR:'First Solar',CEG:'Constellation Energy',
-      JNJ:'Johnson & Johnson',UNH:'UnitedHealth',PFE:'Pfizer',ABBV:'AbbVie',MRK:'Merck',
+      JNJ:'J&J',UNH:'UnitedHealth',PFE:'Pfizer',ABBV:'AbbVie',MRK:'Merck',
       LLY:'Eli Lilly',TMO:'Thermo Fisher',AMGN:'Amgen',GILD:'Gilead',ISRG:'Intuitive Surgical',
       AMZN:'Amazon',WMT:'Walmart',HD:'Home Depot',MCD:"McDonald's",SBUX:'Starbucks',
       TGT:'Target',COST:'Costco',NKE:'Nike',
       FCX:'Freeport-McMoRan',NEM:'Newmont',GOLD:'Barrick Gold',WPM:'Wheaton Precious',
       LMT:'Lockheed Martin',RTX:'RTX Corp.',NOC:'Northrop Grumman',
       RIVN:'Rivian',GM:'General Motors',
-      TLT:'iShares 20Y Treasury',SPY:'S&P 500 ETF',QQQ:'Nasdaq 100 ETF',
+      TLT:'20Y Treasury ETF',SPY:'S&P 500 ETF',QQQ:'Nasdaq 100 ETF',
       VOO:'Vanguard S&P 500',GLD:'SPDR Gold',SLV:'iShares Silver'
     };
 
-    // ── Imagens fallback por categoria ──────────────────────────────────────
     const CAT_IMG = {
+      'Geopo\u00edtica':'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80',
       'Geopol\u00edtica':'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80',
-      'Macro':          'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&q=80',
-      'Energia':        'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80',
-      'Com\u00e9rcio':  'https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=800&q=80',
-      'Mercados':       'https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80',
-      'Tecnologia':     'https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80',
-      'Clima':          'https://images.unsplash.com/photo-1569025743873-ea3a9ade89f9?w=800&q=80',
-      'Global':         'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80'
+      'Macro':        'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&q=80',
+      'Energia':      'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80',
+      'Com\u00e9rcio':'https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=800&q=80',
+      'Mercados':     'https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80',
+      'Tecnologia':   'https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80',
+      'Clima':        'https://images.unsplash.com/photo-1569025743873-ea3a9ade89f9?w=800&q=80',
+      'Global':       'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80'
     };
     const FALLBACK_IMG = 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80';
 
@@ -266,7 +263,7 @@
       return CAT_IMG[a.category] || FALLBACK_IMG;
     }
 
-    // ── Tema ────────────────────────────────────────────────────────────────
+    // Tema
     (function(){
       const t=document.querySelector('[data-theme-toggle]'),r=document.documentElement;
       let d=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
@@ -280,7 +277,6 @@
       if(t)t.addEventListener('click',()=>set(d==='dark'?'light':'dark'));
     })();
 
-    // ── Utils ───────────────────────────────────────────────────────────────
     function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
     function timeAgo(isoStr){
@@ -304,80 +300,66 @@
     }
 
     function tickerChip(t, stopProp){
-      const name = TICKER_NAMES[t] || '';
-      const dataN = name ? ` data-name="${esc(name)}"` : '';
-      const click = stopProp
-        ? `onclick="event.stopPropagation();goToMarkets('${t}')"`
-        : `onclick="goToMarkets('${t}')"`;
+      const name=TICKER_NAMES[t]||'';
+      const dataN=name?` data-name="${esc(name)}"`:"\'";
+      const click=stopProp
+        ?`onclick="event.stopPropagation();goToMarkets('${t}')"`
+        :`onclick="goToMarkets('${t}')"` ;
       return `<button class="ticker-chip"${dataN} ${click}>${esc(t)}</button>`;
     }
 
     function impactRowHTML(impact, stopProp){
       if(!impact||!impact.tickers||!impact.tickers.length)
         return '<span style="font-size:var(--text-xs);color:var(--color-text-faint)">Impacto difuso</span>';
-      return sentimentHTML(impact.sentiment) +
-             impact.tickers.map(t=>tickerChip(t,stopProp)).join('');
+      return sentimentHTML(impact.sentiment)+impact.tickers.map(t=>tickerChip(t,stopProp)).join('');
     }
 
     function goToMarkets(ticker){
-      window.location.href = 'markets.html?ticker=' + encodeURIComponent(ticker);
+      window.location.href='markets.html?ticker='+encodeURIComponent(ticker);
     }
 
-    // ── Conteudo do modal (parágrafos mais ricos) ────────────────────────────
+    // Conteudo do modal — divide em paragrafos
     function buildModalContent(a){
-      // Junta title, summary e content, remove duplicados, divide em frases
-      const parts = [];
-      const summary = (a.summary || '').trim();
-      const content = (a.content || '').trim();
+      const parts=[];
+      const summary=(a.summary||'').trim();
+      const content=(a.content||'').trim();
+      const titleLow=(a.title||'').toLowerCase().slice(0,60);
 
-      // Adiciona summary se existir e nao for identico ao titulo
-      if(summary && summary.toLowerCase().slice(0,60) !== (a.title||'').toLowerCase().slice(0,60)){
+      if(summary && summary.toLowerCase().slice(0,60)!==titleLow)
         parts.push(summary);
-      }
 
-      // Adiciona content se diferente do summary
-      if(content && content.toLowerCase().slice(0,80) !== summary.toLowerCase().slice(0,80)){
-        // divide por \n ou por ". " para criar paragrafos
-        const subs = content.split(/\n+/).filter(s=>s.trim().length > 30);
-        if(subs.length > 1){
-          subs.forEach(s=>parts.push(s.trim()));
+      if(content && content.toLowerCase().slice(0,80)!==summary.toLowerCase().slice(0,80)){
+        const subs=content.split(/\n+/).filter(s=>s.trim().length>30);
+        if(subs.length>1){
+          subs.forEach(s=>{if(!parts.some(p=>p.slice(0,60)===s.slice(0,60)))parts.push(s.trim());});
         } else {
-          // divide por frases se o content for um bloco unico
-          const sentences = content.match(/[^.!?]+[.!?]+/g) || [content];
-          const grouped = [];
-          let buf = '';
-          sentences.forEach(s=>{
-            buf += s + ' ';
-            if(buf.length > 180){ grouped.push(buf.trim()); buf = ''; }
-          });
-          if(buf.trim()) grouped.push(buf.trim());
-          grouped.forEach(g=>{ if(!parts.some(p=>p.slice(0,60)===g.slice(0,60))) parts.push(g); });
+          const sentences=content.match(/[^.!?]+[.!?]+/g)||[content];
+          let buf='';
+          const grouped=[];
+          sentences.forEach(s=>{buf+=s+' ';if(buf.length>220){grouped.push(buf.trim());buf='';} });
+          if(buf.trim())grouped.push(buf.trim());
+          grouped.forEach(g=>{if(!parts.some(p=>p.slice(0,60)===g.slice(0,60)))parts.push(g);});
         }
       }
 
-      // Se ainda nao ha conteudo, usa o titulo como unico paragrafo
-      if(!parts.length) parts.push(a.title || '');
-
-      // Remove partes demasiado curtas ou que sejam o titulo repetido
-      const titleLow = (a.title||'').toLowerCase().slice(0,60);
-      const filtered = parts.filter(p=>p.length>40 && p.toLowerCase().slice(0,60)!==titleLow);
-      const final = filtered.length ? filtered : parts;
-
-      return final.slice(0,5).map(p=>`<p>${esc(p)}</p>`).join('');
+      if(!parts.length)parts.push(a.title||'');
+      const filtered=parts.filter(p=>p.length>40&&p.toLowerCase().slice(0,60)!==titleLow);
+      const final=filtered.length?filtered:parts;
+      return final.slice(0,6).map(p=>`<p>${esc(p)}</p>`).join('');
     }
 
-    // ── State ───────────────────────────────────────────────────────────────
-    let allArticles = [];
-    let activeFilter = 'all';
+    let allArticles=[];
+    let activeFilter='all';
 
-    // ── Card HTML ───────────────────────────────────────────────────────────
+    // Card HTML — com contain:layout style para isolar repaint
     function cardHTML(a, isHero){
-      const ago = timeAgo(a.publishedAt);
-      const img = getImg(a);
-      const fallback = CAT_IMG[a.category] || FALLBACK_IMG;
+      const ago=timeAgo(a.publishedAt);
+      const img=getImg(a);
+      const fallback=CAT_IMG[a.category]||FALLBACK_IMG;
+      const snippet=a.summary||a.content||'';
       return `
         <article class="news-card${isHero?' news-hero':''}" data-id="${a.id}" tabindex="0" role="button" aria-label="${esc(a.title)}">
-          <img class="card-img" src="${esc(img)}" alt="" loading="lazy"
+          <img class="card-img" src="${esc(img)}" alt="" loading="lazy" decoding="async"
             onerror="this.onerror=null;this.src='${esc(fallback)}'">
           <div class="card-body">
             <div class="card-top">
@@ -385,7 +367,7 @@
               ${heatHTML(a.heat||1)}
             </div>
             <h2 class="card-title">${esc(a.title)}</h2>
-            <p class="card-summary">${esc(a.summary||a.content||'')}</p>
+            <p class="card-summary">${esc(snippet)}</p>
             <div class="card-footer">
               <div class="impact-row">
                 ${sentimentHTML(a.impact?.sentiment||'neutral')}
@@ -401,111 +383,114 @@
         </article>`;
     }
 
+    // Render em chunks com requestAnimationFrame para nao bloquear o thread
     function renderGrid(articles){
-      const grid = document.getElementById('newsGrid');
+      const grid=document.getElementById('newsGrid');
       if(!articles.length){
-        grid.innerHTML = `<div class="state-box" style="grid-column:1/-1">
+        grid.innerHTML=`<div class="state-box" style="grid-column:1/-1">
           <div class="state-icon">\uD83D\uDCF0</div>
           <p class="state-title">Sem not\u00edcias nesta categoria</p>
           <p style="font-size:var(--text-sm);color:var(--color-text-faint);margin-top:var(--space-2)">Tenta outra categoria ou volta mais tarde.</p>
         </div>`;
         return;
       }
-      grid.innerHTML = articles.map((a,i)=>cardHTML(a,i===0)).join('');
-      grid.querySelectorAll('.news-card').forEach(card=>{
-        const id = Number(card.dataset.id);
-        const open = ()=>openModal(allArticles.find(a=>a.id===id));
-        card.addEventListener('click', open);
-        card.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' ') open(); });
+
+      // Renderiza os primeiros 6 imediatamente (above-the-fold)
+      const first=articles.slice(0,6);
+      const rest=articles.slice(6);
+      grid.innerHTML=first.map((a,i)=>cardHTML(a,i===0)).join('');
+
+      // Restantes em chunks de 6, via rAF, para nao bloquear
+      if(rest.length){
+        let idx=0;
+        function renderChunk(){
+          const chunk=rest.slice(idx,idx+6);
+          if(!chunk.length){
+            attachCardListeners();
+            return;
+          }
+          chunk.forEach(a=>{
+            const div=document.createElement('div');
+            div.innerHTML=cardHTML(a,false);
+            grid.appendChild(div.firstElementChild);
+          });
+          idx+=6;
+          requestAnimationFrame(renderChunk);
+        }
+        requestAnimationFrame(renderChunk);
+      } else {
+        attachCardListeners();
+      }
+    }
+
+    function attachCardListeners(){
+      document.querySelectorAll('.news-card').forEach(card=>{
+        if(card.dataset.listenerAttached) return;
+        card.dataset.listenerAttached='1';
+        const id=Number(card.dataset.id);
+        const open=()=>openModal(allArticles.find(a=>a.id===id));
+        card.addEventListener('click',open);
+        card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' ')open();});
       });
     }
 
     function applyFilter(f){
-      activeFilter = f;
-      const filtered = f==='all' ? allArticles : allArticles.filter(a=>a.category===f);
+      activeFilter=f;
+      const filtered=f==='all'?allArticles:allArticles.filter(a=>a.category===f);
       renderGrid(filtered);
     }
 
-    // ── Filtros dinamicos (so mostra categorias com noticias) ───────────────
     function buildFilters(articles){
-      const cats = ['all', ...new Set(articles.map(a=>a.category))];
-      const icons = {'all':'\uD83C\uDF10','Geopol\u00edtica':'\uD83C\uDF0D','Macro':'\uD83D\uDCCA',
+      const cats=['all',...new Set(articles.map(a=>a.category))];
+      const icons={'all':'\uD83C\uDF10','Geopol\u00edtica':'\uD83C\uDF0D','Macro':'\uD83D\uDCCA',
         'Energia':'\u26A1','Com\u00e9rcio':'\uD83D\uDEA2','Mercados':'\uD83D\uDCB0',
         'Tecnologia':'\uD83D\uDCBB','Clima':'\uD83C\uDF31','Global':'\uD83C\uDF10'};
-      const labels = {'all':'Todas'};
-      document.getElementById('filters').innerHTML = cats.map(c=>{
-        const label = labels[c] || c;
-        const icon = icons[c] || '\uD83D\uDCCC';
+      const labels={'all':'Todas'};
+      document.getElementById('filters').innerHTML=cats.map(c=>{
+        const label=labels[c]||c;
+        const icon=icons[c]||'\uD83D\uDCCC';
         return `<button class="filter-btn${c===activeFilter?' active':''}" data-filter="${esc(c)}">${icon} ${esc(label)}</button>`;
       }).join('');
-      document.getElementById('filters').addEventListener('click', e=>{
-        const btn = e.target.closest('.filter-btn');
-        if(!btn) return;
+      document.getElementById('filters').addEventListener('click',e=>{
+        const btn=e.target.closest('.filter-btn');
+        if(!btn)return;
         document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
         btn.classList.add('active');
         applyFilter(btn.dataset.filter);
       });
     }
 
-    // ── Modal ───────────────────────────────────────────────────────────────
-    const overlay   = document.getElementById('modalOverlay');
-    const modalImg  = document.getElementById('modalImg');
-    const modalTitle   = document.getElementById('modalTitle');
-    const modalContent = document.getElementById('modalContent');
-    const modalImpact  = document.getElementById('modalImpact');
-    const modalSource  = document.getElementById('modalSource');
-    const modalLink    = document.getElementById('modalLink');
-    const modalCatRow  = document.getElementById('modalCatRow');
+    // Modal
+    const overlay=document.getElementById('modalOverlay');
+    const modalImg=document.getElementById('modalImg');
+    const modalTitle=document.getElementById('modalTitle');
+    const modalContent=document.getElementById('modalContent');
+    const modalImpact=document.getElementById('modalImpact');
+    const modalSource=document.getElementById('modalSource');
+    const modalLink=document.getElementById('modalLink');
+    const modalCatRow=document.getElementById('modalCatRow');
 
     function openModal(a){
-      if(!a) return;
-      const img = getImg(a);
-      const fallback = CAT_IMG[a.category] || FALLBACK_IMG;
-      modalImg.src = img;
-      modalImg.onerror = function(){ this.onerror=null; this.src=fallback; };
-      modalImg.alt = a.title;
-      modalTitle.textContent = a.title;
-      modalContent.innerHTML = buildModalContent(a);
-      modalImpact.innerHTML = impactRowHTML(a.impact, false);
-      modalSource.textContent = (a.source||'') + (a.publishedAt ? '  \u00b7  ' + timeAgo(a.publishedAt) : '');
-      modalLink.href = a.url || '#';
-      modalCatRow.innerHTML = `<span class="cat-badge">${esc(a.icon||'\uD83C\uDF10')} ${esc(a.category)}</span>${heatHTML(a.heat||1)}`;
+      if(!a)return;
+      const img=getImg(a);
+      const fallback=CAT_IMG[a.category]||FALLBACK_IMG;
+      modalImg.src=img;
+      modalImg.onerror=function(){this.onerror=null;this.src=fallback;};
+      modalImg.alt=a.title;
+      modalTitle.textContent=a.title;
+      modalContent.innerHTML=buildModalContent(a);
+      modalImpact.innerHTML=impactRowHTML(a.impact,false);
+      modalSource.textContent=(a.source||'')+(a.publishedAt?' \u00b7 '+timeAgo(a.publishedAt):'');
+      modalLink.href=a.url||'#';
+      modalCatRow.innerHTML=`<span class="cat-badge">${esc(a.icon||'\uD83C\uDF10')} ${esc(a.category)}</span>${heatHTML(a.heat||1)}`;
       overlay.classList.add('open');
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow='hidden';
     }
 
     function closeModal(){
       overlay.classList.remove('open');
-      document.body.style.overflow = '';
+      document.body.style.overflow='';
     }
 
-    document.getElementById('modalClose').addEventListener('click', closeModal);
-    overlay.addEventListener('click', e=>{ if(e.target===overlay) closeModal(); });
-    document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
-
-    // ── Load ─────────────────────────────────────────────────────────────────
-    async function loadNews(){
-      try{
-        const r = await fetch('news.json?t='+Date.now());
-        if(!r.ok) throw new Error('HTTP '+r.status);
-        const data = await r.json();
-        allArticles = data.articles || [];
-        if(data.updated){
-          const d = new Date(data.updated);
-          document.getElementById('updatedLabel').textContent =
-            '\u00daltima atualiza\u00e7\u00e3o: '+d.toLocaleString('pt',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});
-        }
-        buildFilters(allArticles);
-        applyFilter(activeFilter);
-      }catch(e){
-        document.getElementById('newsGrid').innerHTML = `<div class="state-box" style="grid-column:1/-1">
-          <div class="state-icon">\u26A0\uFE0F</div>
-          <p class="state-title">N\u00e3o foi poss\u00edvel carregar as not\u00edcias</p>
-          <p style="font-size:var(--text-sm);color:var(--color-text-faint);margin-top:var(--space-2)">Corre o workflow <strong>Update News</strong> no GitHub Actions para gerar o news.json.</p>
-        </div>`;
-      }
-    }
-    loadNews();
-  </script>
-</body>
-</html>
+    document.getElementById('modalClose').addEventListener('click',closeModal);
+    overlay.addEventListener('click',

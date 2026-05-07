@@ -7,6 +7,7 @@ Gera: news.json
 
 import json, os, re, sys, time, datetime, traceback, requests
 from html.parser import HTMLParser
+from urllib.parse import urlparse
 
 GNEWS_TOKEN   = os.environ.get("GNEWS_TOKEN", "").strip()
 NEWSAPI_TOKEN = os.environ.get("NEWSAPI_TOKEN", "").strip()
@@ -74,22 +75,23 @@ CATEGORY_MAP = [
 # ---------------------------------------------------------------------------
 
 HEADERS = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36",
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
     "Accept-Language": "en-US,en;q=0.9",
+    "Accept-Encoding": "gzip, deflate",
 }
 
-# Dominios que bloqueiam scrapers
+# Dominios que bloqueiam scraping (paywall total)
 BLOCKED_DOMAINS = [
     "wsj.com", "ft.com", "bloomberg.com", "nytimes.com",
     "washingtonpost.com", "economist.com", "barrons.com",
-    "thestreet.com", "seekingalpha.com",
+    "seekingalpha.com",
 ]
 
 def sanitize(text):
     if not isinstance(text, str):
         return str(text) if text is not None else ""
-    return text.encode('utf-8', errors='replace').decode('utf-8', errors='replace')
+    return text.encode("utf-8", errors="replace").decode("utf-8", errors="replace")
 
 def classify(text):
     low = text.lower()
@@ -124,10 +126,10 @@ def fallback_img(cat):
 
 def clean_text(text):
     if not text: return ""
-    text = re.sub(r'\.\.\.\s*\[\d+ chars\]$', '', text)
-    text = re.sub(r'\[\+\d+ chars\]$', '', text)
-    text = re.sub(r'<[^>]+>', ' ', text)
-    text = re.sub(r'\s+', ' ', text).strip()
+    text = re.sub(r"\.\.\.\s*\[\d+ chars\]$", "", text)
+    text = re.sub(r"\[\+\d+ chars\]$", "", text)
+    text = re.sub(r"<[^>]+>", " ", text)
+    text = re.sub(r"\s+", " ", text).strip()
     return sanitize(text)
 
 def now_utc():
@@ -139,115 +141,131 @@ def ts_to_iso(ts):
     except:
         return ""
 
+def is_meaningful(text, min_len=120):
+    """True se o texto tem conteudo real (nao e apenas o titulo repetido como source)."""
+    if not text or len(text) < min_len:
+        return False
+    # Padrao tipico de artigos Finnhub via Google News: "Texto Reuters" ou "Texto Reuters\n"
+    if re.match(r'^.{10,120}\s+(Reuters|AP|AFP|Bloomberg|CNBC|CNN)\s*$', text.strip()):
+        return False
+    return True
+
 # --- scraping ---------------------------------------------------------------
 
 class TextExtractor(HTMLParser):
-    """Extrai paragrafos e divs de texto de HTML."""
+    """Extrai texto de paragrafos, divs e articles."""
+    BLOCK_TAGS = {"p", "div", "article", "section", "li", "blockquote", "td", "h2", "h3"}
+    SKIP_TAGS  = {"script", "style", "nav", "header", "footer", "aside",
+                  "figure", "figcaption", "noscript", "iframe", "form",
+                  "button", "input", "select", "textarea", "menu", "svg"}
+
     def __init__(self):
         super().__init__()
-        self._buf = ""
+        self._buf   = ""
         self._paras = []
-        self._depth = 0
-        self._active_tags = {"p", "div", "article", "section", "li", "blockquote", "td"}
-        self._skip_tags = {"script", "style", "nav", "header", "footer", "aside",
-                           "figure", "figcaption", "noscript", "iframe", "form",
-                           "button", "input", "select", "textarea", "menu"}
-        self._skip = 0
-        self._in_active = False
+        self._skip  = 0
 
     def handle_starttag(self, tag, attrs):
-        if tag in self._skip_tags:
+        if tag in self.SKIP_TAGS:
             self._skip += 1
-        if self._skip == 0 and tag in self._active_tags:
+            return
+        if self._skip == 0 and tag in self.BLOCK_TAGS:
             if self._buf.strip():
-                t = re.sub(r'\s+', ' ', self._buf).strip()
-                if len(t) > 50:
-                    self._paras.append(t)
-            self._buf = ""
-            self._in_active = True
+                self._flush()
 
     def handle_endtag(self, tag):
-        if tag in self._skip_tags and self._skip > 0:
+        if tag in self.SKIP_TAGS and self._skip > 0:
             self._skip -= 1
-        if self._skip == 0 and tag in self._active_tags and self._in_active:
-            t = re.sub(r'\s+', ' ', self._buf).strip()
-            if len(t) > 50:
-                self._paras.append(t)
-            self._buf = ""
-            self._in_active = False
+            return
+        if self._skip == 0 and tag in self.BLOCK_TAGS:
+            self._flush()
 
     def handle_data(self, data):
         if self._skip == 0:
             self._buf += data
 
-    def get_text(self, max_paras=12):
-        # flush residuo
-        if self._buf.strip():
-            t = re.sub(r'\s+', ' ', self._buf).strip()
-            if len(t) > 50:
-                self._paras.append(t)
-        # filtrar paragrafos com pouco conteudo informativo
-        good = []
-        seen_short = set()
+    def _flush(self):
+        t = re.sub(r"\s+", " ", self._buf).strip()
+        if len(t) > 55:
+            self._paras.append(t)
+        self._buf = ""
+
+    def get_text(self, max_paras=14):
+        self._flush()
+        seen, good = set(), []
         for p in self._paras:
-            if len(p) < 60: continue
-            if p[:40] in seen_short: continue
-            seen_short.add(p[:40])
+            key = p[:50]
+            if key in seen: continue
+            seen.add(key)
+            # Filtrar frases tipicas de paywall/cookie/subscribe
+            low = p.lower()
+            if any(x in low for x in ["subscribe","cookie","sign in","log in","create account",
+                                       "privacy policy","terms of service","advertisement",
+                                       "enable javascript","disable adblock"]):
+                continue
             good.append(p)
         return "\n\n".join(good[:max_paras])
 
 
-def resolve_google_news_url(url, timeout=8):
-    """Resolve redirect do Google News para URL real do artigo."""
+def resolve_url(url, timeout=8):
+    """
+    Resolve Google News RSS redirects para o URL real.
+    Usa GET leve (stream) em vez de HEAD para garantir redirect correto.
+    """
     if "news.google.com" not in url:
         return url
     try:
-        r = requests.head(url, headers=HEADERS, timeout=timeout,
-                          allow_redirects=True)
+        # GET com stream=True nao faz download do body, so segue redirects
+        r = requests.get(url, headers=HEADERS, timeout=timeout,
+                         allow_redirects=True, stream=True)
+        r.close()
         final = r.url
-        if "news.google.com" not in final:
-            return final
-        # head nao funcionou, tenta GET leve
-        r2 = requests.get(url, headers=HEADERS, timeout=timeout,
-                          allow_redirects=True)
-        return r2.url if "news.google.com" not in r2.url else url
-    except:
+        return final if "news.google.com" not in final else url
+    except Exception as ex:
+        print(f"    [resolve skip] {url[:60]} — {ex}")
         return url
 
 
-def scrape_article(url, existing="", min_len=300):
-    """Faz scrape do artigo e retorna o texto mais longo entre existing e scraped."""
-    if len(existing) >= min_len and not any(
-        b in (existing or "") for b in ["Reuters\n", "Reuters ", "AP\n", "Reuters$"]
-    ):
+def scrape_article(url, existing=""):
+    """
+    Faz scrape do artigo. Sempre tenta se o conteudo existente nao for significativo.
+    Retorna o texto mais longo e mais rico.
+    """
+    # So ignora o scrape se ja tiver conteudo real bom
+    if is_meaningful(existing, min_len=400):
         return existing
 
     if not url or not url.startswith("http"):
         return existing
 
     # Resolver Google News redirect
-    real_url = resolve_google_news_url(url)
+    real_url = resolve_url(url)
+    if real_url == url and "news.google.com" in url:
+        # Nao conseguiu resolver, ignora
+        return existing
 
-    if any(b in real_url for b in BLOCKED_DOMAINS):
+    domain = urlparse(real_url).netloc.replace("www.", "")
+    if any(b in domain for b in BLOCKED_DOMAINS):
+        print(f"    [blocked] {domain}")
         return existing
 
     try:
-        r = requests.get(real_url, headers=HEADERS, timeout=10,
-                         allow_redirects=True)
+        r = requests.get(real_url, headers=HEADERS, timeout=12, allow_redirects=True)
         if r.status_code != 200:
             return existing
-        ct = r.headers.get("Content-Type", "")
-        if "text/html" not in ct:
+        if "text/html" not in r.headers.get("Content-Type", ""):
             return existing
+
         parser = TextExtractor()
-        parser.feed(r.text[:120000])
-        scraped = sanitize(parser.get_text(max_paras=12))
-        if len(scraped) > max(len(existing), 150):
-            print(f"    [scrape OK] {real_url[:70]} ({len(scraped)} chars)")
+        parser.feed(r.text[:150000])
+        scraped = sanitize(parser.get_text(max_paras=14))
+
+        if len(scraped) > max(len(existing), 200):
+            print(f"    [scrape OK] {domain} ({len(scraped)} chars)")
             return scraped
         return existing
     except Exception as ex:
-        print(f"    [scrape skip] {str(real_url)[:60]} — {ex}")
+        print(f"    [scrape err] {str(real_url)[:60]} — {ex}")
         return existing
 
 
@@ -289,8 +307,8 @@ def fetch_gnews():
             articles.append({
                 "id": abs(hash(title)) % (10**9),
                 "source": sanitize((a.get("source") or {}).get("name", "GNews")),
-                "title": title[:200], "summary": desc[:500],
-                "content": enriched[:4000], "url": article_url,
+                "title": title[:200], "summary": desc[:600],
+                "content": enriched[:5000], "url": article_url,
                 "image": img, "publishedAt": sanitize(a.get("publishedAt", "")),
                 "category": cat, "icon": icon,
                 "impact": impact, "heat": heat_score(impact), "feed": "gnews"
@@ -370,8 +388,8 @@ def _ingest_newsapi(a, articles, seen, feed):
     articles.append({
         "id": abs(hash(title)) % (10**9),
         "source": sanitize((a.get("source") or {}).get("name", "NewsAPI")),
-        "title": title[:200], "summary": desc[:500],
-        "content": enriched[:4000], "url": url,
+        "title": title[:200], "summary": desc[:600],
+        "content": enriched[:5000], "url": url,
         "image": img, "publishedAt": sanitize(a.get("publishedAt", "")),
         "category": cat, "icon": icon,
         "impact": impact, "heat": heat_score(impact), "feed": feed
@@ -392,6 +410,7 @@ def fetch_finnhub():
     except Exception:
         print(f"  [WARN Finnhub]:\n{traceback.format_exc()}")
         return []
+
     articles, seen = [], set()
     for a in data[:60]:
         title = sanitize((a.get("headline") or "").strip())
@@ -399,24 +418,31 @@ def fetch_finnhub():
         seen.add(title)
         summary = clean_text(a.get("summary") or "")
         url = sanitize(a.get("url", ""))
-        # Sempre tenta scrape (muitos artigos do Finnhub vem via Google News)
-        enriched = scrape_article(url, summary, min_len=50)
-        full_text = title + " " + (enriched or summary)
+
+        # Finnhub usa muito Google News RSS — scrape sempre (summary e apenas o titulo)
+        enriched = scrape_article(url, "")
+        # Se o scrape falhar, usa o summary original (mesmo que curto)
+        content_final = enriched if is_meaningful(enriched, 100) else summary
+
+        full_text = title + " " + content_final
         cat, icon = classify(full_text)
         impact    = get_impact(full_text)
         img = sanitize(a.get("image") or "")
         if not img or len(img) < 12: img = fallback_img(cat)
         iso = ts_to_iso(a.get("datetime", 0))
+
         articles.append({
             "id": abs(hash(title)) % (10**9),
             "source": sanitize(a.get("source", "Finnhub")),
-            "title": title[:200], "summary": summary[:500] or enriched[:500],
-            "content": enriched[:4000], "url": url,
+            "title": title[:200],
+            "summary": (content_final[:600] if not is_meaningful(summary, 80) else summary[:600]),
+            "content": content_final[:5000], "url": url,
             "image": img, "publishedAt": iso,
             "category": cat, "icon": icon,
             "impact": impact, "heat": heat_score(impact), "feed": "finnhub"
         })
         if len(articles) >= 25: break
+
     print(f"  Finnhub: {len(articles)} artigos")
     return articles
 
@@ -462,8 +488,11 @@ def main():
         avg = sum(len(a["content"]) for a in articles if a["category"] == cat) // max(n, 1)
         print(f"  {cat}: {n} artigos (media {avg} chars)")
 
-    out = {"updated": now_utc().isoformat(), "articles": articles}
+    # Estatistica de conteudo
+    com_content = sum(1 for a in articles if is_meaningful(a["content"], 150))
+    print(f"  Artigos com conteudo real: {com_content}/{len(articles)}")
 
+    out = {"updated": now_utc().isoformat(), "articles": articles}
     try:
         payload = json.dumps(out, ensure_ascii=True, indent=2)
     except Exception as e:
