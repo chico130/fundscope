@@ -69,56 +69,6 @@
     .quick-chips{display:flex;flex-wrap:wrap;gap:var(--space-2);justify-content:center;margin-bottom:var(--space-12);}
     .chip{font-size:var(--text-xs);padding:var(--space-1) var(--space-3);border-radius:var(--radius-full);border:1px solid var(--color-border);background:var(--color-surface);color:var(--color-text-muted);cursor:pointer;transition:all var(--transition);font-weight:500;}
     .chip:hover{border-color:var(--color-primary);color:var(--color-primary);background:var(--color-primary-highlight);}
-    .section-label{font-size:var(--text-xs);color:var(--color-text-faint);letter-spacing:.07em;text-transform:uppercase;font-weight:500;margin-bottom:var(--space-4);}
-    .live-badge{display:inline-flex;align-items:center;gap:5px;font-size:var(--text-xs);color:var(--color-success);margin-bottom:var(--space-2);font-weight:500;}
-    .live-dot{width:7px;height:7px;border-radius:50%;background:var(--color-success);animation:pulse 2s ease-in-out infinite;}
-    @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.85)}}
-    .watchlist-header{display:flex;align-items:center;justify-content:space-between;width:100%;max-width:680px;margin-bottom:var(--space-3);}
-    .watchlist-edit-btn{font-size:var(--text-xs);color:var(--color-primary);padding:var(--space-1) var(--space-2);border-radius:var(--radius-md);border:1px solid var(--color-primary-highlight);background:var(--color-primary-highlight);transition:all var(--transition);display:inline-flex;align-items:center;gap:4px;font-weight:500;}
-    .watchlist-edit-btn:hover{background:var(--color-primary);color:#fff;}
-    .cards-row{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-4);width:100%;max-width:680px;}
-    .ticker-card{background:var(--color-surface);border:1px solid rgba(40,37,29,.08);border-radius:var(--radius-xl);padding:var(--space-4) var(--space-5);cursor:pointer;text-align:left;transition:border-color var(--transition),box-shadow var(--transition),transform var(--transition);position:relative;overflow:hidden;}
-    .ticker-card:hover{border-color:var(--color-primary);box-shadow:var(--shadow-md);transform:translateY(-2px);}
-    .ticker-card:active{transform:translateY(0);}
-    .ticker-symbol{font-size:var(--text-sm);font-weight:600;color:var(--color-text);margin-bottom:var(--space-1);letter-spacing:.02em;}
-    .ticker-name{font-size:var(--text-xs);color:var(--color-text-muted);margin-bottom:var(--space-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-    .ticker-price{font-size:var(--text-sm);font-weight:500;color:var(--color-text);font-variant-numeric:tabular-nums;}
-    .ticker-change{font-size:var(--text-xs);font-weight:500;font-variant-numeric:tabular-nums;margin-top:var(--space-1);}
-    .ticker-change.up{color:var(--color-success);}
-    .ticker-change.down{color:var(--color-notification);}
-    .sparkline{position:absolute;bottom:0;right:0;opacity:.15;pointer-events:none;}
-    .skeleton{background:linear-gradient(90deg,var(--color-surface-offset) 25%,var(--color-surface) 50%,var(--color-surface-offset) 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;border-radius:var(--radius-md);}
-    @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
-    .wl-modal-overlay{position:fixed;inset:0;background:rgba(20,19,18,.55);backdrop-filter:blur(6px);z-index:300;display:flex;align-items:center;justify-content:center;padding:var(--space-4);opacity:0;pointer-events:none;transition:opacity var(--transition);}
-    .wl-modal-overlay.open{opacity:1;pointer-events:all;}
-    .wl-modal{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-2xl);padding:var(--space-6);width:100%;max-width:420px;box-shadow:var(--shadow-lg);transform:translateY(12px);transition:transform var(--transition);}
-    .wl-modal-overlay.open .wl-modal{transform:translateY(0);}
-    .wl-modal-title{font-size:var(--text-base);font-weight:600;margin-bottom:var(--space-1);}
-    .wl-modal-sub{font-size:var(--text-xs);color:var(--color-text-muted);margin-bottom:var(--space-5);}
-    .wl-slots{display:flex;flex-direction:column;gap:var(--space-3);margin-bottom:var(--space-5);}
-    .wl-slot{display:flex;align-items:center;gap:var(--space-3);}
-    .wl-slot-label{font-size:var(--text-xs);color:var(--color-text-muted);min-width:52px;}
-    .wl-slot-input{flex:1;background:var(--color-bg);border:1.5px solid var(--color-border);border-radius:var(--radius-md);padding:var(--space-2) var(--space-3);font-size:var(--text-sm);color:var(--color-text);outline:none;text-transform:uppercase;transition:border-color var(--transition);}
-    .wl-slot-input:focus{border-color:var(--color-primary);}
-    .wl-actions{display:flex;gap:var(--space-3);justify-content:flex-end;}
-    .wl-btn{padding:var(--space-2) var(--space-5);border-radius:var(--radius-md);font-size:var(--text-sm);font-weight:500;transition:all var(--transition);}
-    .wl-btn-cancel{border:1px solid var(--color-border);color:var(--color-text-muted);}
-    .wl-btn-cancel:hover{background:var(--color-surface-offset);}
-    .wl-btn-save{background:var(--color-primary);color:#fff;border:1px solid transparent;}
-    .wl-btn-save:hover{background:var(--color-primary-hover);}
-    .compare-section{width:100%;max-width:680px;margin-top:var(--space-8);}
-    .compare-title{font-size:var(--text-xs);color:var(--color-text-faint);letter-spacing:.07em;text-transform:uppercase;font-weight:500;margin-bottom:var(--space-3);}
-    .compare-row{display:flex;gap:var(--space-2);align-items:center;flex-wrap:wrap;}
-    .compare-input{background:var(--color-surface);border:1.5px solid var(--color-border);border-radius:var(--radius-full);padding:var(--space-2) var(--space-4);font-size:var(--text-sm);color:var(--color-text);outline:none;width:110px;text-transform:uppercase;transition:border-color var(--transition);}
-    .compare-input:focus{border-color:var(--color-primary);}
-    .compare-btn{padding:var(--space-2) var(--space-4);border-radius:var(--radius-full);background:var(--color-primary);color:#fff;font-size:var(--text-sm);font-weight:500;border:none;transition:background var(--transition);}
-    .compare-btn:hover{background:var(--color-primary-hover);}
-    .compare-btn-clear{padding:var(--space-2) var(--space-3);border-radius:var(--radius-full);border:1px solid var(--color-border);color:var(--color-text-muted);font-size:var(--text-sm);transition:all var(--transition);}
-    .compare-btn-clear:hover{background:var(--color-surface-offset);}
-    .compare-chart-wrap{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-5);margin-top:var(--space-4);position:relative;height:200px;display:none;}
-    .compare-chart-wrap.visible{display:block;}
-    .compare-legend{display:flex;gap:var(--space-4);font-size:var(--text-xs);color:var(--color-text-muted);margin-top:var(--space-3);}
-    .compare-legend-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:4px;}
     .footer{padding:var(--space-6);text-align:center;font-size:var(--text-xs);color:var(--color-text-faint);border-top:1px solid var(--color-divider);}
     .footer a{color:var(--color-text-muted);transition:color var(--transition);}
     .footer a:hover{color:var(--color-primary);}
@@ -153,7 +103,6 @@
       .header{padding:var(--space-3) var(--space-4);}
       .nav-link .nav-label{display:none;}
       .nav-link{padding:0;width:36px;height:36px;justify-content:center;}
-      .cards-row{grid-template-columns:1fr 1fr;}
       .mascot-gif{width:130px;height:130px;}
       .hero-title{font-size:clamp(1.8rem,9vw,3.5rem);}
       .hero-sub{margin-bottom:var(--space-8);}
@@ -163,11 +112,6 @@
       .bnav-item.active{color:var(--color-primary);}
       .bnav-item:hover{color:var(--color-primary);}
       body{padding-bottom:72px;}
-      .wl-modal{max-width:calc(100vw - var(--space-8));padding:var(--space-5);}
-      .compare-row{gap:var(--space-2);}
-    }
-    @media(max-width:400px){
-      .cards-row{grid-template-columns:1fr;}
     }
   </style>
 </head>
@@ -226,29 +170,6 @@
       <button class="chip" role="listitem" data-query="ASML">ASML</button>
       <button class="chip" role="listitem" data-query="TSLA">TSLA</button>
     </div>
-    <div class="live-badge"><span class="live-dot"></span><span id="liveLabel">A carregar preços…</span></div>
-    <div class="watchlist-header" style="margin-top:var(--space-2)">
-      <p class="section-label" style="margin-bottom:0">A tua watchlist</p>
-      <button class="watchlist-edit-btn" id="wlEditBtn" aria-label="Editar watchlist">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-        Editar
-      </button>
-    </div>
-    <div class="cards-row" role="list" id="cardsRow">
-      <div class="ticker-card skeleton" style="min-height:110px"></div>
-      <div class="ticker-card skeleton" style="min-height:110px"></div>
-      <div class="ticker-card skeleton" style="min-height:110px"></div>
-    </div>
-    <div class="compare-section">
-      <p class="compare-title">Comparar ações</p>
-      <div class="compare-row">
-        <input class="compare-input" id="cmpA" placeholder="AAPL" maxlength="10" aria-label="Ticker A"/>
-        <input class="compare-input" id="cmpB" placeholder="MSFT" maxlength="10" aria-label="Ticker B"/>
-        <button class="compare-btn" id="cmpBtn">Comparar</button>
-        <button class="compare-btn-clear" id="cmpClear" style="display:none">Limpar</button>
-      </div>
-      <div class="compare-chart-wrap" id="cmpChartWrap"></div>
-    </div>
   </main>
 
   <footer class="footer">
@@ -266,22 +187,6 @@
       </div>
       <div class="results-list" id="resultsList">
         <div class="results-empty">Escreve para pesquisar qualquer ação ou ETF…</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="wl-modal-overlay" id="wlModal" role="dialog" aria-modal="true" aria-label="Editar watchlist">
-    <div class="wl-modal">
-      <p class="wl-modal-title">Editar watchlist</p>
-      <p class="wl-modal-sub">Escolhe os 3 tickers que aparecem na página inicial.</p>
-      <div class="wl-slots">
-        <div class="wl-slot"><span class="wl-slot-label">Posição 1</span><input class="wl-slot-input" id="wlInput0" maxlength="10" autocomplete="off" spellcheck="false" placeholder="VOO"/></div>
-        <div class="wl-slot"><span class="wl-slot-label">Posição 2</span><input class="wl-slot-input" id="wlInput1" maxlength="10" autocomplete="off" spellcheck="false" placeholder="AAPL"/></div>
-        <div class="wl-slot"><span class="wl-slot-label">Posição 3</span><input class="wl-slot-input" id="wlInput2" maxlength="10" autocomplete="off" spellcheck="false" placeholder="NVDA"/></div>
-      </div>
-      <div class="wl-actions">
-        <button class="wl-btn wl-btn-cancel" id="wlCancel">Cancelar</button>
-        <button class="wl-btn wl-btn-save" id="wlSave">Guardar</button>
       </div>
     </div>
   </div>
@@ -305,7 +210,6 @@
     </a>
   </nav>
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <script>
     (function(){
       const t=document.querySelector('[data-theme-toggle]'),r=document.documentElement;
@@ -321,17 +225,7 @@
     })();
 
     const FH = 'd7ttd51r01qvtspvodegd7ttd51r01qvtspvodf0';
-    const SPK = {
-      up:  'M0,32 13,28 26,30 39,20 52,18 65,12 80,8',
-      down:'M0,10 13,14 26,12 39,18 52,16 65,22 80,26'
-    };
     let LOCAL = {};
-
-    const WL_KEY = 'fundscope_watchlist';
-    const WL_DEFAULT = ['VOO','AAPL','NVDA'];
-    function getWatchlist(){ try{ const v=localStorage.getItem(WL_KEY); return v?JSON.parse(v):[...WL_DEFAULT]; }catch{ return [...WL_DEFAULT]; } }
-    function saveWatchlist(arr){ try{ localStorage.setItem(WL_KEY,JSON.stringify(arr)); }catch{} }
-    let FEATURED = getWatchlist();
 
     async function loadLocal() {
       try {
@@ -339,58 +233,7 @@
         if(!r.ok) throw new Error();
         const j = await r.json();
         LOCAL = j.stocks || {};
-        if(j.updated){
-          const lbl = new Date(j.updated).toLocaleString('pt',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});
-          document.getElementById('liveLabel').textContent = 'Atualizado ' + lbl;
-          document.getElementById('footerUpdated').innerHTML = '© 2026 FundScope · <a href="https://github.com/chico130/fundscope">GitHub</a> · Atualizado: '+lbl;
-        } else {
-          document.getElementById('liveLabel').textContent = 'Preços em direto';
-        }
-        renderCards();
-      } catch {
-        document.getElementById('liveLabel').textContent = 'Preços via Finnhub';
-        renderCardsFH();
-      }
-    }
-
-    function mkCard(ticker, name, price, chgPct, sym) {
-      const up = chgPct >= 0;
-      const sign = up ? '+' : '';
-      return `<article class="ticker-card" role="listitem" tabindex="0" data-ticker="${ticker}">
-        <p class="ticker-symbol">${ticker}</p>
-        <p class="ticker-name">${name}</p>
-        <p class="ticker-price">${sym}${price.toFixed(2)}</p>
-        <p class="ticker-change ${up?'up':'down'}">${up?'▲':'▼'} ${sign}${chgPct.toFixed(2)}%</p>
-        <svg class="sparkline" width="80" height="40" viewBox="0 0 80 40"><polyline points="${SPK[up?'up':'down']}" fill="none" stroke="${up?'#437a22':'#a13544'}" stroke-width="2"/></svg>
-      </article>`;
-    }
-    function renderCards() {
-      const tickers = FEATURED.filter(t => LOCAL[t]);
-      if(!tickers.length){ renderCardsFH(); return; }
-      document.getElementById('cardsRow').innerHTML = tickers.map(t => {
-        const s = LOCAL[t];
-        return mkCard(t, s.name, s.price, s.changePct, s.symbol||'$');
-      }).join('');
-      addCardListeners();
-    }
-    async function renderCardsFH() {
-      const rows = await Promise.all(FEATURED.map(async t => {
-        try {
-          const q = await fetch(`https://finnhub.io/api/v1/quote?symbol=${t}&token=${FH}`).then(r=>r.json());
-          const price = q.c || q.pc;
-          if(!price) return '';
-          const pct = q.pc && q.c ? ((q.c-q.pc)/q.pc)*100 : 0;
-          return mkCard(t, t, price, pct, '$');
-        } catch { return ''; }
-      }));
-      document.getElementById('cardsRow').innerHTML = rows.join('');
-      addCardListeners();
-    }
-    function addCardListeners(){
-      document.querySelectorAll('.ticker-card').forEach(c=>{
-        c.addEventListener('click',()=>location.href='stock.html?ticker='+c.dataset.ticker);
-        c.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' ')location.href='stock.html?ticker='+c.dataset.ticker;});
-      });
+      } catch {}
     }
 
     const panel = document.getElementById('resultsPanel');
@@ -412,7 +255,7 @@
 
     function resultHTML(ticker, name, type, exch, price, chgPct, sym){
       const up = chgPct >= 0;
-      const sign = up?'+':'';
+      const sign = up?'+':'-';
       const shortTicker = ticker.length > 7 ? ticker.slice(0,7) : ticker;
       return `<a class="result-item" href="stock.html?ticker=${encodeURIComponent(ticker)}">
         <span class="result-badge">${shortTicker}</span>
@@ -422,7 +265,7 @@
         </div>
         <div>
           <p class="result-price">${sym}${price.toFixed(2)}</p>
-          <p class="result-chg ${up?'up':'down'}">${up?'▲':'▼'} ${sign}${chgPct.toFixed(2)}%</p>
+          <p class="result-chg ${up?'up':'down'}">${up?'▲':'▼'} ${sign}${Math.abs(chgPct).toFixed(2)}%</p>
         </div>
       </a>`;
     }
@@ -491,83 +334,6 @@
     document.querySelectorAll('.chip').forEach(c=>c.addEventListener('click',()=>openPanel(c.dataset.query)));
 
     loadLocal();
-
-    const wlModal = document.getElementById('wlModal');
-    const wlEditBtn = document.getElementById('wlEditBtn');
-    const wlCancel = document.getElementById('wlCancel');
-    const wlSave = document.getElementById('wlSave');
-    function openWlModal(){
-      const wl = getWatchlist();
-      [0,1,2].forEach(i=>{ const inp=document.getElementById('wlInput'+i); if(inp) inp.value=wl[i]||''; });
-      wlModal.classList.add('open');
-      setTimeout(()=>document.getElementById('wlInput0').focus(),50);
-    }
-    function closeWlModal(){ wlModal.classList.remove('open'); }
-    if(wlEditBtn) wlEditBtn.addEventListener('click', openWlModal);
-    if(wlCancel) wlCancel.addEventListener('click', closeWlModal);
-    wlModal.addEventListener('click', e=>{ if(e.target===wlModal) closeWlModal(); });
-    document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeWlModal(); });
-    if(wlSave) wlSave.addEventListener('click', ()=>{
-      const vals = [0,1,2].map(i=>(document.getElementById('wlInput'+i).value||'').trim().toUpperCase()).filter(Boolean);
-      if(!vals.length){ closeWlModal(); return; }
-      saveWatchlist(vals);
-      FEATURED.length=0; vals.forEach(v=>FEATURED.push(v));
-      document.getElementById('cardsRow').innerHTML = FEATURED.map(()=>`<div class="ticker-card skeleton" style="min-height:110px"></div>`).join('');
-      loadLocal();
-      closeWlModal();
-    });
-
-    const CHART_COLORS = ['#01696f','#a13544'];
-    let cmpChartInst = null;
-    function getTC(){ const s=getComputedStyle(document.documentElement); return {bg:s.getPropertyValue('--color-tooltip-bg').trim()||'#1c1b19',text:s.getPropertyValue('--color-tooltip-text').trim()||'#e8e7e5',muted:s.getPropertyValue('--color-text-muted').trim()||'#797876',border:s.getPropertyValue('--color-tooltip-border').trim()||'#2e2d2b'}; }
-    function genSim(pts,vol){ let p=100;const d=[];for(let i=0;i<pts;i++){p+=(Math.random()-.48)*vol;d.push(parseFloat(p.toFixed(2)));}return d; }
-    async function runCompare(){
-      const aRaw=(document.getElementById('cmpA').value||'').trim().toUpperCase();
-      const bRaw=(document.getElementById('cmpB').value||'').trim().toUpperCase();
-      if(!aRaw||!bRaw) return;
-      const wrap=document.getElementById('cmpChartWrap');
-      wrap.innerHTML='<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--color-text-muted);font-size:var(--text-sm)">A carregar…</div>';
-      wrap.style.height='240px';
-      wrap.classList.add('visible');
-      document.getElementById('cmpClear').style.display='inline-flex';
-      async function getPrice(t){ try{ const q=await fetch(`https://finnhub.io/api/v1/quote?symbol=${t}&token=${FH}`).then(r=>r.json()); return q.c||q.pc||100; }catch{ return 100; } }
-      const [pa,pb]=await Promise.all([getPrice(aRaw),getPrice(bRaw)]);
-      const pts=30;
-      const dataA=genSim(pts,2.5);
-      const dataB=genSim(pts,2.8); dataB[dataB.length-1]=parseFloat(((pb/pa)*100).toFixed(2));
-      const labels=Array.from({length:pts},(_,i)=>{ const d=new Date(); d.setDate(d.getDate()-(pts-1-i)); return d.toLocaleDateString('pt',{day:'numeric',month:'short'}); });
-      wrap.innerHTML=`<canvas id="cmpCanvas"></canvas><div class="compare-legend" id="cmpLegend"></div>`;
-      wrap.style.height='240px';
-      const canvas=document.getElementById('cmpCanvas');
-      if(cmpChartInst) cmpChartInst.destroy();
-      const tc=getTC();
-      cmpChartInst=new Chart(canvas,{
-        type:'line',
-        data:{labels,datasets:[
-          {label:aRaw,data:dataA,borderColor:CHART_COLORS[0],borderWidth:2,pointRadius:0,pointHoverRadius:5,fill:false,tension:.4},
-          {label:bRaw,data:dataB,borderColor:CHART_COLORS[1],borderWidth:2,pointRadius:0,pointHoverRadius:5,fill:false,tension:.4}
-        ]},
-        options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
-          plugins:{legend:{display:false},tooltip:{backgroundColor:tc.bg,bodyColor:tc.text,titleColor:tc.muted,borderColor:tc.border,borderWidth:1,padding:10,cornerRadius:8,
-            callbacks:{label:ctx=>` ${ctx.dataset.label}: ${ctx.raw.toFixed(1)}`}}},
-          scales:{x:{grid:{display:false},ticks:{color:'#8a8985',font:{size:10},maxTicksLimit:6}},
-            y:{position:'right',grid:{color:'rgba(180,178,172,.1)'},ticks:{color:'#8a8985',font:{size:10},callback:v=>v.toFixed(0)}}}}
-      });
-      document.getElementById('cmpLegend').innerHTML=`<span><span class="compare-legend-dot" style="background:${CHART_COLORS[0]}"></span>${aRaw} (base 100)</span><span><span class="compare-legend-dot" style="background:${CHART_COLORS[1]}"></span>${bRaw} (relativo)</span>`;
-    }
-    const cmpBtn=document.getElementById('cmpBtn');
-    const cmpClear=document.getElementById('cmpClear');
-    if(cmpBtn) cmpBtn.addEventListener('click',runCompare);
-    document.getElementById('cmpA').addEventListener('keydown',e=>{ if(e.key==='Enter') document.getElementById('cmpB').focus(); });
-    document.getElementById('cmpB').addEventListener('keydown',e=>{ if(e.key==='Enter') runCompare(); });
-    if(cmpClear) cmpClear.addEventListener('click',()=>{
-      document.getElementById('cmpA').value='';
-      document.getElementById('cmpB').value='';
-      const wrap=document.getElementById('cmpChartWrap');
-      wrap.classList.remove('visible');
-      if(cmpChartInst){ cmpChartInst.destroy(); cmpChartInst=null; }
-      cmpClear.style.display='none';
-    });
   </script>
 </body>
 </html>
