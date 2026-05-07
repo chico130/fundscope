@@ -10,7 +10,6 @@ Produz markets.json com:
 """
 
 import json, os, time, datetime, requests
-from collections import defaultdict
 
 FH_TOKEN = os.environ.get("FINNHUB_TOKEN", "")
 HEADERS_REDDIT = {"User-Agent": "FundScope/1.0 (educational project)"}
@@ -82,8 +81,6 @@ def fh_quote(ticker):
 
 def fh_sentiment(ticker):
     try:
-        today = datetime.date.today()
-        frm = (today - datetime.timedelta(days=3)).isoformat()
         r = requests.get(
             f"https://finnhub.io/api/v1/news-sentiment?symbol={ticker}&token={FH_TOKEN}",
             timeout=6
@@ -113,11 +110,10 @@ def reddit_posts(subreddits, keywords, limit=3):
                     if uid in seen:
                         continue
                     seen.add(uid)
-                    ups = d.get("ups", 0)
                     posts.append({
                         "source": f"r/{sub}",
                         "title": title[:120],
-                        "ups": ups,
+                        "ups": d.get("ups", 0),
                         "url": "https://reddit.com" + d.get("permalink", ""),
                         "author": d.get("author", "anonymous"),
                         "comments": d.get("num_comments", 0)
@@ -137,7 +133,7 @@ def stocktwits_posts(ticker, limit=2):
         msgs = r.json().get("messages", [])
         out = []
         for m in msgs[:limit]:
-            sentiment = m.get("entities", {}).get("sentiment", {})
+            sentiment = m.get("entities", {}).get("sentiment") or {}
             label = sentiment.get("basic", "") if sentiment else ""
             body = m.get("body", "")[:140]
             user = m.get("user", {}).get("username", "?")
@@ -155,9 +151,9 @@ def build_sector(name, cfg):
             quotes.append(q)
         time.sleep(0.15)
 
-    quotes.sort(key=lambda x: x["changePct"], reverse=True)
-    gainers = quotes[:5]
-    losers = sorted(quotes, key=lambda x: x["changePct"])[:5]
+    quotes_sorted = sorted(quotes, key=lambda x: x["changePct"], reverse=True)
+    gainers = quotes_sorted[:5]
+    losers = quotes_sorted[-5:][::-1]  # piores primeiro, sem IndexError
 
     # Sentimento Finnhub
     sentiments = []
@@ -167,22 +163,21 @@ def build_sector(name, cfg):
         sentiments.append(s)
         time.sleep(0.2)
 
-    avg_bull = None
     valid = [s["bullish"] for s in sentiments if s["bullish"] is not None]
-    if valid:
-        avg_bull = round(sum(valid) / len(valid), 1)
+    avg_bull = round(sum(valid) / len(valid), 1) if valid else None
 
     # Reddit
-    keywords = [t.replace("-"," ") for t in cfg["sentiment_tickers"]] + [name]
+    keywords = [t.replace("-", " ") for t in cfg["sentiment_tickers"]] + [name]
     reddit = reddit_posts(cfg["reddit"], keywords, limit=3)
 
-    # StockTwits do ticker mais movimentado
-    top_ticker = gainers[0]["ticker"] if gainers else tickers[0]
-    if abs(losers[0]["changePct"]) > abs(gainers[0]["changePct"]):
-        top_ticker = losers[0]["ticker"]
+    # StockTwits: ticker mais movimentado (maior abs changePct), com guarda
+    all_quotes = gainers + losers
+    if all_quotes:
+        top_ticker = max(all_quotes, key=lambda x: abs(x["changePct"]))["ticker"]
+    else:
+        top_ticker = tickers[0]
     twits = stocktwits_posts(top_ticker, limit=2)
 
-    # Sector change médio
     avg_chg = round(sum(q["changePct"] for q in quotes) / len(quotes), 2) if quotes else 0
 
     return {
@@ -211,7 +206,17 @@ def main():
     sectors = {}
     for name, cfg in SECTORS.items():
         print(f"A processar setor: {name}")
-        sectors[name] = build_sector(name, cfg)
+        try:
+            sectors[name] = build_sector(name, cfg)
+        except Exception as e:
+            print(f"ERRO no setor {name}: {e}")
+            sectors[name] = {
+                "name": name, "icon": cfg["icon"], "color": cfg["color"],
+                "image": cfg["image"], "avgChange": 0,
+                "gainers": [], "losers": [],
+                "sentiment": {"bullishPct": None, "details": []},
+                "reddit": [], "twits": []
+            }
         time.sleep(1)
 
     out = {
@@ -222,7 +227,7 @@ def main():
 
     with open("markets.json", "w", encoding="utf-8") as f:
         json.dump(out, f, ensure_ascii=False, indent=2)
-    print(f"markets.json gerado ({slot})")
+    print(f"markets.json gerado com sucesso ({slot})")
 
 if __name__ == "__main__":
     main()
