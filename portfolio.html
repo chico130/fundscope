@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="pt" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfólio — FundScope</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300..700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    :root,[data-theme="light"]{
+      --color-bg:#f7f6f2;--color-surface:#f9f8f5;--color-surface-2:#fbfbf9;
+      --color-surface-offset:#f0ede8;--color-surface-dynamic:#e6e4df;
+      --color-border:#d4d1ca;--color-divider:#dcd9d5;
+      --color-text:#28251d;--color-text-muted:#7a7974;--color-text-faint:#bab9b4;
+      --color-primary:#01696f;--color-primary-hover:#0c4e54;--color-primary-highlight:#cedcd8;
+      --color-success:#437a22;--color-success-highlight:#d4dfcc;
+      --color-notification:#a13544;--color-notification-highlight:#ddd4d6;
+      --color-warning:#964219;--color-warning-highlight:#ddcfc6;
+      --radius-sm:.375rem;--radius-md:.5rem;--radius-lg:.75rem;--radius-xl:1rem;--radius-2xl:1.5rem;--radius-full:9999px;
+      --shadow-sm:0 1px 2px rgba(40,37,29,.06);--shadow-md:0 4px 12px rgba(40,37,29,.08);--shadow-lg:0 12px 32px rgba(40,37,29,.12);
+      --transition:180ms cubic-bezier(.16,1,.3,1);
+      --font-display:'Instrument Serif',Georgia,serif;--font-body:'Inter','Helvetica Neue',sans-serif;
+      --text-xs:clamp(.75rem,.7rem + .25vw,.875rem);--text-sm:clamp(.875rem,.8rem + .35vw,1rem);
+      --text-base:clamp(1rem,.95rem + .25vw,1.125rem);--text-lg:clamp(1.125rem,1rem + .75vw,1.5rem);
+      --text-xl:clamp(1.5rem,1.2rem + 1.25vw,2.25rem);--text-2xl:clamp(2rem,1.2rem + 2.5vw,3.5rem);
+      --space-1:.25rem;--space-2:.5rem;--space-3:.75rem;--space-4:1rem;--space-5:1.25rem;
+      --space-6:1.5rem;--space-8:2rem;--space-10:2.5rem;--space-12:3rem;--space-16:4rem;
+    }
+    [data-theme="dark"]{
+      --color-bg:#141312;--color-surface:#1a1917;--color-surface-2:#201f1d;
+      --color-surface-offset:#252421;--color-surface-dynamic:#2d2c2a;
+      --color-border:#393836;--color-divider:#2e2d2b;
+      --color-text:#cdccca;--color-text-muted:#797876;--color-text-faint:#5a5957;
+      --color-primary:#4f98a3;--color-primary-hover:#63b2be;--color-primary-highlight:#1f3335;
+      --color-success:#6daa45;--color-success-highlight:#1e3311;
+      --color-notification:#dd6974;--color-notification-highlight:#3d1f22;
+      --color-warning:#bb653b;--color-warning-highlight:#3d2211;
+      --shadow-sm:0 1px 2px rgba(0,0,0,.25);--shadow-md:0 4px 12px rgba(0,0,0,.35);--shadow-lg:0 12px 32px rgba(0,0,0,.45);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;scroll-behavior:smooth;}
+    body{min-height:100dvh;font-family:var(--font-body);font-size:var(--text-base);color:var(--color-text);background:var(--color-bg);transition:background var(--transition),color var(--transition);}
+    button{cursor:pointer;background:none;border:none;font:inherit;color:inherit;}
+    a{color:inherit;text-decoration:none;}
+    :focus-visible{outline:2px solid var(--color-primary);outline-offset:3px;border-radius:var(--radius-sm);}
+
+    /* ── Header ── */
+    .header{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:var(--space-4) var(--space-6);background:color-mix(in oklch,var(--color-bg) 85%,transparent);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(40,37,29,.06);}
+    .logo{display:flex;align-items:center;gap:var(--space-2);font-family:var(--font-display);font-size:var(--text-lg);font-weight:400;letter-spacing:-.01em;transition:color var(--transition);}
+    .logo:hover{color:var(--color-primary);}
+    .logo-svg{width:28px;height:28px;}
+    .header-actions{display:flex;align-items:center;gap:var(--space-3);}
+    .nav-link{font-size:var(--text-sm);color:var(--color-text-muted);padding:var(--space-2) var(--space-3);border-radius:var(--radius-md);transition:color var(--transition),background var(--transition);}
+    .nav-link:hover{color:var(--color-text);background:var(--color-surface-offset);}
+    .nav-link.active{color:var(--color-primary);font-weight:500;}
+    .theme-toggle{width:36px;height:36px;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;color:var(--color-text-muted);transition:color var(--transition),background var(--transition);}
+    .theme-toggle:hover{color:var(--color-text);background:var(--color-surface-offset);}
+
+    /* ── Login Screen ── */
+    #loginScreen{position:fixed;inset:0;z-index:500;display:flex;align-items:center;justify-content:center;background:var(--color-bg);padding:var(--space-6);}
+    .login-box{width:100%;max-width:380px;background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-2xl);padding:var(--space-10) var(--space-8);box-shadow:var(--shadow-lg);text-align:center;}
+    .login-icon{width:56px;height:56px;margin:0 auto var(--space-6);background:var(--color-primary-highlight);border-radius:var(--radius-xl);display:flex;align-items:center;justify-content:center;color:var(--color-primary);}
+    .login-title{font-family:var(--font-display);font-size:var(--text-xl);margin-bottom:var(--space-2);}
+    .login-sub{font-size:var(--text-sm);color:var(--color-text-muted);margin-bottom:var(--space-8);}
+    .login-field{text-align:left;margin-bottom:var(--space-4);}
+    .login-field label{display:block;font-size:var(--text-xs);font-weight:500;color:var(--color-text-muted);margin-bottom:var(--space-2);letter-spacing:.05em;text-transform:uppercase;}
+    .login-field input{width:100%;background:var(--color-bg);border:1.5px solid var(--color-border);border-radius:var(--radius-lg);padding:var(--space-3) var(--space-4);font-size:var(--text-base);color:var(--color-text);outline:none;transition:border-color var(--transition),box-shadow var(--transition);}
+    .login-field input:focus{border-color:var(--color-primary);box-shadow:0 0 0 3px color-mix(in oklch,var(--color-primary) 15%,transparent);}
+    .login-btn{width:100%;padding:var(--space-3) var(--space-6);background:var(--color-primary);color:#fff;border-radius:var(--radius-full);font-size:var(--text-sm);font-weight:500;margin-top:var(--space-2);transition:background var(--transition),transform var(--transition);}
+    .login-btn:hover{background:var(--color-primary-hover);transform:translateY(-1px);}
+    .login-btn:active{transform:translateY(0);}
+    .login-error{font-size:var(--text-xs);color:var(--color-notification);margin-top:var(--space-3);min-height:1.2em;}
+    .login-remember{display:flex;align-items:center;gap:var(--space-2);font-size:var(--text-sm);color:var(--color-text-muted);margin-bottom:var(--space-6);cursor:pointer;}
+    .login-remember input{width:16px;height:16px;accent-color:var(--color-primary);cursor:pointer;}
+
+    /* ── Main layout ── */
+    .page{padding-top:72px;}
+    .container{max-width:1100px;margin:0 auto;padding:var(--space-8) var(--space-6);}
+
+    /* ── KPI bar ── */
+    .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-4);margin-bottom:var(--space-8);}
+    .kpi-card{background:var(--color-surface);border:1px solid rgba(40,37,29,.07);border-radius:var(--radius-xl);padding:var(--space-5) var(--space-6);}
+    .kpi-label{font-size:var(--text-xs);color:var(--color-text-muted);letter-spacing:.06em;text-transform:uppercase;font-weight:500;margin-bottom:var(--space-2);}
+    .kpi-value{font-size:var(--text-xl);font-weight:600;font-variant-numeric:tabular-nums;line-height:1.1;margin-bottom:var(--space-1);}
+    .kpi-sub{font-size:var(--text-xs);color:var(--color-text-muted);font-variant-numeric:tabular-nums;}
+    .kpi-value.up{color:var(--color-success);}
+    .kpi-value.down{color:var(--color-notification);}
+
+    /* ── Charts row ── */
+    .charts-row{display:grid;grid-template-columns:320px 1fr;gap:var(--space-6);margin-bottom:var(--space-8);}
+    .chart-card{background:var(--color-surface);border:1px solid rgba(40,37,29,.07);border-radius:var(--radius-xl);padding:var(--space-6);}
+    .chart-title{font-size:var(--text-sm);font-weight:600;color:var(--color-text);margin-bottom:var(--space-4);}
+    .donut-wrap{position:relative;width:200px;height:200px;margin:0 auto var(--space-4);}
+    .donut-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;}
+    .donut-total{font-size:var(--text-lg);font-weight:700;font-variant-numeric:tabular-nums;}
+    .donut-sub{font-size:var(--text-xs);color:var(--color-text-muted);}
+    .legend{display:flex;flex-direction:column;gap:var(--space-2);}
+    .legend-item{display:flex;align-items:center;gap:var(--space-2);font-size:var(--text-xs);}
+    .legend-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+    .legend-name{flex:1;color:var(--color-text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .legend-pct{color:var(--color-text);font-weight:500;font-variant-numeric:tabular-nums;}
+
+    /* ── History chart ── */
+    .history-card{background:var(--color-surface);border:1px solid rgba(40,37,29,.07);border-radius:var(--radius-xl);padding:var(--space-6);margin-bottom:var(--space-8);}
+    .history-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-4);}
+    .period-tabs{display:flex;gap:var(--space-1);}
+    .period-tab{font-size:var(--text-xs);padding:var(--space-1) var(--space-3);border-radius:var(--radius-full);border:1px solid var(--color-border);color:var(--color-text-muted);transition:all var(--transition);cursor:pointer;}
+    .period-tab.active{background:var(--color-primary);border-color:var(--color-primary);color:#fff;}
+    .history-canvas-wrap{height:180px;}
+
+    /* ── Performance bars ── */
+    .perf-list{display:flex;flex-direction:column;gap:var(--space-3);}
+    .perf-item{display:grid;grid-template-columns:60px 1fr 70px;align-items:center;gap:var(--space-3);}
+    .perf-ticker{font-size:var(--text-xs);font-weight:700;color:var(--color-text);letter-spacing:.03em;}
+    .perf-bar-wrap{height:8px;background:var(--color-surface-offset);border-radius:var(--radius-full);overflow:hidden;}
+    .perf-bar{height:100%;border-radius:var(--radius-full);transition:width .6s cubic-bezier(.16,1,.3,1);}
+    .perf-bar.up{background:var(--color-success);}
+    .perf-bar.down{background:var(--color-notification);}
+    .perf-pct{font-size:var(--text-xs);font-variant-numeric:tabular-nums;font-weight:500;text-align:right;}
+    .perf-pct.up{color:var(--color-success);}
+    .perf-pct.down{color:var(--color-notification);}
+
+    /* ── Positions table ── */
+    .section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-4);}
+    .section-title{font-size:var(--text-base);font-weight:600;}
+    .updated-badge{font-size:var(--text-xs);color:var(--color-text-faint);}
+    .positions-wrap{background:var(--color-surface);border:1px solid rgba(40,37,29,.07);border-radius:var(--radius-xl);overflow:hidden;margin-bottom:var(--space-8);}
+    .pos-table{width:100%;border-collapse:collapse;}
+    .pos-table th{font-size:var(--text-xs);font-weight:500;color:var(--color-text-muted);letter-spacing:.05em;text-transform:uppercase;padding:var(--space-3) var(--space-5);text-align:left;border-bottom:1px solid var(--color-divider);background:var(--color-surface-offset);}
+    .pos-table th.r{text-align:right;}
+    .pos-table td{padding:var(--space-4) var(--space-5);border-bottom:1px solid var(--color-divider);font-size:var(--text-sm);vertical-align:middle;}
+    .pos-table tr:last-child td{border-bottom:none;}
+    .pos-table tr{cursor:pointer;transition:background var(--transition);}
+    .pos-table tr:hover{background:var(--color-surface-offset);}
+    .pos-ticker{font-weight:700;letter-spacing:.03em;}
+    .pos-name{font-size:var(--text-xs);color:var(--color-text-muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:160px;}
+    .pos-num{text-align:right;font-variant-numeric:tabular-nums;}
+    .pos-gain.up{color:var(--color-success);}
+    .pos-gain.down{color:var(--color-notification);}
+    .alloc-bar{width:60px;height:6px;background:var(--color-surface-offset);border-radius:var(--radius-full);overflow:hidden;display:inline-block;vertical-align:middle;margin-right:var(--space-2);}
+    .alloc-fill{height:100%;background:var(--color-primary);border-radius:var(--radius-full);}
+    .sentiment-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:4px;}
+    .sentiment-dot.positivo{background:var(--color-success);}
+    .sentiment-dot.negativo{background:var(--color-notification);}
+    .sentiment-dot.neutro{background:var(--color-text-faint);}
+
+    /* ── Detail panel (drawer) ── */
+    .drawer-overlay{position:fixed;inset:0;z-index:300;background:rgba(20,19,18,.45);opacity:0;pointer-events:none;transition:opacity 250ms ease;}
+    .drawer-overlay.open{opacity:1;pointer-events:all;}
+    .drawer{position:fixed;right:0;top:0;bottom:0;width:min(560px,100vw);z-index:301;background:var(--color-surface);border-left:1px solid var(--color-border);box-shadow:var(--shadow-lg);overflow-y:auto;transform:translateX(100%);transition:transform 280ms cubic-bezier(.16,1,.3,1);}
+    .drawer.open{transform:translateX(0);}
+    .drawer-header{position:sticky;top:0;background:var(--color-surface);border-bottom:1px solid var(--color-divider);padding:var(--space-5) var(--space-6);display:flex;align-items:center;gap:var(--space-4);z-index:1;}
+    .drawer-close{width:32px;height:32px;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;color:var(--color-text-muted);transition:all var(--transition);flex-shrink:0;}
+    .drawer-close:hover{background:var(--color-surface-offset);color:var(--color-text);}
+    .drawer-ticker{font-size:var(--text-lg);font-weight:700;}
+    .drawer-name{font-size:var(--text-xs);color:var(--color-text-muted);margin-top:2px;}
+    .drawer-body{padding:var(--space-6);}
+    .drawer-section{margin-bottom:var(--space-8);}
+    .drawer-section-title{font-size:var(--text-xs);font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--color-text-muted);margin-bottom:var(--space-4);padding-bottom:var(--space-2);border-bottom:1px solid var(--color-divider);}
+    .sentiment-badge{display:inline-flex;align-items:center;gap:var(--space-2);padding:var(--space-1) var(--space-3);border-radius:var(--radius-full);font-size:var(--text-xs);font-weight:600;}
+    .sentiment-badge.positivo{background:var(--color-success-highlight);color:var(--color-success);}
+    .sentiment-badge.negativo{background:var(--color-notification-highlight);color:var(--color-notification);}
+    .sentiment-badge.neutro{background:var(--color-surface-offset);color:var(--color-text-muted);}
+    .analysis-text{font-size:var(--text-sm);color:var(--color-text-muted);line-height:1.65;margin-top:var(--space-3);}
+    .watch-list{margin-top:var(--space-3);display:flex;flex-direction:column;gap:var(--space-2);}
+    .watch-item{display:flex;gap:var(--space-2);align-items:flex-start;font-size:var(--text-sm);color:var(--color-text-muted);}
+    .watch-item::before{content:'→';color:var(--color-primary);flex-shrink:0;font-weight:600;}
+    .news-list{display:flex;flex-direction:column;gap:var(--space-3);}
+    .news-item{border-bottom:1px solid var(--color-divider);padding-bottom:var(--space-3);}
+    .news-item:last-child{border-bottom:none;padding-bottom:0;}
+    .news-source{font-size:var(--text-xs);color:var(--color-text-faint);margin-bottom:var(--space-1);}
+    .news-headline{font-size:var(--text-sm);font-weight:500;color:var(--color-text);line-height:1.4;margin-bottom:var(--space-1);}
+    .news-headline a{transition:color var(--transition);}
+    .news-headline a:hover{color:var(--color-primary);}
+    .news-summary{font-size:var(--text-xs);color:var(--color-text-muted);line-height:1.55;}
+    .earnings-grid{display:flex;flex-direction:column;gap:var(--space-2);}
+    .earn-row{display:grid;grid-template-columns:80px 80px 80px 1fr;gap:var(--space-2);align-items:center;font-size:var(--text-xs);padding:var(--space-2) var(--space-3);border-radius:var(--radius-md);background:var(--color-surface-offset);}
+    .earn-period{color:var(--color-text-muted);font-weight:500;}
+    .earn-num{font-variant-numeric:tabular-nums;color:var(--color-text);}
+    .earn-badge{padding:2px var(--space-2);border-radius:var(--radius-full);font-size:10px;font-weight:700;text-align:center;}
+    .earn-badge.beat{background:var(--color-success-highlight);color:var(--color-success);}
+    .earn-badge.miss{background:var(--color-notification-highlight);color:var(--color-notification);}
+    .div-list{display:flex;gap:var(--space-3);flex-wrap:wrap;}
+    .div-item{background:var(--color-surface-offset);border-radius:var(--radius-lg);padding:var(--space-3) var(--space-4);text-align:center;min-width:90px;}
+    .div-date{font-size:var(--text-xs);color:var(--color-text-muted);margin-bottom:var(--space-1);}
+    .div-val{font-size:var(--text-base);font-weight:600;font-variant-numeric:tabular-nums;color:var(--color-text);}
+
+    /* ── Skeleton ── */
+    .skeleton{background:linear-gradient(90deg,var(--color-surface-offset) 25%,var(--color-surface-dynamic) 50%,var(--color-surface-offset) 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;border-radius:var(--radius-md);}
+    @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+    /* ── Empty / Error ── */
+    .empty-state{text-align:center;padding:var(--space-16) var(--space-8);color:var(--color-text-muted);}
+    .empty-state h3{font-size:var(--text-base);font-weight:600;color:var(--color-text);margin-bottom:var(--space-2);}
+    .empty-state p{font-size:var(--text-sm);max-width:36ch;margin:0 auto;}
+
+    /* ── Footer ── */
+    .footer{padding:var(--space-6);text-align:center;font-size:var(--text-xs);color:var(--color-text-faint);border-top:1px solid var(--color-divider);}
+    .footer a{color:var(--color-text-muted);transition:color var(--transition);}
+    .footer a:hover{color:var(--color-primary);}
+
+    @media(max-width:900px){
+      .kpi-grid{grid-template-columns:repeat(2,1fr);}
+      .charts-row{grid-template-columns:1fr;}
+    }
+    @media(max-width:640px){
+      .header{padding:var(--space-3) var(--space-4);}
+      .nav-link{display:none;}
+      .kpi-grid{grid-template-columns:repeat(2,1fr);gap:var(--space-3);}
+      .container{padding:var(--space-6) var(--space-4);}
+      .pos-table th:nth-child(n+4),.pos-table td:nth-child(n+4){display:none;}
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Login Screen ── -->
+<div id="loginScreen">
+  <div class="login-box">
+    <div class="login-icon">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    </div>
+    <h1 class="login-title">Portfólio</h1>
+    <p class="login-sub">Acesso privado ao teu portfólio FundScope</p>
+    <div class="login-field">
+      <label for="loginUser">Utilizador</label>
+      <input type="text" id="loginUser" placeholder="chico" autocomplete="username" />
+    </div>
+    <div class="login-field">
+      <label for="loginPass">Password</label>
+      <input type="password" id="loginPass" placeholder="••••••••" autocomplete="current-password" />
+    </div>
+    <label class="login-remember">
+      <input type="checkbox" id="loginRemember" checked />
+      Manter sessão iniciada
+    </label>
+    <button class="login-btn" id="loginBtn">Entrar</button>
+    <p class="login-error" id="loginError"></p>
+  </div>
+</div>
+
+<!-- ── Header ── -->
+<header class="header">
+  <a href="index.html" class="logo">
+    <svg class="logo-svg" viewBox="0 0 28 28" fill="none">
+      <ellipse cx="14" cy="15" rx="9" ry="7.5" fill="var(--color-primary)" opacity="0.18"/>
+      <ellipse cx="14" cy="14.5" rx="8" ry="6.5" fill="var(--color-primary)"/>
+      <ellipse cx="14" cy="18.5" rx="3.5" ry="2.5" fill="var(--color-primary-hover)"/>
+      <circle cx="12.8" cy="18.6" r="0.8" fill="var(--color-bg)" opacity="0.7"/>
+      <circle cx="15.2" cy="18.6" r="0.8" fill="var(--color-bg)" opacity="0.7"/>
+      <circle cx="10.8" cy="13" r="1.2" fill="var(--color-bg)" opacity="0.9"/>
+      <circle cx="11.1" cy="12.8" r="0.5" fill="var(--color-text)"/>
+      <circle cx="17.2" cy="13" r="1.2" fill="var(--color-bg)" opacity="0.9"/>
+      <circle cx="17.5" cy="12.8" r="0.5" fill="var(--color-text)"/>
+      <ellipse cx="7" cy="11" rx="2.2" ry="2.8" fill="var(--color-primary)"/>
+      <ellipse cx="21" cy="11" rx="2.2" ry="2.8" fill="var(--color-primary)"/>
+      <rect x="12" y="8.5" width="4" height="1.2" rx="0.6" fill="var(--color-bg)" opacity="0.6"/>
+      <path d="M22.5 17 Q25 16 24.5 19 Q24 21 22 20" stroke="var(--color-primary-hover)" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+    </svg>
+    FundScope
+  </a>
+  <nav class="header-actions">
+    <a href="news.html" class="nav-link">Notícias</a>
+    <a href="portfolio.html" class="nav-link active">Portfólio</a>
+    <a href="markets.html" class="nav-link">Mercados</a>
+    <button class="theme-toggle" data-theme-toggle aria-label="Alternar tema">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+    </button>
+    <button class="theme-toggle" id="logoutBtn" aria-label="Sair" title="Terminar sessão" style="display:none">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+    </button>
+  </nav>
+</header>
+
+<!-- ── Main ── -->
+<div class="page" id="mainPage" style="display:none">
+  <div class="container">
+
+    <!-- KPIs -->
+    <div class="kpi-grid" id="kpiGrid">
+      <div class="kpi-card"><div class="kpi-label">Valor Total</div><div class="kpi-value skeleton" style="height:2rem;width:120px;margin-bottom:4px"></div><div class="kpi-sub skeleton" style="height:.75rem;width:80px"></div></div>
+      <div class="kpi-card"><div class="kpi-label">Investido</div><div class="kpi-value skeleton" style="height:2rem;width:120px;margin-bottom:4px"></div><div class="kpi-sub skeleton" style="height:.75rem;width:80px"></div></div>
+      <div class="kpi-card"><div class="kpi-label">P&amp;L Total</div><div class="kpi-value skeleton" style="height:2rem;width:120px;margin-bottom:4px"></div><div class="kpi-sub skeleton" style="height:.75rem;width:80px"></div></div>
+      <div class="kpi-card"><div class="kpi-label">Hoje</div><div class="kpi-value skeleton" style="height:2rem;width:120px;margin-bottom:4px"></div><div class="kpi-sub skeleton" style="height:.75rem;width:80px"></div></div>
+    </div>
+
+    <!-- Charts row -->
+    <div class="charts-row">
+      <div class="chart-card">
+        <p class="chart-title">Alocação</p>
+        <div class="donut-wrap">
+          <canvas id="donutChart"></canvas>
+          <div class="donut-center">
+            <span class="donut-total" id="donutTotal">—</span>
+            <span class="donut-sub">posições</span>
+          </div>
+        </div>
+        <div class="legend" id="donutLegend"></div>
+      </div>
+      <div class="chart-card">
+        <p class="chart-title">Performance por Ativo</p>
+        <div class="perf-list" id="perfList"></div>
+      </div>
+    </div>
+
+    <!-- History -->
+    <div class="history-card">
+      <div class="history-header">
+        <p class="chart-title" style="margin-bottom:0">Evolução do Portfólio</p>
+        <div class="period-tabs">
+          <button class="period-tab active" data-period="30">1M</button>
+          <button class="period-tab" data-period="90">3M</button>
+          <button class="period-tab" data-period="180">6M</button>
+          <button class="period-tab" data-period="365">1A</button>
+        </div>
+      </div>
+      <div class="history-canvas-wrap">
+        <canvas id="historyChart"></canvas>
+      </div>
+    </div>
+
+    <!-- Positions -->
+    <div class="section-header">
+      <p class="section-title">Posições</p>
+      <p class="updated-badge" id="updatedBadge">A carregar…</p>
+    </div>
+    <div class="positions-wrap">
+      <table class="pos-table">
+        <thead>
+          <tr>
+            <th>Ativo</th>
+            <th class="r">Qtd</th>
+            <th class="r">P. Médio</th>
+            <th class="r">Atual</th>
+            <th class="r">Valor</th>
+            <th class="r">P&amp;L</th>
+            <th class="r">Aloc.</th>
+            <th>Análise</th>
+          </tr>
+        </thead>
+        <tbody id="posBody"></tbody>
+      </table>
+    </div>
+
+  </div>
+  <footer class="footer">
+    <p>© 2026 FundScope · <a href="https://github.com/chico130/fundscope" target="_blank" rel="noopener">GitHub</a> · Dados via Trading 212 &amp; Yahoo Finance</p>
+  </footer>
+</div>
+
+<!-- ── Drawer (detalhe por ativo) ── -->
+<div class="drawer-overlay" id="drawerOverlay"></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Detalhe do ativo">
+  <div class="drawer-header">
+    <button class="drawer-close" id="drawerClose" aria-label="Fechar">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+    <div>
+      <p class="drawer-ticker" id="drawerTicker"></p>
+      <p class="drawer-name" id="drawerName"></p>
+    </div>
+  </div>
+  <div class="drawer-body" id="drawerBody"></div>
+</aside>
+
+<script>
+// ── Theme ──
+(function(){
+  const t=document.querySelector('[data-theme-toggle]'),r=document.documentElement;
+  let d=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
+  const saved=sessionStorage.getItem('fs-theme');
+  if(saved) d=saved;
+  r.setAttribute('data-theme',d);
+  const icons={
+    light:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>',
+    dark:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>'
+  };
+  const setTheme=th=>{d=th;r.setAttribute('data-theme',th);sessionStorage.setItem('fs-theme',th);if(t)t.innerHTML=icons[th];};
+  setTheme(d);
+  if(t)t.addEventListener('click',()=>setTheme(d==='dark'?'light':'dark'));
+})();
+
+// ── Auth ──
+// NOTA: Muda USERNAME e PASSWORD para as tuas credenciais reais antes de publicar
+const AUTH = { user: 'chico', pass: 'fundscope2026' };
+const SESSION_KEY = 'fs-portfolio-auth';
+
+function checkSession() {
+  const stored = localStorage.getItem(SESSION_KEY) || sessionStorage.getItem(SESSION_KEY);
+  return stored === btoa(AUTH.user + ':' + AUTH.pass);
+}
+function saveSession(remember) {
+  const token = btoa(AUTH.user + ':' + AUTH.pass);
+  if (remember) localStorage.setItem(SESSION_KEY, token);
+  else sessionStorage.setItem(SESSION_KEY, token);
+}
+function clearSession() {
+  localStorage.removeItem(SESSION_KEY);
+  sessionStorage.removeItem(SESSION_KEY);
+}
+
+const loginScreen = document.getElementById('loginScreen');
+const mainPage    = document.getElementById('mainPage');
+const logoutBtn   = document.getElementById('logoutBtn');
+
+function showMain() {
+  loginScreen.style.display = 'none';
+  mainPage.style.display = 'block';
+  logoutBtn.style.display = 'flex';
+  loadPortfolio();
+}
+
+if (checkSession()) {
+  showMain();
+}
+
+document.getElementById('loginBtn').addEventListener('click', doLogin);
+document.getElementById('loginPass').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+
+function doLogin() {
+  const u = document.getElementById('loginUser').value.trim();
+  const p = document.getElementById('loginPass').value;
+  const err = document.getElementById('loginError');
+  if (u === AUTH.user && p === AUTH.pass) {
+    saveSession(document.getElementById('loginRemember').checked);
+    err.textContent = '';
+    showMain();
+  } else {
+    err.textContent = 'Utilizador ou password incorretos.';
+    document.getElementById('loginPass').value = '';
+    document.getElementById('loginPass').focus();
+  }
+}
+
+logoutBtn.addEventListener('click', () => {
+  clearSession();
+  location.reload();
+});
+
+// ── Formatters ──
+const fmt = (v, d=2) => new Intl.NumberFormat('pt-PT', {minimumFractionDigits:d, maximumFractionDigits:d}).format(v);
+const fmtEur = v => fmt(v) + '€';
+const sign = v => v >= 0 ? '+' : '';
+
+// ── Palette for charts ──
+const PALETTE = [
+  '#01696f','#437a22','#964219','#006494','#7a39bb',
+  '#d19900','#a13544','#4f98a3','#6daa45','#bb653b'
+];
+
+// ── Chart instances ──
+let donutChart = null;
+let histChart  = null;
+let historyData = [];
+
+// ── Load portfolio.json ──
+async function loadPortfolio() {
+  try {
+    const r = await fetch('portfolio.json?t=' + Date.now());
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const data = await r.json();
+    renderAll(data);
+  } catch(e) {
+    document.getElementById('kpiGrid').innerHTML =
+      '<div class="empty-state" style="grid-column:1/-1"><h3>Portfólio não disponível</h3><p>Corre o script de actualização ou aguarda a próxima actualização automática.</p></div>';
+  }
+}
+
+function renderAll(data) {
+  const s = data.summary || {};
+  historyData = data.history || [];
+  renderKPIs(s);
+  renderCharts(data.positions || [], historyData);
+  renderPositions(data.positions || []);
+  const lbl = data.updated ? new Date(data.updated).toLocaleString('pt-PT',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}) : '';
+  document.getElementById('updatedBadge').textContent = lbl ? 'Actualizado ' + lbl : '';
+}
+
+function renderKPIs(s) {
+  const grid = document.getElementById('kpiGrid');
+  const pnlClass = s.total_gain_eur >= 0 ? 'up' : 'down';
+  const todayClass = s.daily_gain_eur >= 0 ? 'up' : 'down';
+  grid.innerHTML = `
+    <div class="kpi-card">
+      <p class="kpi-label">Valor Total</p>
+      <p class="kpi-value">${fmtEur(s.total_value)}</p>
+      <p class="kpi-sub">${s.n_positions} posições</p>
+    </div>
+    <div class="kpi-card">
+      <p class="kpi-label">Investido</p>
+      <p class="kpi-value">${fmtEur(s.total_invested)}</p>
+      <p class="kpi-sub">custo médio ponderado</p>
+    </div>
+    <div class="kpi-card">
+      <p class="kpi-label">P&L Total</p>
+      <p class="kpi-value ${pnlClass}">${sign(s.total_gain_eur)}${fmtEur(s.total_gain_eur)}</p>
+      <p class="kpi-sub">${sign(s.total_gain_pct)}${fmt(s.total_gain_pct)}%</p>
+    </div>
+    <div class="kpi-card">
+      <p class="kpi-label">Hoje</p>
+      <p class="kpi-value ${todayClass}">${sign(s.daily_gain_eur)}${fmtEur(s.daily_gain_eur)}</p>
+      <p class="kpi-sub">variação diária</p>
+    </div>`;
+}
+
+function renderCharts(positions, history) {
+  // Donut
+  const top = positions.slice(0, 10);
+  const otherVal = positions.slice(10).reduce((a,p) => a + p.value_eur, 0);
+  const labels  = top.map(p => p.ticker);
+  const values  = top.map(p => p.value_eur);
+  if (otherVal > 0) { labels.push('Outros'); values.push(otherVal); }
+
+  document.getElementById('donutTotal').textContent = positions.length;
+
+  const ctx = document.getElementById('donutChart').getContext('2d');
+  if (donutChart) donutChart.destroy();
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  donutChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: { labels, datasets: [{ data: values, backgroundColor: PALETTE, borderWidth: 2, borderColor: isDark ? '#1a1917' : '#f9f8f5', hoverOffset: 6 }] },
+    options: {
+      cutout: '72%', responsive: true, maintainAspectRatio: true,
+      plugins: { legend: { display: false }, tooltip: {
+        callbacks: { label: ctx => ` ${ctx.label}: ${fmt(ctx.raw)}€ (${fmt(ctx.raw / values.reduce((a,b)=>a+b,0)*100)}%)` }
+      }}
+    }
+  });
+
+  // Legend
+  const legEl = document.getElementById('donutLegend');
+  legEl.innerHTML = labels.map((l,i) =>
+    `<div class="legend-item">
+      <span class="legend-dot" style="background:${PALETTE[i % PALETTE.length]}"></span>
+      <span class="legend-name">${l}</span>
+      <span class="legend-pct">${fmt(values[i] / values.reduce((a,b)=>a+b,0)*100)}%</span>
+    </div>`
+  ).join('');
+
+  // Performance bars
+  const perfEl = document.getElementById('perfList');
+  const sorted = [...positions].sort((a,b) => b.change_pct - a.change_pct);
+  const maxAbs = Math.max(...sorted.map(p => Math.abs(p.change_pct)), 1);
+  perfEl.innerHTML = sorted.map(p => {
+    const up = p.change_pct >= 0;
+    const w  = Math.abs(p.change_pct) / maxAbs * 100;
+    return `<div class="perf-item">
+      <span class="perf-ticker">${p.ticker.split('.')[0]}</span>
+      <div class="perf-bar-wrap"><div class="perf-bar ${up?'up':'down'}" style="width:${w}%"></div></div>
+      <span class="perf-pct ${up?'up':'down'}">${sign(p.change_pct)}${fmt(p.change_pct)}%</span>
+    </div>`;
+  }).join('');
+
+  // History chart
+  renderHistoryChart(history, 30);
+  document.querySelectorAll('.period-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.period-tab').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderHistoryChart(history, parseInt(btn.dataset.period));
+    });
+  });
+}
+
+function renderHistoryChart(history, days) {
+  const slice = history.slice(-days);
+  if (!slice.length) return;
+  const labels = slice.map(h => {
+    const d = new Date(h.date);
+    return d.toLocaleDateString('pt-PT', {day:'numeric',month:'short'});
+  });
+  const values = slice.map(h => h.value);
+  const isDark  = document.documentElement.getAttribute('data-theme') === 'dark';
+  const textClr = isDark ? '#797876' : '#7a7974';
+  const gridClr = isDark ? '#2e2d2b' : '#dcd9d5';
+  const upColor = isDark ? '#6daa45' : '#437a22';
+  const dnColor = isDark ? '#dd6974' : '#a13544';
+  const first = values[0], last = values[values.length-1];
+  const lineClr = last >= first ? upColor : dnColor;
+
+  const ctx2 = document.getElementById('historyChart').getContext('2d');
+  const grad = ctx2.createLinearGradient(0, 0, 0, 180);
+  grad.addColorStop(0, lineClr + '33');
+  grad.addColorStop(1, lineClr + '00');
+
+  if (histChart) histChart.destroy();
+  histChart = new Chart(ctx2, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        data: values,
+        borderColor: lineClr,
+        borderWidth: 2,
+        backgroundColor: grad,
+        fill: true,
+        tension: 0.35,
+        pointRadius: 0,
+        pointHoverRadius: 5,
+        pointHoverBackgroundColor: lineClr,
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: ctx => ' ' + fmtEur(ctx.raw) } }
+      },
+      scales: {
+        x: { grid: { color: gridClr }, ticks: { color: textClr, maxTicksLimit: 6, font: { size: 11 } } },
+        y: { grid: { color: gridClr }, ticks: { color: textClr, font: { size: 11 }, callback: v => fmt(v/1000,1)+'k€' } }
+      }
+    }
+  });
+}
+
+// ── Positions table ──
+let allPositions = [];
+function renderPositions(positions) {
+  allPositions = positions;
+  const tbody = document.getElementById('posBody');
+  if (!positions.length) {
+    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:var(--space-12);color:var(--color-text-muted)">Sem posições encontradas.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = positions.map((p, i) => {
+    const gainClass = p.gain_eur >= 0 ? 'up' : 'down';
+    const todayClass = p.change_pct >= 0 ? 'up' : 'down';
+    const sent = p.analysis?.sentiment || 'neutro';
+    const color = PALETTE[i % PALETTE.length];
+    return `<tr data-idx="${i}">
+      <td>
+        <p class="pos-ticker" style="color:${color}">${p.ticker.split('.')[0]}</p>
+        <p class="pos-name">${p.ticker_t212 || p.ticker}</p>
+      </td>
+      <td class="pos-num">${fmt(p.quantity, p.quantity < 1 ? 4 : 2)}</td>
+      <td class="pos-num">${fmt(p.avg_price, 2)}€</td>
+      <td class="pos-num ${todayClass}">${fmt(p.current_price, 2)}</td>
+      <td class="pos-num">${fmtEur(p.value_eur)}</td>
+      <td class="pos-num pos-gain ${gainClass}">${sign(p.gain_eur)}${fmtEur(p.gain_eur)}<br><span style="font-size:var(--text-xs)">${sign(p.gain_pct)}${fmt(p.gain_pct)}%</span></td>
+      <td class="pos-num">
+        <div style="display:flex;align-items:center;justify-content:flex-end;gap:4px">
+          <div class="alloc-bar"><div class="alloc-fill" style="width:${Math.min(p.allocation_pct*3,100)}%;background:${color}"></div></div>
+          ${fmt(p.allocation_pct)}%
+        </div>
+      </td>
+      <td><span class="sentiment-dot ${sent}"></span><span style="font-size:var(--text-xs);color:var(--color-text-muted)">${sent}</span></td>
+    </tr>`;
+  }).join('');
+
+  document.querySelectorAll('#posBody tr').forEach(row => {
+    row.addEventListener('click', () => openDrawer(allPositions[parseInt(row.dataset.idx)]));
+  });
+}
+
+// ── Drawer ──
+const drawer = document.getElementById('drawer');
+const overlay = document.getElementById('drawerOverlay');
+
+function openDrawer(p) {
+  document.getElementById('drawerTicker').textContent = p.ticker.split('.')[0];
+  document.getElementById('drawerName').textContent = p.ticker_t212 || p.ticker;
+  const body = document.getElementById('drawerBody');
+  const a = p.analysis || {};
+  const sent = a.sentiment || 'neutro';
+
+  // Análise Gemini
+  const watchHTML = (a.watch_points||[]).map(w => `<li class="watch-item">${w}</li>`).join('');
+  const analysisSection = `
+    <div class="drawer-section">
+      <p class="drawer-section-title">Análise IA</p>
+      <span class="sentiment-badge ${sent}">${sent === 'positivo' ? '↑ Positivo' : sent === 'negativo' ? '↓ Negativo' : '→ Neutro'}</span>
+      <p class="analysis-text">${a.news_comment || ''}</p>
+      <p class="analysis-text" style="margin-top:var(--space-2)">${a.earnings_comment || ''}</p>
+      ${watchHTML ? `<ul class="watch-list">${watchHTML}</ul>` : ''}
+    </div>`;
+
+  // Notícias
+  const newsHTML = (p.news||[]).length
+    ? (p.news||[]).map(n => {
+        const dt = n.datetime ? new Date(n.datetime*1000).toLocaleDateString('pt-PT',{day:'numeric',month:'short'}) : '';
+        return `<div class="news-item">
+          <p class="news-source">${n.source}${dt?' · '+dt:''}</p>
+          <p class="news-headline">${n.url ? `<a href="${n.url}" target="_blank" rel="noopener">${n.headline}</a>` : n.headline}</p>
+          ${n.summary ? `<p class="news-summary">${n.summary}</p>` : ''}
+        </div>`;
+      }).join('')
+    : '<p style="font-size:var(--text-sm);color:var(--color-text-muted)">Sem notícias recentes.</p>';
+
+  const newsSection = `<div class="drawer-section"><p class="drawer-section-title">Notícias Recentes</p><div class="news-list">${newsHTML}</div></div>`;
+
+  // Earnings
+  let earnSection = '';
+  if ((p.earnings||[]).length) {
+    const rows = p.earnings.map(e =>
+      `<div class="earn-row">
+        <span class="earn-period">${e.period}</span>
+        <span class="earn-num">${e.estimate !== null ? fmt(e.estimate,3) : '—'}</span>
+        <span class="earn-num">${fmt(e.actual,3)}</span>
+        <span class="earn-badge ${e.beat ? 'beat':'miss'}">${e.beat===null ? '—' : e.beat ? 'BEAT':'MISS'}${e.surprise !== null ? ' '+sign(e.surprise)+fmt(e.surprise,1)+'%' : ''}</span>
+      </div>`).join('');
+    earnSection = `<div class="drawer-section">
+      <p class="drawer-section-title">Earnings Históricos</p>
+      <div style="display:grid;grid-template-columns:80px 80px 80px 1fr;gap:var(--space-2);padding:var(--space-2) var(--space-3);">
+        <span style="font-size:10px;color:var(--color-text-faint);text-transform:uppercase">Período</span>
+        <span style="font-size:10px;color:var(--color-text-faint);text-transform:uppercase">Estimado</span>
+        <span style="font-size:10px;color:var(--color-text-faint);text-transform:uppercase">Real</span>
+        <span style="font-size:10px;color:var(--color-text-faint);text-transform:uppercase">Resultado</span>
+      </div>
+      <div class="earnings-grid">${rows}</div>
+    </div>`;
+  }
+
+  // Dividendos
+  let divSection = '';
+  if ((p.dividends||[]).length) {
+    const items = p.dividends.map(d =>
+      `<div class="div-item"><p class="div-date">${d.date}</p><p class="div-val">${fmt(d.amount,4)}</p></div>`).join('');
+    divSection = `<div class="drawer-section"><p class="drawer-section-title">Dividendos Recentes</p><div class="div-list">${items}</div></div>`;
+  }
+
+  // Métricas da posição
+  const gainClass = p.gain_eur >= 0 ? 'up' : 'down';
+  const metricsSection = `
+    <div class="drawer-section">
+      <p class="drawer-section-title">Métricas</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-3)">
+        <div class="kpi-card" style="padding:var(--space-4)">
+          <p class="kpi-label">Valor</p>
+          <p class="kpi-value" style="font-size:var(--text-base);font-weight:700">${fmtEur(p.value_eur)}</p>
+        </div>
+        <div class="kpi-card" style="padding:var(--space-4)">
+          <p class="kpi-label">P&L</p>
+          <p class="kpi-value ${gainClass}" style="font-size:var(--text-base);font-weight:700">${sign(p.gain_eur)}${fmtEur(p.gain_eur)}</p>
+          <p class="kpi-sub">${sign(p.gain_pct)}${fmt(p.gain_pct)}%</p>
+        </div>
+        <div class="kpi-card" style="padding:var(--space-4)">
+          <p class="kpi-label">Alocação</p>
+          <p class="kpi-value" style="font-size:var(--text-base);font-weight:700">${fmt(p.allocation_pct)}%</p>
+        </div>
+        <div class="kpi-card" style="padding:var(--space-4)">
+          <p class="kpi-label">Hoje</p>
+          <p class="kpi-value ${p.change_pct>=0?'up':'down'}" style="font-size:var(--text-base);font-weight:700">${sign(p.change_pct)}${fmt(p.change_pct)}%</p>
+        </div>
+      </div>
+    </div>`;
+
+  body.innerHTML = metricsSection + analysisSection + newsSection + earnSection + divSection;
+  drawer.classList.add('open');
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeDrawer() {
+  drawer.classList.remove('open');
+  overlay.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('drawerClose').addEventListener('click', closeDrawer);
+overlay.addEventListener('click', closeDrawer);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
+</script>
+</body>
+</html>
