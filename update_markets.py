@@ -1,12 +1,21 @@
 #!/usr/bin/env python3
 """
-update_markets.py — FundScope v1.9
-Fix: apenas tickers US com cobertura confirmada no Finnhub free tier.
-Removidos: VALE (NYSE ADR por vezes falha), RIO, BHP (LSE), AGI, PAAS, SCCO
-Adicionados: tickers S&P500/NYSE com pc>0 garantido
+update_markets.py — FundScope v2.0
+
+Causa raiz do problema:
+  O Finnhub free tier tem limite de 60 req/min.
+  Com 15 tickers x 6 setores = 90 chamadas so de quotes, o token era
+  throttled e devolvia {"c":0,"pc":0} para Consumo e Commodities
+  (os ultimos setores a correr).
+
+Solucao:
+  - Cotacoes: yfinance (sem rate limit, batch download)
+  - Sentimento: Finnhub /stock/recommendation (3 req/setor = 18 total, ok)
+  - Noticias:   Finnhub company-news (5 req/setor = 30 total, ok)
 """
 
 import json, os, time, datetime, requests
+import yfinance as yf
 
 FH_TOKEN = os.environ.get("FINNHUB_TOKEN", "")
 FH_BASE  = "https://finnhub.io/api/v1"
@@ -48,22 +57,72 @@ SECTORS = {
         "icon": "\U0001f6d2",
         "color": "#7a5c9e",
         "image": "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&q=80",
-        # Todos NYSE/NASDAQ - sem ADRs nem ETFs
-        "tickers": ["WMT","HD","MCD","SBUX","NKE","TGT","COST","LOW","TJX","PG","KO","PEP","PM","CL","MDLZ"],
-        "sentiment_tickers": ["WMT","MCD","KO"],
-        "news_tickers": ["WMT","MCD","COST","KO","HD"]
+        "tickers": ["AMZN","WMT","HD","MCD","SBUX","NKE","TGT","COST","LOW","TJX","PG","KO","PEP","PM","CL"],
+        "sentiment_tickers": ["AMZN","WMT","MCD"],
+        "news_tickers": ["AMZN","WMT","MCD","COST","KO"]
     },
     "Commodities": {
         "icon": "\U0001fa99",
         "color": "#8a7340",
         "image": "https://images.unsplash.com/photo-1610375461246-83df859d849d?w=800&q=80",
-        # Apenas produtores US/NYSE com cobertura confirmada
         "tickers": ["FCX","NEM","GOLD","AA","CLF","X","MP","WPM","AEM","CF","MOS","NUE","STLD","RS","ATI"],
         "sentiment_tickers": ["FCX","NEM","GOLD"],
         "news_tickers": ["FCX","NEM","GOLD","AA","CLF"]
     }
 }
 
+# ------------------------------------------------------------------ yfinance
+def fetch_all_quotes():
+    """
+    Faz um unico batch download de todos os tickers via yfinance.
+    Devolve dict: {TICKER: {"price": x, "changePct": y, "pc": z}}
+    """
+    all_tickers = []
+    for cfg in SECTORS.values():
+        all_tickers.extend(cfg["tickers"])
+    all_tickers = list(dict.fromkeys(all_tickers))  # dedup, preserva ordem
+
+    print(f"A descarregar {len(all_tickers)} cotacoes via yfinance...")
+    try:
+        data = yf.download(
+            all_tickers,
+            period="2d",
+            interval="1d",
+            auto_adjust=True,
+            progress=False,
+            threads=True
+        )
+    except Exception as e:
+        print(f"  [ERRO yfinance download]: {e}")
+        return {}
+
+    quotes = {}
+    close = data["Close"] if "Close" in data.columns else data.xs("Close", axis=1, level=0) if hasattr(data.columns, 'levels') else None
+
+    if close is None:
+        print("  [ERRO] nao foi possivel extrair Close do dataframe")
+        return {}
+
+    for t in all_tickers:
+        try:
+            col = close[t] if t in close.columns else None
+            if col is None or col.dropna().empty:
+                print(f"  [SKIP] {t}: sem dados")
+                continue
+            vals = col.dropna()
+            if len(vals) < 1:
+                continue
+            price = float(vals.iloc[-1])
+            pc    = float(vals.iloc[-2]) if len(vals) >= 2 else price
+            chg   = round((price - pc) / pc * 100, 2) if pc else 0.0
+            quotes[t] = {"ticker": t, "price": round(price, 2), "changePct": chg, "pc": round(pc, 2)}
+        except Exception as e:
+            print(f"  [SKIP] {t}: {e}")
+
+    print(f"  {len(quotes)}/{len(all_tickers)} cotacoes obtidas")
+    return quotes
+
+# ------------------------------------------------------------------ Finnhub
 def fh_get(endpoint, params):
     params["token"] = FH_TOKEN
     try:
@@ -71,23 +130,7 @@ def fh_get(endpoint, params):
         r.raise_for_status()
         return r.json()
     except Exception as e:
-        print(f"  [WARN] {endpoint} {params.get('symbol','')}: {e}")
-        return None
-
-def fh_quote(ticker):
-    d = fh_get("quote", {"symbol": ticker})
-    if not d:
-        return None
-    c  = d.get("c") or 0
-    pc = d.get("pc") or 0
-    if c > 0 and pc > 0:
-        chg = round((c - pc) / pc * 100, 2)
-        return {"ticker": ticker, "price": round(c, 2), "changePct": chg, "pc": round(pc, 2)}
-    elif pc > 0:
-        # Fora de horas: usa previous close, variacao=0
-        return {"ticker": ticker, "price": round(pc, 2), "changePct": 0.0, "pc": round(pc, 2)}
-    else:
-        print(f"    [SKIP] {ticker}: sem cobertura (c={c} pc={pc})")
+        print(f"  [WARN Finnhub] {endpoint} {params.get('symbol','')}: {e}")
         return None
 
 def fh_recommendation(ticker):
@@ -130,19 +173,16 @@ def fh_news(ticker, frm, to, limit=2):
             break
     return out
 
-def build_sector(name, cfg, frm, to):
-    quotes = []
-    for t in cfg["tickers"]:
-        q = fh_quote(t)
-        if q:
-            quotes.append(q)
-        time.sleep(0.13)
-    print(f"  {len(quotes)}/{len(cfg['tickers'])} quotes: {[q['ticker'] for q in quotes]}")
+# ------------------------------------------------------------------ builder
+def build_sector(name, cfg, all_quotes, frm, to):
+    quotes = [all_quotes[t] for t in cfg["tickers"] if t in all_quotes]
+    print(f"  {len(quotes)}/{len(cfg['tickers'])} quotes")
 
     quotes_sorted = sorted(quotes, key=lambda x: x["changePct"], reverse=True)
     gainers = quotes_sorted[:5]
     losers  = list(reversed(quotes_sorted[-5:])) if len(quotes_sorted) >= 5 else list(reversed(quotes_sorted))
 
+    # Sentimento via Finnhub (poucos pedidos)
     sentiments = []
     for t in cfg["sentiment_tickers"]:
         rec = fh_recommendation(t)
@@ -150,18 +190,19 @@ def build_sector(name, cfg, frm, to):
             "ticker": t, "bullish": rec["bullish"], "articles": rec["articles"],
             "sb": rec["sb"], "b": rec["b"], "h": rec["h"], "s": rec["s"], "ss": rec["ss"]
         })
-        time.sleep(0.2)
+        time.sleep(0.25)
 
     valid    = [s["bullish"] for s in sentiments if s["bullish"] is not None]
     avg_bull = round(sum(valid) / len(valid), 1) if valid else None
 
+    # Noticias via Finnhub
     news, seen_h = [], set()
     for t in cfg["news_tickers"]:
         for item in fh_news(t, frm, to, limit=2):
             if item["headline"] not in seen_h:
                 seen_h.add(item["headline"])
                 news.append(item)
-        time.sleep(0.15)
+        time.sleep(0.25)
         if len(news) >= 5:
             break
     news.sort(key=lambda x: x["datetime"], reverse=True)
@@ -176,18 +217,26 @@ def build_sector(name, cfg, frm, to):
         "news": news
     }
 
+# ------------------------------------------------------------------ main
 def main():
-    now  = datetime.datetime.utcnow()
-    slot = "abertura" if now.hour < 10 else ("meio-dia" if now.hour < 14 else "fecho")
+    now   = datetime.datetime.utcnow()
+    slot  = "abertura" if now.hour < 10 else ("meio-dia" if now.hour < 14 else "fecho")
     today = now.date()
     frm   = (today - datetime.timedelta(days=4)).isoformat()
     to    = today.isoformat()
 
+    # 1. Batch download de todas as cotacoes (1 unica chamada yfinance)
+    all_quotes = fetch_all_quotes()
+
+    # 2. Construir cada setor
     sectors = {}
     for name, cfg in SECTORS.items():
         print(f"\n=== {name} ===")
         try:
-            sectors[name] = build_sector(name, cfg, frm, to)
+            sectors[name] = build_sector(name, cfg, all_quotes, frm, to)
+            g = len(sectors[name]["gainers"])
+            l = len(sectors[name]["losers"])
+            print(f"  gainers={g} losers={l} avgChg={sectors[name]['avgChange']}%")
         except Exception as e:
             print(f"  ERRO: {e}")
             sectors[name] = {
@@ -195,7 +244,6 @@ def main():
                 "avgChange": 0, "gainers": [], "losers": [],
                 "sentiment": {"bullishPct": None, "details": []}, "news": []
             }
-        time.sleep(1)
 
     out = {"updated": now.isoformat() + "Z", "slot": slot, "sectors": sectors}
     with open("markets.json", "w", encoding="utf-8") as f:
