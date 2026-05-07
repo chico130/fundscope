@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 """
-update_markets.py — FundScope v1.6
+update_markets.py — FundScope v1.7
 Corre 3x/dia via GitHub Actions: 08:00, 12:00, 15:30 UTC
-Produz markets.json com:
-  - top 5 gainers / losers por setor
-  - sentimento Finnhub (news-sentiment) por setor
-  - notícias recentes Finnhub company-news (substitui Reddit/StockTwits)
+
+Fixes v1.7:
+  - Consumo: apenas acoes liquidas (sem ETFs)
+  - Commodities: produtores reais em vez de GLD/USO/UNG (nao suportados no free tier)
+  - Sentimento: /stock/recommendation (free) em vez de news-sentiment (premium)
 """
 
 import json, os, time, datetime, requests
@@ -50,6 +51,7 @@ SECTORS = {
         "icon": "\U0001f6d2",
         "color": "#7a5c9e",
         "image": "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&q=80",
+        # Apenas acoes — sem ETFs (AMZN, WMT, etc. suportados no free tier)
         "tickers": ["AMZN","WMT","HD","MCD","SBUX","NKE","TGT","COST","LOW","TJX","PG","KO","PEP","PM","CL"],
         "sentiment_tickers": ["AMZN","WMT","MCD"],
         "news_tickers": ["AMZN","WMT","MCD","COST","KO"]
@@ -58,8 +60,9 @@ SECTORS = {
         "icon": "\U0001fa99",
         "color": "#8a7340",
         "image": "https://images.unsplash.com/photo-1610375461246-83df859d849d?w=800&q=80",
-        "tickers": ["GLD","SLV","USO","UNG","CORN","WEAT","FCX","NEM","GOLD","AA","CLF","X","MP","VALE","RIO"],
-        "sentiment_tickers": ["GLD","USO","FCX"],
+        # Produtores reais: GLD/USO/SLV/UNG sao ETFs nao suportados no free tier
+        "tickers": ["FCX","NEM","GOLD","AA","CLF","X","MP","VALE","RIO","BHP","SCCO","WPM","AEM","AGI","PAAS"],
+        "sentiment_tickers": ["FCX","NEM","GOLD"],
         "news_tickers": ["FCX","NEM","GOLD","VALE","AA"]
     }
 }
@@ -78,27 +81,41 @@ def fh_quote(ticker):
     d = fh_get("quote", {"symbol": ticker})
     if not d:
         return None
-    price = d.get("c") or d.get("pc") or 0
+    price = d.get("c") or 0
     pc    = d.get("pc") or price
-    chg   = ((price - pc) / pc * 100) if pc else 0
+    if price <= 0:
+        return None
+    chg = ((price - pc) / pc * 100) if pc else 0
     return {"ticker": ticker, "price": round(price, 2), "changePct": round(chg, 2), "pc": round(pc, 2)}
 
-def fh_sentiment(ticker):
-    d = fh_get("news-sentiment", {"symbol": ticker})
-    if not d:
-        return {"bullish": None, "articles": 0}
-    score = (d.get("sentiment") or {}).get("bullishPercent")
-    buzz  = (d.get("buzz") or {}).get("articlesInLastWeek", 0)
-    return {"bullish": round(score * 100, 1) if score else None, "articles": buzz}
+def fh_recommendation(ticker):
+    """
+    /stock/recommendation (free tier) -> converte em % bullish (0-100).
+    Pesos: strongBuy=+2, buy=+1, hold=0, sell=-1, strongSell=-2
+    Normalizado: (score + 2*total) / (4*total) * 100
+    """
+    d = fh_get("stock/recommendation", {"symbol": ticker})
+    if not d or not isinstance(d, list) or not d:
+        return {"bullish": None, "articles": 0, "sb": 0, "b": 0, "h": 0, "s": 0, "ss": 0}
+    latest = d[0]
+    sb = latest.get("strongBuy", 0) or 0
+    b  = latest.get("buy", 0) or 0
+    h  = latest.get("hold", 0) or 0
+    s  = latest.get("sell", 0) or 0
+    ss = latest.get("strongSell", 0) or 0
+    total = sb + b + h + s + ss
+    if total == 0:
+        return {"bullish": None, "articles": 0, "sb": 0, "b": 0, "h": 0, "s": 0, "ss": 0}
+    score = sb * 2 + b * 1 + s * (-1) + ss * (-2)
+    pct   = round((score + 2 * total) / (4 * total) * 100, 1)
+    return {"bullish": pct, "articles": total, "sb": sb, "b": b, "h": h, "s": s, "ss": ss}
 
 def fh_news(ticker, frm, to, limit=2):
-    """Devolve até `limit` notícias recentes do ticker."""
     d = fh_get("company-news", {"symbol": ticker, "from": frm, "to": to})
     if not d or not isinstance(d, list):
         return []
-    out = []
-    seen = set()
-    for item in d[:40]:  # percorrer no máx 40 para evitar duplicados
+    out, seen = [], set()
+    for item in d[:40]:
         headline = (item.get("headline") or "").strip()
         if not headline or headline in seen:
             continue
@@ -117,65 +134,59 @@ def fh_news(ticker, frm, to, limit=2):
     return out
 
 def build_sector(name, cfg, frm, to):
-    tickers = cfg["tickers"]
-
-    # --- Cotações ---
+    # Cotacoes
     quotes = []
-    for t in tickers:
+    for t in cfg["tickers"]:
         q = fh_quote(t)
-        if q and q["price"] > 0:
+        if q:
             quotes.append(q)
         time.sleep(0.12)
 
     quotes_sorted = sorted(quotes, key=lambda x: x["changePct"], reverse=True)
     gainers = quotes_sorted[:5]
-    losers  = quotes_sorted[-5:][::-1]
+    losers  = list(reversed(quotes_sorted[-5:])) if len(quotes_sorted) >= 5 else list(reversed(quotes_sorted))
 
-    # --- Sentimento ---
+    # Sentimento via recommendation trends
     sentiments = []
     for t in cfg["sentiment_tickers"]:
-        s = fh_sentiment(t)
-        s["ticker"] = t
-        sentiments.append(s)
+        rec = fh_recommendation(t)
+        sentiments.append({
+            "ticker":   t,
+            "bullish":  rec["bullish"],
+            "articles": rec["articles"],
+            "sb": rec["sb"], "b": rec["b"],
+            "h":  rec["h"],  "s": rec["s"], "ss": rec["ss"]
+        })
         time.sleep(0.2)
 
-    valid   = [s["bullish"] for s in sentiments if s["bullish"] is not None]
+    valid    = [s["bullish"] for s in sentiments if s["bullish"] is not None]
     avg_bull = round(sum(valid) / len(valid), 1) if valid else None
 
-    # --- Notícias (substitui Reddit/StockTwits) ---
-    news = []
-    seen_headlines = set()
+    # Noticias
+    news, seen_h = [], set()
     for t in cfg["news_tickers"]:
         for item in fh_news(t, frm, to, limit=2):
-            if item["headline"] not in seen_headlines:
-                seen_headlines.add(item["headline"])
+            if item["headline"] not in seen_h:
+                seen_h.add(item["headline"])
                 news.append(item)
         time.sleep(0.15)
         if len(news) >= 5:
             break
-    # Ordenar por data desc, manter top 5
     news.sort(key=lambda x: x["datetime"], reverse=True)
     news = news[:5]
 
     avg_chg = round(sum(q["changePct"] for q in quotes) / len(quotes), 2) if quotes else 0
 
     return {
-        "name":      name,
-        "icon":      cfg["icon"],
-        "color":     cfg["color"],
-        "image":     cfg["image"],
-        "avgChange": avg_chg,
-        "gainers":   gainers,
-        "losers":    losers,
+        "name": name, "icon": cfg["icon"], "color": cfg["color"], "image": cfg["image"],
+        "avgChange": avg_chg, "gainers": gainers, "losers": losers,
         "sentiment": {"bullishPct": avg_bull, "details": sentiments},
-        "news":      news
+        "news": news
     }
 
 def main():
     now  = datetime.datetime.utcnow()
-    hour = now.hour
-    slot = "abertura" if hour < 10 else ("meio-dia" if hour < 14 else "fecho")
-
+    slot = "abertura" if now.hour < 10 else ("meio-dia" if now.hour < 14 else "fecho")
     today = now.date()
     frm   = (today - datetime.timedelta(days=4)).isoformat()
     to    = today.isoformat()
@@ -188,11 +199,9 @@ def main():
         except Exception as e:
             print(f"  ERRO: {e}")
             sectors[name] = {
-                "name": name, "icon": cfg["icon"], "color": cfg["color"],
-                "image": cfg["image"], "avgChange": 0,
-                "gainers": [], "losers": [],
-                "sentiment": {"bullishPct": None, "details": []},
-                "news": []
+                "name": name, "icon": cfg["icon"], "color": cfg["color"], "image": cfg["image"],
+                "avgChange": 0, "gainers": [], "losers": [],
+                "sentiment": {"bullishPct": None, "details": []}, "news": []
             }
         time.sleep(1)
 
