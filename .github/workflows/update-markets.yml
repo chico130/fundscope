@@ -1,0 +1,35 @@
+name: Update Markets
+
+on:
+  schedule:
+    - cron: '0 8 * * 1-5'   # 08:00 UTC = 09:00 WEST (abertura)
+    - cron: '0 12 * * 1-5'  # 12:00 UTC = 13:00 WEST (meio-dia)
+    - cron: '30 15 * * 1-5' # 15:30 UTC = 16:30 WEST (fecho europeu)
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install deps
+        run: pip install requests
+
+      - name: Run update_markets.py
+        env:
+          FINNHUB_TOKEN: ${{ secrets.FINNHUB_TOKEN }}
+        run: python update_markets.py
+
+      - name: Commit markets.json
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add markets.json
+          git diff --staged --quiet || git commit -m "chore: update markets.json [skip ci]"
+          git push
