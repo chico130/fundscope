@@ -32,6 +32,54 @@ if GEMINI_AVAILABLE and GEMINI_KEY:
     except Exception as e:
         print(f"[AVISO] Gemini init falhou: {e}")
 
+T212_TO_YF = {
+    "MTEd":  "META",   "49Vd":  "NVDA",   "ASMLa": "ASML",
+    "AAPLd": "AAPL",   "MSFTd": "MSFT",   "TSLAd": "TSLA",
+    "AMZNd": "AMZN",   "GOOGLd":"GOOGL",  "AMDd":  "AMD",
+    "AVGOd": "AVGO",   "LLYd":  "LLY",    "UNHd":  "UNH",
+    "XOMd":  "XOM",    "JPMd":  "JPM",    "Vd":    "V",
+    "MAd":   "MA",     "NVDAd": "NVDA",
+    "0V6d":  "VWCE.DE","CJ6d":  "IWDA.AS",
+    "VWCE":  "VWCE.DE","IWDA":  "IWDA.AS","EUNL":  "EUNL.DE",
+    "CSPX":  "CSPX.L", "SXR8":  "SXR8.DE","VUSA":  "VUSA.AS",
+    "SPPW":  "SPPW.DE","XDWD":  "XDWD.DE","VWRA":  "VWRA.L",
+    "VUAA":  "VUAA.DE","VEUR":  "VEUR.AS","VFEM":  "VFEM.AS",
+    "VHYL":  "VHYL.AS","VDIV":  "VDIV.AS","VAGP":  "VAGP.L",
+    "IMAE":  "IMAE.AS","IUSQ":  "IUSQ.DE","IQQQ":  "IQQQ.DE",
+    "EMIM":  "EMIM.L", "AGGH":  "AGGH.L", "SSAC":  "SSAC.L",
+    "CNDX":  "CNDX.L", "MEUD":  "MEUD.PA","SPYY":  "SPYY.DE",
+    "SPYW":  "SPYW.DE","EQQQ":  "EQQQ.L", "SMEA":  "SMEA.DE",
+}
+
+YF_NAMES = {
+    "META":    "Meta Platforms",
+    "NVDA":    "NVIDIA",
+    "ASML":    "ASML Holding",
+    "AAPL":    "Apple Inc.",
+    "MSFT":    "Microsoft",
+    "TSLA":    "Tesla",
+    "AMZN":    "Amazon",
+    "GOOGL":   "Alphabet",
+    "AMD":     "AMD",
+    "AVGO":    "Broadcom",
+    "LLY":     "Eli Lilly",
+    "UNH":     "UnitedHealth",
+    "XOM":     "ExxonMobil",
+    "JPM":     "JPMorgan Chase",
+    "V":       "Visa",
+    "MA":      "Mastercard",
+    "VWCE.DE": "Vanguard FTSE All-World Acc (Xetra)",
+    "IWDA.AS": "iShares Core MSCI World (AMS)",
+    "EUNL.DE": "iShares Core MSCI World (Xetra)",
+    "CSPX.L":  "iShares Core S&P 500 (LSE)",
+    "SXR8.DE": "iShares Core S&P 500 (Xetra)",
+    "VUSA.AS": "Vanguard S&P 500 UCITS ETF",
+    "SPPW.DE": "SPDR S&P 500 UCITS ETF",
+    "XDWD.DE": "Xtrackers MSCI World",
+    "VWRA.L":  "Vanguard FTSE All-World Acc (LSE)",
+    "VUAA.DE": "Vanguard S&P 500 UCITS Acc (Xetra)",
+}
+
 def t212_get(path):
     r = requests.get(f"{T212_BASE}{path}", headers={"Authorization": T212_AUTH}, timeout=15)
     r.raise_for_status()
@@ -55,22 +103,36 @@ def fetch_t212_positions():
     return positions
 
 def map_t212_ticker(t212_ticker):
-    ticker = t212_ticker
-    for suffix in ["_US_EQ", "_EQ", "_GBX_EQ", "_EUR_EQ", "_GBP_EQ"]:
-        ticker = ticker.replace(suffix, "")
+    clean = t212_ticker
+    for suffix in ["_US_EQ", "_GBX_EQ", "_EUR_EQ", "_GBP_EQ", "_EQ"]:
+        if clean.endswith(suffix):
+            clean = clean[:-len(suffix)]
+            break
+    if clean in T212_TO_YF:
+        return T212_TO_YF[clean]
     eu_etfs = {
         "VWCE": "VWCE.DE", "VWRA": "VWRA.L",  "VUAA": "VUAA.DE",
         "VUSA": "VUSA.AS", "VEUR": "VEUR.AS",  "VFEM": "VFEM.AS",
-        "VHYL": "VHYL.AS", "VDIV": "VDIV.AS",  "VAGP": "VAGP.L",
         "CSPX": "CSPX.L",  "IWDA": "IWDA.AS",  "EUNL": "EUNL.DE",
-        "SXR8": "SXR8.DE", "IMAE": "IMAE.AS",  "IUSQ": "IUSQ.DE",
-        "IQQQ": "IQQQ.DE", "EMIM": "EMIM.L",   "AGGH": "AGGH.L",
-        "SSAC": "SSAC.L",  "CNDX": "CNDX.L",
-        "MEUD": "MEUD.PA", "SPYY": "SPYY.DE",  "SPPW": "SPPW.DE",
-        "SPYW": "SPYW.DE", "XDWD": "XDWD.DE",  "EQQQ": "EQQQ.L",
-        "SMEA": "SMEA.DE",
+        "SXR8": "SXR8.DE", "IUSQ": "IUSQ.DE",  "SPPW": "SPPW.DE",
+        "XDWD": "XDWD.DE", "EQQQ": "EQQQ.L",   "MEUD": "MEUD.PA",
     }
-    return eu_etfs.get(ticker, ticker)
+    return eu_etfs.get(clean, clean)
+
+def get_display_name(ticker_yf, ticker_t212):
+    if ticker_yf in YF_NAMES:
+        return YF_NAMES[ticker_yf]
+    base = ticker_yf.split(".")[0]
+    if base in YF_NAMES:
+        return YF_NAMES[base]
+    try:
+        info = yf.Ticker(ticker_yf).info
+        name = info.get("longName") or info.get("shortName") or ""
+        if name:
+            return name
+    except Exception:
+        pass
+    return base
 
 def fetch_quotes_yf(yf_tickers):
     if not yf_tickers:
@@ -137,8 +199,8 @@ def fetch_dividends(yf_ticker):
     except Exception:
         return []
 
-def fh_news(ticker, frm, to, limit=5):
-    base_symbol = ticker.split(".")[0]
+def fh_news(ticker_yf, frm, to, limit=5):
+    base_symbol = ticker_yf.split(".")[0]
     try:
         r = requests.get(f"{FH_BASE}/company-news",
                          params={"symbol": base_symbol, "from": frm, "to": to, "token": FH_TOKEN},
@@ -216,7 +278,11 @@ def main():
 
     print("\n[2] A enriquecer com yfinance...")
     for p in positions:
-        p["ticker"] = map_t212_ticker(p["ticker_t212"])
+        yf_ticker = map_t212_ticker(p["ticker_t212"])
+        p["ticker"]       = yf_ticker
+        p["display_name"] = get_display_name(yf_ticker, p["ticker_t212"])
+        p["ticker_display"] = yf_ticker.split(".")[0]
+
     yf_tickers = list(dict.fromkeys(p["ticker"] for p in positions))
     quotes = fetch_quotes_yf(yf_tickers)
     for p in positions:
@@ -245,15 +311,17 @@ def main():
 
     print("\n[3] Notícias + Earnings + Gemini...")
     for p in positions:
-        ticker = p["ticker"]
-        print(f"  → {ticker}")
+        ticker     = p["ticker"]
+        disp_name  = p["display_name"]
+        print(f"  → {ticker} ({disp_name})")
         p["news"]      = fh_news(ticker, frm, to)
         time.sleep(0.3)
         p["earnings"]  = fetch_earnings(ticker)
         p["dividends"] = fetch_dividends(ticker)
-        p["analysis"]  = gemini_analyze(ticker, p.get("ticker_t212", ticker),
-                                         p["news"], p["earnings"],
-                                         p["gain_eur"], p["change_pct"])
+        p["analysis"]  = gemini_analyze(
+            p["ticker_display"], disp_name,
+            p["news"], p["earnings"],
+            p["gain_eur"], p["change_pct"])
         time.sleep(1)
 
     print("\n[4] Histórico...")
