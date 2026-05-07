@@ -1,32 +1,28 @@
 #!/usr/bin/env python3
 """
 update_portfolio.py — FundScope Portfolio
-
-Fluxo:
-  1. Puxa posições da Trading 212 API (auto-detecta live vs demo)
-  2. Enriquece com cotações via yfinance
-  3. Busca notícias via Finnhub
-  4. Busca earnings e dividendos via yfinance
-  5. Gera análise em PT via Gemini API (google-genai SDK)
-  6. Guarda portfolio.json
 """
 
-import json, os, time, datetime, requests
+import json, os, time, datetime, requests, base64
 import yfinance as yf
 
-# ---------- Gemini (novo SDK google-genai) ----------
 try:
     from google import genai
     from google.genai import types as genai_types
     GEMINI_AVAILABLE = True
 except ImportError:
     GEMINI_AVAILABLE = False
-    print("[AVISO] google-genai não instalado — análise Gemini desativada")
+    print("[AVISO] google-genai não instalado")
 
-T212_KEY   = os.environ["T212_API_KEY"]
-FH_TOKEN   = os.environ.get("FINNHUB_TOKEN", "")
-GEMINI_KEY = os.environ.get("GEMINI_API_KEY", "")
-FH_BASE    = "https://finnhub.io/api/v1"
+# T212 usa Basic Auth: base64(API_KEY_ID:SECRET)
+T212_KEY_ID  = os.environ.get("T212_API_ID", "")
+T212_SECRET  = os.environ["T212_API_KEY"]
+FH_TOKEN     = os.environ.get("FINNHUB_TOKEN", "")
+GEMINI_KEY   = os.environ.get("GEMINI_API_KEY", "")
+FH_BASE      = "https://finnhub.io/api/v1"
+
+_creds      = base64.b64encode(f"{T212_KEY_ID}:{T212_SECRET}".encode()).decode()
+T212_AUTH   = f"Basic {_creds}"
 
 gemini_client = None
 if GEMINI_AVAILABLE and GEMINI_KEY:
@@ -38,13 +34,11 @@ if GEMINI_AVAILABLE and GEMINI_KEY:
 
 # ------------------------------------------------------------------ T212
 def t212_get(base, path):
-    headers = {"Authorization": T212_KEY}
-    r = requests.get(f"{base}{path}", headers=headers, timeout=15)
+    r = requests.get(f"{base}{path}", headers={"Authorization": T212_AUTH}, timeout=15)
     r.raise_for_status()
     return r.json()
 
 def detect_t212_base():
-    """Tenta live primeiro, cai para demo se 401/403."""
     for base in [
         "https://live.trading212.com/api/v0",
         "https://demo.trading212.com/api/v0"
@@ -55,14 +49,11 @@ def detect_t212_base():
             return base
         except requests.HTTPError as e:
             code = e.response.status_code
-            print(f"    [T212] {base} → HTTP {code}")
+            print(f"    [T212] {base} → HTTP {code} | {e.response.text[:200]}")
             if code in (401, 403):
                 continue
             raise
-    raise RuntimeError(
-        "T212 API key inválida para live E demo. "
-        "Verifica o secret T212_API_KEY no GitHub."
-    )
+    raise RuntimeError("T212: ambos os endpoints falharam. Verifica T212_API_ID e T212_API_KEY.")
 
 def fetch_t212_positions(base):
     data = t212_get(base, "/equity/portfolio")
@@ -82,27 +73,19 @@ def fetch_t212_positions(base):
     return positions
 
 def map_t212_ticker(t212_ticker):
-    """
-    T212 usa tickers como AAPL_US_EQ, VWCE_EQ, CSPX_EQ.
-    Remove sufixos e mapeia ETFs europeus para ticker yfinance correto.
-    """
     ticker = t212_ticker
     for suffix in ["_US_EQ", "_EQ", "_GBX_EQ", "_EUR_EQ", "_GBP_EQ"]:
         ticker = ticker.replace(suffix, "")
-
     eu_etfs = {
-        # Vanguard
-        "VWCE": "VWCE.DE",  "VWRA": "VWRA.L",   "VUAA": "VUAA.DE",
-        "VUSA": "VUSA.AS",  "VEUR": "VEUR.AS",   "VFEM": "VFEM.AS",
-        "VHYL": "VHYL.AS",  "VDIV": "VDIV.AS",   "VAGP": "VAGP.L",
-        # iShares
-        "CSPX": "CSPX.L",   "IWDA": "IWDA.AS",   "EUNL": "EUNL.DE",
-        "SXR8": "SXR8.DE",  "IMAE": "IMAE.AS",   "IUSQ": "IUSQ.DE",
-        "IQQQ": "IQQQ.DE",  "EMIM": "EMIM.L",    "AGGH": "AGGH.L",
-        "SSAC": "SSAC.L",   "CNDX": "CNDX.L",
-        # Amundi / SPDR
-        "MEUD": "MEUD.PA",  "SPYY": "SPYY.DE",   "SPPW": "SPPW.DE",
-        "SPYW": "SPYW.DE",  "XDWD": "XDWD.DE",   "EQQQ": "EQQQ.L",
+        "VWCE": "VWCE.DE", "VWRA": "VWRA.L",  "VUAA": "VUAA.DE",
+        "VUSA": "VUSA.AS", "VEUR": "VEUR.AS",  "VFEM": "VFEM.AS",
+        "VHYL": "VHYL.AS", "VDIV": "VDIV.AS",  "VAGP": "VAGP.L",
+        "CSPX": "CSPX.L",  "IWDA": "IWDA.AS",  "EUNL": "EUNL.DE",
+        "SXR8": "SXR8.DE", "IMAE": "IMAE.AS",  "IUSQ": "IUSQ.DE",
+        "IQQQ": "IQQQ.DE", "EMIM": "EMIM.L",   "AGGH": "AGGH.L",
+        "SSAC": "SSAC.L",  "CNDX": "CNDX.L",
+        "MEUD": "MEUD.PA", "SPYY": "SPYY.DE",  "SPPW": "SPPW.DE",
+        "SPYW": "SPYW.DE", "XDWD": "XDWD.DE",  "EQQQ": "EQQQ.L",
         "SMEA": "SMEA.DE",
     }
     return eu_etfs.get(ticker, ticker)
@@ -113,44 +96,27 @@ def fetch_quotes_yf(yf_tickers):
         return {}
     print(f"  yfinance: {len(yf_tickers)} tickers...")
     quotes = {}
-    # single ticker — yf.download comporta-se diferente
     tickers_str = " ".join(yf_tickers) if len(yf_tickers) > 1 else yf_tickers[0]
     try:
-        data = yf.download(
-            tickers_str, period="5d", interval="1d",
-            auto_adjust=True, progress=False, threads=True, group_by="ticker"
-        )
+        data = yf.download(tickers_str, period="5d", interval="1d",
+                           auto_adjust=True, progress=False, threads=True, group_by="ticker")
     except Exception as e:
         print(f"  [ERRO yfinance batch]: {e}")
-        # fallback individual
-        for t in yf_tickers:
-            try:
-                tk   = yf.Ticker(t)
-                hist = tk.history(period="5d")
-                if hist.empty:
-                    continue
-                price = float(hist["Close"].iloc[-1])
-                pc    = float(hist["Close"].iloc[-2]) if len(hist) >= 2 else price
-                chg   = round((price - pc) / pc * 100, 2) if pc else 0.0
-                quotes[t] = {"price": round(price, 4), "changePct": chg}
-            except Exception as e2:
-                print(f"  [SKIP individual] {t}: {e2}")
-        return quotes
+        data = None
 
     for t in yf_tickers:
         try:
-            if len(yf_tickers) == 1:
-                col = data["Close"]
+            if data is not None:
+                col = data["Close"] if len(yf_tickers) == 1 else data[t]["Close"]
+                vals = col.dropna()
+                price = float(vals.iloc[-1])
+                pc    = float(vals.iloc[-2]) if len(vals) >= 2 else price
             else:
-                col = data[t]["Close"] if t in data.columns.get_level_values(0) else None
-            if col is None:
-                continue
-            vals = col.dropna()
-            if len(vals) < 1:
-                continue
-            price = float(vals.iloc[-1])
-            pc    = float(vals.iloc[-2]) if len(vals) >= 2 else price
-            chg   = round((price - pc) / pc * 100, 2) if pc else 0.0
+                tk    = yf.Ticker(t)
+                hist  = tk.history(period="5d")
+                price = float(hist["Close"].iloc[-1])
+                pc    = float(hist["Close"].iloc[-2]) if len(hist) >= 2 else price
+            chg = round((price - pc) / pc * 100, 2) if pc else 0.0
             quotes[t] = {"price": round(price, 4), "changePct": chg}
         except Exception as e:
             print(f"  [SKIP] {t}: {e}")
@@ -158,14 +124,13 @@ def fetch_quotes_yf(yf_tickers):
 
 def fetch_earnings(yf_ticker):
     try:
-        tk   = yf.Ticker(yf_ticker)
-        hist = tk.earnings_history
+        hist = yf.Ticker(yf_ticker).earnings_history
         if hist is None or hist.empty:
             return []
         records = []
         for _, row in hist.tail(8).iterrows():
-            eps_est  = row.get("epsEstimate")     or row.get("EpsEstimate")
-            eps_act  = row.get("epsActual")       or row.get("EpsActual")
+            eps_est  = row.get("epsEstimate") or row.get("EpsEstimate")
+            eps_act  = row.get("epsActual")   or row.get("EpsActual")
             surprise = row.get("surprisePercent") or row.get("SurprisePercent")
             period   = str(row.get("period") or row.get("Period") or "")
             if eps_act is None:
@@ -184,14 +149,11 @@ def fetch_earnings(yf_ticker):
 
 def fetch_dividends(yf_ticker):
     try:
-        tk   = yf.Ticker(yf_ticker)
-        divs = tk.dividends
+        divs = yf.Ticker(yf_ticker).dividends
         if divs is None or divs.empty:
             return []
-        records = []
-        for dt, val in divs.tail(4).items():
-            records.append({"date": str(dt.date()), "amount": round(float(val), 4)})
-        return list(reversed(records))
+        return list(reversed([{"date": str(dt.date()), "amount": round(float(v), 4)}
+                               for dt, v in divs.tail(4).items()]))
     except Exception:
         return []
 
@@ -199,8 +161,9 @@ def fetch_dividends(yf_ticker):
 def fh_news(ticker, frm, to, limit=5):
     base_symbol = ticker.split(".")[0]
     try:
-        params = {"symbol": base_symbol, "from": frm, "to": to, "token": FH_TOKEN}
-        r = requests.get(f"{FH_BASE}/company-news", params=params, timeout=10)
+        r = requests.get(f"{FH_BASE}/company-news",
+                         params={"symbol": base_symbol, "from": frm, "to": to, "token": FH_TOKEN},
+                         timeout=10)
         r.raise_for_status()
         data = r.json()
     except Exception as e:
@@ -212,14 +175,10 @@ def fh_news(ticker, frm, to, limit=5):
         if not h or h in seen:
             continue
         seen.add(h)
-        out.append({
-            "source":   item.get("source", base_symbol),
-            "headline": h[:180],
-            "summary":  (item.get("summary") or "")[:300],
-            "url":      item.get("url", ""),
-            "datetime": item.get("datetime", 0),
-            "image":    item.get("image", "")
-        })
+        out.append({"source": item.get("source", base_symbol), "headline": h[:180],
+                    "summary": (item.get("summary") or "")[:300],
+                    "url": item.get("url", ""), "datetime": item.get("datetime", 0),
+                    "image": item.get("image", "")})
         if len(out) >= limit:
             break
     return out
@@ -227,52 +186,28 @@ def fh_news(ticker, frm, to, limit=5):
 # ------------------------------------------------------------------ Gemini
 def gemini_analyze(ticker, name, news_list, earnings_list, ppl, pct_change):
     if not gemini_client:
-        return {
-            "sentiment": "neutro",
-            "news_comment": "Gemini indisponível.",
-            "earnings_comment": "Gemini indisponível.",
-            "watch_points": []
-        }
-
-    news_text = "\n".join([f"- {n['headline']}" for n in news_list]) or "Sem notícias recentes."
+        return {"sentiment": "neutro", "news_comment": "Gemini indisponível.",
+                "earnings_comment": "Gemini indisponível.", "watch_points": []}
+    news_text = "\n".join([f"- {n['headline']}" for n in news_list]) or "Sem notícias."
     earn_text = "\n".join([
         f"- {e['period']}: real={e['actual']} est={e['estimate']} {'BEAT' if e.get('beat') else 'MISS'}"
-        for e in earnings_list
-    ]) or "Sem dados de earnings."
-
-    prompt = f"""Analisa o ativo {ticker} ({name}) em português de Portugal (PT-PT), de forma direta e concisa.
-
-Desempenho: {'+' if ppl >= 0 else ''}{ppl:.2f}€ P&L total, variação hoje: {pct_change:+.2f}%
-
-Notícias:
-{news_text}
-
-Earnings (EPS):
-{earn_text}
-
-Responde APENAS com JSON válido, sem markdown:
-{{"sentiment": "positivo|negativo|neutro", "news_comment": "...", "earnings_comment": "...", "watch_points": ["...", "...", "..."]}}"""
-
+        for e in earnings_list]) or "Sem dados."
+    prompt = f"""Analisa {ticker} ({name}) em PT-PT.
+P&L: {'+' if ppl>=0 else ''}{ppl:.2f}€, hoje: {pct_change:+.2f}%
+Notícias:\n{news_text}\nEarnings:\n{earn_text}
+Responde APENAS JSON: {{"sentiment":"positivo|negativo|neutro","news_comment":"...","earnings_comment":"...","watch_points":["...","...","..."]}}"""
     try:
         response = gemini_client.models.generate_content(
-            model="gemini-2.0-flash",
-            contents=prompt,
+            model="gemini-2.0-flash", contents=prompt,
             config=genai_types.GenerateContentConfig(
-                response_mime_type="application/json",
-                temperature=0.3
-            )
-        )
+                response_mime_type="application/json", temperature=0.3))
         return json.loads(response.text.strip())
     except Exception as e:
         print(f"  [Gemini] {ticker}: {e}")
-        return {
-            "sentiment": "neutro",
-            "news_comment": "Análise indisponível.",
-            "earnings_comment": "Análise indisponível.",
-            "watch_points": []
-        }
+        return {"sentiment": "neutro", "news_comment": "Indisponível.",
+                "earnings_comment": "Indisponível.", "watch_points": []}
 
-# ------------------------------------------------------------------ histórico
+# ------------------------------------------------------------------ main
 def load_history():
     try:
         with open("portfolio.json", "r", encoding="utf-8") as f:
@@ -284,10 +219,8 @@ def update_history(history, total_value):
     today = datetime.date.today().isoformat()
     history = [h for h in history if h["date"] != today]
     history.append({"date": today, "value": round(total_value, 2)})
-    history.sort(key=lambda x: x["date"])
-    return history[-365:]
+    return sorted(history, key=lambda x: x["date"])[-365:]
 
-# ------------------------------------------------------------------ main
 def main():
     now   = datetime.datetime.utcnow()
     today = now.date()
@@ -296,10 +229,10 @@ def main():
 
     print("=== FundScope Portfolio Update ===")
     print(f"UTC: {now.isoformat()}")
+    print(f"T212 Key ID set: {bool(T212_KEY_ID)}")
     print(f"Gemini disponível: {gemini_client is not None}")
 
-    # 1. Detectar T212 e buscar posições
-    print("\n[1] A detectar T212 e buscar posições...")
+    print("\n[1] A detectar T212...")
     t212_base = detect_t212_base()
     positions = fetch_t212_positions(t212_base)
     print(f"    {len(positions)} posições encontradas")
@@ -307,63 +240,51 @@ def main():
         print("    Nenhuma posição — a terminar.")
         return
 
-    # 2. Mapear tickers e cotações yfinance
-    print("\n[2] A enriquecer com cotações yfinance...")
+    print("\n[2] A enriquecer com yfinance...")
     for p in positions:
         p["ticker"] = map_t212_ticker(p["ticker_t212"])
-
     yf_tickers = list(dict.fromkeys(p["ticker"] for p in positions))
     quotes = fetch_quotes_yf(yf_tickers)
-
     for p in positions:
         q = quotes.get(p["ticker"], {})
         if q.get("price"):
             p["current_price"] = q["price"]
         p["change_pct"] = q.get("changePct", 0.0)
 
-    # 3. Calcular métricas
     for p in positions:
         invested   = p["avg_price"] * p["quantity"]
         curr_value = p["current_price"] * p["quantity"]
         gain_eur   = p["ppl"]
-        gain_pct   = (gain_eur / invested * 100) if invested > 0 else 0
         p["invested"]  = round(invested, 2)
         p["value_eur"] = round(curr_value, 2)
         p["gain_eur"]  = round(gain_eur, 2)
-        p["gain_pct"]  = round(gain_pct, 2)
+        p["gain_pct"]  = round((gain_eur / invested * 100) if invested > 0 else 0, 2)
 
     total_value    = sum(p["value_eur"] for p in positions)
     total_invested = sum(p["invested"]  for p in positions)
     total_gain     = sum(p["gain_eur"]  for p in positions)
     total_gain_pct = (total_gain / total_invested * 100) if total_invested > 0 else 0
     daily_gain     = sum(p["value_eur"] * p["change_pct"] / 100 for p in positions)
-
     for p in positions:
         p["allocation_pct"] = round(p["value_eur"] / total_value * 100, 2) if total_value > 0 else 0
-
     positions.sort(key=lambda x: x["value_eur"], reverse=True)
 
-    # 4. Notícias + Earnings + Análise
-    print("\n[3] A buscar notícias, earnings e análise Gemini...")
+    print("\n[3] Notícias + Earnings + Gemini...")
     for p in positions:
         ticker = p["ticker"]
-        print(f"  → {ticker} (T212: {p['ticker_t212']})")
+        print(f"  → {ticker}")
         p["news"]      = fh_news(ticker, frm, to)
         time.sleep(0.3)
         p["earnings"]  = fetch_earnings(ticker)
         p["dividends"] = fetch_dividends(ticker)
-        p["analysis"]  = gemini_analyze(
-            ticker, p.get("ticker_t212", ticker),
-            p["news"], p["earnings"],
-            p["gain_eur"], p["change_pct"]
-        )
+        p["analysis"]  = gemini_analyze(ticker, p.get("ticker_t212", ticker),
+                                         p["news"], p["earnings"],
+                                         p["gain_eur"], p["change_pct"])
         time.sleep(1)
 
-    # 5. Histórico
-    print("\n[4] A atualizar histórico...")
+    print("\n[4] Histórico...")
     history = update_history(load_history(), total_value)
 
-    # 6. Guardar JSON
     out = {
         "updated":   now.isoformat() + "Z",
         "t212_mode": "live" if "live" in t212_base else "demo",
@@ -378,15 +299,11 @@ def main():
         "positions": positions,
         "history":   history
     }
-
     with open("portfolio.json", "w", encoding="utf-8") as f:
         json.dump(out, f, ensure_ascii=False, indent=2)
 
-    print(f"\n✅ portfolio.json guardado")
-    print(f"   Modo T212:   {out['t212_mode']}")
-    print(f"   Valor total: {total_value:.2f}€")
-    print(f"   P&L total:   {total_gain:+.2f}€ ({total_gain_pct:+.2f}%)")
-    print(f"   Posições:    {len(positions)}")
+    print(f"\n✅ Concluído!")
+    print(f"   Modo: {out['t212_mode']} | Valor: {total_value:.2f}€ | P&L: {total_gain:+.2f}€ | Posições: {len(positions)}")
 
 if __name__ == "__main__":
     main()
