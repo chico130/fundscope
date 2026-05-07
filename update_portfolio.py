@@ -32,42 +32,77 @@ if GEMINI_AVAILABLE and GEMINI_KEY:
     except Exception as e:
         print(f"[AVISO] Gemini init falhou: {e}")
 
+# ===========================================================
+# MAPEAMENTO T212 → yfinance
+# Formato: código T212 sem sufixo _EQ → ticker yfinance
+# POSIÇÕES ACTUAIS DO PORTFÓLIO:
+#   MTEd  → MU    (Micron Technology)
+#   49Vd  → VST   (Vistra Corp)
+#   0V6d  → VRT   (Vertiv Holdings)
+#   CJ6d  → CCJ   (Cameco Corp)
+#   ASMLa → ASML  (ASML Holding)
+# ===========================================================
 T212_TO_YF = {
-    "MTEd":  "META",   "49Vd":  "NVDA",   "ASMLa": "ASML",
+    # --- Portfólio actual ---
+    "MTEd":  "MU",     # Micron Technology
+    "49Vd":  "VST",    # Vistra Corp
+    "0V6d":  "VRT",    # Vertiv Holdings
+    "CJ6d":  "CCJ",    # Cameco Corp
+    "ASMLa": "ASML",   # ASML Holding
+    # --- Outros stocks US comuns (para future-proofing) ---
     "AAPLd": "AAPL",   "MSFTd": "MSFT",   "TSLAd": "TSLA",
-    "AMZNd": "AMZN",   "GOOGLd":"GOOGL",  "AMDd":  "AMD",
-    "AVGOd": "AVGO",   "LLYd":  "LLY",    "UNHd":  "UNH",
-    "XOMd":  "XOM",    "JPMd":  "JPM",    "Vd":    "V",
-    "MAd":   "MA",     "NVDAd": "NVDA",
-    "0V6d":  "VWCE.DE","CJ6d":  "IWDA.AS",
-    "VWCE":  "VWCE.DE","IWDA":  "IWDA.AS","EUNL":  "EUNL.DE",
-    "CSPX":  "CSPX.L", "SXR8":  "SXR8.DE","VUSA":  "VUSA.AS",
-    "SPPW":  "SPPW.DE","XDWD":  "XDWD.DE","VWRA":  "VWRA.L",
-    "VUAA":  "VUAA.DE","VEUR":  "VEUR.AS","VFEM":  "VFEM.AS",
-    "VHYL":  "VHYL.AS","VDIV":  "VDIV.AS","VAGP":  "VAGP.L",
-    "IMAE":  "IMAE.AS","IUSQ":  "IUSQ.DE","IQQQ":  "IQQQ.DE",
-    "EMIM":  "EMIM.L", "AGGH":  "AGGH.L", "SSAC":  "SSAC.L",
-    "CNDX":  "CNDX.L", "MEUD":  "MEUD.PA","SPYY":  "SPYY.DE",
-    "SPYW":  "SPYW.DE","EQQQ":  "EQQQ.L", "SMEA":  "SMEA.DE",
+    "AMZNd": "AMZN",   "GOOGLd": "GOOGL", "AMDd":  "AMD",
+    "AVGOd": "AVGO",   "NVDAd": "NVDA",   "METAd": "META",
+    "JPMd":  "JPM",    "Vd":    "V",       "MAd":   "MA",
+    "LLYd":  "LLY",    "UNHd":  "UNH",    "XOMd":  "XOM",
+    "NEEd":  "NEE",    "CEGd":  "CEG",     "NRGd":  "NRG",
+    "CCJd":  "CCJ",    "MUd":   "MU",      "VSTd":  "VST",
+    "VRTd":  "VRT",
+    # --- ETFs europeus ---
+    "0V6d":  "VRT",    # override removido abaixo — ver nota
+    "VWCE":  "VWCE.DE", "IWDA": "IWDA.AS", "EUNL": "EUNL.DE",
+    "CSPX":  "CSPX.L",  "SXR8": "SXR8.DE", "VUSA": "VUSA.AS",
+    "SPPW":  "SPPW.DE", "XDWD": "XDWD.DE", "VWRA": "VWRA.L",
+    "VUAA":  "VUAA.DE", "VEUR": "VEUR.AS", "VFEM": "VFEM.AS",
+    "VHYL":  "VHYL.AS", "VDIV": "VDIV.AS", "VAGP": "VAGP.L",
+    "IMAE":  "IMAE.AS", "IUSQ": "IUSQ.DE", "IQQQ": "IQQQ.DE",
+    "EMIM":  "EMIM.L",  "AGGH": "AGGH.L",  "SSAC": "SSAC.L",
+    "CNDX":  "CNDX.L",  "MEUD": "MEUD.PA", "SPYY": "SPYY.DE",
+    "SPYW":  "SPYW.DE", "EQQQ": "EQQQ.L",  "SMEA": "SMEA.DE",
 }
+# Corrigir: 0V6d → VRT (Vertiv), não pode ser duplicado com VWCE
+# O dicionário Python usa o último valor para chaves duplicadas,
+# por isso garantimos a ordem correcta sobrepondo no final:
+T212_TO_YF["0V6d"] = "VRT"   # Vertiv Holdings
+T212_TO_YF["CJ6d"] = "CCJ"   # Cameco Corp
 
 YF_NAMES = {
-    "META":    "Meta Platforms",
-    "NVDA":    "NVIDIA",
+    # --- Portfólio actual ---
+    "MU":      "Micron Technology",
+    "VST":     "Vistra Corp",
+    "VRT":     "Vertiv Holdings",
+    "CCJ":     "Cameco Corp",
     "ASML":    "ASML Holding",
-    "AAPL":    "Apple Inc.",
-    "MSFT":    "Microsoft",
-    "TSLA":    "Tesla",
-    "AMZN":    "Amazon",
-    "GOOGL":   "Alphabet",
-    "AMD":     "AMD",
-    "AVGO":    "Broadcom",
-    "LLY":     "Eli Lilly",
-    "UNH":     "UnitedHealth",
-    "XOM":     "ExxonMobil",
-    "JPM":     "JPMorgan Chase",
-    "V":       "Visa",
-    "MA":      "Mastercard",
+    # --- Outros stocks ---
+    "AAPL":   "Apple Inc.",
+    "MSFT":   "Microsoft",
+    "TSLA":   "Tesla",
+    "AMZN":   "Amazon",
+    "GOOGL":  "Alphabet",
+    "AMD":    "AMD",
+    "AVGO":   "Broadcom",
+    "NVDA":   "NVIDIA",
+    "META":   "Meta Platforms",
+    "JPM":    "JPMorgan Chase",
+    "V":      "Visa",
+    "MA":     "Mastercard",
+    "LLY":    "Eli Lilly",
+    "UNH":    "UnitedHealth",
+    "XOM":    "ExxonMobil",
+    "NEE":    "NextEra Energy",
+    "CEG":    "Constellation Energy",
+    "NRG":    "NRG Energy",
+    # --- ETFs europeus ---
     "VWCE.DE": "Vanguard FTSE All-World Acc (Xetra)",
     "IWDA.AS": "iShares Core MSCI World (AMS)",
     "EUNL.DE": "iShares Core MSCI World (Xetra)",
@@ -103,6 +138,7 @@ def fetch_t212_positions():
     return positions
 
 def map_t212_ticker(t212_ticker):
+    """Converte ticker T212 (ex: MTEd_EQ) para ticker yfinance (ex: MU)."""
     clean = t212_ticker
     for suffix in ["_US_EQ", "_GBX_EQ", "_EUR_EQ", "_GBP_EQ", "_EQ"]:
         if clean.endswith(suffix):
@@ -110,6 +146,7 @@ def map_t212_ticker(t212_ticker):
             break
     if clean in T212_TO_YF:
         return T212_TO_YF[clean]
+    # Fallback: tentar como ticker directo (ex: ASML, VWCE)
     eu_etfs = {
         "VWCE": "VWCE.DE", "VWRA": "VWRA.L",  "VUAA": "VUAA.DE",
         "VUSA": "VUSA.AS", "VEUR": "VEUR.AS",  "VFEM": "VFEM.AS",
@@ -117,7 +154,11 @@ def map_t212_ticker(t212_ticker):
         "SXR8": "SXR8.DE", "IUSQ": "IUSQ.DE",  "SPPW": "SPPW.DE",
         "XDWD": "XDWD.DE", "EQQQ": "EQQQ.L",   "MEUD": "MEUD.PA",
     }
-    return eu_etfs.get(clean, clean)
+    if clean in eu_etfs:
+        return eu_etfs[clean]
+    # Último recurso: devolver o código limpo e registar aviso
+    print(f"  [AVISO] Ticker T212 desconhecido: {t212_ticker} (clean={clean}) — usar como está")
+    return clean
 
 def get_display_name(ticker_yf, ticker_t212):
     if ticker_yf in YF_NAMES:
@@ -279,9 +320,10 @@ def main():
     print("\n[2] A enriquecer com yfinance...")
     for p in positions:
         yf_ticker = map_t212_ticker(p["ticker_t212"])
-        p["ticker"]       = yf_ticker
-        p["display_name"] = get_display_name(yf_ticker, p["ticker_t212"])
+        p["ticker"]         = yf_ticker
+        p["display_name"]   = get_display_name(yf_ticker, p["ticker_t212"])
         p["ticker_display"] = yf_ticker.split(".")[0]
+        print(f"  T212={p['ticker_t212']} → yf={yf_ticker} ({p['display_name']})")
 
     yf_tickers = list(dict.fromkeys(p["ticker"] for p in positions))
     quotes = fetch_quotes_yf(yf_tickers)
@@ -311,8 +353,8 @@ def main():
 
     print("\n[3] Notícias + Earnings + Gemini...")
     for p in positions:
-        ticker     = p["ticker"]
-        disp_name  = p["display_name"]
+        ticker    = p["ticker"]
+        disp_name = p["display_name"]
         print(f"  → {ticker} ({disp_name})")
         p["news"]      = fh_news(ticker, frm, to)
         time.sleep(0.3)
@@ -346,6 +388,9 @@ def main():
 
     print(f"\n✅ Concluído!")
     print(f"   Valor: {total_value:.2f}€ | P&L: {total_gain:+.2f}€ | Posições: {len(positions)}")
+    print("   Mapeamento utilizado:")
+    for p in positions:
+        print(f"   {p['ticker_t212']} → {p['ticker']} ({p['display_name']})")
 
 if __name__ == "__main__":
     main()
