@@ -1,5 +1,5 @@
 {
-  "updated": "2026-05-07T18:18:31.338086Z",
+  "updated": "2026-05-07T18:23:51.695624Z",
   "slot": "fecho",
   "sectors": {
     "Tecnologia": {
@@ -7,7 +7,7 @@
       "icon": "💻",
       "color": "#4f98a3",
       "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
-      "avgChange": 0.17,
+      "avgChange": 0.24,
       "gainers": [
         {
           "ticker": "QCOM",
@@ -17,58 +17,58 @@
         },
         {
           "ticker": "CRM",
-          "price": 186.88,
-          "changePct": 3.14,
+          "price": 187.03,
+          "changePct": 3.22,
           "pc": 181.19
         },
         {
           "ticker": "ADBE",
-          "price": 256.87,
-          "changePct": 2.68,
+          "price": 256.93,
+          "changePct": 2.7,
           "pc": 250.17
         },
         {
           "ticker": "NVDA",
-          "price": 213,
-          "changePct": 2.49,
+          "price": 213.05,
+          "changePct": 2.51,
           "pc": 207.83
         },
         {
-          "ticker": "TSLA",
-          "price": 406.89,
-          "changePct": 2.05,
-          "pc": 398.73
+          "ticker": "MSFT",
+          "price": 423.19,
+          "changePct": 2.23,
+          "pc": 413.96
         }
       ],
       "losers": [
         {
           "ticker": "AVGO",
-          "price": 406.61,
-          "changePct": -4.43,
+          "price": 407.72,
+          "changePct": -4.17,
           "pc": 425.44
         },
         {
           "ticker": "AMD",
-          "price": 405.15,
-          "changePct": -3.85,
+          "price": 406.27,
+          "changePct": -3.59,
           "pc": 421.39
         },
         {
           "ticker": "MU",
-          "price": 644.68,
-          "changePct": -3.29,
+          "price": 643.28,
+          "changePct": -3.5,
           "pc": 666.59
         },
         {
           "ticker": "INTC",
-          "price": 110.08,
-          "changePct": -2.59,
+          "price": 109.89,
+          "changePct": -2.76,
           "pc": 113.01
         },
         {
           "ticker": "ASML",
-          "price": 1516.57,
-          "changePct": -1.82,
+          "price": 1515.98,
+          "changePct": -1.86,
           "pc": 1544.74
         }
       ],
@@ -109,21 +109,21 @@
       },
       "news": [
         {
+          "source": "ChartMill",
+          "ticker": "AAPL",
+          "headline": "What's going on in today's session: S&P500 most active stocks",
+          "summary": "Stay informed about the most active stocks in the S&P500 index on Thursday's session. Discover the stocks that are generating the highest trading volume and driving market activity.",
+          "url": "https://finnhub.io/api/news?id=b33cec284a2f684fc44dcca16b41456443ba53adae5de30bcb1073b2c4862608",
+          "datetime": 1778177104,
+          "image": "https://www.chartmill.com/images/uploads/CM_Most_Active_Stocks_Small_free_fec0650b7f.webp"
+        },
+        {
           "source": "Yahoo",
           "ticker": "NVDA",
           "headline": "Why Jumia Stock Surged Today",
           "summary": "Africa is a massive and still largely untapped market.",
           "url": "https://finnhub.io/api/news?id=4af7ec28f76bfa584ba46c4c80eb09e795683a26c23aea3c8138d1009f39d26b",
           "datetime": 1778175888,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Yahoo",
-          "ticker": "NVDA",
-          "headline": "SCHD: The Dividend ETF That Delivers",
-          "summary": "The Schwab U.S. Dividend Equity ETF's focus on balance sheet quality, high yield, and dividend growth delivers consistently for investors.",
-          "url": "https://finnhub.io/api/news?id=84b8d7d4d44a40990a0b5de33d50da9240f729bbbea12f64ce9f2fba55f972b1",
-          "datetime": 1778175300,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
@@ -160,69 +160,69 @@
       "icon": "🏦",
       "color": "#437a22",
       "image": "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&q=80",
-      "avgChange": -0.88,
+      "avgChange": -0.87,
       "gainers": [
         {
           "ticker": "MA",
-          "price": 499.67,
-          "changePct": 1.58,
+          "price": 499.85,
+          "changePct": 1.62,
           "pc": 491.89
         },
         {
           "ticker": "C",
-          "price": 129.6,
-          "changePct": 1.57,
+          "price": 129.62,
+          "changePct": 1.58,
           "pc": 127.6
         },
         {
           "ticker": "V",
-          "price": 321.95,
-          "changePct": 0.99,
+          "price": 322,
+          "changePct": 1.0,
           "pc": 318.8
         },
         {
           "ticker": "BRK-B",
-          "price": 474.04,
-          "changePct": 0.9,
+          "price": 474.27,
+          "changePct": 0.95,
           "pc": 469.83
         },
         {
           "ticker": "BLK",
-          "price": 1062.37,
-          "changePct": -1.04,
+          "price": 1063.73,
+          "changePct": -0.92,
           "pc": 1073.57
         }
       ],
       "losers": [
         {
           "ticker": "SCHW",
-          "price": 88.99,
-          "changePct": -3.43,
+          "price": 89.01,
+          "changePct": -3.41,
           "pc": 92.15
         },
         {
           "ticker": "JPM",
-          "price": 307.83,
-          "changePct": -2.25,
+          "price": 307.5,
+          "changePct": -2.35,
           "pc": 314.9
         },
         {
-          "ticker": "TFC",
-          "price": 49.89,
-          "changePct": -1.79,
-          "pc": 50.8
-        },
-        {
           "ticker": "WFC",
-          "price": 79.08,
-          "changePct": -1.67,
+          "price": 78.97,
+          "changePct": -1.8,
           "pc": 80.42
         },
         {
-          "ticker": "USB",
-          "price": 55.3,
-          "changePct": -1.53,
-          "pc": 56.16
+          "ticker": "TFC",
+          "price": 49.91,
+          "changePct": -1.75,
+          "pc": 50.8
+        },
+        {
+          "ticker": "BAC",
+          "price": 52.79,
+          "changePct": -1.51,
+          "pc": 53.6
         }
       ],
       "sentiment": {
@@ -313,68 +313,68 @@
       "icon": "⚡",
       "color": "#c47d1a",
       "image": "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80",
-      "avgChange": -2.05,
+      "avgChange": -1.98,
       "gainers": [
         {
           "ticker": "D",
-          "price": 61.32,
-          "changePct": -0.52,
+          "price": 61.41,
+          "changePct": -0.37,
           "pc": 61.64
         },
         {
           "ticker": "DUK",
-          "price": 124.55,
-          "changePct": -0.79,
+          "price": 124.69,
+          "changePct": -0.68,
           "pc": 125.54
         },
         {
           "ticker": "VLO",
-          "price": 234.11,
-          "changePct": -1.09,
+          "price": 234.53,
+          "changePct": -0.91,
           "pc": 236.69
         },
         {
           "ticker": "CVX",
-          "price": 182.17,
-          "changePct": -1.61,
+          "price": 182.32,
+          "changePct": -1.53,
           "pc": 185.16
         },
         {
           "ticker": "PSX",
-          "price": 168.9,
-          "changePct": -1.64,
+          "price": 168.93,
+          "changePct": -1.62,
           "pc": 171.72
         }
       ],
       "losers": [
         {
           "ticker": "SLB",
-          "price": 53.36,
-          "changePct": -3.26,
+          "price": 53.33,
+          "changePct": -3.32,
           "pc": 55.16
         },
         {
           "ticker": "SHEL",
-          "price": 84.46,
-          "changePct": -3.14,
+          "price": 84.54,
+          "changePct": -3.05,
           "pc": 87.2
         },
         {
-          "ticker": "COP",
-          "price": 115.35,
-          "changePct": -2.99,
-          "pc": 118.9
-        },
-        {
           "ticker": "HAL",
-          "price": 39.26,
-          "changePct": -2.82,
+          "price": 39.21,
+          "changePct": -2.95,
           "pc": 40.4
         },
         {
+          "ticker": "COP",
+          "price": 115.46,
+          "changePct": -2.89,
+          "pc": 118.9
+        },
+        {
           "ticker": "EOG",
-          "price": 131.08,
-          "changePct": -2.68,
+          "price": 131.12,
+          "changePct": -2.65,
           "pc": 134.69
         }
       ],
@@ -470,32 +470,32 @@
       "gainers": [
         {
           "ticker": "ABT",
-          "price": 87.32,
-          "changePct": 1.18,
+          "price": 87.37,
+          "changePct": 1.24,
           "pc": 86.3
         },
         {
           "ticker": "ISRG",
-          "price": 453.59,
-          "changePct": 0.41,
+          "price": 453.53,
+          "changePct": 0.4,
           "pc": 451.73
         },
         {
           "ticker": "MDT",
-          "price": 77.8,
-          "changePct": 0.26,
+          "price": 77.77,
+          "changePct": 0.22,
           "pc": 77.6
         },
         {
           "ticker": "UNH",
-          "price": 367.96,
-          "changePct": 0.19,
+          "price": 368.01,
+          "changePct": 0.2,
           "pc": 367.28
         },
         {
           "ticker": "TMO",
-          "price": 472.7,
-          "changePct": -0.05,
+          "price": 472.59,
+          "changePct": -0.08,
           "pc": 472.95
         }
       ],
@@ -508,26 +508,26 @@
         },
         {
           "ticker": "GILD",
-          "price": 134.8,
-          "changePct": -1.1,
+          "price": 134.76,
+          "changePct": -1.13,
           "pc": 136.3
         },
         {
-          "ticker": "LLY",
-          "price": 976.66,
-          "changePct": -1.05,
-          "pc": 987.05
-        },
-        {
           "ticker": "JNJ",
-          "price": 222.34,
-          "changePct": -1.02,
+          "price": 222.45,
+          "changePct": -0.97,
           "pc": 224.62
         },
         {
+          "ticker": "LLY",
+          "price": 977.55,
+          "changePct": -0.96,
+          "pc": 987.05
+        },
+        {
           "ticker": "ABBV",
-          "price": 203.21,
-          "changePct": -0.89,
+          "price": 203.27,
+          "changePct": -0.86,
           "pc": 205.03
         }
       ],
@@ -568,6 +568,15 @@
       },
       "news": [
         {
+          "source": "ChartMill",
+          "ticker": "PFE",
+          "headline": "What's going on in today's session: S&P500 most active stocks",
+          "summary": "Stay informed about the most active stocks in the S&P500 index on Thursday's session. Discover the stocks that are generating the highest trading volume and driving market activity.",
+          "url": "https://finnhub.io/api/news?id=b33cec284a2f684fc44dcca16b41456443ba53adae5de30bcb1073b2c4862608",
+          "datetime": 1778177104,
+          "image": "https://www.chartmill.com/images/uploads/CM_Most_Active_Stocks_Small_free_fec0650b7f.webp"
+        },
+        {
           "source": "Yahoo",
           "ticker": "LLY",
           "headline": "Is Eli Lilly and Company (LLY) One of the Best Strong Buy Growth Stocks to Buy Right Now?",
@@ -601,15 +610,6 @@
           "summary": "Darzalex and new launches fuel J&J's 17.8% oncology sales growth in Q1 as the company targets $50B in cancer sales by 2030.",
           "url": "https://finnhub.io/api/news?id=eb345b0f5708f96be45461f9ff574a131ef648cf26445c1e9ee465ccf1c11022",
           "datetime": 1778168520,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Yahoo",
-          "ticker": "PFE",
-          "headline": "NVAX Q1 Earnings Beat, Stock Jumps 16% on Matrix-M Deal Momentum",
-          "summary": "Novavax's shares rise 16% after Q1 earnings beat estimates as the company expands Matrix-M partnerships across oncology and infectious diseases.",
-          "url": "https://finnhub.io/api/news?id=7dc5313776db965d09cb55f0b031988e05efa8eaf63d7e82d7af396f932ea2a5",
-          "datetime": 1778166840,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         }
       ]
