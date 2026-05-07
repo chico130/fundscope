@@ -73,11 +73,22 @@ CATEGORY_MAP = [
 
 # ---------------------------------------------------------------------------
 
+HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "Accept-Language": "en-US,en;q=0.9",
+}
+
+# Dominios que bloqueiam scrapers
+BLOCKED_DOMAINS = [
+    "wsj.com", "ft.com", "bloomberg.com", "nytimes.com",
+    "washingtonpost.com", "economist.com", "barrons.com",
+    "thestreet.com", "seekingalpha.com",
+]
+
 def sanitize(text):
-    """Remove surrogates e caracteres invalidos que quebram json.dump."""
     if not isinstance(text, str):
         return str(text) if text is not None else ""
-    # encode com surrogateescape e decode ignorando erros
     return text.encode('utf-8', errors='replace').decode('utf-8', errors='replace')
 
 def classify(text):
@@ -128,59 +139,124 @@ def ts_to_iso(ts):
     except:
         return ""
 
-# --- scraping leve ----------------------------------------------------------
+# --- scraping ---------------------------------------------------------------
 
 class TextExtractor(HTMLParser):
+    """Extrai paragrafos e divs de texto de HTML."""
     def __init__(self):
         super().__init__()
-        self._in_p = False; self._paras = []; self._buf = ""
-        self._skip_tags = {"script","style","nav","header","footer","aside","figure","figcaption"}
+        self._buf = ""
+        self._paras = []
+        self._depth = 0
+        self._active_tags = {"p", "div", "article", "section", "li", "blockquote", "td"}
+        self._skip_tags = {"script", "style", "nav", "header", "footer", "aside",
+                           "figure", "figcaption", "noscript", "iframe", "form",
+                           "button", "input", "select", "textarea", "menu"}
         self._skip = 0
+        self._in_active = False
+
     def handle_starttag(self, tag, attrs):
-        if tag in self._skip_tags: self._skip += 1
-        if tag == "p" and self._skip == 0: self._in_p = True
+        if tag in self._skip_tags:
+            self._skip += 1
+        if self._skip == 0 and tag in self._active_tags:
+            if self._buf.strip():
+                t = re.sub(r'\s+', ' ', self._buf).strip()
+                if len(t) > 50:
+                    self._paras.append(t)
+            self._buf = ""
+            self._in_active = True
+
     def handle_endtag(self, tag):
-        if tag in self._skip_tags and self._skip > 0: self._skip -= 1
-        if tag == "p" and self._in_p:
+        if tag in self._skip_tags and self._skip > 0:
+            self._skip -= 1
+        if self._skip == 0 and tag in self._active_tags and self._in_active:
             t = re.sub(r'\s+', ' ', self._buf).strip()
-            if len(t) > 60: self._paras.append(t)
-            self._buf = ""; self._in_p = False
+            if len(t) > 50:
+                self._paras.append(t)
+            self._buf = ""
+            self._in_active = False
+
     def handle_data(self, data):
-        if self._in_p and self._skip == 0: self._buf += data
+        if self._skip == 0:
+            self._buf += data
 
-BLOCKED_DOMAINS = ["wsj.com","ft.com","bloomberg.com","nytimes.com",
-                   "washingtonpost.com","economist.com","barrons.com",
-                   "reuters.com","apnews.com"]
+    def get_text(self, max_paras=12):
+        # flush residuo
+        if self._buf.strip():
+            t = re.sub(r'\s+', ' ', self._buf).strip()
+            if len(t) > 50:
+                self._paras.append(t)
+        # filtrar paragrafos com pouco conteudo informativo
+        good = []
+        seen_short = set()
+        for p in self._paras:
+            if len(p) < 60: continue
+            if p[:40] in seen_short: continue
+            seen_short.add(p[:40])
+            good.append(p)
+        return "\n\n".join(good[:max_paras])
 
-def scrape_article(url, existing="", min_len=400):
-    if len(existing) >= min_len: return existing
-    if not url or not url.startswith("http"): return existing
-    if any(b in url for b in BLOCKED_DOMAINS): return existing
+
+def resolve_google_news_url(url, timeout=8):
+    """Resolve redirect do Google News para URL real do artigo."""
+    if "news.google.com" not in url:
+        return url
     try:
-        r = requests.get(url, headers={
-            "User-Agent": "Mozilla/5.0 (compatible; FundScopeBot/1.0)",
-            "Accept": "text/html"
-        }, timeout=7, allow_redirects=True)
-        if r.status_code != 200: return existing
-        if "text/html" not in r.headers.get("Content-Type", ""): return existing
-        parser = TextExtractor()
-        parser.feed(r.text[:80000])
-        good = [p for p in parser._paras if len(p) > 80][:6]
-        if not good: return existing
-        scraped = sanitize("\n\n".join(good))
-        return scraped if len(scraped) > len(existing) + 100 else existing
-    except Exception as ex:
-        print(f"    [scrape skip] {str(url)[:60]} — {ex}")
+        r = requests.head(url, headers=HEADERS, timeout=timeout,
+                          allow_redirects=True)
+        final = r.url
+        if "news.google.com" not in final:
+            return final
+        # head nao funcionou, tenta GET leve
+        r2 = requests.get(url, headers=HEADERS, timeout=timeout,
+                          allow_redirects=True)
+        return r2.url if "news.google.com" not in r2.url else url
+    except:
+        return url
+
+
+def scrape_article(url, existing="", min_len=300):
+    """Faz scrape do artigo e retorna o texto mais longo entre existing e scraped."""
+    if len(existing) >= min_len and not any(
+        b in (existing or "") for b in ["Reuters\n", "Reuters ", "AP\n", "Reuters$"]
+    ):
         return existing
 
+    if not url or not url.startswith("http"):
+        return existing
+
+    # Resolver Google News redirect
+    real_url = resolve_google_news_url(url)
+
+    if any(b in real_url for b in BLOCKED_DOMAINS):
+        return existing
+
+    try:
+        r = requests.get(real_url, headers=HEADERS, timeout=10,
+                         allow_redirects=True)
+        if r.status_code != 200:
+            return existing
+        ct = r.headers.get("Content-Type", "")
+        if "text/html" not in ct:
+            return existing
+        parser = TextExtractor()
+        parser.feed(r.text[:120000])
+        scraped = sanitize(parser.get_text(max_paras=12))
+        if len(scraped) > max(len(existing), 150):
+            print(f"    [scrape OK] {real_url[:70]} ({len(scraped)} chars)")
+            return scraped
+        return existing
+    except Exception as ex:
+        print(f"    [scrape skip] {str(real_url)[:60]} — {ex}")
+        return existing
+
+
 # --- GNews ------------------------------------------------------------------
-# Plano gratuito: 10 pedidos/dia. Com workflow 3x/dia usa so 1 query por execucao.
 
 def fetch_gnews():
     if not GNEWS_TOKEN:
         print("  [SKIP] GNEWS_TOKEN nao definido")
         return []
-    # 1 unica query abrangente para nao exceder o limite diario
     query = "economy war inflation trade technology energy markets"
     articles, seen = [], set()
     try:
@@ -189,7 +265,7 @@ def fetch_gnews():
             "token": GNEWS_TOKEN, "sortby": "publishedAt"
         }, timeout=12)
         if r.status_code == 429:
-            print("  [GNews] 429 — limite diario atingido, a saltar")
+            print("  [GNews] 429 — limite diario atingido")
             return []
         r.raise_for_status()
         data = r.json()
@@ -203,18 +279,19 @@ def fetch_gnews():
             desc    = clean_text(a.get("description") or "")
             content = clean_text(a.get("content") or "")
             raw = (desc + "\n\n" + content) if (content and content[:80] != desc[:80]) else (desc or content)
-            full_text = title + " " + raw
+            article_url = sanitize(a.get("url", ""))
+            enriched = scrape_article(article_url, raw)
+            full_text = title + " " + (enriched or raw)
             cat, icon = classify(full_text)
             impact    = get_impact(full_text)
             img = sanitize(a.get("image") or "")
             if not img or len(img) < 12: img = fallback_img(cat)
-            enriched = scrape_article(a.get("url",""), raw)
             articles.append({
                 "id": abs(hash(title)) % (10**9),
                 "source": sanitize((a.get("source") or {}).get("name", "GNews")),
                 "title": title[:200], "summary": desc[:500],
-                "content": enriched[:3000], "url": sanitize(a.get("url","")),
-                "image": img, "publishedAt": sanitize(a.get("publishedAt","")),
+                "content": enriched[:4000], "url": article_url,
+                "image": img, "publishedAt": sanitize(a.get("publishedAt", "")),
                 "category": cat, "icon": icon,
                 "impact": impact, "heat": heat_score(impact), "feed": "gnews"
             })
@@ -222,6 +299,7 @@ def fetch_gnews():
         print(f"  [WARN GNews]:\n{traceback.format_exc()}")
     print(f"  GNews: {len(articles)} artigos")
     return articles
+
 
 # --- NewsAPI ----------------------------------------------------------------
 
@@ -237,11 +315,11 @@ def fetch_newsapi():
         }, timeout=12)
         r.raise_for_status()
         resp = r.json()
-        if resp.get("status") != "ok":
-            print(f"  [NewsAPI headlines error] {resp.get('message')}")
-        else:
+        if resp.get("status") == "ok":
             for a in resp.get("articles", []):
                 _ingest_newsapi(a, articles, seen, "headlines")
+        else:
+            print(f"  [NewsAPI headlines] {resp.get('message')}")
     except Exception:
         print(f"  [WARN NewsAPI headlines]:\n{traceback.format_exc()}")
 
@@ -263,11 +341,11 @@ def fetch_newsapi():
             }, timeout=12)
             r.raise_for_status()
             resp = r.json()
-            if resp.get("status") != "ok":
-                print(f"  [NewsAPI error] {q}: {resp.get('message')}")
-                continue
-            for a in resp.get("articles", []):
-                _ingest_newsapi(a, articles, seen, "newsapi")
+            if resp.get("status") == "ok":
+                for a in resp.get("articles", []):
+                    _ingest_newsapi(a, articles, seen, "newsapi")
+            else:
+                print(f"  [NewsAPI] {q}: {resp.get('message')}")
             time.sleep(0.2)
         except Exception:
             print(f"  [WARN NewsAPI] {q}:\n{traceback.format_exc()}")
@@ -282,22 +360,23 @@ def _ingest_newsapi(a, articles, seen, feed):
     desc    = clean_text(a.get("description") or "")
     content = clean_text(a.get("content") or "")
     raw = (desc + "\n\n" + content) if (content and content[:80] != desc[:80]) else (desc or content)
-    full_text = title + " " + raw
+    url = sanitize(a.get("url", ""))
+    enriched = scrape_article(url, raw)
+    full_text = title + " " + (enriched or raw)
     cat, icon = classify(full_text)
     impact    = get_impact(full_text)
     img = sanitize(a.get("urlToImage") or "")
     if not img or len(img) < 12: img = fallback_img(cat)
-    url = sanitize(a.get("url", ""))
-    enriched = scrape_article(url, raw)
     articles.append({
         "id": abs(hash(title)) % (10**9),
         "source": sanitize((a.get("source") or {}).get("name", "NewsAPI")),
         "title": title[:200], "summary": desc[:500],
-        "content": enriched[:3000], "url": url,
+        "content": enriched[:4000], "url": url,
         "image": img, "publishedAt": sanitize(a.get("publishedAt", "")),
         "category": cat, "icon": icon,
         "impact": impact, "heat": heat_score(impact), "feed": feed
     })
+
 
 # --- Finnhub ----------------------------------------------------------------
 
@@ -319,19 +398,20 @@ def fetch_finnhub():
         if not title or title in seen: continue
         seen.add(title)
         summary = clean_text(a.get("summary") or "")
-        full_text = title + " " + summary
+        url = sanitize(a.get("url", ""))
+        # Sempre tenta scrape (muitos artigos do Finnhub vem via Google News)
+        enriched = scrape_article(url, summary, min_len=50)
+        full_text = title + " " + (enriched or summary)
         cat, icon = classify(full_text)
         impact    = get_impact(full_text)
         img = sanitize(a.get("image") or "")
         if not img or len(img) < 12: img = fallback_img(cat)
         iso = ts_to_iso(a.get("datetime", 0))
-        url = sanitize(a.get("url", ""))
-        enriched = scrape_article(url, summary, min_len=200)
         articles.append({
             "id": abs(hash(title)) % (10**9),
             "source": sanitize(a.get("source", "Finnhub")),
-            "title": title[:200], "summary": summary[:500],
-            "content": enriched[:3000], "url": url,
+            "title": title[:200], "summary": summary[:500] or enriched[:500],
+            "content": enriched[:4000], "url": url,
             "image": img, "publishedAt": iso,
             "category": cat, "icon": icon,
             "impact": impact, "heat": heat_score(impact), "feed": "finnhub"
@@ -339,6 +419,7 @@ def fetch_finnhub():
         if len(articles) >= 25: break
     print(f"  Finnhub: {len(articles)} artigos")
     return articles
+
 
 # --- merge ------------------------------------------------------------------
 
@@ -360,6 +441,7 @@ def merge_and_sort(*sources):
     deduped.sort(key=parse_dt, reverse=True)
     return deduped[:50]
 
+
 # --- main -------------------------------------------------------------------
 
 def main():
@@ -377,22 +459,16 @@ def main():
     from collections import Counter
     cats = Counter(a["category"] for a in articles)
     for cat, n in sorted(cats.items(), key=lambda x: -x[1]):
-        avg = sum(len(a["content"]) for a in articles if a["category"] == cat) // max(n,1)
+        avg = sum(len(a["content"]) for a in articles if a["category"] == cat) // max(n, 1)
         print(f"  {cat}: {n} artigos (media {avg} chars)")
 
-    out = {
-        "updated": now_utc().isoformat(),
-        "articles": articles
-    }
+    out = {"updated": now_utc().isoformat(), "articles": articles}
 
-    # Serializa com sanitizacao final anti-surrogate
     try:
         payload = json.dumps(out, ensure_ascii=True, indent=2)
     except Exception as e:
-        print(f"[ERRO json.dumps] {e} — a tentar com ensure_ascii=True")
-        # ultimo recurso: substitui tudo que nao e ascii
-        payload = json.dumps(out, ensure_ascii=True, indent=2,
-                             default=lambda o: repr(o))
+        print(f"[ERRO json.dumps] {e}")
+        payload = json.dumps(out, ensure_ascii=True, indent=2, default=lambda o: repr(o))
 
     with open("news.json", "w", encoding="utf-8") as f:
         f.write(payload)
