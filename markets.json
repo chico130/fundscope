@@ -1,0 +1,440 @@
+{
+  "updated": "2026-05-07T00:39:55.154657Z",
+  "slot": "abertura",
+  "sectors": {
+    "Tecnologia": {
+      "name": "Tecnologia",
+      "icon": "💻",
+      "color": "#4f98a3",
+      "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
+      "avgChange": 3.35,
+      "gainers": [
+        {
+          "ticker": "AMD",
+          "price": 421.39,
+          "changePct": 18.61,
+          "pc": 355.26
+        },
+        {
+          "ticker": "ASML",
+          "price": 1544.74,
+          "changePct": 7.06,
+          "pc": 1442.92
+        },
+        {
+          "ticker": "NVDA",
+          "price": 207.83,
+          "changePct": 5.77,
+          "pc": 196.5
+        },
+        {
+          "ticker": "ORCL",
+          "price": 194.03,
+          "changePct": 4.68,
+          "pc": 185.35
+        },
+        {
+          "ticker": "INTC",
+          "price": 113.01,
+          "changePct": 4.49,
+          "pc": 108.15
+        }
+      ],
+      "losers": [
+        {
+          "ticker": "CRM",
+          "price": 181.19,
+          "changePct": -3.1,
+          "pc": 186.99
+        },
+        {
+          "ticker": "ADBE",
+          "price": 250.17,
+          "changePct": -2.13,
+          "pc": 255.62
+        },
+        {
+          "ticker": "AVGO",
+          "price": 425.44,
+          "changePct": -0.45,
+          "pc": 427.36
+        },
+        {
+          "ticker": "MSFT",
+          "price": 413.96,
+          "changePct": 0.63,
+          "pc": 411.38
+        },
+        {
+          "ticker": "AAPL",
+          "price": 287.51,
+          "changePct": 1.17,
+          "pc": 284.18
+        }
+      ],
+      "sentiment": {
+        "bullishPct": null,
+        "details": [
+          {
+            "bullish": null,
+            "articles": 0,
+            "ticker": "AAPL"
+          },
+          {
+            "bullish": null,
+            "articles": 0,
+            "ticker": "NVDA"
+          },
+          {
+            "bullish": null,
+            "articles": 0,
+            "ticker": "MSFT"
+          }
+        ]
+      },
+      "reddit": [],
+      "twits": []
+    },
+    "Finanças": {
+      "name": "Finanças",
+      "icon": "🏦",
+      "color": "#437a22",
+      "image": "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&q=80",
+      "avgChange": 0.87,
+      "gainers": [
+        {
+          "ticker": "BLK",
+          "price": 1073.57,
+          "changePct": 2.35,
+          "pc": 1048.91
+        },
+        {
+          "ticker": "MS",
+          "price": 193.35,
+          "changePct": 2.17,
+          "pc": 189.25
+        },
+        {
+          "ticker": "GS",
+          "price": 937.35,
+          "changePct": 2.01,
+          "pc": 918.89
+        },
+        {
+          "ticker": "AXP",
+          "price": 321.9,
+          "changePct": 1.88,
+          "pc": 315.95
+        },
+        {
+          "ticker": "JPM",
+          "price": 314.9,
+          "changePct": 1.78,
+          "pc": 309.4
+        }
+      ],
+      "losers": [
+        {
+          "ticker": "MA",
+          "price": 491.89,
+          "changePct": -1.04,
+          "pc": 497.08
+        },
+        {
+          "ticker": "V",
+          "price": 318.8,
+          "changePct": -1.0,
+          "pc": 322.03
+        },
+        {
+          "ticker": "C",
+          "price": 127.6,
+          "changePct": -0.32,
+          "pc": 128.01
+        },
+        {
+          "ticker": "SCHW",
+          "price": 92.15,
+          "changePct": -0.27,
+          "pc": 92.4
+        },
+        {
+          "ticker": "PNC",
+          "price": 222.42,
+          "changePct": 0.36,
+          "pc": 221.63
+        }
+      ],
+      "sentiment": {
+        "bullishPct": null,
+        "details": [
+          {
+            "bullish": null,
+            "articles": 0,
+            "ticker": "JPM"
+          },
+          {
+            "bullish": null,
+            "articles": 0,
+            "ticker": "GS"
+          },
+          {
+            "bullish": null,
+            "articles": 0,
+            "ticker": "BAC"
+          }
+        ]
+      },
+      "reddit": [],
+      "twits": []
+    },
+    "Energia": {
+      "name": "Energia",
+      "icon": "⚡",
+      "color": "#c47d1a",
+      "image": "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80",
+      "avgChange": -3.74,
+      "gainers": [
+        {
+          "ticker": "NEE",
+          "price": 95.39,
+          "changePct": -0.92,
+          "pc": 96.28
+        },
+        {
+          "ticker": "SLB",
+          "price": 55.16,
+          "changePct": -1.5,
+          "pc": 56
+        },
+        {
+          "ticker": "DUK",
+          "price": 125.54,
+          "changePct": -1.6,
+          "pc": 127.58
+        },
+        {
+          "ticker": "D",
+          "price": 61.64,
+          "changePct": -2.14,
+          "pc": 62.99
+        },
+        {
+          "ticker": "SHEL",
+          "price": 87.2,
+          "changePct": -2.8,
+          "pc": 89.71
+        }
+      ],
+      "losers": [
+        {
+          "ticker": "OXY",
+          "price": 55.12,
+          "changePct": -7.11,
+          "pc": 59.34
+        },
+        {
+          "ticker": "VLO",
+          "price": 236.69,
+          "changePct": -6.61,
+          "pc": 253.45
+        },
+        {
+          "ticker": "MPC",
+          "price": 245.78,
+          "changePct": -5.65,
+          "pc": 260.51
+        },
+        {
+          "ticker": "PSX",
+          "price": 171.72,
+          "changePct": -4.74,
+          "pc": 180.26
+        },
+        {
+          "ticker": "EOG",
+          "price": 134.69,
+          "changePct": -4.35,
+          "pc": 140.82
+        }
+      ],
+      "sentiment": {
+        "bullishPct": null,
+        "details": [
+          {
+            "bullish": null,
+            "articles": 0,
+            "ticker": "XOM"
+          },
+          {
+            "bullish": null,
+            "articles": 0,
+            "ticker": "CVX"
+          },
+          {
+            "bullish": null,
+            "articles": 0,
+            "ticker": "NEE"
+          }
+        ]
+      },
+      "reddit": [],
+      "twits": []
+    },
+    "Saúde": {
+      "name": "Saúde",
+      "icon": "🏥",
+      "color": "#a13544",
+      "image": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80",
+      "avgChange": 0.69,
+      "gainers": [
+        {
+          "ticker": "CVS",
+          "price": 86.86,
+          "changePct": 7.65,
+          "pc": 80.69
+        },
+        {
+          "ticker": "GILD",
+          "price": 136.3,
+          "changePct": 2.11,
+          "pc": 133.48
+        },
+        {
+          "ticker": "TMO",
+          "price": 472.95,
+          "changePct": 1.33,
+          "pc": 466.76
+        },
+        {
+          "ticker": "UNH",
+          "price": 367.28,
+          "changePct": 0.94,
+          "pc": 363.87
+        },
+        {
+          "ticker": "AMGN",
+          "price": 331.11,
+          "changePct": 0.46,
+          "pc": 329.59
+        }
+      ],
+      "losers": [
+        {
+          "ticker": "ABT",
+          "price": 86.3,
+          "changePct": -1.0,
+          "pc": 87.17
+        },
+        {
+          "ticker": "BMY",
+          "price": 56.59,
+          "changePct": -0.63,
+          "pc": 56.95
+        },
+        {
+          "ticker": "ABBV",
+          "price": 205.03,
+          "changePct": -0.52,
+          "pc": 206.11
+        },
+        {
+          "ticker": "JNJ",
+          "price": 224.62,
+          "changePct": -0.41,
+          "pc": 225.55
+        },
+        {
+          "ticker": "MDT",
+          "price": 77.6,
+          "changePct": -0.24,
+          "pc": 77.79
+        }
+      ],
+      "sentiment": {
+        "bullishPct": null,
+        "details": [
+          {
+            "bullish": null,
+            "articles": 0,
+            "ticker": "JNJ"
+          },
+          {
+            "bullish": null,
+            "articles": 0,
+            "ticker": "LLY"
+          },
+          {
+            "bullish": null,
+            "articles": 0,
+            "ticker": "PFE"
+          }
+        ]
+      },
+      "reddit": [],
+      "twits": []
+    },
+    "Consumo": {
+      "name": "Consumo",
+      "icon": "🛒",
+      "color": "#7a5c9e",
+      "image": "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&q=80",
+      "avgChange": 0,
+      "gainers": [],
+      "losers": [],
+      "sentiment": {
+        "bullishPct": null,
+        "details": [
+          {
+            "bullish": null,
+            "articles": 0,
+            "ticker": "AMZN"
+          },
+          {
+            "bullish": null,
+            "articles": 0,
+            "ticker": "WMT"
+          },
+          {
+            "bullish": null,
+            "articles": 0,
+            "ticker": "MCD"
+          }
+        ]
+      },
+      "reddit": [],
+      "twits": []
+    },
+    "Commodities": {
+      "name": "Commodities",
+      "icon": "🪙",
+      "color": "#8a7340",
+      "image": "https://images.unsplash.com/photo-1610375461246-83df859d849d?w=800&q=80",
+      "avgChange": 0,
+      "gainers": [],
+      "losers": [],
+      "sentiment": {
+        "bullishPct": null,
+        "details": [
+          {
+            "bullish": null,
+            "articles": 0,
+            "ticker": "GLD"
+          },
+          {
+            "bullish": null,
+            "articles": 0,
+            "ticker": "USO"
+          },
+          {
+            "bullish": null,
+            "articles": 0,
+            "ticker": "FCX"
+          }
+        ]
+      },
+      "reddit": [],
+      "twits": []
+    }
+  }
+}
