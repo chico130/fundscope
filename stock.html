@@ -62,6 +62,7 @@
     .live-dot{width:6px;height:6px;border-radius:50%;background:var(--color-success);animation:pulse 2s ease-in-out infinite;}
     @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.85)}}
     .finnhub-badge{display:inline-flex;align-items:center;gap:5px;font-size:var(--text-xs);color:var(--color-primary);margin-top:var(--space-1);font-weight:500;}
+    .closed-badge{display:inline-flex;align-items:center;gap:5px;font-size:var(--text-xs);color:var(--color-text-faint);margin-top:var(--space-1);font-weight:500;background:var(--color-surface-offset);padding:2px 8px;border-radius:var(--radius-full);}
     .period-tabs{display:flex;gap:var(--space-1);background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-lg);padding:3px;margin-bottom:var(--space-5);width:fit-content;}
     .period-tab{padding:var(--space-2) var(--space-4);border-radius:calc(var(--radius-lg) - 3px);font-size:var(--text-xs);font-weight:600;color:var(--color-text-muted);transition:all var(--transition);}
     .period-tab.active{background:var(--color-bg);color:var(--color-text);box-shadow:var(--shadow-sm);}
@@ -98,9 +99,8 @@
   </style>
 </head>
 <body>
-  <!-- ADMIN BAR -->
   <div class="admin-bar">
-    🛠️ Deploy admin: <span>07 Mai 2026, 01:17 WEST</span> &nbsp;·;&nbsp; v1.3 — Finnhub fallback + pesquisa em tempo real
+    🛠️ Deploy admin: <span>07 Mai 2026, 01:25 WEST</span> &nbsp;·&nbsp; v1.4 — Fallback fecho de mercado (q.pc) corrigido
   </div>
 
   <header class="header">
@@ -197,32 +197,36 @@
     async function loadAndRender(ticker) {
       const T = ticker.toUpperCase();
 
-      // 1. Tentar data.json — mas NÃO lançar erro se ticker não existir
-      let localStock = null;
+      // 1. Tentar data.json local
       try {
         const res = await fetch('data.json?t=' + Date.now());
         if (res.ok) {
           const json = await res.json();
-          localStock = (json.stocks || {})[T] || null;
+          const localStock = (json.stocks || {})[T] || null;
           if (localStock) {
-            renderStock(localStock, json.updated, 'local');
-            return; // encontrou localmente, termina aqui
+            renderStock(localStock, json.updated, 'local', false);
+            return;
           }
         }
-      } catch(e) { /* data.json não existe ainda, continuar */ }
+      } catch(e) {}
 
-      // 2. Finnhub /quote — sempre tenta para qualquer ticker
+      // 2. Finnhub /quote
       try {
         const q = await fetch(`https://finnhub.io/api/v1/quote?symbol=${encodeURIComponent(T)}&token=${FH}`).then(r=>r.json());
 
-        if (!q || !q.c || q.c === 0) {
-          throw new Error(`"${T}" não encontrado. Verifica se o símbolo está correto (ex: ASML, MU, VOO).`);
+        // Se q.c === 0, mercado fechado — usar q.pc (fecho anterior) como preço
+        const marketClosed = !q.c || q.c === 0;
+        const price = marketClosed ? q.pc : q.c;
+
+        // Se nem q.pc existe, o ticker não é reconhecido
+        if (!price || price === 0) {
+          throw new Error(`"${T}" não encontrado na Finnhub. Verifica se o símbolo está correto.`);
         }
 
-        const chgPct = q.pc ? ((q.c - q.pc) / q.pc) * 100 : 0;
-        const change = q.c - (q.pc || q.c);
+        const chgPct = q.pc && q.c ? ((q.c - q.pc) / q.pc) * 100 : 0;
+        const change = q.c && q.pc ? q.c - q.pc : 0;
 
-        // Tentar obter nome via /search
+        // Nome via /search
         let name = T;
         try {
           const sr = await fetch(`https://finnhub.io/api/v1/search?q=${encodeURIComponent(T)}&token=${FH}`).then(r=>r.json());
@@ -232,19 +236,19 @@
 
         renderStock({
           ticker: T, name,
-          price: q.c, changePct: chgPct, change,
-          open: q.o, high: q.h, low: q.l, prevClose: q.pc,
-          week52High: q.h * 1.18,
-          week52Low: q.l * 0.82,
+          price, changePct: chgPct, change,
+          open: q.o||0, high: q.h||price, low: q.l||price, prevClose: q.pc||price,
+          week52High: (q.h||price) * 1.18,
+          week52Low: (q.l||price) * 0.82,
           symbol: '$', exchange: '', type: '', sector: ''
-        }, new Date().toISOString(), 'finnhub');
+        }, new Date().toISOString(), 'finnhub', marketClosed);
 
       } catch(err) {
         renderError(T, err.message || 'Não foi possível obter dados. Tenta novamente.');
       }
     }
 
-    function renderStock(s, updated, source) {
+    function renderStock(s, updated, source, marketClosed) {
       document.title = 'FundScope — ' + s.ticker;
       const isUp = s.changePct >= 0;
       const sym = s.symbol || '$';
@@ -255,9 +259,15 @@
       const rangePos = Math.min(100, Math.max(0, Math.round(((s.price - w52L) / (w52H - w52L)) * 100)));
       const initials = s.ticker.slice(0,2);
       const updLabel = updated ? new Date(updated).toLocaleString('pt',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}) : 'agora';
-      const sourceNote = source === 'finnhub'
-        ? `<div class="finnhub-badge">⚡ Dados Finnhub — tempo real</div>`
-        : `<div class="live-badge"><span class="live-dot"></span>Atualizado ${updLabel}</div>`;
+
+      let sourceNote;
+      if (source === 'local') {
+        sourceNote = `<div class="live-badge"><span class="live-dot"></span>Atualizado ${updLabel}</div>`;
+      } else if (marketClosed) {
+        sourceNote = `<div class="finnhub-badge">⚡ Finnhub</div><div class="closed-badge">🔒 Mercado fechado — preço de fecho</div>`;
+      } else {
+        sourceNote = `<div class="finnhub-badge">⚡ Finnhub — tempo real</div>`;
+      }
 
       document.getElementById('stockContent').innerHTML = `
         <div class="stock-hero">
