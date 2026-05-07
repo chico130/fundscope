@@ -50,7 +50,6 @@
     .btn-icon:hover{color:var(--color-text);background:var(--color-surface-offset);}
 
     .page{max-width:1200px;margin:0 auto;padding:var(--space-8) var(--space-6) var(--space-16);}
-
     .hero-strip{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--space-4);margin-bottom:var(--space-8);}
     .hero-title{font-family:var(--font-display);font-size:var(--text-xl);}
     .hero-meta{font-size:var(--text-xs);color:var(--color-text-faint);margin-top:4px;}
@@ -81,9 +80,19 @@
     .movers-card-title{font-size:var(--text-xs);font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--color-text-faint);margin-bottom:var(--space-4);}
     .mover-row{display:flex;align-items:center;justify-content:space-between;padding:var(--space-2) 0;border-bottom:1px solid var(--color-divider);}
     .mover-row:last-child{border-bottom:none;}
-    .mover-ticker{font-size:var(--text-sm);font-weight:700;letter-spacing:.03em;}
+    .mover-ticker{font-size:var(--text-sm);font-weight:700;letter-spacing:.03em;position:relative;}
     .mover-ticker a{transition:color var(--transition);}
     .mover-ticker a:hover{color:var(--color-primary);}
+    /* Tooltip no ticker */
+    .mover-ticker [data-tip]{cursor:default;}
+    .mover-ticker [data-tip]:hover::after{
+      content:attr(data-tip);
+      position:absolute;left:0;top:calc(100% + 4px);z-index:50;
+      background:var(--color-text);color:var(--color-bg);
+      font-size:11px;font-weight:500;white-space:nowrap;
+      padding:4px 8px;border-radius:var(--radius-sm);
+      box-shadow:var(--shadow-md);pointer-events:none;
+    }
     .mover-price{font-size:var(--text-xs);color:var(--color-text-muted);margin-left:var(--space-2);}
     .mover-chg{font-size:var(--text-sm);font-weight:700;font-variant-numeric:tabular-nums;padding:2px 8px;border-radius:var(--radius-full);}
     .mover-chg.up{background:var(--color-success-bg);color:var(--color-success);}
@@ -103,39 +112,31 @@
     .gauge-sub{text-align:center;font-size:var(--text-xs);color:var(--color-text-faint);}
     .analyst-row{display:flex;align-items:center;justify-content:space-between;margin-top:var(--space-2);padding-top:var(--space-2);border-top:1px solid var(--color-divider);font-size:10px;color:var(--color-text-muted);}
 
-    /* NEWS CARD */
     .news-card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-5);box-shadow:var(--shadow-sm);}
     .news-list{display:flex;flex-direction:column;gap:var(--space-3);}
     .news-item{display:flex;gap:var(--space-3);padding:var(--space-3);background:var(--color-surface-2);border-radius:var(--radius-lg);border:1px solid var(--color-divider);transition:border-color var(--transition),box-shadow var(--transition);text-decoration:none;color:inherit;}
     .news-item:hover{border-color:var(--color-primary);box-shadow:var(--shadow-sm);}
-    .news-thumb{width:56px;height:56px;border-radius:var(--radius-md);object-fit:cover;flex-shrink:0;background:var(--color-surface-offset);}
-    .news-thumb-placeholder{width:56px;height:56px;border-radius:var(--radius-md);flex-shrink:0;background:var(--color-surface-offset);display:flex;align-items:center;justify-content:center;font-size:1.4rem;}
+    .news-thumb{width:64px;height:64px;border-radius:var(--radius-md);object-fit:cover;flex-shrink:0;background:var(--color-surface-offset);}
+    .news-thumb-placeholder{width:64px;height:64px;border-radius:var(--radius-md);flex-shrink:0;background:var(--color-surface-offset);display:flex;align-items:center;justify-content:center;font-size:1.6rem;}
     .news-body{flex:1;min-width:0;}
     .news-source-row{display:flex;align-items:center;gap:var(--space-2);margin-bottom:3px;}
     .news-ticker-badge{font-size:10px;font-weight:700;padding:1px 6px;border-radius:var(--radius-sm);background:var(--color-primary-highlight);color:var(--color-primary);}
     .news-source{font-size:10px;color:var(--color-text-faint);}
     .news-headline{font-size:var(--text-xs);font-weight:600;color:var(--color-text);line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
-    .news-summary{font-size:10px;color:var(--color-text-muted);margin-top:3px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+    .news-summary{font-size:var(--text-xs);color:var(--color-text-muted);margin-top:4px;line-height:1.55;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
     .news-time{font-size:10px;color:var(--color-text-faint);margin-top:4px;}
     .empty-news{font-size:var(--text-xs);color:var(--color-text-faint);text-align:center;padding:var(--space-6);}
 
     .skeleton{background:linear-gradient(90deg,var(--color-surface-offset) 25%,var(--color-surface) 50%,var(--color-surface-offset) 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;border-radius:var(--radius-md);}
     @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
-
     .footer{padding:var(--space-6);text-align:center;font-size:var(--text-xs);color:var(--color-text-faint);border-top:1px solid var(--color-divider);margin-top:var(--space-8);}
     .footer a{color:var(--color-text-muted);transition:color var(--transition);}
     .footer a:hover{color:var(--color-primary);}
-
-    @media(max-width:768px){
-      .movers-grid{grid-template-columns:1fr;}
-      .bottom-row{grid-template-columns:1fr;}
-      .nav{display:none;}
-    }
+    @media(max-width:768px){.movers-grid{grid-template-columns:1fr;}.bottom-row{grid-template-columns:1fr;}.nav{display:none;}}
     @media(max-width:480px){.sector-header{height:120px;}}
   </style>
 </head>
 <body>
-
   <header class="header">
     <a href="index.html" class="logo">
       <svg class="logo-svg" viewBox="0 0 28 28" fill="none">
@@ -158,7 +159,7 @@
     <nav class="nav">
       <a href="index.html" class="nav-link">Início</a>
       <a href="markets.html" class="nav-link active">Mercados</a>
-      <a href="#" class="nav-link disabled">Notícias</a>
+      <a href="news.html" class="nav-link">Notícias</a>
     </nav>
     <button class="btn-icon" data-theme-toggle aria-label="Alternar tema">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
@@ -188,10 +189,31 @@
   </main>
 
   <footer class="footer">
-    <p>© 2026 FundScope · <a href="https://github.com/chico130/fundscope">GitHub</a> · Dados via Finnhub · Atualizado 3×/dia (dias úteis)</p>
+    <p>© 2026 FundScope · <a href="https://github.com/chico130/fundscope">GitHub</a> · Dados via yfinance &amp; Finnhub · Atualizado 3×/dia (dias úteis)</p>
   </footer>
 
   <script>
+    // Mapa ticker -> nome da empresa (para tooltip)
+    const TICKER_NAMES = {
+      AAPL:'Apple',MSFT:'Microsoft',NVDA:'NVIDIA',GOOGL:'Alphabet',META:'Meta',AMD:'AMD',INTC:'Intel',
+      TSLA:'Tesla',AVGO:'Broadcom',MU:'Micron',QCOM:'Qualcomm',ORCL:'Oracle',CRM:'Salesforce',
+      ADBE:'Adobe',NOW:'ServiceNow',JPM:'JPMorgan',BAC:'Bank of America',GS:'Goldman Sachs',
+      MS:'Morgan Stanley',WFC:'Wells Fargo',C:'Citigroup',BLK:'BlackRock',AXP:'Amex',V:'Visa',
+      MA:'Mastercard',SCHW:'Schwab',USB:'US Bancorp',PNC:'PNC Financial',TFC:'Truist',COF:'Capital One',
+      XOM:'ExxonMobil',CVX:'Chevron',COP:'ConocoPhillips',SLB:'SLB',EOG:'EOG Resources',
+      PSX:'Phillips 66',MPC:'Marathon Petroleum',VLO:'Valero',OXY:'Occidental',HAL:'Halliburton',
+      NEE:'NextEra Energy',D:'Dominion',DUK:'Duke Energy',SO:'Southern Co.',AEP:'AEP',
+      JNJ:'Johnson & Johnson',UNH:'UnitedHealth',PFE:'Pfizer',ABBV:'AbbVie',MRK:'Merck',
+      LLY:'Eli Lilly',TMO:'Thermo Fisher',ABT:'Abbott',DHR:'Danaher',BMY:'Bristol-Myers',
+      AMGN:'Amgen',GILD:'Gilead',MDT:'Medtronic',CVS:'CVS Health',ISRG:'Intuitive Surgical',
+      AMZN:'Amazon',WMT:'Walmart',HD:'Home Depot',MCD:"McDonald's",SBUX:'Starbucks',NKE:'Nike',
+      TGT:'Target',COST:'Costco',LOW:"Lowe's",TJX:'TJX',PG:'Procter & Gamble',KO:'Coca-Cola',
+      PEP:'PepsiCo',PM:'Philip Morris',CL:'Colgate',MDLZ:'Mondelez',
+      FCX:'Freeport-McMoRan',NEM:'Newmont',GOLD:'Barrick Gold',AA:'Alcoa',CLF:'Cleveland-Cliffs',
+      X:'US Steel',MP:'MP Materials',WPM:'Wheaton Precious',AEM:'Agnico Eagle',CF:'CF Industries',
+      MOS:'Mosaic',NUE:'Nucor',STLD:'Steel Dynamics',RS:'Reliance Steel',ATI:'ATI Inc.'
+    };
+
     (function(){
       const t=document.querySelector('[data-theme-toggle]'),r=document.documentElement;
       let d=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
@@ -207,18 +229,18 @@
 
     const SLOT_LABELS={abertura:'\uD83D\uDD14 Abertura',['meio-dia']:'\u2600\uFE0F Meio-dia',fecho:'\uD83D\uDD14 Fecho'};
 
-    function timeAgo(ts) {
-      const diff = Math.floor((Date.now()/1000) - ts);
-      if(diff < 3600)  return Math.floor(diff/60)+'min';
-      if(diff < 86400) return Math.floor(diff/3600)+'h';
+    function timeAgo(ts){
+      const diff=Math.floor((Date.now()/1000)-ts);
+      if(diff<3600) return Math.floor(diff/60)+'min';
+      if(diff<86400) return Math.floor(diff/3600)+'h';
       return Math.floor(diff/86400)+'d';
     }
 
-    function renderGauge(pct) {
+    function renderGauge(pct){
       if(pct===null||pct===undefined)
-        return `<div class="gauge-score neutral">—</div><div class="gauge-sub">Sem dados</div>`;
-      const cls = pct>=55?'bullish':pct<=45?'bearish':'neutral';
-      const lbl = pct>=55?'\uD83D\uDCC8 Otimista':pct<=45?'\uD83D\uDCC9 Pessimista':'\u27A1\uFE0F Neutro';
+        return '<div class="gauge-score neutral">—</div><div class="gauge-sub">Sem dados</div>';
+      const cls=pct>=55?'bullish':pct<=45?'bearish':'neutral';
+      const lbl=pct>=55?'\uD83D\uDCC8 Otimista':pct<=45?'\uD83D\uDCC9 Pessimista':'\u27A1\uFE0F Neutro';
       return `<div class="gauge-wrap">
         <div class="gauge-bar"><div class="gauge-fill" style="width:${pct}%"></div></div>
         <div class="gauge-labels"><span>Pessimista</span><span>Otimista</span></div>
@@ -227,13 +249,24 @@
       <div class="gauge-sub">${lbl}</div>`;
     }
 
-    function renderNews(newsArr) {
+    // Imagem fallback por setor
+    const SECTOR_FALLBACKS={
+      'Tecnologia':'https://images.unsplash.com/photo-1518770660439-4636190af475?w=200&q=70',
+      'Finan\u00e7as':'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=200&q=70',
+      'Energia':'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=200&q=70',
+      'Sa\u00fade':'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=200&q=70',
+      'Consumo':'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=200&q=70',
+      'Commodities':'https://images.unsplash.com/photo-1610375461246-83df859d849d?w=200&q=70'
+    };
+
+    function renderNews(newsArr, sectorName){
       if(!newsArr||!newsArr.length)
-        return `<div class="empty-news">Sem not\u00edcias recentes</div>`;
-      return newsArr.map(n => {
+        return '<div class="empty-news">Sem not\u00edcias recentes</div>';
+      return newsArr.map(n=>{
+        const fallback = SECTOR_FALLBACKS[sectorName]||'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=200&q=70';
         const thumb = n.image
-          ? `<img class="news-thumb" src="${n.image}" alt="" loading="lazy" onerror="this.style.display='none'">`
-          : `<div class="news-thumb-placeholder">${n.ticker?'\uD83D\uDCF0':'\uD83D\uDCF0'}</div>`;
+          ? `<img class="news-thumb" src="${n.image}" alt="" loading="lazy" onerror="this.src='${fallback}'">`
+          : `<img class="news-thumb" src="${fallback}" alt="" loading="lazy">`;
         const ago = n.datetime ? timeAgo(n.datetime) : '';
         return `<a class="news-item" href="${n.url||'#'}" target="_blank" rel="noopener">
           ${thumb}
@@ -250,31 +283,37 @@
       }).join('');
     }
 
-    function renderSector(name, s) {
-      const isUp = s.avgChange >= 0;
-      const sign = isUp ? '+' : '';
-      const anchor = name.toLowerCase().replace(/[^a-z]/g,'');
+    function renderSector(name, s){
+      const isUp=s.avgChange>=0;
+      const sign=isUp?'+':'';
+      const anchor=name.toLowerCase().replace(/[^a-z]/g,'');
+
+      const moverRow=(g, isGainer)=>{
+        const tip = TICKER_NAMES[g.ticker] ? ` data-tip="${TICKER_NAMES[g.ticker]}"` : '';
+        const chg = isGainer
+          ? `<span class="mover-chg up">\u25b2 +${g.changePct.toFixed(2)}%</span>`
+          : `<span class="mover-chg down">\u25bc ${g.changePct.toFixed(2)}%</span>`;
+        return `<div class="mover-row">
+          <div style="display:flex;align-items:center;gap:4px">
+            <span class="mover-ticker"><a href="stock.html?ticker=${g.ticker}"${tip}>${g.ticker}</a></span>
+            <span class="mover-price">$${g.price}</span>
+          </div>
+          ${chg}
+        </div>`;
+      };
 
       const gainersHTML = s.gainers.length
-        ? s.gainers.map(g=>`
-          <div class="mover-row">
-            <div><span class="mover-ticker"><a href="stock.html?ticker=${g.ticker}">${g.ticker}</a></span><span class="mover-price">$${g.price}</span></div>
-            <span class="mover-chg up">\u25b2 +${g.changePct.toFixed(2)}%</span>
-          </div>`).join('')
+        ? s.gainers.map(g=>moverRow(g,true)).join('')
         : '<div style="font-size:var(--text-xs);color:var(--color-text-faint);padding:var(--space-4)">Sem dados</div>';
-
       const losersHTML = s.losers.length
-        ? s.losers.map(g=>`
-          <div class="mover-row">
-            <div><span class="mover-ticker"><a href="stock.html?ticker=${g.ticker}">${g.ticker}</a></span><span class="mover-price">$${g.price}</span></div>
-            <span class="mover-chg down">\u25bc ${g.changePct.toFixed(2)}%</span>
-          </div>`).join('')
+        ? s.losers.map(g=>moverRow(g,false)).join('')
         : '<div style="font-size:var(--text-xs);color:var(--color-text-faint);padding:var(--space-4)">Sem dados</div>';
 
-      const bullPct = s.sentiment?.bullishPct;
-      const analystDetails = (s.sentiment?.details||[]).map(d=>
-        `<div class="analyst-row"><span>${d.ticker}</span><span>${d.bullish!==null?d.bullish+'%':'—'}</span><span>${d.articles} art.</span></div>`
-      ).join('');
+      const bullPct=s.sentiment?.bullishPct;
+      const analystDetails=(s.sentiment?.details||[]).map(d=>{
+        const tip = TICKER_NAMES[d.ticker] ? ` title="${TICKER_NAMES[d.ticker]}"` : '';
+        return `<div class="analyst-row"><span${tip} style="cursor:default">${d.ticker}</span><span>${d.bullish!==null?d.bullish+'%':'\u2014'}</span><span>${d.articles} art.</span></div>`;
+      }).join('');
 
       return `
         <div class="sector-block" id="${anchor}">
@@ -288,14 +327,8 @@
             </div>
           </div>
           <div class="movers-grid">
-            <div class="movers-card">
-              <div class="movers-card-title">\uD83D\uDFE2 Maiores subidas</div>
-              ${gainersHTML}
-            </div>
-            <div class="movers-card">
-              <div class="movers-card-title">\uD83D\uDD34 Maiores quedas</div>
-              ${losersHTML}
-            </div>
+            <div class="movers-card"><div class="movers-card-title">\uD83D\uDFE2 Maiores subidas</div>${gainersHTML}</div>
+            <div class="movers-card"><div class="movers-card-title">\uD83D\uDD34 Maiores quedas</div>${losersHTML}</div>
           </div>
           <div class="bottom-row">
             <div class="sentiment-card">
@@ -305,33 +338,28 @@
             </div>
             <div class="news-card">
               <div class="card-label">Not\u00edcias do setor</div>
-              <div class="news-list">${renderNews(s.news)}</div>
+              <div class="news-list">${renderNews(s.news, name)}</div>
             </div>
           </div>
         </div>`;
     }
 
-    async function init() {
-      try {
-        const res = await fetch('markets.json?t=' + Date.now());
+    async function init(){
+      try{
+        const res=await fetch('markets.json?t='+Date.now());
         if(!res.ok) throw new Error();
-        const data = await res.json();
-
-        const upd = new Date(data.updated).toLocaleString('pt',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});
-        document.getElementById('heroMeta').textContent = `\u00daltima atualiza\u00e7\u00e3o: ${upd} \u00b7 3 snapshots di\u00e1rios`;
-        document.getElementById('slotLabel').textContent = SLOT_LABELS[data.slot] || data.slot;
-
-        document.getElementById('overviewBar').innerHTML = Object.entries(data.sectors).map(([name,s])=>{
+        const data=await res.json();
+        const upd=new Date(data.updated).toLocaleString('pt',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});
+        document.getElementById('heroMeta').textContent=`\u00daltima atualiza\u00e7\u00e3o: ${upd} \u00b7 3 snapshots di\u00e1rios`;
+        document.getElementById('slotLabel').textContent=SLOT_LABELS[data.slot]||data.slot;
+        document.getElementById('overviewBar').innerHTML=Object.entries(data.sectors).map(([name,s])=>{
           const isUp=s.avgChange>=0;
           const anchor=name.toLowerCase().replace(/[^a-z]/g,'');
           return `<a href="#${anchor}" class="overview-pill ${isUp?'up':'down'}">${s.icon} ${name} <span>${isUp?'+':''}${s.avgChange}%</span></a>`;
         }).join('');
-
-        document.getElementById('sectorsWrap').innerHTML =
-          Object.entries(data.sectors).map(([name,s])=>renderSector(name,s)).join('');
-
-      } catch(e) {
-        document.getElementById('sectorsWrap').innerHTML = `
+        document.getElementById('sectorsWrap').innerHTML=Object.entries(data.sectors).map(([name,s])=>renderSector(name,s)).join('');
+      }catch(e){
+        document.getElementById('sectorsWrap').innerHTML=`
           <div style="text-align:center;padding:4rem;color:var(--color-text-muted)">
             <div style="font-size:2.5rem;margin-bottom:1rem">\uD83D\uDC37</div>
             <h2 style="margin-bottom:.5rem">Dados ainda n\u00e3o dispon\u00edveis</h2>
