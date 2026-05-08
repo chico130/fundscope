@@ -1,12 +1,12 @@
 {
-  "updated": "2026-05-07T22:41:00.298399Z",
+  "updated": "2026-05-08T10:25:42.816187Z",
   "t212_mode": "live",
   "summary": {
-    "total_value": 6258.68,
+    "total_value": 8133.9,
     "total_invested": 2949.75,
-    "total_gain_eur": 3308.93,
-    "total_gain_pct": 112.18,
-    "daily_gain_eur": 0.0,
+    "total_gain_eur": 3342.5,
+    "total_gain_pct": 113.31,
+    "daily_gain_eur": -317.92,
     "n_positions": 5
   },
   "positions": [
@@ -14,129 +14,108 @@
       "ticker_t212": "MTEd_EQ",
       "quantity": 5.823397,
       "avg_price": 123.7851,
-      "current_price": 563.0,
-      "ppl": 2557.72,
+      "current_price": 646.63,
+      "ppl": 2562.38,
       "fx_ppl": 0.0,
       "ticker": "MU",
       "display_name": "Micron Technology",
       "ticker_display": "MU",
-      "change_pct": 0.0,
+      "change_pct": -2.99,
       "invested": 720.85,
-      "value_eur": 3278.57,
-      "gain_eur": 2557.72,
-      "gain_pct": 354.82,
-      "allocation_pct": 52.38,
-      "news": [
-        {
-          "source": "ChartMill",
-          "headline": "What's going on in today's session: S&P500 most active stocks",
-          "summary": "Stay informed about the most active stocks in the S&P500 index on Thursday's session. Discover the stocks that are generating the highest trading volume and driving market activity.",
-          "url": "https://finnhub.io/api/news?id=b33cec284a2f684fc44dcca16b41456443ba53adae5de30bcb1073b2c4862608",
-          "datetime": 1778177104,
-          "image": "https://www.chartmill.com/images/uploads/CM_Most_Active_Stocks_Small_free_fec0650b7f.webp"
-        },
-        {
-          "source": "SeekingAlpha",
-          "headline": "Micron: I Finally Get It - The Market Still Underestimates The AI Memory Supercycle",
-          "summary": "Micron Technology, Inc. outlook: DRAM/NAND shortages lift prices, revenue and margins; AI memory supercycle may extend. Click for this MU update.",
-          "url": "https://finnhub.io/api/news?id=ffb0a5f3fa44ace085e572aa2395b08b4c0c6ce7c12d45ba223e6ae6476e13a4",
-          "datetime": 1778175931,
-          "image": "https://static.seekingalpha.com/cdn/s3/uploads/getty_images/522463528/image_522463528.jpg?io=getty-c-w1536"
-        },
-        {
-          "source": "Yahoo",
-          "headline": "Analysts reset Sandisk stock forecast after massive rally",
-          "summary": "Shares of Sandisk Corporation (SNDK) have been flying high as investors pile into semiconductor names and memory-related stocks. The stock has surged nearly 100% over the past month and closed at $1,409.98 on May 6, extending a massive rally that has pushed shares up nearly 500% year to date, ...",
-          "url": "https://finnhub.io/api/news?id=e33d407c90323a9ff29390c5b1d9d25e22d8ba3827abcebca761a81a5f92fa55",
-          "datetime": 1778175180,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "SeekingAlpha",
-          "headline": "How I'd Deploy $100 Thousand In Value-Driven Covered Call ETFs For Retirement Income",
-          "summary": "Build durable retirement income with covered call ETFs.",
-          "url": "https://finnhub.io/api/news?id=bd8a3fc2048c3e844af0a02947ce13c3f7bec5cc509378c5dd2af1d63aa16aba",
-          "datetime": 1778171467,
-          "image": "https://static.seekingalpha.com/cdn/s3/uploads/getty_images/865186774/image_865186774.jpg?io=getty-c-w1536"
-        },
-        {
-          "source": "Yahoo",
-          "headline": "Bernstein bullish on memory stocks as DRAM and NAND prices rise",
-          "summary": "Investing.com -- Bernstein is bullish on memory stocks after data showed another major jump in chip prices, with DRAM and NAND contract prices both set for significant increases in the second quarter of calendar year 2026, coming in ahead of the firm's own expectations.",
-          "url": "https://finnhub.io/api/news?id=840e8a3cde7a6162e612a338755a273ee56bd51229fee8d313a154e5b5563a3e",
-          "datetime": 1778168347,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        }
-      ],
-      "earnings": [],
-      "dividends": [],
-      "analysis": {
-        "sentiment": "neutro",
-        "news_comment": "Indisponível.",
-        "earnings_comment": "Indisponível.",
-        "watch_points": []
-      }
-    },
-    {
-      "ticker_t212": "49Vd_EQ",
-      "quantity": 4.008083,
-      "avg_price": 125.7334,
-      "current_price": 291.65,
-      "ppl": 665.01,
-      "fx_ppl": 0.0,
-      "ticker": "VST",
-      "display_name": "Vistra Corp",
-      "ticker_display": "VST",
-      "change_pct": 0.0,
-      "invested": 503.95,
-      "value_eur": 1168.96,
-      "gain_eur": 665.01,
-      "gain_pct": 131.96,
-      "allocation_pct": 18.68,
+      "value_eur": 3765.58,
+      "gain_eur": 2562.38,
+      "gain_pct": 355.47,
+      "allocation_pct": 46.29,
       "news": [
         {
           "source": "Yahoo",
-          "headline": "Vistra Corp. Q1 2026 Earnings Call Summary",
-          "summary": "Moby summary of Vistra Corp.'s Q1 2026 earnings call",
-          "url": "https://finnhub.io/api/news?id=05dbe4858c54f55a5c26cbf3ba7cf2e371bb2c30205f916f3be711c2e10d030b",
-          "datetime": 1778187837,
+          "headline": "Netlist Stock: The Next 10-Bagger?",
+          "summary": "Netlist might be the most important AI stock that you have never heard of.",
+          "url": "https://finnhub.io/api/news?id=3a4083e03471425cdc8fcda61ca6a980a57315ad75c3e795213ac9ac9a09bf1e",
+          "datetime": 1778214000,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
           "source": "Yahoo",
-          "headline": "Nuclear Stocks Sell Off In Hefty Earnings Week, NuScale Slides",
-          "summary": "Nuclear stock Vistra and Energy Fuels reported strong earnings and outlook Thursday. But their shares closed lower amid a broader market reversal. NuScale Power missed views after market close. Oklo is due next week.",
-          "url": "https://finnhub.io/api/news?id=6f86601b9337a675d738968bef6b442601566370b51d2a6b7db1dc2fe8562974",
-          "datetime": 1778186662,
+          "headline": "The 2026 Chip War Is Already Over and Apple Dominated",
+          "summary": "The 2026 chip war is over. Apple (NASDAQ:AAPL) won it in procurement meetings, well before product launches. The market is just catching up. Apple’s $287.44 share price and $4.22 trillion market cap already reflect what the silicon industry figured out two quarters ago: when you control the most adv",
+          "url": "https://finnhub.io/api/news?id=45346e968b72e5bd14022109e512b67ea522221462d16a69b0466ccd47239137",
+          "datetime": 1778197450,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
           "source": "Yahoo",
-          "headline": "Uranium Stock Rises Near Buy Point. AI Fuels Nuclear Earnings.",
-          "summary": "Nuclear stocks Vistra and Energy Fuels reported strong earnings and outlook Thursday. Vistra stock rose above a key level while uranium stock Energy Fuels surged near a buy point after more than doubling revenue, but pared gains.",
-          "url": "https://finnhub.io/api/news?id=421887682434cd8aedcf6da5e891324798cd376cb1173d98c58a838e4c6c4c2d",
-          "datetime": 1778172430,
+          "headline": "My Top 2 Semiconductor Stocks Benefiting From the AI Boom to Buy in May 2026",
+          "summary": "These leaders have helped power impressive gains for the chip industry.",
+          "url": "https://finnhub.io/api/news?id=4e14d12ff50a7ad8a1f6506b4c40bda69d6a4e5a9fe9a650dc7d7d4e9c551771",
+          "datetime": 1778191320,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
           "source": "Yahoo",
-          "headline": "Nuclear Stock Vistra Pops On Earnings But Uranium Producer Soars",
-          "summary": "Nuclear stocks Vistra and Energy Fuels reported strong earnings and outlook Thursday. Vistra stock rose above a key level while uranium stock Energy Fuels surged near a buy point. NuScale Power is on deck after market close.",
-          "url": "https://finnhub.io/api/news?id=cf02b17bc580cb5abd41e7bafb909332e8a3af127a2876d0aff0689882beb41a",
-          "datetime": 1778167128,
+          "headline": "Micron (MU) Dips More Than Broader Market: What You Should Know",
+          "summary": "Micron (MU) concluded the recent trading session at $647.17, signifying a -2.91% move from its prior day's close.",
+          "url": "https://finnhub.io/api/news?id=cc15cbc32482db6fe11c7c490b82c94a2be248067c1e1130473bf1fba219eed3",
+          "datetime": 1778190304,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
-          "source": "SeekingAlpha",
-          "headline": "Vistra Corp. (VST) Q1 2026 Earnings Call Transcript",
-          "summary": "Vistra Corp. (VST) Q1 2026 Earnings Call May 7, 2026 10:00 AM EDTCompany ParticipantsEric Micek - Vice President of Investor RelationsJames Burke -...",
-          "url": "https://finnhub.io/api/news?id=a4447a4180fc07d35051a60cf025bfd1ed17020b413e1c093be72901359a616e",
-          "datetime": 1778163082,
-          "image": "https://static.seekingalpha.com/assets/og_image_1200-29b2bfe1a595477db6826bd2126c63ac2091efb7ec76347a8e7f81ba17e3de6c.png"
+          "source": "Yahoo",
+          "headline": "Top AI Memory Stocks for 2026",
+          "summary": "It’s the trade of the year and it’s still going. I’m talking about AI of course, but more specifically, I mean memory and storage stocks.",
+          "url": "https://finnhub.io/api/news?id=d874ed715fa031f826c052abb94f44b6e24206b027d3048bdbd7999072187790",
+          "datetime": 1778189563,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         }
       ],
-      "earnings": [],
-      "dividends": [],
+      "earnings": [
+        {
+          "period": "",
+          "estimate": 1.595,
+          "actual": 1.91,
+          "surprise": 0.2,
+          "beat": true
+        },
+        {
+          "period": "",
+          "estimate": 2.86,
+          "actual": 3.03,
+          "surprise": 0.06,
+          "beat": true
+        },
+        {
+          "period": "",
+          "estimate": 3.964,
+          "actual": 4.78,
+          "surprise": 0.21,
+          "beat": true
+        },
+        {
+          "period": "",
+          "estimate": 9.159,
+          "actual": 12.2,
+          "surprise": 0.33,
+          "beat": true
+        }
+      ],
+      "dividends": [
+        {
+          "date": "2026-03-30",
+          "amount": 0.15
+        },
+        {
+          "date": "2025-12-29",
+          "amount": 0.115
+        },
+        {
+          "date": "2025-10-03",
+          "amount": 0.115
+        },
+        {
+          "date": "2025-07-07",
+          "amount": 0.115
+        }
+      ],
       "analysis": {
         "sentiment": "neutro",
         "news_comment": "Indisponível.",
@@ -148,19 +127,27 @@
       "ticker_t212": "0V6d_EQ",
       "quantity": 8.814727,
       "avg_price": 137.7683,
-      "current_price": 132.14,
-      "ppl": -49.61,
+      "current_price": 340.01,
+      "ppl": -36.74,
       "fx_ppl": 0.0,
       "ticker": "VRT",
       "display_name": "Vertiv Holdings",
       "ticker_display": "VRT",
-      "change_pct": 0.0,
+      "change_pct": -5.27,
       "invested": 1214.39,
-      "value_eur": 1164.78,
-      "gain_eur": -49.61,
-      "gain_pct": -4.09,
-      "allocation_pct": 18.61,
+      "value_eur": 2997.1,
+      "gain_eur": -36.74,
+      "gain_pct": -3.03,
+      "allocation_pct": 36.85,
       "news": [
+        {
+          "source": "SeekingAlpha",
+          "headline": "Allspring Large Cap Growth Fund Q1 2026 Attribution And Adjustments",
+          "summary": "Allspring Large Cap Growth Fund outperformed its benchmark in Q1 2026 despite software sector headwinds. Read the full analysis for more details.",
+          "url": "https://finnhub.io/api/news?id=3dcc734bae306e9911e27598576cb183c7814b566a797e5818d61a71998cace9",
+          "datetime": 1778219400,
+          "image": "https://static.seekingalpha.com/cdn/s3/uploads/getty_images/1401923450/image_1401923450.jpg?io=getty-c-w1536"
+        },
         {
           "source": "Yahoo",
           "headline": "Vertiv Holdings Co (VRT): Expansion Due to Insatiable AI Demand",
@@ -192,18 +179,56 @@
           "url": "https://finnhub.io/api/news?id=33d12d72093b07b587238b768e12442fd696e1c24fc70216fc843191863ea86a",
           "datetime": 1778160951,
           "image": "https://cdn.benzinga.com/files/images/story/2025/11/06/aggregated_options_1.jpg?width=2048&height=1536"
-        },
-        {
-          "source": "Yahoo",
-          "headline": "Here's Why Vertiv Shares Popped Higher in April",
-          "summary": "The company's improving growth outlook and its relationship with Nvidia continues to power the stock higher in 2026.",
-          "url": "https://finnhub.io/api/news?id=71939c539b10029aefcc174a914132de95a0160ce9e70434777c658313b4dece",
-          "datetime": 1778160840,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         }
       ],
-      "earnings": [],
-      "dividends": [],
+      "earnings": [
+        {
+          "period": "",
+          "estimate": 0.831,
+          "actual": 0.95,
+          "surprise": 0.14,
+          "beat": true
+        },
+        {
+          "period": "",
+          "estimate": 0.992,
+          "actual": 1.24,
+          "surprise": 0.25,
+          "beat": true
+        },
+        {
+          "period": "",
+          "estimate": 1.296,
+          "actual": 1.36,
+          "surprise": 0.05,
+          "beat": true
+        },
+        {
+          "period": "",
+          "estimate": 1.012,
+          "actual": 1.17,
+          "surprise": 0.16,
+          "beat": true
+        }
+      ],
+      "dividends": [
+        {
+          "date": "2026-03-17",
+          "amount": 0.063
+        },
+        {
+          "date": "2025-11-25",
+          "amount": 0.063
+        },
+        {
+          "date": "2025-09-15",
+          "amount": 0.038
+        },
+        {
+          "date": "2025-06-16",
+          "amount": 0.038
+        }
+      ],
       "analysis": {
         "sentiment": "neutro",
         "news_comment": "Indisponível.",
@@ -215,18 +240,18 @@
       "ticker_t212": "CJ6d_EQ",
       "quantity": 6.244556,
       "avg_price": 80.0697,
-      "current_price": 101.74,
-      "ppl": 135.32,
+      "current_price": 118.71,
+      "ppl": 135.51,
       "fx_ppl": 0.0,
       "ticker": "CCJ",
       "display_name": "Cameco Corp",
       "ticker_display": "CCJ",
-      "change_pct": 0.0,
+      "change_pct": -4.08,
       "invested": 500.0,
-      "value_eur": 635.32,
-      "gain_eur": 135.32,
-      "gain_pct": 27.06,
-      "allocation_pct": 10.15,
+      "value_eur": 741.29,
+      "gain_eur": 135.51,
+      "gain_pct": 27.1,
+      "allocation_pct": 9.11,
       "news": [
         {
           "source": "SeekingAlpha",
@@ -269,8 +294,167 @@
           "image": "https://static.seekingalpha.com/cdn/s3/uploads/getty_images/2258773474/image_2258773474.jpg?io=getty-c-w1536"
         }
       ],
-      "earnings": [],
-      "dividends": [],
+      "earnings": [
+        {
+          "period": "",
+          "estimate": 0.516,
+          "actual": 0.71,
+          "surprise": 0.38,
+          "beat": true
+        },
+        {
+          "period": "",
+          "estimate": 0.275,
+          "actual": 0.07,
+          "surprise": -0.75,
+          "beat": false
+        },
+        {
+          "period": "",
+          "estimate": 0.443,
+          "actual": 0.5,
+          "surprise": 0.13,
+          "beat": true
+        },
+        {
+          "period": "",
+          "estimate": 0.34,
+          "actual": 0.47,
+          "surprise": 0.38,
+          "beat": true
+        }
+      ],
+      "dividends": [
+        {
+          "date": "2025-12-01",
+          "amount": 0.172
+        },
+        {
+          "date": "2024-11-27",
+          "amount": 0.114
+        },
+        {
+          "date": "2023-11-29",
+          "amount": 0.088
+        },
+        {
+          "date": "2022-11-29",
+          "amount": 0.089
+        }
+      ],
+      "analysis": {
+        "sentiment": "neutro",
+        "news_comment": "Indisponível.",
+        "earnings_comment": "Indisponível.",
+        "watch_points": []
+      }
+    },
+    {
+      "ticker_t212": "49Vd_EQ",
+      "quantity": 4.008083,
+      "avg_price": 125.7334,
+      "current_price": 153.95,
+      "ppl": 680.88,
+      "fx_ppl": 0.0,
+      "ticker": "VST",
+      "display_name": "Vistra Corp",
+      "ticker_display": "VST",
+      "change_pct": -2.74,
+      "invested": 503.95,
+      "value_eur": 617.04,
+      "gain_eur": 680.88,
+      "gain_pct": 135.11,
+      "allocation_pct": 7.59,
+      "news": [
+        {
+          "source": "Yahoo",
+          "headline": "Vistra Corp. Q1 2026 Earnings Call Summary",
+          "summary": "Moby summary of Vistra Corp.'s Q1 2026 earnings call",
+          "url": "https://finnhub.io/api/news?id=05dbe4858c54f55a5c26cbf3ba7cf2e371bb2c30205f916f3be711c2e10d030b",
+          "datetime": 1778187837,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "headline": "Nuclear Stocks Sell Off In Hefty Earnings Week, NuScale Slides",
+          "summary": "Nuclear stock Vistra and Energy Fuels reported strong earnings and outlook Thursday. But their shares closed lower amid a broader market reversal. NuScale Power missed views after market close. Oklo is due next week.",
+          "url": "https://finnhub.io/api/news?id=6f86601b9337a675d738968bef6b442601566370b51d2a6b7db1dc2fe8562974",
+          "datetime": 1778186662,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "headline": "Uranium Stock Rises Near Buy Point. AI Fuels Nuclear Earnings.",
+          "summary": "Nuclear stocks Vistra and Energy Fuels reported strong earnings and outlook Thursday. Vistra stock rose above a key level while uranium stock Energy Fuels surged near a buy point after more than doubling revenue, but pared gains.",
+          "url": "https://finnhub.io/api/news?id=421887682434cd8aedcf6da5e891324798cd376cb1173d98c58a838e4c6c4c2d",
+          "datetime": 1778172430,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "headline": "Nuclear Stock Vistra Pops On Earnings But Uranium Producer Soars",
+          "summary": "Nuclear stocks Vistra and Energy Fuels reported strong earnings and outlook Thursday. Vistra stock rose above a key level while uranium stock Energy Fuels surged near a buy point. NuScale Power is on deck after market close.",
+          "url": "https://finnhub.io/api/news?id=cf02b17bc580cb5abd41e7bafb909332e8a3af127a2876d0aff0689882beb41a",
+          "datetime": 1778167128,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "SeekingAlpha",
+          "headline": "Vistra Corp. (VST) Q1 2026 Earnings Call Transcript",
+          "summary": "Vistra Corp. (VST) Q1 2026 Earnings Call May 7, 2026 10:00 AM EDTCompany ParticipantsEric Micek - Vice President of Investor RelationsJames Burke -...",
+          "url": "https://finnhub.io/api/news?id=a4447a4180fc07d35051a60cf025bfd1ed17020b413e1c093be72901359a616e",
+          "datetime": 1778163082,
+          "image": "https://static.seekingalpha.com/assets/og_image_1200-29b2bfe1a595477db6826bd2126c63ac2091efb7ec76347a8e7f81ba17e3de6c.png"
+        }
+      ],
+      "earnings": [
+        {
+          "period": "",
+          "estimate": 1.004,
+          "actual": 0.81,
+          "surprise": -0.19,
+          "beat": false
+        },
+        {
+          "period": "",
+          "estimate": 1.956,
+          "actual": 1.75,
+          "surprise": -0.11,
+          "beat": false
+        },
+        {
+          "period": "",
+          "estimate": 2.3,
+          "actual": 0.54,
+          "surprise": -0.77,
+          "beat": false
+        },
+        {
+          "period": "",
+          "estimate": 1.871,
+          "actual": NaN,
+          "surprise": NaN,
+          "beat": false
+        }
+      ],
+      "dividends": [
+        {
+          "date": "2026-03-20",
+          "amount": 0.228
+        },
+        {
+          "date": "2025-12-22",
+          "amount": 0.227
+        },
+        {
+          "date": "2025-09-19",
+          "amount": 0.226
+        },
+        {
+          "date": "2025-06-18",
+          "amount": 0.225
+        }
+      ],
       "analysis": {
         "sentiment": "neutro",
         "news_comment": "Indisponível.",
@@ -282,19 +466,35 @@
       "ticker_t212": "ASMLa_EQ",
       "quantity": 0.008498,
       "avg_price": 1242.6015,
-      "current_price": 1300.0,
-      "ppl": 0.49,
+      "current_price": 1516.6,
+      "ppl": 0.47,
       "fx_ppl": 0.0,
       "ticker": "ASML",
       "display_name": "ASML Holding",
       "ticker_display": "ASML",
-      "change_pct": 0.0,
+      "change_pct": -1.82,
       "invested": 10.56,
-      "value_eur": 11.05,
-      "gain_eur": 0.49,
-      "gain_pct": 4.64,
-      "allocation_pct": 0.18,
+      "value_eur": 12.89,
+      "gain_eur": 0.47,
+      "gain_pct": 4.45,
+      "allocation_pct": 0.16,
       "news": [
+        {
+          "source": "Yahoo",
+          "headline": "ASML CEO Says Jensen Huang 'Totally Right' On Exporting Products With An Eight-Generation Gap— Denies Top Chip Access To China",
+          "summary": "ASML Holdings NV CEO Christophe Fouquet addressed the company’s position on export controls and dispelled rumors about reverse-engineering of their machines in China. Fouquet, speaking to Tech Crunch on Tuesday, before the Milken Institute Global Conference, said that he is...",
+          "url": "https://finnhub.io/api/news?id=e96454a6cb9a305600ee0353eacae5bc8e2c70dce5b62116e74399a7bdd17641",
+          "datetime": 1778193074,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "headline": "Exclusive-SK Hynix flooded with unprecedented offers from big tech firms to secure chip supplies",
+          "summary": "SK Hynix is being aggressively courted by big global tech firms with offers to invest in its new production lines and fund purchases of pricey manufacturing tools as they rush to secure memory chips, people familiar with the matter said.  The offers, unprecedented in ‌the global memory chip industry",
+          "url": "https://finnhub.io/api/news?id=1bb48b39512cdc20b95b8088c9b7baf0d7f3b83c2906e09c9b66ec3819b97813",
+          "datetime": 1778191400,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
         {
           "source": "Yahoo",
           "headline": "ASML to reap benefits from demand from Low-NA EUV adoption",
@@ -318,26 +518,56 @@
           "url": "https://finnhub.io/api/news?id=d9cd52fcd06ce3b9ebd918ca270ff843181f8473fdcac03a2fed518de10b8750",
           "datetime": 1778138134,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Yahoo",
-          "headline": "Five architects of the AI economy explain where the wheels are coming off",
-          "summary": "Earlier this week, five people who touch every layer of the AI supply chain sat down at the Milken Global Conference in Beverly Hills, where they talked with TechCrunch about everything from chip shortages to orbital data centers to the possibility that the whole architecture that undergirds the tec",
-          "url": "https://finnhub.io/api/news?id=fb69b8a7493cb672e01c570f25922af1df9ac1fbc4f8a9ad4da83cf2bc9bddfd",
-          "datetime": 1778131510,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Yahoo",
-          "headline": "ASML Holding (ASML) Provides Regular Update on Share Buyback Program Execution",
-          "summary": "ASML Holding (NASDAQ:ASML) is one of the best growth stocks to invest in for the next 2 years. On May 4, ASML released a regular update regarding the execution of its current share buyback program, which was originally announced on January 28. The latest report details a series of transactions condu",
-          "url": "https://finnhub.io/api/news?id=b8a7483ab8ffabb8e3de690334ccd58fec2286b618dd4b40eb9702fc1fe7c1b6",
-          "datetime": 1778129813,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         }
       ],
-      "earnings": [],
-      "dividends": [],
+      "earnings": [
+        {
+          "period": "",
+          "estimate": 5.251,
+          "actual": 5.9,
+          "surprise": 0.12,
+          "beat": true
+        },
+        {
+          "period": "",
+          "estimate": 5.375,
+          "actual": 5.49,
+          "surprise": 0.02,
+          "beat": true
+        },
+        {
+          "period": "",
+          "estimate": 7.545,
+          "actual": 7.34,
+          "surprise": -0.03,
+          "beat": false
+        },
+        {
+          "period": "",
+          "estimate": 6.621,
+          "actual": 7.15,
+          "surprise": 0.08,
+          "beat": true
+        }
+      ],
+      "dividends": [
+        {
+          "date": "2026-04-27",
+          "amount": 3.177
+        },
+        {
+          "date": "2026-02-10",
+          "amount": 1.883
+        },
+        {
+          "date": "2025-10-29",
+          "amount": 1.864
+        },
+        {
+          "date": "2025-07-29",
+          "amount": 1.847
+        }
+      ],
       "analysis": {
         "sentiment": "neutro",
         "news_comment": "Indisponível.",
@@ -350,6 +580,10 @@
     {
       "date": "2026-05-07",
       "value": 6258.68
+    },
+    {
+      "date": "2026-05-08",
+      "value": 8133.9
     }
   ]
 }
