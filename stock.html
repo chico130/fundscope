@@ -179,32 +179,20 @@
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function sym(c){return({USD:'$',EUR:'\u20ac',GBP:'\u00a3',JPY:'\u00a5',CHF:'CHF\u00a0',CAD:'C$',AUD:'A$',DKK:'kr\u00a0',SEK:'kr\u00a0',NOK:'kr\u00a0',BRL:'R$',HKD:'HK$',CNY:'\u00a5',INR:'\u20b9'})[c]||(c+'\u00a0');}
 function fmtNum(n,dec=2){if(n==null||isNaN(n)||n===0)return '\u2014';return Number(n).toFixed(dec);}
-function fmtLarge(n){if(!n||isNaN(n))return '\u2014';if(n>=1e12)return '$'+(n/1e12).toFixed(2)+'T';if(n>=1e9)return '$'+(n/1e9).toFixed(2)+'B';if(n>=1e6)return '$'+(n/1e6).toFixed(2)+'M';return '$'+n.toFixed(0);}
+function fmtLarge(n,cur){if(!n||isNaN(n))return '\u2014';const s=cur?sym(cur):'$';if(n>=1e12)return s+(n/1e12).toFixed(2)+'T';if(n>=1e9)return s+(n/1e9).toFixed(2)+'B';if(n>=1e6)return s+(n/1e6).toFixed(2)+'M';return s+n.toFixed(0);}
 function fmtVol(n){if(!n||isNaN(n))return '\u2014';if(n>=1e6)return (n/1e6).toFixed(1)+'M';if(n>=1e3)return (n/1e3).toFixed(1)+'K';return String(n);}
+function raw(o,k){const v=o?.[k];if(v==null)return null;if(typeof v==='object'&&'raw' in v)return v.raw;return v;}
 
 const TICKER=(()=>{const p=new URLSearchParams(location.search);return(p.get('ticker')||p.get('t')||'').trim().toUpperCase();})();
 
-/* ── PROXIES Yahoo Finance ───────────────────────────────────── */
-// Usamos corsproxy.io + allorigins como fallback para contornar CORS
-const YF_PROXIES = [
-  t => `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(t)}`,
-  t => `https://corsproxy.io/?url=${encodeURIComponent('https://query1.finance.yahoo.com/v8/finance/chart/'+t)}`,
-  t => `https://api.allorigins.win/get?url=${encodeURIComponent('https://query1.finance.yahoo.com/v8/finance/chart/'+t+'?interval=1d&range=1mo')}`,
-];
-
-const YF_QUOTE_PROXIES = [
-  t => `https://query1.finance.yahoo.com/v10/finance/quoteSummary/${encodeURIComponent(t)}?modules=price,summaryDetail,defaultKeyStatistics`,
-  t => `https://corsproxy.io/?url=${encodeURIComponent('https://query1.finance.yahoo.com/v10/finance/quoteSummary/'+t+'?modules=price,summaryDetail,defaultKeyStatistics')}`,
-];
-
-async function fetchWithFallback(urlFns, ticker, opts={}) {
+/* ── fetch com fallback CORS ────────────────────────────────────── */
+async function fetchWithFallback(urlFns, ticker) {
   for (const fn of urlFns) {
     try {
       const url = fn(ticker);
-      const r = await fetch(url, {headers:{'Accept':'application/json'}, ...opts});
+      const r = await fetch(url, {headers:{'Accept':'application/json'}});
       if (!r.ok) continue;
       const j = await r.json();
-      // allorigins wraps in {contents:'...'}
       if (j && j.contents) return JSON.parse(j.contents);
       return j;
     } catch(e) { continue; }
@@ -222,7 +210,6 @@ function fmtAxisLabel(ts, period){
   if(period==='1M') return d.toLocaleDateString('pt',{day:'numeric',month:'short'});
   return d.toLocaleDateString('pt',{month:'short',year:'2-digit'});
 }
-
 function fmtTooltipLabel(ts, period){
   const d=new Date(ts*1000);
   if(period==='1D') return d.toLocaleString('pt',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});
@@ -234,51 +221,30 @@ function renderChart(period, pts){
   if(!canvas) return;
   if(!pts||pts.length<2){
     if(chartInst){chartInst.destroy();chartInst=null;}
-    const wrap=canvas.parentElement;
-    wrap.innerHTML='<div class="chart-loading" style="color:var(--color-text-faint);">Sem dados para este período</div>';
+    canvas.parentElement.innerHTML='<div class="chart-loading" style="color:var(--color-text-faint);">Sem dados para este período</div>';
     return;
   }
-
-  const first=pts[0].v, last=pts[pts.length-1].v;
-  const up=last>=first;
-  const color=up?'#437a22':'#a13544';
-  const bg0=up?'rgba(67,122,34,.18)':'rgba(161,53,68,.18)';
+  const first=pts[0].v, last=pts[pts.length-1].v, up=last>=first;
+  const color=up?'#437a22':'#a13544', bg0=up?'rgba(67,122,34,.18)':'rgba(161,53,68,.18)';
   const dark=document.documentElement.getAttribute('data-theme')==='dark';
-  const axCol=dark?'#5a5957':'#8a8985';
-  const gridC=dark?'rgba(80,78,74,.25)':'rgba(180,178,172,.15)';
-
-  // Se o canvas foi substituído por loading div, recriar
-  const wrap=canvas.parentElement;
-  if(!wrap.querySelector('#priceChart')){
-    const c=document.createElement('canvas');c.id='priceChart';
-    wrap.innerHTML='';wrap.appendChild(c);
-  }
+  const axCol=dark?'#5a5957':'#8a8985', gridC=dark?'rgba(80,78,74,.25)':'rgba(180,178,172,.15)';
+  const wrap=document.querySelector('.chart-wrap');
+  if(wrap&&!wrap.querySelector('#priceChart')){const c=document.createElement('canvas');c.id='priceChart';wrap.innerHTML='';wrap.appendChild(c);}
   const cvs=document.getElementById('priceChart');
-
   if(chartInst){chartInst.destroy();chartInst=null;}
-
-  const timestamps=pts.map(p=>p.t);
-  const labels=pts.map(p=>fmtAxisLabel(p.t, period));
-  const data=pts.map(p=>p.v);
-
+  const timestamps=pts.map(p=>p.t), labels=pts.map(p=>fmtAxisLabel(p.t,period)), data=pts.map(p=>p.v);
   chartInst=new Chart(cvs,{
     type:'line',
-    data:{labels,datasets:[{data,borderColor:color,borderWidth:2,pointRadius:0,pointHoverRadius:4,
-      pointHoverBackgroundColor:color,tension:.3,fill:true,
-      backgroundColor:ctx=>{const g=ctx.chart.ctx.createLinearGradient(0,0,0,ctx.chart.height);g.addColorStop(0,bg0);g.addColorStop(1,'transparent');return g;}
-    }]},
+    data:{labels,datasets:[{data,borderColor:color,borderWidth:2,pointRadius:0,pointHoverRadius:4,pointHoverBackgroundColor:color,tension:.3,fill:true,
+      backgroundColor:ctx=>{const g=ctx.chart.ctx.createLinearGradient(0,0,0,ctx.chart.height);g.addColorStop(0,bg0);g.addColorStop(1,'transparent');return g;}}]},
     options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
       plugins:{legend:{display:false},tooltip:{backgroundColor:dark?'#f0ede8':'#1c1b19',titleColor:dark?'#28251d':'#e8e7e5',
         bodyColor:dark?'#28251d':'#e8e7e5',borderColor:dark?'#d4d1ca':'#2e2d2b',borderWidth:1,padding:10,cornerRadius:8,
-        callbacks:{
-          title:ctx=>{const i=ctx[0]?.dataIndex;return timestamps[i]?fmtTooltipLabel(timestamps[i],period):(labels[i]||'');},
-          label:ctx=>' '+ctx.parsed.y.toFixed(2)
-        }}},
+        callbacks:{title:ctx=>{const i=ctx[0]?.dataIndex;return timestamps[i]?fmtTooltipLabel(timestamps[i],period):(labels[i]||'');},label:ctx=>' '+ctx.parsed.y.toFixed(2)}}},
       scales:{
         x:{ticks:{color:axCol,maxTicksLimit:6,maxRotation:0,font:{size:11}},grid:{color:gridC},border:{display:false}},
         y:{ticks:{color:axCol,maxTicksLimit:5,font:{size:11},callback:v=>v.toFixed(2)},grid:{color:gridC},border:{display:false},position:'right'}
-      }
-    }
+      }}
   });
 }
 
@@ -286,103 +252,116 @@ function updateChangeBadge(pts, period){
   const badge=document.getElementById('chartChangeBadge');
   if(!badge) return;
   if(!pts||pts.length<2){badge.textContent='\u2014';badge.className='chart-change-badge';return;}
-  const first=pts[0].v, last=pts[pts.length-1].v;
-  const chg=last-first, pct=first?(chg/first)*100:0;
+  const first=pts[0].v, last=pts[pts.length-1].v, chg=last-first, pct=first?(chg/first)*100:0;
   const up=chg>=0, sign=up?'+':'', arrow=up?'\u25b2':'\u25bc';
   const S=sym(window._currency||'USD');
   badge.textContent=`${arrow} ${sign}${S}${Math.abs(chg).toFixed(2)} (${sign}${pct.toFixed(2)}%) \u2014 ${period}`;
   badge.className='chart-change-badge '+(up?'up':'down');
 }
 
-/* ── Busca histórico dinâmico da Yahoo Finance ───────────────── */
-const PERIOD_MAP = {
-  '1D':  {range:'1d',  interval:'5m'},
-  '1S':  {range:'5d',  interval:'1h'},
-  '1M':  {range:'1mo', interval:'1d'},
-  '1A':  {range:'1y',  interval:'1wk'},
-  '3A':  {range:'3y',  interval:'1wk'},
-};
+/* ── Histórico dinâmico ─────────────────────────────────────────────── */
+const PERIOD_MAP={'1D':{range:'1d',interval:'5m'},'1S':{range:'5d',interval:'1h'},'1M':{range:'1mo',interval:'1d'},'1A':{range:'1y',interval:'1wk'},'3A':{range:'3y',interval:'1wk'}};
 
 async function fetchYFHistory(yfTicker, period) {
-  const {range, interval} = PERIOD_MAP[period];
-  const data = await fetchWithFallback([
-    t => `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(t)}?range=${range}&interval=${interval}`,
-    t => `https://corsproxy.io/?url=${encodeURIComponent('https://query1.finance.yahoo.com/v8/finance/chart/'+t+'?range='+range+'&interval='+interval)}`,
-    t => `https://api.allorigins.win/get?url=${encodeURIComponent('https://query1.finance.yahoo.com/v8/finance/chart/'+t+'?range='+range+'&interval='+interval)}`,
+  const {range, interval}=PERIOD_MAP[period];
+  const data=await fetchWithFallback([
+    t=>`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(t)}?range=${range}&interval=${interval}`,
+    t=>`https://corsproxy.io/?url=${encodeURIComponent('https://query1.finance.yahoo.com/v8/finance/chart/'+t+'?range='+range+'&interval='+interval)}`,
+    t=>`https://api.allorigins.win/get?url=${encodeURIComponent('https://query1.finance.yahoo.com/v8/finance/chart/'+t+'?range='+range+'&interval='+interval)}`,
   ], yfTicker);
-
-  if (!data) return [];
-  try {
-    const result = data.chart?.result?.[0];
-    if (!result) return [];
-    const timestamps = result.timestamp || [];
-    const closes = result.indicators?.quote?.[0]?.close || [];
-    const pts = [];
-    for (let i=0;i<timestamps.length;i++){
-      const v = closes[i];
-      if(v==null||isNaN(v)) continue;
-      pts.push({t: timestamps[i], v: parseFloat(v.toFixed(4))});
-    }
+  if(!data) return [];
+  try{
+    const result=data.chart?.result?.[0];
+    if(!result) return [];
+    const timestamps=result.timestamp||[], closes=result.indicators?.quote?.[0]?.close||[], pts=[];
+    for(let i=0;i<timestamps.length;i++){const v=closes[i];if(v==null||isNaN(v)) continue;pts.push({t:timestamps[i],v:parseFloat(v.toFixed(4))});}
     return pts;
-  } catch(e){ return []; }
+  }catch(e){return [];}
 }
 
-/* ── Busca dados ao vivo da Yahoo Finance ────────────────────── */
+/* ── Dados ao vivo: chart + quoteSummary em paralelo ─────────────── */
 async function fetchYFQuote(yfTicker) {
-  const data = await fetchWithFallback([
-    t => `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(t)}?range=1d&interval=5m`,
-    t => `https://corsproxy.io/?url=${encodeURIComponent('https://query1.finance.yahoo.com/v8/finance/chart/'+t+'?range=1d&interval=5m')}`,
-    t => `https://api.allorigins.win/get?url=${encodeURIComponent('https://query1.finance.yahoo.com/v8/finance/chart/'+t+'?range=1d&interval=5m')}`,
-  ], yfTicker);
+  // Corre as duas chamadas em paralelo
+  const [chartData, summaryData] = await Promise.all([
+    fetchWithFallback([
+      t=>`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(t)}?range=1d&interval=5m`,
+      t=>`https://corsproxy.io/?url=${encodeURIComponent('https://query1.finance.yahoo.com/v8/finance/chart/'+t+'?range=1d&interval=5m')}`,
+      t=>`https://api.allorigins.win/get?url=${encodeURIComponent('https://query1.finance.yahoo.com/v8/finance/chart/'+t+'?range=1d&interval=5m')}`,
+    ], yfTicker),
+    fetchWithFallback([
+      t=>`https://query1.finance.yahoo.com/v10/finance/quoteSummary/${encodeURIComponent(t)}?modules=price,summaryDetail,defaultKeyStatistics`,
+      t=>`https://corsproxy.io/?url=${encodeURIComponent('https://query1.finance.yahoo.com/v10/finance/quoteSummary/'+t+'?modules=price,summaryDetail,defaultKeyStatistics')}`,
+      t=>`https://api.allorigins.win/get?url=${encodeURIComponent('https://query1.finance.yahoo.com/v10/finance/quoteSummary/'+t+'?modules=price,summaryDetail,defaultKeyStatistics')}`,
+    ], yfTicker),
+  ]);
 
-  if (!data) return null;
-  try {
-    const result = data.chart?.result?.[0];
-    if (!result) return null;
-    const meta = result.meta || {};
-    const price = meta.regularMarketPrice;
-    const prevClose = meta.previousClose || meta.chartPreviousClose;
-    if (!price) return null;
+  if(!chartData) return null;
+  try{
+    const result=chartData.chart?.result?.[0];
+    if(!result) return null;
+    const meta=result.meta||{};
+    const price=meta.regularMarketPrice;
+    const prevClose=meta.previousClose||meta.chartPreviousClose;
+    if(!price) return null;
 
-    const change = prevClose ? parseFloat((price - prevClose).toFixed(2)) : 0;
-    const changePct = prevClose ? parseFloat(((change/prevClose)*100).toFixed(2)) : 0;
-    const currency = meta.currency || 'USD';
-    const displayTicker = yfTicker.replace(/\.[A-Z]+$/,'');
+    const change=prevClose?parseFloat((price-prevClose).toFixed(2)):0;
+    const changePct=prevClose?parseFloat(((change/prevClose)*100).toFixed(2)):0;
+    const currency=meta.currency||'USD';
+    const S=sym(currency);
+    const displayTicker=yfTicker.replace(/\.[A-Z]+$/,'');
 
-    // Histórico 1D a partir dos dados da resposta
-    const timestamps = result.timestamp || [];
-    const closes = result.indicators?.quote?.[0]?.close || [];
-    const hist1D = [];
-    for(let i=0;i<timestamps.length;i++){
-      const v=closes[i];
-      if(v==null||isNaN(v)) continue;
-      hist1D.push({t:timestamps[i], v:parseFloat(v.toFixed(4))});
+    // Histórico 1D
+    const timestamps=result.timestamp||[], closes=result.indicators?.quote?.[0]?.close||[], hist1D=[];
+    for(let i=0;i<timestamps.length;i++){const v=closes[i];if(v==null||isNaN(v)) continue;hist1D.push({t:timestamps[i],v:parseFloat(v.toFixed(4))});}
+
+    // Extrair dados do quoteSummary
+    const qs=summaryData?.quoteSummary?.result?.[0]||{};
+    const priceModule=qs.price||{};
+    const summaryDetail=qs.summaryDetail||{};
+    const keyStats=qs.defaultKeyStatistics||{};
+
+    const mktCap  = raw(priceModule,'marketCap') ?? raw(summaryDetail,'marketCap');
+    const pe      = raw(summaryDetail,'trailingPE') ?? raw(priceModule,'trailingPE');
+    const eps     = raw(keyStats,'trailingEps');
+    const beta    = raw(summaryDetail,'beta') ?? raw(keyStats,'beta');
+    const divRate = raw(summaryDetail,'dividendRate');
+    const divYield= raw(summaryDetail,'dividendYield');
+    const avgVol  = raw(summaryDetail,'averageVolume') ?? raw(summaryDetail,'averageVolume10days');
+    const w52h    = raw(summaryDetail,'fiftyTwoWeekHigh') ?? meta.fiftyTwoWeekHigh;
+    const w52l    = raw(summaryDetail,'fiftyTwoWeekLow')  ?? meta.fiftyTwoWeekLow;
+
+    let divStr='\u2014';
+    if(divRate&&divRate>0){
+      const pct=divYield?(divYield<1?divYield*100:divYield):null;
+      divStr=S+divRate.toFixed(2)+(pct?' ('+pct.toFixed(2)+'%)':'');
     }
 
     return {
-      ticker: displayTicker,
-      yf_ticker: yfTicker,
-      name: meta.longName || meta.shortName || displayTicker,
-      exchange: meta.exchangeName || meta.fullExchangeName || '',
-      type: meta.instrumentType==='EQUITY'?'Ação':(meta.instrumentType||''),
+      ticker:      displayTicker,
+      yf_ticker:   yfTicker,
+      name:        raw(priceModule,'longName')||raw(priceModule,'shortName')||meta.longName||meta.shortName||displayTicker,
+      exchange:    raw(priceModule,'exchangeName')||meta.exchangeName||meta.fullExchangeName||'',
+      type:        (raw(priceModule,'quoteType')||meta.instrumentType||'')==='EQUITY'?'Ação':((raw(priceModule,'quoteType')||meta.instrumentType||'')==='ETF'?'ETF':''),
       currency,
-      price: parseFloat(price.toFixed(2)),
-      prevClose: prevClose ? parseFloat(prevClose.toFixed(2)) : null,
-      change,
-      changePct,
-      open: meta.regularMarketOpen ? parseFloat(meta.regularMarketOpen.toFixed(2)) : null,
-      high: meta.regularMarketDayHigh ? parseFloat(meta.regularMarketDayHigh.toFixed(2)) : null,
-      low: meta.regularMarketDayLow ? parseFloat(meta.regularMarketDayLow.toFixed(2)) : null,
-      week52High: meta.fiftyTwoWeekHigh ? parseFloat(meta.fiftyTwoWeekHigh.toFixed(2)) : null,
-      week52Low: meta.fiftyTwoWeekLow ? parseFloat(meta.fiftyTwoWeekLow.toFixed(2)) : null,
-      volume: fmtVol(meta.regularMarketVolume),
-      avgVolume: '\u2014',
-      marketCap: '\u2014',
-      pe: '\u2014', eps: '\u2014', beta: '\u2014', dividend: '\u2014',
-      history: {'1D': hist1D},
-      _live: true,
+      price:       parseFloat(price.toFixed(2)),
+      prevClose:   prevClose?parseFloat(prevClose.toFixed(2)):null,
+      change, changePct,
+      open:        meta.regularMarketOpen?parseFloat(meta.regularMarketOpen.toFixed(2)):null,
+      high:        meta.regularMarketDayHigh?parseFloat(meta.regularMarketDayHigh.toFixed(2)):null,
+      low:         meta.regularMarketDayLow?parseFloat(meta.regularMarketDayLow.toFixed(2)):null,
+      week52High:  w52h?parseFloat(w52h.toFixed(2)):null,
+      week52Low:   w52l?parseFloat(w52l.toFixed(2)):null,
+      volume:      fmtVol(meta.regularMarketVolume),
+      avgVolume:   fmtVol(avgVol),
+      marketCap:   fmtLarge(mktCap, currency),
+      pe:          pe?parseFloat(pe.toFixed(1)):'\u2014',
+      eps:         eps?parseFloat(eps.toFixed(2)):'\u2014',
+      beta:        beta?parseFloat(beta.toFixed(2)):'\u2014',
+      dividend:    divStr,
+      history:     {'1D':hist1D},
+      _live:       true,
     };
-  } catch(e){ return null; }
+  }catch(e){return null;}
 }
 
 /* ── RENDER PRINCIPAL ────────────────────────────────────────── */
@@ -390,48 +369,36 @@ function renderStock(s, isLive){
   document.getElementById('skeletonHero').style.display='none';
   document.getElementById('skeletonChart').style.display='none';
 
-  const ticker   = s.ticker||TICKER;
-  const name     = s.name||ticker;
-  const exchange = s.exchange||'';
-  const typeRaw  = s.type||'';
-  const currency = s.currency||'USD';
-  const S        = sym(currency);
-  window._currency = currency;
-  window._yfTicker = s.yf_ticker || ticker;
+  const ticker=s.ticker||TICKER, name=s.name||ticker, exchange=s.exchange||'', typeRaw=s.type||'';
+  const currency=s.currency||'USD', S=sym(currency);
+  window._currency=currency;
+  window._yfTicker=s.yf_ticker||ticker;
 
-  const price     = s.price;
-  const prevClose = s.prevClose??price;
-  const change    = s.change??round2(price-prevClose);
-  const changePct = s.changePct??round2(prevClose?(change/prevClose)*100:0);
-  const open      = s.open??price;
-  const high      = s.high??price;
-  const low       = s.low??price;
-  const vol       = s.volume||'\u2014';
-  const avgVol    = s.avgVolume||'\u2014';
-  const mcap      = s.marketCap||'\u2014';
-  const w52h      = s.week52High??price;
-  const w52l      = s.week52Low??price;
-  const pe        = s.pe&&s.pe!=='\u2014'&&s.pe!=='—'?s.pe:'\u2014';
-  const eps_v     = s.eps&&s.eps!=='\u2014'&&s.eps!=='—'?(S+s.eps):'\u2014';
-  const beta_v    = s.beta&&s.beta!=='\u2014'&&s.beta!=='—'?s.beta:'\u2014';
-  const div_v     = s.dividend&&s.dividend!=='—'?s.dividend:'\u2014';
-  const updated   = s._updated?new Date(s._updated).toLocaleString('pt',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}):'';
+  const price=s.price, prevClose=s.prevClose??price;
+  const change=s.change??round2(price-prevClose), changePct=s.changePct??round2(prevClose?(change/prevClose)*100:0);
+  const open=s.open??price, high=s.high??price, low=s.low??price;
+  const vol=s.volume||'\u2014', avgVol=s.avgVolume||'\u2014', mcap=s.marketCap||'\u2014';
+  const w52h=s.week52High??price, w52l=s.week52Low??price;
+  const pe=s.pe!=null&&s.pe!=='\u2014'&&s.pe!=='—'?s.pe:'\u2014';
+  const eps_v=s.eps!=null&&s.eps!=='\u2014'&&s.eps!=='—'?(S+s.eps):'\u2014';
+  const beta_v=s.beta!=null&&s.beta!=='\u2014'&&s.beta!=='—'?s.beta:'\u2014';
+  const div_v=s.dividend&&s.dividend!=='\u2014'&&s.dividend!=='—'?s.dividend:'\u2014';
+  const updated=s._updated?new Date(s._updated).toLocaleString('pt',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}):'';
 
   const up=changePct>=0, sign=up?'+':'', arrow=up?'\u25b2':'\u25bc', cls=up?'up':'down';
   const w52p=w52h>w52l?Math.round((price-w52l)/(w52h-w52l)*100):50;
   const typeLabel=({'Ação':'Ação','ETF':'ETF','MUTUALFUND':'Fundo','INDEX':'Índice','CRYPTOCURRENCY':'Cripto'})[typeRaw]||typeRaw;
 
-  const history = s.history||{};
-  const PERIODS = ['1D','1S','1M','1A','3A'];
-  // Para dados locais: períodos com dados; para live: todos disponíveis (carregamos a pedido)
-  const available = isLive ? PERIODS : PERIODS.filter(p=>history[p]&&history[p].length>1);
-  const defaultPeriod = available.includes('1A')?'1A':(available.includes('1M')?'1M':(available[0]||null));
+  const history=s.history||{};
+  const PERIODS=['1D','1S','1M','1A','3A'];
+  const available=isLive?PERIODS:PERIODS.filter(p=>history[p]&&history[p].length>1);
+  const defaultPeriod=available.includes('1A')?'1A':(available.includes('1M')?'1M':(available[0]||null));
 
   document.title='FundScope \u2014 '+ticker;
 
-  const dotHtml = isLive
-    ? '<span class="live-dot"></span> Yahoo Finance (ao vivo)'
-    : `<span class="static-dot"></span> Yahoo Finance${updated?' &middot; '+updated:''}`;
+  const dotHtml=isLive
+    ?'<span class="live-dot"></span> Yahoo Finance (ao vivo)'
+    :`<span class="static-dot"></span> Yahoo Finance${updated?' &middot; '+updated:''}`;
 
   document.getElementById('stockContent').innerHTML=`
   <div class="stock-hero">
@@ -452,10 +419,7 @@ function renderStock(s, isLive){
   <div class="chart-card">
     <div class="chart-header">
       <div id="periodTabs" class="period-tabs">
-        ${PERIODS.map(p=>{
-          const act=p===defaultPeriod?' active':'';
-          return `<button class="period-tab${act}" data-p="${p}">${p}</button>`;
-        }).join('')}
+        ${PERIODS.map(p=>`<button class="period-tab${p===defaultPeriod?' active':''}" data-p="${p}">${p}</button>`).join('')}
       </div>
       <span id="chartChangeBadge" class="chart-change-badge">\u2014</span>
     </div>
@@ -495,35 +459,25 @@ function renderStock(s, isLive){
   </div>`;
 
   document.getElementById('stockContent').style.display='block';
+  window._histCache=Object.assign({},history);
 
-  // Cache de histórico para não rebuscar
-  window._histCache = Object.assign({}, history);
-
-  async function loadAndRender(p) {
-    // Mostrar loading
-    const wrap = document.querySelector('.chart-wrap');
+  async function loadAndRender(p){
+    const wrap=document.querySelector('.chart-wrap');
     if(wrap) wrap.innerHTML='<div class="chart-loading"><div class="spinner"></div> A carregar gráfico…</div>';
-    updateChangeBadge(null, p);
-
-    let pts = window._histCache[p];
-    if(!pts || pts.length < 2) {
-      pts = await fetchYFHistory(window._yfTicker, p);
-      if(pts && pts.length > 1) window._histCache[p] = pts;
+    updateChangeBadge(null,p);
+    let pts=window._histCache[p];
+    if(!pts||pts.length<2){
+      pts=await fetchYFHistory(window._yfTicker,p);
+      if(pts&&pts.length>1) window._histCache[p]=pts;
     }
-    // Recriar canvas se necessário
-    const w2 = document.querySelector('.chart-wrap');
-    if(w2 && !w2.querySelector('#priceChart')){
-      const c=document.createElement('canvas');c.id='priceChart';
-      w2.innerHTML='';w2.appendChild(c);
-    }
-    renderChart(p, pts);
-    updateChangeBadge(pts, p);
+    const w2=document.querySelector('.chart-wrap');
+    if(w2&&!w2.querySelector('#priceChart')){const c=document.createElement('canvas');c.id='priceChart';w2.innerHTML='';w2.appendChild(c);}
+    renderChart(p,pts);
+    updateChangeBadge(pts,p);
   }
 
-  // Carrega período por defeito
   if(defaultPeriod) loadAndRender(defaultPeriod);
 
-  // Troca de período
   document.getElementById('periodTabs').addEventListener('click',e=>{
     const btn=e.target.closest('[data-p]');
     if(!btn||btn.disabled) return;
@@ -532,7 +486,6 @@ function renderStock(s, isLive){
     loadAndRender(btn.dataset.p);
   });
 
-  // Logo
   const img=new Image();
   img.onload=()=>{const w=document.getElementById('logoWrap');if(w){w.innerHTML='';w.appendChild(img);}};
   img.onerror=()=>{};
@@ -564,41 +517,27 @@ if(!TICKER){
   renderError('?','Nenhum ticker na URL. Exemplo: stock.html?ticker=AAPL');
 }else{
   (async()=>{
-    // 1. Tenta carregar do data.json local (rápido, com histórico completo)
-    let localFound = false;
+    // 1. Tenta data.json local primeiro
+    let localFound=false;
     try{
       const r=await fetch('./data.json',{cache:'no-store'});
       if(r.ok){
         const json=await r.json();
         const stocks=json?.stocks||{};
-        const key=Object.keys(stocks).find(k=>
-          k.toUpperCase()===TICKER||
-          k.toUpperCase()===TICKER.replace(/\.[A-Z]+$/,'')
-        );
-        if(key){
-          const s={...stocks[key], _updated: json.updated};
-          renderStock(s, false);
-          localFound=true;
-        }
+        const key=Object.keys(stocks).find(k=>k.toUpperCase()===TICKER||k.toUpperCase()===TICKER.replace(/\.[A-Z]+$/,''));
+        if(key){renderStock({...stocks[key],_updated:json.updated},false);localFound=true;}
       }
     }catch(e){}
 
-    // 2. Se não encontrou localmente, vai buscar ao vivo à Yahoo Finance
+    // 2. Fallback ao vivo: tenta ticker direto e depois com sufixos de bolsa
     if(!localFound){
-      // Tenta o ticker tal como foi introduzido, depois com sufixos comuns
-      const attempts = [TICKER, TICKER+'.AS', TICKER+'.L', TICKER+'.DE', TICKER+'.PA', TICKER+'.MI'];
+      const attempts=[TICKER,TICKER+'.AS',TICKER+'.L',TICKER+'.DE',TICKER+'.PA',TICKER+'.MI',TICKER+'.LS',TICKER+'.SW'];
       let found=false;
       for(const t of attempts){
-        const data = await fetchYFQuote(t);
-        if(data){
-          renderStock(data, true);
-          found=true;
-          break;
-        }
+        const data=await fetchYFQuote(t);
+        if(data){renderStock(data,true);found=true;break;}
       }
-      if(!found){
-        renderError(TICKER, 'Ticker "'+TICKER+'" não encontrado. Tenta com sufixo de bolsa (ex: ASML.AS para Euronext Amesterdão).');
-      }
+      if(!found) renderError(TICKER,'Ticker "'+TICKER+'" não encontrado. Tenta com sufixo de bolsa (ex: ASML.AS para Euronext Amesterdão).');
     }
   })();
 }
