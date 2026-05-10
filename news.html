@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Notícias — FundScope</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300..700&display=swap" rel="stylesheet">
@@ -247,7 +248,6 @@
       return CAT_IMG[a.category] || FALLBACK_IMG;
     }
 
-    // Tema
     (function() {
       const t = document.querySelector('[data-theme-toggle]'), r = document.documentElement;
       let d = matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light';
@@ -375,7 +375,6 @@
       var first = articles.slice(0, 6);
       var rest  = articles.slice(6);
       grid.innerHTML = first.map(function(a, i){ return cardHTML(a, i === 0); }).join('');
-
       if (rest.length) {
         var idx = 0;
         function renderChunk() {
@@ -397,85 +396,64 @@
 
     function applyFilter(f) {
       activeFilter = f;
-      var filtered = f === 'all' ? allArticles : allArticles.filter(function(a){ return a.category === f; });
-      renderGrid(filtered);
+      document.querySelectorAll('.filter-btn').forEach(function(b){ b.classList.toggle('active', b.dataset.filter === f); });
+      renderGrid(f === 'all' ? allArticles : allArticles.filter(function(a){ return a.category === f; }));
     }
-
-    function buildFilters(articles) {
-      var cats = ['all'].concat(Array.from(new Set(articles.map(function(a){ return a.category; }))));
-      var icons = {'all':'🌐','Geopolítica':'🌍','Macro':'📊','Energia':'⚡','Comércio':'🚢','Mercados':'💰','Tecnologia':'💻','Clima':'🌱','Global':'🌐'};
-      var labels = {'all':'Todas'};
-      var filtersEl = document.getElementById('filters');
-      filtersEl.innerHTML = cats.map(function(c) {
-        return '<button class="filter-btn' + (c === activeFilter ? ' active' : '') + '" data-filter="' + esc(c) + '">' + (icons[c] || '📌') + ' ' + esc(labels[c] || c) + '</button>';
-      }).join('');
-      filtersEl.addEventListener('click', function(e) {
-        var btn = e.target.closest('.filter-btn');
-        if (!btn) return;
-        document.querySelectorAll('.filter-btn').forEach(function(b){ b.classList.remove('active'); });
-        btn.classList.add('active');
-        applyFilter(btn.dataset.filter);
-      });
-    }
-
-    var overlay    = document.getElementById('modalOverlay');
-    var modalImg   = document.getElementById('modalImg');
-    var modalTitle = document.getElementById('modalTitle');
-    var modalContent = document.getElementById('modalContent');
-    var modalImpact  = document.getElementById('modalImpact');
-    var modalSource  = document.getElementById('modalSource');
-    var modalLink    = document.getElementById('modalLink');
-    var modalCatRow  = document.getElementById('modalCatRow');
 
     function openModal(a) {
       if (!a) return;
-      var img = getImg(a);
-      var fallback = CAT_IMG[a.category] || FALLBACK_IMG;
-      modalImg.src = img;
-      modalImg.onerror = function(){ this.onerror = null; this.src = fallback; };
-      modalImg.alt = a.title;
-      modalTitle.textContent = a.title;
-      modalContent.innerHTML = buildModalContent(a);
-      modalImpact.innerHTML = impactRowHTML(a.impact, false);
-      modalSource.textContent = (a.source || '') + (a.publishedAt ? ' · ' + timeAgo(a.publishedAt) : '');
-      modalLink.href = a.url || '#';
-      modalCatRow.innerHTML = '<span class="cat-badge">' + esc(a.icon || '🌐') + ' ' + esc(a.category) + '</span>' + heatHTML(a.heat || 1);
-      overlay.classList.add('open');
+      document.getElementById('modalImg').src = getImg(a);
+      document.getElementById('modalImg').onerror = function(){ this.src = CAT_IMG[a.category] || FALLBACK_IMG; };
+      document.getElementById('modalCatRow').innerHTML = '<span class="cat-badge">' + esc(a.icon || '🌐') + ' ' + esc(a.category) + '</span>';
+      document.getElementById('modalTitle').textContent = a.title || '';
+      document.getElementById('modalContent').innerHTML = buildModalContent(a);
+      document.getElementById('modalImpact').innerHTML = impactRowHTML(a.impact, false);
+      document.getElementById('modalSource').textContent = a.source + (a.publishedAt ? ' · ' + timeAgo(a.publishedAt) : '');
+      document.getElementById('modalLink').href = a.url || '#';
+      document.getElementById('modalOverlay').classList.add('open');
       document.body.style.overflow = 'hidden';
     }
 
     function closeModal() {
-      overlay.classList.remove('open');
+      document.getElementById('modalOverlay').classList.remove('open');
       document.body.style.overflow = '';
     }
 
     document.getElementById('modalClose').addEventListener('click', closeModal);
-    overlay.addEventListener('click', function(e){ if (e.target === overlay) closeModal(); });
+    document.getElementById('modalOverlay').addEventListener('click', function(e){ if (e.target === this) closeModal(); });
     document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeModal(); });
 
-    async function loadNews() {
+    async function init() {
       try {
-        var r = await fetch('news.json');
-        if (!r.ok) throw new Error('HTTP ' + r.status);
-        var data = await r.json();
-        allArticles = data.articles || [];
-        if (data.updated) {
-          var d = new Date(data.updated);
-          document.getElementById('updatedLabel').textContent =
-            'Última atualização: ' + d.toLocaleString('pt', {day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'});
+        var res = await fetch('news.json?t=' + Date.now());
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        var data = await res.json();
+        allArticles = (data.articles || []).map(function(a, i){ return Object.assign({id: i}, a); });
+
+        if (data.generatedAt) {
+          var d = new Date(data.generatedAt);
+          document.getElementById('updatedLabel').textContent = 'Gerado em ' + d.toLocaleString('pt', {day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});
         }
-        buildFilters(allArticles);
-        applyFilter(activeFilter);
+
+        var cats = ['all'].concat([...new Set(allArticles.map(function(a){ return a.category; }))]);
+        var catIcons = {};
+        allArticles.forEach(function(a){ if (a.category && a.icon) catIcons[a.category] = a.icon; });
+        document.getElementById('filters').innerHTML = cats.map(function(c){
+          var lbl = c === 'all' ? '🌐 Todas' : (catIcons[c] || '') + ' ' + c;
+          return '<button class="filter-btn' + (c === 'all' ? ' active' : '') + '" data-filter="' + esc(c) + '">' + lbl + '</button>';
+        }).join('');
+        document.getElementById('filters').addEventListener('click', function(e){
+          var btn = e.target.closest('.filter-btn');
+          if (btn) applyFilter(btn.dataset.filter);
+        });
+
+        renderGrid(allArticles);
       } catch(e) {
-        document.getElementById('newsGrid').innerHTML =
-          '<div class="state-box" style="grid-column:1/-1">'
-          + '<div class="state-icon">⚠️</div>'
-          + '<p class="state-title">Não foi possível carregar as notícias</p>'
-          + '<p style="font-size:var(--text-sm);color:var(--color-text-faint);margin-top:var(--space-2)">Corre o workflow <strong>Update News</strong> no GitHub Actions para gerar o news.json.</p>'
-          + '</div>';
+        document.getElementById('newsGrid').innerHTML = '<div class="state-box" style="grid-column:1/-1"><div class="state-icon">🐷</div><p class="state-title">Notícias ainda não disponíveis</p><p style="font-size:var(--text-sm);color:var(--color-text-faint);margin-top:var(--space-2)">O workflow de notícias ainda não correu hoje.<br>Volta mais tarde ou força em <a href="https://github.com/chico130/fundscope/actions" style="color:var(--color-primary)">GitHub Actions</a>.</p></div>';
+        document.getElementById('filters').innerHTML = '';
       }
     }
-    loadNews();
+    init();
   </script>
 </body>
 </html>

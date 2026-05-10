@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>FundScope — Mercados</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300..700&display=swap" rel="stylesheet">
@@ -37,7 +38,6 @@
     body{min-height:100dvh;font-family:var(--font-body);font-size:var(--text-base);color:var(--color-text);background:var(--color-bg);transition:background var(--transition),color var(--transition);}
     button{cursor:pointer;background:none;border:none;font:inherit;color:inherit;}
     a{color:inherit;text-decoration:none;}
-
     .header{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:var(--space-4) var(--space-6);background:color-mix(in oklch,var(--color-bg) 88%,transparent);backdrop-filter:blur(16px);border-bottom:1px solid var(--color-divider);}
     .logo{display:flex;align-items:center;gap:var(--space-2);font-family:var(--font-display);font-size:var(--text-lg);transition:color var(--transition);}
     .logo:hover{color:var(--color-primary);}
@@ -48,7 +48,6 @@
     .nav-link.disabled{opacity:.35;cursor:default;pointer-events:none;}
     .btn-icon{width:36px;height:36px;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;color:var(--color-text-muted);transition:color var(--transition),background var(--transition);}
     .btn-icon:hover{color:var(--color-text);background:var(--color-surface-offset);}
-
     .page{max-width:1200px;margin:0 auto;padding:var(--space-8) var(--space-6) var(--space-16);}
     .hero-strip{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--space-4);margin-bottom:var(--space-8);}
     .hero-title{font-family:var(--font-display);font-size:var(--text-xl);}
@@ -56,14 +55,12 @@
     .slot-badge{display:inline-flex;align-items:center;gap:6px;font-size:var(--text-xs);font-weight:600;padding:var(--space-1) var(--space-3);border-radius:var(--radius-full);background:var(--color-surface);border:1px solid var(--color-border);color:var(--color-text-muted);}
     .slot-dot{width:7px;height:7px;border-radius:50%;background:var(--color-success);animation:pulse 2s ease-in-out infinite;}
     @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.85)}}
-
     .overview-bar{display:flex;gap:var(--space-3);overflow-x:auto;padding-bottom:var(--space-2);margin-bottom:var(--space-8);scrollbar-width:none;}
     .overview-bar::-webkit-scrollbar{display:none;}
     .overview-pill{flex-shrink:0;display:flex;align-items:center;gap:var(--space-2);padding:var(--space-2) var(--space-4);border-radius:var(--radius-full);border:1px solid var(--color-border);background:var(--color-surface);font-size:var(--text-xs);font-weight:600;cursor:pointer;transition:all var(--transition);white-space:nowrap;}
     .overview-pill:hover{border-color:var(--color-primary);color:var(--color-primary);}
     .overview-pill.up{color:var(--color-success);}
     .overview-pill.down{color:var(--color-notification);}
-
     .sector-block{margin-bottom:var(--space-12);scroll-margin-top:80px;}
     .sector-header{position:relative;border-radius:var(--radius-2xl);overflow:hidden;height:160px;margin-bottom:var(--space-6);display:flex;align-items:flex-end;padding:var(--space-6);}
     .sector-header-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.45) saturate(.8);}
@@ -74,7 +71,6 @@
     .sector-avg{font-size:var(--text-sm);font-weight:600;padding:var(--space-1) var(--space-3);border-radius:var(--radius-full);margin-left:auto;}
     .sector-avg.up{background:rgba(67,122,34,.25);color:#7dcc50;border:1px solid rgba(67,122,34,.4);}
     .sector-avg.down{background:rgba(161,53,68,.25);color:#f08090;border:1px solid rgba(161,53,68,.4);}
-
     .movers-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-5);margin-bottom:var(--space-5);}
     .movers-card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-5);box-shadow:var(--shadow-sm);}
     .movers-card-title{font-size:var(--text-xs);font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--color-text-faint);margin-bottom:var(--space-4);}
@@ -83,21 +79,12 @@
     .mover-ticker{font-size:var(--text-sm);font-weight:700;letter-spacing:.03em;position:relative;}
     .mover-ticker a{transition:color var(--transition);}
     .mover-ticker a:hover{color:var(--color-primary);}
-    /* Tooltip no ticker */
     .mover-ticker [data-tip]{cursor:default;}
-    .mover-ticker [data-tip]:hover::after{
-      content:attr(data-tip);
-      position:absolute;left:0;top:calc(100% + 4px);z-index:50;
-      background:var(--color-text);color:var(--color-bg);
-      font-size:11px;font-weight:500;white-space:nowrap;
-      padding:4px 8px;border-radius:var(--radius-sm);
-      box-shadow:var(--shadow-md);pointer-events:none;
-    }
+    .mover-ticker [data-tip]:hover::after{content:attr(data-tip);position:absolute;left:0;top:calc(100% + 4px);z-index:50;background:var(--color-text);color:var(--color-bg);font-size:11px;font-weight:500;white-space:nowrap;padding:4px 8px;border-radius:var(--radius-sm);box-shadow:var(--shadow-md);pointer-events:none;}
     .mover-price{font-size:var(--text-xs);color:var(--color-text-muted);margin-left:var(--space-2);}
     .mover-chg{font-size:var(--text-sm);font-weight:700;font-variant-numeric:tabular-nums;padding:2px 8px;border-radius:var(--radius-full);}
     .mover-chg.up{background:var(--color-success-bg);color:var(--color-success);}
     .mover-chg.down{background:var(--color-notification-bg);color:var(--color-notification);}
-
     .bottom-row{display:grid;grid-template-columns:220px 1fr;gap:var(--space-5);}
     .sentiment-card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-5);box-shadow:var(--shadow-sm);}
     .card-label{font-size:var(--text-xs);font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--color-text-faint);margin-bottom:var(--space-4);}
@@ -111,7 +98,6 @@
     .gauge-score.neutral{color:var(--color-text-muted);}
     .gauge-sub{text-align:center;font-size:var(--text-xs);color:var(--color-text-faint);}
     .analyst-row{display:flex;align-items:center;justify-content:space-between;margin-top:var(--space-2);padding-top:var(--space-2);border-top:1px solid var(--color-divider);font-size:10px;color:var(--color-text-muted);}
-
     .news-card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-5);box-shadow:var(--shadow-sm);}
     .news-list{display:flex;flex-direction:column;gap:var(--space-3);}
     .news-item{display:flex;gap:var(--space-3);padding:var(--space-3);background:var(--color-surface-2);border-radius:var(--radius-lg);border:1px solid var(--color-divider);transition:border-color var(--transition),box-shadow var(--transition);text-decoration:none;color:inherit;}
@@ -126,7 +112,6 @@
     .news-summary{font-size:var(--text-xs);color:var(--color-text-muted);margin-top:4px;line-height:1.55;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
     .news-time{font-size:10px;color:var(--color-text-faint);margin-top:4px;}
     .empty-news{font-size:var(--text-xs);color:var(--color-text-faint);text-align:center;padding:var(--space-6);}
-
     .skeleton{background:linear-gradient(90deg,var(--color-surface-offset) 25%,var(--color-surface) 50%,var(--color-surface-offset) 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;border-radius:var(--radius-md);}
     @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
     .footer{padding:var(--space-6);text-align:center;font-size:var(--text-xs);color:var(--color-text-faint);border-top:1px solid var(--color-divider);margin-top:var(--space-8);}
@@ -165,7 +150,6 @@
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
     </button>
   </header>
-
   <main class="page">
     <div class="hero-strip">
       <div>
@@ -187,13 +171,10 @@
       <div class="skeleton" style="height:160px;border-radius:1.5rem;margin-bottom:1.5rem"></div>
     </div>
   </main>
-
   <footer class="footer">
     <p>© 2026 FundScope · <a href="https://github.com/chico130/fundscope">GitHub</a> · Dados via yfinance &amp; Finnhub · Atualizado 3×/dia (dias úteis)</p>
   </footer>
-
   <script>
-    // Mapa ticker -> nome da empresa (para tooltip)
     const TICKER_NAMES = {
       AAPL:'Apple',MSFT:'Microsoft',NVDA:'NVIDIA',GOOGL:'Alphabet',META:'Meta',AMD:'AMD',INTC:'Intel',
       TSLA:'Tesla',AVGO:'Broadcom',MU:'Micron',QCOM:'Qualcomm',ORCL:'Oracle',CRM:'Salesforce',
@@ -213,144 +194,58 @@
       X:'US Steel',MP:'MP Materials',WPM:'Wheaton Precious',AEM:'Agnico Eagle',CF:'CF Industries',
       MOS:'Mosaic',NUE:'Nucor',STLD:'Steel Dynamics',RS:'Reliance Steel',ATI:'ATI Inc.'
     };
-
     (function(){
       const t=document.querySelector('[data-theme-toggle]'),r=document.documentElement;
       let d=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
       r.setAttribute('data-theme',d);
-      const icons={
-        light:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>',
-        dark:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>'
-      };
+      const icons={light:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>',dark:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>'};
       const setTheme=th=>{d=th;r.setAttribute('data-theme',th);if(t)t.innerHTML=icons[th];};
       setTheme(d);
       if(t)t.addEventListener('click',()=>setTheme(d==='dark'?'light':'dark'));
     })();
-
-    const SLOT_LABELS={abertura:'\uD83D\uDD14 Abertura',['meio-dia']:'\u2600\uFE0F Meio-dia',fecho:'\uD83D\uDD14 Fecho'};
-
-    function timeAgo(ts){
-      const diff=Math.floor((Date.now()/1000)-ts);
-      if(diff<3600) return Math.floor(diff/60)+'min';
-      if(diff<86400) return Math.floor(diff/3600)+'h';
-      return Math.floor(diff/86400)+'d';
-    }
-
+    const SLOT_LABELS={abertura:'🔔 Abertura',['meio-dia']:'☀️ Meio-dia',fecho:'🔔 Fecho'};
+    function timeAgo(ts){const diff=Math.floor((Date.now()/1000)-ts);if(diff<3600) return Math.floor(diff/60)+'min';if(diff<86400) return Math.floor(diff/3600)+'h';return Math.floor(diff/86400)+'d';}
     function renderGauge(pct){
-      if(pct===null||pct===undefined)
-        return '<div class="gauge-score neutral">—</div><div class="gauge-sub">Sem dados</div>';
+      if(pct===null||pct===undefined) return '<div class="gauge-score neutral">—</div><div class="gauge-sub">Sem dados</div>';
       const cls=pct>=55?'bullish':pct<=45?'bearish':'neutral';
-      const lbl=pct>=55?'\uD83D\uDCC8 Otimista':pct<=45?'\uD83D\uDCC9 Pessimista':'\u27A1\uFE0F Neutro';
-      return `<div class="gauge-wrap">
-        <div class="gauge-bar"><div class="gauge-fill" style="width:${pct}%"></div></div>
-        <div class="gauge-labels"><span>Pessimista</span><span>Otimista</span></div>
-      </div>
-      <div class="gauge-score ${cls}">${pct}%</div>
-      <div class="gauge-sub">${lbl}</div>`;
+      const lbl=pct>=55?'📈 Otimista':pct<=45?'📉 Pessimista':'➡️ Neutro';
+      return `<div class="gauge-wrap"><div class="gauge-bar"><div class="gauge-fill" style="width:${pct}%"></div></div><div class="gauge-labels"><span>Pessimista</span><span>Otimista</span></div></div><div class="gauge-score ${cls}">${pct}%</div><div class="gauge-sub">${lbl}</div>`;
     }
-
-    // Imagem fallback por setor
-    const SECTOR_FALLBACKS={
-      'Tecnologia':'https://images.unsplash.com/photo-1518770660439-4636190af475?w=200&q=70',
-      'Finan\u00e7as':'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=200&q=70',
-      'Energia':'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=200&q=70',
-      'Sa\u00fade':'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=200&q=70',
-      'Consumo':'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=200&q=70',
-      'Commodities':'https://images.unsplash.com/photo-1610375461246-83df859d849d?w=200&q=70'
-    };
-
-    function renderNews(newsArr, sectorName){
-      if(!newsArr||!newsArr.length)
-        return '<div class="empty-news">Sem not\u00edcias recentes</div>';
+    const SECTOR_FALLBACKS={'Tecnologia':'https://images.unsplash.com/photo-1518770660439-4636190af475?w=200&q=70','Finanças':'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=200&q=70','Energia':'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=200&q=70','Saúde':'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=200&q=70','Consumo':'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=200&q=70','Commodities':'https://images.unsplash.com/photo-1610375461246-83df859d849d?w=200&q=70'};
+    function renderNews(newsArr,sectorName){
+      if(!newsArr||!newsArr.length) return '<div class="empty-news">Sem notícias recentes</div>';
       return newsArr.map(n=>{
-        const fallback = SECTOR_FALLBACKS[sectorName]||'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=200&q=70';
-        const thumb = n.image
-          ? `<img class="news-thumb" src="${n.image}" alt="" loading="lazy" onerror="this.src='${fallback}'">`
-          : `<img class="news-thumb" src="${fallback}" alt="" loading="lazy">`;
-        const ago = n.datetime ? timeAgo(n.datetime) : '';
-        return `<a class="news-item" href="${n.url||'#'}" target="_blank" rel="noopener">
-          ${thumb}
-          <div class="news-body">
-            <div class="news-source-row">
-              <span class="news-ticker-badge">${n.ticker||''}</span>
-              <span class="news-source">${n.source||''}</span>
-            </div>
-            <div class="news-headline">${n.headline}</div>
-            ${n.summary?`<div class="news-summary">${n.summary}</div>`:''}
-            ${ago?`<div class="news-time">${ago} atr\u00e1s</div>`:''}
-          </div>
-        </a>`;
+        const fallback=SECTOR_FALLBACKS[sectorName]||'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=200&q=70';
+        const thumb=n.image?`<img class="news-thumb" src="${n.image}" alt="" loading="lazy" onerror="this.src='${fallback}'">`:`<img class="news-thumb" src="${fallback}" alt="" loading="lazy">`;
+        const ago=n.datetime?timeAgo(n.datetime):'';
+        return `<a class="news-item" href="${n.url||'#'}" target="_blank" rel="noopener">${thumb}<div class="news-body"><div class="news-source-row"><span class="news-ticker-badge">${n.ticker||''}</span><span class="news-source">${n.source||''}</span></div><div class="news-headline">${n.headline}</div>${n.summary?`<div class="news-summary">${n.summary}</div>`:''} ${ago?`<div class="news-time">${ago} atrás</div>`:''}</div></a>`;
       }).join('');
     }
-
-    function renderSector(name, s){
+    function renderSector(name,s){
       const isUp=s.avgChange>=0;
       const sign=isUp?'+':'';
       const anchor=name.toLowerCase().replace(/[^a-z]/g,'');
-
-      const moverRow=(g, isGainer)=>{
-        const tip = TICKER_NAMES[g.ticker] ? ` data-tip="${TICKER_NAMES[g.ticker]}"` : '';
-        const chg = isGainer
-          ? `<span class="mover-chg up">\u25b2 +${g.changePct.toFixed(2)}%</span>`
-          : `<span class="mover-chg down">\u25bc ${g.changePct.toFixed(2)}%</span>`;
-        return `<div class="mover-row">
-          <div style="display:flex;align-items:center;gap:4px">
-            <span class="mover-ticker"><a href="stock.html?ticker=${g.ticker}"${tip}>${g.ticker}</a></span>
-            <span class="mover-price">$${g.price}</span>
-          </div>
-          ${chg}
-        </div>`;
+      const moverRow=(g,isGainer)=>{
+        const tip=TICKER_NAMES[g.ticker]?` data-tip="${TICKER_NAMES[g.ticker]}"`:'';
+        const chg=isGainer?`<span class="mover-chg up">▲ +${g.changePct.toFixed(2)}%</span>`:`<span class="mover-chg down">▼ ${g.changePct.toFixed(2)}%</span>`;
+        return `<div class="mover-row"><div style="display:flex;align-items:center;gap:4px"><span class="mover-ticker"><a href="stock.html?ticker=${g.ticker}"${tip}>${g.ticker}</a></span><span class="mover-price">$${g.price}</span></div>${chg}</div>`;
       };
-
-      const gainersHTML = s.gainers.length
-        ? s.gainers.map(g=>moverRow(g,true)).join('')
-        : '<div style="font-size:var(--text-xs);color:var(--color-text-faint);padding:var(--space-4)">Sem dados</div>';
-      const losersHTML = s.losers.length
-        ? s.losers.map(g=>moverRow(g,false)).join('')
-        : '<div style="font-size:var(--text-xs);color:var(--color-text-faint);padding:var(--space-4)">Sem dados</div>';
-
+      const gainersHTML=s.gainers.length?s.gainers.map(g=>moverRow(g,true)).join(''):'<div style="font-size:var(--text-xs);color:var(--color-text-faint);padding:var(--space-4)">Sem dados</div>';
+      const losersHTML=s.losers.length?s.losers.map(g=>moverRow(g,false)).join(''):'<div style="font-size:var(--text-xs);color:var(--color-text-faint);padding:var(--space-4)">Sem dados</div>';
       const bullPct=s.sentiment?.bullishPct;
       const analystDetails=(s.sentiment?.details||[]).map(d=>{
-        const tip = TICKER_NAMES[d.ticker] ? ` title="${TICKER_NAMES[d.ticker]}"` : '';
-        return `<div class="analyst-row"><span${tip} style="cursor:default">${d.ticker}</span><span>${d.bullish!==null?d.bullish+'%':'\u2014'}</span><span>${d.articles} art.</span></div>`;
+        const tip=TICKER_NAMES[d.ticker]?` title="${TICKER_NAMES[d.ticker]}"`:'';
+        return `<div class="analyst-row"><span${tip} style="cursor:default">${d.ticker}</span><span>${d.bullish!==null?d.bullish+'%':'—'}</span><span>${d.articles} art.</span></div>`;
       }).join('');
-
-      return `
-        <div class="sector-block" id="${anchor}">
-          <div class="sector-header">
-            <img class="sector-header-img" src="${s.image}" alt="${name}" loading="lazy">
-            <div class="sector-header-overlay"></div>
-            <div class="sector-header-content">
-              <span class="sector-icon">${s.icon}</span>
-              <span class="sector-title">${name}</span>
-              <span class="sector-avg ${isUp?'up':'down'}">${sign}${s.avgChange}% m\u00e9dia</span>
-            </div>
-          </div>
-          <div class="movers-grid">
-            <div class="movers-card"><div class="movers-card-title">\uD83D\uDFE2 Maiores subidas</div>${gainersHTML}</div>
-            <div class="movers-card"><div class="movers-card-title">\uD83D\uDD34 Maiores quedas</div>${losersHTML}</div>
-          </div>
-          <div class="bottom-row">
-            <div class="sentiment-card">
-              <div class="card-label">Sentimento analistas</div>
-              ${renderGauge(bullPct)}
-              ${analystDetails}
-            </div>
-            <div class="news-card">
-              <div class="card-label">Not\u00edcias do setor</div>
-              <div class="news-list">${renderNews(s.news, name)}</div>
-            </div>
-          </div>
-        </div>`;
+      return `<div class="sector-block" id="${anchor}"><div class="sector-header"><img class="sector-header-img" src="${s.image}" alt="${name}" loading="lazy"><div class="sector-header-overlay"></div><div class="sector-header-content"><span class="sector-icon">${s.icon}</span><span class="sector-title">${name}</span><span class="sector-avg ${isUp?'up':'down'}">${sign}${s.avgChange}% média</span></div></div><div class="movers-grid"><div class="movers-card"><div class="movers-card-title">🟢 Maiores subidas</div>${gainersHTML}</div><div class="movers-card"><div class="movers-card-title">🔴 Maiores quedas</div>${losersHTML}</div></div><div class="bottom-row"><div class="sentiment-card"><div class="card-label">Sentimento analistas</div>${renderGauge(bullPct)}${analystDetails}</div><div class="news-card"><div class="card-label">Notícias do setor</div><div class="news-list">${renderNews(s.news,name)}</div></div></div></div>`;
     }
-
     async function init(){
       try{
         const res=await fetch('markets.json?t='+Date.now());
         if(!res.ok) throw new Error();
         const data=await res.json();
         const upd=new Date(data.updated).toLocaleString('pt',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});
-        document.getElementById('heroMeta').textContent=`\u00daltima atualiza\u00e7\u00e3o: ${upd} \u00b7 3 snapshots di\u00e1rios`;
+        document.getElementById('heroMeta').textContent=`Última atualização: ${upd} · 3 snapshots diários`;
         document.getElementById('slotLabel').textContent=SLOT_LABELS[data.slot]||data.slot;
         document.getElementById('overviewBar').innerHTML=Object.entries(data.sectors).map(([name,s])=>{
           const isUp=s.avgChange>=0;
@@ -359,13 +254,7 @@
         }).join('');
         document.getElementById('sectorsWrap').innerHTML=Object.entries(data.sectors).map(([name,s])=>renderSector(name,s)).join('');
       }catch(e){
-        document.getElementById('sectorsWrap').innerHTML=`
-          <div style="text-align:center;padding:4rem;color:var(--color-text-muted)">
-            <div style="font-size:2.5rem;margin-bottom:1rem">\uD83D\uDC37</div>
-            <h2 style="margin-bottom:.5rem">Dados ainda n\u00e3o dispon\u00edveis</h2>
-            <p style="font-size:var(--text-sm)">O workflow corre \u00e0s 09:00, 13:00 e 16:30 WEST (dias \u00fateis).<br>
-            Ou for\u00e7a manualmente em <a href="https://github.com/chico130/fundscope/actions" style="color:var(--color-primary)">GitHub Actions</a>.</p>
-          </div>`;
+        document.getElementById('sectorsWrap').innerHTML=`<div style="text-align:center;padding:4rem;color:var(--color-text-muted)"><div style="font-size:2.5rem;margin-bottom:1rem">🐷</div><h2 style="margin-bottom:.5rem">Dados ainda não disponíveis</h2><p style="font-size:var(--text-sm)">O workflow corre às 09:00, 13:00 e 16:30 WEST (dias úteis).<br>Ou força manualmente em <a href="https://github.com/chico130/fundscope/actions" style="color:var(--color-primary)">GitHub Actions</a>.</p></div>`;
         document.getElementById('overviewBar').innerHTML='';
       }
     }
