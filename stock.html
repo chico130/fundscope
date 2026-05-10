@@ -181,6 +181,7 @@ function sym(c){return({USD:'$',EUR:'\u20ac',GBP:'\u00a3',JPY:'\u00a5',CHF:'CHF\
 function fmtNum(n,dec=2){if(n==null||isNaN(n)||n===0)return '\u2014';return Number(n).toFixed(dec);}
 function fmtLarge(n,cur){if(!n||isNaN(n))return '\u2014';const s=cur?sym(cur):'$';if(n>=1e12)return s+(n/1e12).toFixed(2)+'T';if(n>=1e9)return s+(n/1e9).toFixed(2)+'B';if(n>=1e6)return s+(n/1e6).toFixed(2)+'M';return s+n.toFixed(0);}
 function fmtVol(n){if(!n||isNaN(n))return '\u2014';if(n>=1e6)return (n/1e6).toFixed(1)+'M';if(n>=1e3)return (n/1e3).toFixed(1)+'K';return String(n);}
+function raw(o,k){const v=o?.[k];if(v==null)return null;if(typeof v==='object'&&'raw' in v)return v.raw;return v;}
 function round2(n){return Math.round(n*100)/100;}
 
 const TICKER=(()=>{const p=new URLSearchParams(location.search);return(p.get('ticker')||p.get('t')||'').trim().toUpperCase();})();
@@ -191,7 +192,6 @@ async function workerQuote(ticker){
     const r=await fetch(`${WORKER}?ticker=${encodeURIComponent(ticker)}&type=quote`);
     if(!r.ok) return null;
     const data=await r.json();
-    // v8/finance/quote devolve quoteResponse.result[]
     return data?.quoteResponse?.result?.[0]||null;
   }catch(e){return null;}
 }
@@ -275,56 +275,73 @@ async function fetchHistory(yfTicker,period){
   return parseChartPts(await workerChart(yfTicker,range,interval));
 }
 
-/* ── Quote ao vivo — usa v8/finance/quote + chart em paralelo ── */
+/* ── Quote ao vivo ──
+   Tenta v8/finance/quote (type=quote) para ter todas as estatísticas.
+   Se falhar, usa o meta do chart como fallback.
+*/
 async function fetchLiveQuote(yfTicker){
-  const [q, chartData]=await Promise.all([
+  const [qData, chartData] = await Promise.all([
     workerQuote(yfTicker),
     workerChart(yfTicker,'1d','5m'),
   ]);
-  if(!q) return null;
 
-  const price     = q.regularMarketPrice;
-  if(!price) return null;
+  // fallback: se o chart também falhou, o ticker não existe
+  const chartResult = chartData?.chart?.result?.[0];
+  const meta = chartResult?.meta || {};
+  const chartPrice = meta.regularMarketPrice;
+  if(!qData && !chartPrice) return null;
 
-  const prevClose = q.regularMarketPreviousClose ?? q.regularMarketPrice;
-  const change    = q.regularMarketChange    ?? parseFloat((price - prevClose).toFixed(2));
-  const changePct = q.regularMarketChangePercent ?? parseFloat(((change/prevClose)*100).toFixed(2));
-  const currency  = q.currency || 'USD';
-  const S         = sym(currency);
+  // fonte primária: v8/finance/quote
+  // fonte secundária: meta do chart
+  const price      = qData?.regularMarketPrice      ?? chartPrice;
+  const prevClose  = qData?.regularMarketPreviousClose ?? meta.previousClose ?? meta.chartPreviousClose ?? price;
+  const change     = qData?.regularMarketChange     ?? parseFloat((price - prevClose).toFixed(2));
+  const changePct  = qData?.regularMarketChangePercent ?? parseFloat(((change / prevClose) * 100).toFixed(2));
+  const currency   = qData?.currency ?? meta.currency ?? 'USD';
+  const S          = sym(currency);
 
-  // Dividendo
+  const mktCap   = qData?.marketCap;
+  const pe       = qData?.trailingPE;
+  const eps      = qData?.epsTrailingTwelveMonths;
+  const beta     = qData?.beta;
+  const divRate  = qData?.dividendRate;
+  const divYield = qData?.dividendYield;
+  const w52h     = qData?.fiftyTwoWeekHigh  ?? meta.fiftyTwoWeekHigh;
+  const w52l     = qData?.fiftyTwoWeekLow   ?? meta.fiftyTwoWeekLow;
+  const avgVol   = qData?.averageDailyVolume3Month;
+
   let divStr = '\u2014';
-  const divRate  = q.dividendRate;
-  const divYield = q.dividendYield;
   if(divRate && divRate > 0){
     const pct = divYield ? (divYield < 1 ? divYield * 100 : divYield) : null;
     divStr = S + divRate.toFixed(2) + (pct ? ' (' + pct.toFixed(2) + '%)' : '');
   }
 
-  const qt = q.quoteType || '';
+  const qt = qData?.quoteType ?? meta.instrumentType ?? '';
+  const name = qData?.longName ?? qData?.shortName ?? meta.longName ?? meta.shortName ?? yfTicker;
+  const exchange = qData?.fullExchangeName ?? meta.exchangeName ?? meta.fullExchangeName ?? '';
 
   return {
     ticker:     yfTicker.replace(/\.[A-Z]+$/, ''),
     yf_ticker:  yfTicker,
-    name:       q.longName || q.shortName || yfTicker,
-    exchange:   q.fullExchangeName || q.exchangeTimezoneName || '',
+    name,
+    exchange,
     type:       qt === 'EQUITY' ? 'Ação' : qt === 'ETF' ? 'ETF' : '',
     currency,
     price:      parseFloat(price.toFixed(2)),
     prevClose:  parseFloat(prevClose.toFixed(2)),
     change:     parseFloat(change.toFixed(2)),
     changePct:  parseFloat(changePct.toFixed(2)),
-    open:       q.regularMarketOpen       ? parseFloat(q.regularMarketOpen.toFixed(2))       : null,
-    high:       q.regularMarketDayHigh    ? parseFloat(q.regularMarketDayHigh.toFixed(2))    : null,
-    low:        q.regularMarketDayLow     ? parseFloat(q.regularMarketDayLow.toFixed(2))     : null,
-    week52High: q.fiftyTwoWeekHigh        ? parseFloat(q.fiftyTwoWeekHigh.toFixed(2))        : null,
-    week52Low:  q.fiftyTwoWeekLow         ? parseFloat(q.fiftyTwoWeekLow.toFixed(2))         : null,
-    volume:     fmtVol(q.regularMarketVolume),
-    avgVolume:  fmtVol(q.averageDailyVolume3Month),
-    marketCap:  fmtLarge(q.marketCap, currency),
-    pe:         q.trailingPE              ? parseFloat(q.trailingPE.toFixed(1))              : '\u2014',
-    eps:        q.epsTrailingTwelveMonths ? parseFloat(q.epsTrailingTwelveMonths.toFixed(2)) : '\u2014',
-    beta:       q.beta                   ? parseFloat(q.beta.toFixed(2))                    : '\u2014',
+    open:       (qData?.regularMarketOpen    ?? meta.regularMarketOpen)    ? parseFloat((qData?.regularMarketOpen    ?? meta.regularMarketOpen).toFixed(2))    : null,
+    high:       (qData?.regularMarketDayHigh ?? meta.regularMarketDayHigh) ? parseFloat((qData?.regularMarketDayHigh ?? meta.regularMarketDayHigh).toFixed(2)) : null,
+    low:        (qData?.regularMarketDayLow  ?? meta.regularMarketDayLow)  ? parseFloat((qData?.regularMarketDayLow  ?? meta.regularMarketDayLow).toFixed(2))  : null,
+    volume:     fmtVol(qData?.regularMarketVolume ?? meta.regularMarketVolume),
+    avgVolume:  fmtVol(avgVol),
+    week52High: w52h ? parseFloat(w52h.toFixed(2)) : null,
+    week52Low:  w52l ? parseFloat(w52l.toFixed(2)) : null,
+    marketCap:  fmtLarge(mktCap, currency),
+    pe:         pe   ? parseFloat(pe.toFixed(1))   : '\u2014',
+    eps:        eps  ? parseFloat(eps.toFixed(2))  : '\u2014',
+    beta:       beta ? parseFloat(beta.toFixed(2)) : '\u2014',
     dividend:   divStr,
     history:    {'1D': parseChartPts(chartData)},
     _live:      true,
