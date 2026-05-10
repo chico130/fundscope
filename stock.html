@@ -163,6 +163,9 @@
   </footer>
 
 <script>
+/* ── WORKER URL ────────────────────────────────────────────── */
+const WORKER = 'https://stocks.araujo-francisco-fernandes.workers.dev';
+
 /* ── tema ────────────────────────────────────────────────────── */
 (function(){
   const btn=document.getElementById('themeToggle'),r=document.documentElement;
@@ -182,65 +185,69 @@ function fmtNum(n,dec=2){if(n==null||isNaN(n)||n===0)return '\u2014';return Numb
 function fmtLarge(n,cur){if(!n||isNaN(n))return '\u2014';const s=cur?sym(cur):'$';if(n>=1e12)return s+(n/1e12).toFixed(2)+'T';if(n>=1e9)return s+(n/1e9).toFixed(2)+'B';if(n>=1e6)return s+(n/1e6).toFixed(2)+'M';return s+n.toFixed(0);}
 function fmtVol(n){if(!n||isNaN(n))return '\u2014';if(n>=1e6)return (n/1e6).toFixed(1)+'M';if(n>=1e3)return (n/1e3).toFixed(1)+'K';return String(n);}
 function raw(o,k){const v=o?.[k];if(v==null)return null;if(typeof v==='object'&&'raw' in v)return v.raw;return v;}
+function round2(n){return Math.round(n*100)/100;}
 
 const TICKER=(()=>{const p=new URLSearchParams(location.search);return(p.get('ticker')||p.get('t')||'').trim().toUpperCase();})();
 
-/* ── fetch com fallback CORS ────────────────────────────────────── */
-async function fetchWithFallback(urlFns, ticker) {
-  for (const fn of urlFns) {
-    try {
-      const url = fn(ticker);
-      const r = await fetch(url, {headers:{'Accept':'application/json'}});
-      if (!r.ok) continue;
-      const j = await r.json();
-      if (j && j.contents) return JSON.parse(j.contents);
-      return j;
-    } catch(e) { continue; }
-  }
-  return null;
+/* ── Chamadas ao Worker ─────────────────────────────────────────── */
+async function workerChart(ticker, range, interval) {
+  try {
+    const r = await fetch(`${WORKER}?ticker=${encodeURIComponent(ticker)}&range=${range}&interval=${interval}`);
+    if (!r.ok) return null;
+    return await r.json();
+  } catch(e) { return null; }
+}
+
+async function workerSummary(ticker) {
+  try {
+    const r = await fetch(`${WORKER}?ticker=${encodeURIComponent(ticker)}&modules=price,summaryDetail,defaultKeyStatistics`);
+    if (!r.ok) return null;
+    return await r.json();
+  } catch(e) { return null; }
 }
 
 /* ── GRÁFICO ─────────────────────────────────────────────────── */
 let chartInst=null;
 
-function fmtAxisLabel(ts, period){
+function fmtAxisLabel(ts,period){
   const d=new Date(ts*1000);
   if(period==='1D') return d.toLocaleTimeString('pt',{hour:'2-digit',minute:'2-digit'});
   if(period==='1S') return d.toLocaleDateString('pt',{weekday:'short',day:'numeric'});
   if(period==='1M') return d.toLocaleDateString('pt',{day:'numeric',month:'short'});
   return d.toLocaleDateString('pt',{month:'short',year:'2-digit'});
 }
-function fmtTooltipLabel(ts, period){
+function fmtTooltipLabel(ts,period){
   const d=new Date(ts*1000);
   if(period==='1D') return d.toLocaleString('pt',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});
   return d.toLocaleDateString('pt',{day:'2-digit',month:'short',year:'numeric'});
 }
 
-function renderChart(period, pts){
-  const canvas=document.getElementById('priceChart');
-  if(!canvas) return;
+function renderChart(period,pts){
+  const wrap=document.querySelector('.chart-wrap');
+  if(!wrap) return;
   if(!pts||pts.length<2){
     if(chartInst){chartInst.destroy();chartInst=null;}
-    canvas.parentElement.innerHTML='<div class="chart-loading" style="color:var(--color-text-faint);">Sem dados para este período</div>';
+    wrap.innerHTML='<div class="chart-loading" style="color:var(--color-text-faint);">Sem dados para este período</div>';
     return;
   }
-  const first=pts[0].v, last=pts[pts.length-1].v, up=last>=first;
-  const color=up?'#437a22':'#a13544', bg0=up?'rgba(67,122,34,.18)':'rgba(161,53,68,.18)';
-  const dark=document.documentElement.getAttribute('data-theme')==='dark';
-  const axCol=dark?'#5a5957':'#8a8985', gridC=dark?'rgba(80,78,74,.25)':'rgba(180,178,172,.15)';
-  const wrap=document.querySelector('.chart-wrap');
-  if(wrap&&!wrap.querySelector('#priceChart')){const c=document.createElement('canvas');c.id='priceChart';wrap.innerHTML='';wrap.appendChild(c);}
+  if(!wrap.querySelector('#priceChart')){const c=document.createElement('canvas');c.id='priceChart';wrap.innerHTML='';wrap.appendChild(c);}
   const cvs=document.getElementById('priceChart');
+  const first=pts[0].v,last=pts[pts.length-1].v,up=last>=first;
+  const color=up?'#437a22':'#a13544',bg0=up?'rgba(67,122,34,.18)':'rgba(161,53,68,.18)';
+  const dark=document.documentElement.getAttribute('data-theme')==='dark';
+  const axCol=dark?'#5a5957':'#8a8985',gridC=dark?'rgba(80,78,74,.25)':'rgba(180,178,172,.15)';
   if(chartInst){chartInst.destroy();chartInst=null;}
-  const timestamps=pts.map(p=>p.t), labels=pts.map(p=>fmtAxisLabel(p.t,period)), data=pts.map(p=>p.v);
+  const timestamps=pts.map(p=>p.t),labels=pts.map(p=>fmtAxisLabel(p.t,period)),data=pts.map(p=>p.v);
   chartInst=new Chart(cvs,{
     type:'line',
-    data:{labels,datasets:[{data,borderColor:color,borderWidth:2,pointRadius:0,pointHoverRadius:4,pointHoverBackgroundColor:color,tension:.3,fill:true,
+    data:{labels,datasets:[{data,borderColor:color,borderWidth:2,pointRadius:0,pointHoverRadius:4,
+      pointHoverBackgroundColor:color,tension:.3,fill:true,
       backgroundColor:ctx=>{const g=ctx.chart.ctx.createLinearGradient(0,0,0,ctx.chart.height);g.addColorStop(0,bg0);g.addColorStop(1,'transparent');return g;}}]},
     options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
       plugins:{legend:{display:false},tooltip:{backgroundColor:dark?'#f0ede8':'#1c1b19',titleColor:dark?'#28251d':'#e8e7e5',
         bodyColor:dark?'#28251d':'#e8e7e5',borderColor:dark?'#d4d1ca':'#2e2d2b',borderWidth:1,padding:10,cornerRadius:8,
-        callbacks:{title:ctx=>{const i=ctx[0]?.dataIndex;return timestamps[i]?fmtTooltipLabel(timestamps[i],period):(labels[i]||'');},label:ctx=>' '+ctx.parsed.y.toFixed(2)}}},
+        callbacks:{title:ctx=>{const i=ctx[0]?.dataIndex;return timestamps[i]?fmtTooltipLabel(timestamps[i],period):(labels[i]||'');},
+          label:ctx=>' '+ctx.parsed.y.toFixed(2)}}},
       scales:{
         x:{ticks:{color:axCol,maxTicksLimit:6,maxRotation:0,font:{size:11}},grid:{color:gridC},border:{display:false}},
         y:{ticks:{color:axCol,maxTicksLimit:5,font:{size:11},callback:v=>v.toFixed(2)},grid:{color:gridC},border:{display:false},position:'right'}
@@ -248,51 +255,41 @@ function renderChart(period, pts){
   });
 }
 
-function updateChangeBadge(pts, period){
+function updateChangeBadge(pts,period){
   const badge=document.getElementById('chartChangeBadge');
   if(!badge) return;
   if(!pts||pts.length<2){badge.textContent='\u2014';badge.className='chart-change-badge';return;}
-  const first=pts[0].v, last=pts[pts.length-1].v, chg=last-first, pct=first?(chg/first)*100:0;
-  const up=chg>=0, sign=up?'+':'', arrow=up?'\u25b2':'\u25bc';
+  const first=pts[0].v,last=pts[pts.length-1].v,chg=last-first,pct=first?(chg/first)*100:0;
+  const up=chg>=0,sign=up?'+':'',arrow=up?'\u25b2':'\u25bc';
   const S=sym(window._currency||'USD');
   badge.textContent=`${arrow} ${sign}${S}${Math.abs(chg).toFixed(2)} (${sign}${pct.toFixed(2)}%) \u2014 ${period}`;
   badge.className='chart-change-badge '+(up?'up':'down');
 }
 
-/* ── Histórico dinâmico ─────────────────────────────────────────────── */
+/* ── Histórico via Worker ────────────────────────────────────────────── */
 const PERIOD_MAP={'1D':{range:'1d',interval:'5m'},'1S':{range:'5d',interval:'1h'},'1M':{range:'1mo',interval:'1d'},'1A':{range:'1y',interval:'1wk'},'3A':{range:'3y',interval:'1wk'}};
 
-async function fetchYFHistory(yfTicker, period) {
-  const {range, interval}=PERIOD_MAP[period];
-  const data=await fetchWithFallback([
-    t=>`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(t)}?range=${range}&interval=${interval}`,
-    t=>`https://corsproxy.io/?url=${encodeURIComponent('https://query1.finance.yahoo.com/v8/finance/chart/'+t+'?range='+range+'&interval='+interval)}`,
-    t=>`https://api.allorigins.win/get?url=${encodeURIComponent('https://query1.finance.yahoo.com/v8/finance/chart/'+t+'?range='+range+'&interval='+interval)}`,
-  ], yfTicker);
-  if(!data) return [];
+function parseChartPts(data){
   try{
-    const result=data.chart?.result?.[0];
+    const result=data?.chart?.result?.[0];
     if(!result) return [];
-    const timestamps=result.timestamp||[], closes=result.indicators?.quote?.[0]?.close||[], pts=[];
-    for(let i=0;i<timestamps.length;i++){const v=closes[i];if(v==null||isNaN(v)) continue;pts.push({t:timestamps[i],v:parseFloat(v.toFixed(4))});}
+    const timestamps=result.timestamp||[],closes=result.indicators?.quote?.[0]?.close||[],pts=[];
+    for(let i=0;i<timestamps.length;i++){const v=closes[i];if(v==null||isNaN(v))continue;pts.push({t:timestamps[i],v:parseFloat(v.toFixed(4))});}
     return pts;
   }catch(e){return [];}
 }
 
-/* ── Dados ao vivo: chart + quoteSummary em paralelo ─────────────── */
-async function fetchYFQuote(yfTicker) {
-  // Corre as duas chamadas em paralelo
+async function fetchHistory(yfTicker,period){
+  const {range,interval}=PERIOD_MAP[period];
+  const data=await workerChart(yfTicker,range,interval);
+  return parseChartPts(data);
+}
+
+/* ── Dados ao vivo via Worker ────────────────────────────────────────── */
+async function fetchLiveQuote(yfTicker){
   const [chartData, summaryData] = await Promise.all([
-    fetchWithFallback([
-      t=>`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(t)}?range=1d&interval=5m`,
-      t=>`https://corsproxy.io/?url=${encodeURIComponent('https://query1.finance.yahoo.com/v8/finance/chart/'+t+'?range=1d&interval=5m')}`,
-      t=>`https://api.allorigins.win/get?url=${encodeURIComponent('https://query1.finance.yahoo.com/v8/finance/chart/'+t+'?range=1d&interval=5m')}`,
-    ], yfTicker),
-    fetchWithFallback([
-      t=>`https://query1.finance.yahoo.com/v10/finance/quoteSummary/${encodeURIComponent(t)}?modules=price,summaryDetail,defaultKeyStatistics`,
-      t=>`https://corsproxy.io/?url=${encodeURIComponent('https://query1.finance.yahoo.com/v10/finance/quoteSummary/'+t+'?modules=price,summaryDetail,defaultKeyStatistics')}`,
-      t=>`https://api.allorigins.win/get?url=${encodeURIComponent('https://query1.finance.yahoo.com/v10/finance/quoteSummary/'+t+'?modules=price,summaryDetail,defaultKeyStatistics')}`,
-    ], yfTicker),
+    workerChart(yfTicker,'1d','5m'),
+    workerSummary(yfTicker),
   ]);
 
   if(!chartData) return null;
@@ -310,25 +307,23 @@ async function fetchYFQuote(yfTicker) {
     const S=sym(currency);
     const displayTicker=yfTicker.replace(/\.[A-Z]+$/,'');
 
-    // Histórico 1D
-    const timestamps=result.timestamp||[], closes=result.indicators?.quote?.[0]?.close||[], hist1D=[];
-    for(let i=0;i<timestamps.length;i++){const v=closes[i];if(v==null||isNaN(v)) continue;hist1D.push({t:timestamps[i],v:parseFloat(v.toFixed(4))});}
+    const hist1D=parseChartPts(chartData);
 
-    // Extrair dados do quoteSummary
+    // Dados do quoteSummary
     const qs=summaryData?.quoteSummary?.result?.[0]||{};
-    const priceModule=qs.price||{};
-    const summaryDetail=qs.summaryDetail||{};
-    const keyStats=qs.defaultKeyStatistics||{};
+    const priceM=qs.price||{};
+    const sd=qs.summaryDetail||{};
+    const ks=qs.defaultKeyStatistics||{};
 
-    const mktCap  = raw(priceModule,'marketCap') ?? raw(summaryDetail,'marketCap');
-    const pe      = raw(summaryDetail,'trailingPE') ?? raw(priceModule,'trailingPE');
-    const eps     = raw(keyStats,'trailingEps');
-    const beta    = raw(summaryDetail,'beta') ?? raw(keyStats,'beta');
-    const divRate = raw(summaryDetail,'dividendRate');
-    const divYield= raw(summaryDetail,'dividendYield');
-    const avgVol  = raw(summaryDetail,'averageVolume') ?? raw(summaryDetail,'averageVolume10days');
-    const w52h    = raw(summaryDetail,'fiftyTwoWeekHigh') ?? meta.fiftyTwoWeekHigh;
-    const w52l    = raw(summaryDetail,'fiftyTwoWeekLow')  ?? meta.fiftyTwoWeekLow;
+    const mktCap  = raw(priceM,'marketCap')??raw(sd,'marketCap');
+    const pe      = raw(sd,'trailingPE')??raw(priceM,'trailingPE');
+    const eps     = raw(ks,'trailingEps');
+    const beta    = raw(sd,'beta')??raw(ks,'beta');
+    const divRate = raw(sd,'dividendRate');
+    const divYield= raw(sd,'dividendYield');
+    const avgVol  = raw(sd,'averageVolume')??raw(sd,'averageVolume10days');
+    const w52h    = raw(sd,'fiftyTwoWeekHigh')??meta.fiftyTwoWeekHigh;
+    const w52l    = raw(sd,'fiftyTwoWeekLow') ??meta.fiftyTwoWeekLow;
 
     let divStr='\u2014';
     if(divRate&&divRate>0){
@@ -339,13 +334,13 @@ async function fetchYFQuote(yfTicker) {
     return {
       ticker:      displayTicker,
       yf_ticker:   yfTicker,
-      name:        raw(priceModule,'longName')||raw(priceModule,'shortName')||meta.longName||meta.shortName||displayTicker,
-      exchange:    raw(priceModule,'exchangeName')||meta.exchangeName||meta.fullExchangeName||'',
-      type:        (raw(priceModule,'quoteType')||meta.instrumentType||'')==='EQUITY'?'Ação':((raw(priceModule,'quoteType')||meta.instrumentType||'')==='ETF'?'ETF':''),
+      name:        raw(priceM,'longName')||raw(priceM,'shortName')||meta.longName||meta.shortName||displayTicker,
+      exchange:    raw(priceM,'exchangeName')||meta.exchangeName||meta.fullExchangeName||'',
+      type:        (raw(priceM,'quoteType')||meta.instrumentType||'')==='EQUITY'?'Ação':((raw(priceM,'quoteType')||meta.instrumentType||'')==='ETF'?'ETF':''),
       currency,
       price:       parseFloat(price.toFixed(2)),
       prevClose:   prevClose?parseFloat(prevClose.toFixed(2)):null,
-      change, changePct,
+      change,changePct,
       open:        meta.regularMarketOpen?parseFloat(meta.regularMarketOpen.toFixed(2)):null,
       high:        meta.regularMarketDayHigh?parseFloat(meta.regularMarketDayHigh.toFixed(2)):null,
       low:         meta.regularMarketDayLow?parseFloat(meta.regularMarketDayLow.toFixed(2)):null,
@@ -353,7 +348,7 @@ async function fetchYFQuote(yfTicker) {
       week52Low:   w52l?parseFloat(w52l.toFixed(2)):null,
       volume:      fmtVol(meta.regularMarketVolume),
       avgVolume:   fmtVol(avgVol),
-      marketCap:   fmtLarge(mktCap, currency),
+      marketCap:   fmtLarge(mktCap,currency),
       pe:          pe?parseFloat(pe.toFixed(1)):'\u2014',
       eps:         eps?parseFloat(eps.toFixed(2)):'\u2014',
       beta:        beta?parseFloat(beta.toFixed(2)):'\u2014',
@@ -365,27 +360,27 @@ async function fetchYFQuote(yfTicker) {
 }
 
 /* ── RENDER PRINCIPAL ────────────────────────────────────────── */
-function renderStock(s, isLive){
+function renderStock(s,isLive){
   document.getElementById('skeletonHero').style.display='none';
   document.getElementById('skeletonChart').style.display='none';
 
-  const ticker=s.ticker||TICKER, name=s.name||ticker, exchange=s.exchange||'', typeRaw=s.type||'';
-  const currency=s.currency||'USD', S=sym(currency);
+  const ticker=s.ticker||TICKER,name=s.name||ticker,exchange=s.exchange||'',typeRaw=s.type||'';
+  const currency=s.currency||'USD',S=sym(currency);
   window._currency=currency;
   window._yfTicker=s.yf_ticker||ticker;
 
-  const price=s.price, prevClose=s.prevClose??price;
-  const change=s.change??round2(price-prevClose), changePct=s.changePct??round2(prevClose?(change/prevClose)*100:0);
-  const open=s.open??price, high=s.high??price, low=s.low??price;
-  const vol=s.volume||'\u2014', avgVol=s.avgVolume||'\u2014', mcap=s.marketCap||'\u2014';
-  const w52h=s.week52High??price, w52l=s.week52Low??price;
-  const pe=s.pe!=null&&s.pe!=='\u2014'&&s.pe!=='—'?s.pe:'\u2014';
-  const eps_v=s.eps!=null&&s.eps!=='\u2014'&&s.eps!=='—'?(S+s.eps):'\u2014';
+  const price=s.price,prevClose=s.prevClose??price;
+  const change=s.change??round2(price-prevClose),changePct=s.changePct??round2(prevClose?(change/prevClose)*100:0);
+  const open=s.open??price,high=s.high??price,low=s.low??price;
+  const vol=s.volume||'\u2014',avgVol=s.avgVolume||'\u2014',mcap=s.marketCap||'\u2014';
+  const w52h=s.week52High??price,w52l=s.week52Low??price;
+  const pe  =s.pe  !=null&&s.pe  !=='\u2014'&&s.pe  !=='—'?s.pe  :'\u2014';
+  const eps_v=s.eps!=null&&s.eps !=='\u2014'&&s.eps !=='—'?(S+s.eps):'\u2014';
   const beta_v=s.beta!=null&&s.beta!=='\u2014'&&s.beta!=='—'?s.beta:'\u2014';
   const div_v=s.dividend&&s.dividend!=='\u2014'&&s.dividend!=='—'?s.dividend:'\u2014';
   const updated=s._updated?new Date(s._updated).toLocaleString('pt',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}):'';
 
-  const up=changePct>=0, sign=up?'+':'', arrow=up?'\u25b2':'\u25bc', cls=up?'up':'down';
+  const up=changePct>=0,sign=up?'+':'',arrow=up?'\u25b2':'\u25bc',cls=up?'up':'down';
   const w52p=w52h>w52l?Math.round((price-w52l)/(w52h-w52l)*100):50;
   const typeLabel=({'Ação':'Ação','ETF':'ETF','MUTUALFUND':'Fundo','INDEX':'Índice','CRYPTOCURRENCY':'Cripto'})[typeRaw]||typeRaw;
 
@@ -395,7 +390,6 @@ function renderStock(s, isLive){
   const defaultPeriod=available.includes('1A')?'1A':(available.includes('1M')?'1M':(available[0]||null));
 
   document.title='FundScope \u2014 '+ticker;
-
   const dotHtml=isLive
     ?'<span class="live-dot"></span> Yahoo Finance (ao vivo)'
     :`<span class="static-dot"></span> Yahoo Finance${updated?' &middot; '+updated:''}`;
@@ -467,7 +461,7 @@ function renderStock(s, isLive){
     updateChangeBadge(null,p);
     let pts=window._histCache[p];
     if(!pts||pts.length<2){
-      pts=await fetchYFHistory(window._yfTicker,p);
+      pts=await fetchHistory(window._yfTicker,p);
       if(pts&&pts.length>1) window._histCache[p]=pts;
     }
     const w2=document.querySelector('.chart-wrap');
@@ -492,17 +486,15 @@ function renderStock(s, isLive){
   img.src='https://logo.clearbit.com/'+ticker.toLowerCase().replace(/[^a-z0-9]/g,'').replace(/^([a-z]+).*/,'$1')+'.com';
 }
 
-function round2(n){return Math.round(n*100)/100;}
-
 /* ── ERRO ────────────────────────────────────────────────────── */
-function renderError(ticker, msg){
+function renderError(ticker,msg){
   document.getElementById('skeletonHero').style.display='none';
   document.getElementById('skeletonChart').style.display='none';
   const c=document.getElementById('stockContent');
   c.innerHTML=`<div class="error-state">
     <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--color-text-faint)" stroke-width="1.5" style="margin:0 auto var(--space-4)"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
     <h2>N\u00e3o foi poss\u00edvel carregar "${esc(ticker)}"</h2>
-    <p>Verifica se o ticker est\u00e1 correto (ex: ASML, ASML.AS para Euronext).</p>
+    <p>Verifica se o ticker est\u00e1 correto (ex: ASML, ASML.AS para Euronext, MC.PA para Paris).</p>
     <div class="error-detail">${esc(msg)}</div>
     <a href="index.html" style="display:inline-flex;align-items:center;gap:8px;margin-top:24px;padding:10px 20px;background:var(--color-primary);color:#fff;border-radius:var(--radius-full);font-size:var(--text-sm);font-weight:600;">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
@@ -517,7 +509,7 @@ if(!TICKER){
   renderError('?','Nenhum ticker na URL. Exemplo: stock.html?ticker=AAPL');
 }else{
   (async()=>{
-    // 1. Tenta data.json local primeiro
+    // 1. Tenta data.json local primeiro (tickers da lista fixa — mais rápido)
     let localFound=false;
     try{
       const r=await fetch('./data.json',{cache:'no-store'});
@@ -529,15 +521,15 @@ if(!TICKER){
       }
     }catch(e){}
 
-    // 2. Fallback ao vivo: tenta ticker direto e depois com sufixos de bolsa
+    // 2. Fallback: Worker — tenta ticker direto e depois sufixos de bolsa
     if(!localFound){
-      const attempts=[TICKER,TICKER+'.AS',TICKER+'.L',TICKER+'.DE',TICKER+'.PA',TICKER+'.MI',TICKER+'.LS',TICKER+'.SW'];
+      const attempts=[TICKER,TICKER+'.AS',TICKER+'.L',TICKER+'.DE',TICKER+'.PA',TICKER+'.MI',TICKER+'.LS',TICKER+'.SW',TICKER+'.CO',TICKER+'.ST',TICKER+'.OL'];
       let found=false;
       for(const t of attempts){
-        const data=await fetchYFQuote(t);
+        const data=await fetchLiveQuote(t);
         if(data){renderStock(data,true);found=true;break;}
       }
-      if(!found) renderError(TICKER,'Ticker "'+TICKER+'" não encontrado. Tenta com sufixo de bolsa (ex: ASML.AS para Euronext Amesterdão).');
+      if(!found) renderError(TICKER,'Ticker "'+TICKER+'" não encontrado. Tenta com sufixo de bolsa (ex: ASML.AS, MC.PA, NOVO-B.CO).');
     }
   })();
 }
