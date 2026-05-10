@@ -206,14 +206,23 @@ async function workerChart(ticker,range,interval){
   }catch(e){return null;}
 }
 
-/* ── Worker: estatísticas (Finnhub) ── */
+/* ── Worker: estatísticas — dois módulos em paralelo, fundidos num só objeto ── */
 async function workerStats(ticker){
   try{
-    const r=await fetchTimeout(`${WORKER}?ticker=${encodeURIComponent(ticker)}&modules=price`,12000);
-    if(!r.ok) return null;
-    const j=await r.json();
-    if(j?.quoteSummary?.error) return null;
-    return j?.quoteSummary?.result?.[0]||null;
+    const [r1, r2] = await Promise.all([
+      fetchTimeout(`${WORKER}?ticker=${encodeURIComponent(ticker)}&modules=price,summaryDetail`, 12000),
+      fetchTimeout(`${WORKER}?ticker=${encodeURIComponent(ticker)}&modules=defaultKeyStatistics`, 12000),
+    ]);
+    const j1 = r1.ok ? await r1.json() : null;
+    const j2 = r2.ok ? await r2.json() : null;
+    if(j1?.quoteSummary?.error && j2?.quoteSummary?.error) return null;
+    const base  = j1?.quoteSummary?.result?.[0] || {};
+    const extra = j2?.quoteSummary?.result?.[0] || {};
+    // Fundir: base tem price + summaryDetail; extra traz defaultKeyStatistics
+    return {
+      ...base,
+      defaultKeyStatistics: extra.defaultKeyStatistics || base.defaultKeyStatistics || {}
+    };
   }catch(e){return null;}
 }
 
