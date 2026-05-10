@@ -288,74 +288,100 @@ async function fetchHistory(yfTicker,period){
   return parseChartPts(await workerChart(yfTicker,range,interval));
 }
 
-/* ── Dados combinados: chart + stats em paralelo ── */
+/* ── Dados combinados: chart + stats + fallback data.json ── */
 async function fetchLiveQuote(yfTicker){
-  const [chartData, stats] = await Promise.all([
+  const dispTicker=yfTicker.replace(/\.[A-Z]+$/,'');
+
+  const [chartData, stats, staticDataRaw] = await Promise.all([
     workerChart(yfTicker,'1d','5m'),
-    workerStats(yfTicker)
+    workerStats(yfTicker),
+    fetchTimeout('data.json',4000).then(r=>r.json()).catch(()=>null)
   ]);
 
   const chartResult=chartData?.chart?.result?.[0];
   const meta=chartResult?.meta||{};
+  const st=staticDataRaw?.stocks?.[dispTicker]||{};
 
-  /* price module tem os dados mais fiáveis */
-  const priceM  = stats?.price        || {};
-  const summM   = stats?.summaryDetail || {};
-  const keyM    = stats?.defaultKeyStatistics || {};
+  const priceM = stats?.price||{};
+  const summM  = stats?.summaryDetail||{};
+  const keyM   = stats?.defaultKeyStatistics||{};
 
-  const price = rawVal(priceM.regularMarketPrice) ?? meta.regularMarketPrice;
+  const price = rawVal(priceM.regularMarketPrice) ?? meta.regularMarketPrice ?? st.price;
   if(!price) return null;
 
-  const currency = priceM.currency ?? meta.currency ?? 'USD';
+  const currency = priceM.currency ?? meta.currency ?? st.currency ?? 'USD';
   const S = sym(currency);
 
-  const prevClose = rawVal(priceM.regularMarketPreviousClose) ?? rawVal(summM.previousClose) ?? meta.chartPreviousClose ?? price;
+  const prevClose = rawVal(priceM.regularMarketPreviousClose) ?? rawVal(summM.previousClose) ?? meta.chartPreviousClose ?? st.prevClose ?? price;
   const change    = parseFloat((price - prevClose).toFixed(2));
   const changePct = parseFloat(((change/prevClose)*100).toFixed(2));
 
-  /* estatísticas */
-  const mktCap  = rawVal(priceM.marketCap);
-  const pe      = rawVal(summM.trailingPE)       ?? rawVal(keyM.trailingPE);
-  const eps     = rawVal(keyM.trailingEps);
-  const beta    = rawVal(keyM.beta)              ?? rawVal(summM.beta);
-  const divRate = rawVal(summM.dividendRate);
-  const divYield= rawVal(summM.dividendYield);
-  const avgVol  = rawVal(summM.averageVolume)    ?? rawVal(summM.averageVolume10days);
-  const w52h    = rawVal(summM.fiftyTwoWeekHigh) ?? meta.fiftyTwoWeekHigh;
-  const w52l    = rawVal(summM.fiftyTwoWeekLow)  ?? meta.fiftyTwoWeekLow;
+  /* Cap. mercado */
+  const mktCapRaw = rawVal(priceM.marketCap);
+  const marketCap = mktCapRaw ? fmtLarge(mktCapRaw, currency) : (st.marketCap || '\u2014');
 
+  /* P/E */
+  const peRaw = rawVal(summM.trailingPE) ?? rawVal(keyM.trailingPE);
+  const pe = peRaw != null ? parseFloat(Number(peRaw).toFixed(1)) : (st.pe ?? '\u2014');
+
+  /* EPS */
+  const epsRaw = rawVal(keyM.trailingEps);
+  const eps = epsRaw != null ? parseFloat(Number(epsRaw).toFixed(2)) : (st.eps ?? '\u2014');
+
+  /* Beta */
+  const betaRaw = rawVal(keyM.beta) ?? rawVal(summM.beta);
+  const beta = betaRaw != null ? parseFloat(Number(betaRaw).toFixed(2)) : (st.beta ?? '\u2014');
+
+  /* Dividendo */
   let divStr='\u2014';
+  const divRate=rawVal(summM.dividendRate);
+  const divYield=rawVal(summM.dividendYield);
   if(divRate&&divRate>0){
     const pct=divYield?(divYield<1?divYield*100:divYield):null;
     divStr=S+divRate.toFixed(2)+(pct?' ('+pct.toFixed(2)+'%)':'');
+  } else if(st.dividend && st.dividend!=='\u2014'){
+    divStr=st.dividend;
   }
 
-  const qt = priceM.quoteType ?? meta.instrumentType ?? '';
+  /* Volume */
+  const volRaw   = rawVal(priceM.regularMarketVolume) ?? meta.regularMarketVolume;
+  const avgVolRaw= rawVal(summM.averageVolume) ?? rawVal(summM.averageVolume10days);
+  const volume   = volRaw ? fmtVol(volRaw) : (st.volume || '\u2014');
+  const avgVolume= avgVolRaw ? fmtVol(avgVolRaw) : (st.avgVolume || '\u2014');
+
+  /* 52 semanas */
+  const w52hRaw = rawVal(summM.fiftyTwoWeekHigh) ?? meta.fiftyTwoWeekHigh ?? st.week52High;
+  const w52lRaw = rawVal(summM.fiftyTwoWeekLow)  ?? meta.fiftyTwoWeekLow  ?? st.week52Low;
+  const w52h = w52hRaw ? parseFloat(Number(w52hRaw).toFixed(2)) : null;
+  const w52l = w52lRaw ? parseFloat(Number(w52lRaw).toFixed(2)) : null;
+
+  /* Tipo */
+  const qt = priceM.quoteType ?? meta.instrumentType ?? (st.type==='A\u00e7\u00e3o'?'EQUITY':st.type==='ETF'?'ETF':'');
+
+  /* Histórico 1D: usa live se tiver, senão usa data.json */
+  const livePts = parseChartPts(chartData);
+  const hist1D  = livePts.length>1 ? livePts : (st.history?.['1D'] || []);
 
   return{
-    ticker:    yfTicker.replace(/\.[A-Z]+$/,''),
+    ticker:    dispTicker,
     yf_ticker: yfTicker,
-    name:      priceM.longName ?? priceM.shortName ?? meta.longName ?? meta.shortName ?? yfTicker,
-    exchange:  priceM.exchangeName ?? priceM.fullExchangeName ?? meta.exchangeName ?? '',
-    type:      qt==='EQUITY'?'A\u00e7\u00e3o':qt==='ETF'?'ETF':qt==='MUTUALFUND'?'Fundo':qt==='INDEX'?'\u00cdndice':'',
+    name:      priceM.longName ?? priceM.shortName ?? meta.longName ?? meta.shortName ?? st.name ?? yfTicker,
+    exchange:  priceM.exchangeName ?? priceM.fullExchangeName ?? meta.exchangeName ?? st.exchange ?? '',
+    type:      qt==='EQUITY'?'A\u00e7\u00e3o':qt==='ETF'?'ETF':qt==='MUTUALFUND'?'Fundo':qt==='INDEX'?'\u00cdndice':(st.type||''),
     currency,
     price:     parseFloat(price.toFixed(2)),
     prevClose: parseFloat(prevClose.toFixed(2)),
     change, changePct,
-    open:      rawVal(priceM.regularMarketOpen)    ?? meta.regularMarketOpen    ?? null,
-    high:      rawVal(priceM.regularMarketDayHigh) ?? meta.regularMarketDayHigh ?? null,
-    low:       rawVal(priceM.regularMarketDayLow)  ?? meta.regularMarketDayLow  ?? null,
-    week52High:w52h ? parseFloat(Number(w52h).toFixed(2)) : null,
-    week52Low: w52l ? parseFloat(Number(w52l).toFixed(2)) : null,
-    volume:    fmtVol(rawVal(priceM.regularMarketVolume) ?? meta.regularMarketVolume),
-    avgVolume: fmtVol(avgVol),
-    marketCap: fmtLarge(mktCap, currency),
-    pe:        pe   !=null ? parseFloat(Number(pe).toFixed(1))  : '\u2014',
-    eps:       eps  !=null ? parseFloat(Number(eps).toFixed(2)) : '\u2014',
-    beta:      beta !=null ? parseFloat(Number(beta).toFixed(2)): '\u2014',
-    dividend:  divStr,
-    history:   {'1D': parseChartPts(chartData)},
+    open:      rawVal(priceM.regularMarketOpen)    ?? meta.regularMarketOpen    ?? st.open    ?? null,
+    high:      rawVal(priceM.regularMarketDayHigh) ?? meta.regularMarketDayHigh ?? st.high    ?? null,
+    low:       rawVal(priceM.regularMarketDayLow)  ?? meta.regularMarketDayLow  ?? st.low     ?? null,
+    week52High: w52h,
+    week52Low:  w52l,
+    volume, avgVolume, marketCap,
+    pe, eps, beta, dividend: divStr,
+    history:   {'1D': hist1D},
     _live:     true,
+    _staticHistory: st.history || null,
   };
 }
 
@@ -367,6 +393,7 @@ function renderStock(s){
   const currency=s.currency||'USD',S=sym(currency);
   window._currency=currency;
   window._yfTicker=s.yf_ticker||ticker;
+  window._staticHistory=s._staticHistory||null;
   const price=s.price,prevClose=s.prevClose??price;
   const change=s.change??round2(price-prevClose),changePct=s.changePct??round2(prevClose?(change/prevClose)*100:0);
   const open=s.open??price,high=s.high??price,low=s.low??price;
@@ -439,7 +466,15 @@ function renderStock(s){
     </div>
   </div>`;
   document.getElementById('stockContent').style.display='block';
-  window._histCache={'1D':s.history?.['1D']||[]};
+  /* cache: usa histórico do data.json para períodos que o live não tem ainda */
+  const sh=window._staticHistory||{};
+  window._histCache={
+    '1D': s.history?.['1D']||[],
+    '1S': sh['1S']||[],
+    '1M': sh['1M']||[],
+    '1A': sh['1A']||[],
+    '3A': sh['3A']||[],
+  };
   async function loadAndRender(p){
     const wrap=document.querySelector('.chart-wrap');
     if(wrap) wrap.innerHTML='<div class="chart-loading"><div class="spinner"></div> A carregar gr\u00e1fico\u2026</div>';
