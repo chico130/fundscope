@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 update_news.py — FundScope
-Fontes: RSS (Yahoo/CNBC/Reuters/Investing) + MarketAux + Alpha Vantage + Finnhub
+Fontes: RSS (Yahoo/CNBC/MarketWatch/Investing/FT/Economist) + MarketAux + Alpha Vantage + Finnhub
 Gera: news.json
 """
 
@@ -25,32 +25,34 @@ print(f"Tokens: MarketAux={'sim' if MARKETAUX_TOKEN else 'NAO'} | "
       f"AlphaVantage={'sim' if ALPHAVANTAGE_TOKEN else 'NAO'} | "
       f"Finnhub={'sim' if FH_TOKEN else 'NAO'}")
 
-# ─── RSS Feeds (sem API key, sem limites) ────────────────────────────────────
+# ─── RSS Feeds ─────────────────────────────────────────────────────────────────
 RSS_FEEDS = [
     # Yahoo Finance
     {"url": "https://finance.yahoo.com/news/rssindex",              "source": "Yahoo Finance"},
     {"url": "https://finance.yahoo.com/rss/topstories",             "source": "Yahoo Finance"},
     # CNBC
-    {"url": "https://feeds.nbcnews.com/nbcnews/public/business",     "source": "CNBC"},
     {"url": "https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=100003114", "source": "CNBC"},
     {"url": "https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=10001147",  "source": "CNBC Markets"},
-    # Reuters
-    {"url": "https://feeds.reuters.com/reuters/businessNews",        "source": "Reuters"},
-    {"url": "https://feeds.reuters.com/reuters/technologyNews",      "source": "Reuters Tech"},
+    {"url": "https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=19854910",  "source": "CNBC Tech"},
     # MarketWatch
     {"url": "https://feeds.content.dowjones.io/public/rss/mw_topstories",   "source": "MarketWatch"},
     {"url": "https://feeds.content.dowjones.io/public/rss/mw_marketpulse",  "source": "MarketWatch"},
+    # Reuters — novo dominio (feeds.reuters.com está morto)
+    {"url": "https://www.reutersagency.com/feed/?taxonomy=best-topics&post_type=best", "source": "Reuters"},
     # Investing.com
     {"url": "https://www.investing.com/rss/news.rss",               "source": "Investing.com"},
-    {"url": "https://www.investing.com/rss/news_25.rss",             "source": "Investing.com"},
+    {"url": "https://www.investing.com/rss/news_25.rss",             "source": "Investing.com Tech"},
     # Seeking Alpha
     {"url": "https://seekingalpha.com/market_currents.xml",          "source": "Seeking Alpha"},
     # Financial Times
     {"url": "https://www.ft.com/rss/home/uk",                       "source": "Financial Times"},
-    # Barron's / Dow Jones
-    {"url": "https://www.barrons.com/xml/rss/3_7431.xml",            "source": "Barron's"},
     # The Economist
     {"url": "https://www.economist.com/finance-and-economics/rss.xml", "source": "The Economist"},
+    # Business Insider
+    {"url": "https://markets.businessinsider.com/rss/news",          "source": "Business Insider"},
+    # Nasdaq News
+    {"url": "https://www.nasdaq.com/feed/rssoutbound?category=Markets", "source": "Nasdaq"},
+    {"url": "https://www.nasdaq.com/feed/rssoutbound?category=Stocks",  "source": "Nasdaq"},
 ]
 
 # ─── Imagens de fallback ─────────────────────────────────────────────────────
@@ -65,7 +67,7 @@ FALLBACK_IMAGES = {
     "Global":      "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
 }
 
-# ─── Mapeamentos de impacto e categoria ─────────────────────────────────────
+# ─── Mapeamentos ───────────────────────────────────────────────────────────────
 IMPACT_MAP = [
     {"keywords":["oil","crude","opec","petroleum"],             "tickers":["XOM","CVX","COP","OXY","SLB"],     "sector":"Energia"},
     {"keywords":["fed","federal reserve","interest rate","inflation","ecb","rate cut","rate hike","fomc"],
@@ -114,6 +116,8 @@ HEADERS = {
     "Accept-Language": "en-US,en;q=0.9",
 }
 
+UTC = datetime.timezone.utc
+
 # ─── Helpers ─────────────────────────────────────────────────────────────────
 
 def sanitize(text):
@@ -161,46 +165,63 @@ def fallback_img(cat):
     return FALLBACK_IMAGES.get(cat, FALLBACK_IMAGES["Global"])
 
 def now_utc():
-    return datetime.datetime.now(datetime.timezone.utc)
+    return datetime.datetime.now(UTC)
 
 def ts_to_iso(ts):
     try:
-        return datetime.datetime.fromtimestamp(int(ts), datetime.timezone.utc).isoformat()
+        return datetime.datetime.fromtimestamp(int(ts), UTC).isoformat()
     except:
         return ""
-
-def parse_dt(a):
-    try:
-        s = a.get("publishedAt", "")
-        if not s: return datetime.datetime.min.replace(tzinfo=datetime.timezone.utc)
-        return datetime.datetime.fromisoformat(s.replace("Z", "+00:00"))
-    except:
-        return datetime.datetime.min.replace(tzinfo=datetime.timezone.utc)
 
 def make_id(title):
     return abs(hash(title)) % (10**9)
 
 def parse_rss_date(s):
-    """Converte datas RSS (RFC 2822 e ISO 8601) para ISO 8601."""
+    """Converte datas RSS para ISO 8601 com fuso horário."""
     if not s: return ""
     s = s.strip()
-    # ISO 8601
     if re.match(r"\d{4}-\d{2}-\d{2}T", s):
-        return s.replace("Z", "+00:00")
-    # RFC 2822: "Mon, 10 May 2026 14:30:00 +0000"
+        if s.endswith("Z"):
+            return s[:-1] + "+00:00"
+        if "+" not in s[10:] and not s.endswith("+00:00"):
+            return s + "+00:00"
+        return s
     try:
         import email.utils
         tt = email.utils.parsedate_to_datetime(s)
+        # Garante fuso horário
+        if tt.tzinfo is None:
+            tt = tt.replace(tzinfo=UTC)
         return tt.isoformat()
     except:
-        return s
+        return ""
+
+def parse_dt(a):
+    """Sempre devolve datetime aware (com timezone UTC) para ordenar sem TypeError."""
+    fallback = datetime.datetime.min.replace(tzinfo=UTC)
+    try:
+        s = a.get("publishedAt", "")
+        if not s:
+            return fallback
+        s = s.strip()
+        # Normalizar formatos comuns
+        s = s.replace("Z", "+00:00")
+        # Alpha Vantage: YYYYMMDDTHHMMSS
+        if re.match(r"\d{8}T\d{6}$", s):
+            s = f"{s[:4]}-{s[4:6]}-{s[6:8]}T{s[9:11]}:{s[11:13]}:{s[13:15]}+00:00"
+        dt = datetime.datetime.fromisoformat(s)
+        # Se naive, assume UTC
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=UTC)
+        return dt
+    except:
+        return fallback
 
 def strip_cdata(s):
     if not s: return ""
     return re.sub(r"<!\[CDATA\[(.*?)\]\]>", r"\1", s, flags=re.DOTALL).strip()
 
 def rss_get_text(elem, *tags):
-    """Procura o primeiro tag disponivel num elemento XML e retorna o texto limpo."""
     ns_variants = [
         "",
         "{http://purl.org/rss/1.0/modules/content/}",
@@ -225,14 +246,12 @@ def fetch_rss():
             if r.status_code != 200:
                 print(f"  [RSS {source}] HTTP {r.status_code}")
                 continue
-            # Tentar parsear XML
             try:
                 root = ET.fromstring(r.content)
             except ET.ParseError as e:
                 print(f"  [RSS {source}] XML parse error: {e}")
                 continue
 
-            # Suporte RSS 2.0 e Atom
             ns = {"atom": "http://www.w3.org/2005/Atom"}
             items = root.findall(".//item") or root.findall(".//atom:entry", ns)
             count_new = 0
@@ -241,17 +260,15 @@ def fetch_rss():
                 if not title or title in seen: continue
                 seen.add(title)
 
-                link  = rss_get_text(item, "link", "guid")
+                link = rss_get_text(item, "link", "guid")
                 if not link or not link.startswith("http"):
-                    # Atom usa <link href=...>
                     link_el = item.find("{http://www.w3.org/2005/Atom}link")
                     if link_el is not None:
                         link = link_el.get("href", "")
 
-                desc    = rss_get_text(item, "description", "summary", "content:encoded", "content")
-                pub     = parse_rss_date(rss_get_text(item, "pubDate", "published", "updated", "dc:date"))
+                desc = rss_get_text(item, "description", "summary", "content:encoded", "content")
+                pub  = parse_rss_date(rss_get_text(item, "pubDate", "published", "updated", "dc:date"))
 
-                # Imagem: tentar media:thumbnail / enclosure
                 img = ""
                 for ns_img in ["{http://search.yahoo.com/mrss/}", ""]:
                     th = item.find(ns_img + "thumbnail")
@@ -263,7 +280,6 @@ def fetch_rss():
                     if enc is not None and "image" in (enc.get("type") or ""):
                         img = enc.get("url", "")
                 if not img:
-                    # Tentar extrair do HTML da descrição
                     m = re.search(r'<img[^>]+src=["\']([^"\'>]+)', desc or "")
                     if m: img = m.group(1)
 
@@ -310,15 +326,15 @@ def fetch_marketaux():
         r = requests.get(
             "https://api.marketaux.com/v1/news/all",
             params={
-                "api_token":  MARKETAUX_TOKEN,
-                "language":   "en",
-                "limit":      50,
+                "api_token":       MARKETAUX_TOKEN,
+                "language":        "en",
+                "limit":           50,
                 "published_after": (now_utc() - datetime.timedelta(days=2)).strftime("%Y-%m-%dT%H:%M"),
             },
             timeout=12,
         )
-        if r.status_code == 422 or r.status_code == 429:
-            print(f"  [MarketAux] HTTP {r.status_code} — limite atingido ou erro")
+        if r.status_code in (422, 429):
+            print(f"  [MarketAux] HTTP {r.status_code} — limite ou erro")
             return []
         r.raise_for_status()
         data = r.json()
@@ -327,14 +343,13 @@ def fetch_marketaux():
             if not title or title in seen: continue
             seen.add(title)
 
-            desc     = clean_text(a.get("description") or a.get("snippet") or "")
-            link     = sanitize(a.get("url", ""))
-            img      = sanitize(a.get("image_url") or "")
-            pub      = sanitize(a.get("published_at") or "")
-            source   = sanitize(a.get("source") or "MarketAux")
+            desc   = clean_text(a.get("description") or a.get("snippet") or "")
+            link   = sanitize(a.get("url", ""))
+            img    = sanitize(a.get("image_url") or "")
+            pub    = sanitize(a.get("published_at") or "")
+            source = sanitize(a.get("source") or "MarketAux")
 
-            # MarketAux já devolve tickers e sentimento
-            raw_ents = a.get("entities") or []
+            raw_ents   = a.get("entities") or []
             ma_tickers = [e["symbol"] for e in raw_ents if e.get("symbol") and e.get("type") == "equity"][:5]
             ma_sentiment = "neutral"
             for e in raw_ents:
@@ -378,18 +393,17 @@ def fetch_alphavantage():
         print("  [SKIP] ALPHAVANTAGE_TOKEN nao definido")
         return []
     articles, seen = [], set()
-    # Cada chamada devolve até 50 artigos de alta qualidade (Reuters, Bloomberg, etc.)
     topics = ["financial_markets", "technology", "economy_macro", "energy_transportation"]
     for topic in topics:
         try:
             r = requests.get(
                 "https://www.alphavantage.co/query",
                 params={
-                    "function":  "NEWS_SENTIMENT",
-                    "topics":    topic,
-                    "limit":     50,
-                    "sort":      "LATEST",
-                    "apikey":    ALPHAVANTAGE_TOKEN,
+                    "function": "NEWS_SENTIMENT",
+                    "topics":   topic,
+                    "limit":    50,
+                    "sort":     "LATEST",
+                    "apikey":   ALPHAVANTAGE_TOKEN,
                 },
                 timeout=15,
             )
@@ -398,7 +412,7 @@ def fetch_alphavantage():
 
             if "Note" in data or "Information" in data:
                 msg = data.get("Note") or data.get("Information", "")
-                print(f"  [AlphaVantage {topic}] {msg[:100]}")
+                print(f"  [AlphaVantage {topic}] limite: {msg[:100]}")
                 break
 
             for a in data.get("feed", []):
@@ -409,18 +423,18 @@ def fetch_alphavantage():
                 desc   = clean_text(a.get("summary") or "")
                 link   = sanitize(a.get("url", ""))
                 img    = sanitize(a.get("banner_image") or "")
-                pub    = sanitize(a.get("time_published") or "")
-                # AV usa formato YYYYMMDDTHHMMSS
-                if pub and re.match(r"\d{8}T\d{6}", pub):
-                    pub = f"{pub[:4]}-{pub[4:6]}-{pub[6:8]}T{pub[9:11]}:{pub[11:13]}:{pub[13:15]}+00:00"
                 source = sanitize(a.get("source") or "Alpha Vantage")
 
-                # Sentimento do AV
+                # AV usa YYYYMMDDTHHMMSS — converter para ISO com fuso
+                raw_pub = a.get("time_published") or ""
+                if raw_pub and re.match(r"\d{8}T\d{6}", raw_pub):
+                    pub = f"{raw_pub[:4]}-{raw_pub[4:6]}-{raw_pub[6:8]}T{raw_pub[9:11]}:{raw_pub[11:13]}:{raw_pub[13:15]}+00:00"
+                else:
+                    pub = raw_pub
+
                 av_sent_label = (a.get("overall_sentiment_label") or "").lower()
                 av_sentiment  = "positive" if "bullish" in av_sent_label else ("negative" if "bearish" in av_sent_label else "neutral")
-
-                # Tickers do AV
-                av_tickers = [t["ticker"] for t in (a.get("ticker_sentiment") or []) if t.get("ticker") and not t["ticker"].startswith("CRYPTO")][:5]
+                av_tickers    = [t["ticker"] for t in (a.get("ticker_sentiment") or []) if t.get("ticker") and not t["ticker"].startswith("CRYPTO")][:5]
 
                 full_text = title + " " + desc
                 cat, icon = classify(full_text)
@@ -445,12 +459,13 @@ def fetch_alphavantage():
                     "feed":        "alphavantage",
                 })
 
-            print(f"  [AlphaVantage {topic}]: {len([a for a in articles if a['feed']=='alphavantage'])} artigos acumulados")
-            time.sleep(12)  # AV free: 5 req/min
+            count_av = len([x for x in articles if x["feed"] == "alphavantage"])
+            print(f"  [AlphaVantage {topic}]: {count_av} acumulados")
+            time.sleep(13)  # AV free: 5 req/min
         except Exception:
             print(f"  [WARN AlphaVantage {topic}]:\n{traceback.format_exc()}")
 
-    total_av = len([a for a in articles if a["feed"] == "alphavantage"])
+    total_av = len([x for x in articles if x["feed"] == "alphavantage"])
     print(f"  AlphaVantage: {total_av} artigos")
     return articles
 
@@ -481,7 +496,7 @@ def fetch_finnhub():
         summary = clean_text(a.get("summary") or "")
         link    = sanitize(a.get("url", ""))
         img     = sanitize(a.get("image") or "")
-        pub     = ts_to_iso(a.get("datetime", 0))
+        pub     = ts_to_iso(a.get("datetime", 0))  # já devolve ISO com +00:00
         source  = sanitize(a.get("source", "Finnhub"))
 
         full_text = title + " " + summary
@@ -518,6 +533,7 @@ def merge_and_sort(*sources):
         key = a["title"][:70].lower()
         if key not in seen:
             seen.add(key); deduped.append(a)
+    # parse_dt garante sempre datetime aware — sem TypeError
     deduped.sort(key=parse_dt, reverse=True)
     return deduped[:60]
 
@@ -526,17 +542,14 @@ def merge_and_sort(*sources):
 
 def main():
     print("=== FundScope News Update ===")
-    rss_arts = av_arts = ma_arts = fh_arts = []
+    rss_arts = ma_arts = av_arts = fh_arts = []
 
     try:    rss_arts = fetch_rss()
     except: print(traceback.format_exc())
-
     try:    ma_arts  = fetch_marketaux()
     except: print(traceback.format_exc())
-
     try:    av_arts  = fetch_alphavantage()
     except: print(traceback.format_exc())
-
     try:    fh_arts  = fetch_finnhub()
     except: print(traceback.format_exc())
 
@@ -546,28 +559,15 @@ def main():
     from collections import Counter
     cats  = Counter(a["category"] for a in articles)
     feeds = Counter(a["feed"]     for a in articles)
-    for cat, n in sorted(cats.items(),  key=lambda x: -x[1]):
-        print(f"  {cat}: {n} artigos")
+    for cat, n in sorted(cats.items(), key=lambda x: -x[1]):
+        print(f"  {cat}: {n}")
     print("  Feeds:", dict(feeds))
 
     out = {"updated": now_utc().isoformat(), "articles": articles}
-    try:
-        payload = json.dumps(out, ensure_ascii=True, indent=2)
-    except Exception as e:
-        print(f"[ERRO json.dumps] {e}")
-        payload = json.dumps(out, ensure_ascii=True, indent=2, default=lambda o: repr(o))
-
     with open("news.json", "w", encoding="utf-8") as f:
-        f.write(payload)
+        json.dump(out, f, ensure_ascii=True, indent=2, default=lambda o: repr(o))
 
     print("\nnews.json escrito com sucesso.")
-
-    # Avisos de cotas
-    if not MARKETAUX_TOKEN:
-        print("\n[AVISO] MARKETAUX_TOKEN em falta — regista-te em marketaux.com (plano gratuito: 100 req/dia)")
-    if not ALPHAVANTAGE_TOKEN:
-        print("[AVISO] ALPHAVANTAGE_TOKEN em falta — regista-te em alphavantage.co (plano gratuito: 25 req/dia)")
-
     sys.exit(0)
 
 if __name__ == "__main__":
