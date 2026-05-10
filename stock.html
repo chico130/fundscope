@@ -157,7 +157,7 @@
   </main>
 
   <footer class="footer">
-    <p>&#169; 2026 FundScope &middot; <a href="https://github.com/chico130/fundscope" target="_blank" rel="noopener">GitHub</a> &middot; Dados via Yahoo Finance</p>
+    <p>&#169; 2026 FundScope &middot; <a href="https://github.com/chico130/fundscope" target="_blank" rel="noopener">GitHub</a> &middot; Dados via Yahoo Finance &amp; FMP</p>
   </footer>
 
 <script>
@@ -185,7 +185,7 @@ function round2(n){return Math.round(n*100)/100;}
 function rawVal(obj){return obj?.raw??obj??null;}
 
 /* ── fetch com timeout ── */
-function fetchTimeout(url,ms=8000){
+function fetchTimeout(url,ms=12000){
   const ctrl=new AbortController();
   const tid=setTimeout(()=>ctrl.abort(),ms);
   return fetch(url,{signal:ctrl.signal}).finally(()=>clearTimeout(tid));
@@ -197,7 +197,7 @@ const TICKER=(()=>{const p=new URLSearchParams(location.search);return(p.get('ti
 async function workerChart(ticker,range,interval){
   try{
     const url=`${WORKER}?ticker=${encodeURIComponent(ticker)}&range=${range}&interval=${interval}`;
-    const r=await fetchTimeout(url,9000);
+    const r=await fetchTimeout(url,12000);
     if(!r.ok) return null;
     return await r.json();
   }catch(e){return null;}
@@ -208,7 +208,7 @@ async function workerStats(ticker){
   try{
     const modules='price,summaryDetail,defaultKeyStatistics';
     const url=`${WORKER}?ticker=${encodeURIComponent(ticker)}&modules=${encodeURIComponent(modules)}`;
-    const r=await fetchTimeout(url,9000);
+    const r=await fetchTimeout(url,12000);
     if(!r.ok) return null;
     const j=await r.json();
     const res=j?.quoteSummary?.result?.[0];
@@ -316,23 +316,18 @@ async function fetchLiveQuote(yfTicker){
   const change    = parseFloat((price - prevClose).toFixed(2));
   const changePct = parseFloat(((change/prevClose)*100).toFixed(2));
 
-  /* Cap. mercado */
   const mktCapRaw = rawVal(priceM.marketCap);
   const marketCap = mktCapRaw ? fmtLarge(mktCapRaw, currency) : (st.marketCap || '\u2014');
 
-  /* P/E */
   const peRaw = rawVal(summM.trailingPE) ?? rawVal(keyM.trailingPE);
   const pe = peRaw != null ? parseFloat(Number(peRaw).toFixed(1)) : (st.pe ?? '\u2014');
 
-  /* EPS */
   const epsRaw = rawVal(keyM.trailingEps);
   const eps = epsRaw != null ? parseFloat(Number(epsRaw).toFixed(2)) : (st.eps ?? '\u2014');
 
-  /* Beta */
   const betaRaw = rawVal(keyM.beta) ?? rawVal(summM.beta);
   const beta = betaRaw != null ? parseFloat(Number(betaRaw).toFixed(2)) : (st.beta ?? '\u2014');
 
-  /* Dividendo */
   let divStr='\u2014';
   const divRate=rawVal(summM.dividendRate);
   const divYield=rawVal(summM.dividendYield);
@@ -343,22 +338,18 @@ async function fetchLiveQuote(yfTicker){
     divStr=st.dividend;
   }
 
-  /* Volume */
   const volRaw   = rawVal(priceM.regularMarketVolume) ?? meta.regularMarketVolume;
   const avgVolRaw= rawVal(summM.averageVolume) ?? rawVal(summM.averageVolume10days);
   const volume   = volRaw ? fmtVol(volRaw) : (st.volume || '\u2014');
   const avgVolume= avgVolRaw ? fmtVol(avgVolRaw) : (st.avgVolume || '\u2014');
 
-  /* 52 semanas */
   const w52hRaw = rawVal(summM.fiftyTwoWeekHigh) ?? meta.fiftyTwoWeekHigh ?? st.week52High;
   const w52lRaw = rawVal(summM.fiftyTwoWeekLow)  ?? meta.fiftyTwoWeekLow  ?? st.week52Low;
   const w52h = w52hRaw ? parseFloat(Number(w52hRaw).toFixed(2)) : null;
   const w52l = w52lRaw ? parseFloat(Number(w52lRaw).toFixed(2)) : null;
 
-  /* Tipo */
   const qt = priceM.quoteType ?? meta.instrumentType ?? (st.type==='A\u00e7\u00e3o'?'EQUITY':st.type==='ETF'?'ETF':'');
 
-  /* Histórico 1D: usa live se tiver, senão usa data.json */
   const livePts = parseChartPts(chartData);
   const hist1D  = livePts.length>1 ? livePts : (st.history?.['1D'] || []);
 
@@ -421,7 +412,7 @@ function renderStock(s){
     <div class="stock-price-block">
       <div class="stock-price">${S}${fmtNum(price)}</div>
       <div class="stock-change ${cls}">${arrow} ${sign}${S}${fmtNum(Math.abs(change))} (${sign}${fmtNum(Math.abs(changePct))}%)</div>
-      <div class="source-badge"><span class="live-dot"></span> Yahoo Finance (ao vivo) &middot; ${esc(currency)}</div>
+      <div class="source-badge"><span class="live-dot"></span> Ao vivo &middot; ${esc(currency)}</div>
     </div>
   </div>
   <div class="chart-card">
@@ -466,7 +457,6 @@ function renderStock(s){
     </div>
   </div>`;
   document.getElementById('stockContent').style.display='block';
-  /* cache: usa histórico do data.json para períodos que o live não tem ainda */
   const sh=window._staticHistory||{};
   window._histCache={
     '1D': s.history?.['1D']||[],
@@ -518,18 +508,26 @@ function renderError(ticker,msg){
   c.style.display='block';
 }
 
-/* ── Entry point ── */
+/* ── Entry point ──
+   Se o ticker já tem sufixo de bolsa (ex: ASML.AS, MC.PA), tenta só esse.
+   Se for bare (ex: AAPL, MSFT), tenta só o bare — bolsas US não precisam de sufixo.
+   O utilizador deve escrever o ticker completo para europeias.
+*/
 if(!TICKER){
-  renderError('?','Nenhum ticker na URL. Exemplo: stock.html?ticker=AAPL');
+  renderError('?','Nenhum ticker na URL. Exemplo: stock.html?ticker=AAPL ou stock.html?ticker=ASML.AS');
 }else{
   (async()=>{
-    const attempts=[TICKER,TICKER+'.AS',TICKER+'.L',TICKER+'.DE',TICKER+'.PA',TICKER+'.MI',TICKER+'.LS',TICKER+'.SW',TICKER+'.CO',TICKER+'.ST',TICKER+'.OL'];
+    const hasSuffix = /\.[A-Z]+$/.test(TICKER);
+    // Se já tem sufixo, tenta só esse ticker
+    // Se não tem sufixo (ação US), tenta o bare ticker
+    const attempts = hasSuffix ? [TICKER] : [TICKER];
+
     let found=false;
     for(const t of attempts){
       const data=await fetchLiveQuote(t);
       if(data){renderStock(data);found=true;break;}
     }
-    if(!found) renderError(TICKER,'Ticker "'+TICKER+'" n\u00e3o encontrado. Tenta com sufixo de bolsa (ex: ASML.AS, MC.PA, NOVO-B.CO).');
+    if(!found) renderError(TICKER,'Ticker "'+TICKER+'" n\u00e3o encontrado. Para ações europeias usa o sufixo da bolsa (ex: ASML.AS, MC.PA, EDP.LS, NOVO-B.CO).');
   })();
 }
 </script>
