@@ -1,6 +1,6 @@
 """
 FundScope — Atualização automática de preços via Yahoo Finance
-Gera: data.json com preços, variações, volume e metadata de todos os tickers.
+Gera: data.json com preços, variações, volume, metadata e histórico de preços.
 """
 
 import yfinance as yf
@@ -31,6 +31,15 @@ TICKER_META = {
     "BRK-B":  {"name": "Berkshire Hathaway B",          "type": "Ação",  "exchange": "NYSE",              "sector": "Financeiro"},
 }
 
+# Períodos a guardar: chave -> (period, interval)
+HISTORY_PERIODS = {
+    "1D":  ("1d",  "2m"),
+    "1S":  ("5d",  "1h"),
+    "1M":  ("1mo", "1d"),
+    "1A":  ("1y",  "1wk"),
+    "3A":  ("3y",  "1wk"),
+}
+
 def fmt_large(n):
     if n is None: return "—"
     if n >= 1e12: return f"${n/1e12:.2f}T"
@@ -43,6 +52,31 @@ def fmt_vol(n):
     if n >= 1e6: return f"{n/1e6:.1f}M"
     if n >= 1e3: return f"{n/1e3:.1f}K"
     return str(n)
+
+def get_history(t_obj, period, interval):
+    """Devolve lista de {t (unix timestamp), v (float)} ou lista vazia."""
+    try:
+        hist = t_obj.history(period=period, interval=interval, auto_adjust=True)
+        if hist.empty:
+            return []
+        pts = []
+        for ts, row in hist.iterrows():
+            close = row.get("Close")
+            if close is None or (hasattr(close, '__iter__')):
+                # MultiIndex fallback
+                try: close = float(row["Close"].iloc[0])
+                except: continue
+            else:
+                close = float(close)
+            if close != close:  # NaN
+                continue
+            # Converte para Unix timestamp int
+            unix = int(ts.timestamp())
+            pts.append({"t": unix, "v": round(close, 4)})
+        return pts
+    except Exception as e:
+        print(f"    histórico {period}/{interval}: {e}")
+        return []
 
 def get_stock_data(ticker):
     try:
@@ -78,12 +112,18 @@ def get_stock_data(ticker):
 
         div_str = "—"
         if div_rate and div_yield:
-            # yfinance devolve dividendYield em decimal (ex: 0.0037 = 0.37%)
-            # Se o valor já vier em percentagem (>= 1), não multiplicamos por 100
             div_pct = div_yield * 100 if div_yield < 1 else div_yield
             div_str = f"{sym}{div_rate:.2f} ({div_pct:.2f}%)"
 
         display_ticker = ticker.replace(".AS", "").replace(".L", "")
+
+        # Recolher histórico para todos os períodos
+        print(f"    a buscar histórico…")
+        history = {}
+        for period_key, (period, interval) in HISTORY_PERIODS.items():
+            pts = get_history(t, period, interval)
+            history[period_key] = pts
+            print(f"      {period_key}: {len(pts)} pontos")
 
         return {
             "ticker":      display_ticker,
@@ -107,6 +147,7 @@ def get_stock_data(ticker):
             "currency":    currency,
             "symbol":      sym,
             "about":       about[:400] if about else "",
+            "history":     history,
             **TICKER_META.get(ticker, {"name": ticker, "type": "—", "exchange": "—", "sector": "—"})
         }
     except Exception as e:
@@ -114,14 +155,15 @@ def get_stock_data(ticker):
         return None
 
 def main():
-    print("FundScope — A buscar preços em tempo real...")
+    print("FundScope — A buscar preços e histórico em tempo real...")
     result = {}
     for ticker in TICKERS:
+        print(f"  {ticker}…")
         data = get_stock_data(ticker)
         if data:
             display = data["ticker"]
             result[display] = data
-            print(f"  {display}: {data['symbol']}{data['price']} ({'+' if data['changePct']>=0 else ''}{data['changePct']}%)")
+            print(f"  ✓ {display}: {data['symbol']}{data['price']} ({'+' if data['changePct']>=0 else ''}{data['changePct']}%)")
 
     output = {
         "updated": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
@@ -131,7 +173,7 @@ def main():
     with open("data.json", "w", encoding="utf-8") as f:
         json.dump(output, f, ensure_ascii=False, indent=2)
 
-    print(f"\n  data.json gerado com {len(result)} tickers.")
+    print(f"\n  data.json gerado com {len(result)} tickers (com histórico).")
 
 if __name__ == "__main__":
     main()
