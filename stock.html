@@ -190,12 +190,11 @@ function fetchTimeout(url,ms=12000){
   return fetch(url,{signal:ctrl.signal}).finally(()=>clearTimeout(tid));
 }
 
-/* ── Ticker da URL — sem sufixos de bolsa ── */
-const TICKER=(()=>{
-  const p=new URLSearchParams(location.search);
-  const t=(p.get('ticker')||p.get('t')||'').trim().toUpperCase();
-  // Rejeita tickers com sufixo de bolsa europeia (ex: ASML.AS, MC.PA)
-  return t.replace(/\.[A-Z]+$/,'');
+/* ── Ticker da URL ── */
+const TICKER = (() => {
+  const p = new URLSearchParams(location.search);
+  const t = (p.get('ticker') || p.get('t') || '').trim().toUpperCase();
+  return t; // Não faz replace! O bloqueio é feito no entry point abaixo.
 })();
 
 /* ── Worker: gráfico (Yahoo Finance) ── */
@@ -285,73 +284,82 @@ function updateChangeBadge(pts,period){
   badge.className='chart-change-badge '+(up?'up':'down');
 }
 
-/* ── Dados combinados ── */
+/* ── Dados combinados: chart + stats em paralelo + FALLBACK DATA.JSON ── */
 async function fetchLiveQuote(ticker){
-  const [chartData, stats] = await Promise.all([
+  // O Promise.all TRIPLO é vital para nunca perder estatísticas!
+  const [chartData, stats, staticDataRaw] = await Promise.all([
     workerChart(ticker,'1d','5m'),
     workerStats(ticker),
+    fetchTimeout('data.json', 4000).then(r=>r.json()).catch(()=>null)
   ]);
 
   const chartResult = chartData?.chart?.result?.[0];
   const meta        = chartResult?.meta || {};
+  const staticStock = staticDataRaw?.stocks?.[ticker] || {};
+
   const priceM      = stats?.price || {};
   const summM       = stats?.summaryDetail || {};
   const keyM        = stats?.defaultKeyStatistics || {};
 
-  // Preço: Finnhub em primeiro, Yahoo como fallback
-  const price = rawVal(priceM.regularMarketPrice) || meta.regularMarketPrice;
+  // Preço: Worker em primeiro, Yahoo gráfico em segundo, data.json em terceiro
+  const price = rawVal(priceM.regularMarketPrice) ?? meta.regularMarketPrice ?? staticStock.price;
   if(!price || price === 0) return null;
 
-  const prevClose = rawVal(priceM.regularMarketPreviousClose) || rawVal(summM.previousClose) || meta.chartPreviousClose || price;
+  const prevClose = rawVal(priceM.regularMarketPreviousClose) ?? rawVal(summM.previousClose) ?? meta.chartPreviousClose ?? staticStock.prevClose ?? price;
   const change    = parseFloat((price - prevClose).toFixed(2));
   const changePct = parseFloat(((change/prevClose)*100).toFixed(2));
 
+  // FALLBACKS INTELIGENTES: Se a API falhar, vai ao data.json (staticStock)
   const mktCapRaw = rawVal(priceM.marketCap);
-  const marketCap = mktCapRaw ? fmtLarge(mktCapRaw) : '\u2014';
+  const marketCap = mktCapRaw ? fmtLarge(mktCapRaw) : (staticStock.marketCap || '\u2014');
 
   const peRaw  = rawVal(summM.trailingPE) ?? rawVal(keyM.trailingPE);
-  const pe     = peRaw  != null ? parseFloat(Number(peRaw).toFixed(1))  : '\u2014';
-  const epsRaw = rawVal(keyM.trailingEps);
-  const eps    = epsRaw != null ? parseFloat(Number(epsRaw).toFixed(2)) : '\u2014';
-  const betaRaw= rawVal(keyM.beta) ?? rawVal(summM.beta);
-  const beta   = betaRaw!= null ? parseFloat(Number(betaRaw).toFixed(2)): '\u2014';
+  const pe     = peRaw  != null ? parseFloat(Number(peRaw).toFixed(1))  : (staticStock.pe || '\u2014');
 
-  let divStr='\u2014';
-  const divRate =rawVal(summM.dividendRate);
-  const divYield=rawVal(summM.dividendYield);
-  if(divRate && divRate>0){
-    const pct=divYield?(divYield<1?divYield*100:divYield):null;
-    divStr='$'+divRate.toFixed(2)+(pct?' ('+pct.toFixed(2)+'%)':'');
+  const epsRaw = rawVal(keyM.trailingEps);
+  const eps    = epsRaw != null ? parseFloat(Number(epsRaw).toFixed(2)) : (staticStock.eps || '\u2014');
+
+  const betaRaw= rawVal(keyM.beta) ?? rawVal(summM.beta);
+  const beta   = betaRaw!= null ? parseFloat(Number(betaRaw).toFixed(2)): (staticStock.beta || '\u2014');
+
+  let divStr = '\u2014';
+  const divRate  = rawVal(summM.dividendRate);
+  const divYield = rawVal(summM.dividendYield);
+  if(divRate && divRate > 0){
+    const pct = divYield ? (divYield < 1 ? divYield * 100 : divYield) : null;
+    divStr = '$' + divRate.toFixed(2) + (pct ? ' (' + pct.toFixed(2) + '%)' : '');
+  } else if (staticStock.dividend && staticStock.dividend !== '—') {
+    divStr = staticStock.dividend;
   }
 
-  const volRaw   = rawVal(priceM.regularMarketVolume) ?? meta.regularMarketVolume;
-  const avgVolRaw= rawVal(summM.averageVolume);
-  const volume   = volRaw    ? fmtVol(volRaw)    : '\u2014';
-  const avgVolume= avgVolRaw ? fmtVol(avgVolRaw) : '\u2014';
+  const volRaw    = rawVal(priceM.regularMarketVolume) ?? meta.regularMarketVolume;
+  const avgVolRaw = rawVal(summM.averageVolume);
+  const volume    = volRaw    ? fmtVol(volRaw)    : (staticStock.volume || '\u2014');
+  const avgVolume = avgVolRaw ? fmtVol(avgVolRaw) : (staticStock.avgVolume || '\u2014');
 
-  const w52hRaw = rawVal(summM.fiftyTwoWeekHigh) ?? meta.fiftyTwoWeekHigh;
-  const w52lRaw = rawVal(summM.fiftyTwoWeekLow)  ?? meta.fiftyTwoWeekLow;
+  const w52hRaw = rawVal(summM.fiftyTwoWeekHigh) ?? meta.fiftyTwoWeekHigh ?? staticStock.week52High;
+  const w52lRaw = rawVal(summM.fiftyTwoWeekLow)  ?? meta.fiftyTwoWeekLow  ?? staticStock.week52Low;
   const w52h    = w52hRaw ? parseFloat(Number(w52hRaw).toFixed(2)) : null;
   const w52l    = w52lRaw ? parseFloat(Number(w52lRaw).toFixed(2)) : null;
 
-  const qt = priceM.quoteType ?? meta.instrumentType ?? '';
+  const qt = priceM.quoteType ?? meta.instrumentType ?? (staticStock.type==='Ação'?'EQUITY':staticStock.type==='ETF'?'ETF':'');
 
   return {
     ticker,
-    name:      rawVal(priceM.longName) ?? rawVal(priceM.shortName) ?? meta.longName ?? meta.shortName ?? ticker,
-    exchange:  rawVal(priceM.exchangeName) ?? meta.exchangeName ?? 'NASDAQ / NYSE',
-    type:      qt==='EQUITY'?'Ação':qt==='ETF'?'ETF':qt==='MUTUALFUND'?'Fundo':qt==='INDEX'?'Índice':'',
+    name:      rawVal(priceM.longName) ?? rawVal(priceM.shortName) ?? meta.longName ?? meta.shortName ?? staticStock.name ?? ticker,
+    exchange:  rawVal(priceM.exchangeName) ?? meta.exchangeName ?? staticStock.exchange ?? 'NASDAQ / NYSE',
+    type:      qt==='EQUITY'?'Ação':qt==='ETF'?'ETF':qt==='MUTUALFUND'?'Fundo':qt==='INDEX'?'Índice':(staticStock.type||''),
     currency:  'USD',
     price:     parseFloat(price.toFixed(2)),
     prevClose: parseFloat(prevClose.toFixed(2)),
     change, changePct,
-    open:      rawVal(priceM.regularMarketOpen)    ?? meta.regularMarketOpen    ?? null,
-    high:      rawVal(priceM.regularMarketDayHigh) ?? meta.regularMarketDayHigh ?? null,
-    low:       rawVal(priceM.regularMarketDayLow)  ?? meta.regularMarketDayLow  ?? null,
+    open:      rawVal(priceM.regularMarketOpen)    ?? meta.regularMarketOpen    ?? staticStock.open ?? null,
+    high:      rawVal(priceM.regularMarketDayHigh) ?? meta.regularMarketDayHigh ?? staticStock.high ?? null,
+    low:       rawVal(priceM.regularMarketDayLow)  ?? meta.regularMarketDayLow  ?? staticStock.low ?? null,
     week52High: w52h, week52Low: w52l,
     volume, avgVolume, marketCap,
     pe, eps, beta, dividend: divStr,
-    hist1D: parseChartPts(chartData),
+    hist1D: parseChartPts(chartData) || (staticStock.history ? staticStock.history['1D'] : []),
   };
 }
 
@@ -487,10 +495,13 @@ function renderError(ticker,msg){
 /* ── Entry point ── */
 if(!TICKER){
   renderError('?','Nenhum ticker na URL. Exemplo: stock.html?ticker=AAPL');
-}else{
+} else if (TICKER.includes('.')) {
+  // O verdadeiro bloqueio de ações europeias faz-se aqui!
+  renderError(TICKER, 'Ticker "' + TICKER + '" inválido. Este site suporta apenas ações americanas puras (sem sufixos de bolsas internacionais como .AS, .L ou .PA).');
+} else {
   fetchLiveQuote(TICKER).then(data=>{
     if(data) renderStock(data);
-    else renderError(TICKER,'Ticker "'+TICKER+'" não encontrado. Certifica-te que é um ticker de bolsa norte-americana (ex: AAPL, MSFT, GOOGL, SPY).');
+    else renderError(TICKER,'Ticker "'+TICKER+'" não encontrado ou API bloqueada.');
   });
 }
 </script>
