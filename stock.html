@@ -98,11 +98,44 @@
     .error-state{text-align:center;padding:var(--space-16) var(--space-8);color:var(--color-text-muted);}
     .error-state h2{font-size:var(--text-lg);margin-bottom:var(--space-3);color:var(--color-text);}
     .error-detail{margin-top:var(--space-2);font-size:var(--text-sm);color:var(--color-text-faint);font-family:monospace;background:var(--color-surface);padding:var(--space-3);border-radius:var(--radius-md);text-align:left;max-width:520px;margin-inline:auto;word-break:break-all;line-height:1.6;}
+    /* ── Analistas ── */
+    .analyst-card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-5);box-shadow:var(--shadow-sm);margin-bottom:var(--space-6);}
+    .analyst-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-4);margin-bottom:var(--space-5);}
+    .analyst-kpi{text-align:center;}
+    .analyst-kpi .kpi-value{font-size:var(--text-base);}
+    .rec-bar-wrap{display:flex;gap:3px;height:8px;border-radius:var(--radius-full);overflow:hidden;margin-bottom:var(--space-3);}
+    .rec-seg{height:100%;transition:width .4s ease;}
+    .rec-seg.strong-buy{background:#437a22;}
+    .rec-seg.buy{background:#8ab74a;}
+    .rec-seg.hold{background:#bab9b4;}
+    .rec-seg.sell{background:#dd8a6a;}
+    .rec-seg.strong-sell{background:#a13544;}
+    .rec-legend{display:flex;gap:var(--space-4);flex-wrap:wrap;}
+    .rec-legend-item{display:flex;align-items:center;gap:5px;font-size:var(--text-xs);color:var(--color-text-muted);}
+    .rec-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+    /* ── Notícias ── */
+    .news-section{margin-bottom:var(--space-6);}
+    .news-section-title{font-size:var(--text-xs);font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--color-text-faint);margin-bottom:var(--space-4);}
+    .news-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4);}
+    .news-card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);overflow:hidden;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;transition:box-shadow var(--transition);}
+    .news-card:hover{box-shadow:var(--shadow-md);}
+    .news-img{width:100%;height:120px;object-fit:cover;background:var(--color-surface-offset);}
+    .news-body{padding:var(--space-4);flex:1;display:flex;flex-direction:column;gap:var(--space-2);}
+    .news-meta{display:flex;align-items:center;gap:var(--space-2);font-size:var(--text-xs);color:var(--color-text-faint);}
+    .news-source{font-weight:600;color:var(--color-text-muted);}
+    .news-sentiment{padding:1px 6px;border-radius:var(--radius-full);font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;}
+    .news-sentiment.positive{background:var(--color-success-bg);color:var(--color-success);}
+    .news-sentiment.negative{background:var(--color-error-bg);color:var(--color-error);}
+    .news-sentiment.neutral{background:var(--color-surface-offset);color:var(--color-text-faint);}
+    .news-title{font-size:var(--text-sm);font-weight:600;line-height:1.4;color:var(--color-text);flex:1;}
+    .news-title:hover{color:var(--color-primary);}
+    .news-date{font-size:var(--text-xs);color:var(--color-text-faint);margin-top:auto;}
+    .news-fallback{font-size:var(--text-xs);color:var(--color-text-faint);padding:var(--space-4);text-align:center;background:var(--color-surface);border-radius:var(--radius-xl);border:1px solid var(--color-border);}
     .footer{padding:var(--space-6);text-align:center;font-size:var(--text-xs);color:var(--color-text-faint);border-top:1px solid var(--color-divider);}
     .footer a{color:var(--color-text-muted);transition:color var(--transition);}
     .footer a:hover{color:var(--color-primary);}
-    @media(max-width:768px){.grid-2{grid-template-columns:1fr;}.grid-3{grid-template-columns:1fr 1fr;}.stock-hero{flex-direction:column;}.stock-price-block{text-align:left;}.page{padding:var(--space-6) var(--space-4) var(--space-16);}}
-    @media(max-width:480px){.grid-3{grid-template-columns:1fr;}.header{padding:var(--space-3) var(--space-4);}}
+    @media(max-width:768px){.grid-2{grid-template-columns:1fr;}.grid-3{grid-template-columns:1fr 1fr;}.stock-hero{flex-direction:column;}.stock-price-block{text-align:left;}.page{padding:var(--space-6) var(--space-4) var(--space-16);}.analyst-grid{grid-template-columns:1fr 1fr;}.news-grid{grid-template-columns:1fr;}}
+    @media(max-width:480px){.grid-3{grid-template-columns:1fr;}.header{padding:var(--space-3) var(--space-4);}.analyst-grid{grid-template-columns:1fr 1fr;}}
   </style>
 </head>
 <body>
@@ -180,9 +213,17 @@ function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').repl
 function fmtNum(n,dec=2){if(n==null||isNaN(n)||n===0)return '\u2014';return Number(n).toFixed(dec);}
 function fmtLarge(n){if(!n||isNaN(n))return '\u2014';if(n>=1e12)return '$'+(n/1e12).toFixed(2)+'T';if(n>=1e9)return '$'+(n/1e9).toFixed(2)+'B';if(n>=1e6)return '$'+(n/1e6).toFixed(2)+'M';return '$'+n.toFixed(0);}
 function fmtVol(n){if(!n||isNaN(n))return '\u2014';if(n>=1e6)return (n/1e6).toFixed(1)+'M';if(n>=1e3)return (n/1e3).toFixed(1)+'K';return String(n);}
+function fmtRelTime(iso){
+  const d=new Date(iso),now=Date.now(),diff=Math.floor((now-d)/1000);
+  if(diff<60) return 'agora';
+  if(diff<3600) return Math.floor(diff/60)+'min';
+  if(diff<86400) return Math.floor(diff/3600)+'h';
+  if(diff<604800) return Math.floor(diff/86400)+'d';
+  return d.toLocaleDateString('pt',{day:'numeric',month:'short'});
+}
 function round2(n){return Math.round(n*100)/100;}
 
-/* ── rawVal corrigido: { raw: null } devolve null, não o objecto inteiro ── */
+/* ── rawVal ── */
 function rawVal(obj){
   if(obj !== null && typeof obj === 'object' && 'raw' in obj) return obj.raw;
   return obj ?? null;
@@ -202,7 +243,7 @@ const TICKER = (() => {
   return t;
 })();
 
-/* ── FIX 2/3: botão Voltar dinâmico conforme from= na URL ── */
+/* ── FIX 2/3: botão Voltar dinâmico ── */
 (function(){
   const from = new URLSearchParams(location.search).get('from');
   if(from === 'watchlist'){
@@ -213,7 +254,7 @@ const TICKER = (() => {
   }
 })();
 
-/* ── Worker: gráfico (Yahoo Finance) ── */
+/* ── Worker: gráfico ── */
 async function workerChart(ticker,range,interval){
   try{
     const r=await fetchTimeout(`${WORKER}?ticker=${encodeURIComponent(ticker)}&range=${range}&interval=${interval}`,12000);
@@ -222,7 +263,7 @@ async function workerChart(ticker,range,interval){
   }catch(e){return null;}
 }
 
-/* ── Worker: estatísticas (Finnhub) — 1 pedido, o Worker já devolve os 3 módulos ── */
+/* ── Worker: estatísticas (price, summaryDetail, defaultKeyStatistics) ── */
 async function workerStats(ticker){
   try{
     const r=await fetchTimeout(`${WORKER}?ticker=${encodeURIComponent(ticker)}&modules=price`,12000);
@@ -231,6 +272,29 @@ async function workerStats(ticker){
     if(j?.quoteSummary?.error) return null;
     return j?.quoteSummary?.result?.[0]||null;
   }catch(e){return null;}
+}
+
+/* ── FIX 3/3: Worker analistas (financialData) ── */
+async function workerAnalysts(ticker){
+  try{
+    const r=await fetchTimeout(`${WORKER}?ticker=${encodeURIComponent(ticker)}&modules=financialData`,12000);
+    if(!r.ok) return null;
+    const j=await r.json();
+    if(j?.quoteSummary?.error) return null;
+    return j?.quoteSummary?.result?.[0]?.financialData || null;
+  }catch(e){return null;}
+}
+
+/* ── FIX 3/3: Notícias do news.json filtradas por ticker ── */
+async function fetchNews(ticker){
+  try{
+    const r=await fetchTimeout('news.json',6000);
+    const j=await r.json();
+    const articles=j?.articles||[];
+    const byTicker=articles.filter(a=>Array.isArray(a.impact?.tickers)&&a.impact.tickers.includes(ticker));
+    if(byTicker.length>=2) return byTicker.slice(0,4);
+    return articles.slice(0,4);
+  }catch(e){return [];}
 }
 
 /* ── Gráfico ── */
@@ -355,7 +419,7 @@ async function fetchLiveQuote(ticker){
   const w52h    = (w52hRaw != null) ? parseFloat(Number(w52hRaw).toFixed(2)) : null;
   const w52l    = (w52lRaw != null) ? parseFloat(Number(w52lRaw).toFixed(2)) : null;
 
-  const qt = rawVal(priceM.quoteType) ?? meta.instrumentType ?? (staticStock.type==='A\u00e7\u00e3o'?'EQUITY':staticStock.type==='ETF'?'ETF':'');
+  const qt = rawVal(priceM.quoteType) ?? meta.instrumentType ?? (staticStock.type==='\u00c7\u00e3o'?'EQUITY':staticStock.type==='ETF'?'ETF':'');
 
   return {
     ticker,
@@ -449,7 +513,9 @@ function renderStock(s){
         </div>
       </div>
     </div>
-  </div>`;
+  </div>
+  <div id="analystSection"></div>
+  <div id="newsSection"></div>`;
 
   document.getElementById('stockContent').style.display='block';
 
@@ -484,6 +550,112 @@ function renderStock(s){
   img.onload=()=>{const w=document.getElementById('logoWrap');if(w){w.innerHTML='';w.appendChild(img);}};
   img.onerror=()=>{};
   img.src='https://logo.clearbit.com/'+ticker.toLowerCase()+'.com';
+
+  /* ── FIX 3/3: carregar analistas e notícias em paralelo ── */
+  Promise.all([workerAnalysts(ticker), fetchNews(ticker)]).then(([fd, articles])=>{
+    renderAnalysts(fd, price);
+    renderNews(articles, ticker);
+  });
+}
+
+/* ── FIX 3/3: Render Analistas ── */
+function renderAnalysts(fd, currentPrice){
+  const sec = document.getElementById('analystSection');
+  if(!sec) return;
+  if(!fd){sec.innerHTML='';return;}
+
+  const targetMean = rawVal(fd.targetMeanPrice);
+  const targetHigh = rawVal(fd.targetHighPrice);
+  const targetLow  = rawVal(fd.targetLowPrice);
+  const recKey     = fd.recommendationKey || '';
+  const numAnal    = rawVal(fd.numberOfAnalystOpinions);
+
+  if(!targetMean && !recKey){sec.innerHTML='';return;}
+
+  const recLabels={
+    'strong_buy':'Compra Forte','buy':'Comprar','hold':'Manter',
+    'sell':'Vender','strong_sell':'Venda Forte','':\u2014
+  };
+  const recColors={
+    'strong_buy':'var(--color-success)','buy':'#8ab74a','hold':'var(--color-text-muted)',
+    'sell':'#dd8a6a','strong_sell':'var(--color-error)',''  :'var(--color-text-faint)'
+  };
+  const recLabel = recLabels[recKey] ?? recKey;
+  const recColor = recColors[recKey] ?? 'var(--color-text-faint)';
+
+  const upside = (targetMean && currentPrice)
+    ? ((targetMean - currentPrice) / currentPrice * 100)
+    : null;
+  const upsideStr = upside != null
+    ? `${upside>=0?'+':''}${upside.toFixed(1)}%`
+    : '\u2014';
+  const upsideCls = upside == null ? '' : (upside >= 0 ? 'color:var(--color-success)' : 'color:var(--color-error)');
+
+  sec.innerHTML=`
+  <div class="analyst-card">
+    <div class="card-title">Analistas</div>
+    <div class="analyst-grid">
+      <div class="analyst-kpi">
+        <div class="kpi-value">${targetMean ? '$'+Number(targetMean).toFixed(2) : '\u2014'}</div>
+        <div class="kpi-label">Target m\u00e9dio</div>
+      </div>
+      <div class="analyst-kpi">
+        <div class="kpi-value" style="${upsideCls}">${upsideStr}</div>
+        <div class="kpi-label">Upside potencial</div>
+      </div>
+      <div class="analyst-kpi">
+        <div class="kpi-value" style="color:${recColor}">${recLabel}</div>
+        <div class="kpi-label">Consenso</div>
+      </div>
+      <div class="analyst-kpi">
+        <div class="kpi-value">${numAnal ?? '\u2014'}</div>
+        <div class="kpi-label">N.º analistas</div>
+      </div>
+    </div>
+    <div class="range-bar-wrap">
+      <div class="range-labels">
+        <span>Target baixo: ${targetLow ? '$'+Number(targetLow).toFixed(2) : '\u2014'}</span>
+        <span>Target alto: ${targetHigh ? '$'+Number(targetHigh).toFixed(2) : '\u2014'}</span>
+      </div>
+      ${(targetLow && targetHigh && targetHigh > targetLow) ? `
+      <div class="range-track">
+        <div class="range-fill" style="width:100%;"></div>
+        ${targetMean ? `<div class="range-thumb" style="left:${Math.min(100,Math.max(0,Math.round((targetMean-targetLow)/(targetHigh-targetLow)*100)))}%;"></div>` : ''}
+      </div>` : ''}
+    </div>
+  </div>`;
+}
+
+/* ── FIX 3/3: Render Notícias ── */
+function renderNews(articles, ticker){
+  const sec = document.getElementById('newsSection');
+  if(!sec) return;
+  if(!articles || articles.length === 0){
+    sec.innerHTML=`<div class="news-section"><div class="news-section-title">Not\u00edcias</div><div class="news-fallback">Sem not\u00edcias dispon\u00edveis de momento.</div></div>`;
+    return;
+  }
+
+  const cards = articles.map(a=>{
+    const sent = a.impact?.sentiment || 'neutral';
+    const sentLabel = sent==='positive'?'Positivo':sent==='negative'?'Negativo':'Neutro';
+    const imgSrc = a.image || 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80';
+    return `<a href="${esc(a.url)}" target="_blank" rel="noopener" class="news-card">
+      <img class="news-img" src="${esc(imgSrc)}" alt="" loading="lazy" onerror="this.style.display='none'">
+      <div class="news-body">
+        <div class="news-meta">
+          <span class="news-source">${esc(a.source||'')}</span>
+          <span class="news-sentiment ${sent}">${sentLabel}</span>
+        </div>
+        <div class="news-title">${esc(a.title||'')}</div>
+        <div class="news-date">${fmtRelTime(a.publishedAt)}</div>
+      </div>
+    </a>`;
+  }).join('');
+
+  sec.innerHTML=`<div class="news-section">
+    <div class="news-section-title">Not\u00edcias recentes</div>
+    <div class="news-grid">${cards}</div>
+  </div>`;
 }
 
 /* ── Erro ── */
