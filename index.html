@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>FundScope</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300..700&display=swap" rel="stylesheet">
@@ -237,15 +238,9 @@
       } catch {}
     }
 
-    // ─── Yahoo Finance — endpoint público, sem chave de API ─────────────────
-    // Pesquisa de tickers: query2.finance.yahoo.com/v1/finance/search
-    // Cotação em tempo real: query1.finance.yahoo.com/v8/finance/chart/{SYMBOL}
-    // Ambos são públicos e sem rate limit publicado.
-
     const YF_PROXY = 'https://query2.finance.yahoo.com/v1/finance/search';
     const YF_QUOTE = 'https://query1.finance.yahoo.com/v8/finance/chart/';
-    // Corsproxy público para contornar CORS no browser
-    const CORS = 'https://corsproxy.io/?' ;
+    const CORS = 'https://corsproxy.io/?';
 
     async function yfSearch(term) {
       const url = `${CORS}${encodeURIComponent(YF_PROXY + '?q=' + encodeURIComponent(term) + '&lang=en&region=US&quotesCount=8&newsCount=0&enableFuzzyQuery=true&quotesQueryId=tss_match_phrase_query')}`;
@@ -273,7 +268,6 @@
       return m[qt] || qt;
     }
 
-    // ─── UI helpers ─────────────────────────────────────────────────────────
     const panel   = document.getElementById('resultsPanel');
     const list    = document.getElementById('resultsList');
     const mainIn  = document.getElementById('mainSearch');
@@ -308,27 +302,23 @@
       </a>`;
     }
 
-    // ─── Pesquisa principal ─────────────────────────────────────────────────
     async function doSearch(q) {
       const term = q.trim();
       if (!term) { list.innerHTML = '<div class="results-empty">Escreve para pesquisar&#8230;</div>'; return; }
       list.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>';
 
-      // 1. Verificar dados locais primeiro (0 chamadas API)
       const termUpper = term.toUpperCase();
       const localHits = Object.values(LOCAL).filter(s =>
         (s.ticker || '').toUpperCase().includes(termUpper) ||
         (s.name   || '').toUpperCase().includes(termUpper)
       );
 
-      // Se encontrou localmente, mostra imediatamente e continua a enriquecer
       if (localHits.length) {
         list.innerHTML = localHits
           .map(s => resultHTML(s.ticker, s.name || s.ticker, s.type || 'A\u00e7\u00e3o', s.exchange || '', s.price || 0, s.changePct || 0, s.symbol || '$'))
           .join('');
       }
 
-      // 2. Yahoo Finance search — sem chave, sem limite
       try {
         const data = await yfSearch(term);
         const quotes = (data.quotes || []).filter(q =>
@@ -343,76 +333,40 @@
           return;
         }
 
-        // 3. Para cada resultado, tentar obter cotação
-        //    Primeiro verificar dados locais, depois Yahoo Finance quote
         const results = await Promise.all(quotes.map(async h => {
-          // Chave local: ticker sem sufixo de bolsa
           const localKey = h.symbol.replace(/\.(AS|L|PA|DE|MI|BR|HK|T|BO|NS|F|ST|CO|OL|HE|VI|PR|IS)$/i, '');
           if (LOCAL[localKey]) {
             const s = LOCAL[localKey];
-            return {
-              ticker:   localKey,
-              name:     h.longname || h.shortname || s.name,
-              typeLabel: quoteTypeLabel(h.quoteType),
-              exch:     h.exchDisp || s.exchange || '',
-              price:    s.price,
-              chgPct:   s.changePct,
-              sym:      s.symbol || '$'
-            };
+            return { ticker:localKey, name:h.longname||h.shortname||s.name, typeLabel:quoteTypeLabel(h.quoteType), exch:h.exchDisp||s.exchange||'', price:s.price, chgPct:s.changePct, sym:s.symbol||'$' };
           }
-          // Cotação via Yahoo Finance (público)
           try {
             const cd = await yfQuote(h.symbol);
             const meta   = cd?.chart?.result?.[0]?.meta;
-            const closes = cd?.chart?.result?.[0]?.indicators?.quote?.[0]?.close || [];
             if (!meta || !meta.regularMarketPrice) return null;
             const price    = meta.regularMarketPrice;
             const prevClose= meta.chartPreviousClose || meta.previousClose || price;
             const chgPct   = prevClose ? ((price - prevClose) / prevClose) * 100 : 0;
-            const cur      = meta.currency || 'USD';
-            return {
-              ticker:   h.symbol,
-              name:     h.longname || h.shortname || h.symbol,
-              typeLabel: quoteTypeLabel(h.quoteType),
-              exch:     h.exchDisp || '',
-              price:    price,
-              chgPct:   chgPct,
-              sym:      currencySymbol(cur)
-            };
+            return { ticker:h.symbol, name:h.longname||h.shortname||h.symbol, typeLabel:quoteTypeLabel(h.quoteType), exch:h.exchDisp||'', price, chgPct, sym:currencySymbol(meta.currency||'USD') };
           } catch { return null; }
         }));
 
-        const seen   = new Set();
-        const deduped = results.filter(r => {
-          if (!r || seen.has(r.ticker)) return false;
-          seen.add(r.ticker);
-          return true;
-        });
+        const seen = new Set();
+        const deduped = results.filter(r => { if (!r || seen.has(r.ticker)) return false; seen.add(r.ticker); return true; });
 
         if (!deduped.length) {
-          if (!localHits.length) {
-            list.innerHTML = '<div class="results-empty">Sem pre\u00e7os dispon\u00edveis para "<strong>' + esc(q) + '</strong>"</div>';
-          }
+          if (!localHits.length) list.innerHTML = '<div class="results-empty">Sem pre\u00e7os dispon\u00edveis para "<strong>' + esc(q) + '</strong>"</div>';
           return;
         }
-
-        list.innerHTML = deduped
-          .map(r => resultHTML(r.ticker, r.name, r.typeLabel, r.exch, r.price, r.chgPct, r.sym))
-          .join('');
-
+        list.innerHTML = deduped.map(r => resultHTML(r.ticker, r.name, r.typeLabel, r.exch, r.price, r.chgPct, r.sym)).join('');
       } catch (err) {
-        // Fallback: mostrar apenas dados locais se o Yahoo falhar
         if (localHits.length) {
-          list.innerHTML = localHits
-            .map(s => resultHTML(s.ticker, s.name || s.ticker, s.type || 'A\u00e7\u00e3o', s.exchange || '', s.price || 0, s.changePct || 0, s.symbol || '$'))
-            .join('');
+          list.innerHTML = localHits.map(s => resultHTML(s.ticker, s.name||s.ticker, s.type||'A\u00e7\u00e3o', s.exchange||'', s.price||0, s.changePct||0, s.symbol||'$')).join('');
         } else {
           list.innerHTML = '<div class="results-empty">Erro de liga\u00e7\u00e3o. Tenta novamente.</div>';
         }
       }
     }
 
-    // ─── Event listeners ────────────────────────────────────────────────────
     document.getElementById('searchBtn').addEventListener('click', () => openPanel(mainIn.value));
     mainIn.addEventListener('keydown', e => { if (e.key === 'Enter') openPanel(mainIn.value); });
     mainIn.addEventListener('input', () => { if (mainIn.value.trim()) openPanel(mainIn.value); });
