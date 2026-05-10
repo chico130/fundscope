@@ -157,11 +157,11 @@
   </main>
 
   <footer class="footer">
-    <p>&#169; 2026 FundScope &middot; <a href="https://github.com/chico130/fundscope" target="_blank" rel="noopener">GitHub</a> &middot; Dados via Yahoo Finance &amp; FMP</p>
+    <p>&#169; 2026 FundScope &middot; <a href="https://github.com/chico130/fundscope" target="_blank" rel="noopener">GitHub</a> &middot; Dados via Yahoo Finance &amp; Finnhub</p>
   </footer>
 
 <script>
-const WORKER='https://stocks.araujo-francisco-fernandes.workers.dev';
+const WORKER = 'https://stocks.araujo-francisco-fernandes.workers.dev';
 
 /* ── tema ── */
 (function(){
@@ -177,9 +177,8 @@ const WORKER='https://stocks.araujo-francisco-fernandes.workers.dev';
 
 /* ── utils ── */
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-function sym(c){return({USD:'$',EUR:'\u20ac',GBP:'\u00a3',JPY:'\u00a5',CHF:'CHF\u00a0',CAD:'C$',AUD:'A$',DKK:'kr\u00a0',SEK:'kr\u00a0',NOK:'kr\u00a0',BRL:'R$',HKD:'HK$',CNY:'\u00a5',INR:'\u20b9'})[c]||(c+'\u00a0');}
 function fmtNum(n,dec=2){if(n==null||isNaN(n)||n===0)return '\u2014';return Number(n).toFixed(dec);}
-function fmtLarge(n,cur){if(!n||isNaN(n))return '\u2014';const s=cur?sym(cur):'$';if(n>=1e12)return s+(n/1e12).toFixed(2)+'T';if(n>=1e9)return s+(n/1e9).toFixed(2)+'B';if(n>=1e6)return s+(n/1e6).toFixed(2)+'M';return s+n.toFixed(0);}
+function fmtLarge(n){if(!n||isNaN(n))return '\u2014';if(n>=1e12)return '$'+(n/1e12).toFixed(2)+'T';if(n>=1e9)return '$'+(n/1e9).toFixed(2)+'B';if(n>=1e6)return '$'+(n/1e6).toFixed(2)+'M';return '$'+n.toFixed(0);}
 function fmtVol(n){if(!n||isNaN(n))return '\u2014';if(n>=1e6)return (n/1e6).toFixed(1)+'M';if(n>=1e3)return (n/1e3).toFixed(1)+'K';return String(n);}
 function round2(n){return Math.round(n*100)/100;}
 function rawVal(obj){return obj?.raw??obj??null;}
@@ -191,33 +190,38 @@ function fetchTimeout(url,ms=12000){
   return fetch(url,{signal:ctrl.signal}).finally(()=>clearTimeout(tid));
 }
 
-const TICKER=(()=>{const p=new URLSearchParams(location.search);return(p.get('ticker')||p.get('t')||'').trim().toUpperCase();})();
+/* ── Ticker da URL — sem sufixos de bolsa ── */
+const TICKER=(()=>{
+  const p=new URLSearchParams(location.search);
+  const t=(p.get('ticker')||p.get('t')||'').trim().toUpperCase();
+  // Rejeita tickers com sufixo de bolsa europeia (ex: ASML.AS, MC.PA)
+  return t.replace(/\.[A-Z]+$/,'');
+})();
 
-/* ── Worker: chart ── */
+/* ── Worker: gráfico (Yahoo Finance) ── */
 async function workerChart(ticker,range,interval){
   try{
-    const url=`${WORKER}?ticker=${encodeURIComponent(ticker)}&range=${range}&interval=${interval}`;
-    const r=await fetchTimeout(url,12000);
+    const r=await fetchTimeout(`${WORKER}?ticker=${encodeURIComponent(ticker)}&range=${range}&interval=${interval}`,12000);
     if(!r.ok) return null;
     return await r.json();
   }catch(e){return null;}
 }
 
-/* ── Worker: quoteSummary (stats) ── */
+/* ── Worker: estatísticas (Finnhub) ── */
 async function workerStats(ticker){
   try{
-    const modules='price,summaryDetail,defaultKeyStatistics';
-    const url=`${WORKER}?ticker=${encodeURIComponent(ticker)}&modules=${encodeURIComponent(modules)}`;
-    const r=await fetchTimeout(url,12000);
+    const r=await fetchTimeout(`${WORKER}?ticker=${encodeURIComponent(ticker)}&modules=price`,12000);
     if(!r.ok) return null;
     const j=await r.json();
-    const res=j?.quoteSummary?.result?.[0];
-    return res||null;
+    if(j?.quoteSummary?.error) return null;
+    return j?.quoteSummary?.result?.[0]||null;
   }catch(e){return null;}
 }
 
 /* ── Gráfico ── */
 let chartInst=null;
+const PERIOD_MAP={'1D':{range:'1d',interval:'5m'},'1S':{range:'5d',interval:'1h'},'1M':{range:'1mo',interval:'1d'},'1A':{range:'1y',interval:'1wk'},'3A':{range:'3y',interval:'1wk'}};
+
 function fmtAxisLabel(ts,period){
   const d=new Date(ts*1000);
   if(period==='1D') return d.toLocaleTimeString('pt',{hour:'2-digit',minute:'2-digit'});
@@ -229,6 +233,15 @@ function fmtTooltipLabel(ts,period){
   const d=new Date(ts*1000);
   if(period==='1D') return d.toLocaleString('pt',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});
   return d.toLocaleDateString('pt',{day:'2-digit',month:'short',year:'numeric'});
+}
+function parseChartPts(data){
+  try{
+    const result=data?.chart?.result?.[0];
+    if(!result) return [];
+    const ts=result.timestamp||[],cl=result.indicators?.quote?.[0]?.close||[],pts=[];
+    for(let i=0;i<ts.length;i++){const v=cl[i];if(v==null||isNaN(v))continue;pts.push({t:ts[i],v:parseFloat(v.toFixed(4))});}
+    return pts;
+  }catch(e){return [];}
 }
 function renderChart(period,pts){
   const wrap=document.querySelector('.chart-wrap');
@@ -255,10 +268,10 @@ function renderChart(period,pts){
       plugins:{legend:{display:false},tooltip:{backgroundColor:dark?'#f0ede8':'#1c1b19',titleColor:dark?'#28251d':'#e8e7e5',
         bodyColor:dark?'#28251d':'#e8e7e5',borderColor:dark?'#d4d1ca':'#2e2d2b',borderWidth:1,padding:10,cornerRadius:8,
         callbacks:{title:ctx=>{const i=ctx[0]?.dataIndex;return timestamps[i]?fmtTooltipLabel(timestamps[i],period):(labels[i]||'');},
-          label:ctx=>' '+ctx.parsed.y.toFixed(2)}}},
+          label:ctx=>' $'+ctx.parsed.y.toFixed(2)}}},
       scales:{
         x:{ticks:{color:axCol,maxTicksLimit:6,maxRotation:0,font:{size:11}},grid:{color:gridC},border:{display:false}},
-        y:{ticks:{color:axCol,maxTicksLimit:5,font:{size:11},callback:v=>v.toFixed(2)},grid:{color:gridC},border:{display:false},position:'right'}
+        y:{ticks:{color:axCol,maxTicksLimit:5,font:{size:11},callback:v=>'$'+v.toFixed(2)},grid:{color:gridC},border:{display:false},position:'right'}
       }}
   });
 }
@@ -268,111 +281,77 @@ function updateChangeBadge(pts,period){
   if(!pts||pts.length<2){badge.textContent='\u2014';badge.className='chart-change-badge';return;}
   const first=pts[0].v,last=pts[pts.length-1].v,chg=last-first,pct=first?(chg/first)*100:0;
   const up=chg>=0,sign=up?'+':'',arrow=up?'\u25b2':'\u25bc';
-  badge.textContent=`${arrow} ${sign}${sym(window._currency||'USD')}${Math.abs(chg).toFixed(2)} (${sign}${pct.toFixed(2)}%) \u2014 ${period}`;
+  badge.textContent=`${arrow} ${sign}$${Math.abs(chg).toFixed(2)} (${sign}${pct.toFixed(2)}%) \u2014 ${period}`;
   badge.className='chart-change-badge '+(up?'up':'down');
 }
 
-/* ── Histórico ── */
-const PERIOD_MAP={'1D':{range:'1d',interval:'5m'},'1S':{range:'5d',interval:'1h'},'1M':{range:'1mo',interval:'1d'},'1A':{range:'1y',interval:'1wk'},'3A':{range:'3y',interval:'1wk'}};
-function parseChartPts(data){
-  try{
-    const result=data?.chart?.result?.[0];
-    if(!result) return [];
-    const ts=result.timestamp||[],cl=result.indicators?.quote?.[0]?.close||[],pts=[];
-    for(let i=0;i<ts.length;i++){const v=cl[i];if(v==null||isNaN(v))continue;pts.push({t:ts[i],v:parseFloat(v.toFixed(4))});}
-    return pts;
-  }catch(e){return [];}
-}
-async function fetchHistory(yfTicker,period){
-  const {range,interval}=PERIOD_MAP[period];
-  return parseChartPts(await workerChart(yfTicker,range,interval));
-}
-
-/* ── Dados combinados: chart + stats + fallback data.json ── */
-async function fetchLiveQuote(yfTicker){
-  const dispTicker=yfTicker.replace(/\.[A-Z]+$/,'');
-
-  const [chartData, stats, staticDataRaw] = await Promise.all([
-    workerChart(yfTicker,'1d','5m'),
-    workerStats(yfTicker),
-    fetchTimeout('data.json',4000).then(r=>r.json()).catch(()=>null)
+/* ── Dados combinados ── */
+async function fetchLiveQuote(ticker){
+  const [chartData, stats] = await Promise.all([
+    workerChart(ticker,'1d','5m'),
+    workerStats(ticker),
   ]);
 
-  const chartResult=chartData?.chart?.result?.[0];
-  const meta=chartResult?.meta||{};
-  const st=staticDataRaw?.stocks?.[dispTicker]||{};
+  const chartResult = chartData?.chart?.result?.[0];
+  const meta        = chartResult?.meta || {};
+  const priceM      = stats?.price || {};
+  const summM       = stats?.summaryDetail || {};
+  const keyM        = stats?.defaultKeyStatistics || {};
 
-  const priceM = stats?.price||{};
-  const summM  = stats?.summaryDetail||{};
-  const keyM   = stats?.defaultKeyStatistics||{};
+  // Preço: Finnhub em primeiro, Yahoo como fallback
+  const price = rawVal(priceM.regularMarketPrice) || meta.regularMarketPrice;
+  if(!price || price === 0) return null;
 
-  const price = rawVal(priceM.regularMarketPrice) ?? meta.regularMarketPrice ?? st.price;
-  if(!price) return null;
-
-  const currency = priceM.currency ?? meta.currency ?? st.currency ?? 'USD';
-  const S = sym(currency);
-
-  const prevClose = rawVal(priceM.regularMarketPreviousClose) ?? rawVal(summM.previousClose) ?? meta.chartPreviousClose ?? st.prevClose ?? price;
+  const prevClose = rawVal(priceM.regularMarketPreviousClose) || rawVal(summM.previousClose) || meta.chartPreviousClose || price;
   const change    = parseFloat((price - prevClose).toFixed(2));
   const changePct = parseFloat(((change/prevClose)*100).toFixed(2));
 
   const mktCapRaw = rawVal(priceM.marketCap);
-  const marketCap = mktCapRaw ? fmtLarge(mktCapRaw, currency) : (st.marketCap || '\u2014');
+  const marketCap = mktCapRaw ? fmtLarge(mktCapRaw) : '\u2014';
 
-  const peRaw = rawVal(summM.trailingPE) ?? rawVal(keyM.trailingPE);
-  const pe = peRaw != null ? parseFloat(Number(peRaw).toFixed(1)) : (st.pe ?? '\u2014');
-
+  const peRaw  = rawVal(summM.trailingPE) ?? rawVal(keyM.trailingPE);
+  const pe     = peRaw  != null ? parseFloat(Number(peRaw).toFixed(1))  : '\u2014';
   const epsRaw = rawVal(keyM.trailingEps);
-  const eps = epsRaw != null ? parseFloat(Number(epsRaw).toFixed(2)) : (st.eps ?? '\u2014');
-
-  const betaRaw = rawVal(keyM.beta) ?? rawVal(summM.beta);
-  const beta = betaRaw != null ? parseFloat(Number(betaRaw).toFixed(2)) : (st.beta ?? '\u2014');
+  const eps    = epsRaw != null ? parseFloat(Number(epsRaw).toFixed(2)) : '\u2014';
+  const betaRaw= rawVal(keyM.beta) ?? rawVal(summM.beta);
+  const beta   = betaRaw!= null ? parseFloat(Number(betaRaw).toFixed(2)): '\u2014';
 
   let divStr='\u2014';
-  const divRate=rawVal(summM.dividendRate);
+  const divRate =rawVal(summM.dividendRate);
   const divYield=rawVal(summM.dividendYield);
-  if(divRate&&divRate>0){
+  if(divRate && divRate>0){
     const pct=divYield?(divYield<1?divYield*100:divYield):null;
-    divStr=S+divRate.toFixed(2)+(pct?' ('+pct.toFixed(2)+'%)':'');
-  } else if(st.dividend && st.dividend!=='\u2014'){
-    divStr=st.dividend;
+    divStr='$'+divRate.toFixed(2)+(pct?' ('+pct.toFixed(2)+'%)':'');
   }
 
   const volRaw   = rawVal(priceM.regularMarketVolume) ?? meta.regularMarketVolume;
-  const avgVolRaw= rawVal(summM.averageVolume) ?? rawVal(summM.averageVolume10days);
-  const volume   = volRaw ? fmtVol(volRaw) : (st.volume || '\u2014');
-  const avgVolume= avgVolRaw ? fmtVol(avgVolRaw) : (st.avgVolume || '\u2014');
+  const avgVolRaw= rawVal(summM.averageVolume);
+  const volume   = volRaw    ? fmtVol(volRaw)    : '\u2014';
+  const avgVolume= avgVolRaw ? fmtVol(avgVolRaw) : '\u2014';
 
-  const w52hRaw = rawVal(summM.fiftyTwoWeekHigh) ?? meta.fiftyTwoWeekHigh ?? st.week52High;
-  const w52lRaw = rawVal(summM.fiftyTwoWeekLow)  ?? meta.fiftyTwoWeekLow  ?? st.week52Low;
-  const w52h = w52hRaw ? parseFloat(Number(w52hRaw).toFixed(2)) : null;
-  const w52l = w52lRaw ? parseFloat(Number(w52lRaw).toFixed(2)) : null;
+  const w52hRaw = rawVal(summM.fiftyTwoWeekHigh) ?? meta.fiftyTwoWeekHigh;
+  const w52lRaw = rawVal(summM.fiftyTwoWeekLow)  ?? meta.fiftyTwoWeekLow;
+  const w52h    = w52hRaw ? parseFloat(Number(w52hRaw).toFixed(2)) : null;
+  const w52l    = w52lRaw ? parseFloat(Number(w52lRaw).toFixed(2)) : null;
 
-  const qt = priceM.quoteType ?? meta.instrumentType ?? (st.type==='A\u00e7\u00e3o'?'EQUITY':st.type==='ETF'?'ETF':'');
+  const qt = priceM.quoteType ?? meta.instrumentType ?? '';
 
-  const livePts = parseChartPts(chartData);
-  const hist1D  = livePts.length>1 ? livePts : (st.history?.['1D'] || []);
-
-  return{
-    ticker:    dispTicker,
-    yf_ticker: yfTicker,
-    name:      priceM.longName ?? priceM.shortName ?? meta.longName ?? meta.shortName ?? st.name ?? yfTicker,
-    exchange:  priceM.exchangeName ?? priceM.fullExchangeName ?? meta.exchangeName ?? st.exchange ?? '',
-    type:      qt==='EQUITY'?'A\u00e7\u00e3o':qt==='ETF'?'ETF':qt==='MUTUALFUND'?'Fundo':qt==='INDEX'?'\u00cdndice':(st.type||''),
-    currency,
+  return {
+    ticker,
+    name:      rawVal(priceM.longName) ?? rawVal(priceM.shortName) ?? meta.longName ?? meta.shortName ?? ticker,
+    exchange:  rawVal(priceM.exchangeName) ?? meta.exchangeName ?? 'NASDAQ / NYSE',
+    type:      qt==='EQUITY'?'Ação':qt==='ETF'?'ETF':qt==='MUTUALFUND'?'Fundo':qt==='INDEX'?'Índice':'',
+    currency:  'USD',
     price:     parseFloat(price.toFixed(2)),
     prevClose: parseFloat(prevClose.toFixed(2)),
     change, changePct,
-    open:      rawVal(priceM.regularMarketOpen)    ?? meta.regularMarketOpen    ?? st.open    ?? null,
-    high:      rawVal(priceM.regularMarketDayHigh) ?? meta.regularMarketDayHigh ?? st.high    ?? null,
-    low:       rawVal(priceM.regularMarketDayLow)  ?? meta.regularMarketDayLow  ?? st.low     ?? null,
-    week52High: w52h,
-    week52Low:  w52l,
+    open:      rawVal(priceM.regularMarketOpen)    ?? meta.regularMarketOpen    ?? null,
+    high:      rawVal(priceM.regularMarketDayHigh) ?? meta.regularMarketDayHigh ?? null,
+    low:       rawVal(priceM.regularMarketDayLow)  ?? meta.regularMarketDayLow  ?? null,
+    week52High: w52h, week52Low: w52l,
     volume, avgVolume, marketCap,
     pe, eps, beta, dividend: divStr,
-    history:   {'1D': hist1D},
-    _live:     true,
-    _staticHistory: st.history || null,
+    hist1D: parseChartPts(chartData),
   };
 }
 
@@ -380,25 +359,19 @@ async function fetchLiveQuote(yfTicker){
 function renderStock(s){
   document.getElementById('skeletonHero').style.display='none';
   document.getElementById('skeletonChart').style.display='none';
-  const ticker=s.ticker||TICKER,name=s.name||ticker,exchange=s.exchange||'',typeRaw=s.type||'';
-  const currency=s.currency||'USD',S=sym(currency);
-  window._currency=currency;
-  window._yfTicker=s.yf_ticker||ticker;
-  window._staticHistory=s._staticHistory||null;
-  const price=s.price,prevClose=s.prevClose??price;
-  const change=s.change??round2(price-prevClose),changePct=s.changePct??round2(prevClose?(change/prevClose)*100:0);
-  const open=s.open??price,high=s.high??price,low=s.low??price;
-  const vol=s.volume||'\u2014',avgVol=s.avgVolume||'\u2014',mcap=s.marketCap||'\u2014';
-  const w52h=s.week52High??price,w52l=s.week52Low??price;
-  const dash='\u2014';
-  const pe_v  = (s.pe  !==dash&&s.pe  !=null)?s.pe  :dash;
-  const eps_v = (s.eps !==dash&&s.eps !=null)?(S+s.eps):dash;
-  const beta_v= (s.beta!==dash&&s.beta!=null)?s.beta:dash;
-  const div_v = (s.dividend&&s.dividend!==dash)?s.dividend:dash;
+  const {ticker,name,exchange,type,price,prevClose,change,changePct,open,high,low,
+         volume,avgVolume,marketCap,pe,eps,beta,dividend,week52High:w52h,week52Low:w52l,hist1D}=s;
+  window._yfTicker = ticker;
   const up=changePct>=0,sign=up?'+':'',arrow=up?'\u25b2':'\u25bc',cls=up?'up':'down';
-  const w52p=w52h>w52l?Math.round((price-w52l)/(w52h-w52l)*100):50;
+  const dash='\u2014';
+  const pe_v  =(pe  !==dash&&pe  !=null)?pe  :dash;
+  const eps_v =(eps !==dash&&eps !=null)?('$'+eps):dash;
+  const beta_v=(beta!==dash&&beta!=null)?beta:dash;
+  const div_v =(dividend&&dividend!==dash)?dividend:dash;
+  const w52p  = w52h&&w52l&&w52h>w52l ? Math.round((price-w52l)/(w52h-w52l)*100) : 50;
   const PERIODS=['1D','1S','1M','1A','3A'];
   document.title='FundScope \u2014 '+ticker;
+
   document.getElementById('stockContent').innerHTML=`
   <div class="stock-hero">
     <div class="stock-identity">
@@ -406,13 +379,13 @@ function renderStock(s){
       <div>
         <div class="stock-ticker">${esc(ticker)}</div>
         <div class="stock-name">${esc(name)}</div>
-        <div class="stock-exchange">${esc(exchange)}${typeRaw?' &middot; '+esc(typeRaw):''}</div>
+        <div class="stock-exchange">${esc(exchange)}${type?' &middot; '+esc(type):''}</div>
       </div>
     </div>
     <div class="stock-price-block">
-      <div class="stock-price">${S}${fmtNum(price)}</div>
-      <div class="stock-change ${cls}">${arrow} ${sign}${S}${fmtNum(Math.abs(change))} (${sign}${fmtNum(Math.abs(changePct))}%)</div>
-      <div class="source-badge"><span class="live-dot"></span> Ao vivo &middot; ${esc(currency)}</div>
+      <div class="stock-price">$${fmtNum(price)}</div>
+      <div class="stock-change ${cls}">${arrow} ${sign}$${fmtNum(Math.abs(change))} (${sign}${fmtNum(Math.abs(changePct))}%)</div>
+      <div class="source-badge"><span class="live-dot"></span> Ao vivo &middot; USD</div>
     </div>
   </div>
   <div class="chart-card">
@@ -425,16 +398,16 @@ function renderStock(s){
     <div class="chart-wrap"><canvas id="priceChart"></canvas></div>
   </div>
   <div class="grid-3">
-    <div class="card"><div class="card-title">Abertura</div><div class="kpi-value">${S}${fmtNum(open)}</div><div class="kpi-label">Pre\u00e7o de abertura</div></div>
-    <div class="card"><div class="card-title">M\u00e1x / M\u00edn hoje</div><div class="kpi-value">${S}${fmtNum(high)}</div><div class="kpi-sub">M\u00edn: ${S}${fmtNum(low)}</div></div>
-    <div class="card"><div class="card-title">Volume</div><div class="kpi-value">${vol}</div><div class="kpi-label">M\u00e9dia: ${avgVol}</div></div>
+    <div class="card"><div class="card-title">Abertura</div><div class="kpi-value">$${fmtNum(open)}</div><div class="kpi-label">Preço de abertura</div></div>
+    <div class="card"><div class="card-title">Máx / Mín hoje</div><div class="kpi-value">$${fmtNum(high)}</div><div class="kpi-sub">Mín: $${fmtNum(low)}</div></div>
+    <div class="card"><div class="card-title">Volume</div><div class="kpi-value">${volume}</div><div class="kpi-label">Média: ${avgVolume}</div></div>
   </div>
   <div class="grid-2">
     <div class="card">
-      <div class="card-title">Estat\u00edsticas</div>
+      <div class="card-title">Estatísticas</div>
       <div class="stat-row">
-        <div class="stat-item"><span class="stat-label">Fecho anterior</span><span class="stat-value">${S}${fmtNum(prevClose)}</span></div>
-        <div class="stat-item"><span class="stat-label">Cap. mercado</span><span class="stat-value">${mcap}</span></div>
+        <div class="stat-item"><span class="stat-label">Fecho anterior</span><span class="stat-value">$${fmtNum(prevClose)}</span></div>
+        <div class="stat-item"><span class="stat-label">Cap. mercado</span><span class="stat-value">${marketCap}</span></div>
         <div class="stat-item"><span class="stat-label">P/E (trailing)</span><span class="stat-value">${pe_v}</span></div>
         <div class="stat-item"><span class="stat-label">EPS (trailing)</span><span class="stat-value">${eps_v}</span></div>
         <div class="stat-item"><span class="stat-label">Dividendo</span><span class="stat-value">${div_v}</span></div>
@@ -444,11 +417,11 @@ function renderStock(s){
     <div class="card">
       <div class="card-title">Intervalo 52 semanas</div>
       <div class="stat-row" style="margin-bottom:var(--space-4);">
-        <div class="stat-item"><span class="stat-label">M\u00e1ximo 52s</span><span class="stat-value">${S}${fmtNum(w52h)}</span></div>
-        <div class="stat-item"><span class="stat-label">M\u00ednimo 52s</span><span class="stat-value">${S}${fmtNum(w52l)}</span></div>
+        <div class="stat-item"><span class="stat-label">Máximo 52s</span><span class="stat-value">$${fmtNum(w52h)}</span></div>
+        <div class="stat-item"><span class="stat-label">Mínimo 52s</span><span class="stat-value">$${fmtNum(w52l)}</span></div>
       </div>
       <div class="range-bar-wrap">
-        <div class="range-labels"><span>${S}${fmtNum(w52l)}</span><span>${S}${fmtNum(w52h)}</span></div>
+        <div class="range-labels"><span>$${fmtNum(w52l)}</span><span>$${fmtNum(w52h)}</span></div>
         <div class="range-track">
           <div class="range-fill" style="width:${w52p}%;"></div>
           <div class="range-thumb" style="left:${w52p}%;"></div>
@@ -456,38 +429,41 @@ function renderStock(s){
       </div>
     </div>
   </div>`;
+
   document.getElementById('stockContent').style.display='block';
-  const sh=window._staticHistory||{};
-  window._histCache={
-    '1D': s.history?.['1D']||[],
-    '1S': sh['1S']||[],
-    '1M': sh['1M']||[],
-    '1A': sh['1A']||[],
-    '3A': sh['3A']||[],
-  };
+
+  window._histCache={'1D':hist1D||[],'1S':[],'1M':[],'1A':[],'3A':[]};
+
   async function loadAndRender(p){
     const wrap=document.querySelector('.chart-wrap');
-    if(wrap) wrap.innerHTML='<div class="chart-loading"><div class="spinner"></div> A carregar gr\u00e1fico\u2026</div>';
+    if(wrap) wrap.innerHTML='<div class="chart-loading"><div class="spinner"></div> A carregar gráfico\u2026</div>';
     updateChangeBadge(null,p);
     let pts=window._histCache[p];
-    if(!pts||pts.length<2){pts=await fetchHistory(window._yfTicker,p);if(pts&&pts.length>1)window._histCache[p]=pts;}
+    if(!pts||pts.length<2){
+      const {range,interval}=PERIOD_MAP[p];
+      pts=parseChartPts(await workerChart(window._yfTicker,range,interval));
+      if(pts&&pts.length>1) window._histCache[p]=pts;
+    }
     const w2=document.querySelector('.chart-wrap');
     if(w2&&!w2.querySelector('#priceChart')){const c=document.createElement('canvas');c.id='priceChart';w2.innerHTML='';w2.appendChild(c);}
     renderChart(p,pts);
     updateChangeBadge(pts,p);
   }
+
   loadAndRender('1D');
   document.getElementById('periodTabs').addEventListener('click',e=>{
     const btn=e.target.closest('[data-p]');
-    if(!btn||btn.disabled) return;
+    if(!btn) return;
     document.querySelectorAll('.period-tab').forEach(t=>t.classList.remove('active'));
     btn.classList.add('active');
     loadAndRender(btn.dataset.p);
   });
+
+  // Logo da empresa via Clearbit
   const img=new Image();
   img.onload=()=>{const w=document.getElementById('logoWrap');if(w){w.innerHTML='';w.appendChild(img);}};
   img.onerror=()=>{};
-  img.src='https://logo.clearbit.com/'+ticker.toLowerCase().replace(/[^a-z0-9]/g,'').replace(/^([a-z]+).*/,'$1')+'.com';
+  img.src='https://logo.clearbit.com/'+ticker.toLowerCase()+'.com';
 }
 
 /* ── Erro ── */
@@ -497,38 +473,25 @@ function renderError(ticker,msg){
   const c=document.getElementById('stockContent');
   c.innerHTML=`<div class="error-state">
     <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--color-text-faint)" stroke-width="1.5" style="margin:0 auto var(--space-4)"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
-    <h2>N\u00e3o foi poss\u00edvel carregar "${esc(ticker)}"</h2>
-    <p>Verifica se o ticker est\u00e1 correto (ex: AAPL, ASML.AS para Euronext, MC.PA para Paris).</p>
+    <h2>Não foi possível carregar "${esc(ticker)}"</h2>
+    <p>Este site suporta apenas ações cotadas em bolsas norte-americanas (NYSE, NASDAQ, AMEX).<br>Exemplos válidos: <strong>AAPL</strong>, <strong>MSFT</strong>, <strong>NVDA</strong>, <strong>SPY</strong>, <strong>BRK-B</strong></p>
     <div class="error-detail">${esc(msg)}</div>
     <a href="index.html" style="display:inline-flex;align-items:center;gap:8px;margin-top:24px;padding:10px 20px;background:var(--color-primary);color:#fff;border-radius:var(--radius-full);font-size:var(--text-sm);font-weight:600;">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-      Voltar \u00e0 pesquisa
+      Voltar à pesquisa
     </a>
   </div>`;
   c.style.display='block';
 }
 
-/* ── Entry point ──
-   Se o ticker já tem sufixo de bolsa (ex: ASML.AS, MC.PA), tenta só esse.
-   Se for bare (ex: AAPL, MSFT), tenta só o bare — bolsas US não precisam de sufixo.
-   O utilizador deve escrever o ticker completo para europeias.
-*/
+/* ── Entry point ── */
 if(!TICKER){
-  renderError('?','Nenhum ticker na URL. Exemplo: stock.html?ticker=AAPL ou stock.html?ticker=ASML.AS');
+  renderError('?','Nenhum ticker na URL. Exemplo: stock.html?ticker=AAPL');
 }else{
-  (async()=>{
-    const hasSuffix = /\.[A-Z]+$/.test(TICKER);
-    // Se já tem sufixo, tenta só esse ticker
-    // Se não tem sufixo (ação US), tenta o bare ticker
-    const attempts = hasSuffix ? [TICKER] : [TICKER];
-
-    let found=false;
-    for(const t of attempts){
-      const data=await fetchLiveQuote(t);
-      if(data){renderStock(data);found=true;break;}
-    }
-    if(!found) renderError(TICKER,'Ticker "'+TICKER+'" n\u00e3o encontrado. Para ações europeias usa o sufixo da bolsa (ex: ASML.AS, MC.PA, EDP.LS, NOVO-B.CO).');
-  })();
+  fetchLiveQuote(TICKER).then(data=>{
+    if(data) renderStock(data);
+    else renderError(TICKER,'Ticker "'+TICKER+'" não encontrado. Certifica-te que é um ticker de bolsa norte-americana (ex: AAPL, MSFT, GOOGL, SPY).');
+  });
 }
 </script>
 </body>
