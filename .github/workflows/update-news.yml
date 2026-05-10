@@ -2,7 +2,7 @@ name: Update News
 
 on:
   schedule:
-    - cron: '0 8,12,16 * * 1-5'
+    - cron: '0 7,11,15,19 * * *'
   workflow_dispatch:
 
 permissions:
@@ -29,9 +29,9 @@ jobs:
 
       - name: Correr update_news.py
         env:
-          GNEWS_TOKEN:   ${{ secrets.GNEWS_TOKEN }}
-          NEWSAPI_TOKEN: ${{ secrets.NEWSAPI_TOKEN }}
-          FINNHUB_TOKEN: ${{ secrets.FINNHUB_TOKEN }}
+          FINNHUB_TOKEN:     ${{ secrets.FINNHUB_TOKEN }}
+          MARKETAUX_TOKEN:   ${{ secrets.MARKETAUX_TOKEN }}
+          ALPHAVANTAGE_TOKEN: ${{ secrets.ALPHAVANTAGE_TOKEN }}
         run: python update_news.py
 
       - name: Mostrar news.json
