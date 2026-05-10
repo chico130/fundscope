@@ -62,7 +62,13 @@
     .stock-change.down{background:var(--color-error-bg);color:var(--color-error);}
     .source-badge{display:inline-flex;align-items:center;gap:5px;font-size:var(--text-xs);color:var(--color-text-faint);margin-top:var(--space-2);}
     .live-dot{width:6px;height:6px;border-radius:50%;background:var(--color-success);animation:pulse 2s ease-in-out infinite;}
+    .static-dot{width:6px;height:6px;border-radius:50%;background:var(--color-text-faint);}
     @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.85)}}
+    /* Banner de atualização em background */
+    .update-banner{display:flex;align-items:center;gap:var(--space-2);padding:var(--space-2) var(--space-4);background:color-mix(in oklch,var(--color-primary) 8%,var(--color-surface));border:1px solid color-mix(in oklch,var(--color-primary) 20%,var(--color-border));border-radius:var(--radius-lg);font-size:var(--text-xs);color:var(--color-text-muted);margin-bottom:var(--space-6);}
+    .update-banner.hidden{display:none;}
+    .spinner{width:14px;height:14px;border:2px solid color-mix(in oklch,var(--color-primary) 30%,transparent);border-top-color:var(--color-primary);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0;}
+    @keyframes spin{to{transform:rotate(360deg)}}
     .period-tabs{display:flex;gap:var(--space-1);background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-lg);padding:3px;margin-bottom:var(--space-5);width:fit-content;}
     .period-tab{padding:var(--space-2) var(--space-4);border-radius:calc(var(--radius-lg) - 3px);font-size:var(--text-xs);font-weight:600;color:var(--color-text-muted);transition:all var(--transition);}
     .period-tab.active{background:var(--color-bg);color:var(--color-text);box-shadow:var(--shadow-sm);}
@@ -129,6 +135,10 @@
   </header>
 
   <main class="page">
+    <div id="updateBanner" class="update-banner hidden">
+      <span class="spinner"></span>
+      <span id="updateBannerText">A atualizar dados em tempo real…</span>
+    </div>
     <div id="skeletonHero" class="stock-hero">
       <div class="stock-identity">
         <div class="skeleton" style="width:56px;height:56px;border-radius:var(--radius-lg);flex-shrink:0;"></div>
@@ -171,7 +181,6 @@ function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').repl
 function sym(c){return({USD:'$',EUR:'\u20ac',GBP:'\u00a3',JPY:'\u00a5',CHF:'CHF\u00a0',CAD:'C$',AUD:'A$',DKK:'kr\u00a0',SEK:'kr\u00a0',NOK:'kr\u00a0',BRL:'R$',HKD:'HK$',CNY:'\u00a5',INR:'\u20b9'})[c]||(c+'\u00a0');}
 function fmtBig(n){if(n==null||isNaN(n))return '\u2014';if(n>=1e12)return(n/1e12).toFixed(2)+'T';if(n>=1e9)return(n/1e9).toFixed(2)+'B';if(n>=1e6)return(n/1e6).toFixed(2)+'M';return n.toLocaleString('pt');}
 function fmtNum(n,dec=2){if(n==null||isNaN(n)||n===0)return '\u2014';return Number(n).toFixed(dec);}
-/* extrai valor de campo que pode ser {raw:x} ou número directo */
 function raw(v){if(v==null)return null;if(typeof v==='object'&&v.raw!=null)return v.raw;if(typeof v==='number')return v;return null;}
 
 const TICKER=(()=>{const p=new URLSearchParams(location.search);return(p.get('ticker')||p.get('t')||'').trim().toUpperCase();})();
@@ -183,8 +192,54 @@ function fetchT(url,ms=10000){
   return fetch(url,{signal:ac.signal,cache:'no-store'}).finally(()=>clearTimeout(t));
 }
 
-/* ── constrói lista de URLs a tentar para um path Yahoo ───────────── 
-   Ordem: directo q1 → directo q2 → allorigins → corsproxy           */
+/* ── FASE 1: tenta carregar do data.json local ────────────────────── */
+async function fetchLocal(ticker){
+  try{
+    const r=await fetchT('./data.json',5000);
+    if(!r.ok) return null;
+    const j=await r.json();
+    const stocks=j?.stocks||{};
+    /* procura pelo ticker com ou sem sufixo de bolsa */
+    const key=Object.keys(stocks).find(k=>k.toUpperCase()===ticker||
+      k.toUpperCase()===ticker.replace(/\.[A-Z]+$/,''));
+    if(!key) return null;
+    const s=stocks[key];
+    if(!s||!s.price) return null;
+    /* normaliza para o formato esperado pelo renderStock */
+    return {
+      _source: 'local',
+      _updated: j.updated||null,
+      symbol:            s.ticker||ticker,
+      shortName:         s.name||ticker,
+      exchangeName:      s.exchange||'',
+      quoteType:         s.type||'EQUITY',
+      currency:          s.currency||'USD',
+      marketState:       'CLOSED',
+      regularMarketPrice:    s.price,
+      chartPreviousClose:    s.prevClose||s.price,
+      regularMarketOpen:     s.open||s.price,
+      regularMarketDayHigh:  s.high||s.price,
+      regularMarketDayLow:   s.low||s.price,
+      regularMarketVolume:   null,
+      averageDailyVolume3Month: null,
+      marketCap:         null,
+      trailingPE:        s.pe!=='—'?Number(s.pe)||null:null,
+      epsTrailingTwelveMonths: s.eps!=='—'?Number(s.eps)||null:null,
+      beta:              s.beta!=='—'?Number(s.beta)||null:null,
+      dividendFormatted: s.dividend||null,
+      fiftyTwoWeekHigh:  s.week52High||null,
+      fiftyTwoWeekLow:   s.week52Low||null,
+      _volume:           s.volume||'—',
+      _avgVolume:        s.avgVolume||'—',
+      _marketCap:        s.marketCap||'—',
+      _about:            s.about||''
+    };
+  }catch(e){
+    return null;
+  }
+}
+
+/* ── FASE 2: tenta Yahoo Finance via proxies ──────────────────────── */
 function yUrls(path){
   const base1='https://query1.finance.yahoo.com'+path;
   const base2='https://query2.finance.yahoo.com'+path;
@@ -196,8 +251,6 @@ function yUrls(path){
   ];
 }
 
-/* ── tenta lista de URLs, devolve primeiro JSON válido ─────────────
-   validate(json) → devolve o objecto útil ou null se inválido        */
 async function tryUrls(urls,validate,timeoutMs=9000){
   for(const url of urls){
     try{
@@ -211,24 +264,16 @@ async function tryUrls(urls,validate,timeoutMs=9000){
   return null;
 }
 
-/* ── FETCH PRINCIPAL: /v8/finance/chart com range=1y ───────────────
-   range=1y devolve o meta com TODOS os campos: preço, fundamentais,
-   52-week, dividendo, beta, EPS, P/E, marketCap — tudo de uma vez.  */
-async function fetchAll(ticker){
-  /* Usamos range=1y para garantir que o Yahoo inclui todos os
-     campos de fundamentais no objecto meta. Com range=1d alguns
-     campos ficam em falta para acções não-US.                        */
+async function fetchYahoo(ticker){
   const path=`/v8/finance/chart/${encodeURIComponent(ticker)}?interval=1d&range=1y&includePrePost=false`;
   const result=await tryUrls(yUrls(path),(j)=>{
     const res=j?.chart?.result?.[0];
     if(res&&res.meta&&res.meta.regularMarketPrice) return res;
     return null;
   });
-  if(!result) throw new Error('Ticker "'+ticker+'" não encontrado. Verifica no Yahoo Finance (ex: AAPL, ASML, NOVO-B.CO, VOO).');
-  return result;
+  return result||null;
 }
 
-/* ── FETCH HISTÓRICO para outros períodos ─────────────────────────  */
 async function fetchHistory(ticker,range,interval){
   const path=`/v8/finance/chart/${encodeURIComponent(ticker)}?interval=${interval}&range=${range}&includePrePost=false`;
   const result=await tryUrls(yUrls(path),(j)=>{
@@ -239,7 +284,7 @@ async function fetchHistory(ticker,range,interval){
     const pts=times.map((t,i)=>({t,v:closes[i]})).filter(p=>p.v!=null&&!isNaN(p.v));
     return pts.length>1?pts:null;
   });
-  return result; /* null se falhar — gráfico placeholder */
+  return result;
 }
 
 /* ── GRÁFICO ──────────────────────────────────────────────────────── */
@@ -287,11 +332,10 @@ function renderChart(price,period,up,pts){
 }
 
 /* ── RENDER PRINCIPAL ─────────────────────────────────────────────── */
-function renderStock(meta,histPts){
+function renderStock(meta,histPts,isLive){
   document.getElementById('skeletonHero').style.display='none';
   document.getElementById('skeletonChart').style.display='none';
 
-  /* ── extrair todos os campos do meta ─────────────────────────── */
   const ticker   = meta.symbol||TICKER;
   const name     = meta.shortName||meta.longName||ticker;
   const exchange = meta.exchangeName||meta.fullExchangeName||'';
@@ -307,37 +351,49 @@ function renderStock(meta,histPts){
   const open      = meta.regularMarketOpen??price;
   const high      = meta.regularMarketDayHigh??price;
   const low       = meta.regularMarketDayLow??price;
-  const vol       = fmtBig(meta.regularMarketVolume||0);
-  const w52h      = meta.fiftyTwoWeekHigh??price;
-  const w52l      = meta.fiftyTwoWeekLow??price;
 
-  /* fundamentais — todos vêm do mesmo meta do /v8/finance/chart */
-  const mcap   = fmtBig(meta.marketCap??null);
-  /* P/E: trailingPE directo no meta (alguns tickers) ou calculado */
-  const pe     = (()=>{
+  /* Volume e marketCap: usa campos formatados do data.json ou calcula do Yahoo */
+  const vol    = meta._volume||(fmtBig(meta.regularMarketVolume||0)||'\u2014');
+  const avgVol = meta._avgVolume||(fmtBig(meta.averageDailyVolume3Month??meta.averageVolume??null)||'\u2014');
+  const mcap   = meta._marketCap||(fmtBig(meta.marketCap??null)||'\u2014');
+
+  const w52h   = meta.fiftyTwoWeekHigh??price;
+  const w52l   = meta.fiftyTwoWeekLow??price;
+
+  const pe = (()=>{
     const v=meta.trailingPE??null;
     if(v&&v>0) return fmtNum(v);
-    /* fallback: price / epsTrailingTwelveMonths */
     const eps=meta.epsTrailingTwelveMonths??null;
     if(eps&&eps>0) return fmtNum(price/eps);
     return '\u2014';
   })();
-  const eps    = (()=>{const v=meta.epsTrailingTwelveMonths??null;return v!=null?s+fmtNum(v):'\u2014';})();
-  const beta   = (()=>{const v=meta.beta??null;return v!=null?fmtNum(v):'\u2014';})();
-  const div    = (()=>{
+  const eps = (()=>{const v=meta.epsTrailingTwelveMonths??null;return v!=null&&v!==0?s+fmtNum(v):'\u2014';})();
+  const beta = (()=>{const v=meta.beta??null;return v!=null&&v!==0?fmtNum(v):'\u2014';})();
+
+  /* Dividendo: usa string pré-formatada do data.json ou calcula do Yahoo.
+     No Yahoo o dividendYield já vem em % (ex: 0.92 = 0.92%), não em decimal. */
+  const div = (()=>{
+    if(meta.dividendFormatted) return meta.dividendFormatted;
     const rate=meta.dividendRate??null;
-    const yld=meta.dividendYield??null;  /* já em % no meta — ex: 1.42 */
+    const yld=meta.dividendYield??null;
     if(!rate&&!yld) return '\u2014';
     const parts=[];
     if(rate&&rate>0) parts.push(s+fmtNum(rate));
     if(yld&&yld>0) parts.push('('+fmtNum(yld)+'%)');
     return parts.join(' ')||'\u2014';
   })();
-  const avgVol = fmtBig(meta.averageDailyVolume3Month??meta.averageVolume??null);
 
   const up=change>=0, sign=up?'+':'', arrow=up?'\u25b2':'\u25bc', cls=up?'up':'down';
   const w52p=w52h>w52l?Math.round((price-w52l)/(w52h-w52l)*100):50;
-  const typeLabel=({'EQUITY':'Ação','ETF':'ETF','MUTUALFUND':'Fundo','INDEX':'Índice','CRYPTOCURRENCY':'Cripto','FUTURE':'Futuro'})[type]||type;
+  const typeLabel=({'EQUITY':'Ação','Ação':'Ação','ETF':'ETF','MUTUALFUND':'Fundo','INDEX':'Índice','CRYPTOCURRENCY':'Cripto','FUTURE':'Futuro'})[type]||type;
+
+  /* Badge da fonte de dados */
+  const sourceBadge = isLive
+    ? `<div class="source-badge"><span class="live-dot"></span> Yahoo Finance &middot; ${esc(currency)} &middot; ${mktState==='REGULAR'?'Mercado aberto':'Mercado fechado'}</div>`
+    : (()=>{
+        const updated=meta._updated?new Date(meta._updated).toLocaleString('pt',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}):'';
+        return `<div class="source-badge"><span class="static-dot"></span> Dados locais${updated?' &middot; '+updated:''}</div>`;
+      })();
 
   document.title='FundScope \u2014 '+ticker;
 
@@ -354,7 +410,7 @@ function renderStock(meta,histPts){
     <div class="stock-price-block">
       <div class="stock-price">${s}${fmtNum(price)}</div>
       <div class="stock-change ${cls}">${arrow} ${sign}${s}${fmtNum(Math.abs(change))} (${sign}${fmtNum(changePct)}%)</div>
-      <div class="source-badge"><span class="live-dot"></span> Yahoo Finance &middot; ${esc(currency)} &middot; ${mktState==='REGULAR'?'Mercado aberto':'Mercado fechado'}</div>
+      ${sourceBadge}
     </div>
   </div>
   <div class="chart-card">
@@ -402,13 +458,10 @@ function renderStock(meta,histPts){
 
   document.getElementById('stockContent').style.display='block';
 
-  /* gráfico com dados do range=1y já carregado */
   renderChart(price,'1A',up,histPts);
-  /* marca 1A como activo */
   document.querySelectorAll('.period-tab').forEach(t=>t.classList.remove('active'));
-  document.querySelector('[data-p="1A"]').classList.add('active');
+  document.querySelector('[data-p="1A"]')?.classList.add('active');
 
-  /* troca de período */
   const rangeMap={"1D":"1d","1S":"5d","1M":"1mo","1A":"1y","3A":"3y"};
   const intMap  ={"1D":"5m","1S":"1h","1M":"1d","1A":"1wk","3A":"1wk"};
   document.getElementById('periodTabs').addEventListener('click',e=>{
@@ -416,21 +469,18 @@ function renderStock(meta,histPts){
     document.querySelectorAll('.period-tab').forEach(t=>t.classList.remove('active'));
     btn.classList.add('active');
     const p=btn.dataset.p;
-    /* usa histPts de 1y se o período for 1A */
     if(p==='1A'){renderChart(price,'1A',up,histPts);return;}
-    renderChart(price,p,up,null); /* placeholder imediato */
+    renderChart(price,p,up,null);
     fetchHistory(ticker,rangeMap[p],intMap[p]).then(pts=>renderChart(price,p,up,pts));
   });
 
-  /* logo via clearbit — silencioso se falhar */
   const img=new Image();
   img.onload=()=>{const w=document.getElementById('logoWrap');if(w){w.innerHTML='';w.appendChild(img);}};
   img.onerror=()=>{};
-  /* usa apenas a parte base do ticker sem sufixo de bolsa */
   img.src='https://logo.clearbit.com/'+ticker.toLowerCase().replace(/[^a-z0-9]/g,'').replace(/^([a-z]+).*/,'$1')+'.com';
 }
 
-/* ── ERRO ─────────────────────────────────────────────────────────── */
+/* ── ERRO (só aparece se data.json também falhar) ─────────────────── */
 function renderError(ticker,msg){
   document.getElementById('skeletonHero').style.display='none';
   document.getElementById('skeletonChart').style.display='none';
@@ -452,17 +502,57 @@ function renderError(ticker,msg){
 if(!TICKER){
   renderError('?','Nenhum ticker na URL. Exemplo: stock.html?ticker=AAPL');
 }else{
-  fetchAll(TICKER)
-    .then(res=>{
-      /* res é o result[0] do chart — meta + timestamps + indicators */
-      const meta=res.meta;
-      /* extrair pontos históricos do próprio response (range=1y) */
-      const times=res.timestamp||[];
-      const closes=res.indicators?.quote?.[0]?.close||[];
-      const histPts=times.map((t,i)=>({t,v:closes[i]})).filter(p=>p.v!=null&&!isNaN(p.v));
-      renderStock(meta, histPts.length>1?histPts:null);
-    })
-    .catch(err=>renderError(TICKER,err.message));
+  (async()=>{
+    /* FASE 1 — tenta data.json local (rápido, sempre disponível) */
+    const local = await fetchLocal(TICKER);
+    if(local){
+      /* Mostra dados locais imediatamente */
+      renderStock(local, null, false);
+      /* FASE 2 — tenta atualizar via Yahoo em background */
+      const banner=document.getElementById('updateBanner');
+      const bannerText=document.getElementById('updateBannerText');
+      banner.classList.remove('hidden');
+      try{
+        const res = await fetchYahoo(TICKER);
+        if(res){
+          const meta=res.meta;
+          const times=res.timestamp||[];
+          const closes=res.indicators?.quote?.[0]?.close||[];
+          const histPts=times.map((t,i)=>({t,v:closes[i]})).filter(p=>p.v!=null&&!isNaN(p.v));
+          banner.classList.add('hidden');
+          renderStock(meta, histPts.length>1?histPts:null, true);
+        }else{
+          bannerText.textContent='Dados em tempo real indisponíveis — a mostrar último fecho.';
+          setTimeout(()=>banner.classList.add('hidden'),4000);
+        }
+      }catch(e){
+        bannerText.textContent='Dados em tempo real indisponíveis — a mostrar último fecho.';
+        setTimeout(()=>banner.classList.add('hidden'),4000);
+      }
+    }else{
+      /* Ticker não está no data.json — tenta só Yahoo */
+      const banner=document.getElementById('updateBanner');
+      const bannerText=document.getElementById('updateBannerText');
+      banner.classList.remove('hidden');
+      bannerText.textContent='A carregar dados de "'+TICKER+'"…';
+      try{
+        const res = await fetchYahoo(TICKER);
+        if(res){
+          const meta=res.meta;
+          const times=res.timestamp||[];
+          const closes=res.indicators?.quote?.[0]?.close||[];
+          const histPts=times.map((t,i)=>({t,v:closes[i]})).filter(p=>p.v!=null&&!isNaN(p.v));
+          banner.classList.add('hidden');
+          renderStock(meta, histPts.length>1?histPts:null, true);
+        }else{
+          throw new Error('Ticker "'+TICKER+'" não encontrado. Verifica no Yahoo Finance (ex: AAPL, ASML.AS, VOO).');
+        }
+      }catch(err){
+        banner.classList.add('hidden');
+        renderError(TICKER, err.message);
+      }
+    }
+  })();
 }
 </script>
 </body>

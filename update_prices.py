@@ -78,7 +78,10 @@ def get_stock_data(ticker):
 
         div_str = "—"
         if div_rate and div_yield:
-            div_str = f"{sym}{div_rate:.2f} ({div_yield*100:.2f}%)"
+            # yfinance devolve dividendYield em decimal (ex: 0.0037 = 0.37%)
+            # Se o valor já vier em percentagem (>= 1), não multiplicamos por 100
+            div_pct = div_yield * 100 if div_yield < 1 else div_yield
+            div_str = f"{sym}{div_rate:.2f} ({div_pct:.2f}%)"
 
         display_ticker = ticker.replace(".AS", "").replace(".L", "")
 
