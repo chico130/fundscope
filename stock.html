@@ -128,7 +128,7 @@
     </div>
   </header>
 
-  <main class="page" id="mainContent">
+  <main class="page">
     <div id="skeletonHero" class="stock-hero">
       <div class="stock-identity">
         <div class="skeleton" style="width:56px;height:56px;border-radius:var(--radius-lg);flex-shrink:0;"></div>
@@ -159,91 +159,90 @@
   const btn=document.getElementById('themeToggle'),r=document.documentElement;
   let d=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
   r.setAttribute('data-theme',d);
-  const icons={light:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>',dark:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>'};
+  const icons={
+    light:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>',
+    dark:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>'
+  };
   if(btn){btn.innerHTML=icons[d];btn.addEventListener('click',()=>{d=d==='dark'?'light':'dark';r.setAttribute('data-theme',d);btn.innerHTML=icons[d];});}
 })();
 
 /* ── utils ────────────────────────────────────────────────────────── */
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-function sym(c){return({USD:'$',EUR:'\u20ac',GBP:'\u00a3',JPY:'\u00a5',CHF:'CHF ',CAD:'C$',AUD:'A$',DKK:'kr',SEK:'kr',NOK:'kr',BRL:'R$',HKD:'HK$',CNY:'\u00a5',INR:'\u20b9'})[c]||c+' ';}
+function sym(c){return({USD:'$',EUR:'\u20ac',GBP:'\u00a3',JPY:'\u00a5',CHF:'CHF\u00a0',CAD:'C$',AUD:'A$',DKK:'kr\u00a0',SEK:'kr\u00a0',NOK:'kr\u00a0',BRL:'R$',HKD:'HK$',CNY:'\u00a5',INR:'\u20b9'})[c]||(c+'\u00a0');}
 function fmtBig(n){if(n==null||isNaN(n))return '\u2014';if(n>=1e12)return(n/1e12).toFixed(2)+'T';if(n>=1e9)return(n/1e9).toFixed(2)+'B';if(n>=1e6)return(n/1e6).toFixed(2)+'M';return n.toLocaleString('pt');}
-function rv(obj,k){const x=obj&&obj[k];return x&&typeof x==='object'?x.raw??null:x??null;}
+function fmtNum(n,dec=2){if(n==null||isNaN(n)||n===0)return '\u2014';return Number(n).toFixed(dec);}
+/* extrai valor de campo que pode ser {raw:x} ou número directo */
+function raw(v){if(v==null)return null;if(typeof v==='object'&&v.raw!=null)return v.raw;if(typeof v==='number')return v;return null;}
 
 const TICKER=(()=>{const p=new URLSearchParams(location.search);return(p.get('ticker')||p.get('t')||'').trim().toUpperCase();})();
 
-/* ── fetch com timeout ────────────────────────────────────────────── */
-function fetchT(url,ms=12000){
+/* ── fetch com timeout (ms) ───────────────────────────────────────── */
+function fetchT(url,ms=10000){
   const ac=new AbortController();
   const t=setTimeout(()=>ac.abort(),ms);
-  return fetch(url,{signal:ac.signal}).finally(()=>clearTimeout(t));
+  return fetch(url,{signal:ac.signal,cache:'no-store'}).finally(()=>clearTimeout(t));
 }
 
-/* ── PASSO 1: obter preço via chart v8 ─────────────────────────────
-   Tenta directo (sem proxy), falha silenciosamente e tenta corsproxy */
-async function fetchPrice(ticker){
-  const path=`/v8/finance/chart/${encodeURIComponent(ticker)}?interval=1d&range=1d`;
-  const urls=[
-    'https://query1.finance.yahoo.com'+path,
-    'https://query2.finance.yahoo.com'+path,
-    'https://corsproxy.io/?'+encodeURIComponent('https://query1.finance.yahoo.com'+path)
+/* ── constrói lista de URLs a tentar para um path Yahoo ───────────── 
+   Ordem: directo q1 → directo q2 → allorigins → corsproxy           */
+function yUrls(path){
+  const base1='https://query1.finance.yahoo.com'+path;
+  const base2='https://query2.finance.yahoo.com'+path;
+  return [
+    base1,
+    base2,
+    'https://api.allorigins.win/raw?url='+encodeURIComponent(base1),
+    'https://corsproxy.io/?'+encodeURIComponent(base1)
   ];
-  for(const url of urls){
-    try{
-      const r=await fetchT(url,8000);
-      if(!r.ok) continue;
-      const j=await r.json();
-      const res=j?.chart?.result?.[0];
-      if(res&&res.meta&&res.meta.regularMarketPrice) return res;
-    }catch(e){continue;}
-  }
-  throw new Error('Não foi possível obter dados para '+ticker+'. Verifica o ticker no Yahoo Finance.');
 }
 
-/* ── PASSO 2: obter fundamentais via quoteSummary ───────────────────
-   Chamada independente — não bloqueia o carregamento do preço */
-async function fetchFundamentals(ticker){
-  const mods='summaryDetail,defaultKeyStatistics';
-  const urls=[
-    'https://query1.finance.yahoo.com/v10/finance/quoteSummary/'+encodeURIComponent(ticker)+'?modules='+mods,
-    'https://query2.finance.yahoo.com/v10/finance/quoteSummary/'+encodeURIComponent(ticker)+'?modules='+mods,
-    'https://corsproxy.io/?'+encodeURIComponent('https://query1.finance.yahoo.com/v10/finance/quoteSummary/'+encodeURIComponent(ticker)+'?modules='+mods)
-  ];
+/* ── tenta lista de URLs, devolve primeiro JSON válido ─────────────
+   validate(json) → devolve o objecto útil ou null se inválido        */
+async function tryUrls(urls,validate,timeoutMs=9000){
   for(const url of urls){
     try{
-      const r=await fetchT(url,10000);
+      const r=await fetchT(url,timeoutMs);
       if(!r.ok) continue;
       const j=await r.json();
-      const res=j?.quoteSummary?.result?.[0];
-      if(res) return res;
-    }catch(e){continue;}
-  }
-  return null; // fundamentais são opcionais
-}
-
-/* ── PASSO 3: histórico para o gráfico ─────────────────────────────*/
-async function fetchHistory(ticker,range,interval){
-  const path=`/v8/finance/chart/${encodeURIComponent(ticker)}?interval=${interval}&range=${range}`;
-  const urls=[
-    'https://query1.finance.yahoo.com'+path,
-    'https://corsproxy.io/?'+encodeURIComponent('https://query1.finance.yahoo.com'+path)
-  ];
-  for(const url of urls){
-    try{
-      const r=await fetchT(url,10000);
-      if(!r.ok) continue;
-      const j=await r.json();
-      const res=j?.chart?.result?.[0];
-      if(!res) continue;
-      const times=res.timestamp||[];
-      const closes=res.indicators?.quote?.[0]?.close||[];
-      const pts=times.map((t,i)=>({t,v:closes[i]})).filter(p=>p.v!=null&&!isNaN(p.v));
-      if(pts.length>1) return pts;
+      const v=validate(j);
+      if(v) return v;
     }catch(e){continue;}
   }
   return null;
 }
 
-/* ── gráfico ──────────────────────────────────────────────────────── */
+/* ── FETCH PRINCIPAL: /v8/finance/chart com range=1y ───────────────
+   range=1y devolve o meta com TODOS os campos: preço, fundamentais,
+   52-week, dividendo, beta, EPS, P/E, marketCap — tudo de uma vez.  */
+async function fetchAll(ticker){
+  /* Usamos range=1y para garantir que o Yahoo inclui todos os
+     campos de fundamentais no objecto meta. Com range=1d alguns
+     campos ficam em falta para acções não-US.                        */
+  const path=`/v8/finance/chart/${encodeURIComponent(ticker)}?interval=1d&range=1y&includePrePost=false`;
+  const result=await tryUrls(yUrls(path),(j)=>{
+    const res=j?.chart?.result?.[0];
+    if(res&&res.meta&&res.meta.regularMarketPrice) return res;
+    return null;
+  });
+  if(!result) throw new Error('Ticker "'+ticker+'" não encontrado. Verifica no Yahoo Finance (ex: AAPL, ASML, NOVO-B.CO, VOO).');
+  return result;
+}
+
+/* ── FETCH HISTÓRICO para outros períodos ─────────────────────────  */
+async function fetchHistory(ticker,range,interval){
+  const path=`/v8/finance/chart/${encodeURIComponent(ticker)}?interval=${interval}&range=${range}&includePrePost=false`;
+  const result=await tryUrls(yUrls(path),(j)=>{
+    const res=j?.chart?.result?.[0];
+    if(!res) return null;
+    const times=res.timestamp||[];
+    const closes=res.indicators?.quote?.[0]?.close||[];
+    const pts=times.map((t,i)=>({t,v:closes[i]})).filter(p=>p.v!=null&&!isNaN(p.v));
+    return pts.length>1?pts:null;
+  });
+  return result; /* null se falhar — gráfico placeholder */
+}
+
+/* ── GRÁFICO ──────────────────────────────────────────────────────── */
 let chartInst=null;
 function renderChart(price,period,up,pts){
   const canvas=document.getElementById('priceChart');
@@ -258,7 +257,9 @@ function renderChart(price,period,up,pts){
   if(pts&&pts.length>1){
     labels=pts.map(p=>{
       const d=new Date(p.t*1000);
-      return period==='1D'?d.toLocaleTimeString('pt',{hour:'2-digit',minute:'2-digit'}):d.toLocaleDateString('pt',{month:'short',day:'numeric'});
+      return period==='1D'
+        ?d.toLocaleTimeString('pt',{hour:'2-digit',minute:'2-digit'})
+        :d.toLocaleDateString('pt',{month:'short',day:'numeric'});
     });
     data=pts.map(p=>p.v);
   }else{
@@ -269,27 +270,76 @@ function renderChart(price,period,up,pts){
   }
   chartInst=new Chart(canvas,{
     type:'line',
-    data:{labels,datasets:[{data,borderColor:color,borderWidth:2,pointRadius:0,pointHoverRadius:4,pointHoverBackgroundColor:color,tension:.3,fill:true,
+    data:{labels,datasets:[{data,borderColor:color,borderWidth:2,pointRadius:0,pointHoverRadius:4,
+      pointHoverBackgroundColor:color,tension:.3,fill:true,
       backgroundColor:ctx=>{const g=ctx.chart.ctx.createLinearGradient(0,0,0,ctx.chart.height);g.addColorStop(0,bg0);g.addColorStop(1,'transparent');return g;}
     }]},
     options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
-      plugins:{legend:{display:false},tooltip:{backgroundColor:dark?'#f0ede8':'#1c1b19',titleColor:dark?'#28251d':'#e8e7e5',bodyColor:dark?'#28251d':'#e8e7e5',borderColor:dark?'#d4d1ca':'#2e2d2b',borderWidth:1,padding:10,cornerRadius:8,callbacks:{label:ctx=>' '+ctx.parsed.y.toFixed(2)}}},
-      scales:{x:{ticks:{color:axCol,maxTicksLimit:6,maxRotation:0,font:{size:11}},grid:{color:gridC},border:{display:false}},y:{ticks:{color:axCol,maxTicksLimit:5,font:{size:11},callback:v=>v.toFixed(2)},grid:{color:gridC},border:{display:false},position:'right'}}
+      plugins:{legend:{display:false},tooltip:{backgroundColor:dark?'#f0ede8':'#1c1b19',titleColor:dark?'#28251d':'#e8e7e5',
+        bodyColor:dark?'#28251d':'#e8e7e5',borderColor:dark?'#d4d1ca':'#2e2d2b',borderWidth:1,padding:10,cornerRadius:8,
+        callbacks:{label:ctx=>' '+ctx.parsed.y.toFixed(2)}}},
+      scales:{
+        x:{ticks:{color:axCol,maxTicksLimit:6,maxRotation:0,font:{size:11}},grid:{color:gridC},border:{display:false}},
+        y:{ticks:{color:axCol,maxTicksLimit:5,font:{size:11},callback:v=>v.toFixed(2)},grid:{color:gridC},border:{display:false},position:'right'}
+      }
     }
   });
 }
 
-/* ── render stock ─────────────────────────────────────────────────── */
-function renderStock(data){
+/* ── RENDER PRINCIPAL ─────────────────────────────────────────────── */
+function renderStock(meta,histPts){
   document.getElementById('skeletonHero').style.display='none';
   document.getElementById('skeletonChart').style.display='none';
-  document.title='FundScope \u2014 '+data.ticker;
-  const {s,ticker,name,exchange,type,currency,marketState,
-         price,change,changePct,prevClose,open,high,low,volume,week52High,week52Low,
-         marketCap,pe,eps,dividend,beta} = data;
+
+  /* ── extrair todos os campos do meta ─────────────────────────── */
+  const ticker   = meta.symbol||TICKER;
+  const name     = meta.shortName||meta.longName||ticker;
+  const exchange = meta.exchangeName||meta.fullExchangeName||'';
+  const type     = meta.instrumentType||meta.quoteType||'';
+  const currency = meta.currency||'USD';
+  const s        = sym(currency);
+  const mktState = meta.marketState||'CLOSED';
+
+  const price     = meta.regularMarketPrice;
+  const prevClose = meta.chartPreviousClose??meta.regularMarketPreviousClose??price;
+  const change    = price-prevClose;
+  const changePct = prevClose?(change/prevClose)*100:0;
+  const open      = meta.regularMarketOpen??price;
+  const high      = meta.regularMarketDayHigh??price;
+  const low       = meta.regularMarketDayLow??price;
+  const vol       = fmtBig(meta.regularMarketVolume||0);
+  const w52h      = meta.fiftyTwoWeekHigh??price;
+  const w52l      = meta.fiftyTwoWeekLow??price;
+
+  /* fundamentais — todos vêm do mesmo meta do /v8/finance/chart */
+  const mcap   = fmtBig(meta.marketCap??null);
+  /* P/E: trailingPE directo no meta (alguns tickers) ou calculado */
+  const pe     = (()=>{
+    const v=meta.trailingPE??null;
+    if(v&&v>0) return fmtNum(v);
+    /* fallback: price / epsTrailingTwelveMonths */
+    const eps=meta.epsTrailingTwelveMonths??null;
+    if(eps&&eps>0) return fmtNum(price/eps);
+    return '\u2014';
+  })();
+  const eps    = (()=>{const v=meta.epsTrailingTwelveMonths??null;return v!=null?s+fmtNum(v):'\u2014';})();
+  const beta   = (()=>{const v=meta.beta??null;return v!=null?fmtNum(v):'\u2014';})();
+  const div    = (()=>{
+    const rate=meta.dividendRate??null;
+    const yld=meta.dividendYield??null;  /* já em % no meta — ex: 1.42 */
+    if(!rate&&!yld) return '\u2014';
+    const parts=[];
+    if(rate&&rate>0) parts.push(s+fmtNum(rate));
+    if(yld&&yld>0) parts.push('('+fmtNum(yld)+'%)');
+    return parts.join(' ')||'\u2014';
+  })();
+  const avgVol = fmtBig(meta.averageDailyVolume3Month??meta.averageVolume??null);
+
   const up=change>=0, sign=up?'+':'', arrow=up?'\u25b2':'\u25bc', cls=up?'up':'down';
-  const w52p=week52High>week52Low?Math.round((price-week52Low)/(week52High-week52Low)*100):50;
-  const typeLabel=type?type.replace('EQUITY','A\u00e7\u00e3o').replace('ETF','ETF').replace('MUTUALFUND','Fundo'):'';
+  const w52p=w52h>w52l?Math.round((price-w52l)/(w52h-w52l)*100):50;
+  const typeLabel=({'EQUITY':'Ação','ETF':'ETF','MUTUALFUND':'Fundo','INDEX':'Índice','CRYPTOCURRENCY':'Cripto','FUTURE':'Futuro'})[type]||type;
+
+  document.title='FundScope \u2014 '+ticker;
 
   document.getElementById('stockContent').innerHTML=`
   <div class="stock-hero">
@@ -302,9 +352,9 @@ function renderStock(data){
       </div>
     </div>
     <div class="stock-price-block">
-      <div class="stock-price">${s}${price.toFixed(2)}</div>
-      <div class="stock-change ${cls}">${arrow} ${sign}${s}${Math.abs(change).toFixed(2)} (${sign}${changePct.toFixed(2)}%)</div>
-      <div class="source-badge"><span class="live-dot"></span> Yahoo Finance &middot; ${esc(currency)} &middot; ${marketState==='REGULAR'?'Mercado aberto':'Mercado fechado'}</div>
+      <div class="stock-price">${s}${fmtNum(price)}</div>
+      <div class="stock-change ${cls}">${arrow} ${sign}${s}${fmtNum(Math.abs(change))} (${sign}${fmtNum(changePct)}%)</div>
+      <div class="source-badge"><span class="live-dot"></span> Yahoo Finance &middot; ${esc(currency)} &middot; ${mktState==='REGULAR'?'Mercado aberto':'Mercado fechado'}</div>
     </div>
   </div>
   <div class="chart-card">
@@ -318,77 +368,69 @@ function renderStock(data){
     <div class="chart-wrap"><canvas id="priceChart"></canvas></div>
   </div>
   <div class="grid-3">
-    <div class="card"><div class="card-title">Abertura</div><div class="kpi-value">${s}${open.toFixed(2)}</div><div class="kpi-label">Pre\u00e7o de abertura</div></div>
-    <div class="card"><div class="card-title">M\u00e1x / M\u00edn hoje</div><div class="kpi-value">${s}${high.toFixed(2)}</div><div class="kpi-sub">M\u00edn: ${s}${low.toFixed(2)}</div></div>
-    <div class="card"><div class="card-title">Volume</div><div class="kpi-value">${volume}</div><div class="kpi-label">Unidades negociadas</div></div>
+    <div class="card"><div class="card-title">Abertura</div><div class="kpi-value">${s}${fmtNum(open)}</div><div class="kpi-label">Pre\u00e7o de abertura</div></div>
+    <div class="card"><div class="card-title">M\u00e1x / M\u00edn hoje</div><div class="kpi-value">${s}${fmtNum(high)}</div><div class="kpi-sub">M\u00edn: ${s}${fmtNum(low)}</div></div>
+    <div class="card"><div class="card-title">Volume</div><div class="kpi-value">${vol}</div><div class="kpi-label">M\u00e9dia 3M: ${avgVol}</div></div>
   </div>
   <div class="grid-2">
     <div class="card">
       <div class="card-title">Estat\u00edsticas</div>
       <div class="stat-row">
-        <div class="stat-item"><span class="stat-label">Fecho anterior</span><span class="stat-value">${s}${prevClose.toFixed(2)}</span></div>
-        <div class="stat-item"><span class="stat-label">Cap. mercado</span><span class="stat-value" id="sMarketCap">${marketCap}</span></div>
-        <div class="stat-item"><span class="stat-label">P/E</span><span class="stat-value" id="sPE">${pe}</span></div>
-        <div class="stat-item"><span class="stat-label">EPS</span><span class="stat-value" id="sEPS">${eps}</span></div>
-        <div class="stat-item"><span class="stat-label">Dividendo</span><span class="stat-value" id="sDiv">${dividend}</span></div>
-        <div class="stat-item"><span class="stat-label">Beta</span><span class="stat-value" id="sBeta">${beta}</span></div>
+        <div class="stat-item"><span class="stat-label">Fecho anterior</span><span class="stat-value">${s}${fmtNum(prevClose)}</span></div>
+        <div class="stat-item"><span class="stat-label">Cap. mercado</span><span class="stat-value">${mcap}</span></div>
+        <div class="stat-item"><span class="stat-label">P/E (trailing)</span><span class="stat-value">${pe}</span></div>
+        <div class="stat-item"><span class="stat-label">EPS (trailing)</span><span class="stat-value">${eps}</span></div>
+        <div class="stat-item"><span class="stat-label">Dividendo</span><span class="stat-value">${div}</span></div>
+        <div class="stat-item"><span class="stat-label">Beta</span><span class="stat-value">${beta}</span></div>
       </div>
     </div>
     <div class="card">
       <div class="card-title">Intervalo 52 semanas</div>
       <div class="stat-row" style="margin-bottom:var(--space-4);">
-        <div class="stat-item"><span class="stat-label">M\u00e1ximo 52s</span><span class="stat-value">${s}${week52High.toFixed(2)}</span></div>
-        <div class="stat-item"><span class="stat-label">M\u00ednimo 52s</span><span class="stat-value">${s}${week52Low.toFixed(2)}</span></div>
+        <div class="stat-item"><span class="stat-label">M\u00e1ximo 52s</span><span class="stat-value">${s}${fmtNum(w52h)}</span></div>
+        <div class="stat-item"><span class="stat-label">M\u00ednimo 52s</span><span class="stat-value">${s}${fmtNum(w52l)}</span></div>
       </div>
       <div class="range-bar-wrap">
-        <div class="range-labels"><span>${s}${week52Low.toFixed(2)}</span><span>${s}${week52High.toFixed(2)}</span></div>
-        <div class="range-track"><div class="range-fill" style="width:${w52p}%;"></div><div class="range-thumb" style="left:${w52p}%;"></div></div>
+        <div class="range-labels"><span>${s}${fmtNum(w52l)}</span><span>${s}${fmtNum(w52h)}</span></div>
+        <div class="range-track">
+          <div class="range-fill" style="width:${w52p}%;"></div>
+          <div class="range-thumb" style="left:${w52p}%;"></div>
+        </div>
       </div>
     </div>
   </div>`;
 
   document.getElementById('stockContent').style.display='block';
 
-  // gráfico 1D imediato
-  const rangeMap={"1D":"1d","1S":"5d","1M":"1mo","1A":"1y","3A":"3y"};
-  const intMap={"1D":"5m","1S":"1h","1M":"1d","1A":"1wk","3A":"1wk"};
-  fetchHistory(ticker,'1d','5m').then(pts=>renderChart(price,'1D',up,pts));
+  /* gráfico com dados do range=1y já carregado */
+  renderChart(price,'1A',up,histPts);
+  /* marca 1A como activo */
+  document.querySelectorAll('.period-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelector('[data-p="1A"]').classList.add('active');
 
-  // troca de período
+  /* troca de período */
+  const rangeMap={"1D":"1d","1S":"5d","1M":"1mo","1A":"1y","3A":"3y"};
+  const intMap  ={"1D":"5m","1S":"1h","1M":"1d","1A":"1wk","3A":"1wk"};
   document.getElementById('periodTabs').addEventListener('click',e=>{
     const btn=e.target.closest('[data-p]');if(!btn)return;
     document.querySelectorAll('.period-tab').forEach(t=>t.classList.remove('active'));
     btn.classList.add('active');
     const p=btn.dataset.p;
-    renderChart(price,p,up,null); // placeholder imediato
+    /* usa histPts de 1y se o período for 1A */
+    if(p==='1A'){renderChart(price,'1A',up,histPts);return;}
+    renderChart(price,p,up,null); /* placeholder imediato */
     fetchHistory(ticker,rangeMap[p],intMap[p]).then(pts=>renderChart(price,p,up,pts));
   });
 
-  // logo via clearbit (silencioso se falhar)
+  /* logo via clearbit — silencioso se falhar */
   const img=new Image();
   img.onload=()=>{const w=document.getElementById('logoWrap');if(w){w.innerHTML='';w.appendChild(img);}};
-  img.src='https://logo.clearbit.com/'+ticker.toLowerCase().replace(/[^a-z]/g,'')+'.com';
+  img.onerror=()=>{};
+  /* usa apenas a parte base do ticker sem sufixo de bolsa */
+  img.src='https://logo.clearbit.com/'+ticker.toLowerCase().replace(/[^a-z0-9]/g,'').replace(/^([a-z]+).*/,'$1')+'.com';
 }
 
-/* ── render fundamentais (actualiza células já visíveis) ─────────── */
-function applyFundamentals(qs,s){
-  if(!qs) return;
-  const sd=qs.summaryDetail||{}, dk=qs.defaultKeyStatistics||{};
-  const set=(id,val)=>{const el=document.getElementById(id);if(el&&val)el.textContent=val;};
-  const mcRaw=rv(sd,'marketCap'); if(mcRaw) set('sMarketCap',fmtBig(mcRaw));
-  const peRaw=rv(sd,'trailingPE'); if(peRaw) set('sPE',peRaw.toFixed(2));
-  const epsRaw=rv(dk,'trailingEps'); if(epsRaw) set('sEPS',s+epsRaw.toFixed(2));
-  const betaRaw=rv(sd,'beta')??rv(dk,'beta'); if(betaRaw) set('sBeta',betaRaw.toFixed(2));
-  const drRaw=rv(sd,'dividendRate'), dyRaw=rv(sd,'dividendYield');
-  if(drRaw||dyRaw){
-    const parts=[];
-    if(drRaw) parts.push(s+drRaw.toFixed(2));
-    if(dyRaw) parts.push('('+(dyRaw*100).toFixed(2)+'%)');
-    set('sDiv',parts.join(' '));
-  }
-}
-
-/* ── render erro ─────────────────────────────────────────────────── */
+/* ── ERRO ─────────────────────────────────────────────────────────── */
 function renderError(ticker,msg){
   document.getElementById('skeletonHero').style.display='none';
   document.getElementById('skeletonChart').style.display='none';
@@ -396,7 +438,7 @@ function renderError(ticker,msg){
   c.innerHTML=`<div class="error-state">
     <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--color-text-faint)" stroke-width="1.5" style="margin:0 auto var(--space-4)"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
     <h2>N\u00e3o foi poss\u00edvel carregar "${esc(ticker)}"</h2>
-    <p>Verifica se o ticker existe no Yahoo Finance (ex: AAPL, ASML, VOO, NOVO-B.CO).</p>
+    <p>Verifica se o ticker existe no Yahoo Finance.<br>Exemplos: <b>AAPL</b>, <b>ASML.AS</b>, <b>VOO</b>, <b>NOVO-B.CO</b></p>
     <div class="error-detail">${esc(msg)}</div>
     <a href="index.html" style="display:inline-flex;align-items:center;gap:8px;margin-top:24px;padding:10px 20px;background:var(--color-primary);color:#fff;border-radius:var(--radius-full);font-size:var(--text-sm);font-weight:600;">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
@@ -406,37 +448,21 @@ function renderError(ticker,msg){
   c.style.display='block';
 }
 
-/* ── entry point ─────────────────────────────────────────────────── */
+/* ── ENTRY POINT ──────────────────────────────────────────────────── */
 if(!TICKER){
   renderError('?','Nenhum ticker na URL. Exemplo: stock.html?ticker=AAPL');
 }else{
-  fetchPrice(TICKER).then(res=>{
-    const meta=res.meta;
-    const price  = meta.regularMarketPrice;
-    const prevClose = meta.chartPreviousClose ?? meta.regularMarketPreviousClose ?? price;
-    const change = price - prevClose;
-    const changePct = prevClose ? (change/prevClose)*100 : 0;
-    const currency = meta.currency||'USD';
-    const data={
-      ticker:   meta.symbol||TICKER,
-      name:     meta.shortName||meta.longName||TICKER,
-      exchange: meta.exchangeName||meta.fullExchangeName||'',
-      type:     meta.instrumentType||meta.quoteType||'',
-      currency, s: sym(currency),
-      marketState: meta.marketState||'CLOSED',
-      price, change, changePct, prevClose,
-      open:      meta.regularMarketOpen     ?? price,
-      high:      meta.regularMarketDayHigh  ?? price,
-      low:       meta.regularMarketDayLow   ?? price,
-      volume:    fmtBig(meta.regularMarketVolume||0),
-      week52High:meta.fiftyTwoWeekHigh      ?? price,
-      week52Low: meta.fiftyTwoWeekLow       ?? price,
-      marketCap:'\u2014', pe:'\u2014', eps:'\u2014', dividend:'\u2014', beta:'\u2014'
-    };
-    renderStock(data);
-    // fundamentais em background — actualiza os campos depois de renderizar
-    fetchFundamentals(TICKER).then(qs=>applyFundamentals(qs,data.s));
-  }).catch(err=>renderError(TICKER,err.message));
+  fetchAll(TICKER)
+    .then(res=>{
+      /* res é o result[0] do chart — meta + timestamps + indicators */
+      const meta=res.meta;
+      /* extrair pontos históricos do próprio response (range=1y) */
+      const times=res.timestamp||[];
+      const closes=res.indicators?.quote?.[0]?.close||[];
+      const histPts=times.map((t,i)=>({t,v:closes[i]})).filter(p=>p.v!=null&&!isNaN(p.v));
+      renderStock(meta, histPts.length>1?histPts:null);
+    })
+    .catch(err=>renderError(TICKER,err.message));
 }
 </script>
 </body>
