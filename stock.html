@@ -64,7 +64,6 @@
     .live-dot{width:6px;height:6px;border-radius:50%;background:var(--color-success);animation:pulse 2s ease-in-out infinite;}
     .static-dot{width:6px;height:6px;border-radius:50%;background:var(--color-text-faint);}
     @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.85)}}
-    /* Banner de atualização em background */
     .update-banner{display:flex;align-items:center;gap:var(--space-2);padding:var(--space-2) var(--space-4);background:color-mix(in oklch,var(--color-primary) 8%,var(--color-surface));border:1px solid color-mix(in oklch,var(--color-primary) 20%,var(--color-border));border-radius:var(--radius-lg);font-size:var(--text-xs);color:var(--color-text-muted);margin-bottom:var(--space-6);}
     .update-banner.hidden{display:none;}
     .spinner{width:14px;height:14px;border:2px solid color-mix(in oklch,var(--color-primary) 30%,transparent);border-top-color:var(--color-primary);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0;}
@@ -74,6 +73,11 @@
     .period-tab.active{background:var(--color-bg);color:var(--color-text);box-shadow:var(--shadow-sm);}
     .period-tab:hover:not(.active){color:var(--color-text);}
     .chart-card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-2xl);padding:var(--space-6);margin-bottom:var(--space-6);box-shadow:var(--shadow-sm);}
+    /* Cabeçalho do gráfico: período + variação do intervalo */
+    .chart-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--space-3);margin-bottom:var(--space-4);}
+    .chart-change-badge{display:inline-flex;align-items:center;gap:4px;font-size:var(--text-sm);font-weight:600;padding:var(--space-1) var(--space-3);border-radius:var(--radius-full);font-variant-numeric:tabular-nums;}
+    .chart-change-badge.up{background:var(--color-success-bg);color:var(--color-success);}
+    .chart-change-badge.down{background:var(--color-error-bg);color:var(--color-error);}
     .chart-wrap{position:relative;height:280px;}
     .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-5);margin-bottom:var(--space-6);}
     .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-4);margin-bottom:var(--space-6);}
@@ -181,7 +185,6 @@ function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').repl
 function sym(c){return({USD:'$',EUR:'\u20ac',GBP:'\u00a3',JPY:'\u00a5',CHF:'CHF\u00a0',CAD:'C$',AUD:'A$',DKK:'kr\u00a0',SEK:'kr\u00a0',NOK:'kr\u00a0',BRL:'R$',HKD:'HK$',CNY:'\u00a5',INR:'\u20b9'})[c]||(c+'\u00a0');}
 function fmtBig(n){if(n==null||isNaN(n))return '\u2014';if(n>=1e12)return(n/1e12).toFixed(2)+'T';if(n>=1e9)return(n/1e9).toFixed(2)+'B';if(n>=1e6)return(n/1e6).toFixed(2)+'M';return n.toLocaleString('pt');}
 function fmtNum(n,dec=2){if(n==null||isNaN(n)||n===0)return '\u2014';return Number(n).toFixed(dec);}
-function raw(v){if(v==null)return null;if(typeof v==='object'&&v.raw!=null)return v.raw;if(typeof v==='number')return v;return null;}
 
 const TICKER=(()=>{const p=new URLSearchParams(location.search);return(p.get('ticker')||p.get('t')||'').trim().toUpperCase();})();
 
@@ -199,13 +202,11 @@ async function fetchLocal(ticker){
     if(!r.ok) return null;
     const j=await r.json();
     const stocks=j?.stocks||{};
-    /* procura pelo ticker com ou sem sufixo de bolsa */
     const key=Object.keys(stocks).find(k=>k.toUpperCase()===ticker||
       k.toUpperCase()===ticker.replace(/\.[A-Z]+$/,''));
     if(!key) return null;
     const s=stocks[key];
     if(!s||!s.price) return null;
-    /* normaliza para o formato esperado pelo renderStock */
     return {
       _source: 'local',
       _updated: j.updated||null,
@@ -264,8 +265,9 @@ async function tryUrls(urls,validate,timeoutMs=9000){
   return null;
 }
 
+/* Devolve o objecto completo chart result (meta + timestamps + indicators) */
 async function fetchYahoo(ticker){
-  const path=`/v8/finance/chart/${encodeURIComponent(ticker)}?interval=1d&range=1y&includePrePost=false`;
+  const path=`/v8/finance/chart/${encodeURIComponent(ticker)}?interval=1wk&range=1y&includePrePost=false`;
   const result=await tryUrls(yUrls(path),(j)=>{
     const res=j?.chart?.result?.[0];
     if(res&&res.meta&&res.meta.regularMarketPrice) return res;
@@ -289,7 +291,24 @@ async function fetchHistory(ticker,range,interval){
 
 /* ── GRÁFICO ──────────────────────────────────────────────────────── */
 let chartInst=null;
-function renderChart(price,period,up,pts){
+
+/* Formata label do eixo X de acordo com o período */
+function fmtAxisLabel(ts, period){
+  const d=new Date(ts*1000);
+  if(period==='1D') return d.toLocaleTimeString('pt',{hour:'2-digit',minute:'2-digit'});
+  if(period==='1S') return d.toLocaleDateString('pt',{weekday:'short',day:'numeric'});
+  if(period==='1M') return d.toLocaleDateString('pt',{day:'numeric',month:'short'});
+  return d.toLocaleDateString('pt',{month:'short',year:'2-digit'});
+}
+
+/* Formata label do tooltip (mais detalhe) */
+function fmtTooltipLabel(ts, period){
+  const d=new Date(ts*1000);
+  if(period==='1D') return d.toLocaleString('pt',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});
+  return d.toLocaleDateString('pt',{day:'2-digit',month:'short',year:'numeric'});
+}
+
+function renderChart(period, up, pts){
   const canvas=document.getElementById('priceChart');
   if(!canvas) return;
   const color=up?'#437a22':'#a13544';
@@ -298,21 +317,18 @@ function renderChart(price,period,up,pts){
   const axCol=dark?'#5a5957':'#8a8985';
   const gridC=dark?'rgba(80,78,74,.25)':'rgba(180,178,172,.15)';
   if(chartInst){chartInst.destroy();chartInst=null;}
-  let labels,data;
+
+  let labels, data, timestamps;
   if(pts&&pts.length>1){
-    labels=pts.map(p=>{
-      const d=new Date(p.t*1000);
-      return period==='1D'
-        ?d.toLocaleTimeString('pt',{hour:'2-digit',minute:'2-digit'})
-        :d.toLocaleDateString('pt',{month:'short',day:'numeric'});
-    });
+    timestamps=pts.map(p=>p.t);
+    labels=pts.map(p=>fmtAxisLabel(p.t, period));
     data=pts.map(p=>p.v);
   }else{
-    const n=30;labels=Array.from({length:n},()=>'');
-    let v=price*0.97;
-    data=Array.from({length:n},()=>{v+=v*(Math.random()-.48)*.015;return+v.toFixed(4);});
-    data[n-1]=price;
+    const n=30; timestamps=[]; labels=[]; let v=(window._currentPrice||100)*0.97;
+    data=Array.from({length:n},(_,i)=>{v+=v*(Math.random()-.48)*.015;timestamps.push(0);labels.push('');return+v.toFixed(4);});
+    data[n-1]=window._currentPrice||data[n-1];
   }
+
   chartInst=new Chart(canvas,{
     type:'line',
     data:{labels,datasets:[{data,borderColor:color,borderWidth:2,pointRadius:0,pointHoverRadius:4,
@@ -322,7 +338,14 @@ function renderChart(price,period,up,pts){
     options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
       plugins:{legend:{display:false},tooltip:{backgroundColor:dark?'#f0ede8':'#1c1b19',titleColor:dark?'#28251d':'#e8e7e5',
         bodyColor:dark?'#28251d':'#e8e7e5',borderColor:dark?'#d4d1ca':'#2e2d2b',borderWidth:1,padding:10,cornerRadius:8,
-        callbacks:{label:ctx=>' '+ctx.parsed.y.toFixed(2)}}},
+        callbacks:{
+          title:ctx=>{
+            const i=ctx[0]?.dataIndex;
+            if(timestamps&&timestamps[i]&&timestamps[i]>0) return fmtTooltipLabel(timestamps[i], period);
+            return labels[i]||'';
+          },
+          label:ctx=>' '+ctx.parsed.y.toFixed(2)
+        }}},
       scales:{
         x:{ticks:{color:axCol,maxTicksLimit:6,maxRotation:0,font:{size:11}},grid:{color:gridC},border:{display:false}},
         y:{ticks:{color:axCol,maxTicksLimit:5,font:{size:11},callback:v=>v.toFixed(2)},grid:{color:gridC},border:{display:false},position:'right'}
@@ -331,10 +354,31 @@ function renderChart(price,period,up,pts){
   });
 }
 
+/* Atualiza o badge de variação do período selecionado */
+function updateChangeBadge(pts, currentPrice, period){
+  const badge=document.getElementById('chartChangeBadge');
+  if(!badge) return;
+  if(!pts||pts.length<2){badge.textContent='—';badge.className='chart-change-badge';return;}
+  const first=pts[0].v;
+  const last=pts[pts.length-1].v;
+  const chg=last-first;
+  const pct=first?(chg/first)*100:0;
+  const up=chg>=0;
+  const sign=up?'+':'';
+  const arrow=up?'▲':'▼';
+  const s=sym(window._currency||'USD');
+  badge.textContent=`${arrow} ${sign}${s}${Math.abs(chg).toFixed(2)} (${sign}${pct.toFixed(2)}%) — ${period}`;
+  badge.className='chart-change-badge '+(up?'up':'down');
+}
+
 /* ── RENDER PRINCIPAL ─────────────────────────────────────────────── */
-function renderStock(meta,histPts,isLive){
+function renderStock(meta, histPts, isLive){
   document.getElementById('skeletonHero').style.display='none';
   document.getElementById('skeletonChart').style.display='none';
+
+  /* ── FIX: normaliza o meta do Yahoo (que vem dentro de res.meta) ── */
+  /* Quando vem do Yahoo, meta é res.meta (já extraído antes de chamar renderStock) */
+  /* Quando vem do data.json local, meta está no formato normalizado correto */
 
   const ticker   = meta.symbol||TICKER;
   const name     = meta.shortName||meta.longName||ticker;
@@ -344,6 +388,10 @@ function renderStock(meta,histPts,isLive){
   const s        = sym(currency);
   const mktState = meta.marketState||'CLOSED';
 
+  /* Guarda globalmente para uso no gráfico */
+  window._currentPrice = meta.regularMarketPrice;
+  window._currency = currency;
+
   const price     = meta.regularMarketPrice;
   const prevClose = meta.chartPreviousClose??meta.regularMarketPreviousClose??price;
   const change    = price-prevClose;
@@ -352,7 +400,6 @@ function renderStock(meta,histPts,isLive){
   const high      = meta.regularMarketDayHigh??price;
   const low       = meta.regularMarketDayLow??price;
 
-  /* Volume e marketCap: usa campos formatados do data.json ou calcula do Yahoo */
   const vol    = meta._volume||(fmtBig(meta.regularMarketVolume||0)||'\u2014');
   const avgVol = meta._avgVolume||(fmtBig(meta.averageDailyVolume3Month??meta.averageVolume??null)||'\u2014');
   const mcap   = meta._marketCap||(fmtBig(meta.marketCap??null)||'\u2014');
@@ -370,8 +417,6 @@ function renderStock(meta,histPts,isLive){
   const eps = (()=>{const v=meta.epsTrailingTwelveMonths??null;return v!=null&&v!==0?s+fmtNum(v):'\u2014';})();
   const beta = (()=>{const v=meta.beta??null;return v!=null&&v!==0?fmtNum(v):'\u2014';})();
 
-  /* Dividendo: usa string pré-formatada do data.json ou calcula do Yahoo.
-     No Yahoo o dividendYield já vem em % (ex: 0.92 = 0.92%), não em decimal. */
   const div = (()=>{
     if(meta.dividendFormatted) return meta.dividendFormatted;
     const rate=meta.dividendRate??null;
@@ -387,7 +432,6 @@ function renderStock(meta,histPts,isLive){
   const w52p=w52h>w52l?Math.round((price-w52l)/(w52h-w52l)*100):50;
   const typeLabel=({'EQUITY':'Ação','Ação':'Ação','ETF':'ETF','MUTUALFUND':'Fundo','INDEX':'Índice','CRYPTOCURRENCY':'Cripto','FUTURE':'Futuro'})[type]||type;
 
-  /* Badge da fonte de dados */
   const sourceBadge = isLive
     ? `<div class="source-badge"><span class="live-dot"></span> Yahoo Finance &middot; ${esc(currency)} &middot; ${mktState==='REGULAR'?'Mercado aberto':'Mercado fechado'}</div>`
     : (()=>{
@@ -414,12 +458,15 @@ function renderStock(meta,histPts,isLive){
     </div>
   </div>
   <div class="chart-card">
-    <div id="periodTabs" class="period-tabs">
-      <button class="period-tab active" data-p="1D">1D</button>
-      <button class="period-tab" data-p="1S">1S</button>
-      <button class="period-tab" data-p="1M">1M</button>
-      <button class="period-tab" data-p="1A">1A</button>
-      <button class="period-tab" data-p="3A">3A</button>
+    <div class="chart-header">
+      <div id="periodTabs" class="period-tabs">
+        <button class="period-tab active" data-p="1D">1D</button>
+        <button class="period-tab" data-p="1S">1S</button>
+        <button class="period-tab" data-p="1M">1M</button>
+        <button class="period-tab" data-p="1A">1A</button>
+        <button class="period-tab" data-p="3A">3A</button>
+      </div>
+      <span id="chartChangeBadge" class="chart-change-badge">—</span>
     </div>
     <div class="chart-wrap"><canvas id="priceChart"></canvas></div>
   </div>
@@ -458,29 +505,53 @@ function renderStock(meta,histPts,isLive){
 
   document.getElementById('stockContent').style.display='block';
 
-  renderChart(price,'1A',up,histPts);
+  /* Renderiza gráfico 1A por omissão */
+  const initialPeriod='1A';
+  renderChart(initialPeriod, up, histPts);
+  updateChangeBadge(histPts, price, initialPeriod);
   document.querySelectorAll('.period-tab').forEach(t=>t.classList.remove('active'));
   document.querySelector('[data-p="1A"]')?.classList.add('active');
 
   const rangeMap={"1D":"1d","1S":"5d","1M":"1mo","1A":"1y","3A":"3y"};
-  const intMap  ={"1D":"5m","1S":"1h","1M":"1d","1A":"1wk","3A":"1wk"};
+  const intMap  ={"1D":"2m","1S":"1h","1M":"1d","1A":"1wk","3A":"1wk"};
+
+  /* Cache de histórico por período para não re-fetchar */
+  const histCache={"1A": histPts};
+
   document.getElementById('periodTabs').addEventListener('click',e=>{
     const btn=e.target.closest('[data-p]');if(!btn)return;
     document.querySelectorAll('.period-tab').forEach(t=>t.classList.remove('active'));
     btn.classList.add('active');
     const p=btn.dataset.p;
-    if(p==='1A'){renderChart(price,'1A',up,histPts);return;}
-    renderChart(price,p,up,null);
-    fetchHistory(ticker,rangeMap[p],intMap[p]).then(pts=>renderChart(price,p,up,pts));
+    /* Se já temos em cache, usa directamente */
+    if(histCache[p]){
+      const upP=histCache[p].length>1?(histCache[p][histCache[p].length-1].v>=histCache[p][0].v):up;
+      renderChart(p, upP, histCache[p]);
+      updateChangeBadge(histCache[p], price, p);
+      return;
+    }
+    /* Mostra gráfico placeholder enquanto carrega */
+    renderChart(p, up, null);
+    document.getElementById('chartChangeBadge').textContent='A carregar…';
+    document.getElementById('chartChangeBadge').className='chart-change-badge';
+    fetchHistory(TICKER, rangeMap[p], intMap[p]).then(pts=>{
+      histCache[p]=pts;
+      if(document.querySelector(`[data-p="${p}"]`)?.classList.contains('active')){
+        const upP=pts&&pts.length>1?(pts[pts.length-1].v>=pts[0].v):up;
+        renderChart(p, upP, pts);
+        updateChangeBadge(pts, price, p);
+      }
+    });
   });
 
+  /* Logo da empresa */
   const img=new Image();
   img.onload=()=>{const w=document.getElementById('logoWrap');if(w){w.innerHTML='';w.appendChild(img);}};
   img.onerror=()=>{};
   img.src='https://logo.clearbit.com/'+ticker.toLowerCase().replace(/[^a-z0-9]/g,'').replace(/^([a-z]+).*/,'$1')+'.com';
 }
 
-/* ── ERRO (só aparece se data.json também falhar) ─────────────────── */
+/* ── ERRO ─────────────────────────────────────────────────────────── */
 function renderError(ticker,msg){
   document.getElementById('skeletonHero').style.display='none';
   document.getElementById('skeletonChart').style.display='none';
@@ -506,21 +577,47 @@ if(!TICKER){
     /* FASE 1 — tenta data.json local (rápido, sempre disponível) */
     const local = await fetchLocal(TICKER);
     if(local){
-      /* Mostra dados locais imediatamente */
       renderStock(local, null, false);
-      /* FASE 2 — tenta atualizar via Yahoo em background */
+      /* FASE 2 — atualiza via Yahoo em background */
       const banner=document.getElementById('updateBanner');
       const bannerText=document.getElementById('updateBannerText');
       banner.classList.remove('hidden');
       try{
         const res = await fetchYahoo(TICKER);
         if(res){
+          /* res é o chart result completo; res.meta tem os dados da ação */
           const meta=res.meta;
           const times=res.timestamp||[];
           const closes=res.indicators?.quote?.[0]?.close||[];
           const histPts=times.map((t,i)=>({t,v:closes[i]})).filter(p=>p.v!=null&&!isNaN(p.v));
+          /* Mapeia campos do Yahoo para o formato esperado por renderStock */
+          const normalized={
+            _source:                  'live',
+            symbol:                   meta.symbol||TICKER,
+            shortName:                meta.shortName||meta.longName||TICKER,
+            exchangeName:             meta.exchangeName||meta.fullExchangeName||'',
+            quoteType:                meta.instrumentType||meta.quoteType||'EQUITY',
+            currency:                 meta.currency||'USD',
+            marketState:              meta.marketState||'CLOSED',
+            regularMarketPrice:       meta.regularMarketPrice,
+            chartPreviousClose:       meta.chartPreviousClose??meta.regularMarketPreviousClose??meta.regularMarketPrice,
+            regularMarketOpen:        meta.regularMarketOpen??meta.regularMarketPrice,
+            regularMarketDayHigh:     meta.regularMarketDayHigh??meta.regularMarketPrice,
+            regularMarketDayLow:      meta.regularMarketDayLow??meta.regularMarketPrice,
+            regularMarketVolume:      meta.regularMarketVolume??null,
+            averageDailyVolume3Month: meta.averageDailyVolume3Month??meta.averageVolume??null,
+            marketCap:                meta.marketCap??null,
+            trailingPE:               meta.trailingPE??null,
+            epsTrailingTwelveMonths:  meta.epsTrailingTwelveMonths??null,
+            beta:                     meta.beta??null,
+            dividendRate:             meta.dividendRate??null,
+            /* Yahoo /v8 devolve dividendYield já em % (ex: 0.92 para 0.92%) */
+            dividendYield:            meta.dividendYield??null,
+            fiftyTwoWeekHigh:         meta.fiftyTwoWeekHigh??meta.regularMarketPrice,
+            fiftyTwoWeekLow:          meta.fiftyTwoWeekLow??meta.regularMarketPrice,
+          };
           banner.classList.add('hidden');
-          renderStock(meta, histPts.length>1?histPts:null, true);
+          renderStock(normalized, histPts.length>1?histPts:null, true);
         }else{
           bannerText.textContent='Dados em tempo real indisponíveis — a mostrar último fecho.';
           setTimeout(()=>banner.classList.add('hidden'),4000);
@@ -542,8 +639,32 @@ if(!TICKER){
           const times=res.timestamp||[];
           const closes=res.indicators?.quote?.[0]?.close||[];
           const histPts=times.map((t,i)=>({t,v:closes[i]})).filter(p=>p.v!=null&&!isNaN(p.v));
+          const normalized={
+            _source:                  'live',
+            symbol:                   meta.symbol||TICKER,
+            shortName:                meta.shortName||meta.longName||TICKER,
+            exchangeName:             meta.exchangeName||meta.fullExchangeName||'',
+            quoteType:                meta.instrumentType||meta.quoteType||'EQUITY',
+            currency:                 meta.currency||'USD',
+            marketState:              meta.marketState||'CLOSED',
+            regularMarketPrice:       meta.regularMarketPrice,
+            chartPreviousClose:       meta.chartPreviousClose??meta.regularMarketPreviousClose??meta.regularMarketPrice,
+            regularMarketOpen:        meta.regularMarketOpen??meta.regularMarketPrice,
+            regularMarketDayHigh:     meta.regularMarketDayHigh??meta.regularMarketPrice,
+            regularMarketDayLow:      meta.regularMarketDayLow??meta.regularMarketPrice,
+            regularMarketVolume:      meta.regularMarketVolume??null,
+            averageDailyVolume3Month: meta.averageDailyVolume3Month??meta.averageVolume??null,
+            marketCap:                meta.marketCap??null,
+            trailingPE:               meta.trailingPE??null,
+            epsTrailingTwelveMonths:  meta.epsTrailingTwelveMonths??null,
+            beta:                     meta.beta??null,
+            dividendRate:             meta.dividendRate??null,
+            dividendYield:            meta.dividendYield??null,
+            fiftyTwoWeekHigh:         meta.fiftyTwoWeekHigh??meta.regularMarketPrice,
+            fiftyTwoWeekLow:          meta.fiftyTwoWeekLow??meta.regularMarketPrice,
+          };
           banner.classList.add('hidden');
-          renderStock(meta, histPts.length>1?histPts:null, true);
+          renderStock(normalized, histPts.length>1?histPts:null, true);
         }else{
           throw new Error('Ticker "'+TICKER+'" não encontrado. Verifica no Yahoo Finance (ex: AAPL, ASML.AS, VOO).');
         }
