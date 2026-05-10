@@ -79,6 +79,7 @@
     .results-close:hover{color:var(--color-text);background:var(--color-surface-offset);}
     .results-list{max-height:420px;overflow-y:auto;}
     .results-empty{padding:var(--space-12);text-align:center;color:var(--color-text-muted);font-size:var(--text-sm);}
+    /* result-item é agora o elemento clicável */
     .result-item{display:flex;align-items:center;padding:var(--space-3) var(--space-5);gap:var(--space-4);cursor:pointer;transition:background var(--transition);text-decoration:none;color:inherit;}
     .result-item:hover{background:var(--color-surface-offset);}
     .result-badge{min-width:52px;text-align:center;font-size:var(--text-xs);font-weight:700;letter-spacing:.04em;padding:var(--space-1) var(--space-2);border-radius:var(--radius-sm);background:var(--color-primary-highlight);color:var(--color-primary);flex-shrink:0;}
@@ -205,11 +206,12 @@
   if(t)t.addEventListener('click',()=>setTheme(d==='dark'?'light':'dark'));
 })();
 
+/* ── constantes ── */
 const WORKER='https://stocks.araujo-francisco-fernandes.workers.dev';
 const YF_PROXY='https://query2.finance.yahoo.com/v1/finance/search';
-const YF_QUOTE='https://query1.finance.yahoo.com/v8/finance/chart/';
 const CORS_P='https://corsproxy.io/?';
 
+/* ── watchlist helpers ── */
 function getWatchlist(){try{return JSON.parse(localStorage.getItem('fs_watchlist')||'[]');}catch{return[];}}
 function saveWatchlist(arr){localStorage.setItem('fs_watchlist',JSON.stringify(arr));}
 function isInWatchlist(ticker){return getWatchlist().includes(ticker.toUpperCase());}
@@ -221,22 +223,35 @@ function toggleWatchlist(ticker){
   return arr.includes(t);
 }
 
+/* ── data.json local ── */
 let LOCAL={};
 async function loadLocal(){
   try{const r=await fetch('data.json?t='+Date.now());if(!r.ok)throw 0;const j=await r.json();LOCAL=j.stocks||{};}catch{}
 }
 
+/* ── pesquisa no Yahoo (apenas para obter lista de símbolos/nomes) ── */
 async function yfSearch(term){
   const url=`${CORS_P}${encodeURIComponent(YF_PROXY+'?q='+encodeURIComponent(term)+'&lang=en&region=US&quotesCount=8&newsCount=0&enableFuzzyQuery=true')}`;
   const r=await fetch(url,{headers:{'Accept':'application/json'}});
   if(!r.ok)throw new Error('search '+r.status);
   return r.json();
 }
-async function yfQuote(symbol){
-  const url=`${CORS_P}${encodeURIComponent(YF_QUOTE+encodeURIComponent(symbol)+'?interval=1d&range=2d')}`;
-  const r=await fetch(url,{headers:{'Accept':'application/json'}});
-  if(!r.ok)throw new Error('quote '+r.status);
-  return r.json();
+
+/* ── FIX: cotação via Worker (sem corsproxy para o preço) ── */
+async function workerQuote(symbol){
+  try{
+    const ctrl=new AbortController();
+    const tid=setTimeout(()=>ctrl.abort(),8000);
+    const r=await fetch(`${WORKER}?ticker=${encodeURIComponent(symbol)}&range=1d&interval=5m`,{signal:ctrl.signal});
+    clearTimeout(tid);
+    if(!r.ok) return null;
+    const j=await r.json();
+    const meta=j?.chart?.result?.[0]?.meta;
+    if(!meta||!meta.regularMarketPrice) return null;
+    const price=meta.regularMarketPrice;
+    const prev=meta.chartPreviousClose||meta.previousClose||price;
+    return{price,chgPct:prev?((price-prev)/prev)*100:0,currency:meta.currency||'USD'};
+  }catch{return null;}
 }
 
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
@@ -267,22 +282,21 @@ window.handleWlToggle=function(btn,ticker){
   btn.innerHTML=`<svg width="14" height="14" viewBox="0 0 24 24" fill="${added?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`;
 };
 
+/* FIX: result-item é um <a> direto — toda a área é clicável */
 function resultHTML(ticker,name,typeLabel,exch,price,chgPct,sym){
   const up=chgPct>=0,sign=up?'+':'-';
-  return `<div class="result-item" style="display:flex;align-items:center;padding:var(--space-3) var(--space-5);gap:var(--space-4);">
-    <a href="stock.html?ticker=${encodeURIComponent(ticker)}" style="display:flex;align-items:center;gap:var(--space-4);flex:1;min-width:0;text-decoration:none;color:inherit;">
-      <span class="result-badge">${esc(ticker.slice(0,7))}</span>
-      <div class="result-info">
-        <p class="result-name">${esc(name)}</p>
-        <p class="result-type">${esc(typeLabel)}${exch?' &middot; '+esc(exch):''}</p>
-      </div>
-      <div style="text-align:right;flex-shrink:0;">
-        <p class="result-price">${esc(sym)}${price.toFixed(2)}</p>
-        <p class="result-chg ${up?'up':'down'}">${up?'&#9650;':'&#9660;'} ${sign}${Math.abs(chgPct).toFixed(2)}%</p>
-      </div>
-    </a>
+  return `<a class="result-item" href="stock.html?ticker=${encodeURIComponent(ticker)}">
+    <span class="result-badge">${esc(ticker.slice(0,7))}</span>
+    <div class="result-info">
+      <p class="result-name">${esc(name)}</p>
+      <p class="result-type">${esc(typeLabel)}${exch?' &middot; '+esc(exch):''}</p>
+    </div>
+    <div style="text-align:right;flex-shrink:0;">
+      <p class="result-price">${esc(sym)}${price.toFixed(2)}</p>
+      <p class="result-chg ${up?'up':'down'}">${up?'&#9650;':'&#9660;'} ${sign}${Math.abs(chgPct).toFixed(2)}%</p>
+    </div>
     ${watchlistBtnHTML(ticker)}
-  </div>`;
+  </a>`;
 }
 
 async function doSearch(q){
@@ -290,32 +304,69 @@ async function doSearch(q){
   if(!term){list.innerHTML='<div class="results-empty">Escreve para pesquisar&#8230;</div>';return;}
   list.innerHTML='<div class="loading-dots"><span></span><span></span><span></span></div>';
   const termUpper=term.toUpperCase();
-  const localHits=Object.values(LOCAL).filter(s=>(s.ticker||'').toUpperCase().includes(termUpper)||(s.name||'').toUpperCase().includes(termUpper));
+
+  /* resultados locais imediatos */
+  const localHits=Object.values(LOCAL).filter(s=>
+    (s.ticker||'').toUpperCase().includes(termUpper)||(s.name||'').toUpperCase().includes(termUpper)
+  );
   if(localHits.length){
     list.innerHTML=localHits.map(s=>resultHTML(s.ticker,s.name||s.ticker,s.type||'A\u00e7\u00e3o',s.exchange||'',s.price||0,s.changePct||0,s.symbol||'$')).join('');
   }
+
   try{
     const data=await yfSearch(term);
-    const quotes=(data.quotes||[]).filter(q=>['EQUITY','ETF','MUTUALFUND','INDEX'].includes(q.quoteType)).slice(0,7);
-    if(!quotes.length){if(!localHits.length)list.innerHTML='<div class="results-empty">Sem resultados para "<strong>'+esc(q)+'</strong>"</div>';return;}
+    const quotes=(data.quotes||[])
+      .filter(q=>['EQUITY','ETF','MUTUALFUND','INDEX'].includes(q.quoteType))
+      .slice(0,7);
+
+    if(!quotes.length){
+      if(!localHits.length) list.innerHTML='<div class="results-empty">Sem resultados para "<strong>'+esc(q)+'</strong>"</div>';
+      return;
+    }
+
+    /* FIX: cotações via Worker, sem corsproxy */
     const results=await Promise.all(quotes.map(async h=>{
-      const lk=h.symbol.replace(/\.(AS|L|PA|DE|MI|BR|HK|T|BO|NS|F|ST|CO|OL|HE|VI|PR|IS)$/i,'');
-      if(LOCAL[lk]){const s=LOCAL[lk];return{ticker:lk,name:h.longname||h.shortname||s.name,typeLabel:quoteTypeLabel(h.quoteType),exch:h.exchDisp||s.exchange||'',price:s.price,chgPct:s.changePct,sym:s.symbol||'$'};}
-      try{
-        const cd=await yfQuote(h.symbol);
-        const meta=cd?.chart?.result?.[0]?.meta;
-        if(!meta||!meta.regularMarketPrice)return null;
-        const price=meta.regularMarketPrice,prev=meta.chartPreviousClose||meta.previousClose||price;
-        return{ticker:h.symbol,name:h.longname||h.shortname||h.symbol,typeLabel:quoteTypeLabel(h.quoteType),exch:h.exchDisp||'',price,chgPct:prev?((price-prev)/prev)*100:0,sym:currencySymbol(meta.currency||'USD')};
-      }catch{return null;}
+      const sym=h.symbol;
+      const lk=sym.replace(/\.(AS|L|PA|DE|MI|BR|HK|T|BO|NS|F|ST|CO|OL|HE|VI|PR|IS)$/i,'');
+      /* tenta cache local primeiro */
+      if(LOCAL[lk]){
+        const s=LOCAL[lk];
+        return{ticker:lk,name:h.longname||h.shortname||s.name,typeLabel:quoteTypeLabel(h.quoteType),exch:h.exchDisp||s.exchange||'',price:s.price,chgPct:s.changePct,sym:s.symbol||'$'};
+      }
+      /* Worker para todos os outros */
+      const q2=await workerQuote(sym);
+      if(!q2) return null;
+      return{
+        ticker:sym,
+        name:h.longname||h.shortname||sym,
+        typeLabel:quoteTypeLabel(h.quoteType),
+        exch:h.exchDisp||'',
+        price:q2.price,
+        chgPct:q2.chgPct,
+        sym:currencySymbol(q2.currency)
+      };
     }));
+
     const seen=new Set();
     const deduped=results.filter(r=>{if(!r||seen.has(r.ticker))return false;seen.add(r.ticker);return true;});
-    if(!deduped.length){if(!localHits.length)list.innerHTML='<div class="results-empty">Sem pre\u00e7os dispon\u00edveis</div>';return;}
+
+    if(!deduped.length){
+      if(!localHits.length) list.innerHTML='<div class="results-empty">Sem pre\u00e7os dispon\u00edveis. Tenta um ticker exato (ex: AAPL).</div>';
+      return;
+    }
     list.innerHTML=deduped.map(r=>resultHTML(r.ticker,r.name,r.typeLabel,r.exch,r.price,r.chgPct,r.sym)).join('');
+
   }catch(err){
-    if(localHits.length)list.innerHTML=localHits.map(s=>resultHTML(s.ticker,s.name||s.ticker,s.type||'A\u00e7\u00e3o',s.exchange||'',s.price||0,s.changePct||0,s.symbol||'$')).join('');
-    else list.innerHTML='<div class="results-empty">Erro de liga\u00e7\u00e3o. Tenta novamente.</div>';
+    /* fallback: se a pesquisa Yahoo falhar, deixa o ticker tal como digitado e vai direto */
+    const t=term.toUpperCase();
+    if(!t.includes(' ')&&!localHits.length){
+      list.innerHTML=`<a class="result-item" href="stock.html?ticker=${encodeURIComponent(t)}">
+        <span class="result-badge">${esc(t)}</span>
+        <div class="result-info"><p class="result-name">Ver p\u00e1gina de ${esc(t)}</p><p class="result-type">Clicar para abrir</p></div>
+      </a>`;
+    } else if(!localHits.length){
+      list.innerHTML='<div class="results-empty">Erro de liga\u00e7\u00e3o. Tenta novamente.</div>';
+    }
   }
 }
 
