@@ -93,26 +93,30 @@
     .error-state{text-align:center;padding:var(--space-16) var(--space-8);color:var(--color-text-muted);}
     .error-state h2{font-size:var(--text-lg);margin-bottom:var(--space-3);color:var(--color-text);}
     .error-detail{margin-top:var(--space-2);font-size:var(--text-sm);color:var(--color-text-faint);font-family:monospace;background:var(--color-surface);padding:var(--space-3);border-radius:var(--radius-md);text-align:left;max-width:520px;margin-inline:auto;word-break:break-all;line-height:1.6;}
-    .footer{padding:var(--space-6);text-align:center;font-size:var(--text-xs);color:var(--color-text-faint);border-top:1px solid var(--color-divider);margin-top:var(--space-8);}
+    .footer{padding:var(--space-6);text-align:center;font-size:var(--text-xs);color:var(--color-text-faint);border-top:1px solid var(--color-divider);}
     .footer a{color:var(--color-text-muted);transition:color var(--transition);}
     .footer a:hover{color:var(--color-primary);}
+    .news-item{display:flex;flex-direction:column;gap:var(--space-2);padding:var(--space-4) 0;border-bottom:1px solid var(--color-divider);}
+    .news-item:last-child{border-bottom:none;}
+    .news-source{font-size:var(--text-xs);color:var(--color-text-faint);font-weight:500;}
+    .news-title{font-size:var(--text-sm);font-weight:500;color:var(--color-text);line-height:1.4;}
+    .news-title a{transition:color var(--transition);}
+    .news-title a:hover{color:var(--color-primary);}
+    .news-date{font-size:var(--text-xs);color:var(--color-text-faint);}
     @media(max-width:768px){
       .grid-2{grid-template-columns:1fr;}
       .grid-3{grid-template-columns:1fr 1fr;}
-      .stock-hero{flex-direction:column;gap:var(--space-4);}
+      .stock-hero{flex-direction:column;}
       .stock-price-block{text-align:left;}
-      .page{padding:var(--space-6) var(--space-4) var(--space-12);}
+      .page{padding:var(--space-6) var(--space-4) var(--space-16);}
     }
     @media(max-width:480px){
       .grid-3{grid-template-columns:1fr;}
-      .chart-wrap{height:220px;}
-      .period-tabs{width:100%;}
-      .period-tab{flex:1;text-align:center;}
+      .header{padding:var(--space-3) var(--space-4);}
     }
   </style>
 </head>
 <body>
-
   <header class="header">
     <a href="index.html" class="logo">
       <svg class="logo-svg" viewBox="0 0 28 28" fill="none">
@@ -127,84 +131,73 @@
         <circle cx="17.5" cy="12.8" r="0.5" fill="var(--color-text)"/>
         <ellipse cx="7" cy="11" rx="2.2" ry="2.8" fill="var(--color-primary)"/>
         <ellipse cx="21" cy="11" rx="2.2" ry="2.8" fill="var(--color-primary)"/>
-        <rect x="12" y="8.5" width="4" height="1.2" rx="0.6" fill="var(--color-bg)" opacity="0.6"/>
-        <path d="M22.5 17 Q25 16 24.5 19 Q24 21 22 20" stroke="var(--color-primary-hover)" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+        <path d="M11.5 16.8 Q14 18.5 16.5 16.8" stroke="var(--color-bg)" stroke-width="0.8" fill="none" stroke-linecap="round"/>
       </svg>
       FundScope
     </a>
-    <button class="btn-icon" data-theme-toggle aria-label="Alternar tema">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
-    </button>
+    <div style="display:flex;align-items:center;gap:var(--space-2);">
+      <a href="index.html" class="back-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Pesquisa
+      </a>
+      <button class="btn-icon" id="themeToggle" data-theme-toggle aria-label="Alternar tema">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+    </div>
   </header>
 
-  <div class="page">
-    <a href="index.html" class="back-btn" style="margin-bottom:var(--space-6)">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
-      Voltar
-    </a>
-    <div id="stockContent">
-      <div style="display:flex;flex-direction:column;gap:var(--space-4)">
-        <div style="display:flex;align-items:center;gap:var(--space-4)">
-          <div class="skeleton" style="width:56px;height:56px;border-radius:var(--radius-lg);flex-shrink:0"></div>
-          <div style="flex:1;display:flex;flex-direction:column;gap:var(--space-2)">
-            <div class="skeleton" style="height:28px;width:160px"></div>
-            <div class="skeleton" style="height:16px;width:240px"></div>
-          </div>
-          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:var(--space-2)">
-            <div class="skeleton" style="height:32px;width:120px"></div>
-            <div class="skeleton" style="height:20px;width:100px"></div>
-          </div>
-        </div>
-        <div class="skeleton" style="height:300px;border-radius:var(--radius-2xl)"></div>
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:var(--space-4)">
-          <div class="skeleton" style="height:80px;border-radius:var(--radius-xl)"></div>
-          <div class="skeleton" style="height:80px;border-radius:var(--radius-xl)"></div>
-          <div class="skeleton" style="height:80px;border-radius:var(--radius-xl)"></div>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-5)">
-          <div class="skeleton" style="height:200px;border-radius:var(--radius-xl)"></div>
-          <div class="skeleton" style="height:200px;border-radius:var(--radius-xl)"></div>
+  <main class="page" id="mainContent">
+    <!-- skeleton inicial -->
+    <div id="skeletonHero" class="stock-hero">
+      <div class="stock-identity">
+        <div class="skeleton" style="width:56px;height:56px;border-radius:var(--radius-lg);flex-shrink:0;"></div>
+        <div>
+          <div class="skeleton" style="width:120px;height:28px;margin-bottom:8px;"></div>
+          <div class="skeleton" style="width:180px;height:16px;margin-bottom:6px;"></div>
+          <div class="skeleton" style="width:80px;height:12px;"></div>
         </div>
       </div>
+      <div style="text-align:right;">
+        <div class="skeleton" style="width:140px;height:36px;margin-bottom:10px;margin-left:auto;"></div>
+        <div class="skeleton" style="width:100px;height:24px;margin-left:auto;"></div>
+      </div>
     </div>
-  </div>
+    <div id="skeletonChart" class="chart-card">
+      <div class="skeleton" style="height:280px;border-radius:var(--radius-lg);"></div>
+    </div>
+    <div id="stockContent" style="display:none;"></div>
+  </main>
 
   <footer class="footer">
-    <p>&copy; 2026 FundScope &middot; <a href="https://github.com/chico130/fundscope" target="_blank" rel="noopener">GitHub</a> &middot; Dados via stooq &amp; FMP</p>
+    <p>&#169; 2026 FundScope &middot; <a href="https://github.com/chico130/fundscope" target="_blank" rel="noopener">GitHub</a> &middot; Dados via Yahoo Finance</p>
   </footer>
 
 <script>
-// ── TEMA ──────────────────────────────────────────────────────────────────
 (function(){
-  const btn=document.querySelector('[data-theme-toggle]'),root=document.documentElement;
-  const icons={
-    light:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>',
-    dark:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>'
-  };
-  let th=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
-  function apply(t){th=t;root.setAttribute('data-theme',t);if(btn)btn.innerHTML=icons[t];}
-  apply(th);
-  if(btn)btn.addEventListener('click',()=>apply(th==='dark'?'light':'dark'));
+  const el=document.getElementById('themeToggle');
+  const r=document.documentElement;
+  let d=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
+  r.setAttribute('data-theme',d);
+  if(el) el.addEventListener('click',()=>{
+    d=d==='dark'?'light':'dark';
+    r.setAttribute('data-theme',d);
+    el.innerHTML=d==='dark'
+      ?'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>'
+      :'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+  });
 })();
 
-// ── HELPERS ───────────────────────────────────────────────────────────────
-const CSYM={USD:'$',EUR:'€',GBP:'£',JPY:'¥',CHF:'CHF ',CAD:'CA$',AUD:'A$',BRL:'R$',HKD:'HK$',INR:'₹',KRW:'₩',MXN:'MX$',SGD:'S$',TWD:'NT$',ZAR:'R ',SEK:'kr',NOK:'kr',DKK:'kr'};
-function sym(c){return CSYM[c]||(c?c+' ':'$');}
 function fmt(n){
-  if(n==null||isNaN(n))return '—';
-  const a=Math.abs(n);
-  if(a>=1e12)return (n/1e12).toFixed(2)+'T';
-  if(a>=1e9) return (n/1e9).toFixed(2)+'B';
-  if(a>=1e6) return (n/1e6).toFixed(2)+'M';
-  if(a>=1e3) return (n/1e3).toFixed(1)+'K';
+  if(n==null||isNaN(n)) return '—';
+  if(typeof n==='string') return n;
+  if(Math.abs(n)>=1e12) return (n/1e12).toFixed(2)+'T';
+  if(Math.abs(n)>=1e9)  return (n/1e9).toFixed(2)+'B';
+  if(Math.abs(n)>=1e6)  return (n/1e6).toFixed(2)+'M';
+  if(Math.abs(n)>=1e3)  return (n/1e3).toFixed(1)+'K';
   return n.toLocaleString('pt');
 }
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-function tof(url,ms=9000){
-  const ac=new AbortController();
-  const id=setTimeout(()=>ac.abort(),ms);
-  return fetch(url,{signal:ac.signal}).finally(()=>clearTimeout(id));
-}
+function sym(c){const m={USD:'$',EUR:'€',GBP:'£',JPY:'¥',CHF:'CHF ',CAD:'C$',AUD:'A$',DKK:'kr',SEK:'kr',NOK:'kr',BRL:'R$',HKD:'HK$',CNY:'¥',INR:'₹'};return m[c]||c+' ';}
 
 // ── TICKER ────────────────────────────────────────────────────────────────
 const TICKER=(()=>{
@@ -212,137 +205,125 @@ const TICKER=(()=>{
   return (p.get('ticker')||p.get('t')||'').trim().toUpperCase();
 })();
 
-// ── FONTE 1: stooq.com CSV (sem autenticação, CORS aberto) ────────────────
-// Devolve preço, high, low, open, volume do dia mais recente
-async function fromStooq(ticker){
-  // stooq usa tickers em minúsculas; bolsas não-US precisam de sufixo (ex: ASML.NL)
-  const t=ticker.toLowerCase();
-  const url=`https://stooq.com/q/l/?s=${encodeURIComponent(t)}&f=sd2t2ohlcv&h&e=csv`;
-  const r=await tof(url);
-  if(!r.ok) throw new Error('stooq HTTP '+r.status);
-  const txt=await r.text();
-  const lines=txt.trim().split('\n');
-  if(lines.length<2) throw new Error('stooq: sem dados');
-  const cols=lines[1].split(',');
-  // Symbol,Date,Time,Open,High,Low,Close,Volume
-  const [,date,,open,high,low,close,volume]=cols;
-  const price=parseFloat(close);
-  if(!price||isNaN(price)) throw new Error('stooq: preço inválido');
-  const prevClose=price; // stooq não devolve prevClose diretamente
-  return {
-    ticker:ticker,
-    name:ticker,
-    price,
-    change:0, changePct:0,  // calculado depois com histórico
-    open:parseFloat(open)||price,
-    high:parseFloat(high)||price,
-    low:parseFloat(low)||price,
-    prevClose:price,
-    volume:fmt(parseInt(volume)||0),
-    week52High:price*1.15, week52Low:price*0.85,
-    marketCap:'—',pe:'—',eps:'—',dividend:'—',beta:'—',
-    sym:'$',currency:'USD',
-    exchange:'',type:'',marketState:'CLOSED',
-    partial:true
-  };
+// ── HELPERS ───────────────────────────────────────────────────────────────
+function tof(url,ms=10000){
+  const ac=new AbortController();
+  const id=setTimeout(()=>ac.abort(),ms);
+  return fetch(url,{signal:ac.signal}).finally(()=>clearTimeout(id));
 }
 
-// ── FONTE 2: FMP free (CORS aberto, 250 req/dia sem chave no plano demo) ──
-// Endpoint público que não requer chave: /api/v3/quote-short e quote
-async function fromFMP(ticker){
-  const url=`https://financialmodelingprep.com/api/v3/quote/${encodeURIComponent(ticker)}?apikey=demo`;
-  const r=await tof(url);
-  if(!r.ok) throw new Error('FMP HTTP '+r.status);
-  const json=await r.json();
-  const d=Array.isArray(json)?json[0]:json;
-  if(!d||!d.price) throw new Error('FMP: sem dados');
-  const c=d.currency||'USD';
+// Yahoo Finance via corsproxy.io (sem CORS, sem chave, funciona em GitHub Pages)
+async function fromYahoo(ticker){
+  const proxy='https://corsproxy.io/?';
+  const yfUrl=`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(ticker)}?interval=1d&range=5d`;
+  const r=await tof(proxy+encodeURIComponent(yfUrl));
+  if(!r.ok) throw new Error('Yahoo HTTP '+r.status);
+  const j=await r.json();
+  const res=j?.chart?.result?.[0];
+  if(!res) throw new Error('Yahoo: sem dados para '+ticker);
+  const meta=res.meta;
+  const price=meta.regularMarketPrice??meta.previousClose;
+  if(!price) throw new Error('Yahoo: preço nulo');
+  const prevClose=meta.previousClose??price;
+  const change=price-prevClose;
+  const changePct=(prevClose?change/prevClose*100:0);
+  const c=meta.currency||'USD';
   return {
-    ticker:d.symbol||ticker,
-    name:d.name||ticker,
-    price:d.price,
-    change:d.change??0,
-    changePct:d.changesPercentage??0,
-    open:d.open??d.price,
-    high:d.dayHigh??d.price,
-    low:d.dayLow??d.price,
-    prevClose:d.previousClose??d.price,
-    volume:fmt(d.volume),
-    week52High:d.yearHigh??d.price*1.1,
-    week52Low:d.yearLow??d.price*0.9,
-    marketCap:fmt(d.marketCap),
-    pe:d.pe?d.pe.toFixed(2):'—',
-    eps:d.eps?d.eps.toFixed(2):'—',
-    dividend:d.lastDiv?(d.lastDiv.toFixed(2)):'—',
-    beta:'—',
+    ticker:meta.symbol||ticker,
+    name:meta.shortName||meta.longName||ticker,
+    price,change,changePct,
+    open:meta.regularMarketOpen??price,
+    high:meta.regularMarketDayHigh??price,
+    low:meta.regularMarketDayLow??price,
+    prevClose,
+    volume:fmt(meta.regularMarketVolume||0),
+    week52High:meta.fiftyTwoWeekHigh??price,
+    week52Low:meta.fiftyTwoWeekLow??price,
+    marketCap:meta.marketCap?fmt(meta.marketCap):'—',
+    pe:'—',eps:'—',dividend:'—',beta:'—',
     sym:sym(c),currency:c,
-    exchange:d.exchange||'',
-    type:d.type||'',
-    marketState:d.isActivelyTrading?'REGULAR':'CLOSED',
+    exchange:meta.exchangeName||meta.fullExchangeName||'',
+    type:meta.instrumentType||meta.quoteType||'',
+    marketState:meta.marketState||'CLOSED',
     partial:false
   };
 }
 
-// ── FONTE 3: allorigins wrapping stooq (fallback extra) ───────────────────
-async function fromAllOriginsStooq(ticker){
-  const inner=`https://stooq.com/q/l/?s=${encodeURIComponent(ticker.toLowerCase())}&f=sd2t2ohlcv&h&e=csv`;
-  const url=`https://api.allorigins.win/raw?url=${encodeURIComponent(inner)}`;
+// Fallback: allorigins wrapping Yahoo Finance
+async function fromYahooViaAllOrigins(ticker){
+  const yfUrl=`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(ticker)}?interval=1d&range=5d`;
+  const url=`https://api.allorigins.win/raw?url=${encodeURIComponent(yfUrl)}`;
   const r=await tof(url);
-  if(!r.ok) throw new Error('allorigins+stooq HTTP '+r.status);
-  const txt=await r.text();
-  const lines=txt.trim().split('\n');
-  if(lines.length<2) throw new Error('allorigins+stooq: sem dados');
-  const cols=lines[1].split(',');
-  const [,,,open,high,low,close,volume]=cols;
-  const price=parseFloat(close);
-  if(!price||isNaN(price)) throw new Error('allorigins+stooq: preço inválido');
+  if(!r.ok) throw new Error('allorigins+Yahoo HTTP '+r.status);
+  const j=await r.json();
+  const res=j?.chart?.result?.[0];
+  if(!res) throw new Error('allorigins+Yahoo: sem dados');
+  const meta=res.meta;
+  const price=meta.regularMarketPrice??meta.previousClose;
+  if(!price) throw new Error('allorigins+Yahoo: preço nulo');
+  const prevClose=meta.previousClose??price;
+  const change=price-prevClose;
+  const changePct=(prevClose?change/prevClose*100:0);
+  const c=meta.currency||'USD';
   return {
-    ticker,name:ticker,price,
-    change:0,changePct:0,
-    open:parseFloat(open)||price,
-    high:parseFloat(high)||price,
-    low:parseFloat(low)||price,
-    prevClose:price,
-    volume:fmt(parseInt(volume)||0),
-    week52High:price*1.15,week52Low:price*0.85,
-    marketCap:'—',pe:'—',eps:'—',dividend:'—',beta:'—',
-    sym:'$',currency:'USD',
-    exchange:'',type:'',marketState:'CLOSED',
-    partial:true
+    ticker:meta.symbol||ticker,
+    name:meta.shortName||meta.longName||ticker,
+    price,change,changePct,
+    open:meta.regularMarketOpen??price,
+    high:meta.regularMarketDayHigh??price,
+    low:meta.regularMarketDayLow??price,
+    prevClose,
+    volume:fmt(meta.regularMarketVolume||0),
+    week52High:meta.fiftyTwoWeekHigh??price,
+    week52Low:meta.fiftyTwoWeekLow??price,
+    marketCap:meta.marketCap?fmt(meta.marketCap):'—',
+    pe:'—',eps:'—',dividend:'—',beta:'—',
+    sym:sym(c),currency:c,
+    exchange:meta.exchangeName||meta.fullExchangeName||'',
+    type:meta.instrumentType||meta.quoteType||'',
+    marketState:meta.marketState||'CLOSED',
+    partial:false
   };
 }
 
-// ── HISTÓRICO via stooq (para o gráfico) ──────────────────────────────────
-async function histStooq(ticker, period){
-  const map={'1D':'d','1S':'w','1M':'m','1A':'y'};
-  // stooq aceita &d1=YYYYMMDD&d2=YYYYMMDD para range ou usamos os últimos N dias
-  const now=new Date();
-  const days={'1D':2,'1S':8,'1M':32,'1A':370}[period]||32;
-  const d2=now.toISOString().slice(0,10).replace(/-/g,'');
-  const d1=new Date(now-days*864e5).toISOString().slice(0,10).replace(/-/g,'');
-  const url=`https://stooq.com/q/d/l/?s=${encodeURIComponent(ticker.toLowerCase())}&d1=${d1}&d2=${d2}&i=d`;
+// Histórico Yahoo Finance via proxy (para gráfico)
+async function histYahoo(ticker, period){
+  const rangeMap={'1D':'1d','1S':'5d','1M':'1mo','1A':'1y','3A':'3y'};
+  const intervalMap={'1D':'5m','1S':'1h','1M':'1d','1A':'1wk','3A':'1wk'};
+  const range=rangeMap[period]||'1mo';
+  const interval=intervalMap[period]||'1d';
+  const proxy='https://corsproxy.io/?';
+  const yfUrl=`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(ticker)}?interval=${interval}&range=${range}`;
   try{
-    const r=await tof(url,7000);
+    const r=await tof(proxy+encodeURIComponent(yfUrl),10000);
     if(!r.ok) return null;
-    const txt=await r.text();
-    const lines=txt.trim().split('\n').slice(1); // remove header
-    if(lines.length<2) return null;
-    return lines.map(l=>{
-      const [date,,open,high,low,close]=l.split(',');
-      return {t:new Date(date).getTime()/1000, v:parseFloat(close)};
-    }).filter(p=>!isNaN(p.v));
-  }catch{return null;}
+    const j=await r.json();
+    const res=j?.chart?.result?.[0];
+    if(!res) return null;
+    const times=res.timestamp||[];
+    const closes=res.indicators?.quote?.[0]?.close||[];
+    if(times.length<2) return null;
+    return times.map((t,i)=>({t,v:closes[i]})).filter(p=>p.v!=null&&!isNaN(p.v));
+  }catch{
+    try{
+      const url2=`https://api.allorigins.win/raw?url=${encodeURIComponent(yfUrl)}`;
+      const r2=await tof(url2,10000);
+      if(!r2.ok) return null;
+      const j2=await r2.json();
+      const res2=j2?.chart?.result?.[0];
+      if(!res2) return null;
+      const times2=res2.timestamp||[];
+      const closes2=res2.indicators?.quote?.[0]?.close||[];
+      return times2.map((t,i)=>({t,v:closes2[i]})).filter(p=>p.v!=null&&!isNaN(p.v));
+    }catch{return null;}
+  }
 }
 
 // ── ORQUESTRADOR ──────────────────────────────────────────────────────────
 async function getQuote(ticker){
   const errors=[];
-  // Tenta FMP primeiro (mais dados)
-  try{ return await fromFMP(ticker); }catch(e){ errors.push('FMP: '+e.message); }
-  // Tenta stooq direto
-  try{ return await fromStooq(ticker); }catch(e){ errors.push('stooq: '+e.message); }
-  // Tenta allorigins+stooq
-  try{ return await fromAllOriginsStooq(ticker); }catch(e){ errors.push('allorigins+stooq: '+e.message); }
+  try{ return await fromYahoo(ticker); }catch(e){ errors.push('Yahoo/corsproxy: '+e.message); }
+  try{ return await fromYahooViaAllOrigins(ticker); }catch(e){ errors.push('Yahoo/allorigins: '+e.message); }
   throw new Error('Todas as fontes falharam:\n'+errors.join('\n'));
 }
 
@@ -358,47 +339,56 @@ function renderChart(price, period, up, realData){
   const gridC=dark?'rgba(80,78,74,.25)':'rgba(180,178,172,.15)';
   const ttBg=dark?'#f0ede8':'#1c1b19';
   const ttTx=dark?'#28251d':'#e8e7e5';
-  const ttBd=dark?'#d4d1ca':'#2e2d2b';
-  const now=new Date();
-  let labels=[],data=[];
+  if(chartInst){chartInst.destroy();chartInst=null;}
+  let labels,data;
   if(realData&&realData.length>1){
-    data=realData.map(p=>p.v);
     labels=realData.map(p=>{
       const d=new Date(p.t*1000);
-      if(period==='1A') return d.toLocaleDateString('pt',{month:'short',year:'2-digit'});
-      return d.toLocaleDateString('pt',{day:'numeric',month:'short'});
+      if(period==='1D') return d.toLocaleTimeString('pt',{hour:'2-digit',minute:'2-digit'});
+      return d.toLocaleDateString('pt',{month:'short',day:'numeric'});
     });
+    data=realData.map(p=>p.v);
   } else {
-    const pts={'1D':28,'1S':7,'1M':30,'1A':52}[period]||30;
-    const vol={'1D':.003,'1S':.015,'1M':.03,'1A':.12}[period]||.02;
-    let p=price*(1-vol*.5);
-    for(let i=0;i<pts;i++){p+=(Math.random()-.47)*price*vol;p=Math.max(p,price*.5);data.push(+p.toFixed(2));}
-    data[data.length-1]=price;
-    if(period==='1D'){for(let h=9;h<=16;h++)for(let m=0;m<60;m+=30){if(h===16&&m>0)break;labels.push(`${h}:${String(m).padStart(2,'0')}`);}}
-    else if(period==='1S'){for(let i=6;i>=0;i--){const d=new Date(now);d.setDate(d.getDate()-i);labels.push(d.toLocaleDateString('pt',{weekday:'short'}));}}
-    else if(period==='1M'){for(let i=29;i>=0;i--){const d=new Date(now);d.setDate(d.getDate()-i);labels.push(d.toLocaleDateString('pt',{day:'numeric',month:'short'}));}}
-    else{for(let i=51;i>=0;i--){const d=new Date(now);d.setDate(d.getDate()-i*7);labels.push(d.toLocaleDateString('pt',{day:'numeric',month:'short'}));}}
+    const n=30;
+    labels=Array.from({length:n},(_,i)=>'');
+    let v=price*0.97;
+    data=Array.from({length:n},()=>{v+=v*(Math.random()-.48)*.015;return+v.toFixed(4);});
+    data[n-1]=price;
   }
-  if(chartInst)chartInst.destroy();
   chartInst=new Chart(canvas,{
     type:'line',
-    data:{labels:labels.slice(0,data.length),datasets:[{
-      data,borderColor:color,borderWidth:2,
-      pointRadius:0,pointHoverRadius:5,pointHoverBackgroundColor:color,
-      fill:true,tension:.4,
-      backgroundColor:(ctx)=>{const g=ctx.chart.ctx.createLinearGradient(0,0,0,ctx.chart.height);g.addColorStop(0,bg0);g.addColorStop(1,'rgba(0,0,0,0)');return g;}
-    }]},
+    data:{
+      labels,
+      datasets:[{
+        data,
+        borderColor:color,
+        borderWidth:2,
+        pointRadius:0,
+        pointHoverRadius:4,
+        pointHoverBackgroundColor:color,
+        tension:.3,
+        fill:true,
+        backgroundColor:(ctx)=>{
+          const g=ctx.chart.ctx.createLinearGradient(0,0,0,ctx.chart.height);
+          g.addColorStop(0,bg0);g.addColorStop(1,'transparent');return g;
+        }
+      }]
+    },
     options:{
       responsive:true,maintainAspectRatio:false,
       interaction:{mode:'index',intersect:false},
       plugins:{
         legend:{display:false},
-        tooltip:{backgroundColor:ttBg,titleColor:axCol,bodyColor:ttTx,borderColor:ttBd,borderWidth:1,padding:10,cornerRadius:8,
-          callbacks:{label:ctx=>` ${ctx.raw.toFixed(2)}`}}
+        tooltip:{
+          backgroundColor:ttBg,titleColor:ttTx,bodyColor:ttTx,
+          borderColor:dark?'#d4d1ca':'#2e2d2b',borderWidth:1,
+          padding:10,cornerRadius:8,
+          callbacks:{label:ctx=>' '+ctx.parsed.y.toFixed(2)}
+        }
       },
       scales:{
-        x:{grid:{display:false},ticks:{color:axCol,font:{size:11},maxTicksLimit:7}},
-        y:{position:'right',grid:{color:gridC},ticks:{color:axCol,font:{size:11},callback:v=>v.toFixed(0)}}
+        x:{ticks:{color:axCol,maxTicksLimit:6,maxRotation:0,font:{size:11}},grid:{color:gridC},border:{display:false}},
+        y:{ticks:{color:axCol,maxTicksLimit:5,font:{size:11},callback:v=>v.toFixed(2)},grid:{color:gridC},border:{display:false},position:'right'}
       }
     }
   });
@@ -406,98 +396,96 @@ function renderChart(price, period, up, realData){
 
 // ── RENDER ────────────────────────────────────────────────────────────────
 function renderStock(s){
+  document.getElementById('skeletonHero').style.display='none';
+  document.getElementById('skeletonChart').style.display='none';
   document.title=`FundScope — ${s.ticker}`;
-  const up=s.changePct>=0;
-  const sign=up?'+':'';
-  const arr=up?'▲':'▼';
-  const w52H=s.week52High, w52L=s.week52Low;
-  const pos=Math.min(100,Math.max(0,Math.round(((s.price-w52L)/(w52H-w52L||1))*100)));
-  const sourceBadge=s.partial
-    ? `<div class="source-badge">📊 stooq · variação pendente</div>`
-    : `<div class="source-badge">${s.marketState==='REGULAR'?'<span class="live-dot"></span> Mercado aberto':'📊 FMP · Mercado fechado'}</div>`;
-
-  document.getElementById('stockContent').innerHTML=`
-    <div class="stock-hero">
-      <div class="stock-identity">
-        <div class="stock-logo-wrap" id="logoWrap">${esc(s.ticker.slice(0,2))}</div>
-        <div>
-          <div class="stock-ticker">${esc(s.ticker)}</div>
-          <div class="stock-name">${esc(s.name)}</div>
-          <div class="stock-exchange">${esc([s.exchange,s.type].filter(Boolean).join(' · '))}</div>
-        </div>
-      </div>
-      <div class="stock-price-block">
-        <div class="stock-price">${s.sym}${s.price.toFixed(2)}</div>
-        ${s.changePct!==0?`<div><span class="stock-change ${up?'up':'down'}">${arr} ${sign}${s.sym}${Math.abs(s.change).toFixed(2)} (${sign}${s.changePct.toFixed(2)}%)</span></div>`:''}
-        ${sourceBadge}
+  const up2=s.change>=0;
+  const chgSign=up2?'+':'';
+  const chgClass=up2?'up':'down';
+  const chgArrow=up2?'▲':'▼';
+  const priceFmt=`${s.sym}${(+s.price).toFixed(2)}`;
+  const w52Pct=s.week52High>s.week52Low?Math.round((s.price-s.week52Low)/(s.week52High-s.week52Low)*100):50;
+  const html=`
+  <div class="stock-hero">
+    <div class="stock-identity">
+      <div class="stock-logo-wrap" id="logoWrap">${esc(s.ticker.slice(0,2))}</div>
+      <div>
+        <div class="stock-ticker">${esc(s.ticker)}</div>
+        <div class="stock-name">${esc(s.name)}</div>
+        <div class="stock-exchange">${esc(s.exchange)}${s.type?' &middot; '+esc(s.type.replace('EQUITY','Ação').replace('ETF','ETF').replace('MUTUALFUND','Fundo'))':''}</div>
       </div>
     </div>
+    <div class="stock-price-block">
+      <div class="stock-price">${priceFmt}</div>
+      <div class="stock-change ${chgClass}">${chgArrow} ${chgSign}${s.sym}${Math.abs(+s.change).toFixed(2)} (${chgSign}${(+s.changePct).toFixed(2)}%)</div>
+      <div class="source-badge"><span class="live-dot"></span> Yahoo Finance &middot; ${esc(s.currency)} &middot; ${s.marketState==='REGULAR'?'Mercado aberto':'Mercado fechado'}</div>
+    </div>
+  </div>
 
-    <div class="period-tabs" id="periodTabs">
+  <div class="chart-card">
+    <div id="periodTabs" class="period-tabs">
       <button class="period-tab active" data-period="1D">1D</button>
       <button class="period-tab" data-period="1S">1S</button>
       <button class="period-tab" data-period="1M">1M</button>
       <button class="period-tab" data-period="1A">1A</button>
+      <button class="period-tab" data-period="3A">3A</button>
     </div>
-    <div class="chart-card"><div class="chart-wrap"><canvas id="priceChart"></canvas></div></div>
+    <div class="chart-wrap"><canvas id="priceChart"></canvas></div>
+  </div>
 
-    <div class="grid-3">
-      <div class="card">
-        <div class="kpi-label">Abertura</div>
-        <div class="kpi-value">${s.sym}${s.open.toFixed(2)}</div>
-        <div class="kpi-sub">Fecho anterior: ${s.sym}${s.prevClose.toFixed(2)}</div>
-      </div>
-      <div class="card">
-        <div class="kpi-label">Máx. / Mín. do dia</div>
-        <div class="kpi-value" style="color:var(--color-success)">${s.sym}${s.high.toFixed(2)}</div>
-        <div class="kpi-sub" style="color:var(--color-error)">Mín: ${s.sym}${s.low.toFixed(2)}</div>
-      </div>
-      <div class="card">
-        <div class="kpi-label">Volume</div>
-        <div class="kpi-value">${s.volume}</div>
+  <div class="grid-3">
+    <div class="card">
+      <div class="card-title">Abertura</div>
+      <div class="kpi-value">${s.sym}${(+s.open).toFixed(2)}</div>
+      <div class="kpi-label">Preço de abertura</div>
+    </div>
+    <div class="card">
+      <div class="card-title">Máximo / Mínimo hoje</div>
+      <div class="kpi-value">${s.sym}${(+s.high).toFixed(2)}</div>
+      <div class="kpi-sub">Mín: ${s.sym}${(+s.low).toFixed(2)}</div>
+    </div>
+    <div class="card">
+      <div class="card-title">Volume</div>
+      <div class="kpi-value">${s.volume}</div>
+      <div class="kpi-label">Unidades negociadas</div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Estatísticas</div>
+      <div class="stat-row">
+        <div class="stat-item"><span class="stat-label">Fecho anterior</span><span class="stat-value">${s.sym}${(+s.prevClose).toFixed(2)}</span></div>
+        <div class="stat-item"><span class="stat-label">Cap. mercado</span><span class="stat-value">${s.marketCap}</span></div>
+        <div class="stat-item"><span class="stat-label">P/E</span><span class="stat-value">${s.pe}</span></div>
+        <div class="stat-item"><span class="stat-label">EPS</span><span class="stat-value">${s.eps}</span></div>
+        <div class="stat-item"><span class="stat-label">Dividendo</span><span class="stat-value">${s.dividend}</span></div>
+        <div class="stat-item"><span class="stat-label">Beta</span><span class="stat-value">${s.beta}</span></div>
       </div>
     </div>
-
-    <div class="grid-2">
-      <div class="card">
-        <div class="card-title">Fundamentais</div>
-        <div class="stat-row">
-          <div class="stat-item"><span class="stat-label">Cap. mercado</span><span class="stat-value">${s.marketCap}</span></div>
-          <div class="stat-item"><span class="stat-label">P/E Ratio</span><span class="stat-value">${s.pe}</span></div>
-          <div class="stat-item"><span class="stat-label">EPS (TTM)</span><span class="stat-value">${s.eps}</span></div>
-          <div class="stat-item"><span class="stat-label">Dividendo</span><span class="stat-value">${s.dividend}</span></div>
-          <div class="stat-item"><span class="stat-label">Beta</span><span class="stat-value">${s.beta}</span></div>
+    <div class="card">
+      <div class="card-title">Intervalo 52 semanas</div>
+      <div class="stat-row" style="margin-bottom:var(--space-4);">
+        <div class="stat-item"><span class="stat-label">Máximo 52s</span><span class="stat-value">${s.sym}${(+s.week52High).toFixed(2)}</span></div>
+        <div class="stat-item"><span class="stat-label">Mínimo 52s</span><span class="stat-value">${s.sym}${(+s.week52Low).toFixed(2)}</span></div>
+      </div>
+      <div class="range-bar-wrap">
+        <div class="range-labels"><span>${s.sym}${(+s.week52Low).toFixed(2)}</span><span>${s.sym}${(+s.week52High).toFixed(2)}</span></div>
+        <div class="range-track">
+          <div class="range-fill" style="width:${w52Pct}%;"></div>
+          <div class="range-thumb" style="left:${w52Pct}%;"></div>
         </div>
       </div>
-      <div class="card">
-        <div class="card-title">Intervalo 52 Semanas</div>
-        <div class="range-bar-wrap">
-          <div class="range-labels">
-            <span>Mín ${s.sym}${w52L.toFixed(2)}</span>
-            <span>Máx ${s.sym}${w52H.toFixed(2)}</span>
-          </div>
-          <div class="range-track">
-            <div class="range-fill" style="width:${pos}%"></div>
-            <div class="range-thumb" style="left:${pos}%"></div>
-          </div>
-          <div style="text-align:center;margin-top:var(--space-3);font-size:var(--text-xs);color:var(--color-text-muted)">
-            Atual <strong>${s.sym}${s.price.toFixed(2)}</strong> — ${pos}% do intervalo anual
-          </div>
-        </div>
-        <div class="stat-row" style="margin-top:var(--space-5)">
-          <div class="stat-item"><span class="stat-label">Máx. 52 semanas</span><span class="stat-value" style="color:var(--color-success)">${s.sym}${w52H.toFixed(2)}</span></div>
-          <div class="stat-item"><span class="stat-label">Mín. 52 semanas</span><span class="stat-value" style="color:var(--color-error)">${s.sym}${w52L.toFixed(2)}</span></div>
-        </div>
-      </div>
-    </div>`;
+    </div>
+  </div>`;
+  const cont=document.getElementById('stockContent');
+  cont.innerHTML=html;
+  cont.style.display='block';
 
-  // Gráfico com simulação inicial, depois tenta real
-  const up2=s.changePct>=0;
-  requestAnimationFrame(()=>renderChart(s.price,'1D',up2,null));
-
-  // Carrega histórico real em background
-  histStooq(s.ticker,'1D').then(hist=>{
+  // Gráfico inicial
+  histYahoo(s.ticker,'1D').then(hist=>{
     if(hist&&hist.length>1) renderChart(s.price,'1D',up2,hist);
+    else renderChart(s.price,'1D',up2,null);
   });
 
   // Troca de período
@@ -508,7 +496,7 @@ function renderStock(s){
     btn.classList.add('active');
     currentPeriod=btn.dataset.period;
     renderChart(s.price,currentPeriod,up2,null);
-    histStooq(s.ticker,currentPeriod).then(hist=>{
+    histYahoo(s.ticker,currentPeriod).then(hist=>{
       if(hist&&hist.length>1) renderChart(s.price,currentPeriod,up2,hist);
     });
   });
@@ -520,17 +508,22 @@ function renderStock(s){
 }
 
 function renderError(ticker,msg){
-  document.getElementById('stockContent').innerHTML=`
-    <div class="error-state">
-      <div style="font-size:3rem;margin-bottom:var(--space-4)">🐷</div>
-      <h2>Não foi possível carregar</h2>
-      <p>Dados indisponíveis para <strong>${esc(ticker||'?')}</strong>.</p>
-      <div class="error-detail">${esc(msg)}</div>
-      <a href="index.html" class="back-btn" style="margin-top:var(--space-8);justify-content:center">← Voltar ao início</a>
-    </div>`;
+  document.getElementById('skeletonHero').style.display='none';
+  document.getElementById('skeletonChart').style.display='none';
+  const cont=document.getElementById('stockContent');
+  cont.innerHTML=`<div class="error-state">
+    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--color-text-faint)" stroke-width="1.5" style="margin:0 auto var(--space-4)"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+    <h2>Não foi possível carregar "${esc(ticker)}"</h2>
+    <p>Verifica se o ticker existe no Yahoo Finance (ex: AAPL, ASML, VOO, NOVO-B.CO).</p>
+    <div class="error-detail">${esc(msg)}</div>
+    <a href="index.html" style="display:inline-flex;align-items:center;gap:8px;margin-top:24px;padding:10px 20px;background:var(--color-primary);color:#fff;border-radius:var(--radius-full);font-size:var(--text-sm);font-weight:600;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Voltar à pesquisa
+    </a>
+  </div>`;
+  cont.style.display='block';
 }
 
-// ── INIT ──────────────────────────────────────────────────────────────────
 if(!TICKER){
   renderError('?','Nenhum ticker na URL. Exemplo: stock.html?ticker=AAPL');
 } else {
