@@ -212,13 +212,14 @@ function tof(url,ms=10000){
   return fetch(url,{signal:ac.signal}).finally(()=>clearTimeout(id));
 }
 
-// Yahoo Finance via corsproxy.io (sem CORS, sem chave, funciona em GitHub Pages)
+// Yahoo Finance via corsproxy.io
 async function fromYahoo(ticker){
   const proxy='https://corsproxy.io/?';
   const yfUrl=`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(ticker)}?interval=1d&range=5d`;
   const r=await tof(proxy+encodeURIComponent(yfUrl));
   if(!r.ok) throw new Error('Yahoo HTTP '+r.status);
   const j=await r.json();
+  if(j?.error) throw new Error('Yahoo: '+j.error.description);
   const res=j?.chart?.result?.[0];
   if(!res) throw new Error('Yahoo: sem dados para '+ticker);
   const meta=res.meta;
@@ -256,6 +257,7 @@ async function fromYahooViaAllOrigins(ticker){
   const r=await tof(url);
   if(!r.ok) throw new Error('allorigins+Yahoo HTTP '+r.status);
   const j=await r.json();
+  if(j?.error) throw new Error('allorigins+Yahoo: '+j.error.description);
   const res=j?.chart?.result?.[0];
   if(!res) throw new Error('allorigins+Yahoo: sem dados');
   const meta=res.meta;
@@ -405,6 +407,7 @@ function renderStock(s){
   const chgArrow=up2?'▲':'▼';
   const priceFmt=`${s.sym}${(+s.price).toFixed(2)}`;
   const w52Pct=s.week52High>s.week52Low?Math.round((s.price-s.week52Low)/(s.week52High-s.week52Low)*100):50;
+  const typeLabel=s.type?s.type.replace('EQUITY','Ação').replace('ETF','ETF').replace('MUTUALFUND','Fundo'):'';
   const html=`
   <div class="stock-hero">
     <div class="stock-identity">
@@ -412,7 +415,7 @@ function renderStock(s){
       <div>
         <div class="stock-ticker">${esc(s.ticker)}</div>
         <div class="stock-name">${esc(s.name)}</div>
-        <div class="stock-exchange">${esc(s.exchange)}${s.type?' &middot; '+esc(s.type.replace('EQUITY','Ação').replace('ETF','ETF').replace('MUTUALFUND','Fundo'))':''}</div>
+        <div class="stock-exchange">${esc(s.exchange)}${typeLabel?' &middot; '+esc(typeLabel):''}</div>
       </div>
     </div>
     <div class="stock-price-block">
