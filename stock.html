@@ -96,13 +96,6 @@
     .footer{padding:var(--space-6);text-align:center;font-size:var(--text-xs);color:var(--color-text-faint);border-top:1px solid var(--color-divider);}
     .footer a{color:var(--color-text-muted);transition:color var(--transition);}
     .footer a:hover{color:var(--color-primary);}
-    .news-item{display:flex;flex-direction:column;gap:var(--space-2);padding:var(--space-4) 0;border-bottom:1px solid var(--color-divider);}
-    .news-item:last-child{border-bottom:none;}
-    .news-source{font-size:var(--text-xs);color:var(--color-text-faint);font-weight:500;}
-    .news-title{font-size:var(--text-sm);font-weight:500;color:var(--color-text);line-height:1.4;}
-    .news-title a{transition:color var(--transition);}
-    .news-title a:hover{color:var(--color-primary);}
-    .news-date{font-size:var(--text-xs);color:var(--color-text-faint);}
     @media(max-width:768px){
       .grid-2{grid-template-columns:1fr;}
       .grid-3{grid-template-columns:1fr 1fr;}
@@ -147,7 +140,6 @@
   </header>
 
   <main class="page" id="mainContent">
-    <!-- skeleton inicial -->
     <div id="skeletonHero" class="stock-hero">
       <div class="stock-identity">
         <div class="skeleton" style="width:56px;height:56px;border-radius:var(--radius-lg);flex-shrink:0;"></div>
@@ -198,6 +190,7 @@ function fmt(n){
 }
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function sym(c){const m={USD:'$',EUR:'€',GBP:'£',JPY:'¥',CHF:'CHF ',CAD:'C$',AUD:'A$',DKK:'kr',SEK:'kr',NOK:'kr',BRL:'R$',HKD:'HK$',CNY:'¥',INR:'₹'};return m[c]||c+' ';}
+function raw(obj,key){const x=obj&&obj[key];if(!x) return null;return typeof x==='object'?x.raw??null:x;}
 
 // ── TICKER ────────────────────────────────────────────────────────────────
 const TICKER=(()=>{
@@ -206,30 +199,141 @@ const TICKER=(()=>{
 })();
 
 // ── HELPERS ───────────────────────────────────────────────────────────────
-function tof(url,ms=10000){
+function tof(url,ms=12000){
   const ac=new AbortController();
   const id=setTimeout(()=>ac.abort(),ms);
   return fetch(url,{signal:ac.signal}).finally(()=>clearTimeout(id));
 }
 
-// Yahoo Finance via corsproxy.io
-async function fromYahoo(ticker){
-  const proxy='https://corsproxy.io/?';
-  const yfUrl=`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(ticker)}?interval=1d&range=5d`;
-  const r=await tof(proxy+encodeURIComponent(yfUrl));
-  if(!r.ok) throw new Error('Yahoo HTTP '+r.status);
-  const j=await r.json();
-  if(j?.error) throw new Error('Yahoo: '+j.error.description);
-  const res=j?.chart?.result?.[0];
-  if(!res) throw new Error('Yahoo: sem dados para '+ticker);
-  const meta=res.meta;
-  const price=meta.regularMarketPrice??meta.previousClose;
-  if(!price) throw new Error('Yahoo: preço nulo');
-  const prevClose=meta.previousClose??price;
+// ── CRUMB (necessário para quoteSummary) ──────────────────────────────────
+// Obtém o crumb do Yahoo Finance usando o endpoint público sem proxy
+async function getYahooCrumb(){
+  // Tentar directo (funciona nalguns browsers/regiões sem problemas de CORS no getcrumb)
+  try{
+    const r=await tof('https://query1.finance.yahoo.com/v1/test/getcrumb',5000);
+    if(r.ok){
+      const text=await r.text();
+      if(text&&text.length>0&&text.length<50&&!text.includes('<')) return text.trim();
+    }
+  }catch{}
+  // Fallback via allorigins
+  try{
+    const url='https://api.allorigins.win/raw?url='+encodeURIComponent('https://query1.finance.yahoo.com/v1/test/getcrumb');
+    const r=await tof(url,8000);
+    if(r.ok){
+      const text=await r.text();
+      if(text&&text.length>0&&text.length<50&&!text.includes('<')) return text.trim();
+    }
+  }catch{}
+  return null;
+}
+
+// ── FUNDAMENTAIS (quoteSummary) ───────────────────────────────────────────
+async function getFundamentals(ticker,crumb){
+  const modules='summaryDetail,defaultKeyStatistics';
+  const endpoints=[
+    `https://query1.finance.yahoo.com/v10/finance/quoteSummary/${encodeURIComponent(ticker)}?modules=${modules}${crumb?'&crumb='+encodeURIComponent(crumb):''}`,
+    `https://query2.finance.yahoo.com/v10/finance/quoteSummary/${encodeURIComponent(ticker)}?modules=${modules}${crumb?'&crumb='+encodeURIComponent(crumb):''}`
+  ];
+
+  for(const ep of endpoints){
+    // Tentar directo
+    try{
+      const r=await tof(ep,8000);
+      if(r.ok){
+        const j=await r.json();
+        const res=j?.quoteSummary?.result?.[0];
+        if(res) return res;
+      }
+    }catch{}
+    // Tentar via allorigins
+    try{
+      const url='https://api.allorigins.win/raw?url='+encodeURIComponent(ep);
+      const r=await tof(url,10000);
+      if(r.ok){
+        const j=await r.json();
+        const res=j?.quoteSummary?.result?.[0];
+        if(res) return res;
+      }
+    }catch{}
+  }
+  return null;
+}
+
+// Extrai os fundamentais do resultado do quoteSummary
+function parseFundamentals(qs,currency){
+  if(!qs) return {marketCap:'—',pe:'—',eps:'—',dividend:'—',beta:'—'};
+  const sd=qs.summaryDetail||{};
+  const dks=qs.defaultKeyStatistics||{};
+  const s=sym(currency);
+
+  const marketCapRaw=raw(sd,'marketCap');
+  const marketCap=marketCapRaw?fmt(marketCapRaw):'—';
+
+  const peRaw=raw(sd,'trailingPE');
+  const pe=peRaw?peRaw.toFixed(2):'—';
+
+  const epsRaw=raw(dks,'trailingEps');
+  const eps=epsRaw?s+epsRaw.toFixed(2):'—';
+
+  const betaRaw=raw(sd,'beta')??raw(dks,'beta');
+  const beta=betaRaw?betaRaw.toFixed(2):'—';
+
+  const divRateRaw=raw(sd,'dividendRate');
+  const divYieldRaw=raw(sd,'dividendYield');
+  let dividend='—';
+  if(divRateRaw||divYieldRaw){
+    const parts=[];
+    if(divRateRaw) parts.push(s+divRateRaw.toFixed(2));
+    if(divYieldRaw) parts.push('('+( divYieldRaw*100).toFixed(2)+'%)');
+    dividend=parts.join(' ');
+  }
+
+  return {marketCap,pe,eps,dividend,beta};
+}
+
+// ── QUOTE principal (chart v8) ────────────────────────────────────────────
+async function fetchChart(ticker){
+  // usar range=1d para ter chartPreviousClose correcto (fecho do dia anterior real)
+  const yfUrl=`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(ticker)}?interval=1d&range=1d`;
+
+  // 1. Tentar directo
+  try{
+    const r=await tof(yfUrl,8000);
+    if(r.ok){const j=await r.json();if(j?.chart?.result?.[0]) return j.chart.result[0];}
+  }catch{}
+
+  // 2. corsproxy.io
+  try{
+    const r=await tof('https://corsproxy.io/?'+encodeURIComponent(yfUrl),10000);
+    if(r.ok){const j=await r.json();if(j?.chart?.result?.[0]) return j.chart.result[0];}
+  }catch{}
+
+  // 3. allorigins
+  const r2=await tof('https://api.allorigins.win/raw?url='+encodeURIComponent(yfUrl),12000);
+  if(!r2.ok) throw new Error('HTTP '+r2.status);
+  const j2=await r2.json();
+  if(j2?.error) throw new Error(j2.error.description||'Yahoo error');
+  const res=j2?.chart?.result?.[0];
+  if(!res) throw new Error('Sem dados para '+ticker);
+  return res;
+}
+
+// ── ORQUESTRADOR PRINCIPAL ────────────────────────────────────────────────
+async function getQuote(ticker){
+  // 1. Obter dados de preço
+  const chartRes=await fetchChart(ticker);
+  const meta=chartRes.meta;
+  const price=meta.regularMarketPrice??meta.chartPreviousClose;
+  if(!price) throw new Error('Preço nulo para '+ticker);
+
+  // FIX: usar chartPreviousClose (fecho real do dia anterior) para calcular variação
+  const prevClose=meta.chartPreviousClose??meta.regularMarketPreviousClose??price;
   const change=price-prevClose;
-  const changePct=(prevClose?change/prevClose*100:0);
+  const changePct=prevClose?change/prevClose*100:0;
   const c=meta.currency||'USD';
-  return {
+
+  const base={
     ticker:meta.symbol||ticker,
     name:meta.shortName||meta.longName||ticker,
     price,change,changePct,
@@ -240,98 +344,58 @@ async function fromYahoo(ticker){
     volume:fmt(meta.regularMarketVolume||0),
     week52High:meta.fiftyTwoWeekHigh??price,
     week52Low:meta.fiftyTwoWeekLow??price,
-    marketCap:meta.marketCap?fmt(meta.marketCap):'—',
-    pe:'—',eps:'—',dividend:'—',beta:'—',
+    marketCap:'—',pe:'—',eps:'—',dividend:'—',beta:'—',
     sym:sym(c),currency:c,
     exchange:meta.exchangeName||meta.fullExchangeName||'',
     type:meta.instrumentType||meta.quoteType||'',
-    marketState:meta.marketState||'CLOSED',
-    partial:false
+    marketState:meta.marketState||'CLOSED'
   };
+
+  // 2. Obter fundamentais em paralelo (não bloqueante — renderiza mesmo que falhe)
+  try{
+    const crumb=await getYahooCrumb();
+    const qs=await getFundamentals(ticker,crumb);
+    const fund=parseFundamentals(qs,c);
+    Object.assign(base,fund);
+  }catch(e){
+    console.warn('Fundamentais não disponíveis:',e.message);
+  }
+
+  return base;
 }
 
-// Fallback: allorigins wrapping Yahoo Finance
-async function fromYahooViaAllOrigins(ticker){
-  const yfUrl=`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(ticker)}?interval=1d&range=5d`;
-  const url=`https://api.allorigins.win/raw?url=${encodeURIComponent(yfUrl)}`;
-  const r=await tof(url);
-  if(!r.ok) throw new Error('allorigins+Yahoo HTTP '+r.status);
-  const j=await r.json();
-  if(j?.error) throw new Error('allorigins+Yahoo: '+j.error.description);
-  const res=j?.chart?.result?.[0];
-  if(!res) throw new Error('allorigins+Yahoo: sem dados');
-  const meta=res.meta;
-  const price=meta.regularMarketPrice??meta.previousClose;
-  if(!price) throw new Error('allorigins+Yahoo: preço nulo');
-  const prevClose=meta.previousClose??price;
-  const change=price-prevClose;
-  const changePct=(prevClose?change/prevClose*100:0);
-  const c=meta.currency||'USD';
-  return {
-    ticker:meta.symbol||ticker,
-    name:meta.shortName||meta.longName||ticker,
-    price,change,changePct,
-    open:meta.regularMarketOpen??price,
-    high:meta.regularMarketDayHigh??price,
-    low:meta.regularMarketDayLow??price,
-    prevClose,
-    volume:fmt(meta.regularMarketVolume||0),
-    week52High:meta.fiftyTwoWeekHigh??price,
-    week52Low:meta.fiftyTwoWeekLow??price,
-    marketCap:meta.marketCap?fmt(meta.marketCap):'—',
-    pe:'—',eps:'—',dividend:'—',beta:'—',
-    sym:sym(c),currency:c,
-    exchange:meta.exchangeName||meta.fullExchangeName||'',
-    type:meta.instrumentType||meta.quoteType||'',
-    marketState:meta.marketState||'CLOSED',
-    partial:false
-  };
-}
-
-// Histórico Yahoo Finance via proxy (para gráfico)
-async function histYahoo(ticker, period){
+// ── HISTÓRICO (gráfico) ───────────────────────────────────────────────────
+async function histYahoo(ticker,period){
   const rangeMap={'1D':'1d','1S':'5d','1M':'1mo','1A':'1y','3A':'3y'};
   const intervalMap={'1D':'5m','1S':'1h','1M':'1d','1A':'1wk','3A':'1wk'};
   const range=rangeMap[period]||'1mo';
   const interval=intervalMap[period]||'1d';
-  const proxy='https://corsproxy.io/?';
   const yfUrl=`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(ticker)}?interval=${interval}&range=${range}`;
-  try{
-    const r=await tof(proxy+encodeURIComponent(yfUrl),10000);
-    if(!r.ok) return null;
-    const j=await r.json();
-    const res=j?.chart?.result?.[0];
-    if(!res) return null;
-    const times=res.timestamp||[];
-    const closes=res.indicators?.quote?.[0]?.close||[];
-    if(times.length<2) return null;
-    return times.map((t,i)=>({t,v:closes[i]})).filter(p=>p.v!=null&&!isNaN(p.v));
-  }catch{
-    try{
-      const url2=`https://api.allorigins.win/raw?url=${encodeURIComponent(yfUrl)}`;
-      const r2=await tof(url2,10000);
-      if(!r2.ok) return null;
-      const j2=await r2.json();
-      const res2=j2?.chart?.result?.[0];
-      if(!res2) return null;
-      const times2=res2.timestamp||[];
-      const closes2=res2.indicators?.quote?.[0]?.close||[];
-      return times2.map((t,i)=>({t,v:closes2[i]})).filter(p=>p.v!=null&&!isNaN(p.v));
-    }catch{return null;}
-  }
-}
 
-// ── ORQUESTRADOR ──────────────────────────────────────────────────────────
-async function getQuote(ticker){
-  const errors=[];
-  try{ return await fromYahoo(ticker); }catch(e){ errors.push('Yahoo/corsproxy: '+e.message); }
-  try{ return await fromYahooViaAllOrigins(ticker); }catch(e){ errors.push('Yahoo/allorigins: '+e.message); }
-  throw new Error('Todas as fontes falharam:\n'+errors.join('\n'));
+  for(const url of [
+    yfUrl,
+    'https://corsproxy.io/?'+encodeURIComponent(yfUrl),
+    'https://api.allorigins.win/raw?url='+encodeURIComponent(yfUrl)
+  ]){
+    try{
+      const r=await tof(url,10000);
+      if(!r.ok) continue;
+      const j=await r.json();
+      const res=j?.chart?.result?.[0];
+      if(!res) continue;
+      const times=res.timestamp||[];
+      const closes=res.indicators?.quote?.[0]?.close||[];
+      if(times.length<2) continue;
+      const pts=times.map((t,i)=>({t,v:closes[i]})).filter(p=>p.v!=null&&!isNaN(p.v));
+      if(pts.length>1) return pts;
+    }catch{}
+  }
+  return null;
 }
 
 // ── CHART ─────────────────────────────────────────────────────────────────
 let chartInst=null;
-function renderChart(price, period, up, realData){
+function renderChart(price,period,up,realData){
   const canvas=document.getElementById('priceChart');
   if(!canvas) return;
   const color=up?'#437a22':'#a13544';
@@ -350,9 +414,9 @@ function renderChart(price, period, up, realData){
       return d.toLocaleDateString('pt',{month:'short',day:'numeric'});
     });
     data=realData.map(p=>p.v);
-  } else {
+  }else{
     const n=30;
-    labels=Array.from({length:n},(_,i)=>'');
+    labels=Array.from({length:n},()=>'');
     let v=price*0.97;
     data=Array.from({length:n},()=>{v+=v*(Math.random()-.48)*.015;return+v.toFixed(4);});
     data[n-1]=price;
@@ -459,11 +523,11 @@ function renderStock(s){
       <div class="card-title">Estatísticas</div>
       <div class="stat-row">
         <div class="stat-item"><span class="stat-label">Fecho anterior</span><span class="stat-value">${s.sym}${(+s.prevClose).toFixed(2)}</span></div>
-        <div class="stat-item"><span class="stat-label">Cap. mercado</span><span class="stat-value">${s.marketCap}</span></div>
-        <div class="stat-item"><span class="stat-label">P/E</span><span class="stat-value">${s.pe}</span></div>
-        <div class="stat-item"><span class="stat-label">EPS</span><span class="stat-value">${s.eps}</span></div>
-        <div class="stat-item"><span class="stat-label">Dividendo</span><span class="stat-value">${s.dividend}</span></div>
-        <div class="stat-item"><span class="stat-label">Beta</span><span class="stat-value">${s.beta}</span></div>
+        <div class="stat-item"><span class="stat-label">Cap. mercado</span><span class="stat-value" id="statMarketCap">${s.marketCap}</span></div>
+        <div class="stat-item"><span class="stat-label">P/E</span><span class="stat-value" id="statPE">${s.pe}</span></div>
+        <div class="stat-item"><span class="stat-label">EPS</span><span class="stat-value" id="statEPS">${s.eps}</span></div>
+        <div class="stat-item"><span class="stat-label">Dividendo</span><span class="stat-value" id="statDiv">${s.dividend}</span></div>
+        <div class="stat-item"><span class="stat-label">Beta</span><span class="stat-value" id="statBeta">${s.beta}</span></div>
       </div>
     </div>
     <div class="card">
@@ -481,20 +545,20 @@ function renderStock(s){
       </div>
     </div>
   </div>`;
+
   const cont=document.getElementById('stockContent');
   cont.innerHTML=html;
   cont.style.display='block';
 
   // Gráfico inicial
   histYahoo(s.ticker,'1D').then(hist=>{
-    if(hist&&hist.length>1) renderChart(s.price,'1D',up2,hist);
-    else renderChart(s.price,'1D',up2,null);
+    renderChart(s.price,'1D',up2,hist&&hist.length>1?hist:null);
   });
 
   // Troca de período
   let currentPeriod='1D';
   document.getElementById('periodTabs').addEventListener('click',e=>{
-    const btn=e.target.closest('.period-tab'); if(!btn) return;
+    const btn=e.target.closest('.period-tab');if(!btn) return;
     document.querySelectorAll('.period-tab').forEach(t=>t.classList.remove('active'));
     btn.classList.add('active');
     currentPeriod=btn.dataset.period;
@@ -529,7 +593,7 @@ function renderError(ticker,msg){
 
 if(!TICKER){
   renderError('?','Nenhum ticker na URL. Exemplo: stock.html?ticker=AAPL');
-} else {
+}else{
   getQuote(TICKER).then(renderStock).catch(err=>renderError(TICKER,err.message));
 }
 </script>
