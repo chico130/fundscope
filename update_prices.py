@@ -10,25 +10,27 @@ from datetime import datetime, timezone
 
 TICKERS = [
     "AAPL", "MSFT", "NVDA", "TSLA", "AMZN", "GOOGL", "META", "AMD",
-    "VOO", "IWDA.AS", "QQQ", "SPY", "VT", "CSPX.L", "BRK-B"
+    "VOO", "IWDA.AS", "QQQ", "SPY", "VT", "CSPX.L", "BRK-B",
+    "ASML.AS",
 ]
 
 TICKER_META = {
-    "AAPL":   {"name": "Apple Inc.",                    "type": "Ação",  "exchange": "NASDAQ",             "sector": "Tecnologia"},
-    "MSFT":   {"name": "Microsoft Corporation",         "type": "Ação",  "exchange": "NASDAQ",             "sector": "Tecnologia"},
-    "NVDA":   {"name": "NVIDIA Corporation",            "type": "Ação",  "exchange": "NASDAQ",             "sector": "Semicondutores"},
-    "TSLA":   {"name": "Tesla Inc.",                    "type": "Ação",  "exchange": "NASDAQ",             "sector": "Automóvel"},
-    "AMZN":   {"name": "Amazon.com Inc.",               "type": "Ação",  "exchange": "NASDAQ",             "sector": "Consumo"},
-    "GOOGL":  {"name": "Alphabet Inc.",                 "type": "Ação",  "exchange": "NASDAQ",             "sector": "Tecnologia"},
-    "META":   {"name": "Meta Platforms",               "type": "Ação",  "exchange": "NASDAQ",             "sector": "Tecnologia"},
-    "AMD":    {"name": "Advanced Micro Devices",        "type": "Ação",  "exchange": "NASDAQ",             "sector": "Semicondutores"},
-    "VOO":    {"name": "Vanguard S&P 500 ETF",          "type": "ETF",   "exchange": "NYSE Arca",          "sector": "ETF — Large Blend"},
-    "IWDA.AS":{"name": "iShares Core MSCI World UCITS", "type": "ETF",   "exchange": "Euronext Amsterdam", "sector": "ETF — Global Blend"},
-    "QQQ":    {"name": "Invesco QQQ Trust",             "type": "ETF",   "exchange": "NASDAQ",             "sector": "ETF — Tech"},
-    "SPY":    {"name": "SPDR S&P 500 ETF",              "type": "ETF",   "exchange": "NYSE Arca",          "sector": "ETF — Large Blend"},
-    "VT":     {"name": "Vanguard Total World ETF",      "type": "ETF",   "exchange": "NYSE Arca",          "sector": "ETF — Global Blend"},
-    "CSPX.L": {"name": "iShares Core S&P 500 UCITS",   "type": "ETF",   "exchange": "LSE",               "sector": "ETF — Large Blend"},
-    "BRK-B":  {"name": "Berkshire Hathaway B",          "type": "Ação",  "exchange": "NYSE",              "sector": "Financeiro"},
+    "AAPL":    {"name": "Apple Inc.",                    "type": "Ação",  "exchange": "NASDAQ",             "sector": "Tecnologia"},
+    "MSFT":    {"name": "Microsoft Corporation",         "type": "Ação",  "exchange": "NASDAQ",             "sector": "Tecnologia"},
+    "NVDA":    {"name": "NVIDIA Corporation",            "type": "Ação",  "exchange": "NASDAQ",             "sector": "Semicondutores"},
+    "TSLA":    {"name": "Tesla Inc.",                    "type": "Ação",  "exchange": "NASDAQ",             "sector": "Automóvel"},
+    "AMZN":    {"name": "Amazon.com Inc.",               "type": "Ação",  "exchange": "NASDAQ",             "sector": "Consumo"},
+    "GOOGL":   {"name": "Alphabet Inc.",                 "type": "Ação",  "exchange": "NASDAQ",             "sector": "Tecnologia"},
+    "META":    {"name": "Meta Platforms",                "type": "Ação",  "exchange": "NASDAQ",             "sector": "Tecnologia"},
+    "AMD":     {"name": "Advanced Micro Devices",        "type": "Ação",  "exchange": "NASDAQ",             "sector": "Semicondutores"},
+    "VOO":     {"name": "Vanguard S&P 500 ETF",          "type": "ETF",   "exchange": "NYSE Arca",          "sector": "ETF — Large Blend"},
+    "IWDA.AS": {"name": "iShares Core MSCI World UCITS", "type": "ETF",   "exchange": "Euronext Amsterdam", "sector": "ETF — Global Blend"},
+    "QQQ":     {"name": "Invesco QQQ Trust",             "type": "ETF",   "exchange": "NASDAQ",             "sector": "ETF — Tech"},
+    "SPY":     {"name": "SPDR S&P 500 ETF",              "type": "ETF",   "exchange": "NYSE Arca",          "sector": "ETF — Large Blend"},
+    "VT":      {"name": "Vanguard Total World ETF",      "type": "ETF",   "exchange": "NYSE Arca",          "sector": "ETF — Global Blend"},
+    "CSPX.L":  {"name": "iShares Core S&P 500 UCITS",   "type": "ETF",   "exchange": "LSE",               "sector": "ETF — Large Blend"},
+    "BRK-B":   {"name": "Berkshire Hathaway B",          "type": "Ação",  "exchange": "NYSE",              "sector": "Financeiro"},
+    "ASML.AS": {"name": "ASML Holding N.V.",             "type": "Ação",  "exchange": "Euronext Amsterdam", "sector": "Semicondutores"},
 }
 
 # Períodos a guardar: chave -> (period, interval)
@@ -40,12 +42,12 @@ HISTORY_PERIODS = {
     "3A":  ("3y",  "1wk"),
 }
 
-def fmt_large(n):
+def fmt_large(n, sym="$"):
     if n is None: return "—"
-    if n >= 1e12: return f"${n/1e12:.2f}T"
-    if n >= 1e9:  return f"${n/1e9:.2f}B"
-    if n >= 1e6:  return f"${n/1e6:.2f}M"
-    return f"${n:.0f}"
+    if n >= 1e12: return f"{sym}{n/1e12:.2f}T"
+    if n >= 1e9:  return f"{sym}{n/1e9:.2f}B"
+    if n >= 1e6:  return f"{sym}{n/1e6:.2f}M"
+    return f"{sym}{n:.0f}"
 
 def fmt_vol(n):
     if n is None: return "—"
@@ -137,7 +139,7 @@ def get_stock_data(ticker):
             "changePct":   change_pct,
             "volume":      fmt_vol(volume),
             "avgVolume":   fmt_vol(avg_vol),
-            "marketCap":   fmt_large(mkt_cap),
+            "marketCap":   fmt_large(mkt_cap, sym),
             "pe":          round(pe, 1) if pe else "—",
             "eps":         round(eps, 2) if eps else "—",
             "beta":        round(beta, 2) if beta else "—",
