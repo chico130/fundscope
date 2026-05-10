@@ -127,7 +127,7 @@
 </head>
 <body>
   <div class="admin-bar">
-    🛠️ Deploy: <span>10 Mai 2026, 14:08 WEST</span> &nbsp;·&nbsp; v1.6 — Yahoo Finance público (sem chave API)
+    🛠️ Deploy: <span>10 Mai 2026, 14:13 WEST</span> &nbsp;·&nbsp; v1.7 — proxy CORS para Yahoo Finance
   </div>
 
   <header class="header">
@@ -196,7 +196,7 @@
   </nav>
 
   <script>
-    // ── Tema ──────────────────────────────────────────────────────────────────
+    // ── Tema ────────────────────────────────────────────────────────────
     const themeToggle = document.querySelector('[data-theme-toggle]');
     const root = document.documentElement;
     const themeIcons = {
@@ -213,7 +213,7 @@
     applyTheme(currentTheme);
     if (themeToggle) themeToggle.addEventListener('click', () => applyTheme(currentTheme === 'dark' ? 'light' : 'dark'));
 
-    // ── Cores do tooltip ─────────────────────────────────────────────────────
+    // ── Tooltip colors ───────────────────────────────────────────────
     function getTooltipColors() {
       const s = getComputedStyle(root);
       return {
@@ -224,7 +224,7 @@
       };
     }
 
-    // ── Gráfico ───────────────────────────────────────────────────────────────
+    // ── Gráfico ──────────────────────────────────────────────────────────────
     function generatePriceData(base, pts, vol) {
       const data = []; let p = base * (1 - vol * 0.5);
       for (let i = 0; i < pts; i++) { p += (Math.random() - .48) * base * vol; p = Math.max(p, base * .7); data.push(parseFloat(p.toFixed(2))); }
@@ -232,10 +232,10 @@
     }
     function generateLabels(period) {
       const now = new Date(), labels = [];
-      if (period === '1D') { for (let h = 9; h <= 16; h++) for (let m = 0; m < 60; m += 15) { if (h === 16 && m > 0) break; labels.push(`${h}:${m.toString().padStart(2, '0')}`); } }
-      else if (period === '1S') { for (let i = 6; i >= 0; i--) { const d = new Date(now); d.setDate(d.getDate() - i); labels.push(d.toLocaleDateString('pt', { weekday: 'short' })); } }
-      else if (period === '1M') { for (let i = 29; i >= 0; i--) { const d = new Date(now); d.setDate(d.getDate() - i); labels.push(d.toLocaleDateString('pt', { day: 'numeric', month: 'short' })); } }
-      else { for (let i = 11; i >= 0; i--) { const d = new Date(now); d.setMonth(d.getMonth() - i); labels.push(d.toLocaleDateString('pt', { month: 'short', year: '2-digit' })); } }
+      if (period === '1D') { for (let h = 9; h <= 16; h++) for (let m = 0; m < 60; m += 15) { if (h === 16 && m > 0) break; labels.push(`${h}:${m.toString().padStart(2,'0')}`); } }
+      else if (period === '1S') { for (let i = 6; i >= 0; i--) { const d = new Date(now); d.setDate(d.getDate()-i); labels.push(d.toLocaleDateString('pt',{weekday:'short'})); } }
+      else if (period === '1M') { for (let i = 29; i >= 0; i--) { const d = new Date(now); d.setDate(d.getDate()-i); labels.push(d.toLocaleDateString('pt',{day:'numeric',month:'short'})); } }
+      else { for (let i = 11; i >= 0; i--) { const d = new Date(now); d.setMonth(d.getMonth()-i); labels.push(d.toLocaleDateString('pt',{month:'short',year:'2-digit'})); } }
       return labels;
     }
 
@@ -245,8 +245,8 @@
     function renderChart(price, period, isUp) {
       lastRenderArgs = [price, period, isUp];
       const canvas = document.getElementById('priceChart'); if (!canvas) return;
-      const pts = { '1D': 29, '1S': 7, '1M': 30, '1A': 12 }[period] || 30;
-      const vol = { '1D': .003, '1S': .012, '1M': .025, '1A': .08 }[period] || .02;
+      const pts = {'1D':29,'1S':7,'1M':30,'1A':12}[period]||30;
+      const vol = {'1D':.003,'1S':.012,'1M':.025,'1A':.08}[period]||.02;
       const data = generatePriceData(price, pts, vol);
       const labels = generateLabels(period);
       const lineColor = isUp ? '#437a22' : '#a13544';
@@ -254,123 +254,97 @@
       if (chartInstance) chartInstance.destroy();
       chartInstance = new Chart(canvas, {
         type: 'line',
-        data: {
-          labels: labels.slice(0, data.length),
-          datasets: [{
-            data,
-            borderColor: lineColor,
-            borderWidth: 2,
-            pointRadius: 0,
-            pointHoverRadius: 5,
-            pointHoverBackgroundColor: lineColor,
-            fill: true,
-            backgroundColor: (ctx) => {
-              const g = ctx.chart.ctx.createLinearGradient(0, 0, 0, ctx.chart.height);
-              g.addColorStop(0, isUp ? 'rgba(67,122,34,.18)' : 'rgba(161,53,68,.18)');
-              g.addColorStop(1, 'rgba(0,0,0,0)');
-              return g;
-            },
-            tension: .4
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          interaction: { mode: 'index', intersect: false },
-          plugins: {
-            legend: { display: false },
-            tooltip: {
-              backgroundColor: tc.bg,
-              titleColor: tc.muted,
-              bodyColor: tc.text,
-              borderColor: tc.border,
-              borderWidth: 1,
-              padding: 10,
-              cornerRadius: 8,
-              callbacks: { label: ctx => ` ${ctx.raw.toFixed(2)}` }
-            }
-          },
-          scales: {
-            x: { grid: { display: false }, ticks: { color: '#8a8985', font: { size: 11 }, maxTicksLimit: 6 } },
-            y: { position: 'right', grid: { color: 'rgba(180,178,172,.12)' }, ticks: { color: '#8a8985', font: { size: 11 }, callback: v => v.toFixed(0) } }
-          }
+        data: { labels: labels.slice(0, data.length), datasets: [{ data, borderColor: lineColor, borderWidth: 2, pointRadius: 0, pointHoverRadius: 5, pointHoverBackgroundColor: lineColor, fill: true,
+          backgroundColor: (ctx) => { const g = ctx.chart.ctx.createLinearGradient(0,0,0,ctx.chart.height); g.addColorStop(0, isUp?'rgba(67,122,34,.18)':'rgba(161,53,68,.18)'); g.addColorStop(1,'rgba(0,0,0,0)'); return g; }, tension:.4 }] },
+        options: { responsive:true, maintainAspectRatio:false, interaction:{mode:'index',intersect:false},
+          plugins: { legend:{display:false}, tooltip:{ backgroundColor:tc.bg, titleColor:tc.muted, bodyColor:tc.text, borderColor:tc.border, borderWidth:1, padding:10, cornerRadius:8, callbacks:{label:ctx=>` ${ctx.raw.toFixed(2)}`} } },
+          scales: { x:{grid:{display:false},ticks:{color:'#8a8985',font:{size:11},maxTicksLimit:6}}, y:{position:'right',grid:{color:'rgba(180,178,172,.12)'},ticks:{color:'#8a8985',font:{size:11},callback:v=>v.toFixed(0)}} }
         }
       });
     }
 
-    // ── Formata números grandes ───────────────────────────────────────────────
     function fmtNum(n) {
       if (!n || isNaN(n)) return '—';
-      if (n >= 1e12) return (n / 1e12).toFixed(2) + 'T';
-      if (n >= 1e9)  return (n / 1e9).toFixed(2) + 'B';
-      if (n >= 1e6)  return (n / 1e6).toFixed(2) + 'M';
+      if (n>=1e12) return (n/1e12).toFixed(2)+'T';
+      if (n>=1e9)  return (n/1e9).toFixed(2)+'B';
+      if (n>=1e6)  return (n/1e6).toFixed(2)+'M';
       return n.toLocaleString('pt');
     }
 
-    // ── Yahoo Finance: cotação via proxy público ──────────────────────────────
+    // ── Yahoo Finance via proxy CORS ────────────────────────────────────────
+    const YAHOO_URL = T => `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(T)}?interval=1d&range=5d&includePrePost=false`;
+
+    // Proxies a tentar por ordem
+    const PROXIES = [
+      url => `https://corsproxy.io/?${encodeURIComponent(url)}`,
+      url => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+      url => `https://thingproxy.freeboard.io/fetch/${url}`,
+    ];
+
     async function fetchYahoo(T) {
-      // Usa o endpoint público v8/finance/chart (sem chave)
-      const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(T)}?interval=1d&range=5d&includePrePost=false`;
-      const res = await fetch(url, { headers: { 'Accept': 'application/json' } });
-      if (!res.ok) throw new Error(`Yahoo HTTP ${res.status}`);
-      const json = await res.json();
-      const result = json?.chart?.result?.[0];
-      if (!result) throw new Error(`Ticker "${T}" não encontrado no Yahoo Finance.`);
+      const targetUrl = YAHOO_URL(T);
+      let lastErr = null;
 
-      const meta = result.meta;
-      const price        = meta.regularMarketPrice ?? meta.previousClose;
-      const prevClose    = meta.previousClose ?? price;
-      const open         = meta.regularMarketOpen ?? price;
-      const high         = meta.regularMarketDayHigh ?? price;
-      const low          = meta.regularMarketDayLow ?? price;
-      const volume       = meta.regularMarketVolume ?? null;
-      const week52High   = meta.fiftyTwoWeekHigh ?? price * 1.1;
-      const week52Low    = meta.fiftyTwoWeekLow  ?? price * 0.9;
-      const currency     = meta.currency ?? 'USD';
-      const exchName     = meta.exchangeName ?? '';
-      const longName     = meta.longName ?? meta.shortName ?? T;
-      const change       = price - prevClose;
-      const changePct    = prevClose ? (change / prevClose) * 100 : 0;
-      const marketState  = meta.marketState ?? 'CLOSED';
+      for (const makeProxy of PROXIES) {
+        try {
+          const proxyUrl = makeProxy(targetUrl);
+          const res = await fetch(proxyUrl);
+          if (!res.ok) { lastErr = new Error(`HTTP ${res.status}`); continue; }
+          const json = await res.json();
+          const result = json?.chart?.result?.[0];
+          if (!result) { lastErr = new Error(`Ticker "${T}" não encontrado.`); continue; }
 
-      // Símbolo de moeda
-      const symMap = { USD:'$', EUR:'€', GBP:'£', JPY:'¥', CHF:'Fr', DKK:'kr', SEK:'kr', NOK:'kr', CAD:'$', AUD:'$', BRL:'R$', CNY:'¥' };
-      const sym = symMap[currency] || currency + ' ';
+          const meta       = result.meta;
+          const price      = meta.regularMarketPrice ?? meta.previousClose;
+          const prevClose  = meta.previousClose ?? price;
+          const open       = meta.regularMarketOpen ?? price;
+          const high       = meta.regularMarketDayHigh ?? price;
+          const low        = meta.regularMarketDayLow ?? price;
+          const volume     = meta.regularMarketVolume ?? null;
+          const week52High = meta.fiftyTwoWeekHigh ?? price * 1.1;
+          const week52Low  = meta.fiftyTwoWeekLow  ?? price * 0.9;
+          const currency   = meta.currency ?? 'USD';
+          const exchName   = meta.exchangeName ?? '';
+          const longName   = meta.longName ?? meta.shortName ?? T;
+          const change     = price - prevClose;
+          const changePct  = prevClose ? (change / prevClose) * 100 : 0;
+          const marketState = meta.marketState ?? 'CLOSED';
+          const symMap = {USD:'$',EUR:'€',GBP:'£',JPY:'¥',CHF:'Fr',DKK:'kr',SEK:'kr',NOK:'kr',CAD:'$',AUD:'$',BRL:'R$',CNY:'¥'};
+          const sym = symMap[currency] || currency + ' ';
 
-      return {
-        ticker: T, name: longName, price, change, changePct,
-        open, high, low, prevClose, volume: fmtNum(volume),
-        week52High, week52Low, symbol: sym,
-        exchange: exchName, type: '', sector: '',
-        marketState
-      };
+          return { ticker:T, name:longName, price, change, changePct,
+            open, high, low, prevClose, volume:fmtNum(volume),
+            week52High, week52Low, symbol:sym,
+            exchange:exchName, type:'', sector:'', marketState };
+        } catch(e) { lastErr = e; }
+      }
+      throw lastErr || new Error('Todos os proxies falharam.');
     }
 
-    // ── Carrega e renderiza ───────────────────────────────────────────────────
+    // ── Load & Render ────────────────────────────────────────────────────────
     async function loadAndRender(ticker) {
       const T = ticker.toUpperCase();
 
-      // 1. Tenta data.json local (gerado pelo GitHub Action)
+      // 1. Tenta data.json local (GitHub Action)
       try {
         const res = await fetch('./data.json?t=' + Date.now());
         if (res.ok) {
           const json = await res.json();
-          const localStock = (json.stocks || {})[T] || null;
-          if (localStock) { renderStock(localStock, json.updated, 'local', false); return; }
+          const s = (json.stocks || {})[T] || null;
+          if (s) { renderStock(s, json.updated, 'local', false); return; }
         }
       } catch(e) {}
 
-      // 2. Fallback: Yahoo Finance público (sem chave API)
+      // 2. Yahoo Finance via proxy CORS
       try {
         const stock = await fetchYahoo(T);
-        const marketClosed = stock.marketState !== 'REGULAR';
-        renderStock(stock, new Date().toISOString(), 'yahoo', marketClosed);
+        renderStock(stock, new Date().toISOString(), 'yahoo', stock.marketState !== 'REGULAR');
       } catch(err) {
-        renderError(T, err.message || 'Não foi possível obter dados. Tenta novamente.');
+        renderError(T, err.message || 'Não foi possível obter dados.');
       }
     }
 
-    // ── Renderiza o conteúdo ──────────────────────────────────────────────────
+    // ── renderStock ───────────────────────────────────────────────────────────
     function renderStock(s, updated, source, marketClosed) {
       document.title = 'FundScope — ' + s.ticker;
       const isUp = s.changePct >= 0;
@@ -381,15 +355,15 @@
       const w52L = s.week52Low  || s.price * 0.9;
       const rangePos = Math.min(100, Math.max(0, Math.round(((s.price - w52L) / (w52H - w52L)) * 100)));
       const initials = s.ticker.slice(0, 2);
-      const updLabel = updated ? new Date(updated).toLocaleString('pt', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : 'agora';
+      const updLabel = updated ? new Date(updated).toLocaleString('pt',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}) : 'agora';
 
       let sourceNote;
       if (source === 'local') {
         sourceNote = `<div class="live-badge"><span class="live-dot"></span>Atualizado ${updLabel}</div>`;
       } else if (marketClosed) {
-        sourceNote = `<div class="yahoo-badge">📊 Yahoo Finance</div><div class="closed-badge">🔒 Mercado fechado — preço de fecho</div>`;
+        sourceNote = `<div class="yahoo-badge">📊 Yahoo Finance</div><div class="closed-badge">🔒 Mercado fechado</div>`;
       } else {
-        sourceNote = `<div class="yahoo-badge">📊 Yahoo Finance — em tempo real</div>`;
+        sourceNote = `<div class="yahoo-badge">📊 Yahoo Finance</div>`;
       }
 
       document.getElementById('stockContent').innerHTML = `
@@ -399,12 +373,12 @@
             <div>
               <div class="stock-ticker">${s.ticker}</div>
               <div class="stock-name">${s.name}</div>
-              <div class="stock-exchange">${[s.exchange, s.type, s.sector].filter(Boolean).join(' · ')}</div>
+              <div class="stock-exchange">${[s.exchange,s.type,s.sector].filter(Boolean).join(' · ')}</div>
             </div>
           </div>
           <div class="stock-price-block">
             <div class="stock-price">${sym}${s.price.toFixed(2)}</div>
-            <div><span class="stock-change ${isUp ? 'up' : 'down'}">${arrow} ${sign}${sym}${Math.abs(s.change || 0).toFixed(2)} (${sign}${s.changePct.toFixed(2)}%)</span></div>
+            <div><span class="stock-change ${isUp?'up':'down'}">${arrow} ${sign}${sym}${Math.abs(s.change||0).toFixed(2)} (${sign}${s.changePct.toFixed(2)}%)</span></div>
             ${sourceNote}
           </div>
         </div>
@@ -416,17 +390,17 @@
         </div>
         <div class="chart-card"><div class="chart-wrap"><canvas id="priceChart"></canvas></div></div>
         <div class="grid-3">
-          <div class="card"><div class="kpi-label">Abertura</div><div class="kpi-value">${sym}${(s.open || s.price).toFixed(2)}</div><div class="kpi-sub">Fecho anterior: ${sym}${(s.prevClose || s.price).toFixed(2)}</div></div>
-          <div class="card"><div class="kpi-label">Máximo do dia</div><div class="kpi-value" style="color:var(--color-success)">${sym}${(s.high || s.price).toFixed(2)}</div><div class="kpi-sub">Mínimo: ${sym}${(s.low || s.price).toFixed(2)}</div></div>
-          <div class="card"><div class="kpi-label">Volume</div><div class="kpi-value">${s.volume || '—'}</div><div class="kpi-sub">Média: ${s.avgVolume || '—'}</div></div>
+          <div class="card"><div class="kpi-label">Abertura</div><div class="kpi-value">${sym}${(s.open||s.price).toFixed(2)}</div><div class="kpi-sub">Fecho anterior: ${sym}${(s.prevClose||s.price).toFixed(2)}</div></div>
+          <div class="card"><div class="kpi-label">Máximo do dia</div><div class="kpi-value" style="color:var(--color-success)">${sym}${(s.high||s.price).toFixed(2)}</div><div class="kpi-sub">Mínimo: ${sym}${(s.low||s.price).toFixed(2)}</div></div>
+          <div class="card"><div class="kpi-label">Volume</div><div class="kpi-value">${s.volume||'—'}</div><div class="kpi-sub">Média: ${s.avgVolume||'—'}</div></div>
         </div>
         <div class="grid-2">
           <div class="card"><div class="card-title">Estatísticas</div><div class="stat-row">
-            <div class="stat-item"><span class="stat-label">Capitalização</span><span class="stat-value">${s.marketCap || '—'}</span></div>
-            <div class="stat-item"><span class="stat-label">P/E Ratio</span><span class="stat-value">${s.pe || '—'}</span></div>
-            <div class="stat-item"><span class="stat-label">EPS</span><span class="stat-value">${s.eps || '—'}</span></div>
-            <div class="stat-item"><span class="stat-label">Dividendo</span><span class="stat-value">${s.dividend || '—'}</span></div>
-            <div class="stat-item"><span class="stat-label">Beta</span><span class="stat-value">${s.beta || '—'}</span></div>
+            <div class="stat-item"><span class="stat-label">Capitalização</span><span class="stat-value">${s.marketCap||'—'}</span></div>
+            <div class="stat-item"><span class="stat-label">P/E Ratio</span><span class="stat-value">${s.pe||'—'}</span></div>
+            <div class="stat-item"><span class="stat-label">EPS</span><span class="stat-value">${s.eps||'—'}</span></div>
+            <div class="stat-item"><span class="stat-label">Dividendo</span><span class="stat-value">${s.dividend||'—'}</span></div>
+            <div class="stat-item"><span class="stat-label">Beta</span><span class="stat-value">${s.beta||'—'}</span></div>
           </div></div>
           <div class="card"><div class="card-title">Intervalo 52 Semanas</div>
             <div class="range-bar-wrap">
@@ -440,7 +414,7 @@
             </div>
           </div>
         </div>
-        ${s.about ? `<div class="card"><div class="card-title">Sobre</div><p style="font-size:var(--text-sm);color:var(--color-text-muted);line-height:1.7">${s.about}</p></div>` : ''}
+        ${s.about?`<div class="card"><div class="card-title">Sobre</div><p style="font-size:var(--text-sm);color:var(--color-text-muted);line-height:1.7">${s.about}</p></div>`:''}
       `;
       requestAnimationFrame(() => renderChart(s.price, '1D', isUp));
       document.getElementById('periodTabs').addEventListener('click', e => {
@@ -465,7 +439,7 @@
     const params = new URLSearchParams(location.search);
     const ticker = (params.get('ticker') || params.get('t') || '').trim();
     if (ticker) loadAndRender(ticker);
-    else renderError('?', 'Nenhum ticker especificado. Volta à página principal e seleciona um ativo.');
+    else renderError('?', 'Nenhum ticker especificado.');
   </script>
 </body>
 </html>
