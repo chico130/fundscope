@@ -1,17 +1,12 @@
 #!/usr/bin/env python3
 """
-update_markets.py — FundScope v2.0
+update_markets.py — FundScope v2.1
 
-Causa raiz do problema:
-  O Finnhub free tier tem limite de 60 req/min.
-  Com 15 tickers x 6 setores = 90 chamadas so de quotes, o token era
-  throttled e devolvia {"c":0,"pc":0} para Consumo e Commodities
-  (os ultimos setores a correr).
-
-Solucao:
-  - Cotacoes: yfinance (sem rate limit, batch download)
-  - Sentimento: Finnhub /stock/recommendation (3 req/setor = 18 total, ok)
-  - Noticias:   Finnhub company-news (5 req/setor = 30 total, ok)
+Fixes:
+  - period="5d" em vez de "2d" para garantir dados mesmo ao inicio da semana
+  - Slot detection corrigida: detecta pre-mercado de segunda-feira
+  - updated timestamp mostra data do ultimo fecho, nao UTC now()
+  - changePct calcula sempre fecho[-1] vs fecho[-2] (dias de mercado aberto)
 """
 
 import json, os, time, datetime, requests
@@ -71,22 +66,50 @@ SECTORS = {
     }
 }
 
+# ------------------------------------------------------------------ slot
+def get_slot(now_utc):
+    """
+    Determina o slot com base na hora UTC e dia da semana.
+    Mercado NYSE: 14:30-21:00 UTC
+    Pre-mercado segunda (08:00 UTC = 09:00 WEST): dados ainda sao de sexta
+    """
+    weekday = now_utc.weekday()  # 0=Monday
+    hour    = now_utc.hour
+    minute  = now_utc.minute
+
+    # Antes da abertura do mercado (14:30 UTC) -> abertura (dados pre-mercado/fecho anterior)
+    if hour < 8:
+        return "fecho"          # corrida noturna improvavel mas segura
+    if hour < 12:
+        return "abertura"       # snapshot matinal (09:00 / 10:00 WEST)
+    if hour < 15 or (hour == 15 and minute < 30):
+        return "meio-dia"       # snapshot meio-dia (13:00 WEST)
+    return "fecho"              # snapshot fecho (16:30 WEST)
+
+def is_market_open(now_utc):
+    """NYSE esta aberto: dias uteis, 14:30-21:00 UTC"""
+    if now_utc.weekday() >= 5:
+        return False
+    minutes = now_utc.hour * 60 + now_utc.minute
+    return 870 <= minutes < 1260  # 14:30=870, 21:00=1260
+
 # ------------------------------------------------------------------ yfinance
 def fetch_all_quotes():
     """
-    Faz um unico batch download de todos os tickers via yfinance.
-    Devolve dict: {TICKER: {"price": x, "changePct": y, "pc": z}}
+    Batch download de todos os tickers.
+    Usa period=5d para garantir pelo menos 2 dias de mercado aberto
+    mesmo em inicio de semana ou apos feriados.
     """
     all_tickers = []
     for cfg in SECTORS.values():
         all_tickers.extend(cfg["tickers"])
-    all_tickers = list(dict.fromkeys(all_tickers))  # dedup, preserva ordem
+    all_tickers = list(dict.fromkeys(all_tickers))
 
-    print(f"A descarregar {len(all_tickers)} cotacoes via yfinance...")
+    print(f"A descarregar {len(all_tickers)} cotacoes via yfinance (period=5d)...")
     try:
         data = yf.download(
             all_tickers,
-            period="2d",
+            period="5d",
             interval="1d",
             auto_adjust=True,
             progress=False,
@@ -94,33 +117,51 @@ def fetch_all_quotes():
         )
     except Exception as e:
         print(f"  [ERRO yfinance download]: {e}")
-        return {}
+        return {}, None
+
+    # Extrair Close
+    try:
+        if hasattr(data.columns, 'levels'):
+            close = data.xs("Close", axis=1, level=0)
+        elif "Close" in data.columns:
+            close = data["Close"]
+        else:
+            print("  [ERRO] coluna Close nao encontrada")
+            return {}, None
+    except Exception as e:
+        print(f"  [ERRO] extrair Close: {e}")
+        return {}, None
 
     quotes = {}
-    close = data["Close"] if "Close" in data.columns else data.xs("Close", axis=1, level=0) if hasattr(data.columns, 'levels') else None
-
-    if close is None:
-        print("  [ERRO] nao foi possivel extrair Close do dataframe")
-        return {}
+    last_close_date = None
 
     for t in all_tickers:
         try:
             col = close[t] if t in close.columns else None
-            if col is None or col.dropna().empty:
-                print(f"  [SKIP] {t}: sem dados")
+            if col is None:
+                print(f"  [SKIP] {t}: ticker ausente")
                 continue
             vals = col.dropna()
             if len(vals) < 1:
+                print(f"  [SKIP] {t}: sem dados")
                 continue
             price = float(vals.iloc[-1])
             pc    = float(vals.iloc[-2]) if len(vals) >= 2 else price
             chg   = round((price - pc) / pc * 100, 2) if pc else 0.0
             quotes[t] = {"ticker": t, "price": round(price, 2), "changePct": chg, "pc": round(pc, 2)}
+            # guardar data do ultimo fecho disponivel
+            if last_close_date is None:
+                try:
+                    last_close_date = vals.index[-1].date().isoformat()
+                except Exception:
+                    pass
         except Exception as e:
             print(f"  [SKIP] {t}: {e}")
 
     print(f"  {len(quotes)}/{len(all_tickers)} cotacoes obtidas")
-    return quotes
+    if last_close_date:
+        print(f"  Ultimo fecho: {last_close_date}")
+    return quotes, last_close_date
 
 # ------------------------------------------------------------------ Finnhub
 def fh_get(endpoint, params):
@@ -182,7 +223,6 @@ def build_sector(name, cfg, all_quotes, frm, to):
     gainers = quotes_sorted[:5]
     losers  = list(reversed(quotes_sorted[-5:])) if len(quotes_sorted) >= 5 else list(reversed(quotes_sorted))
 
-    # Sentimento via Finnhub (poucos pedidos)
     sentiments = []
     for t in cfg["sentiment_tickers"]:
         rec = fh_recommendation(t)
@@ -195,7 +235,6 @@ def build_sector(name, cfg, all_quotes, frm, to):
     valid    = [s["bullish"] for s in sentiments if s["bullish"] is not None]
     avg_bull = round(sum(valid) / len(valid), 1) if valid else None
 
-    # Noticias via Finnhub
     news, seen_h = [], set()
     for t in cfg["news_tickers"]:
         for item in fh_news(t, frm, to, limit=2):
@@ -219,16 +258,29 @@ def build_sector(name, cfg, all_quotes, frm, to):
 
 # ------------------------------------------------------------------ main
 def main():
-    now   = datetime.datetime.utcnow()
-    slot  = "abertura" if now.hour < 10 else ("meio-dia" if now.hour < 14 else "fecho")
-    today = now.date()
-    frm   = (today - datetime.timedelta(days=4)).isoformat()
-    to    = today.isoformat()
+    now_utc = datetime.datetime.utcnow()
+    slot    = get_slot(now_utc)
+    market_open = is_market_open(now_utc)
 
-    # 1. Batch download de todas as cotacoes (1 unica chamada yfinance)
-    all_quotes = fetch_all_quotes()
+    today = now_utc.date()
+    # janela de noticias: ultimos 5 dias para apanhar fim-de-semana + hoje
+    frm = (today - datetime.timedelta(days=5)).isoformat()
+    to  = today.isoformat()
 
-    # 2. Construir cada setor
+    print(f"UTC: {now_utc.strftime('%Y-%m-%d %H:%M')} | slot: {slot} | mercado aberto: {market_open}")
+
+    # 1. Batch download cotacoes
+    all_quotes, last_close_date = fetch_all_quotes()
+
+    # updated: se mercado ainda nao abriu usa data do ultimo fecho, caso contrario now
+    if market_open or last_close_date is None:
+        updated_ts = now_utc.isoformat() + "Z"
+    else:
+        # dados sao do fecho anterior (ex: sexta-feira)
+        # usa a data do ultimo fecho + hora de fecho NYSE (21:00 UTC)
+        updated_ts = f"{last_close_date}T21:00:00Z"
+
+    # 2. Construir setores
     sectors = {}
     for name, cfg in SECTORS.items():
         print(f"\n=== {name} ===")
@@ -245,10 +297,16 @@ def main():
                 "sentiment": {"bullishPct": None, "details": []}, "news": []
             }
 
-    out = {"updated": now.isoformat() + "Z", "slot": slot, "sectors": sectors}
+    out = {
+        "updated": updated_ts,
+        "slot": slot,
+        "marketOpen": market_open,
+        "lastCloseDate": last_close_date,
+        "sectors": sectors
+    }
     with open("markets.json", "w", encoding="utf-8") as f:
         json.dump(out, f, ensure_ascii=False, indent=2)
-    print(f"\nmarkets.json OK ({slot})")
+    print(f"\nmarkets.json OK | slot={slot} | updated={updated_ts}")
 
 if __name__ == "__main__":
     main()
