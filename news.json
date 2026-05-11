@@ -1,41 +1,17 @@
 {
-  "updated": "2026-05-11T13:47:20.316921+00:00",
+  "updated": "2026-05-11T17:23:37.477789+00:00",
   "articles": [
     {
-      "id": 668201283,
-      "source": "CNBC",
-      "title": "Cerebras bumps up IPO range as it looks to raise up to $4.8 billion",
-      "summary": "Elon Musk was open to having OpenAI merge with Cerebras. Now Cerebras is looking at going public as soon as this week.",
-      "content": "Elon Musk was open to having OpenAI merge with Cerebras. Now Cerebras is looking at going public as soon as this week.",
-      "url": "https://www.cnbc.com/2026/05/11/cerebras-raises-ipo-range.html",
-      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
-      "publishedAt": "2026-05-11T13:44:54+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [
-          "TSLA",
-          "RIVN",
-          "GM",
-          "MSFT"
-        ],
-        "sector": "Autom\u00f3vel",
-        "sentiment": "neutral"
-      },
-      "heat": 3,
-      "feed": "rss"
-    },
-    {
-      "id": 472966507,
-      "source": "Seeking Alpha",
-      "title": "Broadwind Q1 2026 Earnings Preview",
-      "summary": "",
-      "content": "",
-      "url": "https://seekingalpha.com/news/4590509-broadwind-q1-2026-earnings-preview?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
-      "image": "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80",
-      "publishedAt": "2026-05-11T09:44:22-04:00",
-      "category": "Energia",
-      "icon": "\u26a1",
+      "id": 33457104,
+      "source": "MarketWatch",
+      "title": "Here\u2019s how much Moderna\u2019s stock has rallied off renewed focus on hantavirus research",
+      "summary": "The public is growing increasingly concerned about the possibility that a hantavirus outbreak on a cruise could spark a new pandemic.",
+      "content": "The public is growing increasingly concerned about the possibility that a hantavirus outbreak on a cruise could spark a new pandemic.",
+      "url": "https://www.marketwatch.com/story/heres-how-much-modernas-stock-has-rallied-off-renewed-focus-on-hantavirus-research-a6898338?mod=mw_rss_topstories",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-11T17:17:00+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
       "impact": {
         "tickers": [],
         "sector": "",
@@ -45,23 +21,229 @@
       "feed": "rss"
     },
     {
-      "id": 183805864,
-      "source": "CNBC",
-      "title": "Micron shares are rising again despite weak overall market. Why memory chip rally seems unstoppable",
-      "summary": "Micron is among the \"most hyped stocks on social media\" as retail enthusiasm simmers",
-      "content": "Micron is among the \"most hyped stocks on social media\" as retail enthusiasm simmers",
-      "url": "https://www.cnbc.com/2026/05/11/micron-shares-are-rising-again-despite-weak-overall-market-why-memory-chip-rally-seems-unstoppable.html",
-      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
-      "publishedAt": "2026-05-11T13:42:58+00:00",
+      "id": 916800423,
+      "source": "seekingalpha.com",
+      "title": "Wall Street Lunch: Wall Street Questions Big Tech\u2019s $700B Hyperscaler Bet (undefined:GOOG)",
+      "summary": "Wall Street is nervous about hyperscaler capex. The combined capex of Amazon, Microsoft, Alphabet, and Meta was over $200B in 2024. Two years later it is on track to approach $700B.",
+      "content": "Wall Street is nervous about hyperscaler capex. The combined capex of Amazon, Microsoft, Alphabet, and Meta was over $200B in 2024. Two years later it is on track to approach $700B.",
+      "url": "https://seekingalpha.com/article/4902495-wall-street-lunch-wall-street-questions-big-techs-700b-hyperscaler-bet",
+      "image": "https://static.seekingalpha.com/cdn/s3/uploads/getty_images/2245514824/image_2245514824.jpg?io=getty-c-w1536",
+      "publishedAt": "2026-05-11T17:15:55.000000Z",
       "category": "Mercados",
       "icon": "\ud83d\udcb0",
       "impact": {
         "tickers": [
+          "AMZN",
+          "WMT",
+          "TGT",
+          "COST",
+          "MSFT"
+        ],
+        "sector": "Consumo",
+        "sentiment": "neutral"
+      },
+      "heat": 3,
+      "feed": "marketaux"
+    },
+    {
+      "id": 47062798,
+      "source": "CNBC",
+      "title": "Trump invites Elon Musk, Tim Cook, Larry Fink and other CEOs to join China trip for Xi summit",
+      "summary": "Trump invited Tesla's Elon Musk, Apple's Tim Cook and Blackrock's Larry Fink to join his China trip for talks with Xi Jinping on trade, AI and geopolitics.",
+      "content": "Trump invited Tesla's Elon Musk, Apple's Tim Cook and Blackrock's Larry Fink to join his China trip for talks with Xi Jinping on trade, AI and geopolitics.",
+      "url": "https://www.cnbc.com/2026/05/11/trump-ceos-elon-musk-tim-cook-larry-fink-xi-china-summit.html",
+      "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
+      "publishedAt": "2026-05-11T17:12:35+00:00",
+      "category": "Geopol\u00edtica",
+      "icon": "\ud83c\udf0d",
+      "impact": {
+        "tickers": [
+          "AAPL",
           "NVDA",
+          "TSLA",
           "AMD",
-          "INTC",
-          "AVGO",
-          "AMZN"
+          "RIVN"
+        ],
+        "sector": "Tecnologia",
+        "sentiment": "neutral"
+      },
+      "heat": 3,
+      "feed": "rss"
+    },
+    {
+      "id": 372475852,
+      "source": "Seeking Alpha",
+      "title": "Opal Fuels anticipates bringing over 2m MMBtu of annual design capacity online over the next year or so",
+      "summary": "",
+      "content": "",
+      "url": "https://seekingalpha.com/news/4590668-opal-fuels-anticipates-bringing-over-2m-mmbtu-of-annual-design-capacity-online-over-the-next?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-11T13:11:40-04:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 130987791,
+      "source": "seekingalpha.com",
+      "title": "Adamas Trust Preferred Share Offers 10.5% Yield (NASDAQ:ADAM)",
+      "summary": "Adamas Trust, Inc. income outlook: NII surges as leverage climbs. Click for this updated look at ADAM and its preferred shares ADAMM.",
+      "content": "Adamas Trust, Inc. income outlook: NII surges as leverage climbs. Click for this updated look at ADAM and its preferred shares ADAMM.",
+      "url": "https://seekingalpha.com/article/4902547-adamas-trust-preferred-share-offers-10-5-percent-yield",
+      "image": "https://static.seekingalpha.com/cdn/s3/uploads/getty_images/1906988050/image_1906988050.jpg?io=getty-c-w1536",
+      "publishedAt": "2026-05-11T17:11:25.000000Z",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "marketaux"
+    },
+    {
+      "id": 827227368,
+      "source": "CNBC",
+      "title": "JPMorgan Chase-led bank group reins in credit line to troubled KKR private credit fund as losses mount",
+      "summary": "The KKR fund, often referred to by its ticker, FSK, has become one of the most visible fault lines in the private credit story.",
+      "content": "The KKR fund, often referred to by its ticker, FSK, has become one of the most visible fault lines in the private credit story.",
+      "url": "https://www.cnbc.com/2026/05/11/kkr-private-credit-fund-fsk-jpmorgan-chase-credit.html",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-11T17:10:56+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [
+          "JPM",
+          "BAC",
+          "WFC",
+          "C"
+        ],
+        "sector": "Finan\u00e7as",
+        "sentiment": "negative"
+      },
+      "heat": 3,
+      "feed": "rss"
+    },
+    {
+      "id": 130928438,
+      "source": "Nasdaq",
+      "title": "Lountzis Asset Management Liquidates SkyWater Technology Stake, According to Recent SEC Filing",
+      "summary": "Key PointsLountzis Asset Management sold 290,222 shares of SkyWater Technology; estimated trade value of $8.53 million (based on quarterly average price)",
+      "content": "Key PointsLountzis Asset Management sold 290,222 shares of SkyWater Technology; estimated trade value of $8.53 million (based on quarterly average price)",
+      "url": "https://www.nasdaq.com/articles/lountzis-asset-management-liquidates-skywater-technology-stake-according-recent-sec-filing",
+      "image": "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=800&q=80",
+      "publishedAt": "2026-05-11T17:09:18+00:00",
+      "category": "Com\u00e9rcio",
+      "icon": "\ud83d\udea2",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 935711690,
+      "source": "Seeking Alpha",
+      "title": "Monday.com climbs after Q1 beat, raises 2026 revenue outlook",
+      "summary": "",
+      "content": "",
+      "url": "https://seekingalpha.com/news/4590390-mondaycom-surges-25-after-q1-beat-raises-2026-revenue-outlook?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-11T13:07:11-04:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 669748898,
+      "source": "MarketWatch",
+      "title": "Cash-strapped homeowners may soon have no choice but to repair their aging houses",
+      "summary": "Home Depot and Lowe\u2019s have struggled this year, but UBS analysts say they\u2019re due to benefit as homeowners reach a tipping point with units built during the mid-2000s housing boom.",
+      "content": "Home Depot and Lowe\u2019s have struggled this year, but UBS analysts say they\u2019re due to benefit as homeowners reach a tipping point with units built during the mid-2000s housing boom.",
+      "url": "https://www.marketwatch.com/story/cash-strapped-homeowners-may-soon-have-no-choice-but-to-repair-their-aging-houses-0241bbdc?mod=mw_rss_topstories",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-11T17:07:00+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 173129013,
+      "source": "Seeking Alpha",
+      "title": "AvalonBay replaces Mid-America in BofA Securities' industry top picks after Q1 results",
+      "summary": "",
+      "content": "",
+      "url": "https://seekingalpha.com/news/4590657-avalonbay-replaces-mid-america-in-bofa-securities-industry-top-picks-after-q1-results?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-11T13:06:35-04:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 215461048,
+      "source": "CNBC",
+      "title": "GM cutting hundreds of salaried IT workers as it trims costs, evaluates needs",
+      "summary": "General Motors is laying off hundreds of salaried employees in its information technology operations.",
+      "content": "General Motors is laying off hundreds of salaried employees in its information technology operations.",
+      "url": "https://www.cnbc.com/2026/05/11/gm-layoffs.html",
+      "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
+      "publishedAt": "2026-05-11T17:06:30+00:00",
+      "category": "Tecnologia",
+      "icon": "\ud83d\udcbb",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 436129720,
+      "source": "Seeking Alpha",
+      "title": "The Trump Administration cuts tariffs as U.S. beef prices continue to surge",
+      "summary": "",
+      "content": "",
+      "url": "https://seekingalpha.com/news/4590661-the-trump-administration-cuts-tariffs-as-us-beef-prices-continue-to-surge?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+      "image": "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=800&q=80",
+      "publishedAt": "2026-05-11T13:04:14-04:00",
+      "category": "Com\u00e9rcio",
+      "icon": "\ud83d\udea2",
+      "impact": {
+        "tickers": [
+          "AAPL",
+          "NVDA",
+          "TSLA",
+          "AMD"
         ],
         "sector": "Tecnologia",
         "sentiment": "positive"
@@ -70,39 +252,76 @@
       "feed": "rss"
     },
     {
-      "id": 773467893,
-      "source": "CNBC",
-      "title": "Hantavirus cases spark surge in pharma and biotech stocks \u2014 here\u2019s why",
-      "summary": "The outbreak of Hantavirus on a cruise ship has led to biotech and pharmaceutical stocks surging on reports of firms developing vaccines.",
-      "content": "The outbreak of Hantavirus on a cruise ship has led to biotech and pharmaceutical stocks surging on reports of firms developing vaccines.",
-      "url": "https://www.cnbc.com/2026/05/11/hantavirus-cases-pharma-stocks-surge-moderna-novavax.html",
-      "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
-      "publishedAt": "2026-05-11T13:41:19+00:00",
-      "category": "Tecnologia",
-      "icon": "\ud83d\udcbb",
+      "id": 349880325,
+      "source": "Yahoo Finance",
+      "title": "Why Analysts Still Favor ServiceNow, Inc. (NOW)",
+      "summary": "",
+      "content": "",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/why-analysts-still-favor-servicenow-170332936.html",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-11T17:03:32+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 994788491,
+      "source": "Yahoo Finance",
+      "title": "Why Analysts Are Watching Elastic N.V. (ESTC) Closely",
+      "summary": "",
+      "content": "",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/why-analysts-watching-elastic-n-170330842.html",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-11T17:03:30+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 912484279,
+      "source": "Yahoo Finance",
+      "title": "Analysts See Strong Risk-Reward in Workiva Inc. (WK)",
+      "summary": "",
+      "content": "",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/analysts-see-strong-risk-reward-170328111.html",
+      "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
+      "publishedAt": "2026-05-11T17:03:28+00:00",
+      "category": "Geopol\u00edtica",
+      "icon": "\ud83c\udf0d",
       "impact": {
         "tickers": [
-          "PFE",
-          "LLY",
-          "JNJ",
-          "MRK",
-          "AMGN"
+          "LMT",
+          "RTX",
+          "NOC",
+          "XOM"
         ],
-        "sector": "Sa\u00fade",
-        "sentiment": "positive"
+        "sector": "Defesa",
+        "sentiment": "negative"
       },
       "heat": 3,
       "feed": "rss"
     },
     {
-      "id": 970656644,
-      "source": "Seeking Alpha",
-      "title": "Orla Mining declares $0.015 dividend",
+      "id": 650635558,
+      "source": "Yahoo Finance",
+      "title": "Why Goldman Suddenly Turned Neutral on EPAM Systems, Inc. (EPAM)",
       "summary": "",
       "content": "",
-      "url": "https://seekingalpha.com/news/4590507-orla-mining-declares-0_015-dividend?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/why-goldman-suddenly-turned-neutral-170327239.html",
       "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-11T09:37:31-04:00",
+      "publishedAt": "2026-05-11T17:03:27+00:00",
       "category": "Global",
       "icon": "\ud83c\udf10",
       "impact": {
@@ -119,14 +338,14 @@
       "feed": "rss"
     },
     {
-      "id": 893642894,
-      "source": "Seeking Alpha",
-      "title": "McDonald\u2019s breaks below prior support; resistance now seen near $280",
+      "id": 529441445,
+      "source": "Yahoo Finance",
+      "title": "Analysts Stay Bullish on Itron, Inc. (ITRI) Despite Target Cut",
       "summary": "",
       "content": "",
-      "url": "https://seekingalpha.com/news/4590503-mcdonalds-breaks-below-prior-support-resistance-now-seen-near-280?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/analysts-stay-bullish-itron-inc-170325374.html",
       "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-11T09:36:58-04:00",
+      "publishedAt": "2026-05-11T17:03:25+00:00",
       "category": "Global",
       "icon": "\ud83c\udf10",
       "impact": {
@@ -138,16 +357,336 @@
       "feed": "rss"
     },
     {
-      "id": 681692545,
+      "id": 277547571,
+      "source": "Yahoo Finance",
+      "title": "Here\u2019s Why ServiceTitan Inc. (TTAN) Is Among The Best High-return Technology Stocks to Buy Now",
+      "summary": "",
+      "content": "",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/why-servicetitan-inc-ttan-among-170323690.html",
+      "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
+      "publishedAt": "2026-05-11T17:03:23+00:00",
+      "category": "Tecnologia",
+      "icon": "\ud83d\udcbb",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 372832590,
+      "source": "Yahoo Finance",
+      "title": "Grab Holdings Limited (GRAB) Balances Growth, Margins, and Capital Returns",
+      "summary": "",
+      "content": "",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/grab-holdings-limited-grab-balances-170322266.html",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-11T17:03:22+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 54340638,
+      "source": "Yahoo Finance",
+      "title": "What Makes Zeta Global Holdings Corp. (ZETA) One of The Best High Return Technology Stocks",
+      "summary": "",
+      "content": "",
+      "url": "https://finance.yahoo.com/sectors/technology/articles/makes-zeta-global-holdings-corp-170320940.html",
+      "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
+      "publishedAt": "2026-05-11T17:03:20+00:00",
+      "category": "Tecnologia",
+      "icon": "\ud83d\udcbb",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 877646519,
+      "source": "Yahoo Finance",
+      "title": "Pagaya Technologies Ltd. (PGY) Starts 2026 With Blowout Earnings Results",
+      "summary": "",
+      "content": "",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/pagaya-technologies-ltd-pgy-starts-170318891.html",
+      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
+      "publishedAt": "2026-05-11T17:03:18+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 651943148,
+      "source": "Yahoo Finance",
+      "title": "Is Klaviyo, Inc. (NYSE:KVYO) The Best High Return Technology Stock to Buy Now?",
+      "summary": "",
+      "content": "",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/klaviyo-inc-nyse-kvyo-best-170317785.html",
+      "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
+      "publishedAt": "2026-05-11T17:03:17+00:00",
+      "category": "Tecnologia",
+      "icon": "\ud83d\udcbb",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 895768450,
+      "source": "Seeking Alpha",
+      "title": "Will Trump tariff setback widen the U.S. fiscal deficit?",
+      "summary": "",
+      "content": "",
+      "url": "https://seekingalpha.com/news/4590656-will-trump-tariff-setback-widen-the-us-fiscal-deficit?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+      "image": "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=800&q=80",
+      "publishedAt": "2026-05-11T13:02:10-04:00",
+      "category": "Com\u00e9rcio",
+      "icon": "\ud83d\udea2",
+      "impact": {
+        "tickers": [
+          "AAPL",
+          "NVDA",
+          "TSLA",
+          "AMD"
+        ],
+        "sector": "Tecnologia",
+        "sentiment": "neutral"
+      },
+      "heat": 3,
+      "feed": "rss"
+    },
+    {
+      "id": 381428134,
+      "source": "Seeking Alpha",
+      "title": "Constellation outlines $11.5B-$13B free cash flow for 2028-29 as it reaffirms 2026 EPS guidance",
+      "summary": "",
+      "content": "",
+      "url": "https://seekingalpha.com/news/4590666-constellation-outlines-11_5b-13b-free-cash-flow-for-2028minus-29-as-it-reaffirms-2026-eps?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-11T13:01:43-04:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 161705433,
+      "source": "Seeking Alpha",
+      "title": "Certara expects $395M-$405M 2026 revenue following medical writing divestiture",
+      "summary": "",
+      "content": "",
+      "url": "https://seekingalpha.com/news/4590664-certara-expects-395m-405m-2026-revenue-following-medical-writing-divestiture?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-11T13:01:38-04:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 309246551,
       "source": "CNBC",
-      "title": "UK PM Starmer battles for political survival amid leadership challenge as gilt yields rise",
-      "summary": "Starmer said that key issues of growth, defense, the U.K.'s relationship with Europe and energy must be urgently addressed.",
-      "content": "Starmer said that key issues of growth, defense, the U.K.'s relationship with Europe and energy must be urgently addressed.",
-      "url": "https://www.cnbc.com/2026/05/11/uk-pm-starmer-fights-for-his-political-future-in-pivotal-speech.html",
-      "image": "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80",
-      "publishedAt": "2026-05-11T13:36:34+00:00",
-      "category": "Energia",
-      "icon": "\u26a1",
+      "title": "The stock market has only done this 3 times since the Gulf War. It's not a good sign",
+      "summary": "The poor breadth in the stock market is drawing comparisons to the late 1990s, and worrying investors.",
+      "content": "The poor breadth in the stock market is drawing comparisons to the late 1990s, and worrying investors.",
+      "url": "https://www.cnbc.com/2026/05/11/the-stock-market-has-only-done-this-3-times-since-the-gulf-war-its-not-a-good-sign.html",
+      "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
+      "publishedAt": "2026-05-11T17:00:09+00:00",
+      "category": "Geopol\u00edtica",
+      "icon": "\ud83c\udf0d",
+      "impact": {
+        "tickers": [
+          "LMT",
+          "RTX",
+          "NOC",
+          "XOM"
+        ],
+        "sector": "Defesa",
+        "sentiment": "neutral"
+      },
+      "heat": 3,
+      "feed": "rss"
+    },
+    {
+      "id": 499781101,
+      "source": "MarketWatch",
+      "title": "Inflation is getting worse. Just how bad is it going to get?",
+      "summary": "The surge in gasoline prices tied to the Iran war is set to drive U.S. inflation to a three-year high \u2014 and it might get worse before it gets better.",
+      "content": "The surge in gasoline prices tied to the Iran war is set to drive U.S. inflation to a three-year high \u2014 and it might get worse before it gets better.",
+      "url": "https://www.marketwatch.com/story/inflation-is-getting-worse-just-how-bad-is-it-going-to-get-db109ea4?mod=mw_rss_topstories",
+      "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
+      "publishedAt": "2026-05-11T17:00:00+00:00",
+      "category": "Geopol\u00edtica",
+      "icon": "\ud83c\udf0d",
+      "impact": {
+        "tickers": [
+          "JPM",
+          "GS",
+          "BAC",
+          "TLT",
+          "LMT"
+        ],
+        "sector": "Finan\u00e7as",
+        "sentiment": "neutral"
+      },
+      "heat": 3,
+      "feed": "rss"
+    },
+    {
+      "id": 442409162,
+      "source": "Nasdaq",
+      "title": "Monday's ETF with Unusual Volume: SPYX",
+      "summary": "The SPDR S&amp;P 500 Fossil Fuel Reserves Free ETF is seeing unusually high volume in afternoon trading Monday, with over 1.6 million shares traded versus three month average volume of about 148,000. Shares of SPYX were up about 0.3% on the day. Components of that ETF with the",
+      "content": "The SPDR S&amp;P 500 Fossil Fuel Reserves Free ETF is seeing unusually high volume in afternoon trading Monday, with over 1.6 million shares traded versus three month average volume of about 148,000. Shares of SPYX were up about 0.3% on the day. Components of that ETF with the",
+      "url": "https://www.nasdaq.com/articles/mondays-etf-unusual-volume-spyx",
+      "image": "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=800&q=80",
+      "publishedAt": "2026-05-11T17:00:00+00:00",
+      "category": "Com\u00e9rcio",
+      "icon": "\ud83d\udea2",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 20827816,
+      "source": "Yahoo Finance",
+      "title": "Carlyle Secured Lending (CGBD) Q1 2026 Transcript",
+      "summary": "",
+      "content": "",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/carlyle-secured-lending-cgbd-q1-165845597.html",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-11T16:58:45+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 471311016,
+      "source": "Yahoo Finance",
+      "title": "Rigetti vs. IonQ: Diverging Revenue, Shared Uncertainty",
+      "summary": "",
+      "content": "",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/rigetti-vs-ionq-diverging-revenue-165832268.html",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-11T16:58:32+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 23300610,
+      "source": "Yahoo Finance",
+      "title": "OPAL Fuels Inc. Q1 2026 Earnings Call Summary",
+      "summary": "",
+      "content": "",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/opal-fuels-inc-q1-2026-165642132.html",
+      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
+      "publishedAt": "2026-05-11T16:56:42+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 772887146,
+      "source": "Yahoo Finance",
+      "title": "Bharti Airtel May Be About to Take Airtel Africa Private",
+      "summary": "",
+      "content": "",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/bharti-airtel-may-airtel-africa-165640498.html",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-11T16:56:40+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 919703894,
+      "source": "Nasdaq",
+      "title": "Stocks Supported by Strong Earnings and AI Optimism",
+      "summary": "The S&P 500 Index ($SPX ) (SPY ) today is up +0.25%, the Dow Jones Industrial Average ($DOWI ) (DIA ) is up +0.05%, and the Nasdaq 100 Index ($IUXX ) (QQQ ) is up +0.17%. June E-mini S&P futures (ESM26 ) are up +0.29%, and June E-mini Nasdaq futures...",
+      "content": "The S&P 500 Index ($SPX ) (SPY ) today is up +0.25%, the Dow Jones Industrial Average ($DOWI ) (DIA ) is up +0.05%, and the Nasdaq 100 Index ($IUXX ) (QQQ ) is up +0.17%. June E-mini S&P futures (ESM26 ) are up +0.29%, and June E-mini Nasdaq futures...",
+      "url": "https://www.nasdaq.com/articles/stocks-supported-strong-earnings-and-ai-optimism",
+      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
+      "publishedAt": "2026-05-11T16:55:39+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 274937019,
+      "source": "Nasdaq",
+      "title": "Dollar Erases Early Gains as Stocks Rally",
+      "summary": "The dollar index (DXY00 ) today is down by -0.03%. The dollar gave up an early advance today and turned lower after US Apr existing home sales rose less than expected. Also, strength in the Chinese yuan is weighing on the dollar after the yuan rallied to a 3-year high...",
+      "content": "The dollar index (DXY00 ) today is down by -0.03%. The dollar gave up an early advance today and turned lower after US Apr existing home sales rose less than expected. Also, strength in the Chinese yuan is weighing on the dollar after the yuan rallied to a 3-year high...",
+      "url": "https://www.nasdaq.com/articles/dollar-erases-early-gains-stocks-rally",
+      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
+      "publishedAt": "2026-05-11T16:55:39+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
       "impact": {
         "tickers": [
           "GS",
@@ -161,16 +700,16 @@
       "feed": "rss"
     },
     {
-      "id": 354050891,
-      "source": "Seeking Alpha",
-      "title": "Rockwell Automation, Actemium deploy AI refrigeration system to cut energy use in food production",
-      "summary": "",
-      "content": "",
-      "url": "https://seekingalpha.com/news/4590502-rockwell-automation-actemium-deploy-ai-refrigeration-system-to-cut-energy-use-in-food-production?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
-      "image": "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80",
-      "publishedAt": "2026-05-11T09:36:17-04:00",
-      "category": "Energia",
-      "icon": "\u26a1",
+      "id": 782371866,
+      "source": "Nasdaq",
+      "title": "Strong Earnings and AI Optimism Push the S&P 500 and Nasdaq 100 to Record Highs",
+      "summary": "The S&P 500 Index ($SPX ) (SPY ) today is up +0.17%, the Dow Jones Industrial Average ($DOWI ) (DIA ) is up +0.10%, and the Nasdaq 100 Index ($IUXX ) (QQQ ) is up +0.06%. June E-mini S&P futures (ESM26 ) are up +0.19%, and June E-mini Nasdaq futures...",
+      "content": "The S&P 500 Index ($SPX ) (SPY ) today is up +0.17%, the Dow Jones Industrial Average ($DOWI ) (DIA ) is up +0.10%, and the Nasdaq 100 Index ($IUXX ) (QQQ ) is up +0.06%. June E-mini S&P futures (ESM26 ) are up +0.19%, and June E-mini Nasdaq futures...",
+      "url": "https://www.nasdaq.com/articles/strong-earnings-and-ai-optimism-push-sp-500-and-nasdaq-100-record-highs",
+      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
+      "publishedAt": "2026-05-11T16:55:39+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
       "impact": {
         "tickers": [],
         "sector": "",
@@ -180,16 +719,16 @@
       "feed": "rss"
     },
     {
-      "id": 731504026,
-      "source": "Seeking Alpha",
-      "title": "Dunkin' sales tower over Inspire Brands' other chains",
-      "summary": "",
-      "content": "",
-      "url": "https://seekingalpha.com/news/4590497-dunkin-sales-tower-over-inspire-brands-other-chains?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-11T09:35:54-04:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
+      "id": 322083714,
+      "source": "Nasdaq",
+      "title": "Soybeans Rallying Early on Monday Morning",
+      "summary": "Soybeans are showing 8 to 15 cent gains across the front months on Monday. Futures were back to higher trade on Friday, with contracts 10 to 17 \u00bc cents in the green at the close. July was 4 \u00be cents higher on the week, with November up 6 \u00be cents....",
+      "content": "Soybeans are showing 8 to 15 cent gains across the front months on Monday. Futures were back to higher trade on Friday, with contracts 10 to 17 \u00bc cents in the green at the close. July was 4 \u00be cents higher on the week, with November up 6 \u00be cents....",
+      "url": "https://www.nasdaq.com/articles/soybeans-rallying-early-monday-morning",
+      "image": "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=800&q=80",
+      "publishedAt": "2026-05-11T16:55:39+00:00",
+      "category": "Com\u00e9rcio",
+      "icon": "\ud83d\udea2",
       "impact": {
         "tickers": [],
         "sector": "",
@@ -199,63 +738,144 @@
       "feed": "rss"
     },
     {
-      "id": 391017967,
-      "source": "Yahoo Finance",
-      "title": "'Bending, not breaking': Goldman Sachs explains why the war in Iran hasn't derailed the global economy",
-      "summary": "",
-      "content": "",
-      "url": "https://finance.yahoo.com/economy/article/bending-not-breaking-goldman-sachs-explains-why-the-war-in-iran-hasnt-derailed-the-global-economy-133542058.html",
+      "id": 620265778,
+      "source": "Nasdaq",
+      "title": "Stocks Finish Higher on Solid Earnings and a Resilient Labor Market",
+      "summary": "The S&P 500 Index ($SPX ) (SPY ) on Friday closed up +0.84%, the Dow Jones Industrial Average ($DOWI ) (DIA ) closed up +0.02%, and the Nasdaq 100 Index ($IUXX ) (QQQ ) closed up +2.35%. June E-mini S&P futures (ESM26 ) rose +0.79%, and June E-mini Nasdaq futures...",
+      "content": "The S&P 500 Index ($SPX ) (SPY ) on Friday closed up +0.84%, the Dow Jones Industrial Average ($DOWI ) (DIA ) closed up +0.02%, and the Nasdaq 100 Index ($IUXX ) (QQQ ) closed up +2.35%. June E-mini S&P futures (ESM26 ) rose +0.79%, and June E-mini Nasdaq futures...",
+      "url": "https://www.nasdaq.com/articles/stocks-finish-higher-solid-earnings-and-resilient-labor-market",
+      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
+      "publishedAt": "2026-05-11T16:55:39+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 444335725,
+      "source": "Nasdaq",
+      "title": "Dollar Slides on Stock Strength and Weak Consumer Sentiment",
+      "summary": "The dollar index (DXY00 ) on Friday fell by -0.19%. The dollar was under pressure on Friday after the S&P 500 rallied to a new all-time high, curbing liquidity demand for the dollar. Also, the University of Michigan's US May consumer sentiment index fell more than expected to a record...",
+      "content": "The dollar index (DXY00 ) on Friday fell by -0.19%. The dollar was under pressure on Friday after the S&P 500 rallied to a new all-time high, curbing liquidity demand for the dollar. Also, the University of Michigan's US May consumer sentiment index fell more than expected to a record...",
+      "url": "https://www.nasdaq.com/articles/dollar-slides-stock-strength-and-weak-consumer-sentiment",
+      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
+      "publishedAt": "2026-05-11T16:55:38+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [
+          "GS",
+          "MS",
+          "JPM"
+        ],
+        "sector": "Finan\u00e7as",
+        "sentiment": "positive"
+      },
+      "heat": 2,
+      "feed": "rss"
+    },
+    {
+      "id": 930425719,
+      "source": "Nasdaq",
+      "title": "Crude Oil Prices Edge Higher on Heightened Middle East Tensions",
+      "summary": "June WTI crude oil (CLM26 ) on Friday closed up +0.61 (+0.64%), and June RBOB gasoline (RBM26 ) closed up +0.0707 (+2.05%). Crude oil and gasoline prices settled higher on Friday due to concerns about the sustainability of the ceasefire between the US and Iran amid fresh hostilities in the...",
+      "content": "June WTI crude oil (CLM26 ) on Friday closed up +0.61 (+0.64%), and June RBOB gasoline (RBM26 ) closed up +0.0707 (+2.05%). Crude oil and gasoline prices settled higher on Friday due to concerns about the sustainability of the ceasefire between the US and Iran amid fresh hostilities in the...",
+      "url": "https://www.nasdaq.com/articles/crude-oil-prices-edge-higher-heightened-middle-east-tensions",
       "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
-      "publishedAt": "2026-05-11T13:35:42+00:00",
+      "publishedAt": "2026-05-11T16:55:38+00:00",
       "category": "Geopol\u00edtica",
       "icon": "\ud83c\udf0d",
       "impact": {
         "tickers": [
-          "NEM",
-          "FCX",
-          "GOLD",
-          "WPM",
-          "LMT"
+          "XOM",
+          "CVX",
+          "COP",
+          "OXY",
+          "SLB"
         ],
-        "sector": "Commodities",
-        "sentiment": "negative"
-      },
-      "heat": 3,
-      "feed": "rss"
-    },
-    {
-      "id": 929908512,
-      "source": "Seeking Alpha",
-      "title": "Caledonia Mining declares $0.14 dividend",
-      "summary": "",
-      "content": "",
-      "url": "https://seekingalpha.com/news/4590505-caledonia-mining-declares-0_14-dividend?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-11T09:35:24-04:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [
-          "NEM",
-          "FCX",
-          "GOLD",
-          "WPM"
-        ],
-        "sector": "Commodities",
+        "sector": "Energia",
         "sentiment": "neutral"
       },
       "heat": 3,
       "feed": "rss"
     },
     {
-      "id": 682517976,
-      "source": "Seeking Alpha",
-      "title": "FS KKR Capital declares $0.42 dividend declines by 6.7% to $0.42",
+      "id": 743007382,
+      "source": "Nasdaq",
+      "title": "Mosaic (MOS) Q1 2026 Earnings Call Transcript",
+      "summary": "@media (max-width: 768px) { .image-container { width: 100% !important; float: none !important; margin: 0 0 1rem 0 !important; } } Image source: The Mo",
+      "content": "@media (max-width: 768px) { .image-container { width: 100% !important; float: none !important; margin: 0 0 1rem 0 !important; } } Image source: The Mo",
+      "url": "https://www.nasdaq.com/articles/mosaic-mos-q1-2026-earnings-call-transcript",
+      "image": "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=800&q=80",
+      "publishedAt": "2026-05-11T16:54:47+00:00",
+      "category": "Com\u00e9rcio",
+      "icon": "\ud83d\udea2",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 951640516,
+      "source": "Yahoo Finance",
+      "title": "Direct Digital Holdings, Inc. Q1 2026 Earnings Call Summary",
       "summary": "",
       "content": "",
-      "url": "https://seekingalpha.com/news/4590504-fs-kkr-capital-declares-042-dividend-declines-by-67-to-042?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/direct-digital-holdings-inc-q1-165411945.html",
+      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
+      "publishedAt": "2026-05-11T16:54:11+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 927042337,
+      "source": "Reuters",
+      "title": "Trump says Iran ceasefire is 'on life support' after he rejects Tehran's response - Reuters",
+      "summary": "Trump says Iran ceasefire is 'on life support' after he rejects Tehran's response Reuters",
+      "content": "Trump says Iran ceasefire is 'on life support' after he rejects Tehran's response Reuters",
+      "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxNTTFIeHh6enp1TW1pNmRpVy1pZ1ZtaVFvNTF2emxOOUg3VXV1RWE3SkFqb3pwY28yS0pBTDF3MjRFSVNRclFhTWtCZlN0SmQ1MDV2YUZJSXJhdXRUdldyM3VZbEkzYnIxUXlvSk1JREJwVURVVGJhcV9vcEU2WnlLcVZKaXZQX0Fac1VEWW1VZjlwdDNNWHp5ZENCNTROaEhsVFRuQ2ZUd0gwTmc?oc=5",
+      "image": "https://static2.finnhub.io/file/finnhub/logo/reuters_logo.jpeg",
+      "publishedAt": "2026-05-11T16:51:54+00:00",
+      "category": "Geopol\u00edtica",
+      "icon": "\ud83c\udf0d",
+      "impact": {
+        "tickers": [
+          "LMT",
+          "RTX",
+          "NOC",
+          "XOM",
+          "CVX"
+        ],
+        "sector": "Defesa",
+        "sentiment": "neutral"
+      },
+      "heat": 3,
+      "feed": "finnhub"
+    },
+    {
+      "id": 501270720,
+      "source": "Nasdaq",
+      "title": "Cocoa Prices Retreat Amid Expanding ICE Inventories",
+      "summary": "July ICE NY cocoa (CCN26 ) on Friday closed down -245 (-5.53%), and July ICE London cocoa #7 (CAN26 ) closed down -180 (-5.46%). Cocoa prices settled sharply lower on Friday. Signs of abundant current supplies sparked long liquidation in cocoa futures on Friday after ICE cocoa inventories rose to...",
+      "content": "July ICE NY cocoa (CCN26 ) on Friday closed down -245 (-5.53%), and July ICE London cocoa #7 (CAN26 ) closed down -180 (-5.46%). Cocoa prices settled sharply lower on Friday. Signs of abundant current supplies sparked long liquidation in cocoa futures on Friday after ICE cocoa inventories rose to...",
+      "url": "https://www.nasdaq.com/articles/cocoa-prices-retreat-amid-expanding-ice-inventories",
       "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-11T09:34:44-04:00",
+      "publishedAt": "2026-05-11T16:50:36+00:00",
       "category": "Global",
       "icon": "\ud83c\udf10",
       "impact": {
@@ -267,14 +887,14 @@
       "feed": "rss"
     },
     {
-      "id": 485411878,
-      "source": "MarketWatch",
-      "title": "\u2018Technically, I\u2019m not sick\u2019: Can I take paid sick leave for my egg-retrieval fertility treatment?",
-      "summary": "\u201cI\u2019m a hard worker who pretty much never takes sick days.\u201d",
-      "content": "\u201cI\u2019m a hard worker who pretty much never takes sick days.\u201d",
-      "url": "https://www.marketwatch.com/story/technically-im-not-sick-can-i-take-paid-sick-leave-for-my-egg-retrieval-fertility-treatment-004fc73e?mod=mw_rss_topstories",
+      "id": 8895587,
+      "source": "The Economist",
+      "title": "America is experiencing a productivity miracle",
+      "summary": "AI hasn\u2019t\u2014yet\u2014got much to do with it",
+      "content": "AI hasn\u2019t\u2014yet\u2014got much to do with it",
+      "url": "https://www.economist.com/finance-and-economics/2026/05/11/america-is-experiencing-a-productivity-miracle",
       "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
-      "publishedAt": "2026-05-11T13:34:00+00:00",
+      "publishedAt": "2026-05-11T16:50:23+00:00",
       "category": "Tecnologia",
       "icon": "\ud83d\udcbb",
       "impact": {
@@ -286,14 +906,264 @@
       "feed": "rss"
     },
     {
-      "id": 110218320,
+      "id": 227464738,
       "source": "Yahoo Finance",
-      "title": "Alphabet Could Pass Nvidia As World\u2019s Most Valuable Company",
+      "title": "If Trump\u2019s Bull Market Does Cool Off, These Stocks Could Reverse Fast \u2014 and These Others Might Keep Powering Higher",
       "summary": "",
       "content": "",
-      "url": "https://finance.yahoo.com/markets/stocks/articles/alphabet-could-pass-nvidia-world-133324593.html",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/trump-bull-market-does-cool-165010942.html",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-11T16:50:10+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 424444616,
+      "source": "Nasdaq",
+      "title": "Whirlpool Stock Is Down 20% and the Outlook For 2026 Is Grim. Should Investor Buy, Sell, or Hold?",
+      "summary": "Key PointsWhirlpool&rsquo;s stock has plummeted over the past few years.",
+      "content": "Key PointsWhirlpool&rsquo;s stock has plummeted over the past few years.",
+      "url": "https://www.nasdaq.com/articles/whirlpool-stock-down-20-and-outlook-2026-grim-should-investor-buy-sell-or-hold",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-11T16:50:00+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 298340215,
+      "source": "CNBC",
+      "title": "Trump says Iran ceasefire is 'on life support' after rejecting Tehran's counterproposal",
+      "summary": "The testy U.S.-Iran ceasefire began in mid-April after Trump threatened to destroy Iran's \"whole civilization\" if no deal was struck.",
+      "content": "The testy U.S.-Iran ceasefire began in mid-April after Trump threatened to destroy Iran's \"whole civilization\" if no deal was struck.",
+      "url": "https://www.cnbc.com/2026/05/11/trump-iran-war-ceasefire-life-support.html",
+      "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
+      "publishedAt": "2026-05-11T16:49:50+00:00",
+      "category": "Geopol\u00edtica",
+      "icon": "\ud83c\udf0d",
+      "impact": {
+        "tickers": [
+          "LMT",
+          "RTX",
+          "NOC",
+          "XOM",
+          "CVX"
+        ],
+        "sector": "Defesa",
+        "sentiment": "neutral"
+      },
+      "heat": 3,
+      "feed": "rss"
+    },
+    {
+      "id": 155965873,
+      "source": "CNBC",
+      "title": "Saudi Aramco CEO says oil market won't normalize until 2027 if Hormuz disruption persists",
+      "summary": "Oil inventories are rapidly drawing down as the Strait of Hormuz remains close, Saudi Aramco CEO Amin Nasser said.",
+      "content": "Oil inventories are rapidly drawing down as the Strait of Hormuz remains close, Saudi Aramco CEO Amin Nasser said.",
+      "url": "https://www.cnbc.com/2026/05/11/saudi-aramco-oil-iran-war-strait-hormuz.html",
+      "image": "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80",
+      "publishedAt": "2026-05-11T16:49:43+00:00",
+      "category": "Energia",
+      "icon": "\u26a1",
+      "impact": {
+        "tickers": [
+          "XOM",
+          "CVX",
+          "COP",
+          "OXY",
+          "SLB"
+        ],
+        "sector": "Energia",
+        "sentiment": "neutral"
+      },
+      "heat": 3,
+      "feed": "rss"
+    },
+    {
+      "id": 56076020,
+      "source": "Nasdaq",
+      "title": "Kodiak Gas (KGS) Q1 2026 Earnings Transcript",
+      "summary": "@media (max-width: 768px) { .image-container { width: 100% !important; float: none !important; margin: 0 0 1rem 0 !important; } } Image source: The Mo",
+      "content": "@media (max-width: 768px) { .image-container { width: 100% !important; float: none !important; margin: 0 0 1rem 0 !important; } } Image source: The Mo",
+      "url": "https://www.nasdaq.com/articles/kodiak-gas-kgs-q1-2026-earnings-transcript",
+      "image": "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80",
+      "publishedAt": "2026-05-11T16:48:48+00:00",
+      "category": "Energia",
+      "icon": "\u26a1",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 893409453,
+      "source": "Nasdaq",
+      "title": "This Fast-Growing Payments Stock Just Moved to Nasdaq. Is Wise Coming for U.S. Banks?",
+      "summary": "Key PointsWise made Nasdaq its primary listing on Monday, while keeping a secondary listing in London.",
+      "content": "Key PointsWise made Nasdaq its primary listing on Monday, while keeping a secondary listing in London.",
+      "url": "https://www.nasdaq.com/articles/fast-growing-payments-stock-just-moved-nasdaq-wise-coming-us-banks",
+      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
+      "publishedAt": "2026-05-11T16:48:31+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [
+          "JPM",
+          "BAC",
+          "WFC",
+          "C"
+        ],
+        "sector": "Finan\u00e7as",
+        "sentiment": "negative"
+      },
+      "heat": 3,
+      "feed": "rss"
+    },
+    {
+      "id": 719244942,
+      "source": "Nasdaq",
+      "title": "RadNet (RDNT) Q1 2026 Earnings Transcript",
+      "summary": "@media (max-width: 768px) { .image-container { width: 100% !important; float: none !important; margin: 0 0 1rem 0 !important; } } Image source: The Mo",
+      "content": "@media (max-width: 768px) { .image-container { width: 100% !important; float: none !important; margin: 0 0 1rem 0 !important; } } Image source: The Mo",
+      "url": "https://www.nasdaq.com/articles/radnet-rdnt-q1-2026-earnings-transcript",
+      "image": "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=800&q=80",
+      "publishedAt": "2026-05-11T16:47:18+00:00",
+      "category": "Com\u00e9rcio",
+      "icon": "\ud83d\udea2",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 16467472,
+      "source": "Nasdaq",
+      "title": "Cattle Look to New Week Following Losses",
+      "summary": "Live cattle futures slipped back lower on Friday, falling 82 cents to $1.67, as June was down $4.10 last week. Open interest was down 2,115 contracts on Friday. Cash trade settled in at $256-260 last week, with southern action $256-258 and northern trade at $258-260. Feeder cattle futures were down...",
+      "content": "Live cattle futures slipped back lower on Friday, falling 82 cents to $1.67, as June was down $4.10 last week. Open interest was down 2,115 contracts on Friday. Cash trade settled in at $256-260 last week, with southern action $256-258 and northern trade at $258-260. Feeder cattle futures were down...",
+      "url": "https://www.nasdaq.com/articles/cattle-look-new-week-following-losses",
+      "image": "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=800&q=80",
+      "publishedAt": "2026-05-11T16:45:58+00:00",
+      "category": "Com\u00e9rcio",
+      "icon": "\ud83d\udea2",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 186400999,
+      "source": "Nasdaq",
+      "title": "Cattle Futures Fall on Friday, Ignoring Stronger Cash Trade",
+      "summary": "Live cattle futures slipped back lower on Friday, falling 82 cents to $1.67, as June was down $4.10 this week. Cash trade has mostly been $256-260 so far this week, with southern action $256-258 and northern trade at $258-260. Feeder cattle futures were down $1.87 to $2.65 at the close,...",
+      "content": "Live cattle futures slipped back lower on Friday, falling 82 cents to $1.67, as June was down $4.10 this week. Cash trade has mostly been $256-260 so far this week, with southern action $256-258 and northern trade at $258-260. Feeder cattle futures were down $1.87 to $2.65 at the close,...",
+      "url": "https://www.nasdaq.com/articles/cattle-futures-fall-friday-ignoring-stronger-cash-trade",
+      "image": "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=800&q=80",
+      "publishedAt": "2026-05-11T16:45:57+00:00",
+      "category": "Com\u00e9rcio",
+      "icon": "\ud83d\udea2",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 568784293,
+      "source": "Yahoo Finance",
+      "title": "AI Infrastructure Stock Sparks Frazzled Breakout While Pulling Off This Trifecta",
+      "summary": "",
+      "content": "",
+      "url": "https://www.investors.com/research/how-to-find-the-best-stocks-to-buy/dycom-stock-ai-data-centers/?src=A00220&yptr=yahoo",
       "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
-      "publishedAt": "2026-05-11T13:33:24+00:00",
+      "publishedAt": "2026-05-11T16:45:54+00:00",
+      "category": "Tecnologia",
+      "icon": "\ud83d\udcbb",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 574024488,
+      "source": "Yahoo Finance",
+      "title": "Nuclear Reactor Leader Constellation Backs Three Mile Island Goal",
+      "summary": "",
+      "content": "",
+      "url": "https://www.investors.com/news/nuclear-stock-constellation-energy-affirms-goal-guidance-earnings-beat/?src=A00220&yptr=yahoo",
+      "image": "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80",
+      "publishedAt": "2026-05-11T16:45:30+00:00",
+      "category": "Energia",
+      "icon": "\u26a1",
+      "impact": {
+        "tickers": [
+          "NEE",
+          "ENPH",
+          "FSLR",
+          "CEG"
+        ],
+        "sector": "Energia",
+        "sentiment": "neutral"
+      },
+      "heat": 3,
+      "feed": "rss"
+    },
+    {
+      "id": 496495836,
+      "source": "Yahoo Finance",
+      "title": "Circle stock climbs 13% as stablecoin use cases grow",
+      "summary": "",
+      "content": "",
+      "url": "https://finance.yahoo.com/markets/crypto/article/circle-stock-climbs-13-as-stablecoin-use-cases-grow-164442310.html",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-11T16:44:42+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 219016371,
+      "source": "MarketWatch",
+      "title": "Iren\u2019s stock pulls back as investors assess the steep price of the AI buildout",
+      "summary": "Iren will take on debt in the wake of its new Nvidia partnership. One analyst said Monday\u2019s stock drop is an overreaction.",
+      "content": "Iren will take on debt in the wake of its new Nvidia partnership. One analyst said Monday\u2019s stock drop is an overreaction.",
+      "url": "https://www.marketwatch.com/story/irens-stock-pulls-back-as-investors-assess-the-steep-price-of-the-ai-buildout-3013b59b?mod=mw_rss_topstories",
+      "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
+      "publishedAt": "2026-05-11T16:44:00+00:00",
       "category": "Tecnologia",
       "icon": "\ud83d\udcbb",
       "impact": {
@@ -310,35 +1180,16 @@
       "feed": "rss"
     },
     {
-      "id": 904631156,
-      "source": "businessinsider.com",
-      "title": "My dad's dementia care cost $17,000 a month. It wiped out his life savings in 16 months.",
-      "summary": "My father with dementia needed full-time care in an assisted living facility. The cost and scarcity of elder care is difficult for families like mine.",
-      "content": "My father with dementia needed full-time care in an assisted living facility. The cost and scarcity of elder care is difficult for families like mine.",
-      "url": "https://www.businessinsider.com/dads-dementia-care-cost-life-savings-2026-5",
-      "image": "https://i.insider.com/69fe2f40c9dd4cb81cda8aa1?width=1200&format=jpeg",
-      "publishedAt": "2026-05-11T13:30:03.000000Z",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "marketaux"
-    },
-    {
-      "id": 244136779,
-      "source": "MarketWatch",
-      "title": "There\u2019s a new top target for the S&P 500 as the \u2018melt-up\u2019 intensifies",
-      "summary": "\u2018We\u2019ve never seen anything like this,\u2019 says Wall Street veteran Yardeni",
-      "content": "\u2018We\u2019ve never seen anything like this,\u2019 says Wall Street veteran Yardeni",
-      "url": "https://www.marketwatch.com/story/theres-a-new-top-target-for-the-s-p-500-as-melt-up-intensifies-b48ea8b7?mod=mw_rss_topstories",
-      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
-      "publishedAt": "2026-05-11T13:30:00+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
+      "id": 737172378,
+      "source": "CNBC",
+      "title": "Stocks making the biggest moves midday: Corning, Qualcomm, Wendy\u2019s, Trade Desk & more",
+      "summary": "Here are the stocks making headlines in midday trading.",
+      "content": "Here are the stocks making headlines in midday trading.",
+      "url": "https://www.cnbc.com/2026/05/11/stocks-making-the-biggest-moves-midday-glw-qcom-wen-ttd.html",
+      "image": "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=800&q=80",
+      "publishedAt": "2026-05-11T16:43:50+00:00",
+      "category": "Com\u00e9rcio",
+      "icon": "\ud83d\udea2",
       "impact": {
         "tickers": [],
         "sector": "",
@@ -348,903 +1199,43 @@
       "feed": "rss"
     },
     {
-      "id": 502025532,
+      "id": 302150927,
       "source": "CNBC",
-      "title": "Jim Cramer's top 10 things to watch in the stock market Monday",
-      "summary": "Stocks are flat, while oil is up 2%, as the Iran war drags on.",
-      "content": "Stocks are flat, while oil is up 2%, as the Iran war drags on.",
-      "url": "https://www.cnbc.com/2026/05/11/jim-cramers-top-10-things-to-watch-in-the-stock-market-monday.html",
-      "image": "https://image.cnbcfm.com/api/v1/image/108271054-17722088882026-02-27t161124z_343131313_rc2dujajql90_rtrmadp_0_usa-stocks.jpeg?v=1772209043&w=1920&h=1080",
-      "publishedAt": "2026-05-11T13:29:52+00:00",
-      "category": "Geopol\u00edtica",
-      "icon": "\ud83c\udf0d",
+      "title": "GM cutting hundreds of salaried IT workers as it cuts costs, evaluates needs",
+      "summary": "General Motors is laying off hundreds of salaried employees in its information technology operations.",
+      "content": "General Motors is laying off hundreds of salaried employees in its information technology operations.",
+      "url": "https://www.cnbc.com/2026/05/11/gm-layoffs.html",
+      "image": "https://image.cnbcfm.com/api/v1/image/108251655-1768310306409-gettyimages-2255454909-GM_BARRA.jpeg?v=1769119297&w=1920&h=1080",
+      "publishedAt": "2026-05-11T16:40:34+00:00",
+      "category": "Tecnologia",
+      "icon": "\ud83d\udcbb",
       "impact": {
-        "tickers": [
-          "XOM",
-          "CVX",
-          "COP",
-          "OXY",
-          "SLB"
-        ],
-        "sector": "Energia",
-        "sentiment": "negative"
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
       },
-      "heat": 3,
+      "heat": 1,
       "feed": "finnhub"
     },
     {
-      "id": 294170156,
-      "source": "Yahoo Finance",
-      "title": "Stock Market Today: Dow Futures Fall, Oil Jumps; Intel, Lumentum, Moderna, Circle Internet All Rise (Live Coverage)",
-      "summary": "",
-      "content": "",
-      "url": "https://www.investors.com/market-trend/stock-market-today/stock-market-today-dow-jones-sp500-nasdaq-oil-prices-intel-lumentum-moderna-circle-internet/?src=A00220&yptr=yahoo",
-      "image": "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80",
-      "publishedAt": "2026-05-11T13:28:43+00:00",
-      "category": "Energia",
-      "icon": "\u26a1",
-      "impact": {
-        "tickers": [
-          "XOM",
-          "CVX",
-          "COP",
-          "OXY",
-          "SLB"
-        ],
-        "sector": "Energia",
-        "sentiment": "neutral"
-      },
-      "heat": 3,
-      "feed": "rss"
-    },
-    {
-      "id": 574690464,
-      "source": "MarketWatch",
-      "title": "Investors are now telling companies to invest in growth, not their own stocks, Goldman Sachs finds",
-      "summary": "The stock market is rewarding companies that seek out secular growth opportunities and don\u2019t just rely on financial engineering to drive shareholder returns.",
-      "content": "The stock market is rewarding companies that seek out secular growth opportunities and don\u2019t just rely on financial engineering to drive shareholder returns.",
-      "url": "https://www.marketwatch.com/story/investors-are-now-telling-companies-to-invest-in-growth-not-their-own-stocks-goldman-sachs-finds-6a71c0cd?mod=mw_rss_topstories",
-      "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
-      "publishedAt": "2026-05-11T13:28:00+00:00",
-      "category": "Geopol\u00edtica",
-      "icon": "\ud83c\udf0d",
-      "impact": {
-        "tickers": [
-          "NEM",
-          "FCX",
-          "GOLD",
-          "WPM",
-          "LMT"
-        ],
-        "sector": "Commodities",
-        "sentiment": "positive"
-      },
-      "heat": 3,
-      "feed": "rss"
-    },
-    {
-      "id": 162969336,
-      "source": "thehindubusinessline.com",
-      "title": "SICCI urges new TN government to drive emerging tech, manufacturing and energy transition agenda",
-      "summary": "SICCI urges Tamil Nadu's new government to prioritize emerging tech, manufacturing, and energy transition for sustainable growth.",
-      "content": "SICCI urges Tamil Nadu's new government to prioritize emerging tech, manufacturing, and energy transition for sustainable growth.",
-      "url": "https://www.thehindubusinessline.com/news/sicci-urges-new-tn-government-to-drive-emerging-tech-manufacturing-and-energy-transition-agenda/article70965852.ece",
-      "image": "https://bl-i.thgim.com/public/news/yfxfb5/article70965853.ece/alternates/LANDSCAPE_1200/WhatsApp%20Image%202026-05-11%20at%203.55.51%20PM.jpeg",
-      "publishedAt": "2026-05-11T13:26:54.000000Z",
-      "category": "Energia",
-      "icon": "\u26a1",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "marketaux"
-    },
-    {
-      "id": 15843380,
-      "source": "CNBC",
-      "title": "Circle raises $222 million from BlackRock, Apollo and others in Arc token presale valued at $3 billion",
-      "summary": "Andreessen Horowitz served as the lead investor in the sale with a $75 million investment. Other investors include BlackRock and Apollo Funds.",
-      "content": "Andreessen Horowitz served as the lead investor in the sale with a $75 million investment. Other investors include BlackRock and Apollo Funds.",
-      "url": "https://www.cnbc.com/2026/05/11/circle-closes-222-million-from-blackrock-apollo-for-arc-blockchain.html",
+      "id": 530665904,
+      "source": "Patch",
+      "title": "General Motors Just Paid A Record Penalty For Breaking California Privacy Law",
+      "summary": "General Motors has agreed to pay a record $12.75 million in civil penalties for violating the California Consumer Privacy Act. The company allegedly sold driving data from hundreds of thousands of California motorists to data brokers without their consent, making approximately $20 million from these sales. This settlement is the largest ever for violations of the California Consumer Privacy Act and follows earlier agreements with Honda and Ford for similar breaches.",
+      "content": "General Motors has agreed to pay a record $12.75 million in civil penalties for violating the California Consumer Privacy Act. The company allegedly sold driving data from hundreds of thousands of California motorists to data brokers without their consent, making approximately $20 million from these sales. This settlement is the largest ever for violations of the California Consumer Privacy Act and follows earlier agreements with Honda and Ford for similar breaches.",
+      "url": "https://patch.com/california/walnutcreek/general-motors-just-paid-record-penalty-breaking-california-privacy-law",
       "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-11T13:26:09+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 235301409,
-      "source": "Yahoo Finance",
-      "title": "Here\u2019s Why the Artisan Mid Cap Fund Established a Position in Semtech (SMTC)",
-      "summary": "",
-      "content": "",
-      "url": "https://finance.yahoo.com/markets/stocks/articles/why-artisan-mid-cap-fund-132551615.html",
-      "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
-      "publishedAt": "2026-05-11T13:25:51+00:00",
-      "category": "Tecnologia",
-      "icon": "\ud83d\udcbb",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 316338705,
-      "source": "Yahoo Finance",
-      "title": "How Extending College Over 4 Years Costs a Ton of Money",
-      "summary": "",
-      "content": "",
-      "url": "https://finance.yahoo.com/economy/policy/articles/extending-college-over-4-years-132537972.html",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-11T13:25:37+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 884095542,
-      "source": "Yahoo Finance",
-      "title": "Visa vs. Mastercard: Better Payments Stock?",
-      "summary": "",
-      "content": "",
-      "url": "https://finance.yahoo.com/markets/stocks/articles/visa-vs-mastercard-better-payments-132500377.html",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-11T13:25:00+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 366861067,
-      "source": "Yahoo Finance",
-      "title": "Stifel is Bullish on Coherent Corp. (COHR)",
-      "summary": "",
-      "content": "",
-      "url": "https://finance.yahoo.com/markets/stocks/articles/stifel-bullish-coherent-corp-cohr-132444599.html",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-11T13:24:44+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 29541374,
-      "source": "benzinga.com",
-      "title": "This Pitney Bowes Analyst Is No Longer Bearish; Here Are Top 5 Upgrades For Monday - Kodiak Sciences (NAS",
-      "summary": "Top analysts upgraded Starz Entertainment, Primoris Services, Pitney Bowes, Kodiak Sciences, and StandardAero. See what they think of PBI stock.",
-      "content": "Top analysts upgraded Starz Entertainment, Primoris Services, Pitney Bowes, Kodiak Sciences, and StandardAero. See what they think of PBI stock.",
-      "url": "https://www.benzinga.com/news/26/05/52447171/this-pitney-bowes-analyst-is-no-longer-bearish-here-are-top-5-upgrades-for-monday",
-      "image": "https://cdn.benzinga.com/files/images/story/2026/05/11/Operations-Research-Analysts_0.jpeg?width=1200&height=800&fit=crop",
-      "publishedAt": "2026-05-11T13:24:32.000000Z",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "marketaux"
-    },
-    {
-      "id": 741112802,
-      "source": "Yahoo Finance",
-      "title": "POET Technologies Inc. (POET) Provides Purchase Order Updates",
-      "summary": "",
-      "content": "",
-      "url": "https://finance.yahoo.com/markets/stocks/articles/poet-technologies-inc-poet-provides-132428158.html",
-      "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
-      "publishedAt": "2026-05-11T13:24:28+00:00",
-      "category": "Tecnologia",
-      "icon": "\ud83d\udcbb",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 424871789,
-      "source": "Yahoo Finance",
-      "title": "Roth Capital is Bullish on nLIGHT, Inc. (LASR)",
-      "summary": "",
-      "content": "",
-      "url": "https://finance.yahoo.com/markets/stocks/articles/roth-capital-bullish-nlight-inc-132420105.html",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-11T13:24:20+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 812017514,
-      "source": "Yahoo Finance",
-      "title": "IPG Photonics Corporation (IPGP) Announces First Quarter 2026 Financial Results",
-      "summary": "",
-      "content": "",
-      "url": "https://finance.yahoo.com/markets/stocks/articles/ipg-photonics-corporation-ipgp-announces-132414624.html",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-11T13:24:14+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 494582675,
-      "source": "Yahoo Finance",
-      "title": "Intel Corporation (INTC) Appoints Qualcomm Executive to Manage its PC and Physical AI Business",
-      "summary": "",
-      "content": "",
-      "url": "https://finance.yahoo.com/markets/stocks/articles/intel-corporation-intc-appoints-qualcomm-132403327.html",
-      "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
-      "publishedAt": "2026-05-11T13:24:03+00:00",
-      "category": "Tecnologia",
-      "icon": "\ud83d\udcbb",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 72742092,
-      "source": "MarketWatch",
-      "title": "Oil market won\u2019t return to normal this year if Iran conflict isn\u2019t solved within weeks, Aramco CEO says",
-      "summary": "Oil futures for December have gained 47% this year, a sign that traders don\u2019t anticipate a quick return to normal.",
-      "content": "Oil futures for December have gained 47% this year, a sign that traders don\u2019t anticipate a quick return to normal.",
-      "url": "https://www.marketwatch.com/story/oil-market-wont-return-to-normal-this-year-if-iran-conflict-isnt-solved-within-weeks-aramco-ceo-says-085513ca?mod=mw_rss_topstories",
-      "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
-      "publishedAt": "2026-05-11T13:24:00+00:00",
-      "category": "Geopol\u00edtica",
-      "icon": "\ud83c\udf0d",
-      "impact": {
-        "tickers": [
-          "XOM",
-          "CVX",
-          "COP",
-          "OXY",
-          "SLB"
-        ],
-        "sector": "Energia",
-        "sentiment": "neutral"
-      },
-      "heat": 3,
-      "feed": "rss"
-    },
-    {
-      "id": 463336745,
-      "source": "Yahoo Finance",
-      "title": "BofA Maintains a Neutral Rating on STMicroelectronics N.V. (STM)",
-      "summary": "",
-      "content": "",
-      "url": "https://finance.yahoo.com/markets/stocks/articles/bofa-maintains-neutral-rating-stmicroelectronics-132355663.html",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-11T13:23:55+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 964467611,
-      "source": "Yahoo Finance",
-      "title": "BofA is Bullish on MKS Inc. (MKSI)",
-      "summary": "",
-      "content": "",
-      "url": "https://finance.yahoo.com/markets/stocks/articles/bofa-bullish-mks-inc-mksi-132348655.html",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-11T13:23:48+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 588320202,
-      "source": "Yahoo Finance",
-      "title": "Onto Innovation Inc. (ONTO) and Rigaku Deepen their Strategic Partnership",
-      "summary": "",
-      "content": "",
-      "url": "https://finance.yahoo.com/markets/stocks/articles/onto-innovation-inc-onto-rigaku-132341624.html",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-11T13:23:41+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 183254252,
-      "source": "Yahoo Finance",
-      "title": "Marvell Technology, Inc. (MRVL) Announces Acquisition of Polariton Technologies",
-      "summary": "",
-      "content": "",
-      "url": "https://finance.yahoo.com/markets/stocks/articles/marvell-technology-inc-mrvl-announces-132334061.html",
-      "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
-      "publishedAt": "2026-05-11T13:23:34+00:00",
-      "category": "Tecnologia",
-      "icon": "\ud83d\udcbb",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 255431693,
-      "source": "Yahoo Finance",
-      "title": "What Makes Tradeweb Markets (TW) a Durable Compounder?",
-      "summary": "",
-      "content": "",
-      "url": "https://finance.yahoo.com/markets/stocks/articles/makes-tradeweb-markets-tw-durable-132138449.html",
-      "image": "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=800&q=80",
-      "publishedAt": "2026-05-11T13:21:38+00:00",
-      "category": "Com\u00e9rcio",
-      "icon": "\ud83d\udea2",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 822068228,
-      "source": "Yahoo Finance",
-      "title": "Circle Surges On Results, Stablecoin Growth. These Crypto, AI Stocks Fall.",
-      "summary": "",
-      "content": "",
-      "url": "https://www.investors.com/news/circle-internet-earnings-stablecoin-usdc-crcl-stock-iren-notes-keel-bitfarms-bitcoin-price/?src=A00220&yptr=yahoo",
-      "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
-      "publishedAt": "2026-05-11T13:20:33+00:00",
-      "category": "Tecnologia",
-      "icon": "\ud83d\udcbb",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 223800571,
-      "source": "CNBC",
-      "title": "Ed Yardeni sees S&P 500 rising to more than 8,000. Here\u2019s why",
-      "summary": "The driver for this sharp outlook boils down to one word.",
-      "content": "The driver for this sharp outlook boils down to one word.",
-      "url": "https://www.cnbc.com/2026/05/11/ed-yardeni-sees-sp-500-rising-to-more-than-8000-heres-why.html",
-      "image": "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80",
-      "publishedAt": "2026-05-11T13:19:31+00:00",
-      "category": "Energia",
-      "icon": "\u26a1",
-      "impact": {
-        "tickers": [
-          "XOM",
-          "CVX",
-          "COP",
-          "OXY",
-          "SLB"
-        ],
-        "sector": "Energia",
-        "sentiment": "neutral"
-      },
-      "heat": 3,
-      "feed": "rss"
-    },
-    {
-      "id": 7056800,
-      "source": "Yahoo Finance",
-      "title": "What Makes SiTime Corporation (SITM) an Investment Choice?",
-      "summary": "",
-      "content": "",
-      "url": "https://finance.yahoo.com/markets/stocks/articles/makes-sitime-corporation-sitm-investment-131811822.html",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-11T13:18:11+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 72596136,
-      "source": "MarketWatch",
-      "title": "Kevin Warsh will be the richest Fed chair ever. Just how rich \u2014 he isn\u2019t saying.",
-      "summary": "The Fed chair nominee has filed 69 pages about his finances that mostly tell you what he won\u2019t tell you. The Senate is ready to confirm him anyway.",
-      "content": "The Fed chair nominee has filed 69 pages about his finances that mostly tell you what he won\u2019t tell you. The Senate is ready to confirm him anyway.",
-      "url": "https://www.marketwatch.com/story/kevin-warshs-undisclosed-wealth-leaves-a-100-million-mystery-atop-the-federal-reserve-19f0dc78?mod=mw_rss_topstories",
-      "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
-      "publishedAt": "2026-05-11T13:18:00+00:00",
-      "category": "Geopol\u00edtica",
-      "icon": "\ud83c\udf0d",
-      "impact": {
-        "tickers": [
-          "JPM",
-          "GS",
-          "BAC",
-          "TLT",
-          "LMT"
-        ],
-        "sector": "Finan\u00e7as",
-        "sentiment": "negative"
-      },
-      "heat": 3,
-      "feed": "rss"
-    },
-    {
-      "id": 203711427,
-      "source": "Yahoo Finance",
-      "title": "Edwards Lifesciences (EW) is Benefitting from Expanding Its Aortic Valve Franchise",
-      "summary": "",
-      "content": "",
-      "url": "https://finance.yahoo.com/sectors/healthcare/articles/edwards-lifesciences-ew-benefitting-expanding-131354021.html",
-      "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
-      "publishedAt": "2026-05-11T13:13:54+00:00",
-      "category": "Geopol\u00edtica",
-      "icon": "\ud83c\udf0d",
-      "impact": {
-        "tickers": [
-          "LMT",
-          "RTX",
-          "NOC",
-          "XOM"
-        ],
-        "sector": "Defesa",
-        "sentiment": "neutral"
-      },
-      "heat": 3,
-      "feed": "rss"
-    },
-    {
-      "id": 913943068,
-      "source": "Yahoo Finance",
-      "title": "What Makes Waters Corporation (WAT) an Investment Bet?",
-      "summary": "",
-      "content": "",
-      "url": "https://finance.yahoo.com/markets/stocks/articles/makes-waters-corporation-wat-investment-131153104.html",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-11T13:11:53+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 396813782,
-      "source": "MarketWatch",
-      "title": "\u2018I\u2019m not an extravagant spender\u2019: I\u2019m in my 70s with a $90,000 income. Can I afford my dream home with a pool?",
-      "summary": "\u201cMy current house is all paid off, and it\u2019s worth $650,000.\u201d",
-      "content": "\u201cMy current house is all paid off, and it\u2019s worth $650,000.\u201d",
-      "url": "https://www.marketwatch.com/story/im-not-an-extravagant-spender-im-in-my-70s-with-a-90-000-income-can-i-afford-my-dream-home-with-a-pool-871ccda2?mod=mw_rss_topstories",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-11T13:11:00+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 122154247,
-      "source": "Financial Times",
-      "title": "Two cruise ship evacuees test positive for hantavirus",
-      "summary": "Virus detected in passengers from US and France hours after being removed from MV Hondius",
-      "content": "Virus detected in passengers from US and France hours after being removed from MV Hondius",
-      "url": "https://www.ft.com/content/6793c1a0-9b84-43ba-a639-1e4706900d8a",
-      "image": "https://images.ft.com/v3/image/raw/https%3A%2F%2Fd1e00ek4ebabms.cloudfront.net%2Fproduction%2F8d44fad7-f477-4a5b-be08-3d82593b219d.jpg?source=next-home-page&dpr=2&width=580&fit=scale-down",
-      "publishedAt": "2026-05-11T13:10:53+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 896037176,
-      "source": "Nasdaq",
-      "title": "Soybeans Recover Higher on Friday",
-      "summary": "Soybeans were back to higher trade on Friday, with contracts 10 to 17 \u00bc cents in the green at the close. July was 4 \u00be cents higher on the week, with November up 6 \u00be cents. The cmdtyView national average Cash Bean price was up 15 3/4 cents at $11.40...",
-      "content": "Soybeans were back to higher trade on Friday, with contracts 10 to 17 \u00bc cents in the green at the close. July was 4 \u00be cents higher on the week, with November up 6 \u00be cents. The cmdtyView national average Cash Bean price was up 15 3/4 cents at $11.40...",
-      "url": "https://www.nasdaq.com/articles/soybeans-recover-higher-friday",
-      "image": "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=800&q=80",
-      "publishedAt": "2026-05-11T13:10:51+00:00",
-      "category": "Com\u00e9rcio",
-      "icon": "\ud83d\udea2",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 959117835,
-      "source": "Nasdaq",
-      "title": "Hogs Post Mixed Trade on Friday",
-      "summary": "Lean hog futures were mixed to close the week, with contracts down 75 cents to 67 cents higher across the board. June was $2.65 lower this week. USDA\u2019s national base hog price was reported at $93.77 on Friday afternoon, up $3.07 from the day prior. The CME Lean Hog Index...",
-      "content": "Lean hog futures were mixed to close the week, with contracts down 75 cents to 67 cents higher across the board. June was $2.65 lower this week. USDA\u2019s national base hog price was reported at $93.77 on Friday afternoon, up $3.07 from the day prior. The CME Lean Hog Index...",
-      "url": "https://www.nasdaq.com/articles/hogs-post-mixed-trade-friday",
-      "image": "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=800&q=80",
-      "publishedAt": "2026-05-11T13:10:50+00:00",
-      "category": "Com\u00e9rcio",
-      "icon": "\ud83d\udea2",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 230546927,
-      "source": "Nasdaq",
-      "title": "Stocks Finish Higher on Solid Earnings and a Resilient Labor Market",
-      "summary": "The S&P 500 Index ($SPX ) (SPY ) on Friday closed up +0.84%, the Dow Jones Industrial Average ($DOWI ) (DIA ) closed up +0.02%, and the Nasdaq 100 Index ($IUXX ) (QQQ ) closed up +2.35%. June E-mini S&P futures (ESM26 ) rose +0.79%, and June E-mini Nasdaq futures...",
-      "content": "The S&P 500 Index ($SPX ) (SPY ) on Friday closed up +0.84%, the Dow Jones Industrial Average ($DOWI ) (DIA ) closed up +0.02%, and the Nasdaq 100 Index ($IUXX ) (QQQ ) closed up +2.35%. June E-mini S&P futures (ESM26 ) rose +0.79%, and June E-mini Nasdaq futures...",
-      "url": "https://www.nasdaq.com/articles/stocks-finish-higher-solid-earnings-and-resilient-labor-market",
-      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
-      "publishedAt": "2026-05-11T13:10:50+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 121355482,
-      "source": "Nasdaq",
-      "title": "Wheat Bouncing on Friday",
-      "summary": "The wheat complex is trading with gains across the three markets on Friday. Chicago SRW futures are up 4 to 7 cents higher to round out the week. KC HRW futures are 4 to 9 cents in the green so far on Friday. MPLS spring wheat is trading with 5...",
-      "content": "The wheat complex is trading with gains across the three markets on Friday. Chicago SRW futures are up 4 to 7 cents higher to round out the week. KC HRW futures are 4 to 9 cents in the green so far on Friday. MPLS spring wheat is trading with 5...",
-      "url": "https://www.nasdaq.com/articles/wheat-bouncing-friday",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-11T13:10:50+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 876818360,
-      "source": "MarketWatch",
-      "title": "No do-overs: How one extra dollar on your Roth conversion triggers a tax bill you won\u2019t see coming",
-      "summary": "The new Roth reality: Stealth taxes and Medicare penalties make the stakes higher than ever.",
-      "content": "The new Roth reality: Stealth taxes and Medicare penalties make the stakes higher than ever.",
-      "url": "https://www.marketwatch.com/story/no-do-overs-how-one-extra-dollar-on-your-roth-conversion-triggers-a-tax-bill-you-wont-see-coming-5b52c911?mod=mw_rss_topstories",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-11T13:10:00+00:00",
+      "publishedAt": "2026-05-11T16:37:42+00:00",
       "category": "Global",
       "icon": "\ud83c\udf10",
       "impact": {
         "tickers": [
-          "GS",
-          "MS",
-          "JPM"
-        ],
-        "sector": "Finan\u00e7as",
-        "sentiment": "neutral"
-      },
-      "heat": 2,
-      "feed": "rss"
-    },
-    {
-      "id": 959433847,
-      "source": "Yahoo Finance",
-      "title": "The CEO of this crashed-out software stock just made a stunning $1 trillion prediction",
-      "summary": "",
-      "content": "",
-      "url": "https://finance.yahoo.com/markets/article/the-ceo-of-this-crashed-out-software-stock-just-made-a-stunning-1-trillion-prediction-130938568.html",
-      "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
-      "publishedAt": "2026-05-11T13:09:38+00:00",
-      "category": "Geopol\u00edtica",
-      "icon": "\ud83c\udf0d",
-      "impact": {
-        "tickers": [
-          "LMT",
-          "RTX",
-          "NOC",
-          "XOM"
-        ],
-        "sector": "Defesa",
-        "sentiment": "negative"
-      },
-      "heat": 3,
-      "feed": "rss"
-    },
-    {
-      "id": 581821671,
-      "source": "Yahoo Finance",
-      "title": "What Makes Arthur J. Gallagher & Co. (AJG) a High-Quality Business?",
-      "summary": "",
-      "content": "",
-      "url": "https://finance.yahoo.com/markets/stocks/articles/makes-arthur-j-gallagher-co-130937408.html",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-11T13:09:37+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 17380242,
-      "source": "ETF Database",
-      "title": "Defined Outcome ETFs",
-      "summary": "This article provides an overview of Defined Outcome ETFs, also known as Buffered ETFs, which utilize options to offer partial upside participation in risk assets while providing a level of downside protection. The article explains that this downside protection comes with a cap on potential upside. It also notes that existing products typically assume a one-year holding period and provides a comprehensive list of such ETFs, along with various financial metrics and analytical tools.",
-      "content": "This article provides an overview of Defined Outcome ETFs, also known as Buffered ETFs, which utilize options to offer partial upside participation in risk assets while providing a level of downside protection. The article explains that this downside protection comes with a cap on potential upside. It also notes that existing products typically assume a one-year holding period and provides a comprehensive list of such ETFs, along with various financial metrics and analytical tools.",
-      "url": "https://etfdb.com/themes/defined-outcome-etfs/",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-11T13:09:31+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [
-          "DGJA"
+          "GM"
         ],
         "sector": "",
         "sentiment": "neutral"
       },
       "heat": 1,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 54664660,
-      "source": "Investing News Network",
-      "title": "Duos Technologies Group Sets First Quarter 2026 Earnings Call for Monday, May 18, 2026 at 8:30 AM ET",
-      "summary": "Duos Technologies Group, Inc. (DUOT) will host a conference call on Monday, May 18, 2026, at 8:30 a.m. ET to discuss its first-quarter financial results for the period ended March 31, 2026. The company will release its results via press release prior to the call. Duos Technologies specializes in modular, colocation Edge and AI data centers and technology infrastructure solutions, focusing on scaling its edge data center platforms.",
-      "content": "Duos Technologies Group, Inc. (DUOT) will host a conference call on Monday, May 18, 2026, at 8:30 a.m. ET to discuss its first-quarter financial results for the period ended March 31, 2026. The company will release its results via press release prior to the call. Duos Technologies specializes in modular, colocation Edge and AI data centers and technology infrastructure solutions, focusing on scaling its edge data center platforms.",
-      "url": "https://investingnews.com/duos-technologies-group-sets-first-quarter-2026-earnings-call-for-monday-may-18-2026-at-8-30-am-et/",
-      "image": "https://investingnews.com/media-library/image.jpg?id=51575834&width=980&quality=70",
-      "publishedAt": "2026-05-11T13:09:21+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [
-          "DUOT"
-        ],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 924982738,
-      "source": "Yahoo Finance",
-      "title": "Should You Consider Selling Ares Management (ARES)?",
-      "summary": "",
-      "content": "",
-      "url": "https://finance.yahoo.com/markets/stocks/articles/consider-selling-ares-management-ares-130710651.html",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-11T13:07:10+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 288929107,
-      "source": "Nasdaq",
-      "title": "Hycroft CEO Diane Garrett Assumes Executive Chairman Role",
-      "summary": "(RTTNews) - Hycroft Mining Holding Corporation (HYMC), on Monday announced that Chief Executive Officer Diane Garrett has assumed the additional role of Executive Chairman.",
-      "content": "(RTTNews) - Hycroft Mining Holding Corporation (HYMC), on Monday announced that Chief Executive Officer Diane Garrett has assumed the additional role of Executive Chairman.",
-      "url": "https://www.nasdaq.com/articles/hycroft-ceo-diane-garrett-assumes-executive-chairman-role",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-11T13:06:30+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [
-          "NEM",
-          "FCX",
-          "GOLD",
-          "WPM"
-        ],
-        "sector": "Commodities",
-        "sentiment": "neutral"
-      },
-      "heat": 3,
-      "feed": "rss"
-    },
-    {
-      "id": 972603079,
-      "source": "CNBC",
-      "title": "Social Security claims at 62 get social media buzz \u2014 experts say proceed with caution",
-      "summary": "This measure for claiming Social Security retirement benefits may encourage people to start benefits at 62. But experts say to proceed with caution.",
-      "content": "This measure for claiming Social Security retirement benefits may encourage people to start benefits at 62. But experts say to proceed with caution.",
-      "url": "https://www.cnbc.com/2026/05/11/social-security-break-even-analysis.html",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-11T13:05:01+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 327041197,
-      "source": "Yahoo Finance",
-      "title": "'I've just ruined their lives': Nashville bar owner's property tax bill soars from $129K to $589K",
-      "summary": "",
-      "content": "",
-      "url": "https://finance.yahoo.com/economy/policy/articles/ive-just-ruined-lives-nashville-130500215.html",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-11T13:05:00+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 82259212,
-      "source": "Yahoo Finance",
-      "title": "Here\u2019s Why Artisan Mid Cap Fund Reduced Its Holdings in Astera Labs (ALAB)",
-      "summary": "",
-      "content": "",
-      "url": "https://finance.yahoo.com/markets/stocks/articles/why-artisan-mid-cap-fund-130417337.html",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-11T13:04:17+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 556136289,
-      "source": "StreetInsider",
-      "title": "F5 expands Red Hat partnership with new Kubernetes and AI security tools",
-      "summary": "F5 Inc. has announced an expanded collaboration with Red Hat to introduce new security solutions for Kubernetes applications and AI workloads. Key offerings include F5 WAF for NGINX on NGINX Gateway Fabric, providing Layer 7 protection for Kubernetes in Red Hat OpenShift environments, and an AI quickstart program for Red Hat OpenShift AI. These initiatives aim to address evolving application security challenges by leveraging open standards and integrating with existing DevOps workflows.",
-      "content": "F5 Inc. has announced an expanded collaboration with Red Hat to introduce new security solutions for Kubernetes applications and AI workloads. Key offerings include F5 WAF for NGINX on NGINX Gateway Fabric, providing Layer 7 protection for Kubernetes in Red Hat OpenShift environments, and an AI quickstart program for Red Hat OpenShift AI. These initiatives aim to address evolving application security challenges by leveraging open standards and integrating with existing DevOps workflows.",
-      "url": "https://www.streetinsider.com/Corporate+News/F5+expands+Red+Hat+partnership+with+new+Kubernetes+and+AI+security+tools/26466160.html",
-      "image": "https://www.streetinsider.com/images/news2/190/19018223/upgradeSItop.jpg",
-      "publishedAt": "2026-05-11T13:03:38+00:00",
-      "category": "Tecnologia",
-      "icon": "\ud83d\udcbb",
-      "impact": {
-        "tickers": [
-          "FFIV"
-        ],
-        "sector": "",
-        "sentiment": "positive"
-      },
-      "heat": 1,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 609469390,
-      "source": "Stock Titan",
-      "title": "This new HPE server packs 64TB memory for real-time business data",
-      "summary": "HPE has introduced the Compute Scale-up Server 3250, a new server boasting an industry-first 64TB of DDR5 memory and powered by Intel Xeon 6 processors. This server is designed for critical business applications that require large in-memory databases, enabling faster transactions and real-time analytics for workloads like SAP Cloud ERP. HPE emphasizes the server's scalability, multi-layered security, and high availability, building on its leadership in SAP HANA-certified servers.",
-      "content": "HPE has introduced the Compute Scale-up Server 3250, a new server boasting an industry-first 64TB of DDR5 memory and powered by Intel Xeon 6 processors. This server is designed for critical business applications that require large in-memory databases, enabling faster transactions and real-time analytics for workloads like SAP Cloud ERP. HPE emphasizes the server's scalability, multi-layered security, and high availability, building on its leadership in SAP HANA-certified servers.",
-      "url": "https://www.stocktitan.net/news/HPE/hpe-introduces-industry-first-64-tb-memory-server-for-sap-cloud-erp-89dk0gm3ua98.html",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-11T13:02:47+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [
-          "HPE",
-          "INTC"
-        ],
-        "sector": "",
-        "sentiment": "positive"
-      },
-      "heat": 2,
       "feed": "alphavantage"
     }
   ]
