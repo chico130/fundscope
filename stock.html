@@ -52,8 +52,7 @@
     .page{max-width:1100px;margin:0 auto;padding:var(--space-8) var(--space-6) var(--space-16);}
     .stock-hero{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:var(--space-6);margin-bottom:var(--space-8);}
     .stock-identity{display:flex;align-items:center;gap:var(--space-4);}
-    .stock-logo-wrap{width:56px;height:56px;border-radius:var(--radius-lg);background:var(--color-surface);border:1px solid var(--color-border);display:flex;align-items:center;justify-content:center;font-size:1.3rem;font-weight:700;color:var(--color-primary);flex-shrink:0;overflow:hidden;}
-    .stock-logo-wrap img{width:100%;height:100%;object-fit:contain;padding:6px;}
+    .stock-logo-wrap{width:56px;height:56px;border-radius:var(--radius-lg);border:1px solid var(--color-border);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;background:var(--color-surface);}
     .stock-ticker{font-size:var(--text-xl);font-weight:700;letter-spacing:-.02em;}
     .stock-name{font-size:var(--text-sm);color:var(--color-text-muted);margin-top:2px;}
     .stock-exchange{font-size:var(--text-xs);color:var(--color-text-faint);margin-top:2px;}
@@ -223,29 +222,23 @@ function fmtRelTime(iso){
   if(diff<604800) return Math.floor(diff/86400)+'d';
   return d.toLocaleDateString('pt',{day:'numeric',month:'short'});
 }
-function round2(n){return Math.round(n*100)/100;}
 
-/* ── rawVal ── */
 function rawVal(obj){
   if(obj !== null && typeof obj === 'object' && 'raw' in obj) return obj.raw;
   return obj ?? null;
 }
 
-/* ── fetch com timeout ── */
 function fetchTimeout(url,ms=12000){
   const ctrl=new AbortController();
   const tid=setTimeout(()=>ctrl.abort(),ms);
   return fetch(url,{signal:ctrl.signal}).finally(()=>clearTimeout(tid));
 }
 
-/* ── Ticker da URL ── */
 const TICKER = (() => {
   const p = new URLSearchParams(location.search);
-  const t = (p.get('ticker') || p.get('t') || '').trim().toUpperCase();
-  return t;
+  return (p.get('ticker') || p.get('t') || '').trim().toUpperCase();
 })();
 
-/* ── botão Voltar dinâmico ── */
 (function(){
   const from = new URLSearchParams(location.search).get('from');
   if(from === 'watchlist'){
@@ -257,61 +250,47 @@ const TICKER = (() => {
 })();
 
 /* ──────────────────────────────────────────────────────────────
-   LOGOS
-   Estratégia (sem CORS, sem API key):
-   1. Google Favicons S=64 — favicon real do site da empresa
-   2. Fallback: inicial em texto (já no DOM)
-
-   Para empresas cujo domínio não corresponde ao ticker,
-   usamos o mapa LOGO_DOMAINS.
+   LOGO — SVG local, sem dependências externas
+   Gera um avatar quadrado com gradiente + iniciais do ticker.
+   Cor determinística baseada no hash do ticker.
 ────────────────────────────────────────────────────────────── */
-const LOGO_DOMAINS = {
-  'AAPL':'apple.com','MSFT':'microsoft.com','GOOGL':'google.com','GOOG':'google.com',
-  'AMZN':'amazon.com','META':'meta.com','TSLA':'tesla.com','NVDA':'nvidia.com',
-  'AVGO':'broadcom.com','JPM':'jpmorgan.com','V':'visa.com','MA':'mastercard.com',
-  'UNH':'unitedhealthgroup.com','XOM':'exxonmobil.com','WMT':'walmart.com',
-  'LLY':'lilly.com','JNJ':'jnj.com','PG':'pg.com','HD':'homedepot.com',
-  'MRK':'merck.com','ABBV':'abbvie.com','CVX':'chevron.com','COST':'costco.com',
-  'BAC':'bankofamerica.com','PFE':'pfizer.com','AMD':'amd.com','INTC':'intel.com',
-  'NFLX':'netflix.com','DIS':'disney.com','CMCSA':'comcast.com','VZ':'verizon.com',
-  'T':'att.com','WFC':'wellsfargo.com','GS':'goldmansachs.com','MS':'morganstanley.com',
-  'CRM':'salesforce.com','ORCL':'oracle.com','ADBE':'adobe.com','QCOM':'qualcomm.com',
-  'TXN':'ti.com','IBM':'ibm.com','NOW':'servicenow.com','UBER':'uber.com',
-  'ABNB':'airbnb.com','PYPL':'paypal.com','SQ':'squareup.com','SNAP':'snap.com',
-  'SPOT':'spotify.com','SHOP':'shopify.com','COIN':'coinbase.com',
-  'BRK-A':'berkshirehathaway.com','BRK-B':'berkshirehathaway.com',
-  'SPY':'ssga.com','QQQ':'invesco.com','VTI':'vanguard.com','VOO':'vanguard.com',
-  'IVV':'ishares.com','ARKK':'ark-invest.com','GLD':'spdrgoldshares.com',
-};
+function tickerColor(ticker) {
+  /* Paleta de 12 pares (bg, texto) com bom contraste */
+  const palette = [
+    ['#01696f','#e8f5f5'], /* teal      */
+    ['#437a22','#eaf3e2'], /* green     */
+    ['#006494','#e0f0f8'], /* blue      */
+    ['#7a39bb','#f0eaf8'], /* purple    */
+    ['#a13544','#fbeaec'], /* red       */
+    ['#da7101','#fdf0e0'], /* orange    */
+    ['#d19900','#fdf6e0'], /* gold      */
+    ['#0c4e54','#e0f2f4'], /* dark teal */
+    ['#2e5c10','#ecf5e5'], /* dark green*/
+    ['#0b3751','#dceef8'], /* dark blue */
+    ['#431673','#ede0f5'], /* dark purple*/
+    ['#4b2614','#f5ede8'], /* brown     */
+  ];
+  let h = 0;
+  for (let i = 0; i < ticker.length; i++) h = (h * 31 + ticker.charCodeAt(i)) >>> 0;
+  return palette[h % palette.length];
+}
 
-function loadStockLogo(ticker){
+function makeLogoSVG(ticker) {
+  const label = ticker.replace('-','').slice(0,3).toUpperCase();
+  const [bg, fg] = tickerColor(ticker);
+  const fs = label.length <= 2 ? 22 : 16;
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 56 56">`
+    + `<rect width="56" height="56" rx="10" fill="${bg}"/>`
+    + `<text x="28" y="28" dominant-baseline="central" text-anchor="middle"`
+    + ` font-family="Inter,Helvetica Neue,sans-serif" font-weight="700"`
+    + ` font-size="${fs}" fill="${fg}" letter-spacing="-0.5">${label}</text>`
+    + `</svg>`;
+}
+
+function loadStockLogo(ticker) {
   const wrap = document.getElementById('logoWrap');
-  if(!wrap) return;
-
-  const domain = LOGO_DOMAINS[ticker]
-    || (ticker.toLowerCase().replace(/[^a-z0-9]/g,'') + '.com');
-
-  /* Google Favicons CDN — sem CORS, sem API key, funciona sempre */
-  const url = `https://www.google.com/s2/favicons?sz=64&domain=${domain}`;
-
-  const img = new Image();
-  img.width  = 56;
-  img.height = 56;
-  img.style.cssText = 'width:100%;height:100%;object-fit:contain;padding:8px;';
-  img.alt = ticker;
-
-  img.onload = () => {
-    /* Google devolve um ícone genérico (16x16 cinzento) quando não encontra.
-       Rejeitamos imagens muito pequenas (≤16px) ou quadradas de 1px. */
-    if(img.naturalWidth <= 16 && img.naturalHeight <= 16){
-      return; /* mantém a inicial */
-    }
-    wrap.innerHTML = '';
-    wrap.appendChild(img);
-  };
-
-  img.onerror = () => { /* mantém a inicial */ };
-  img.src = url;
+  if (!wrap) return;
+  wrap.innerHTML = makeLogoSVG(ticker);
 }
 
 /* ── Worker: gráfico ── */
@@ -334,7 +313,7 @@ async function workerStats(ticker){
   }catch(e){return null;}
 }
 
-/* ── Worker analistas (financialData) ── */
+/* ── Worker analistas ── */
 async function workerAnalysts(ticker){
   try{
     const r=await fetchTimeout(`${WORKER}?ticker=${encodeURIComponent(ticker)}&modules=financialData`,12000);
@@ -345,7 +324,7 @@ async function workerAnalysts(ticker){
   }catch(e){return null;}
 }
 
-/* ── Notícias do news.json filtradas por ticker ── */
+/* ── Notícias ── */
 async function fetchNews(ticker){
   try{
     const r=await fetchTimeout('news.json',6000);
@@ -442,7 +421,6 @@ async function fetchLiveQuote(ticker){
   const chartResult = chartData?.chart?.result?.[0];
   const meta        = chartResult?.meta || {};
   const staticStock = staticDataRaw?.stocks?.[ticker] || {};
-
   const priceM = stats?.price || {};
   const summM  = stats?.summaryDetail || {};
   const keyM   = stats?.defaultKeyStatistics || {};
@@ -451,30 +429,21 @@ async function fetchLiveQuote(ticker){
   let isStatic = false;
 
   if(!price || price === 0){
-    if(staticStock.price){
-      price = staticStock.price;
-      isStatic = true;
-    } else {
-      return null;
-    }
+    if(staticStock.price){ price = staticStock.price; isStatic = true; }
+    else return null;
   }
 
   const prevClose = rawVal(priceM.regularMarketPreviousClose) ?? rawVal(summM.previousClose) ?? meta.chartPreviousClose ?? staticStock.prevClose ?? price;
   const change    = parseFloat((price - prevClose).toFixed(2));
   const changePct = parseFloat(((change/prevClose)*100).toFixed(2));
-
   const mktCapRaw = rawVal(priceM.marketCap);
   const marketCap = (mktCapRaw != null) ? fmtLarge(mktCapRaw) : (staticStock.marketCap || '\u2014');
-
   const peRaw  = rawVal(summM.trailingPE) ?? rawVal(keyM.trailingPE);
   const pe     = (peRaw  != null) ? parseFloat(Number(peRaw).toFixed(1))  : (staticStock.pe  || '\u2014');
-
   const epsRaw = rawVal(keyM.trailingEps);
   const eps    = (epsRaw != null) ? parseFloat(Number(epsRaw).toFixed(2)) : (staticStock.eps || '\u2014');
-
   const betaRaw = rawVal(keyM.beta) ?? rawVal(summM.beta);
   const beta    = (betaRaw != null) ? parseFloat(Number(betaRaw).toFixed(2)) : (staticStock.beta || '\u2014');
-
   let divStr = '\u2014';
   const divRate  = rawVal(summM.dividendRate);
   const divYield = rawVal(summM.dividendYield);
@@ -484,37 +453,30 @@ async function fetchLiveQuote(ticker){
   } else if(staticStock.dividend && staticStock.dividend !== '\u2014'){
     divStr = staticStock.dividend;
   }
-
   const volRaw    = rawVal(priceM.regularMarketVolume) ?? meta.regularMarketVolume;
   const avgVolRaw = rawVal(summM.averageVolume);
   const volume    = (volRaw    != null && volRaw    > 0) ? fmtVol(volRaw)    : (staticStock.volume    || '\u2014');
   const avgVolume = (avgVolRaw != null && avgVolRaw > 0) ? fmtVol(avgVolRaw) : (staticStock.avgVolume || '\u2014');
-
   const w52hRaw = rawVal(summM.fiftyTwoWeekHigh) ?? meta.fiftyTwoWeekHigh ?? staticStock.week52High;
   const w52lRaw = rawVal(summM.fiftyTwoWeekLow)  ?? meta.fiftyTwoWeekLow  ?? staticStock.week52Low;
   const w52h    = (w52hRaw != null) ? parseFloat(Number(w52hRaw).toFixed(2)) : null;
   const w52l    = (w52lRaw != null) ? parseFloat(Number(w52lRaw).toFixed(2)) : null;
-
   const qt = rawVal(priceM.quoteType) ?? meta.instrumentType ?? (staticStock.type==='\u00c7\u00e3o'?'EQUITY':staticStock.type==='ETF'?'ETF':'');
-
   const {pts: hist1Dpts} = parseChartPts(chartData);
 
   return {
-    ticker,
-    isStatic,
+    ticker, isStatic,
     name:      rawVal(priceM.longName) ?? rawVal(priceM.shortName) ?? meta.longName ?? meta.shortName ?? staticStock.name ?? ticker,
     exchange:  rawVal(priceM.exchangeName) ?? meta.exchangeName ?? staticStock.exchange ?? 'NASDAQ / NYSE',
     type:      qt==='EQUITY'?'A\u00e7\u00e3o':qt==='ETF'?'ETF':qt==='MUTUALFUND'?'Fundo':qt==='INDEX'?'\u00cdndice':(staticStock.type||''),
     currency:  'USD',
-    price:     parseFloat(price.toFixed(2)),
-    prevClose: parseFloat(prevClose.toFixed(2)),
+    price: parseFloat(price.toFixed(2)), prevClose: parseFloat(prevClose.toFixed(2)),
     change, changePct,
     open:  rawVal(priceM.regularMarketOpen)    ?? meta.regularMarketOpen    ?? staticStock.open ?? null,
     high:  rawVal(priceM.regularMarketDayHigh) ?? meta.regularMarketDayHigh ?? staticStock.high ?? null,
     low:   rawVal(priceM.regularMarketDayLow)  ?? meta.regularMarketDayLow  ?? staticStock.low  ?? null,
     week52High: w52h, week52Low: w52l,
-    volume, avgVolume, marketCap,
-    pe, eps, beta, dividend: divStr,
+    volume, avgVolume, marketCap, pe, eps, beta, dividend: divStr,
     hist1D: hist1Dpts.length ? hist1Dpts : (staticStock.history ? staticStock.history['1D'] : []),
   };
 }
@@ -538,12 +500,8 @@ function renderStock(s){
   document.title='FundScope \u2014 '+ticker;
 
   const warnBanner = isStatic
-    ? `<div class="warn-banner">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-        <span>A API de dados em tempo real est\u00e1 indispon\u00edvel. A mostrar dados em cache \u2014 os pre\u00e7os podem n\u00e3o estar atualizados.</span>
-      </div>`
+    ? `<div class="warn-banner"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span>A API de dados em tempo real est\u00e1 indispon\u00edvel. A mostrar dados em cache \u2014 os pre\u00e7os podem n\u00e3o estar atualizados.</span></div>`
     : '';
-
   const sourceBadge = isStatic
     ? `<div class="source-badge"><span class="static-dot"></span> Dados em cache &middot; USD</div>`
     : `<div class="source-badge"><span class="live-dot"></span> Ao vivo &middot; USD</div>`;
@@ -552,7 +510,7 @@ function renderStock(s){
   ${warnBanner}
   <div class="stock-hero">
     <div class="stock-identity">
-      <div class="stock-logo-wrap" id="logoWrap">${esc(ticker.slice(0,2))}</div>
+      <div class="stock-logo-wrap" id="logoWrap"></div>
       <div>
         <div class="stock-ticker">${esc(ticker)}</div>
         <div class="stock-name">${esc(name)}</div>
@@ -614,10 +572,8 @@ function renderStock(s){
 
   window._histCache={
     '1D':{pts:hist1D||[],prevClose:prevClose},
-    '1S':{pts:[],prevClose:null},
-    '1M':{pts:[],prevClose:null},
-    '1A':{pts:[],prevClose:null},
-    '3A':{pts:[],prevClose:null}
+    '1S':{pts:[],prevClose:null},'1M':{pts:[],prevClose:null},
+    '1A':{pts:[],prevClose:null},'3A':{pts:[],prevClose:null}
   };
 
   async function loadAndRender(p){
@@ -625,8 +581,7 @@ function renderStock(s){
     if(wrap) wrap.innerHTML='<div class="chart-loading"><div class="spinner"></div> A carregar gr\u00e1fico\u2026</div>';
     updateChangeBadge(null,p,null);
     let cached=window._histCache[p];
-    let pts=cached.pts;
-    let baseClose=cached.prevClose;
+    let pts=cached.pts, baseClose=cached.prevClose;
     if(!pts||pts.length<2){
       const {range,interval}=PERIOD_MAP[p];
       const raw=await workerChart(window._yfTicker,range,interval);
@@ -663,67 +618,30 @@ function renderAnalysts(fd, currentPrice){
   const sec = document.getElementById('analystSection');
   if(!sec) return;
   if(!fd){sec.innerHTML='';return;}
-
   const targetMean = rawVal(fd.targetMeanPrice);
   const targetHigh = rawVal(fd.targetHighPrice);
   const targetLow  = rawVal(fd.targetLowPrice);
   const recKey     = fd.recommendationKey || '';
   const numAnal    = rawVal(fd.numberOfAnalystOpinions);
-
   if(!targetMean && !recKey){sec.innerHTML='';return;}
-
-  const recLabels={
-    'strong_buy':'Compra Forte','buy':'Comprar','hold':'Manter',
-    'sell':'Vender','strong_sell':'Venda Forte','':'\u2014'
-  };
-  const recColors={
-    'strong_buy':'var(--color-success)','buy':'#8ab74a','hold':'var(--color-text-muted)',
-    'sell':'#dd8a6a','strong_sell':'var(--color-error)',''  :'var(--color-text-faint)'
-  };
+  const recLabels={'strong_buy':'Compra Forte','buy':'Comprar','hold':'Manter','sell':'Vender','strong_sell':'Venda Forte','':'\u2014'};
+  const recColors={'strong_buy':'var(--color-success)','buy':'#8ab74a','hold':'var(--color-text-muted)','sell':'#dd8a6a','strong_sell':'var(--color-error)','':'var(--color-text-faint)'};
   const recLabel = recLabels[recKey] ?? recKey;
   const recColor = recColors[recKey] ?? 'var(--color-text-faint)';
-
-  const upside = (targetMean && currentPrice)
-    ? ((targetMean - currentPrice) / currentPrice * 100)
-    : null;
-  const upsideStr = upside != null
-    ? `${upside>=0?'+':''}${upside.toFixed(1)}%`
-    : '\u2014';
+  const upside = (targetMean && currentPrice) ? ((targetMean - currentPrice) / currentPrice * 100) : null;
+  const upsideStr = upside != null ? `${upside>=0?'+':''}${upside.toFixed(1)}%` : '\u2014';
   const upsideCls = upside == null ? '' : (upside >= 0 ? 'color:var(--color-success)' : 'color:var(--color-error)');
-
-  sec.innerHTML=`
-  <div class="analyst-card">
-    <div class="card-title">Analistas</div>
+  sec.innerHTML=`<div class="analyst-card"><div class="card-title">Analistas</div>
     <div class="analyst-grid">
-      <div class="analyst-kpi">
-        <div class="kpi-value">${targetMean ? '$'+Number(targetMean).toFixed(2) : '\u2014'}</div>
-        <div class="kpi-label">Target m\u00e9dio</div>
-      </div>
-      <div class="analyst-kpi">
-        <div class="kpi-value" style="${upsideCls}">${upsideStr}</div>
-        <div class="kpi-label">Upside potencial</div>
-      </div>
-      <div class="analyst-kpi">
-        <div class="kpi-value" style="color:${recColor}">${recLabel}</div>
-        <div class="kpi-label">Consenso</div>
-      </div>
-      <div class="analyst-kpi">
-        <div class="kpi-value">${numAnal ?? '\u2014'}</div>
-        <div class="kpi-label">N.\u00ba analistas</div>
-      </div>
+      <div class="analyst-kpi"><div class="kpi-value">${targetMean ? '$'+Number(targetMean).toFixed(2) : '\u2014'}</div><div class="kpi-label">Target m\u00e9dio</div></div>
+      <div class="analyst-kpi"><div class="kpi-value" style="${upsideCls}">${upsideStr}</div><div class="kpi-label">Upside potencial</div></div>
+      <div class="analyst-kpi"><div class="kpi-value" style="color:${recColor}">${recLabel}</div><div class="kpi-label">Consenso</div></div>
+      <div class="analyst-kpi"><div class="kpi-value">${numAnal ?? '\u2014'}</div><div class="kpi-label">N.\u00ba analistas</div></div>
     </div>
     <div class="range-bar-wrap">
-      <div class="range-labels">
-        <span>Target baixo: ${targetLow ? '$'+Number(targetLow).toFixed(2) : '\u2014'}</span>
-        <span>Target alto: ${targetHigh ? '$'+Number(targetHigh).toFixed(2) : '\u2014'}</span>
-      </div>
-      ${(targetLow && targetHigh && targetHigh > targetLow) ? `
-      <div class="range-track">
-        <div class="range-fill" style="width:100%;"></div>
-        ${targetMean ? `<div class="range-thumb" style="left:${Math.min(100,Math.max(0,Math.round((targetMean-targetLow)/(targetHigh-targetLow)*100)))}%;"></div>` : ''}
-      </div>` : ''}
-    </div>
-  </div>`;
+      <div class="range-labels"><span>Target baixo: ${targetLow ? '$'+Number(targetLow).toFixed(2) : '\u2014'}</span><span>Target alto: ${targetHigh ? '$'+Number(targetHigh).toFixed(2) : '\u2014'}</span></div>
+      ${(targetLow && targetHigh && targetHigh > targetLow) ? `<div class="range-track"><div class="range-fill" style="width:100%;"></div>${targetMean ? `<div class="range-thumb" style="left:${Math.min(100,Math.max(0,Math.round((targetMean-targetLow)/(targetHigh-targetLow)*100)))}%;"></div>` : ''}</div>` : ''}
+    </div></div>`;
 }
 
 /* ── Render Notícias ── */
@@ -734,7 +652,6 @@ function renderNews(articles, ticker){
     sec.innerHTML=`<div class="news-section"><div class="news-section-title">Not\u00edcias</div><div class="news-fallback">Sem not\u00edcias dispon\u00edveis de momento.</div></div>`;
     return;
   }
-
   const cards = articles.map(a=>{
     const sent = a.impact?.sentiment || 'neutral';
     const sentLabel = sent==='positive'?'Positivo':sent==='negative'?'Negativo':'Neutro';
@@ -742,20 +659,12 @@ function renderNews(articles, ticker){
     return `<a href="${esc(a.url)}" target="_blank" rel="noopener" class="news-card">
       <img class="news-img" src="${esc(imgSrc)}" alt="" loading="lazy" onerror="this.style.display='none'">
       <div class="news-body">
-        <div class="news-meta">
-          <span class="news-source">${esc(a.source||'')}</span>
-          <span class="news-sentiment ${sent}">${sentLabel}</span>
-        </div>
+        <div class="news-meta"><span class="news-source">${esc(a.source||'')}</span><span class="news-sentiment ${sent}">${sentLabel}</span></div>
         <div class="news-title">${esc(a.title||'')}</div>
         <div class="news-date">${fmtRelTime(a.publishedAt)}</div>
-      </div>
-    </a>`;
+      </div></a>`;
   }).join('');
-
-  sec.innerHTML=`<div class="news-section">
-    <div class="news-section-title">Not\u00edcias recentes</div>
-    <div class="news-grid">${cards}</div>
-  </div>`;
+  sec.innerHTML=`<div class="news-section"><div class="news-section-title">Not\u00edcias recentes</div><div class="news-grid">${cards}</div></div>`;
 }
 
 /* ── Erro ── */
@@ -771,8 +680,7 @@ function renderError(ticker,msg){
     <a href="index.html" style="display:inline-flex;align-items:center;gap:8px;margin-top:24px;padding:10px 20px;background:var(--color-primary);color:#fff;border-radius:var(--radius-full);font-size:var(--text-sm);font-weight:600;">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
       Voltar \u00e0 pesquisa
-    </a>
-  </div>`;
+    </a></div>`;
   c.style.display='block';
 }
 
@@ -780,7 +688,7 @@ function renderError(ticker,msg){
 if(!TICKER){
   renderError('?','Nenhum ticker na URL. Exemplo: stock.html?ticker=AAPL');
 } else if(TICKER.includes('.')){
-  renderError(TICKER,'Ticker "'+TICKER+'" inv\u00e1lido. Este site suporta apenas a\u00e7\u00f5es americanas puras (sem sufixos de bolsas internacionais como .AS, .L ou .PA).');
+  renderError(TICKER,'Ticker "'+TICKER+'" inv\u00e1lido. Este site suporta apenas a\u00e7\u00f5es americanas puras.');
 } else {
   fetchLiveQuote(TICKER).then(data=>{
     if(data) renderStock(data);
