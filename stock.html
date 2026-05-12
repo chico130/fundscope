@@ -317,16 +317,21 @@ function fmtTooltipLabel(ts,period){
   if(period==='1D') return d.toLocaleString('pt',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});
   return d.toLocaleDateString('pt',{day:'2-digit',month:'short',year:'numeric'});
 }
+
+/* ── parseChartPts: devolve pts + chartPreviousClose do meta ── */
 function parseChartPts(data){
   try{
     const result=data?.chart?.result?.[0];
-    if(!result) return [];
+    if(!result) return {pts:[],prevClose:null};
+    const meta=result.meta||{};
+    const prevClose=meta.chartPreviousClose??meta.previousClose??null;
     const ts=result.timestamp||[],cl=result.indicators?.quote?.[0]?.close||[],pts=[];
     for(let i=0;i<ts.length;i++){const v=cl[i];if(v==null||isNaN(v))continue;pts.push({t:ts[i],v:parseFloat(v.toFixed(4))});}
-    return pts;
-  }catch(e){return [];}
+    return {pts,prevClose};
+  }catch(e){return {pts:[],prevClose:null};}
 }
-function renderChart(period,pts){
+
+function renderChart(period,pts,baseClose){
   const wrap=document.querySelector('.chart-wrap');
   if(!wrap) return;
   if(!pts||pts.length<2){
@@ -336,7 +341,9 @@ function renderChart(period,pts){
   }
   if(!wrap.querySelector('#priceChart')){const c=document.createElement('canvas');c.id='priceChart';wrap.innerHTML='';wrap.appendChild(c);}
   const cvs=document.getElementById('priceChart');
-  const first=pts[0].v,last=pts[pts.length-1].v,up=last>=first;
+  /* cor baseada em baseClose (prevClose oficial) se disponível, senão pts[0] */
+  const ref=baseClose??pts[0].v;
+  const last=pts[pts.length-1].v,up=last>=ref;
   const color=up?'#437a22':'#a13544',bg0=up?'rgba(67,122,34,.18)':'rgba(161,53,68,.18)';
   const dark=document.documentElement.getAttribute('data-theme')==='dark';
   const axCol=dark?'#5a5957':'#8a8985',gridC=dark?'rgba(80,78,74,.25)':'rgba(180,178,172,.15)';
@@ -358,11 +365,15 @@ function renderChart(period,pts){
       }}
   });
 }
-function updateChangeBadge(pts,period){
+
+/* ── updateChangeBadge: usa baseClose como referência ── */
+function updateChangeBadge(pts,period,baseClose){
   const badge=document.getElementById('chartChangeBadge');
   if(!badge) return;
   if(!pts||pts.length<2){badge.textContent='\u2014';badge.className='chart-change-badge';return;}
-  const first=pts[0].v,last=pts[pts.length-1].v,chg=last-first,pct=first?(chg/first)*100:0;
+  /* Para 1D: usa prevClose oficial (baseClose). Para outros: usa chartPreviousClose do meta se disponível, senão pts[0] */
+  const ref=baseClose??pts[0].v;
+  const last=pts[pts.length-1].v,chg=last-ref,pct=ref?(chg/ref)*100:0;
   const up=chg>=0,sign=up?'+':'',arrow=up?'\u25b2':'\u25bc';
   badge.textContent=`${arrow} ${sign}$${Math.abs(chg).toFixed(2)} (${sign}${pct.toFixed(2)}%) \u2014 ${period}`;
   badge.className='chart-change-badge '+(up?'up':'down');
@@ -435,6 +446,8 @@ async function fetchLiveQuote(ticker){
 
   const qt = rawVal(priceM.quoteType) ?? meta.instrumentType ?? (staticStock.type==='\u00c7\u00e3o'?'EQUITY':staticStock.type==='ETF'?'ETF':'');
 
+  const {pts: hist1Dpts} = parseChartPts(chartData);
+
   return {
     ticker,
     isStatic,
@@ -451,7 +464,7 @@ async function fetchLiveQuote(ticker){
     week52High: w52h, week52Low: w52l,
     volume, avgVolume, marketCap,
     pe, eps, beta, dividend: divStr,
-    hist1D: parseChartPts(chartData) || (staticStock.history ? staticStock.history['1D'] : []),
+    hist1D: hist1Dpts.length ? hist1Dpts : (staticStock.history ? staticStock.history['1D'] : []),
   };
 }
 
@@ -462,6 +475,8 @@ function renderStock(s){
   const {ticker,name,exchange,type,price,prevClose,change,changePct,open,high,low,
          volume,avgVolume,marketCap,pe,eps,beta,dividend,week52High:w52h,week52Low:w52l,hist1D,isStatic}=s;
   window._yfTicker = ticker;
+  /* prevClose oficial guardado globalmente para o badge 1D */
+  window._prevClose = prevClose;
   const up=changePct>=0,sign=up?'+':'',arrow=up?'\u25b2':'\u25bc',cls=up?'up':'down';
   const dash='\u2014';
   const pe_v  =(pe  !==dash&&pe  !=null)?pe  :dash;
@@ -546,22 +561,38 @@ function renderStock(s){
 
   document.getElementById('stockContent').style.display='block';
 
-  window._histCache={'1D':hist1D||[],'1S':[],'1M':[],'1A':[],'3A':[]};
+  /* Cache inclui prevClose por período para o badge */
+  window._histCache={
+    '1D':{pts:hist1D||[],prevClose:prevClose},
+    '1S':{pts:[],prevClose:null},
+    '1M':{pts:[],prevClose:null},
+    '1A':{pts:[],prevClose:null},
+    '3A':{pts:[],prevClose:null}
+  };
 
   async function loadAndRender(p){
     const wrap=document.querySelector('.chart-wrap');
     if(wrap) wrap.innerHTML='<div class="chart-loading"><div class="spinner"></div> A carregar gr\u00e1fico\u2026</div>';
-    updateChangeBadge(null,p);
-    let pts=window._histCache[p];
+    updateChangeBadge(null,p,null);
+    let cached=window._histCache[p];
+    let pts=cached.pts;
+    let baseClose=cached.prevClose;
     if(!pts||pts.length<2){
       const {range,interval}=PERIOD_MAP[p];
-      pts=parseChartPts(await workerChart(window._yfTicker,range,interval));
-      if(pts&&pts.length>1) window._histCache[p]=pts;
+      const raw=await workerChart(window._yfTicker,range,interval);
+      const parsed=parseChartPts(raw);
+      pts=parsed.pts;
+      /* Para 1D usa sempre o prevClose oficial da sessão */
+      baseClose = (p==='1D') ? window._prevClose : (parsed.prevClose ?? (pts.length?pts[0].v:null));
+      if(pts&&pts.length>1) window._histCache[p]={pts,prevClose:baseClose};
+    } else {
+      /* 1D já em cache: garante prevClose oficial */
+      if(p==='1D') baseClose=window._prevClose;
     }
     const w2=document.querySelector('.chart-wrap');
     if(w2&&!w2.querySelector('#priceChart')){const c=document.createElement('canvas');c.id='priceChart';w2.innerHTML='';w2.appendChild(c);}
-    renderChart(p,pts);
-    updateChangeBadge(pts,p);
+    renderChart(p,pts,baseClose);
+    updateChangeBadge(pts,p,baseClose);
   }
 
   loadAndRender('1D');
