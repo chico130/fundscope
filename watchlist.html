@@ -188,13 +188,12 @@ function fmtNum(n,dec=2){if(n==null||isNaN(n))return '\u2014';return Number(n).t
 function fmtLarge(n){if(!n||isNaN(n))return '\u2014';if(n>=1e12)return '$'+(n/1e12).toFixed(2)+'T';if(n>=1e9)return '$'+(n/1e9).toFixed(2)+'B';if(n>=1e6)return '$'+(n/1e6).toFixed(2)+'M';return '$'+n.toFixed(0);}
 function fmtVol(n){if(!n||isNaN(n))return '\u2014';if(n>=1e6)return (n/1e6).toFixed(1)+'M';if(n>=1e3)return (n/1e3).toFixed(1)+'K';return String(n);}
 
-/* rawVal — igual ao stock.html: suporta {raw:x} e valor directo */
 function rawVal(obj){
   if(obj!==null&&typeof obj==='object'&&'raw' in obj)return obj.raw;
   return obj??null;
 }
 
-/* ── SVG logo (igual ao stock.html, sem dependências externas) ── */
+/* ── SVG logo (sem dependências externas, igual ao stock.html) ── */
 function tickerColor(ticker){
   const palette=[
     ['#01696f','#e8f5f5'],['#437a22','#eaf3e2'],['#006494','#e0f0f8'],
@@ -223,7 +222,7 @@ async function fetchWithTimeout(url,ms=12000){
   return fetch(url,{signal:ctrl.signal}).finally(()=>clearTimeout(tid));
 }
 
-/* ── Worker: quote (price module) ── */
+/* ── Worker: quote ── */
 async function fetchQuote(ticker){
   try{
     const r=await fetchWithTimeout(`${WORKER}?ticker=${encodeURIComponent(ticker)}&modules=price`);
@@ -234,7 +233,7 @@ async function fetchQuote(ticker){
   }catch{return null;}
 }
 
-/* ── Worker: financialData — IDÊNTICO ao stock.html workerAnalysts() ── */
+/* ── Worker: financialData (idêntico ao stock.html) ── */
 async function fetchAnalysts(ticker){
   try{
     const r=await fetchWithTimeout(`${WORKER}?ticker=${encodeURIComponent(ticker)}&modules=financialData`,12000);
@@ -332,58 +331,40 @@ function buildNewsHTML(news){
   }).join('')+'</div>';
 }
 
-/* ── HTML: Analistas — usa rawVal() sobre financialData, idêntico ao stock.html ── */
-function buildTargetsHTML(fd, currentPrice){
-  if(!fd) return '<p style="color:var(--color-text-muted);font-size:var(--text-sm);">Sem dados de analistas.</p>';
-
-  const targetMean   = rawVal(fd.targetMeanPrice);
-  const targetMedian = rawVal(fd.targetMedianPrice);
-  const targetHigh   = rawVal(fd.targetHighPrice);
-  const targetLow    = rawVal(fd.targetLowPrice);
-  const recKey       = fd.recommendationKey || '';
-  const numAnal      = rawVal(fd.numberOfAnalystOpinions);
-
-  if(!targetMean && !targetMedian && !recKey)
+/* ── HTML: Analistas ── */
+function buildTargetsHTML(fd,currentPrice){
+  if(!fd)return '<p style="color:var(--color-text-muted);font-size:var(--text-sm);">Sem dados de analistas.</p>';
+  const targetMean=rawVal(fd.targetMeanPrice);
+  const targetMedian=rawVal(fd.targetMedianPrice);
+  const targetHigh=rawVal(fd.targetHighPrice);
+  const targetLow=rawVal(fd.targetLowPrice);
+  const recKey=fd.recommendationKey||'';
+  const numAnal=rawVal(fd.numberOfAnalystOpinions);
+  if(!targetMean&&!targetMedian&&!recKey)
     return '<p style="color:var(--color-text-muted);font-size:var(--text-sm);">Sem dados de analistas dispon\u00edveis.</p>';
-
   const recLabels={'strong_buy':'Compra Forte','buy':'Comprar','hold':'Manter','sell':'Vender','strong_sell':'Venda Forte','':'\u2014'};
   const recColors={'strong_buy':'var(--color-success)','buy':'#8ab74a','hold':'var(--color-text-muted)','sell':'#dd8a6a','strong_sell':'var(--color-error)','':'var(--color-text-faint)'};
-  const recLabel = recLabels[recKey] ?? recKey;
-  const recColor = recColors[recKey] ?? 'var(--color-text-faint)';
-
-  const upside = (targetMean && currentPrice)
-    ? ((targetMean - currentPrice) / currentPrice * 100) : null;
-  const upsideStr = upside != null
-    ? `<div style="font-size:var(--text-xs);color:${upside>=0?'var(--color-success)':'var(--color-error)'};margin-top:4px;">${upside>=0?'+':''}${upside.toFixed(1)}% vs atual</div>`
-    : '';
-
-  let html = `<div class="target-block">
+  const recLabel=recLabels[recKey]??recKey;
+  const recColor=recColors[recKey]??'var(--color-text-faint)';
+  const upside=(targetMean&&currentPrice)?((targetMean-currentPrice)/currentPrice*100):null;
+  const upsideStr=upside!=null?`<div style="font-size:var(--text-xs);color:${upside>=0?'var(--color-success)':'var(--color-error)'};margin-top:4px;">${upside>=0?'+':''}${upside.toFixed(1)}% vs atual</div>`:'';
+  let html=`<div class="target-block">
     <div class="target-item"><div class="target-label">Alvo M\u00e9dio</div><div class="target-value">${targetMean?'$'+Number(targetMean).toFixed(2):'\u2014'}</div>${upsideStr}</div>
     <div class="target-item"><div class="target-label">Alvo Mediano</div><div class="target-value">${targetMedian?'$'+Number(targetMedian).toFixed(2):'\u2014'}</div></div>
     <div class="target-item"><div class="target-label">Alvo M\u00e1ximo</div><div class="target-value bull">${targetHigh?'$'+Number(targetHigh).toFixed(2):'\u2014'}</div></div>
     <div class="target-item"><div class="target-label">Alvo M\u00ednimo</div><div class="target-value bear">${targetLow?'$'+Number(targetLow).toFixed(2):'\u2014'}</div></div>
   </div>`;
-
-  /* Consenso + nº analistas */
-  html += `<div class="stat-row" style="margin-bottom:var(--space-4);">
+  html+=`<div class="stat-row" style="margin-bottom:var(--space-4);">
     <div class="stat-item"><span class="stat-label">Consenso</span><span class="stat-value" style="color:${recColor}">${recLabel}</span></div>
     <div class="stat-item"><span class="stat-label">N.\u00ba analistas</span><span class="stat-value">${numAnal??'\u2014'}</span></div>
   </div>`;
-
-  /* Barra target min-max */
-  if(targetLow && targetHigh && targetHigh > targetLow){
-    const pct = targetMean
-      ? Math.min(100,Math.max(0,Math.round((targetMean-targetLow)/(targetHigh-targetLow)*100)))
-      : 50;
-    html += `<div class="range-bar-wrap">
+  if(targetLow&&targetHigh&&targetHigh>targetLow){
+    const pct=targetMean?Math.min(100,Math.max(0,Math.round((targetMean-targetLow)/(targetHigh-targetLow)*100))):50;
+    html+=`<div class="range-bar-wrap">
       <div class="range-labels"><span>M\u00edn: $${Number(targetLow).toFixed(2)}</span><span>M\u00e1x: $${Number(targetHigh).toFixed(2)}</span></div>
-      <div class="range-track">
-        <div class="range-fill"></div>
-        <div class="range-thumb" style="left:${pct}%;"></div>
-      </div>
+      <div class="range-track"><div class="range-fill"></div><div class="range-thumb" style="left:${pct}%;"></div></div>
     </div>`;
   }
-
   return html;
 }
 
@@ -408,31 +389,22 @@ function buildAIHTML(data){
   return html;
 }
 
-/* ── Build card ── */
-async function buildCard(ticker){
-  const stats=await fetchQuote(ticker);
-  const priceM=stats?.price||{};
-  const price=rawVal(priceM.regularMarketPrice);
-  const prev=rawVal(priceM.regularMarketPreviousClose)||price;
-  const change=price&&prev?parseFloat((price-prev).toFixed(2)):0;
-  const changePct=prev?parseFloat(((change/prev)*100).toFixed(2)):0;
-  const name=rawVal(priceM.longName)||rawVal(priceM.shortName)||ticker;
-  const up=changePct>=0;
-  const chartWrapperId='minichart-wrap-'+ticker;
-
+/* ── Build card: cria o placeholder imediatamente, carrega dados depois ── */
+function buildCardPlaceholder(ticker){
   const div=document.createElement('div');
   div.className='wl-card';
   div.id='card-'+ticker;
+  const chartWrapperId='minichart-wrap-'+ticker;
   div.innerHTML=`
     <div class="wl-card-header" onclick="toggleCard('${ticker}')">
       <div class="wl-logo" id="logo-${ticker}">${makeLogoSVG(ticker)}</div>
       <div class="wl-identity">
         <div class="wl-ticker">${esc(ticker)}</div>
-        <div class="wl-name">${esc(name)}</div>
+        <div class="wl-name" id="name-${ticker}" style="color:var(--color-text-faint);">A carregar\u2026</div>
       </div>
       <div class="wl-price-block">
-        <div class="wl-price">${price?'$'+fmtNum(price):'\u2014'}</div>
-        <div class="wl-change ${up?'up':'down'}">${up?'&#9650;':'&#9660;'} ${up?'+':''}${fmtNum(Math.abs(change))} (${up?'+':''}${fmtNum(Math.abs(changePct))}%)</div>
+        <div class="wl-price" id="price-${ticker}">\u2014</div>
+        <div class="wl-change" id="change-${ticker}" style="background:var(--color-surface-offset);color:var(--color-text-faint);">\u2014</div>
       </div>
       <div class="wl-actions" onclick="event.stopPropagation()">
         <a href="stock.html?ticker=${encodeURIComponent(ticker)}&from=watchlist" class="btn-icon" title="Ver p\u00e1gina completa" style="color:var(--color-text-muted);display:flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:var(--radius-md);transition:all var(--transition);">
@@ -454,14 +426,38 @@ async function buildCard(ticker){
         <div class="wl-tab" data-tab="targets" onclick="switchTab('${ticker}','targets')">Analistas</div>
         <div class="wl-tab" data-tab="ai" onclick="switchTab('${ticker}','ai')">&#129302; Earnings AI</div>
       </div>
-      <div class="wl-tab-panel active" id="panel-stats-${ticker}">${buildStatsHTML(stats)}</div>
-      <div class="wl-tab-panel" id="panel-news-${ticker}"><div class="ai-loading"><div class="spinner"></div>A carregar not\u00edcias&#8230;</div></div>
-      <div class="wl-tab-panel" id="panel-targets-${ticker}"><div class="ai-loading"><div class="spinner"></div>A carregar analistas&#8230;</div></div>
-      <div class="wl-tab-panel" id="panel-ai-${ticker}"><div class="ai-loading"><div class="spinner"></div>A analisar earnings com IA&#8230;</div></div>
+      <div class="wl-tab-panel active" id="panel-stats-${ticker}"><div class="ai-loading"><div class="spinner"></div>A carregar dados\u2026</div></div>
+      <div class="wl-tab-panel" id="panel-news-${ticker}"><div class="ai-loading"><div class="spinner"></div>A carregar not\u00edcias\u2026</div></div>
+      <div class="wl-tab-panel" id="panel-targets-${ticker}"><div class="ai-loading"><div class="spinner"></div>A carregar analistas\u2026</div></div>
+      <div class="wl-tab-panel" id="panel-ai-${ticker}"><div class="ai-loading"><div class="spinner"></div>A analisar earnings com IA\u2026</div></div>
     </div>`;
-
   document.getElementById('wlList').appendChild(div);
-  return {ticker,stats,price};
+}
+
+/* ── Preenche card com dados depois de carregados ── */
+function fillCard(ticker,stats){
+  const priceM=stats?.price||{};
+  const price=rawVal(priceM.regularMarketPrice);
+  const prev=rawVal(priceM.regularMarketPreviousClose)||price;
+  const change=price&&prev?parseFloat((price-prev).toFixed(2)):0;
+  const changePct=prev?parseFloat(((change/prev)*100).toFixed(2)):0;
+  const name=rawVal(priceM.longName)||rawVal(priceM.shortName)||ticker;
+  const up=changePct>=0;
+
+  const nameEl=document.getElementById('name-'+ticker);
+  const priceEl=document.getElementById('price-'+ticker);
+  const changeEl=document.getElementById('change-'+ticker);
+  const statsEl=document.getElementById('panel-stats-'+ticker);
+
+  if(nameEl)nameEl.textContent=name;
+  if(priceEl)priceEl.textContent=price?'$'+fmtNum(price):'\u2014';
+  if(changeEl){
+    changeEl.className='wl-change '+(up?'up':'down');
+    changeEl.innerHTML=`${up?'&#9650;':'&#9660;'} ${up?'+':''}${fmtNum(Math.abs(change))} (${up?'+':''}${fmtNum(Math.abs(changePct))}%)`;
+  }
+  if(statsEl)statsEl.innerHTML=buildStatsHTML(stats);
+
+  return price;
 }
 
 /* ── Toggle expand ── */
@@ -483,18 +479,14 @@ function lazyLoadTabs(ticker){
   if(_loaded[ticker])return;
   _loaded[ticker]=true;
   const price=_cardPrices[ticker];
-
   fetchNews(ticker).then(news=>{
     const el=document.getElementById('panel-news-'+ticker);
     if(el)el.innerHTML=buildNewsHTML(news);
   });
-
-  /* Analistas: mesmo padrão do stock.html */
   fetchAnalysts(ticker).then(fd=>{
     const el=document.getElementById('panel-targets-'+ticker);
     if(el)el.innerHTML=buildTargetsHTML(fd,price);
   });
-
   fetchEarningsAI(ticker).then(data=>{
     const el=document.getElementById('panel-ai-'+ticker);
     if(el)el.innerHTML=buildAIHTML(data);
@@ -528,29 +520,32 @@ function renderEmpty(){
 }
 
 /* ── Init ── */
+/* ORDEM GARANTIDA:
+   1. Criamos todos os placeholders primeiro, em sequência → ordem visual fixada
+   2. Carregamos os dados em paralelo (Promise.all) → rápido, mas os cards
+      já estão no DOM na posição certa, só o conteúdo é preenchido depois. */
 const _cardPrices={};
 async function init(){
   const tickers=getWatchlist();
   if(!tickers.length){renderEmpty();return;}
+
+  /* Fase 1 — placeholders em ordem (síncrono, sem fetch) */
+  tickers.forEach(t=>buildCardPlaceholder(t));
+
+  /* Fase 2 — fetch em paralelo, preenchimento no sítio certo */
   await Promise.all(tickers.map(async t=>{
-    const card=await buildCard(t);
-    _cardPrices[t]=card.price;
+    const stats=await fetchQuote(t);
+    const price=fillCard(t,stats);
+    _cardPrices[t]=price;
   }));
+
   /* Auto-refresh preço a cada 60s */
   setInterval(async()=>{
     for(const t of getWatchlist()){
       const stats=await fetchQuote(t);
       if(!stats)continue;
-      const priceM=stats.price||{};
-      const price=rawVal(priceM.regularMarketPrice);
-      const prev=rawVal(priceM.regularMarketPreviousClose)||price;
-      const change=price&&prev?parseFloat((price-prev).toFixed(2)):0;
-      const changePct=prev?parseFloat(((change/prev)*100).toFixed(2)):0;
-      const up=changePct>=0;
-      const priceEl=document.querySelector(`#card-${t} .wl-price`);
-      const changeEl=document.querySelector(`#card-${t} .wl-change`);
-      if(priceEl)priceEl.textContent=price?'$'+fmtNum(price):'\u2014';
-      if(changeEl){changeEl.className='wl-change '+(up?'up':'down');changeEl.innerHTML=`${up?'&#9650;':'&#9660;'} ${up?'+':''}${fmtNum(Math.abs(change))} (${up?'+':''}${fmtNum(Math.abs(changePct))}%)`;}
+      const price=fillCard(t,stats);
+      _cardPrices[t]=price;
     }
   },60000);
 }
