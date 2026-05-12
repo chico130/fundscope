@@ -250,7 +250,7 @@ const TICKER = (() => {
 })();
 
 /* ──────────────────────────────────────────────────────────────
-   LOGO — SVG local, sem dependências externas
+   LOGO — SVG local, sem dependências externas, alinhado com watchlist
 ────────────────────────────────────────────────────────────── */
 function tickerColor(ticker) {
   const palette = [
@@ -273,8 +273,9 @@ function tickerColor(ticker) {
 }
 
 function makeLogoSVG(ticker) {
-  const label = ticker.replace('-','').slice(0,3).toUpperCase();
-  const [bg, fg] = tickerColor(ticker);
+  const clean = ticker.replace(/[^A-Z0-9]/gi, '').toUpperCase();
+  const label = clean.slice(0, 4) || ticker.slice(0, 4).toUpperCase();
+  const [bg, fg] = tickerColor(label);
   const fs = label.length <= 2 ? 22 : 16;
   return `<svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 56 56">`
     + `<rect width="56" height="56" rx="10" fill="${bg}"/>`
@@ -282,12 +283,6 @@ function makeLogoSVG(ticker) {
     + ` font-family="Inter,Helvetica Neue,sans-serif" font-weight="700"`
     + ` font-size="${fs}" fill="${fg}" letter-spacing="-0.5">${label}</text>`
     + `</svg>`;
-}
-
-function loadStockLogo(ticker) {
-  const wrap = document.getElementById('logoWrap');
-  if (!wrap) return;
-  wrap.innerHTML = makeLogoSVG(ticker);
 }
 
 /* ── Worker: gráfico ── */
@@ -313,32 +308,51 @@ async function workerStats(ticker){
 /* ── Worker analistas ── */
 async function workerAnalysts(ticker){
   try{
-    const r=await fetchTimeout(`${WORKER}?ticker=${encodeURIComponent(ticker)}&modules=financialData`,12000);
+    const r=await fetchTimeout(`${WORKER}?ticker=${encodeURIComponent(ticker)}&modules=financialData,recommendationTrend`,12000);
     if(!r.ok) return null;
     const j=await r.json();
     if(j?.quoteSummary?.error) return null;
-    return j?.quoteSummary?.result?.[0]?.financialData || null;
+    const res = j?.quoteSummary?.result?.[0] || {};
+    return {
+      financialData: res.financialData || null,
+      recommendationTrend: res.recommendationTrend || null
+    };
   }catch(e){return null;}
 }
 
-/* ── Notícias ── CORRIGIDO: filtra sempre pelo ticker específico ── */
+/* ── Notícias ── filtragem robusta por ticker, usando apenas news.json ── */
 async function fetchNews(ticker){
   try{
-    const r=await fetchTimeout('news.json',6000);
-    const j=await r.json();
-    const articles=j?.articles||[];
+    const r = await fetchTimeout('news.json', 6000);
+    const j = await r.json();
+    const articles = j?.articles || [];
+    const t = ticker.toUpperCase();
 
-    // Filtra artigos que mencionam este ticker explicitamente
-    const byTicker = articles.filter(a => {
+    const withImpact = articles.filter(a => {
       const tickers = Array.isArray(a.impact?.tickers) ? a.impact.tickers : [];
-      // Verifica também o título/descrição como fallback secundário
-      const tickerInText = (a.title||'').toUpperCase().includes(ticker) ||
-                           (a.description||'').toUpperCase().includes(ticker);
-      return tickers.map(t=>t.toUpperCase()).includes(ticker.toUpperCase()) || tickerInText;
+      return tickers.some(x => String(x).toUpperCase() === t);
     });
 
-    return byTicker.slice(0,4);
-  }catch(e){return [];}
+    const textMatches = articles.filter(a => {
+      if(!a || !a.title) return false;
+      const title = String(a.title).toUpperCase();
+      const desc  = String(a.description || '').toUpperCase();
+      const already = Array.isArray(a.impact?.tickers) && a.impact.tickers.some(x => String(x).toUpperCase() === t);
+      if(already) return false;
+      return title.includes(t) || desc.includes(t);
+    });
+
+    const merged = [...withImpact, ...textMatches];
+    merged.sort((a,b) => {
+      const da = a.publishedAt ? new Date(a.publishedAt).getTime() : 0;
+      const db = b.publishedAt ? new Date(b.publishedAt).getTime() : 0;
+      return db - da;
+    });
+
+    return merged.slice(0, 4);
+  }catch(e){
+    return [];
+  }
 }
 
 /* ── Gráfico ── */
@@ -511,11 +525,13 @@ function renderStock(s){
     ? `<div class="source-badge"><span class="static-dot"></span> Dados em cache &middot; USD</div>`
     : `<div class="source-badge"><span class="live-dot"></span> Ao vivo &middot; USD</div>`;
 
+  const logoSvg = makeLogoSVG(ticker);
+
   document.getElementById('stockContent').innerHTML=`
   ${warnBanner}
   <div class="stock-hero">
     <div class="stock-identity">
-      <div class="stock-logo-wrap" id="logoWrap"></div>
+      <div class="stock-logo-wrap" id="logoWrap">${logoSvg}</div>
       <div>
         <div class="stock-ticker">${esc(ticker)}</div>
         <div class="stock-name">${esc(name)}</div>
@@ -573,7 +589,6 @@ function renderStock(s){
   <div id="newsSection"></div>`;
 
   document.getElementById('stockContent').style.display='block';
-  loadStockLogo(ticker);
 
   window._histCache={
     '1D':{pts:hist1D||[],prevClose:prevClose},
@@ -612,17 +627,19 @@ function renderStock(s){
     loadAndRender(btn.dataset.p);
   });
 
-  Promise.all([workerAnalysts(ticker), fetchNews(ticker)]).then(([fd, articles])=>{
-    renderAnalysts(fd, price);
+  Promise.all([workerAnalysts(ticker), fetchNews(ticker)]).then(([analystData, articles])=>{
+    renderAnalysts(analystData, price);
     renderNews(articles, ticker);
   });
 }
 
 /* ── Render Analistas ── */
-function renderAnalysts(fd, currentPrice){
+function renderAnalysts(analystData, currentPrice){
   const sec = document.getElementById('analystSection');
   if(!sec) return;
-  if(!fd){sec.innerHTML='';return;}
+  if(!analystData || !analystData.financialData){sec.innerHTML='';return;}
+
+  const fd = analystData.financialData;
   const targetMean = rawVal(fd.targetMeanPrice);
   const targetHigh = rawVal(fd.targetHighPrice);
   const targetLow  = rawVal(fd.targetLowPrice);
