@@ -180,7 +180,6 @@ function fmtLarge(n){if(!n||isNaN(n))return '—';if(n>=1e12)return '$'+(n/1e12)
 function fmtVol(n){if(!n||isNaN(n))return '—';if(n>=1e6)return (n/1e6).toFixed(1)+'M';if(n>=1e3)return (n/1e3).toFixed(1)+'K';return String(n);}
 function rawVal(obj){ if(obj!==null&&typeof obj==='object'&&'raw' in obj)return obj.raw; return obj??null; }
 
-// Logo: alinhado com stock.html (limpeza de ticker e até 4 chars)
 function tickerColor(ticker){
   const palette=[['#01696f','#e8f5f5'],['#437a22','#eaf3e2'],['#006494','#e0f0f8'],['#7a39bb','#f0eaf8'],['#a13544','#fbeaec'],['#da7101','#fdf0e0'],['#d19900','#fdf6e0'],['#0c4e54','#e0f2f4'],['#2e5c10','#ecf5e5'],['#0b3751','#dceef8'],['#431673','#ede0f5'],['#4b2614','#f5ede8']];
   const clean = String(ticker||'').toUpperCase();
