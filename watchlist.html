@@ -223,11 +223,14 @@ async function fetchNews(ticker){
   }catch{return[];}
 }
 
+/* CORRIGIDO: usa financialData do Yahoo Finance, igual ao stock.html */
 async function fetchTargets(ticker){
   try{
-    const r=await fetchWithTimeout(`${WORKER}?ticker=${encodeURIComponent(ticker)}&action=targets`);
+    const r=await fetchWithTimeout(`${WORKER}?ticker=${encodeURIComponent(ticker)}&modules=financialData`,12000);
     if(!r.ok)return null;
-    return await r.json();
+    const j=await r.json();
+    if(j?.quoteSummary?.error)return null;
+    return j?.quoteSummary?.result?.[0]?.financialData||null;
   }catch{return null;}
 }
 
@@ -297,27 +300,82 @@ function buildNewsHTML(news){
   }).join('')+'</div>';
 }
 
-function buildTargetsHTML(data,currentPrice){
-  if(!data||!data.priceTarget)return '<p style="color:var(--color-text-muted);font-size:var(--text-sm);">Sem dados de analistas.</p>';
-  const t=data.priceTarget;
-  const upside=t.targetMean&&currentPrice?((t.targetMean-currentPrice)/currentPrice*100):null;
-  let html=`<div class="target-block">
-    <div class="target-item"><div class="target-label">Alvo M\u00e9dio</div><div class="target-value">${t.targetMean?'$'+fmtNum(t.targetMean):'\u2014'}</div>${upside!=null?`<div style="font-size:var(--text-xs);color:${upside>=0?'var(--color-success)':'var(--color-error)'};margin-top:4px;">${upside>=0?'+':''}${upside.toFixed(1)}% vs atual</div>`:''}</div>
-    <div class="target-item"><div class="target-label">Alvo Mediano</div><div class="target-value">${t.targetMedian?'$'+fmtNum(t.targetMedian):'\u2014'}</div></div>
-    <div class="target-item"><div class="target-label">Alvo M\u00e1ximo</div><div class="target-value bull">${t.targetHigh?'$'+fmtNum(t.targetHigh):'\u2014'}</div></div>
-    <div class="target-item"><div class="target-label">Alvo M\u00ednimo</div><div class="target-value bear">${t.targetLow?'$'+fmtNum(t.targetLow):'\u2014'}</div></div>
+/* CORRIGIDO: extrai dados de financialData (mesmo formato que stock.html) */
+function buildTargetsHTML(fd, currentPrice){
+  if(!fd)return '<p style="color:var(--color-text-muted);font-size:var(--text-sm);">Sem dados de analistas.</p>';
+
+  const targetMean   = rawVal(fd.targetMeanPrice);
+  const targetMedian = rawVal(fd.targetMedianPrice);
+  const targetHigh   = rawVal(fd.targetHighPrice);
+  const targetLow    = rawVal(fd.targetLowPrice);
+  const recKey       = fd.recommendationKey || '';
+  const numAnal      = rawVal(fd.numberOfAnalystOpinions);
+
+  if(!targetMean && !recKey)
+    return '<p style="color:var(--color-text-muted);font-size:var(--text-sm);">Sem dados de analistas.</p>';
+
+  const recLabels={
+    'strong_buy':'Compra Forte','buy':'Comprar','hold':'Manter',
+    'sell':'Vender','strong_sell':'Venda Forte','':'\u2014'
+  };
+  const recColors={
+    'strong_buy':'var(--color-success)','buy':'#8ab74a',
+    'hold':'var(--color-text-muted)','sell':'#dd8a6a',
+    'strong_sell':'var(--color-error)','':'var(--color-text-faint)'
+  };
+  const recLabel = recLabels[recKey] ?? recKey;
+  const recColor = recColors[recKey] ?? 'var(--color-text-faint)';
+
+  const upside = (targetMean && currentPrice)
+    ? ((targetMean - currentPrice) / currentPrice * 100) : null;
+  const upsideStr = upside != null
+    ? `<div style="font-size:var(--text-xs);color:${upside>=0?'var(--color-success)':'var(--color-error)'};margin-top:4px;">${upside>=0?'+':''}${upside.toFixed(1)}% vs atual</div>`
+    : '';
+
+  let html = `<div class="target-block">
+    <div class="target-item">
+      <div class="target-label">Alvo M\u00e9dio</div>
+      <div class="target-value">${targetMean ? '$'+fmtNum(targetMean) : '\u2014'}</div>
+      ${upsideStr}
+    </div>
+    <div class="target-item">
+      <div class="target-label">Alvo Mediano</div>
+      <div class="target-value">${targetMedian ? '$'+fmtNum(targetMedian) : '\u2014'}</div>
+    </div>
+    <div class="target-item">
+      <div class="target-label">Alvo M\u00e1ximo</div>
+      <div class="target-value bull">${targetHigh ? '$'+fmtNum(targetHigh) : '\u2014'}</div>
+    </div>
+    <div class="target-item">
+      <div class="target-label">Alvo M\u00ednimo</div>
+      <div class="target-value bear">${targetLow ? '$'+fmtNum(targetLow) : '\u2014'}</div>
+    </div>
   </div>`;
-  if(data.recommendations&&data.recommendations.length){
-    html+='<div class="rec-list">'+data.recommendations.map(r=>`
-      <div class="rec-item">
-        <span class="rec-period">${esc(r.period||'')}</span>
-        <div class="rec-counts">
-          <span class="rec-buy">&#9650; ${r.strongBuy+r.buy} Buy</span>
-          <span class="rec-hold">&#9644; ${r.hold} Hold</span>
-          <span class="rec-sell">&#9660; ${r.sell+r.strongSell} Sell</span>
-        </div>
-      </div>`).join('')+'</div>';
+
+  /* Consenso e nº de analistas */
+  if(recKey || numAnal != null){
+    html += `<div class="stat-row" style="margin-bottom:var(--space-4);">
+      <div class="stat-item"><span class="stat-label">Consenso</span><span class="stat-value" style="color:${recColor}">${recLabel}</span></div>
+      <div class="stat-item"><span class="stat-label">N.\u00ba analistas</span><span class="stat-value">${numAnal ?? '\u2014'}</span></div>
+    </div>`;
   }
+
+  /* Barra target baixo — alto */
+  if(targetLow && targetHigh && targetHigh > targetLow){
+    const pct = targetMean
+      ? Math.min(100, Math.max(0, Math.round((targetMean - targetLow) / (targetHigh - targetLow) * 100)))
+      : 50;
+    html += `<div style="margin-bottom:var(--space-4);">
+      <div style="display:flex;justify-content:space-between;font-size:var(--text-xs);color:var(--color-text-muted);margin-bottom:var(--space-2);">
+        <span>M\u00edn: $${fmtNum(targetLow)}</span><span>M\u00e1x: $${fmtNum(targetHigh)}</span>
+      </div>
+      <div style="height:6px;background:var(--color-surface-offset);border-radius:var(--radius-full);position:relative;">
+        <div style="height:100%;width:100%;border-radius:var(--radius-full);background:linear-gradient(90deg,var(--color-error),var(--color-success));"></div>
+        <div style="position:absolute;top:50%;transform:translate(-50%,-50%);width:12px;height:12px;border-radius:50%;background:var(--color-primary);border:2px solid var(--color-bg);left:${pct}%;"></div>
+      </div>
+    </div>`;
+  }
+
   return html;
 }
 
@@ -355,8 +413,6 @@ async function buildCard(ticker){
   const div=document.createElement('div');
   div.className='wl-card';
   div.id='card-'+ticker;
-  /* FIX 1: btn-expand tem onclick proprio para nao ser bloqueado pelo stopPropagation do wl-actions */
-  /* FIX 2: link "ver pagina completa" passa from=watchlist */
   div.innerHTML=`
     <div class="wl-card-header" onclick="toggleCard('${ticker}')">
       <div class="wl-logo" id="logo-${ticker}">${esc(ticker.slice(0,2))}</div>
@@ -421,7 +477,7 @@ function lazyLoadTabs(ticker){
   _loaded[ticker]=true;
   const price=_cardPrices[ticker];
   fetchNews(ticker).then(news=>{const el=document.getElementById('panel-news-'+ticker);if(el)el.innerHTML=buildNewsHTML(news);});
-  fetchTargets(ticker).then(data=>{const el=document.getElementById('panel-targets-'+ticker);if(el)el.innerHTML=buildTargetsHTML(data,price);});
+  fetchTargets(ticker).then(fd=>{const el=document.getElementById('panel-targets-'+ticker);if(el)el.innerHTML=buildTargetsHTML(fd,price);});
   fetchEarningsAI(ticker).then(data=>{const el=document.getElementById('panel-ai-'+ticker);if(el)el.innerHTML=buildAIHTML(data);});
 }
 
