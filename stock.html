@@ -251,24 +251,21 @@ const TICKER = (() => {
 
 /* ──────────────────────────────────────────────────────────────
    LOGO — SVG local, sem dependências externas
-   Gera um avatar quadrado com gradiente + iniciais do ticker.
-   Cor determinística baseada no hash do ticker.
 ────────────────────────────────────────────────────────────── */
 function tickerColor(ticker) {
-  /* Paleta de 12 pares (bg, texto) com bom contraste */
   const palette = [
-    ['#01696f','#e8f5f5'], /* teal      */
-    ['#437a22','#eaf3e2'], /* green     */
-    ['#006494','#e0f0f8'], /* blue      */
-    ['#7a39bb','#f0eaf8'], /* purple    */
-    ['#a13544','#fbeaec'], /* red       */
-    ['#da7101','#fdf0e0'], /* orange    */
-    ['#d19900','#fdf6e0'], /* gold      */
-    ['#0c4e54','#e0f2f4'], /* dark teal */
-    ['#2e5c10','#ecf5e5'], /* dark green*/
-    ['#0b3751','#dceef8'], /* dark blue */
-    ['#431673','#ede0f5'], /* dark purple*/
-    ['#4b2614','#f5ede8'], /* brown     */
+    ['#01696f','#e8f5f5'],
+    ['#437a22','#eaf3e2'],
+    ['#006494','#e0f0f8'],
+    ['#7a39bb','#f0eaf8'],
+    ['#a13544','#fbeaec'],
+    ['#da7101','#fdf0e0'],
+    ['#d19900','#fdf6e0'],
+    ['#0c4e54','#e0f2f4'],
+    ['#2e5c10','#ecf5e5'],
+    ['#0b3751','#dceef8'],
+    ['#431673','#ede0f5'],
+    ['#4b2614','#f5ede8'],
   ];
   let h = 0;
   for (let i = 0; i < ticker.length; i++) h = (h * 31 + ticker.charCodeAt(i)) >>> 0;
@@ -324,15 +321,23 @@ async function workerAnalysts(ticker){
   }catch(e){return null;}
 }
 
-/* ── Notícias ── */
+/* ── Notícias ── CORRIGIDO: filtra sempre pelo ticker específico ── */
 async function fetchNews(ticker){
   try{
     const r=await fetchTimeout('news.json',6000);
     const j=await r.json();
     const articles=j?.articles||[];
-    const byTicker=articles.filter(a=>Array.isArray(a.impact?.tickers)&&a.impact.tickers.includes(ticker));
-    if(byTicker.length>=2) return byTicker.slice(0,4);
-    return articles.slice(0,4);
+
+    // Filtra artigos que mencionam este ticker explicitamente
+    const byTicker = articles.filter(a => {
+      const tickers = Array.isArray(a.impact?.tickers) ? a.impact.tickers : [];
+      // Verifica também o título/descrição como fallback secundário
+      const tickerInText = (a.title||'').toUpperCase().includes(ticker) ||
+                           (a.description||'').toUpperCase().includes(ticker);
+      return tickers.map(t=>t.toUpperCase()).includes(ticker.toUpperCase()) || tickerInText;
+    });
+
+    return byTicker.slice(0,4);
   }catch(e){return [];}
 }
 
@@ -649,7 +654,7 @@ function renderNews(articles, ticker){
   const sec = document.getElementById('newsSection');
   if(!sec) return;
   if(!articles || articles.length === 0){
-    sec.innerHTML=`<div class="news-section"><div class="news-section-title">Not\u00edcias</div><div class="news-fallback">Sem not\u00edcias dispon\u00edveis de momento.</div></div>`;
+    sec.innerHTML=`<div class="news-section"><div class="news-section-title">Not\u00edcias recentes &mdash; ${esc(ticker)}</div><div class="news-fallback">Sem not\u00edcias dispon\u00edveis para <strong>${esc(ticker)}</strong> de momento.</div></div>`;
     return;
   }
   const cards = articles.map(a=>{
@@ -664,7 +669,7 @@ function renderNews(articles, ticker){
         <div class="news-date">${fmtRelTime(a.publishedAt)}</div>
       </div></a>`;
   }).join('');
-  sec.innerHTML=`<div class="news-section"><div class="news-section-title">Not\u00edcias recentes</div><div class="news-grid">${cards}</div></div>`;
+  sec.innerHTML=`<div class="news-section"><div class="news-section-title">Not\u00edcias recentes &mdash; ${esc(ticker)}</div><div class="news-grid">${cards}</div></div>`;
 }
 
 /* ── Erro ── */
