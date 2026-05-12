@@ -205,12 +205,10 @@
   if(t)t.addEventListener('click',()=>setTheme(d==='dark'?'light':'dark'));
 })();
 
-/* ── constantes ── */
 const WORKER='https://stocks.araujo-francisco-fernandes.workers.dev';
 const YF_PROXY='https://query2.finance.yahoo.com/v1/finance/search';
 const CORS_P='https://corsproxy.io/?';
 
-/* ── watchlist helpers (alinhado com watchlist.html) ── */
 function normalizeWatchlist(items){
   const arr=Array.isArray(items)?items:[];
   const seen=new Set();
@@ -249,13 +247,16 @@ function toggleWatchlist(ticker){
   return arr.includes(t);
 }
 
-/* ── data.json local ── */
 let LOCAL={};
 async function loadLocal(){
-  try{const r=await fetch('data.json?t='+Date.now());if(!r.ok)throw 0;const j=await r.json();LOCAL=j.stocks||{};}catch{}
+  try{
+    const r=await fetch('data.json?t='+Date.now());
+    if(!r.ok)throw 0;
+    const j=await r.json();
+    LOCAL=j.stocks||{};
+  }catch{}
 }
 
-/* ── pesquisa no Yahoo (apenas para obter lista de símbolos/nomes) ── */
 async function yfSearch(term){
   const url=`${CORS_P}${encodeURIComponent(YF_PROXY+'?q='+encodeURIComponent(term)+'&lang=en&region=US&quotesCount=8&newsCount=0&enableFuzzyQuery=true')}`;
   const r=await fetch(url,{headers:{'Accept':'application/json'}});
@@ -263,7 +264,6 @@ async function yfSearch(term){
   return r.json();
 }
 
-/* ── FIX: cotação via Worker (sem corsproxy para o preço) ── */
 async function workerQuote(symbol){
   try{
     const ctrl=new AbortController();
@@ -291,8 +291,17 @@ const resIn=document.getElementById('resultsInput');
 const closeBtn=document.getElementById('resultsClose');
 let timer=null;
 
-function openPanel(q){panel.classList.add('open');resIn.value=q||'';resIn.focus();if(q)doSearch(q);else list.innerHTML='<div class="results-empty">Escreve para pesquisar qualquer a&#231;&#227;o ou ETF&#8230;</div>';}
-function closePanel(){panel.classList.remove('open');mainIn.focus();}
+function openPanel(q){
+  panel.classList.add('open');
+  resIn.value=q||'';
+  resIn.focus();
+  if(q) doSearch(q);
+  else list.innerHTML='<div class="results-empty">Escreve para pesquisar qualquer a&#231;&#227;o ou ETF&#8230;</div>';
+}
+function closePanel(){
+  panel.classList.remove('open');
+  mainIn.focus();
+}
 
 function watchlistBtnHTML(ticker){
   const added=isInWatchlist(ticker);
@@ -326,7 +335,10 @@ function resultHTML(ticker,name,typeLabel,exch,price,chgPct,sym){
 
 async function doSearch(q){
   const term=q.trim();
-  if(!term){list.innerHTML='<div class="results-empty">Escreve para pesquisar&#8230;</div>';return;}
+  if(!term){
+    list.innerHTML='<div class="results-empty">Escreve para pesquisar&#8230;</div>';
+    return;
+  }
   list.innerHTML='<div class="loading-dots"><span></span><span></span><span></span></div>';
   const termUpper=term.toUpperCase();
 
