@@ -1,11 +1,11 @@
 {
-  "updated": "2026-05-11T20:45:54.691793Z",
+  "updated": "2026-05-12T11:22:40.474522Z",
   "t212_mode": "live",
   "summary": {
-    "total_value": 9434.42,
+    "total_value": 9425.7,
     "total_invested": 3385.23,
-    "total_gain_eur": 3821.65,
-    "total_gain_pct": 112.89,
+    "total_gain_eur": 3746.71,
+    "total_gain_pct": 110.68,
     "daily_gain_eur": 585.27,
     "n_positions": 7
   },
@@ -15,7 +15,7 @@
       "quantity": 5.823397,
       "avg_price": 123.7851,
       "current_price": 795.33,
-      "ppl": 3149.38,
+      "ppl": 3099.88,
       "fx_ppl": 0.0,
       "ticker": "MU",
       "display_name": "Micron Technology",
@@ -23,48 +23,48 @@
       "change_pct": 6.5,
       "invested": 720.85,
       "value_eur": 4631.52,
-      "gain_eur": 3149.38,
-      "gain_pct": 436.9,
-      "allocation_pct": 49.09,
+      "gain_eur": 3099.88,
+      "gain_pct": 430.03,
+      "allocation_pct": 49.14,
       "news": [
         {
           "source": "Yahoo",
-          "headline": "Stock Market Today: Dow Up; Intel Gain Reaches 260%; Dividend Play Tests Entry (Live Coverage)",
-          "summary": "The Dow Jones index is steady on the stock market today after President Trump rejects an Iran proposal. Intel and Micron are winners.",
-          "url": "https://finnhub.io/api/news?id=5b80c1484766f38b6eb6bf67ac823ff8ba5fd46909882b37fa424423379b6218",
-          "datetime": 1778526854,
+          "headline": "These Stocks Are Today’s Movers: Intel, Micron, GitLab, ZoomInfo, AST SpaceMobile, Plug Power, and More",
+          "summary": "Intel and Micron shares falls as investors opt to lock in profits following a breakneck rally in chip stocks.",
+          "url": "https://finnhub.io/api/news?id=2c372185573f1111af79b7a242212fa84986e1a802ce2d5bd263390b8e2e43c6",
+          "datetime": 1778579400,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
           "source": "ChartMill",
-          "headline": "Explore the top gainers and losers within the S&P500 index in today's session.",
-          "summary": "Stay updated with the movement of S&P500 stocks in today's session. Discover which S&P500 stocks are making waves on Monday.",
-          "url": "https://finnhub.io/api/news?id=fa4af5bd47fa07d29176c5ba0f0c1a375ab8cce403feefcded7a1b5b3ce0e490",
-          "datetime": 1778526303,
-          "image": "https://www.chartmill.com/images/uploads/CM_Top_Movers_Small_free_2b4ff2fc22.webp"
+          "headline": "Chips Push the S&P 500 to 7,400, Supercycle or the Last Act of a Bubble?",
+          "summary": "Monday was one of those sessions where the headline number - a modest 0.2% gain on the S&P 500 - doesn't begin to capture what's actually happening underneath the surface.",
+          "url": "https://finnhub.io/api/news?id=0254dbea09e8b79cd07ca314218a491c90985378a4403005097622f40fad872e",
+          "datetime": 1778569455,
+          "image": "https://www.chartmill.com/images/uploads/THUMBNAILS_CHARTMILL_1000_528_43_6ead78858a.webp"
         },
         {
           "source": "Yahoo",
-          "headline": "Nearly 40% of Trump’s China CEO Delegation Have Crypto Ties",
-          "summary": "Trump heads to Beijing with Musk, Cook, and Fink leading a 17-CEO delegation, where roughly 40% have crypto ties.",
-          "url": "https://finnhub.io/api/news?id=91ab41b459de975385a8ddcc2e1732eefd9f828b9dafeaf04322cede7d764ad8",
-          "datetime": 1778525451,
+          "headline": "Dow Jones Futures: Techs Fall As South Korea Eyes Excess AI Profits; CPI Inflation Due",
+          "summary": "Techs fell as South Korea's Kospi index as a top official suggested excess AI profits could be given to citizens. The CPI inflation report is on tap.",
+          "url": "https://finnhub.io/api/news?id=44de4e85fcf743b30443dd8fe173918e7befd0a74fdea5997cdcd748dc54c811",
+          "datetime": 1778555408,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
-          "source": "ChartMill",
-          "headline": "Which S&P500 stocks are the most active on Monday?",
-          "summary": "Looking for the most active stocks in the S&P500 index on Monday? Dive into today's session and discover the stocks that are dominating the trading activity and setting the pace for the market.",
-          "url": "https://finnhub.io/api/news?id=11bde6e11142beafbc733e4b84ae00b51ce05d69bd458fb9f792209e302f5876",
-          "datetime": 1778522702,
-          "image": "https://www.chartmill.com/images/uploads/CM_Most_Active_Stocks_Small_free_fec0650b7f.webp"
+          "source": "Yahoo",
+          "headline": "Micron vs. Sandisk: Which Memory Stock Is the Better Buy Right Now?",
+          "summary": "Each one offers a unique mix of opportunity and risk.",
+          "url": "https://finnhub.io/api/news?id=981b9e1501b47b51a79057e89ee37479576640692085bc333a8f67f4f4ffbdd8",
+          "datetime": 1778548800,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
           "source": "Yahoo",
-          "headline": "Equities Rise Intraday, Oil Jumps as Markets Montior Middle East Developments",
-          "summary": "US benchmark equity indexes were higher intraday as traders appeared to shake off worries about the",
-          "url": "https://finnhub.io/api/news?id=afc495533ab78c58d85db5474e4a056f9e3e676ebff09b7fe7ef8130659245d4",
-          "datetime": 1778522664,
+          "headline": "Micron (MU) Draws Bullish Call as AI Memory Demand Reshapes Growth Outlook",
+          "summary": "Micron’s growth profile seems to be shifting as memory demand enters a new, more profitable phase. The stock is fifth on our list of 12 AI Stocks Wall Street Is Watching Now. On May 11, D.A. Davidson reiterated the stock as “Buy” with a $1,000.00 price target. The firm believes Micron is a table-pou",
+          "url": "https://finnhub.io/api/news?id=2d54a839ffdcdecda6cc999f08751daf7b932f815525f69d11720b2f3cbd862f",
+          "datetime": 1778543825,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         }
       ],
@@ -128,7 +128,7 @@
       "quantity": 8.814727,
       "avg_price": 137.7683,
       "current_price": 367.92,
-      "ppl": -77.55,
+      "ppl": -76.23,
       "fx_ppl": 0.0,
       "ticker": "VRT",
       "display_name": "Vertiv Holdings",
@@ -136,49 +136,49 @@
       "change_pct": 8.22,
       "invested": 1214.39,
       "value_eur": 3243.11,
-      "gain_eur": -77.55,
-      "gain_pct": -6.39,
-      "allocation_pct": 34.38,
+      "gain_eur": -76.23,
+      "gain_pct": -6.28,
+      "allocation_pct": 34.41,
       "news": [
         {
           "source": "ChartMill",
-          "headline": "Explore the top gainers and losers within the S&P500 index in today's session.",
-          "summary": "Stay updated with the movement of S&P500 stocks in today's session. Discover which S&P500 stocks are making waves on Monday.",
-          "url": "https://finnhub.io/api/news?id=fa4af5bd47fa07d29176c5ba0f0c1a375ab8cce403feefcded7a1b5b3ce0e490",
-          "datetime": 1778526303,
-          "image": "https://www.chartmill.com/images/uploads/CM_Top_Movers_Small_free_2b4ff2fc22.webp"
-        },
-        {
-          "source": "ChartMill",
-          "headline": "What's going on in today's session: S&P500 movers",
-          "summary": "Uncover the latest developments among S&P500 stocks in today's session. Stay tuned to the S&P500 index's top gainers and losers on Monday.",
-          "url": "https://finnhub.io/api/news?id=dc4ce07b203421c61a20658c0d0a42656b3260db3639d14ad6cfd9f748eb6d0f",
-          "datetime": 1778517303,
-          "image": "https://www.chartmill.com/images/uploads/CM_Top_Movers_Small_free_2b4ff2fc22.webp"
-        },
-        {
-          "source": "SeekingAlpha",
-          "headline": "Documenting The Rally",
-          "summary": "The S&P 500 is now up more than 17% since its late March low, and it's 7% above its 50-day moving average. Read more here.",
-          "url": "https://finnhub.io/api/news?id=9b2e3ad7df5f3dbd87a0f58e2931b68568b3e4362e5bc2059ffce4ba478a7da3",
-          "datetime": 1778509200,
-          "image": "https://static.seekingalpha.com/cdn/s3/uploads/getty_images/1936201908/image_1936201908.jpg?io=getty-c-w1536"
+          "headline": "Vertiv Holdings Co (NYSE:VRT) Screens as a Strong GARP Candidate",
+          "summary": "Vertiv Holdings Co (VRT) exemplifies the GARP strategy, blending strong earnings growth with a reasonable valuation. With a 54% EPS surge and solid financial health, it offers growth at a fair price relative to industry peers.",
+          "url": "https://finnhub.io/api/news?id=97f6a8babb050ea0f3dfce7c89927a21fb43b0cbf6b5b926dfc497ef534cc776",
+          "datetime": 1778574039,
+          "image": "https://www.chartmill.com/images/uploads/Affordable_Growth_500_264px_webp_add6a3aa59.webp"
         },
         {
           "source": "Yahoo",
-          "headline": "Vertiv Holdings Co. (VRT) is Attracting Investor Attention: Here is What You Should Know",
-          "summary": "Recently, Zacks.com users have been paying close attention to Vertiv (VRT). This makes it worthwhile to examine what the stock has in store.",
-          "url": "https://finnhub.io/api/news?id=a1699e53b6990bb1a4944761b55098e52646d0c014bfe37a7b9269b5a5095876",
-          "datetime": 1778504405,
+          "headline": "Vertiv Holdings (VRT) Price Target Increased by Citi to $141",
+          "summary": "Vertiv Holdings Co. (NYSE:VRT) is one of the 10 Best Industrial Stocks Benefiting from the Data Center Boom. On May 7, Citi increased its price target on Vertiv to $414 from $353 and maintained a Buy rating on the shares, according to a report by TheFly. Citi emphasized the company’s multi-year visi",
+          "url": "https://finnhub.io/api/news?id=7ca054d903af3d0ef4ec414a5cc08035c3aa94fd1545b5638df5f197114c338e",
+          "datetime": 1778565641,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
-          "source": "CNBC",
-          "headline": "The record-setting rally's next move",
-          "summary": "The Investment Committee debate where the market is headed after hitting record highs.",
-          "url": "https://finnhub.io/api/news?id=dc6e2ca0bf06aead33c96017f0afb8dab023026904174a842f969620de484568",
-          "datetime": 1778504008,
-          "image": "https://image.cnbcfm.com/api/v1/image/108305119-17785170031778516999-45865821821-1080pnbcnews.jpg?v=1778517002&w=1920&h=1080"
+          "source": "Yahoo",
+          "headline": "Dow Jones Futures: Techs Fall As South Korea Eyes Excess AI Profits; CPI Inflation Due",
+          "summary": "Techs fell as South Korea's Kospi index as a top official suggested excess AI profits could be given to citizens. The CPI inflation report is on tap.",
+          "url": "https://finnhub.io/api/news?id=44de4e85fcf743b30443dd8fe173918e7befd0a74fdea5997cdcd748dc54c811",
+          "datetime": 1778555408,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "headline": "Dow Jones Futures: AI, Chip Stocks Thrive Despite Oil Prices, Trump Comments; CPI Inflation Due",
+          "summary": "The major indexes rose slightly Monday as AI and chips shrugged off higher oil prices as Trump said Iran ceasefire \"on life support.\"",
+          "url": "https://finnhub.io/api/news?id=bbe3ef805e75fc87d16731e21b32ee00ff6854893579fd9b56bd10e56427dd63",
+          "datetime": 1778533972,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "SeekingAlpha",
+          "headline": "Allspring Mid Cap Growth Fund Q1 2026 Performance And Attribution",
+          "summary": "Allspring Mid Cap Growth Fund outperformed its benchmark in Q1 2026 due to strong selection in industrials. Read the full analysis for more details.",
+          "url": "https://finnhub.io/api/news?id=1fe204e91346726512657eb9d916c63355ab4785e6a85e0c4e5bd35c67c14ef9",
+          "datetime": 1778533800,
+          "image": "https://static.seekingalpha.com/cdn/s3/uploads/getty_images/2248090640/image_2248090640.jpg?io=getty-c-w1536"
         }
       ],
       "earnings": [
@@ -241,7 +241,7 @@
       "quantity": 4.008083,
       "avg_price": 125.7334,
       "current_price": 152.05,
-      "ppl": 747.65,
+      "ppl": 729.22,
       "fx_ppl": 0.0,
       "ticker": "VST",
       "display_name": "Vistra Corp",
@@ -249,10 +249,18 @@
       "change_pct": 2.93,
       "invested": 503.95,
       "value_eur": 609.43,
-      "gain_eur": 747.65,
-      "gain_pct": 148.36,
-      "allocation_pct": 6.46,
+      "gain_eur": 729.22,
+      "gain_pct": 144.7,
+      "allocation_pct": 6.47,
       "news": [
+        {
+          "source": "Yahoo",
+          "headline": "Vistra Corp. (VST) – Among the 10 Best Robinhood Stocks to Buy According to Billionaires",
+          "summary": "Vistra Corp. (NYSE:VST) is included among the 10 Best Robinhood Stocks to Buy According to Billionaires. On May 7, Reuters reported that Vistra Corp. (NYSE:VST) swung to a quarterly profit as rising power demand and higher electricity prices lifted results. The company’s shares climbed 4.2% in prema",
+          "url": "https://finnhub.io/api/news?id=8107ec1f961525c7b9a00e916120df56d000abb7903a812122709ee4df8768bb",
+          "datetime": 1778568290,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
         {
           "source": "Yahoo",
           "headline": "Nuclear Reactor Leader Constellation Backs Three Mile Island Goal",
@@ -284,14 +292,6 @@
           "url": "https://finnhub.io/api/news?id=6f8f528cda14ed55e74ab75b4bf23ec05b97588c84ff0b2bff8722653dc97c6a",
           "datetime": 1778499196,
           "image": "https://static.seekingalpha.com/cdn/s3/uploads/getty_images/2247506344/image_2247506344.jpg?io=getty-c-w1536"
-        },
-        {
-          "source": "Benzinga",
-          "headline": "Here's How Much $100 Invested In Vistra 5 Years Ago Would Be Worth Today",
-          "summary": " ",
-          "url": "https://finnhub.io/api/news?id=a745eb94d4eb327afca4e81a2d235e2072c205408ed5adaeae1c6e00e0344420",
-          "datetime": 1778497237,
-          "image": ""
         }
       ],
       "earnings": [
@@ -353,18 +353,18 @@
       "ticker_t212": "AMZd_EQ",
       "quantity": 1.803283,
       "avg_price": 230.5462,
-      "current_price": 231.15,
-      "ppl": 1.09,
+      "current_price": 227.36,
+      "ppl": -5.75,
       "fx_ppl": 0.0,
       "ticker": "AMZd",
       "display_name": "Direxion Daily AMZN Bear 1X Shares",
       "ticker_display": "AMZd",
       "change_pct": 0.0,
       "invested": 415.74,
-      "value_eur": 416.83,
-      "gain_eur": 1.09,
-      "gain_pct": 0.26,
-      "allocation_pct": 4.42,
+      "value_eur": 409.99,
+      "gain_eur": -5.75,
+      "gain_pct": -1.38,
+      "allocation_pct": 4.35,
       "news": [],
       "earnings": [],
       "dividends": [
@@ -396,18 +396,18 @@
       "ticker_t212": "M4Id_EQ",
       "quantity": 0.947418,
       "avg_price": 422.2,
-      "current_price": 423.9,
-      "ppl": 1.61,
+      "current_price": 422.8,
+      "ppl": 0.57,
       "fx_ppl": 0.0,
       "ticker": "M4Id",
       "display_name": "M4Id",
       "ticker_display": "M4Id",
       "change_pct": 0.0,
       "invested": 400.0,
-      "value_eur": 401.61,
-      "gain_eur": 1.61,
-      "gain_pct": 0.4,
-      "allocation_pct": 4.26,
+      "value_eur": 400.57,
+      "gain_eur": 0.57,
+      "gain_pct": 0.14,
+      "allocation_pct": 4.25,
       "news": [],
       "earnings": [],
       "dividends": [],
@@ -422,18 +422,18 @@
       "ticker_t212": "SVFC_US_EQ",
       "quantity": 2.293839,
       "avg_price": 52.2007,
-      "current_price": 51.71,
-      "ppl": -1.07,
-      "fx_ppl": -0.11,
+      "current_price": 51.34,
+      "ppl": -1.46,
+      "fx_ppl": 0.22,
       "ticker": "SVFC",
       "display_name": "SVFC",
       "ticker_display": "SVFC",
       "change_pct": 0.0,
       "invested": 119.74,
-      "value_eur": 118.61,
-      "gain_eur": -1.07,
-      "gain_pct": -0.89,
-      "allocation_pct": 1.26,
+      "value_eur": 117.77,
+      "gain_eur": -1.46,
+      "gain_pct": -1.22,
+      "allocation_pct": 1.25,
       "news": [],
       "earnings": [],
       "dividends": [],
@@ -449,7 +449,7 @@
       "quantity": 0.008498,
       "avg_price": 1242.6015,
       "current_price": 1565.8101,
-      "ppl": 0.54,
+      "ppl": 0.48,
       "fx_ppl": 0.0,
       "ticker": "ASML",
       "display_name": "ASML Holding",
@@ -457,8 +457,8 @@
       "change_pct": -1.65,
       "invested": 10.56,
       "value_eur": 13.31,
-      "gain_eur": 0.54,
-      "gain_pct": 5.11,
+      "gain_eur": 0.48,
+      "gain_pct": 4.55,
       "allocation_pct": 0.14,
       "news": [
         {
@@ -570,6 +570,10 @@
     {
       "date": "2026-05-11",
       "value": 9434.42
+    },
+    {
+      "date": "2026-05-12",
+      "value": 9425.7
     }
   ]
 }
