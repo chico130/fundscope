@@ -258,6 +258,57 @@ const TICKER = (() => {
   }
 })();
 
+/* ── Logo: cadeia de fontes gratuitas com fallback para inicial ──
+   1. img.logo.dev  — melhor cobertura, gratuito
+   2. logo.uplead.com — backup gratuito
+   3. inicial em texto (já presente no DOM)
+*/
+const LOGO_DOMAINS = {
+  /* ticker -> domínio correto quando não é ticker.com */
+  'BRK-B':'berkshirehathaway.com','BRK-A':'berkshirehathaway.com',
+  'GOOGL':'google.com','GOOG':'google.com',
+  'META':'meta.com','AMZN':'amazon.com','TSLA':'tesla.com',
+  'NVDA':'nvidia.com','AMD':'amd.com','INTC':'intel.com',
+  'JPM':'jpmorgan.com','BAC':'bankofamerica.com','WFC':'wellsfargo.com',
+  'GS':'goldmansachs.com','MS':'morganstanley.com',
+  'JNJ':'jnj.com','PFE':'pfizer.com','MRK':'merck.com','ABBV':'abbvie.com',
+  'XOM':'exxonmobil.com','CVX':'chevron.com',
+  'WMT':'walmart.com','TGT':'target.com','COST':'costco.com',
+  'DIS':'disney.com','NFLX':'netflix.com','CMCSA':'comcast.com',
+  'VZ':'verizon.com','T':'att.com',
+  'SPY':'ssga.com','QQQ':'invesco.com','VTI':'vanguard.com',
+  'VOO':'vanguard.com','IVV':'ishares.com','ARKK':'ark-invest.com',
+};
+
+function loadStockLogo(ticker){
+  const wrap = document.getElementById('logoWrap');
+  if(!wrap) return;
+  const domain = LOGO_DOMAINS[ticker] || (ticker.toLowerCase().replace(/[^a-z0-9]/g,'') + '.com');
+
+  const sources = [
+    `https://img.logo.dev/${domain}?token=pk_TZ0vMBYRQF6qenRSQcL-5A&size=80&format=png`,
+    `https://logo.uplead.com/${domain}`,
+  ];
+
+  let idx = 0;
+  const img = new Image();
+  img.style.cssText = 'width:100%;height:100%;object-fit:contain;padding:6px;';
+
+  function tryNext(){
+    if(idx >= sources.length){ return; } /* mantém a inicial */
+    img.src = sources[idx++];
+  }
+
+  img.onload = () => {
+    /* rejeita imagens 1x1 (pixel de erro) */
+    if(img.naturalWidth <= 2 && img.naturalHeight <= 2){ tryNext(); return; }
+    wrap.innerHTML = '';
+    wrap.appendChild(img);
+  };
+  img.onerror = tryNext;
+  tryNext();
+}
+
 /* ── Worker: gráfico ── */
 async function workerChart(ticker,range,interval){
   try{
@@ -341,7 +392,6 @@ function renderChart(period,pts,baseClose){
   }
   if(!wrap.querySelector('#priceChart')){const c=document.createElement('canvas');c.id='priceChart';wrap.innerHTML='';wrap.appendChild(c);}
   const cvs=document.getElementById('priceChart');
-  /* cor baseada em baseClose (prevClose oficial) se disponível, senão pts[0] */
   const ref=baseClose??pts[0].v;
   const last=pts[pts.length-1].v,up=last>=ref;
   const color=up?'#437a22':'#a13544',bg0=up?'rgba(67,122,34,.18)':'rgba(161,53,68,.18)';
@@ -371,7 +421,6 @@ function updateChangeBadge(pts,period,baseClose){
   const badge=document.getElementById('chartChangeBadge');
   if(!badge) return;
   if(!pts||pts.length<2){badge.textContent='\u2014';badge.className='chart-change-badge';return;}
-  /* Para 1D: usa prevClose oficial (baseClose). Para outros: usa chartPreviousClose do meta se disponível, senão pts[0] */
   const ref=baseClose??pts[0].v;
   const last=pts[pts.length-1].v,chg=last-ref,pct=ref?(chg/ref)*100:0;
   const up=chg>=0,sign=up?'+':'',arrow=up?'\u25b2':'\u25bc';
@@ -395,7 +444,6 @@ async function fetchLiveQuote(ticker){
   const summM  = stats?.summaryDetail || {};
   const keyM   = stats?.defaultKeyStatistics || {};
 
-  /* ── FALLBACK: se o worker não responde, usa data.json ── */
   let price = rawVal(priceM.regularMarketPrice) ?? meta.regularMarketPrice ?? null;
   let isStatic = false;
 
@@ -475,7 +523,6 @@ function renderStock(s){
   const {ticker,name,exchange,type,price,prevClose,change,changePct,open,high,low,
          volume,avgVolume,marketCap,pe,eps,beta,dividend,week52High:w52h,week52Low:w52l,hist1D,isStatic}=s;
   window._yfTicker = ticker;
-  /* prevClose oficial guardado globalmente para o badge 1D */
   window._prevClose = prevClose;
   const up=changePct>=0,sign=up?'+':'',arrow=up?'\u25b2':'\u25bc',cls=up?'up':'down';
   const dash='\u2014';
@@ -561,7 +608,9 @@ function renderStock(s){
 
   document.getElementById('stockContent').style.display='block';
 
-  /* Cache inclui prevClose por período para o badge */
+  /* Carregar logo após o DOM estar pronto */
+  loadStockLogo(ticker);
+
   window._histCache={
     '1D':{pts:hist1D||[],prevClose:prevClose},
     '1S':{pts:[],prevClose:null},
@@ -582,11 +631,9 @@ function renderStock(s){
       const raw=await workerChart(window._yfTicker,range,interval);
       const parsed=parseChartPts(raw);
       pts=parsed.pts;
-      /* Para 1D usa sempre o prevClose oficial da sessão */
       baseClose = (p==='1D') ? window._prevClose : (parsed.prevClose ?? (pts.length?pts[0].v:null));
       if(pts&&pts.length>1) window._histCache[p]={pts,prevClose:baseClose};
     } else {
-      /* 1D já em cache: garante prevClose oficial */
       if(p==='1D') baseClose=window._prevClose;
     }
     const w2=document.querySelector('.chart-wrap');
@@ -603,11 +650,6 @@ function renderStock(s){
     btn.classList.add('active');
     loadAndRender(btn.dataset.p);
   });
-
-  const img=new Image();
-  img.onload=()=>{const w=document.getElementById('logoWrap');if(w){w.innerHTML='';w.appendChild(img);}};
-  img.onerror=()=>{};
-  img.src='https://logo.clearbit.com/'+ticker.toLowerCase()+'.com';
 
   Promise.all([workerAnalysts(ticker), fetchNews(ticker)]).then(([fd, articles])=>{
     renderAnalysts(fd, price);
