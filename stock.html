@@ -102,7 +102,6 @@
     .error-state{text-align:center;padding:var(--space-16) var(--space-8);color:var(--color-text-muted);}
     .error-state h2{font-size:var(--text-lg);margin-bottom:var(--space-3);color:var(--color-text);}
     .error-detail{margin-top:var(--space-2);font-size:var(--text-sm);color:var(--color-text-faint);font-family:monospace;background:var(--color-surface);padding:var(--space-3);border-radius:var(--radius-md);text-align:left;max-width:520px;margin-inline:auto;word-break:break-all;line-height:1.6;}
-    /* ── Analistas ── */
     .analyst-card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-5);box-shadow:var(--shadow-sm);margin-bottom:var(--space-6);}
     .analyst-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-4);margin-bottom:var(--space-5);}
     .analyst-kpi{text-align:center;}
@@ -117,7 +116,6 @@
     .rec-legend{display:flex;gap:var(--space-4);flex-wrap:wrap;}
     .rec-legend-item{display:flex;align-items:center;gap:5px;font-size:var(--text-xs);color:var(--color-text-muted);}
     .rec-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
-    /* ── Notícias ── */
     .news-section{margin-bottom:var(--space-6);}
     .news-section-title{font-size:var(--text-xs);font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--color-text-faint);margin-bottom:var(--space-4);}
     .news-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4);}
@@ -258,55 +256,62 @@ const TICKER = (() => {
   }
 })();
 
-/* ── Logo: cadeia de fontes gratuitas com fallback para inicial ──
-   1. img.logo.dev  — melhor cobertura, gratuito
-   2. logo.uplead.com — backup gratuito
-   3. inicial em texto (já presente no DOM)
-*/
+/* ──────────────────────────────────────────────────────────────
+   LOGOS
+   Estratégia (sem CORS, sem API key):
+   1. Google Favicons S=64 — favicon real do site da empresa
+   2. Fallback: inicial em texto (já no DOM)
+
+   Para empresas cujo domínio não corresponde ao ticker,
+   usamos o mapa LOGO_DOMAINS.
+────────────────────────────────────────────────────────────── */
 const LOGO_DOMAINS = {
-  /* ticker -> domínio correto quando não é ticker.com */
-  'BRK-B':'berkshirehathaway.com','BRK-A':'berkshirehathaway.com',
-  'GOOGL':'google.com','GOOG':'google.com',
-  'META':'meta.com','AMZN':'amazon.com','TSLA':'tesla.com',
-  'NVDA':'nvidia.com','AMD':'amd.com','INTC':'intel.com',
-  'JPM':'jpmorgan.com','BAC':'bankofamerica.com','WFC':'wellsfargo.com',
-  'GS':'goldmansachs.com','MS':'morganstanley.com',
-  'JNJ':'jnj.com','PFE':'pfizer.com','MRK':'merck.com','ABBV':'abbvie.com',
-  'XOM':'exxonmobil.com','CVX':'chevron.com',
-  'WMT':'walmart.com','TGT':'target.com','COST':'costco.com',
-  'DIS':'disney.com','NFLX':'netflix.com','CMCSA':'comcast.com',
-  'VZ':'verizon.com','T':'att.com',
-  'SPY':'ssga.com','QQQ':'invesco.com','VTI':'vanguard.com',
-  'VOO':'vanguard.com','IVV':'ishares.com','ARKK':'ark-invest.com',
+  'AAPL':'apple.com','MSFT':'microsoft.com','GOOGL':'google.com','GOOG':'google.com',
+  'AMZN':'amazon.com','META':'meta.com','TSLA':'tesla.com','NVDA':'nvidia.com',
+  'AVGO':'broadcom.com','JPM':'jpmorgan.com','V':'visa.com','MA':'mastercard.com',
+  'UNH':'unitedhealthgroup.com','XOM':'exxonmobil.com','WMT':'walmart.com',
+  'LLY':'lilly.com','JNJ':'jnj.com','PG':'pg.com','HD':'homedepot.com',
+  'MRK':'merck.com','ABBV':'abbvie.com','CVX':'chevron.com','COST':'costco.com',
+  'BAC':'bankofamerica.com','PFE':'pfizer.com','AMD':'amd.com','INTC':'intel.com',
+  'NFLX':'netflix.com','DIS':'disney.com','CMCSA':'comcast.com','VZ':'verizon.com',
+  'T':'att.com','WFC':'wellsfargo.com','GS':'goldmansachs.com','MS':'morganstanley.com',
+  'CRM':'salesforce.com','ORCL':'oracle.com','ADBE':'adobe.com','QCOM':'qualcomm.com',
+  'TXN':'ti.com','IBM':'ibm.com','NOW':'servicenow.com','UBER':'uber.com',
+  'ABNB':'airbnb.com','PYPL':'paypal.com','SQ':'squareup.com','SNAP':'snap.com',
+  'SPOT':'spotify.com','SHOP':'shopify.com','COIN':'coinbase.com',
+  'BRK-A':'berkshirehathaway.com','BRK-B':'berkshirehathaway.com',
+  'SPY':'ssga.com','QQQ':'invesco.com','VTI':'vanguard.com','VOO':'vanguard.com',
+  'IVV':'ishares.com','ARKK':'ark-invest.com','GLD':'spdrgoldshares.com',
 };
 
 function loadStockLogo(ticker){
   const wrap = document.getElementById('logoWrap');
   if(!wrap) return;
-  const domain = LOGO_DOMAINS[ticker] || (ticker.toLowerCase().replace(/[^a-z0-9]/g,'') + '.com');
 
-  const sources = [
-    `https://img.logo.dev/${domain}?token=pk_TZ0vMBYRQF6qenRSQcL-5A&size=80&format=png`,
-    `https://logo.uplead.com/${domain}`,
-  ];
+  const domain = LOGO_DOMAINS[ticker]
+    || (ticker.toLowerCase().replace(/[^a-z0-9]/g,'') + '.com');
 
-  let idx = 0;
+  /* Google Favicons CDN — sem CORS, sem API key, funciona sempre */
+  const url = `https://www.google.com/s2/favicons?sz=64&domain=${domain}`;
+
   const img = new Image();
-  img.style.cssText = 'width:100%;height:100%;object-fit:contain;padding:6px;';
-
-  function tryNext(){
-    if(idx >= sources.length){ return; } /* mantém a inicial */
-    img.src = sources[idx++];
-  }
+  img.width  = 56;
+  img.height = 56;
+  img.style.cssText = 'width:100%;height:100%;object-fit:contain;padding:8px;';
+  img.alt = ticker;
 
   img.onload = () => {
-    /* rejeita imagens 1x1 (pixel de erro) */
-    if(img.naturalWidth <= 2 && img.naturalHeight <= 2){ tryNext(); return; }
+    /* Google devolve um ícone genérico (16x16 cinzento) quando não encontra.
+       Rejeitamos imagens muito pequenas (≤16px) ou quadradas de 1px. */
+    if(img.naturalWidth <= 16 && img.naturalHeight <= 16){
+      return; /* mantém a inicial */
+    }
     wrap.innerHTML = '';
     wrap.appendChild(img);
   };
-  img.onerror = tryNext;
-  tryNext();
+
+  img.onerror = () => { /* mantém a inicial */ };
+  img.src = url;
 }
 
 /* ── Worker: gráfico ── */
@@ -369,7 +374,6 @@ function fmtTooltipLabel(ts,period){
   return d.toLocaleDateString('pt',{day:'2-digit',month:'short',year:'numeric'});
 }
 
-/* ── parseChartPts: devolve pts + chartPreviousClose do meta ── */
 function parseChartPts(data){
   try{
     const result=data?.chart?.result?.[0];
@@ -416,7 +420,6 @@ function renderChart(period,pts,baseClose){
   });
 }
 
-/* ── updateChangeBadge: usa baseClose como referência ── */
 function updateChangeBadge(pts,period,baseClose){
   const badge=document.getElementById('chartChangeBadge');
   if(!badge) return;
@@ -607,8 +610,6 @@ function renderStock(s){
   <div id="newsSection"></div>`;
 
   document.getElementById('stockContent').style.display='block';
-
-  /* Carregar logo após o DOM estar pronto */
   loadStockLogo(ticker);
 
   window._histCache={
