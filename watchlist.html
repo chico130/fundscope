@@ -260,19 +260,26 @@ async function fetchNews(ticker){
     if(!r.ok)return[];
     const j=await r.json();
     const articles=Array.isArray(j?.articles)?j.articles:[];
-    const t = ticker.toUpperCase();
+    const t = String(ticker||'').toUpperCase();
+
+    // regex com fronteiras de palavra para evitar matches tipo "O" em "Stock"
+    const regex = new RegExp(`\\b${t}\\b`, 'i');
+
     const withImpact = articles.filter(a => {
       const tickers = Array.isArray(a?.impact?.tickers) ? a.impact.tickers.map(x=>String(x).toUpperCase()) : [];
       return tickers.includes(t);
     });
+
     const textMatches = articles.filter(a => {
-      if(!a || !a.title) return false;
-      const title = String(a.title).toUpperCase();
-      const desc  = String(a.description || '').toUpperCase();
+      if(!a) return false;
+      const title   = String(a.title || '').toUpperCase();
+      const summary = String(a.summary || '').toUpperCase();
+      const content = String(a.content || '').toUpperCase();
       const tickers = Array.isArray(a?.impact?.tickers) ? a.impact.tickers.map(x=>String(x).toUpperCase()) : [];
       if(tickers.includes(t)) return false;
-      return title.includes(t) || desc.includes(t);
+      return regex.test(title) || regex.test(summary) || regex.test(content);
     });
+
     const merged = [...withImpact, ...textMatches];
     merged.sort((a,b)=>{
       const da=a.publishedAt?new Date(a.publishedAt).getTime():0;
@@ -373,8 +380,11 @@ function buildTargetsHTML(analystData,currentPrice){
   return html;
 }
 function buildAIHTML(data){
-  if(!data||!data.analysis)return '<p style="color:var(--color-text-muted);font-size:var(--text-sm);">Sem dados de earnings disponíveis.</p>';
-  const a=data.analysis; let html='';
+  const a = data?.analysis || data;
+  if(!a || (!a.resumo && !Array.isArray(a.correu_bem) && !Array.isArray(a.correu_mal) && !Array.isArray(a.vigiar))){
+    return '<p style="color:var(--color-text-muted);font-size:var(--text-sm);">Sem dados de earnings disponíveis.</p>';
+  }
+  let html='';
   if(a.resumo)html+=`<div class="ai-resumo">“${esc(a.resumo)}” &mdash; ${esc(a.periodo||'')}</div>`;
   if(a.correu_bem?.length)html+=`<div class="ai-section"><div class="ai-section-title good"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>O que correu bem</div><div class="ai-points">${a.correu_bem.map(p=>`<div class="ai-point">${esc(p)}</div>`).join('')}</div></div>`;
   if(a.correu_mal?.length)html+=`<div class="ai-section"><div class="ai-section-title bad"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>O que correu mal</div><div class="ai-points">${a.correu_mal.map(p=>`<div class="ai-point">${esc(p)}</div>`).join('')}</div></div>`;
@@ -451,14 +461,25 @@ const _loaded={}; const _cardPrices={};
 function lazyLoadTabs(ticker){
   if(_loaded[ticker])return;
   _loaded[ticker]=true;
-  const price=_cardPrices[ticker];
+
+  let price=_cardPrices[ticker];
+  if(!price){
+    const priceText=document.getElementById('price-'+ticker)?.textContent;
+    if(priceText && priceText.trim()!=='—'){
+      const num=parseFloat(priceText.replace('$','').replace(',',''));
+      if(!isNaN(num)) price=num;
+    }
+  }
+
   fetchNews(ticker).then(news=>{ const el=document.getElementById('panel-news-'+ticker); if(el)el.innerHTML=buildNewsHTML(news); });
   fetchAnalysts(ticker).then(analystData=>{ const el=document.getElementById('panel-targets-'+ticker); if(el)el.innerHTML=buildTargetsHTML(analystData,price); });
   fetchEarningsAI(ticker).then(data=>{ const el=document.getElementById('panel-ai-'+ticker); if(el)el.innerHTML=buildAIHTML(data); });
 }
 window.switchTab=function(ticker,tab){
-  document.querySelectorAll(`#card-${ticker} .wl-tab`).forEach(t=>t.classList.toggle('active',t.dataset.tab===tab));
-  document.querySelectorAll(`#card-${ticker} .wl-tab-panel`).forEach(p=>p.classList.toggle('active',p.id===`panel-${tab}-${ticker}`));
+  const card=document.getElementById('card-'+ticker);
+  if(!card)return;
+  card.querySelectorAll('.wl-tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===tab));
+  card.querySelectorAll('.wl-tab-panel').forEach(p=>p.classList.toggle('active',p.id===`panel-${tab}-${ticker}`));
 };
 window.removeCard=function(ticker){
   removeFromWatchlist(ticker);
