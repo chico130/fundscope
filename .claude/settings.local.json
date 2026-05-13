@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:8080/portfolio.html)",
+      "Bash(python serve.py)",
+      "Bash(curl -s -o nul -w \"%{http_code}\" http://localhost:8080/portfolio.html)",
+      "Bash(git add *)"
+    ]
+  }
+}

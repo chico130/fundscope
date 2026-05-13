@@ -198,8 +198,55 @@
     .div-list{display:flex;flex-direction:column;gap:var(--space-2);} 
     .div-row{display:flex;justify-content:space-between;align-items:center;padding:var(--space-2) var(--space-3);background:var(--color-surface-offset);border-radius:var(--radius-md);font-size:var(--text-xs);font-variant-numeric:tabular-nums;} 
 
-    @media (max-width: 1080px){.layout-grid{grid-template-columns:1fr;}.right-col{order:-1;}.kpi-grid{grid-template-columns:repeat(2,1fr);} .pos-head,.pos-row{grid-template-columns:2fr 1fr 1fr 1fr 1fr;}.hide-md{display:none;}}
-    @media (max-width: 720px){.header{padding:var(--space-4);} .header-actions .nav-link{display:none;} .container{padding:var(--space-6) var(--space-4);} .kpi-grid{grid-template-columns:1fr;} table{min-width:860px;} .positions-card{overflow-x:auto;} .drawer{width:100vw;}}
+    /* ── ALFA/BETA tab switcher */
+    .pf-tab-bar{display:flex;gap:3px;background:var(--color-surface-offset);border-radius:var(--radius-lg);padding:3px;}
+    .pf-tab{padding:var(--space-2) var(--space-5);border-radius:var(--radius-md);font-size:var(--text-sm);font-weight:500;color:var(--color-text-muted);transition:all var(--transition);white-space:nowrap;}
+    .pf-tab.active{background:var(--color-surface);color:var(--color-text);box-shadow:var(--shadow-sm);}
+    .demo-chip{font-size:10px;padding:1px 6px;border-radius:var(--radius-full);background:var(--color-gold-highlight);color:var(--color-gold);margin-left:4px;vertical-align:middle;font-weight:700;}
+    /* ── BETA demo badge */
+    .demo-badge{display:inline-flex;align-items:center;gap:var(--space-2);padding:var(--space-2) var(--space-4);border-radius:var(--radius-full);background:var(--color-gold-highlight);color:var(--color-gold);font-size:var(--text-sm);font-weight:600;border:1px solid color-mix(in oklch,var(--color-gold) 22%,transparent);}
+    /* ── BETA KPI row (4-col) */
+    .beta-kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-4);margin-bottom:var(--space-6);}
+    /* ── Equity canvas */
+    .equity-canvas{height:200px;}
+    /* ── Beta positions list */
+    .beta-pos-list{display:flex;flex-direction:column;gap:var(--space-2);margin-top:var(--space-3);}
+    .beta-pos-item{display:grid;grid-template-columns:1fr auto;gap:var(--space-3);align-items:center;padding:var(--space-3);background:var(--color-surface-offset);border-radius:var(--radius-lg);}
+    .beta-pos-ticker{font-size:var(--text-sm);font-weight:700;}
+    .beta-pos-name{font-size:var(--text-xs);color:var(--color-text-muted);}
+    .beta-pos-value{font-size:var(--text-sm);font-weight:600;font-variant-numeric:tabular-nums;text-align:right;}
+    .beta-pos-gain{font-size:var(--text-xs);font-variant-numeric:tabular-nums;text-align:right;}
+    .beta-pos-gain.up{color:var(--color-success);} .beta-pos-gain.down{color:var(--color-notification);}
+    /* ── Trades journal */
+    .trades-list{display:flex;flex-direction:column;gap:var(--space-3);margin-top:var(--space-3);max-height:500px;overflow-y:auto;}
+    .trade-card{background:var(--color-surface-offset);border-radius:var(--radius-lg);padding:var(--space-4);}
+    .trade-head-row{display:flex;align-items:center;gap:var(--space-2);flex-wrap:wrap;margin-bottom:var(--space-2);}
+    .trade-ticker-badge{font-size:var(--text-sm);font-weight:700;}
+    .trade-side{font-size:10px;font-weight:700;padding:2px 8px;border-radius:var(--radius-full);text-transform:uppercase;letter-spacing:.04em;}
+    .trade-side.buy{background:var(--color-success-highlight);color:var(--color-success);}
+    .trade-side.sell{background:var(--color-notification-highlight);color:var(--color-notification);}
+    .trade-datetime{font-size:var(--text-xs);color:var(--color-text-faint);margin-left:auto;}
+    .trade-reason{font-size:var(--text-sm);color:var(--color-text-muted);line-height:1.55;margin-bottom:var(--space-2);}
+    .trade-ctx-chips{display:flex;gap:var(--space-2);flex-wrap:wrap;margin-bottom:var(--space-2);}
+    .trade-ctx-chip{font-size:10px;padding:2px 8px;border-radius:var(--radius-full);background:var(--color-surface-dynamic);color:var(--color-text-muted);}
+    .trade-result-row{display:flex;gap:var(--space-4);padding-top:var(--space-2);border-top:1px solid var(--color-divider);flex-wrap:wrap;}
+    .trade-result-col{display:flex;flex-direction:column;gap:2px;}
+    .trade-result-label{font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--color-text-faint);}
+    .trade-result-val{font-size:var(--text-sm);font-weight:700;font-variant-numeric:tabular-nums;}
+    .trade-postmortem{font-size:var(--text-xs);color:var(--color-text-muted);line-height:1.55;margin-top:var(--space-2);padding:var(--space-2) var(--space-3);background:var(--color-surface);border-radius:var(--radius-md);border-left:2px solid var(--color-primary);}
+    /* ── ALFA vs BETA comparison */
+    .vs-card{background:var(--color-surface);border:1px solid rgba(40,37,29,.07);border-radius:var(--radius-xl);padding:var(--space-5);}
+    .vs-title{font-size:var(--text-sm);font-weight:600;margin-bottom:var(--space-4);}
+    .vs-grid{display:grid;grid-template-columns:1fr 28px 1fr;gap:var(--space-3);align-items:start;margin-bottom:var(--space-4);}
+    .vs-col-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--color-text-muted);margin-bottom:var(--space-2);}
+    .vs-separator{display:flex;align-items:center;justify-content:center;color:var(--color-text-faint);font-size:var(--text-xs);padding-top:22px;}
+    .vs-metric{padding:var(--space-2) var(--space-3);background:var(--color-surface-offset);border-radius:var(--radius-md);margin-bottom:var(--space-2);}
+    .vs-metric-label{font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--color-text-faint);}
+    .vs-metric-val{font-size:var(--text-sm);font-weight:700;font-variant-numeric:tabular-nums;}
+    .vs-verdict{text-align:center;padding:var(--space-3);border-radius:var(--radius-lg);background:var(--color-primary-highlight);color:var(--color-primary);font-size:var(--text-sm);font-weight:600;}
+
+    @media (max-width: 1080px){.layout-grid{grid-template-columns:1fr;}.right-col{order:-1;}.kpi-grid{grid-template-columns:repeat(2,1fr);} .pos-head,.pos-row{grid-template-columns:2fr 1fr 1fr 1fr 1fr;}.hide-md{display:none;} .beta-kpi-row{grid-template-columns:repeat(2,1fr);}}
+    @media (max-width: 720px){.header{padding:var(--space-4);} .header-actions .nav-link{display:none;} .container{padding:var(--space-6) var(--space-4);} .kpi-grid{grid-template-columns:1fr;} table{min-width:860px;} .positions-card{overflow-x:auto;} .drawer{width:100vw;} .beta-kpi-row{grid-template-columns:1fr 1fr;} .vs-grid{grid-template-columns:1fr;}}
   </style>
 </head>
 <body>
@@ -254,14 +301,21 @@
   <!-- MAIN APP -->
   <main class="page" id="app" style="display:none">
     <div class="container">
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:var(--space-4);margin-bottom:var(--space-6);flex-wrap:wrap;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:var(--space-4);margin-bottom:var(--space-6);flex-wrap:wrap;">
         <div>
           <h1 style="font-family:var(--font-display);font-size:var(--text-2xl);font-weight:400;line-height:1;">Portfólio</h1>
-          <p style="font-size:var(--text-sm);color:var(--color-text-muted);margin-top:8px;">Resumo da tua carteira Trading212, com P&L diário e total por activo.</p>
+          <p style="font-size:var(--text-sm);color:var(--color-text-muted);margin-top:8px;">Conta real ALFA e bot de trading demo BETA lado a lado.</p>
         </div>
-        <div class="updated-badge" id="updatedBadge"></div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:var(--space-3)">
+          <div class="updated-badge" id="updatedBadge"></div>
+          <div class="pf-tab-bar">
+            <button class="pf-tab active" data-tab="alfa">ALFA</button>
+            <button class="pf-tab" data-tab="beta">BETA <span class="demo-chip">DEMO</span></button>
+          </div>
+        </div>
       </div>
 
+      <div id="alfaSection">
       <section class="layout-grid">
         <div class="left-col">
           <div class="overview-card">
@@ -355,6 +409,62 @@
           <tbody id="posBody"></tbody>
         </table>
       </section>
+      </div><!-- /alfaSection -->
+
+      <!-- BETA section -->
+      <div id="betaSection" style="display:none">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--space-3);margin-bottom:var(--space-6)">
+          <span class="demo-badge">⚗️ DEMO / PAPER TRADING — dinheiro virtual</span>
+          <span class="updated-badge" id="betaUpdatedBadge"></span>
+        </div>
+
+        <div class="beta-kpi-row" id="betaKpiRow">
+          <div class="kpi-card"><p class="kpi-label">A carregar…</p></div>
+          <div class="kpi-card"></div><div class="kpi-card"></div><div class="kpi-card"></div>
+        </div>
+
+        <section class="layout-grid" style="margin-bottom:var(--space-6)">
+          <div class="left-col">
+            <div class="chart-card">
+              <div class="chart-title-row">
+                <div>
+                  <p class="chart-title">Equity Curve — Bot BETA</p>
+                  <p class="chart-sub">Evolução do capital demo ao longo do tempo</p>
+                </div>
+              </div>
+              <div class="equity-canvas" id="betaEquityWrap"><canvas id="betaEquityChart"></canvas></div>
+              <div class="history-meta" id="betaEquityMeta"></div>
+            </div>
+
+            <div class="chart-card">
+              <div class="chart-title-row">
+                <div>
+                  <p class="chart-title">Diário de Trades</p>
+                  <p class="chart-sub">Decisões do bot com contexto técnico e post-mortem</p>
+                </div>
+              </div>
+              <div class="trades-list" id="tradesJournal"></div>
+            </div>
+          </div>
+
+          <div class="right-col">
+            <div class="chart-card">
+              <div class="chart-title-row">
+                <div>
+                  <p class="chart-title">Posições Demo</p>
+                  <p class="chart-sub">Carteira actual do bot</p>
+                </div>
+              </div>
+              <div class="beta-pos-list" id="betaPosList"></div>
+            </div>
+
+            <div class="vs-card" id="vsCard">
+              <p class="vs-title">ALFA vs BETA</p>
+              <p style="font-size:var(--text-sm);color:var(--color-text-muted)">A carregar dados de comparação…</p>
+            </div>
+          </div>
+        </section>
+      </div><!-- /betaSection -->
     </div>
   </main>
 
@@ -774,7 +884,239 @@ themeToggle.addEventListener('click', () => {
   root.setAttribute('data-theme', next);
   localStorage.setItem('fundscope_theme', next);
   if (app.style.display === 'block') loadPortfolio();
+  if (betaLoaded) { betaLoaded = false; loadBeta(); }
 });
+
+// ── BETA ─────────────────────────────────────────────────────────────────────
+let betaLoaded = false;
+let betaSummary = null, betaPositions = null, betaEquity = null, betaTrades = null;
+let betaEquityChartObj = null;
+
+document.querySelectorAll('.pf-tab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.pf-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const tab = btn.dataset.tab;
+    document.getElementById('alfaSection').style.display = tab === 'alfa' ? '' : 'none';
+    document.getElementById('betaSection').style.display = tab === 'beta' ? '' : 'none';
+    if (tab === 'beta' && !betaLoaded) loadBeta();
+  });
+});
+
+async function loadBeta() {
+  const t = Date.now();
+  try {
+    const [sumR, posR, eqR, trR] = await Promise.all([
+      fetch(`data/beta/beta_summary.json?t=${t}`),
+      fetch(`data/beta/beta_positions.json?t=${t}`),
+      fetch(`data/beta/beta_equity.json?t=${t}`),
+      fetch(`data/beta/beta_trades.json?t=${t}`),
+    ]);
+    betaSummary   = sumR.ok ? await sumR.json() : null;
+    betaPositions = posR.ok ? await posR.json() : null;
+    betaEquity    = eqR.ok  ? await eqR.json()  : null;
+    betaTrades    = trR.ok  ? await trR.json()   : null;
+    betaLoaded = true;
+    renderBetaAll();
+  } catch(e) {
+    document.getElementById('betaSection').innerHTML +=
+      '<p style="text-align:center;padding:var(--space-8);color:var(--color-text-muted)">Bot BETA ainda não iniciado — dados não disponíveis.</p>';
+  }
+}
+
+function renderBetaAll() {
+  if (betaSummary) renderBetaKpis(betaSummary);
+  if (betaEquity)  renderBetaEquity(betaEquity);
+  if (betaPositions) renderBetaPositions(betaPositions);
+  if (betaTrades)  renderTradesJournal(betaTrades);
+  renderComparison();
+  if (betaSummary) {
+    const u = betaSummary.updated ? new Date(betaSummary.updated).toLocaleString('pt-PT',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}) : '';
+    document.getElementById('betaUpdatedBadge').textContent = u ? 'Actualizado ' + u : '';
+  }
+}
+
+function renderBetaKpis(data) {
+  const s = data.summary;
+  const gainClass = s.total_gain_pct >= 0 ? 'up' : 'down';
+  const wrClass   = s.win_rate_pct   >= 50 ? 'up' : 'down';
+  document.getElementById('betaKpiRow').innerHTML = `
+    <div class="kpi-card">
+      <p class="kpi-label">Capital Demo</p>
+      <p class="kpi-value">${fmtEur(s.current_value)}</p>
+      <p class="kpi-sub">Inicial: ${fmtEur(s.initial_capital)}</p>
+    </div>
+    <div class="kpi-card">
+      <p class="kpi-label">P&L Demo</p>
+      <p class="kpi-value ${gainClass}">${sign(s.total_gain_eur)}${fmtEur(s.total_gain_eur)}</p>
+      <p class="kpi-sub">${sign(s.total_gain_pct)}${fmt(s.total_gain_pct)}%</p>
+    </div>
+    <div class="kpi-card">
+      <p class="kpi-label">Drawdown Máx</p>
+      <p class="kpi-value down">${fmt(s.max_drawdown_pct)}%</p>
+      <p class="kpi-sub">${s.n_trades} trades executados</p>
+    </div>
+    <div class="kpi-card">
+      <p class="kpi-label">Win Rate</p>
+      <p class="kpi-value ${wrClass}">${fmt(s.win_rate_pct)}%</p>
+      <p class="kpi-sub">Avg win ${fmtEur(s.avg_win_eur)} · loss ${fmtEur(Math.abs(s.avg_loss_eur))}</p>
+    </div>`;
+}
+
+function renderBetaEquity(data) {
+  const wrap  = document.getElementById('betaEquityWrap');
+  const metaEl = document.getElementById('betaEquityMeta');
+  const pts = (data.history || []).slice().sort((a,b) => a.datetime.localeCompare(b.datetime));
+  if (pts.length < 2) {
+    wrap.innerHTML = '<div class="no-history"><span>Histórico de equity insuficiente.</span></div>';
+    return;
+  }
+  if (!wrap.querySelector('canvas')) wrap.innerHTML = '<canvas id="betaEquityChart"></canvas>';
+  const labels = pts.map(p => {
+    const d = new Date(p.datetime);
+    return d.toLocaleDateString('pt-PT',{day:'numeric',month:'short'}) + ' ' + d.toLocaleTimeString('pt-PT',{hour:'2-digit',minute:'2-digit'});
+  });
+  const values  = pts.map(p => p.equity);
+  const isDark  = document.documentElement.getAttribute('data-theme') === 'dark';
+  const textClr = isDark ? '#797876' : '#7a7974';
+  const gridClr = isDark ? '#2e2d2b' : '#dcd9d5';
+  const upColor = isDark ? '#6daa45' : '#437a22';
+  const dnColor = isDark ? '#dd6974' : '#a13544';
+  const first   = values[0];
+  const last    = values[values.length-1];
+  const lineClr = last >= first ? upColor : dnColor;
+  const gainTotal = last - first;
+  const gainPct   = first > 0 ? (gainTotal/first)*100 : 0;
+
+  metaEl.innerHTML =
+    `<div class="history-stat"><span class="history-stat-label">Capital inicial</span><span class="history-stat-val">${fmtEur(first)}</span></div>` +
+    `<div class="history-stat"><span class="history-stat-label">Capital actual</span><span class="history-stat-val">${fmtEur(last)}</span></div>` +
+    `<div class="history-stat"><span class="history-stat-label">P&L período</span><span class="history-stat-val ${gainTotal>=0?'up':'down'}">${sign(gainTotal)}${fmtEur(gainTotal)} (${sign(gainPct)}${fmt(gainPct)}%)</span></div>`;
+
+  const cvs = document.getElementById('betaEquityChart');
+  const ctx = cvs.getContext('2d');
+  const grad = ctx.createLinearGradient(0,0,0,200);
+  grad.addColorStop(0, lineClr+'30'); grad.addColorStop(1, lineClr+'00');
+  if (betaEquityChartObj) betaEquityChartObj.destroy();
+  betaEquityChartObj = new Chart(ctx, {
+    type:'line',
+    data:{ labels, datasets:[{ data:values, borderColor:lineClr, borderWidth:2, backgroundColor:grad, fill:true, tension:0.25, pointRadius: pts.length<=30?3:0, pointBackgroundColor:lineClr, pointHoverRadius:4, pointHoverBackgroundColor:lineClr, pointHoverBorderColor: isDark?'#1a1917':'#f9f8f5', pointHoverBorderWidth:2 }] },
+    options:{ responsive:true, maintainAspectRatio:false, interaction:{mode:'index',intersect:false}, plugins:{ legend:{display:false}, tooltip:{ backgroundColor: isDark?'#1c1b19':'#fff', borderColor: isDark?'#393836':'#d4d1ca', borderWidth:1, titleColor:textClr, bodyColor: isDark?'#cdccca':'#28251d', padding:10, callbacks:{ label: c => '  ' + fmtEur(c.raw) } } }, scales:{ x:{ grid:{color:gridClr}, ticks:{color:textClr, maxTicksLimit:8, font:{size:11}} }, y:{ grid:{color:gridClr}, ticks:{color:textClr, font:{size:11}, callback:v => fmt(v/1000,1)+'k€'}, border:{dash:[4,4]} } } }
+  });
+}
+
+function renderBetaPositions(data) {
+  const list = document.getElementById('betaPosList');
+  const positions = data.positions || [];
+  if (!positions.length) {
+    list.innerHTML = '<p style="font-size:var(--text-sm);color:var(--color-text-muted);padding:var(--space-4) 0">Sem posições abertas no bot.</p>';
+    return;
+  }
+  list.innerHTML = positions.map(p => {
+    const gainClass = p.gain_eur >= 0 ? 'up' : 'down';
+    return `<div class="beta-pos-item">
+      <div>
+        <p class="beta-pos-ticker">${p.ticker}</p>
+        <p class="beta-pos-name">${p.display_name}</p>
+      </div>
+      <div>
+        <p class="beta-pos-value">${fmtEur(p.value)}</p>
+        <p class="beta-pos-gain ${gainClass}">${sign(p.gain_eur)}${fmtEur(p.gain_eur)} (${sign(p.gain_pct)}${fmt(p.gain_pct)}%)</p>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderTradesJournal(data) {
+  const list   = document.getElementById('tradesJournal');
+  const trades = [...(data.trades || [])].reverse().slice(0, 10);
+  if (!trades.length) {
+    list.innerHTML = '<p style="font-size:var(--text-sm);color:var(--color-text-muted);padding:var(--space-4) 0">Sem trades registados.</p>';
+    return;
+  }
+  list.innerHTML = trades.map(t => {
+    const dt = t.datetime ? new Date(t.datetime).toLocaleString('pt-PT',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}) : '';
+    const sideClass = (t.side||'').toLowerCase();
+    const ctx = t.context || {};
+
+    const ctxChips = Object.entries(ctx).map(([k,v]) => {
+      const label = k==='rsi_14' ? `RSI ${v}` :
+                    k==='ema50_above_ema200' ? (v ? 'EMA50 > EMA200' : 'EMA50 < EMA200') :
+                    k==='volume_ratio_vs_avg' ? `Vol ${v}× média` : `${k}: ${v}`;
+      return `<span class="trade-ctx-chip">${label}</span>`;
+    }).join('');
+
+    let resultHTML;
+    if (t.result_eur !== null && t.result_eur !== undefined) {
+      const rClass = t.result_eur >= 0 ? 'up' : 'down';
+      const closeStr = t.closed_at ? new Date(t.closed_at).toLocaleString('pt-PT',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}) : '';
+      resultHTML = `<div class="trade-result-row">
+        <div class="trade-result-col"><span class="trade-result-label">Resultado</span><span class="trade-result-val ${rClass}">${sign(t.result_eur)}${fmtEur(t.result_eur)}</span></div>
+        <div class="trade-result-col"><span class="trade-result-label">P&L%</span><span class="trade-result-val ${rClass}">${sign(t.result_pct)}${fmt(t.result_pct)}%</span></div>
+        ${closeStr ? `<div class="trade-result-col"><span class="trade-result-label">Fecho</span><span class="trade-result-val" style="font-weight:400;color:var(--color-text-muted)">${closeStr}</span></div>` : ''}
+      </div>`;
+    } else {
+      resultHTML = `<div class="trade-result-row"><div class="trade-result-col"><span class="trade-result-label">Estado</span><span class="trade-result-val" style="color:var(--color-warning)">Aberto</span></div></div>`;
+    }
+
+    const postHTML = t.postmortem ? `<p class="trade-postmortem">${t.postmortem}</p>` : '';
+
+    return `<div class="trade-card">
+      <div class="trade-head-row">
+        <span class="trade-ticker-badge">${t.ticker}</span>
+        <span class="trade-side ${sideClass}">${t.side}</span>
+        <span style="font-size:var(--text-xs);color:var(--color-text-muted)">${fmt(t.qty,0)} × ${fmt(t.price,2)}€</span>
+        <span class="trade-datetime">${dt}</span>
+      </div>
+      <p class="trade-reason">${t.reason}</p>
+      ${ctxChips ? `<div class="trade-ctx-chips">${ctxChips}</div>` : ''}
+      ${resultHTML}
+      ${postHTML}
+    </div>`;
+  }).join('');
+}
+
+function renderComparison() {
+  const card = document.getElementById('vsCard');
+  if (!betaSummary) return;
+  const bg  = betaSummary.summary.total_gain_pct;
+  const bgClass = bg >= 0 ? 'up' : 'down';
+  const dd  = betaSummary.summary.max_drawdown_pct;
+
+  if (!summary || !summary.total_gain_pct) {
+    card.innerHTML = `<p class="vs-title">ALFA vs BETA</p>
+      <div class="vs-grid">
+        <div><p class="vs-col-label">BETA (Demo)</p>
+          <div class="vs-metric"><p class="vs-metric-label">P&L Demo</p><p class="vs-metric-val ${bgClass}">${sign(bg)}${fmt(bg)}%</p></div>
+          <div class="vs-metric"><p class="vs-metric-label">Drawdown Máx</p><p class="vs-metric-val down">${fmt(dd)}%</p></div>
+        </div>
+      </div>
+      <p style="font-size:var(--text-xs);color:var(--color-text-muted);margin-top:var(--space-3)">Carrega o tab ALFA para ver a comparação completa.</p>`;
+    return;
+  }
+
+  const ag = summary.total_gain_pct;
+  const agClass = ag >= 0 ? 'up' : 'down';
+  const winner = ag >= bg ? 'ALFA supera BETA' : 'BETA supera ALFA';
+  const diff = Math.abs(ag - bg).toFixed(2);
+
+  card.innerHTML = `
+    <p class="vs-title">ALFA vs BETA — Comparação</p>
+    <div class="vs-grid">
+      <div>
+        <p class="vs-col-label">ALFA (Conta Real)</p>
+        <div class="vs-metric"><p class="vs-metric-label">P&L Total</p><p class="vs-metric-val ${agClass}">${sign(ag)}${fmt(ag)}%</p></div>
+        <div class="vs-metric"><p class="vs-metric-label">Valor</p><p class="vs-metric-val">${fmtEur(summary.total_value)}</p></div>
+      </div>
+      <div class="vs-separator">vs</div>
+      <div>
+        <p class="vs-col-label">BETA (Demo)</p>
+        <div class="vs-metric"><p class="vs-metric-label">P&L Demo</p><p class="vs-metric-val ${bgClass}">${sign(bg)}${fmt(bg)}%</p></div>
+        <div class="vs-metric"><p class="vs-metric-label">Drawdown Máx</p><p class="vs-metric-val down">${fmt(dd)}%</p></div>
+      </div>
+    </div>
+    <div class="vs-verdict">${winner} · diferença de ${diff}%</div>`;
+}
   </script>
 </body>
 </html>
