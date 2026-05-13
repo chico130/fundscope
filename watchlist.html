@@ -182,11 +182,13 @@ function rawVal(obj){ if(obj!==null&&typeof obj==='object'&&'raw' in obj)return 
 
 function tickerColor(ticker){
   const palette=[['#01696f','#e8f5f5'],['#437a22','#eaf3e2'],['#006494','#e0f0f8'],['#7a39bb','#f0eaf8'],['#a13544','#fbeaec'],['#da7101','#fdf0e0'],['#d19900','#fdf6e0'],['#0c4e54','#e0f2f4'],['#2e5c10','#ecf5e5'],['#0b3751','#dceef8'],['#431673','#ede0f5'],['#4b2614','#f5ede8']];
-  let h=0; for(let i=0;i<ticker.length;i++) h=(h*31+ticker.charCodeAt(i))>>>0; return palette[h%palette.length];
+  const clean = String(ticker||'').toUpperCase();
+  let h=0; for(let i=0;i<clean.length;i++) h=(h*31+clean.charCodeAt(i))>>>0; return palette[h%palette.length];
 }
 function makeLogoSVG(ticker){
-  const label=ticker.replace(/[^A-Z0-9]/gi,'').slice(0,4).toUpperCase()||ticker.slice(0,3).toUpperCase();
-  const [bg,fg]=tickerColor(ticker);
+  const clean = String(ticker||'').replace(/[^A-Z0-9]/gi,'').toUpperCase();
+  const label = clean.slice(0,4) || String(ticker||'').slice(0,4).toUpperCase();
+  const [bg,fg]=tickerColor(label);
   const fs=label.length<=2?18:label.length===3?13:11;
   return `<svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 44 44" aria-label="${esc(ticker)} logo"><rect width="44" height="44" rx="8" fill="${bg}"/><text x="22" y="22" dominant-baseline="central" text-anchor="middle" font-family="Inter,Helvetica Neue,sans-serif" font-weight="700" font-size="${fs}" fill="${fg}" letter-spacing="-0.5">${esc(label)}</text></svg>`;
 }
@@ -229,11 +231,15 @@ async function fetchQuote(ticker){
 }
 async function fetchAnalysts(ticker){
   try{
-    const r=await fetchWithTimeout(`${WORKER}?ticker=${encodeURIComponent(ticker)}&modules=financialData`,12000);
+    const r=await fetchWithTimeout(`${WORKER}?ticker=${encodeURIComponent(ticker)}&modules=financialData,recommendationTrend`,12000);
     if(!r.ok)return null;
     const j=await r.json();
     if(j?.quoteSummary?.error)return null;
-    return j?.quoteSummary?.result?.[0]?.financialData||null;
+    const res = j?.quoteSummary?.result?.[0] || {};
+    return {
+      financialData: res.financialData || null,
+      recommendationTrend: res.recommendationTrend || null
+    };
   }catch{return null;}
 }
 async function fetchChart(ticker){
@@ -254,12 +260,33 @@ async function fetchNews(ticker){
     if(!r.ok)return[];
     const j=await r.json();
     const articles=Array.isArray(j?.articles)?j.articles:[];
-    return articles.filter(a=>{
-      const impactTickers=Array.isArray(a?.impact?.tickers)?a.impact.tickers.map(t=>String(t).toUpperCase()):[];
-      const title=String(a?.title||'').toUpperCase();
-      const desc=String(a?.description||'').toUpperCase();
-      return impactTickers.includes(ticker) || title.includes(ticker) || desc.includes(ticker);
-    }).slice(0,6).map(a=>({
+    const t = String(ticker||'').toUpperCase();
+
+    // regex com fronteiras de palavra para evitar matches tipo "O" em "Stock"
+    const regex = new RegExp(`\\b${t}\\b`, 'i');
+
+    const withImpact = articles.filter(a => {
+      const tickers = Array.isArray(a?.impact?.tickers) ? a.impact.tickers.map(x=>String(x).toUpperCase()) : [];
+      return tickers.includes(t);
+    });
+
+    const textMatches = articles.filter(a => {
+      if(!a) return false;
+      const title   = String(a.title || '').toUpperCase();
+      const summary = String(a.summary || '').toUpperCase();
+      const content = String(a.content || '').toUpperCase();
+      const tickers = Array.isArray(a?.impact?.tickers) ? a.impact.tickers.map(x=>String(x).toUpperCase()) : [];
+      if(tickers.includes(t)) return false;
+      return regex.test(title) || regex.test(summary) || regex.test(content);
+    });
+
+    const merged = [...withImpact, ...textMatches];
+    merged.sort((a,b)=>{
+      const da=a.publishedAt?new Date(a.publishedAt).getTime():0;
+      const db=b.publishedAt?new Date(b.publishedAt).getTime():0;
+      return db-da;
+    });
+    return merged.slice(0,6).map(a=>({
       headline:a.title||'Sem título',
       source:a.source||'Fonte',
       datetime: Math.floor(new Date(a.publishedAt||Date.now()).getTime()/1000),
@@ -318,8 +345,9 @@ function buildNewsHTML(news){
     return `<a class="news-item" href="${esc(n.url)}" target="_blank" rel="noopener noreferrer"><span class="news-headline">${esc(n.headline)}</span><span class="news-meta">${esc(n.source)} &middot; ${date}</span></a>`;
   }).join('')+'</div>';
 }
-function buildTargetsHTML(fd,currentPrice){
-  if(!fd)return '<p style="color:var(--color-text-muted);font-size:var(--text-sm);">Sem dados de analistas.</p>';
+function buildTargetsHTML(analystData,currentPrice){
+  if(!analystData || !analystData.financialData)return '<p style="color:var(--color-text-muted);font-size:var(--text-sm);">Sem dados de analistas.</p>';
+  const fd = analystData.financialData;
   const targetMean=rawVal(fd.targetMeanPrice);
   const targetMedian=rawVal(fd.targetMedianPrice) ?? rawVal(fd.targetMeanPrice);
   const targetHigh=rawVal(fd.targetHighPrice);
@@ -352,8 +380,11 @@ function buildTargetsHTML(fd,currentPrice){
   return html;
 }
 function buildAIHTML(data){
-  if(!data||!data.analysis)return '<p style="color:var(--color-text-muted);font-size:var(--text-sm);">Sem dados de earnings disponíveis.</p>';
-  const a=data.analysis; let html='';
+  const a = data?.analysis || data;
+  if(!a || (!a.resumo && !Array.isArray(a.correu_bem) && !Array.isArray(a.correu_mal) && !Array.isArray(a.vigiar))){
+    return '<p style="color:var(--color-text-muted);font-size:var(--text-sm);">Sem dados de earnings disponíveis.</p>';
+  }
+  let html='';
   if(a.resumo)html+=`<div class="ai-resumo">“${esc(a.resumo)}” &mdash; ${esc(a.periodo||'')}</div>`;
   if(a.correu_bem?.length)html+=`<div class="ai-section"><div class="ai-section-title good"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>O que correu bem</div><div class="ai-points">${a.correu_bem.map(p=>`<div class="ai-point">${esc(p)}</div>`).join('')}</div></div>`;
   if(a.correu_mal?.length)html+=`<div class="ai-section"><div class="ai-section-title bad"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>O que correu mal</div><div class="ai-points">${a.correu_mal.map(p=>`<div class="ai-point">${esc(p)}</div>`).join('')}</div></div>`;
@@ -430,14 +461,25 @@ const _loaded={}; const _cardPrices={};
 function lazyLoadTabs(ticker){
   if(_loaded[ticker])return;
   _loaded[ticker]=true;
-  const price=_cardPrices[ticker];
+
+  let price=_cardPrices[ticker];
+  if(!price){
+    const priceText=document.getElementById('price-'+ticker)?.textContent;
+    if(priceText && priceText.trim()!=='—'){
+      const num=parseFloat(priceText.replace('$','').replace(',',''));
+      if(!isNaN(num)) price=num;
+    }
+  }
+
   fetchNews(ticker).then(news=>{ const el=document.getElementById('panel-news-'+ticker); if(el)el.innerHTML=buildNewsHTML(news); });
-  fetchAnalysts(ticker).then(fd=>{ const el=document.getElementById('panel-targets-'+ticker); if(el)el.innerHTML=buildTargetsHTML(fd,price); });
+  fetchAnalysts(ticker).then(analystData=>{ const el=document.getElementById('panel-targets-'+ticker); if(el)el.innerHTML=buildTargetsHTML(analystData,price); });
   fetchEarningsAI(ticker).then(data=>{ const el=document.getElementById('panel-ai-'+ticker); if(el)el.innerHTML=buildAIHTML(data); });
 }
 window.switchTab=function(ticker,tab){
-  document.querySelectorAll(`#card-${ticker} .wl-tab`).forEach(t=>t.classList.toggle('active',t.dataset.tab===tab));
-  document.querySelectorAll(`#card-${ticker} .wl-tab-panel`).forEach(p=>p.classList.toggle('active',p.id===`panel-${tab}-${ticker}`));
+  const card=document.getElementById('card-'+ticker);
+  if(!card)return;
+  card.querySelectorAll('.wl-tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===tab));
+  card.querySelectorAll('.wl-tab-panel').forEach(p=>p.classList.toggle('active',p.id===`panel-${tab}-${ticker}`));
 };
 window.removeCard=function(ticker){
   removeFromWatchlist(ticker);
@@ -454,7 +496,7 @@ async function init(){
   if(!tickers.length){renderEmpty();return;}
   tickers.forEach(t=>buildCardPlaceholder(t));
   await Promise.all(tickers.map(async t=>{ const stats=await fetchQuote(t); const price=fillCard(t,stats); _cardPrices[t]=price; }));
-  setInterval(async()=>{ for(const t of getWatchlist()){ const stats=await fetchQuote(t); if(!stats)continue; const price=fillCard(t,stats); _cardPrices[t]=price; } },60000);
+  setInterval(async()=>{ const current = getWatchlist(); for(const t of current){ const stats=await fetchQuote(t); if(!stats)continue; const price=fillCard(t,stats); _cardPrices[t]=price; } },60000);
 }
 init();
 </script>
