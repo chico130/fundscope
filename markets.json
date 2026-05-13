@@ -1,7 +1,7 @@
 {
-  "updated": "2026-05-12T17:31:51.651537Z",
-  "slot": "fecho",
-  "marketOpen": true,
+  "updated": "2026-05-12T21:00:00Z",
+  "slot": "abertura",
+  "marketOpen": false,
   "lastCloseDate": "2026-05-12",
   "sectors": {
     "Tecnologia": {
@@ -9,69 +9,69 @@
       "icon": "💻",
       "color": "#4f98a3",
       "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
-      "avgChange": -3.91,
+      "avgChange": -2.69,
       "gainers": [
         {
           "ticker": "AAPL",
-          "price": 294.04,
-          "changePct": 0.46,
+          "price": 294.8,
+          "changePct": 0.72,
           "pc": 292.68
         },
         {
           "ticker": "META",
-          "price": 598.76,
-          "changePct": -0.02,
+          "price": 603.0,
+          "changePct": 0.69,
           "pc": 598.86
         },
         {
           "ticker": "NVDA",
-          "price": 218.07,
-          "changePct": -0.63,
+          "price": 220.78,
+          "changePct": 0.61,
           "pc": 219.44
         },
         {
-          "ticker": "MSFT",
-          "price": 408.99,
-          "changePct": -0.89,
-          "pc": 412.66
+          "ticker": "GOOGL",
+          "price": 387.35,
+          "changePct": -0.33,
+          "pc": 388.64
         },
         {
-          "ticker": "GOOGL",
-          "price": 384.17,
-          "changePct": -1.15,
-          "pc": 388.64
+          "ticker": "MSFT",
+          "price": 407.77,
+          "changePct": -1.18,
+          "pc": 412.66
         }
       ],
       "losers": [
         {
           "ticker": "QCOM",
-          "price": 205.85,
-          "changePct": -13.34,
+          "price": 210.31,
+          "changePct": -11.46,
           "pc": 237.53
         },
         {
           "ticker": "INTC",
-          "price": 117.18,
-          "changePct": -9.47,
+          "price": 120.61,
+          "changePct": -6.82,
           "pc": 129.44
         },
         {
-          "ticker": "MU",
-          "price": 730.72,
-          "changePct": -8.12,
-          "pc": 795.33
-        },
-        {
           "ticker": "ORCL",
-          "price": 183.78,
-          "changePct": -5.19,
+          "price": 186.83,
+          "changePct": -3.62,
           "pc": 193.84
         },
         {
-          "ticker": "AMD",
-          "price": 436.74,
-          "changePct": -4.81,
-          "pc": 458.79
+          "ticker": "MU",
+          "price": 766.58,
+          "changePct": -3.61,
+          "pc": 795.33
+        },
+        {
+          "ticker": "CRM",
+          "price": 171.31,
+          "changePct": -3.48,
+          "pc": 177.49
         }
       ],
       "sentiment": {
@@ -113,46 +113,46 @@
         {
           "source": "Yahoo",
           "ticker": "AAPL",
-          "headline": "Trump invited only 2 women executives on his first trip to China in nearly a decade — an increase from last time",
-          "summary": "The last time President Trump visited China, he took an even larger delegation, but didn’t invite a single woman.",
-          "url": "https://finnhub.io/api/news?id=456318566ea3c16ffca4fcf525574a9418505cb8e4ad8f2cebd06e86e7ad7a30",
-          "datetime": 1778601300,
+          "headline": "Samsung's Late Galaxy Launch Hands Apple A Massive Advantage",
+          "summary": "Apple Inc. (NASDAQ:AAPL) strengthened its position in the U.S. smartphone market during the first quarter of 2026 as analysts at Counterpoint Research said delayed rival launches, stronger carrier performance, and pressu",
+          "url": "https://finnhub.io/api/news?id=54f7d38fc2975a5a63ef01711b0bec57c40f00c1b3813c7a5f1add8665ef4528",
+          "datetime": 1778665913,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "ticker": "AAPL",
+          "headline": "Stock Market Today: Dow Jones Futures Fall, S&P 500 Gains As Trump Takes Big Tech Leaders To China—Nvidia, Nextpower, Red Cat In Focus",
+          "summary": "U.S. stock futures were mixed on Wednesday after Monday’s mostly lower close. Dow Jones futures fell, whereas S&P 500 and Nasdaq 100 indices were rising. This follows President Donald Trump‘s visit to China along with Nv",
+          "url": "https://finnhub.io/api/news?id=51071c4eb65bf7dcd6911a28239e16273bf62a30ff1994b4adb870ddd0698d12",
+          "datetime": 1778665329,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
           "source": "Yahoo",
           "ticker": "NVDA",
-          "headline": "The April Jobs Report and CPI Reading Just Hit Consumers With a Double Whammy. Will the Fed Have to Rethink Its Position Regarding Interest Rates?",
-          "summary": "The April jobs report showed some areas of weakness in the labor market, while consumer prices came in slightly higher than expected.",
-          "url": "https://finnhub.io/api/news?id=d5848545d035647a5bb6901587e14e05f05bb307a0e6f4e753dc4c2a6ff2895e",
-          "datetime": 1778601218,
+          "headline": "Meet the AI Stock Crushing Palantir, Nvidia, and Alphabet Right Now",
+          "summary": "This chipmaker is experiencing an inflection point in its growth trajectory.",
+          "url": "https://finnhub.io/api/news?id=95fe0f29da9977fe9dbea9fa8e0e06ed8b954f98ac81169588f1f511d983d421",
+          "datetime": 1778665320,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
           "source": "Yahoo",
           "ticker": "MSFT",
-          "headline": "Microsoft's Revised OpenAI Deal Strengthens AI Strategy, Wedbush Securities Says",
-          "summary": "Microsoft's (MSFT) revised revenue-sharing deal with OpenAI strengthens its long-term artificial int",
-          "url": "https://finnhub.io/api/news?id=4b2621d145477c47734dbba623781166fa4b45b36b784424e5a3e5452890e828",
-          "datetime": 1778600995,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Yahoo",
-          "ticker": "NVDA",
-          "headline": "Prediction: Taiwan Semiconductor Could Be the Smartest AI Bet in the Market",
-          "summary": "Let me cut to the chase. Taiwan Semiconductor Manufacturing (NYSE:TSM) trades at $404.54, and our 24/7 Wall St. price target for TSMC is $473.33 over the next 12 months. That implies 17% upside, and our recommendation is",
-          "url": "https://finnhub.io/api/news?id=38d1bd12d422eb8b5d4ccc7b729de82828abb55fa79e1454f39323a858009259",
-          "datetime": 1778600923,
+          "headline": "Proofpoint Launches Dedicated MSP Business Unit and Introduces 365 Total Protection for North America",
+          "summary": "New MSP Platform business unit, AI-powered all-in-one Microsoft 365 protection, and Marketplace partnership with Pax8 strengthen Proofpoint’s commitment to channel and small and mid-size businessesProofpoint launches ded",
+          "url": "https://finnhub.io/api/news?id=0fb4dcc9b41f52c6528de07255fc7000aa457e07af950848e04a2bff4ca147a3",
+          "datetime": 1778662800,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
           "source": "Yahoo",
           "ticker": "MSFT",
-          "headline": "Microsoft's OpenAI Deal Faces $38 Billion Revenue Cap",
-          "summary": "The reported limit could improve OpenAI's IPO pitch while narrowing Microsoft's long-term upside.",
-          "url": "https://finnhub.io/api/news?id=1e1bf25a1eae54c347da41db1801145198b574e6b57aba64ee45b89c3b2c11d8",
-          "datetime": 1778600845,
+          "headline": "Cloud Storage Industry Report 2026-2031: Trends, Regulations, Regional Business Opportunities and Competitive Intelligence Featuring AWS, Microsoft, Google, IBM",
+          "summary": "The market is poised for growth driven by increasing enterprise data, AI, and multi-cloud strategies. Key opportunities include adopting advanced AI for security, embracing hybrid architectures, and transitioning to sust",
+          "url": "https://finnhub.io/api/news?id=7453d28999b2cbc25cacc38ffa9d319544aed1bc9c04aefa8dfb948a9b4f07d7",
+          "datetime": 1778662500,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         }
       ]
@@ -162,69 +162,69 @@
       "icon": "🏦",
       "color": "#437a22",
       "image": "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&q=80",
-      "avgChange": 0.68,
+      "avgChange": 0.72,
       "gainers": [
         {
           "ticker": "SCHW",
-          "price": 89.87,
-          "changePct": 2.32,
+          "price": 90.18,
+          "changePct": 2.68,
           "pc": 87.83
         },
         {
           "ticker": "WFC",
-          "price": 74.82,
-          "changePct": 1.68,
+          "price": 75.18,
+          "changePct": 2.17,
           "pc": 73.58
         },
         {
           "ticker": "JPM",
-          "price": 304.85,
-          "changePct": 1.62,
+          "price": 304.88,
+          "changePct": 1.63,
           "pc": 300.0
         },
         {
-          "ticker": "V",
-          "price": 327.84,
-          "changePct": 1.23,
-          "pc": 323.86
+          "ticker": "BLK",
+          "price": 1092.5,
+          "changePct": 1.03,
+          "pc": 1081.32
         },
         {
-          "ticker": "MA",
-          "price": 503.01,
-          "changePct": 1.04,
-          "pc": 497.81
+          "ticker": "V",
+          "price": 326.42,
+          "changePct": 1.0,
+          "pc": 323.19
         }
       ],
       "losers": [
         {
-          "ticker": "GS",
-          "price": 937.85,
-          "changePct": -0.74,
-          "pc": 944.86
-        },
-        {
           "ticker": "TFC",
-          "price": 47.83,
-          "changePct": -0.3,
+          "price": 47.79,
+          "changePct": -0.38,
           "pc": 47.97
         },
         {
-          "ticker": "MS",
-          "price": 190.63,
-          "changePct": -0.25,
-          "pc": 191.1
-        },
-        {
-          "ticker": "C",
-          "price": 126.01,
-          "changePct": 0.13,
-          "pc": 125.85
+          "ticker": "COF",
+          "price": 183.71,
+          "changePct": -0.12,
+          "pc": 183.93
         },
         {
           "ticker": "USB",
-          "price": 54.69,
-          "changePct": 0.38,
+          "price": 54.48,
+          "changePct": -0.02,
           "pc": 54.49
+        },
+        {
+          "ticker": "GS",
+          "price": 945.9,
+          "changePct": 0.11,
+          "pc": 944.86
+        },
+        {
+          "ticker": "PNC",
+          "price": 215.21,
+          "changePct": 0.29,
+          "pc": 214.59
         }
       ],
       "sentiment": {
@@ -265,48 +265,48 @@
       "news": [
         {
           "source": "Yahoo",
-          "ticker": "JPM",
-          "headline": "JPMorgan Cuts Hims & Hers Price Target as GLP-1 Shift Reshapes the Growth Story",
-          "summary": "Shares of Hims & Hers Health (NYSE:HIMS) are under pressure after JPMorgan trimmed its price target on the consumer telehealth name following a messy first quarter. The firm lowered its price target to $33 from $35 while",
-          "url": "https://finnhub.io/api/news?id=a65c5e1148d54bcc7d9e00dddb415dbb59353a523131c3270e276dddb0416215",
-          "datetime": 1778599311,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Yahoo",
-          "ticker": "JPM",
-          "headline": "How The Schneider Electric (ENXTPA:SU) Investment Story Is Shifting With Conflicting Analyst Targets",
-          "summary": "Schneider Electric’s updated fair value of €300.55, compared with the earlier €296.50, comes against a backdrop of mixed price targets that run from about €290 up to €340. Bullish analysts lifting targets toward €325 to ",
-          "url": "https://finnhub.io/api/news?id=c9be56eb636e3996d70943492156f917b3c626d659486129238d67364a2fa8c1",
-          "datetime": 1778598826,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Yahoo",
-          "ticker": "BAC",
-          "headline": "Bank of America reboots Affirm stock price target after earnings",
-          "summary": "Affirm has been one of the more closely watched names in financial technology as investors weigh whether the buy now, pay later company can turn rapid growth into a more durable profit story. Bank of America came away fr",
-          "url": "https://finnhub.io/api/news?id=f13849390e6f2ef880439694989b426457cc2733c48db078ff4c06a86f6e7249",
-          "datetime": 1778594820,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Yahoo",
-          "ticker": "BAC",
-          "headline": "Ibu Movement Launches Ibu Atelier, in Partnership with Bank of America, Empowering Artisans Worldwide with Market Access, Design Collaboration and Economic Oppo",
-          "summary": "Ibu Movement, the global nonprofit marketplace connecting women artisans in more than 50 countries to international audiences, today announced the launch of Ibu Atelier, a first-of-its-kind artisan incubator program made",
-          "url": "https://finnhub.io/api/news?id=880b1b2e9adebebf42c6201cd576aa4aa38623d1ae07adb3d11542d891fb9672",
-          "datetime": 1778590140,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Yahoo",
           "ticker": "GS",
-          "headline": "Non-hardware AI investments could exceed $1tn globally in the coming years: GS",
-          "summary": "Investing.com -- Non-hardware investments in artificial intelligence could surpass $1 trillion globally in the coming years, Goldman Sachs said, as companies pour money into data infrastructure, software and organization",
-          "url": "https://finnhub.io/api/news?id=ee70592dcf14ebff47f4f9b53f3e7f4c3e89d5233f50d654bf60f39158ec266a",
-          "datetime": 1778588297,
+          "headline": "Transaction in Own Shares",
+          "summary": "Transaction in Own Shares 12 May, 2026 • • • • • • • • • • • • • • • • Shell plc (the 'Company') announces that on 12 May, 2026 it purchased the following number of Shares for cancellation. Aggregated information on Shar",
+          "url": "https://finnhub.io/api/news?id=61dda2e8abcf723f5c82fcb44312bce049dd4daa1c7c7ebc79c097ec6e722f02",
+          "datetime": 1778665200,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "ticker": "JPM",
+          "headline": "Gold Slips as US Inflation Resurgence Raises Odds of Fed Hike",
+          "summary": "(Bloomberg) -- Gold edged lower, after a jump in US consumer prices lifted the odds of an interest rate increase by the Federal Reservethis year. Most Read from BloombergAmbani’s Cola War With Coke, Pepsi Spurs Fridge Bo",
+          "url": "https://finnhub.io/api/news?id=7d984622e256370123877a51da43c008fef9fc8406d73bb9fb9b57ae8b93cd76",
+          "datetime": 1778663008,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "ticker": "JPM",
+          "headline": "Japan Megabanks Set to Win Mythos Access After Bessent Visit",
+          "summary": "(Bloomberg) -- Japan’s three megabanks are set to secure access to Anthropic’s artificial intelligence model Mythos, according to a person familiar with the matter, after its limited release last month sparked fears of a",
+          "url": "https://finnhub.io/api/news?id=bdb3909881713bec3afaf43b6592640afa6a9e8be4ba3f4879ac0807304b49c1",
+          "datetime": 1778661875,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Finnhub",
+          "ticker": "GS",
+          "headline": "Fitch Revises Outlooks for 5 Prepaid Energy Transactions to Positive; Affirms Ratings at 'A'",
+          "summary": "Fitch Ratings has affirmed the following prepaid energy transactions at 'A' and revised the Rating Outlooks for each to Positive from Stable.PEFA, Inc. Gas Project revenue bonds, series 2019;SA...",
+          "url": "https://finnhub.io/api/news?id=cb9814813ec455f456aacd219ac91e305f75091cf2f60cb519cde8ce95c07c83",
+          "datetime": 1778651411,
+          "image": ""
+        },
+        {
+          "source": "Finnhub",
+          "ticker": "BAC",
+          "headline": "Bank of America : to Power Americana Celebration at the Goodwood Festival of Speed",
+          "summary": "LONDON - Goodwood is pleased to announce it will host a spectacular Americana Celebration, presented by Bank of America, at this year's Festival of Speed presented by Mastercard. ...",
+          "url": "https://finnhub.io/api/news?id=be1a7137c3391e38223dc5cd32bf274ae6c9e0d9a7161d2540c8b395925ecac7",
+          "datetime": 1778648897,
+          "image": ""
         }
       ]
     },
@@ -315,69 +315,69 @@
       "icon": "⚡",
       "color": "#c47d1a",
       "image": "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80",
-      "avgChange": 0.95,
+      "avgChange": 0.81,
       "gainers": [
         {
           "ticker": "HAL",
-          "price": 41.35,
-          "changePct": 2.72,
+          "price": 41.7,
+          "changePct": 3.58,
           "pc": 40.26
         },
         {
           "ticker": "OXY",
-          "price": 56.22,
-          "changePct": 1.97,
+          "price": 56.27,
+          "changePct": 2.05,
           "pc": 55.14
         },
         {
-          "ticker": "MPC",
-          "price": 256.49,
-          "changePct": 1.59,
-          "pc": 252.48
-        },
-        {
           "ticker": "COP",
-          "price": 117.27,
-          "changePct": 1.49,
+          "price": 117.87,
+          "changePct": 2.01,
           "pc": 115.55
         },
         {
           "ticker": "SLB",
-          "price": 55.72,
-          "changePct": 1.44,
+          "price": 55.64,
+          "changePct": 1.29,
           "pc": 54.93
+        },
+        {
+          "ticker": "AEP",
+          "price": 131.94,
+          "changePct": 0.95,
+          "pc": 130.7
         }
       ],
       "losers": [
         {
+          "ticker": "VLO",
+          "price": 247.12,
+          "changePct": -0.41,
+          "pc": 248.13
+        },
+        {
           "ticker": "NEE",
-          "price": 94.35,
-          "changePct": -0.52,
+          "price": 94.59,
+          "changePct": -0.26,
           "pc": 94.84
         },
         {
-          "ticker": "D",
-          "price": 62.5,
-          "changePct": -0.1,
-          "pc": 62.56
+          "ticker": "MPC",
+          "price": 251.99,
+          "changePct": -0.19,
+          "pc": 252.48
         },
         {
-          "ticker": "SO",
-          "price": 93.36,
-          "changePct": 0.28,
-          "pc": 93.1
+          "ticker": "PSX",
+          "price": 175.43,
+          "changePct": 0.04,
+          "pc": 175.36
         },
         {
           "ticker": "DUK",
-          "price": 125.35,
-          "changePct": 0.36,
+          "price": 125.07,
+          "changePct": 0.14,
           "pc": 124.9
-        },
-        {
-          "ticker": "EOG",
-          "price": 134.09,
-          "changePct": 0.59,
-          "pc": 133.31
         }
       ],
       "sentiment": {
@@ -418,48 +418,48 @@
       "news": [
         {
           "source": "Yahoo",
-          "ticker": "XOM",
-          "headline": "Up 130% YTD, This ETF Can Double Again as Iran War Has No End in Sight",
-          "summary": "An ETF has done something unusual for a leveraged commodity fund. It has actually rewarded holders. ProShares Ultra Bloomberg Crude Oil (NYSEARCA:UCO) is up 130% year to date, the kind of move that pays for past pain in ",
-          "url": "https://finnhub.io/api/news?id=443711f517c5a64ac4be11b989c32a472b691f908658560c7ee476b3c86bc81f",
-          "datetime": 1778595430,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Yahoo",
-          "ticker": "XOM",
-          "headline": "Up 373%, Is ExxonMobil Proving Why It Was a Mistake for Salesforce to Replace ExxonMobil in the Dow Jones Industrial Average?",
-          "summary": "The Dow Jones Industrial Average would be even higher if it had more exposure to energy stocks.",
-          "url": "https://finnhub.io/api/news?id=72948540a48469c69c820fa38ed287a8ec653cd018be6fd44e1cfed3f1da1af8",
-          "datetime": 1778595300,
+          "ticker": "COP",
+          "headline": "TotalEnergies and partners sign MoU for Syrian offshore exploration",
+          "summary": "Block 3 is situated in the Levantine Basin offshore the Syrian city of Latakia.",
+          "url": "https://finnhub.io/api/news?id=3481348b69249f7035ef24f0702f4c3c05b390919a5fc91448f2ba53b360b461",
+          "datetime": 1778662852,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
           "source": "Yahoo",
           "ticker": "CVX",
-          "headline": "Cenovus Energy Q1 Earnings Top Estimates on Higher Upstream Production",
-          "summary": "CVE's Q1 earnings beat estimates as higher oil sands production and stronger refining margins increase profitability.",
-          "url": "https://finnhub.io/api/news?id=9d06e859a9086c58682d4acb3d6dcd8a56bd15bbbd15c38cf39d93d0367e026b",
-          "datetime": 1778590740,
+          "headline": "Warren Buffett Reveals Why Berkshire's Portfolio Hasn't Changed Much in Recent Years",
+          "summary": "Just five stocks account for 60% of Berkshire's holdings -- that percentage was even higher in the past.",
+          "url": "https://finnhub.io/api/news?id=53bc753b177f7d1a718b17110c0e9bb300aa32728c6d68f38296f38859ba6496",
+          "datetime": 1778661300,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Finnhub",
+          "ticker": "XOM",
+          "headline": "Mozambique partners ExxonMobil to build $40mn centre to offer hydrocarbon-related technical skills",
+          "summary": "Mozambique has launched the construction of a college to providetechnical training for personnel in the oil and gas industry,AIM reported on May 12.The southern African nation broke ground for the...",
+          "url": "https://finnhub.io/api/news?id=3019183d710f12eac1ba59c4c8a50e4f39e2cea3ff260fd29a3a0683b3a46e8d",
+          "datetime": 1778634909,
+          "image": ""
+        },
+        {
+          "source": "Yahoo",
+          "ticker": "CVX",
+          "headline": "Chevron's CEO Just Said Physical Oil Shortages Are Starting. Here's What That Means for CVX Stock.",
+          "summary": "The global economy is burning through its oil and refined products stockpiles.",
+          "url": "https://finnhub.io/api/news?id=8ff008f2f1d89c7c627c6fb555ab79a6eda3217c918225cfd972c9cce9cb288b",
+          "datetime": 1778628000,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
           "source": "Yahoo",
           "ticker": "COP",
-          "headline": "Syria: TotalEnergies Signs a Cooperation Agreement on Offshore Exploration",
-          "summary": "PARIS, May 12, 2026-- TotalEnergies (Paris:TTE) (LSE:TTE) (NYSE:TTE), together with its partners QatarEnergy and ConocoPhillips, has signed today a Memorandum of Understanding (MoU) with the Syrian Petroleum Company (SPC",
-          "url": "https://finnhub.io/api/news?id=56bde67ec4ac157b0b889548b4ef37ee17f020e6a79e1e05000859dadc9342a6",
-          "datetime": 1778588640,
+          "headline": "Freedom Broker Cuts ConocoPhillips (COP) Rating after Recent Share Gains",
+          "summary": "With a 5-year average dividend growth rate of 14.05%, ConocoPhillips (NYSE:COP) is included among the 14 Best Dividend Stocks to Buy for Steady Growth. On May 7, Freedom Broker downgraded ConocoPhillips (NYSE:COP) to Hol",
+          "url": "https://finnhub.io/api/news?id=99a46efb59a7c48d96e4e638351f66da8fef147bc035e41531516acba186cfb8",
+          "datetime": 1778620432,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "ChartMill",
-          "ticker": "OXY",
-          "headline": "Chips Push the S&P 500 to 7,400, Supercycle or the Last Act of a Bubble?",
-          "summary": "Monday was one of those sessions where the headline number - a modest 0.2% gain on the S&P 500 - doesn't begin to capture what's actually happening underneath the surface.",
-          "url": "https://finnhub.io/api/news?id=0254dbea09e8b79cd07ca314218a491c90985378a4403005097622f40fad872e",
-          "datetime": 1778569455,
-          "image": "https://www.chartmill.com/images/uploads/THUMBNAILS_CHARTMILL_1000_528_43_6ead78858a.webp"
         }
       ]
     },
@@ -468,69 +468,69 @@
       "icon": "🏥",
       "color": "#a13544",
       "image": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80",
-      "avgChange": 2.21,
+      "avgChange": 1.83,
       "gainers": [
         {
-          "ticker": "ABBV",
-          "price": 209.64,
-          "changePct": 3.38,
-          "pc": 202.78
+          "ticker": "CVS",
+          "price": 95.15,
+          "changePct": 3.18,
+          "pc": 92.22
+        },
+        {
+          "ticker": "UNH",
+          "price": 396.39,
+          "changePct": 3.11,
+          "pc": 384.44
         },
         {
           "ticker": "MDT",
-          "price": 76.81,
-          "changePct": 3.04,
+          "price": 76.82,
+          "changePct": 3.06,
           "pc": 74.54
         },
         {
           "ticker": "ISRG",
-          "price": 432.68,
-          "changePct": 3.01,
+          "price": 431.87,
+          "changePct": 2.81,
           "pc": 420.06
         },
         {
-          "ticker": "LLY",
-          "price": 995.78,
-          "changePct": 2.98,
-          "pc": 966.99
-        },
-        {
-          "ticker": "CVS",
-          "price": 94.8,
-          "changePct": 2.8,
-          "pc": 92.22
+          "ticker": "ABBV",
+          "price": 207.86,
+          "changePct": 2.51,
+          "pc": 202.78
         }
       ],
       "losers": [
         {
           "ticker": "DHR",
-          "price": 166.16,
-          "changePct": -0.22,
+          "price": 166.26,
+          "changePct": -0.16,
           "pc": 166.52
         },
         {
           "ticker": "PFE",
-          "price": 26.04,
-          "changePct": 0.88,
+          "price": 25.87,
+          "changePct": 0.23,
           "pc": 25.81
         },
         {
-          "ticker": "TMO",
-          "price": 459.15,
-          "changePct": 1.45,
-          "pc": 452.6
-        },
-        {
           "ticker": "MRK",
-          "price": 113.42,
-          "changePct": 1.92,
+          "price": 112.37,
+          "changePct": 0.98,
           "pc": 111.28
         },
         {
-          "ticker": "BMY",
-          "price": 56.84,
-          "changePct": 2.1,
-          "pc": 55.67
+          "ticker": "GILD",
+          "price": 134.94,
+          "changePct": 1.06,
+          "pc": 133.52
+        },
+        {
+          "ticker": "JNJ",
+          "price": 224.26,
+          "changePct": 1.28,
+          "pc": 221.43
         }
       ],
       "sentiment": {
@@ -571,47 +571,47 @@
       "news": [
         {
           "source": "Yahoo",
-          "ticker": "LLY",
-          "headline": "Eli Lilly Price Prediction: This Is Where The Stock Will End This Year",
-          "summary": "Few stocks have polarized investors in 2026 like Eli Lilly (NYSE:LLY). After a stunning Q1 earnings report and raised full-year guidance, the question is whether the valuation has run ahead of fundamentals. Here is where",
-          "url": "https://finnhub.io/api/news?id=46acc235b4a7e4247e38471ff98ce26e682c8a999f6eb10808e1435d724c6a4f",
-          "datetime": 1778599512,
+          "ticker": "PFE",
+          "headline": "Pfizer Shifts VEPPANU Rights To Rigel As Valuation Gap Persists",
+          "summary": "Pfizer (NYSE:PFE) and Arvinas have transferred global development and commercialization rights for VEPPANU (vepdegestrant) to Rigel Pharmaceuticals. VEPPANU is the first FDA approved PROTAC therapy and was recently clear",
+          "url": "https://finnhub.io/api/news?id=1bb5594820007fd17e263df237e528ca899935ba49823fc5ef94181101170e47",
+          "datetime": 1778660252,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
           "source": "Yahoo",
           "ticker": "LLY",
-          "headline": "The 3 Best S&P 500 Stocks to Buy Now",
-          "summary": "These growth stocks are benefiting from major tailwinds across cloud computing, digital payments, and healthcare.",
-          "url": "https://finnhub.io/api/news?id=1a067cef6a8235da2f2343a0a76c5a2e37289cbbc4ecbd35f7172a1fa0aa4de0",
-          "datetime": 1778599200,
+          "headline": "Eli Lilly Obesity Data Support Oral Shift And Undervalued Growth Story",
+          "summary": "Eli Lilly (NYSE:LLY) reported new late phase clinical data on its obesity portfolio. Patients with obesity maintained significant long term weight loss after switching from injectable to oral therapies. The trials highli",
+          "url": "https://finnhub.io/api/news?id=d2236c61591e116b9b62248cffb0cebea2f5562fd8ea03118997f0a7b5acad85",
+          "datetime": 1778660170,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Finnhub",
+          "ticker": "LLY",
+          "headline": "Eli Lilly launches Alzheimer's drug Donanemab in India",
+          "summary": "U.S.-based drugmaker Eli Lilly on Wednesday launched its Alzheimer's drug Lormalzi, also known as Donanemab, in India. Here are the details: o The drugmaker has priced the...",
+          "url": "https://finnhub.io/api/news?id=63a6f3441dffe538332e829e7a05613c57e8806fcd5e55d252ecec012fcfe993",
+          "datetime": 1778650141,
+          "image": ""
         },
         {
           "source": "Yahoo",
           "ticker": "PFE",
-          "headline": "Up 373%, Is ExxonMobil Proving Why It Was a Mistake for Salesforce to Replace ExxonMobil in the Dow Jones Industrial Average?",
-          "summary": "The Dow Jones Industrial Average would be even higher if it had more exposure to energy stocks.",
-          "url": "https://finnhub.io/api/news?id=72948540a48469c69c820fa38ed287a8ec653cd018be6fd44e1cfed3f1da1af8",
-          "datetime": 1778595300,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Yahoo",
-          "ticker": "PFE",
-          "headline": "3 Berkshire Stocks Under $30 and 2 Under $30 Greg Abel May Buy",
-          "summary": "Warren Buffett built Berkshire Hathaway by paying reasonable prices for durable cash flows, and three of his current bets still trade below $30 a share. With Greg Abel sitting on a record cash pile, the sub-$30 aisle is ",
-          "url": "https://finnhub.io/api/news?id=ca7c6e85e8b5cef302f78ab8bda57f61f0399e0f9dab9075a571444cb31024bc",
-          "datetime": 1778592884,
+          "headline": "Valneva Reports First Quarter 2026 Financial Results and Provides Corporate Updates",
+          "summary": "Total product sales of €30.5 million Cash position of €105.3 million as of end March 2026, excluding proceeds from successful reserved offering completed in April 20261Program launched in April to further reduce operatin",
+          "url": "https://finnhub.io/api/news?id=def9f5799adceace6ca413932aacaf5be334dd41aad75b90aac0fd55644af899",
+          "datetime": 1778648400,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
           "source": "Yahoo",
           "ticker": "JNJ",
-          "headline": "Johnson & Johnson Advances the Standard of Calcium Modification with Global Launch of Shockwave™ C2 Aero Coronary IVL Catheter",
-          "summary": "SANTA CLARA, Calif., May 12, 2026--Johnson & Johnson Advances the Standard of Calcium Modification with Global Launch of Shockwave™ C2 Aero Coronary IVL Catheter",
-          "url": "https://finnhub.io/api/news?id=c204dd594bd6e8f3306bb0778f136d28c9ea401a7bd9584c2d539a6aeacd4fe3",
-          "datetime": 1778586300,
+          "headline": "Johnson & Johnson Advances Cardiology Crohn’s Care And Robotics As Shares Lag",
+          "summary": "Johnson & Johnson (NYSE:JNJ) has launched the Shockwave C2 Aero Coronary IVL Catheter for calcified coronary artery disease, adding to its intravascular lithotripsy portfolio. The company reported key clinical results fo",
+          "url": "https://finnhub.io/api/news?id=ca0ed525d1a2c3339f74741e6bd9bd2e237668a885ad79ee21af902ff4dd2b7d",
+          "datetime": 1778624284,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         }
       ]
@@ -621,68 +621,68 @@
       "icon": "🛒",
       "color": "#7a5c9e",
       "image": "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&q=80",
-      "avgChange": 1.31,
+      "avgChange": 0.93,
       "gainers": [
         {
-          "ticker": "PM",
-          "price": 189.96,
-          "changePct": 4.31,
-          "pc": 182.11
-        },
-        {
           "ticker": "TGT",
-          "price": 121.91,
-          "changePct": 2.93,
+          "price": 121.8,
+          "changePct": 2.84,
           "pc": 118.44
         },
         {
-          "ticker": "WMT",
-          "price": 130.57,
-          "changePct": 2.33,
-          "pc": 127.59
+          "ticker": "PM",
+          "price": 186.93,
+          "changePct": 2.65,
+          "pc": 182.11
         },
         {
           "ticker": "COST",
-          "price": 1020.75,
-          "changePct": 2.13,
+          "price": 1021.88,
+          "changePct": 2.24,
           "pc": 999.47
         },
         {
-          "ticker": "CL",
-          "price": 88.53,
-          "changePct": 2.06,
-          "pc": 86.74
+          "ticker": "WMT",
+          "price": 130.35,
+          "changePct": 2.16,
+          "pc": 127.59
+        },
+        {
+          "ticker": "KO",
+          "price": 80.03,
+          "changePct": 1.74,
+          "pc": 78.66
         }
       ],
       "losers": [
         {
           "ticker": "AMZN",
-          "price": 263.89,
-          "changePct": -1.9,
+          "price": 265.82,
+          "changePct": -1.18,
           "pc": 268.99
         },
         {
-          "ticker": "NKE",
-          "price": 42.28,
-          "changePct": -0.27,
-          "pc": 42.39
-        },
-        {
           "ticker": "LOW",
-          "price": 225.85,
-          "changePct": -0.09,
+          "price": 224.52,
+          "changePct": -0.68,
           "pc": 226.06
         },
         {
           "ticker": "HD",
-          "price": 312.26,
-          "changePct": 0.28,
+          "price": 310.46,
+          "changePct": -0.3,
           "pc": 311.4
         },
         {
+          "ticker": "NKE",
+          "price": 42.35,
+          "changePct": -0.09,
+          "pc": 42.39
+        },
+        {
           "ticker": "MCD",
-          "price": 276.99,
-          "changePct": 0.87,
+          "price": 274.84,
+          "changePct": 0.09,
           "pc": 274.6
         }
       ],
@@ -724,47 +724,47 @@
       "news": [
         {
           "source": "Yahoo",
-          "ticker": "AMZN",
-          "headline": "Hedge Fund Bets Big on Minerals Stock, According to Recent SEC Filing",
-          "summary": "This royalty-based firm generates revenue from leasing mineral rights and direct soda ash production across key U.S. basins.",
-          "url": "https://finnhub.io/api/news?id=bfc8ad551030f73fc2202d529b62d1f641a0f65758f5a8757b6d11282c881fba",
-          "datetime": 1778600128,
+          "ticker": "MCD",
+          "headline": "McDonald's and Chicago Fire Football Club Announce Landmark Stadium Naming Rights Partnership: McDonald's Park to Open in 2028 as a New Destination for Soccer, ",
+          "summary": "McDonald's and Chicago Fire Football Club today announced a historic naming rights partnership that will see the Major League Soccer club's new $750 million privately-funded stadium named McDonald's Park, opening in 2028",
+          "url": "https://finnhub.io/api/news?id=2b802af5690f93a034c6230a0b4e06bdfff598b1132f807abbb5b8779ad608f9",
+          "datetime": 1778664600,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
           "source": "Yahoo",
           "ticker": "AMZN",
-          "headline": "AST SpaceMobile Earnings, Revenue Miss Amid Satellite Launch Delays",
-          "summary": "AST SpaceMobile reported Q1 earnings that missed estimates but the company said it's \"on track\" to meet 2026 guidance.",
-          "url": "https://finnhub.io/api/news?id=b4b8fa6edb5e6a925fdb38a58facd3f43446d2bc91c1788f5f153a38f09db01b",
-          "datetime": 1778599586,
+          "headline": "Mitch Gould's Retail Playbook: How Brands Get Into Major U.S. Retailers",
+          "summary": "With more than 35 years of experience as a nutrition expert, retail distribution strategist, and brand-building executive, Mitch Gould is sharing the core strategies behind successfully selling products into major retail",
+          "url": "https://finnhub.io/api/news?id=1e2464644e86c77c1b1d00e77d239cd155e4b522a43909daef6d45b00f544985",
+          "datetime": 1778662800,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
           "source": "Yahoo",
           "ticker": "WMT",
-          "headline": "We’re Bullish on SoundHound With Six Straight Earnings Beats",
-          "summary": "Voice and agentic AI specialist SoundHound AI (NASDAQ:SOUN) just delivered its sixth straight earnings beat, and our model has digested the results. Here is where the 24/7 Wall St. price target lands. Our price target fo",
-          "url": "https://finnhub.io/api/news?id=d89b19bc648832b3ccfe0f5e0f7dce147bf5320248859329946d06d829ead536",
-          "datetime": 1778599450,
+          "headline": "How Walmart’s Dairy Push and Brand Partnerships At Walmart (WMT) Has Changed Its Investment Story",
+          "summary": "In recent months, partner brands including Buda Juice, Every Man Jack, Axil Brands, and Rogue have announced expanded product distribution or exclusive launches at Walmart stores and online, while Walmart itself opened a",
+          "url": "https://finnhub.io/api/news?id=d768eb09082de642df44bbd38968685229e0f67303a70e063cc60b458f7ad054",
+          "datetime": 1778660247,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
           "source": "Yahoo",
-          "ticker": "WMT",
-          "headline": "Walmart Expands Wellness Partners To Support Loyalty And Store Differentiation",
-          "summary": "Walmart is expanding distribution for several third party brands, including Buda Juice, Axil Brands, Rogue snacks, and O Positiv Health, across its U.S. stores. The rollouts focus on wellness, nutrition, women's health, ",
-          "url": "https://finnhub.io/api/news?id=9896ec7e2d626f3ee1c4682fd2ed688105893b9ad1368c10c9baa0479c67cb46",
-          "datetime": 1778598716,
+          "ticker": "AMZN",
+          "headline": "Elizabeth Warren Targets Amazon, Google, Microsoft And Meta After Warning That AI Data Centers 'Use As Much Electricity As 100,000 Households'",
+          "summary": "On Tuesday, Sen. Elizabeth Warren (D-Mass.) launched a renewed push to examine whether the rapid expansion of AI data centers run by major technology companies is driving up electricity costs for American households. War",
+          "url": "https://finnhub.io/api/news?id=6c840f62e09f814bea3cbb2f5ee81288762a7bed44107fadd857edbae43c42de",
+          "datetime": 1778659738,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
           "source": "Yahoo",
           "ticker": "MCD",
-          "headline": "The fast food stocks benefitting from value, premium offerings",
-          "summary": "Fast food companies reported strong first quarter earnings, their respective chief executives emphasizing the value being offered to consumers amid rising food costs, oil (CL=F, BZ=F) and gas prices (RB=F), and overall c",
-          "url": "https://finnhub.io/api/news?id=37178f7ed0d41caa1f7bae37ad602709f5243d8516766ebcf4a599e6e0abb9c7",
-          "datetime": 1778596877,
+          "headline": "Inflation Has Pushed this Dividend Aristocrat to 52-Week Lows. Why It’s Still Not Quite Time to Buy.",
+          "summary": "McDonald's stock is trading near its 52-week lows and has a dividend yield of aroudn 2.7%. However, the stock does not look like a compelling buy yet.",
+          "url": "https://finnhub.io/api/news?id=83073e4ea0a4e01cdb54c500b6799951755620ba676c5a39800bf1f186237e5f",
+          "datetime": 1778628602,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         }
       ]
@@ -774,69 +774,69 @@
       "icon": "🪙",
       "color": "#8a7340",
       "image": "https://images.unsplash.com/photo-1610375461246-83df859d849d?w=800&q=80",
-      "avgChange": -1.45,
+      "avgChange": -0.14,
       "gainers": [
         {
           "ticker": "CF",
-          "price": 127.55,
-          "changePct": 2.47,
+          "price": 130.39,
+          "changePct": 4.75,
           "pc": 124.48
         },
         {
+          "ticker": "AA",
+          "price": 67.62,
+          "changePct": 3.49,
+          "pc": 65.34
+        },
+        {
           "ticker": "MOS",
-          "price": 21.89,
-          "changePct": 0.44,
+          "price": 22.39,
+          "changePct": 2.75,
           "pc": 21.79
         },
         {
           "ticker": "FCX",
-          "price": 64.3,
-          "changePct": -0.11,
+          "price": 66.03,
+          "changePct": 2.58,
           "pc": 64.37
         },
         {
-          "ticker": "NUE",
-          "price": 231.24,
-          "changePct": -0.33,
-          "pc": 232.0
-        },
-        {
-          "ticker": "ATI",
-          "price": 160.31,
-          "changePct": -0.53,
-          "pc": 161.16
+          "ticker": "AEM",
+          "price": 197.05,
+          "changePct": 0.11,
+          "pc": 196.84
         }
       ],
       "losers": [
         {
           "ticker": "CLF",
-          "price": 10.68,
-          "changePct": -5.03,
+          "price": 10.79,
+          "changePct": -4.0,
           "pc": 11.24
         },
         {
-          "ticker": "MP",
-          "price": 64.6,
-          "changePct": -4.17,
-          "pc": 67.41
-        },
-        {
           "ticker": "GOLD",
-          "price": 41.83,
-          "changePct": -3.56,
+          "price": 42.16,
+          "changePct": -2.81,
           "pc": 43.38
         },
         {
-          "ticker": "WPM",
-          "price": 140.41,
-          "changePct": -2.36,
-          "pc": 143.8
+          "ticker": "MP",
+          "price": 65.59,
+          "changePct": -2.7,
+          "pc": 67.41
         },
         {
-          "ticker": "NEM",
-          "price": 117.88,
-          "changePct": -2.31,
-          "pc": 120.67
+          "ticker": "RS",
+          "price": 360.3,
+          "changePct": -2.22,
+          "pc": 368.47
+        },
+        {
+          "ticker": "STLD",
+          "price": 232.8,
+          "changePct": -1.34,
+          "pc": 235.97
         }
       ],
       "sentiment": {
@@ -877,29 +877,38 @@
       "news": [
         {
           "source": "Yahoo",
-          "ticker": "NEM",
-          "headline": "Lahontan Gold – Historic Mine Poised for a Comeback",
-          "summary": "Nevada Takes Center StageThe Iran conflict once again demonstrates why gold remains in demand as a safe-haven asset during times of geopolitical uncertainty. While rising oil prices fuel inflation fears and put pressure ",
-          "url": "https://finnhub.io/api/news?id=ecd093cad9053a1530e8a92f7a72fe628b9dadd73b9e3a84624cc1f4a2feab54",
-          "datetime": 1778595326,
+          "ticker": "FCX",
+          "headline": "Freeport expects full output at Grasberg by 2027",
+          "summary": "The Grasberg minerals district in Indonesia is home to one of the largest deposits of copper and gold globally.",
+          "url": "https://finnhub.io/api/news?id=1b3e1843d7675f96ccdbaf8176657a1dd23643bcdb223b83d8055d45622d58a4",
+          "datetime": 1778660216,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "SeekingAlpha",
-          "ticker": "NEM",
-          "headline": "7 Numbers That Should Make Investors Cautious",
-          "summary": "We highlight seven 'off the radar' numbers that should give prudent investors pause about current trading levels of the markets. Read the full analysis here.",
-          "url": "https://finnhub.io/api/news?id=d0b298172bb3c995774f289f512c3739aadcd116536ddb3b0c2653e9da05d6cf",
-          "datetime": 1778591684,
-          "image": "https://static.seekingalpha.com/cdn/s3/uploads/getty_images/2210552100/image_2210552100.jpg?io=getty-c-w1536"
         },
         {
           "source": "Yahoo",
           "ticker": "FCX",
-          "headline": "The AI Data Center Backlash Is Growing. Kevin O’Leary’s $1 Billion Stratos Project Reveals Why",
-          "summary": "Artificial intelligence is setting off the biggest infrastructure buildout since the early internet boom. Only this time, the stakes are larger, the power demands are higher, and the local pushback is louder. The world’s",
-          "url": "https://finnhub.io/api/news?id=6ab1323b174a446eecd40f724d32f84f09bdcb33bccb8dbf9103d8f3b0d80aff",
-          "datetime": 1778589329,
+          "headline": "A Look At Freeport McMoRan (FCX) Valuation As Shares Show Mixed Short Term Returns",
+          "summary": "Freeport-McMoRan stock in focus Freeport-McMoRan (FCX) is back on investors’ radar after recent trading, with the stock closing at US$66.03 and posting mixed short term returns, including a move down over the past month ",
+          "url": "https://finnhub.io/api/news?id=d64c0a0b117e7daf2de79298b51aeb5e2dd7d1ddb3aa7a8f780c562a88665012",
+          "datetime": 1778656601,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "ticker": "NEM",
+          "headline": "Newmont CTO Transition Puts Technical Priorities And Valuation In Focus",
+          "summary": "Newmont (NYSE:NEM) announced the retirement of Executive Vice President and Chief Technical Officer Francois Hardy after 24 years with the company. The company appointed Erin Workman as interim Chief Technical Officer as",
+          "url": "https://finnhub.io/api/news?id=2495d0e521e42b8406829adfc2282f9e6508f94845d824b3f9af94b70cb611ae",
+          "datetime": 1778606086,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "ticker": "NEM",
+          "headline": "AngloGold Ashanti Q1 Earnings Beat Estimates on Higher Gold Prices",
+          "summary": "AU's Q1 earnings surge 186% y/y on soaring gold prices, driving record cash flow and a massive $2B buyback plan despite rising costs.",
+          "url": "https://finnhub.io/api/news?id=19657e730652b4d39f32840ea32133463c98b9fb7dc6ed50c794d1d677ab422f",
+          "datetime": 1778604540,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
@@ -910,15 +919,6 @@
           "url": "https://finnhub.io/api/news?id=5421d3aebae98d2edfb4d5c285d85645c9448ee50b3a9f224db1cdc3730f57f1",
           "datetime": 1778577150,
           "image": ""
-        },
-        {
-          "source": "Yahoo",
-          "ticker": "FCX",
-          "headline": "Is It Too Late To Consider Freeport-McMoRan (FCX) After Its Recent Copper Price Rally?",
-          "summary": "Wondering whether Freeport-McMoRan's current share price really reflects its underlying value, or if the stock is getting ahead of itself. The stock last closed at US$64.37, with returns of 15.8% over the past week, down",
-          "url": "https://finnhub.io/api/news?id=81d62f9a47d31a4d72d2a796789619a6aff5e1022045d625fc04cdde0a83b519",
-          "datetime": 1778577066,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         }
       ]
     }
