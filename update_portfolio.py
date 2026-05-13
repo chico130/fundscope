@@ -1,9 +1,14 @@
 #!/usr/bin/env python3
 """
 update_portfolio.py — FundScope Portfolio
+Symbol resolution flow:
+  1. T212 /equity/instruments metadata (isin, currencyCode, name, type)
+  2. Static T212_TO_YF map (known symbols)
+  3. symbol_cache.json  (previous Gemini resolutions, persisted in repo)
+  4. Gemini 2.0 Flash   (last resort — only for unknown symbols)
 """
 
-import json, os, time, datetime, requests, base64
+import json, os, re, time, datetime, requests, base64
 import yfinance as yf
 
 try:
@@ -14,15 +19,15 @@ except ImportError:
     GEMINI_AVAILABLE = False
     print("[AVISO] google-genai não instalado")
 
-T212_KEY_ID  = os.environ.get("T212_API_ID", "")
-T212_SECRET  = os.environ["T212_API_KEY"]
-FH_TOKEN     = os.environ.get("FINNHUB_TOKEN", "")
-GEMINI_KEY   = os.environ.get("GEMINI_API_KEY", "")
-FH_BASE      = "https://finnhub.io/api/v1"
-T212_BASE    = "https://live.trading212.com/api/v0"
+T212_KEY_ID = os.environ.get("T212_API_ID", "")
+T212_SECRET = os.environ["T212_API_KEY"]
+FH_TOKEN    = os.environ.get("FINNHUB_TOKEN", "")
+GEMINI_KEY  = os.environ.get("GEMINI_API_KEY", "")
+FH_BASE     = "https://finnhub.io/api/v1"
+T212_BASE   = "https://live.trading212.com/api/v0"
 
-_creds      = base64.b64encode(f"{T212_KEY_ID}:{T212_SECRET}".encode()).decode()
-T212_AUTH   = f"Basic {_creds}"
+_creds    = base64.b64encode(f"{T212_KEY_ID}:{T212_SECRET}".encode()).decode()
+T212_AUTH = f"Basic {_creds}"
 
 gemini_client = None
 if GEMINI_AVAILABLE and GEMINI_KEY:
@@ -33,76 +38,61 @@ if GEMINI_AVAILABLE and GEMINI_KEY:
         print(f"[AVISO] Gemini init falhou: {e}")
 
 # ===========================================================
-# MAPEAMENTO T212 → yfinance
-# Formato: código T212 sem sufixo _EQ → ticker yfinance
-# POSIÇÕES ACTUAIS DO PORTFÓLIO:
-#   MTEd  → MU    (Micron Technology)
-#   49Vd  → VST   (Vistra Corp)
-#   0V6d  → VRT   (Vertiv Holdings)
-#   CJ6d  → CCJ   (Cameco Corp)
-#   ASMLa → ASML  (ASML Holding)
+# MAPA ESTÁTICO  T212 clean key → yfinance ticker
+# Chave = ticker_t212 sem sufixo (_EQ, _US_EQ, etc.)
 # ===========================================================
 T212_TO_YF = {
-    # --- Portfólio actual ---
-    "MTEd":  "MU",     # Micron Technology
-    "49Vd":  "VST",    # Vistra Corp
-    "0V6d":  "VRT",    # Vertiv Holdings
-    "CJ6d":  "CCJ",    # Cameco Corp
-    "ASMLa": "ASML",   # ASML Holding
-    # --- Outros stocks US comuns (para future-proofing) ---
+    # — Portfólio actual —
+    "MTEd":  "MU",
+    "49Vd":  "VST",
+    "0V6d":  "VRT",
+    "CJ6d":  "CCJ",
+    "ASMLa": "ASML",
+    # Tickers directos US (sem código especial)
     "AAPLd": "AAPL",   "MSFTd": "MSFT",   "TSLAd": "TSLA",
-    "AMZNd": "AMZN",   "GOOGLd": "GOOGL", "AMDd":  "AMD",
+    "AMZNd": "AMZN",   "GOOGLd":"GOOGL",  "AMDd":  "AMD",
     "AVGOd": "AVGO",   "NVDAd": "NVDA",   "METAd": "META",
     "JPMd":  "JPM",    "Vd":    "V",       "MAd":   "MA",
     "LLYd":  "LLY",    "UNHd":  "UNH",    "XOMd":  "XOM",
     "NEEd":  "NEE",    "CEGd":  "CEG",     "NRGd":  "NRG",
-    "CCJd":  "CCJ",    "MUd":   "MU",      "VSTd":  "VST",
-    "VRTd":  "VRT",
-    # --- ETFs europeus ---
-    "0V6d":  "VRT",    # override removido abaixo — ver nota
-    "VWCE":  "VWCE.DE", "IWDA": "IWDA.AS", "EUNL": "EUNL.DE",
-    "CSPX":  "CSPX.L",  "SXR8": "SXR8.DE", "VUSA": "VUSA.AS",
-    "SPPW":  "SPPW.DE", "XDWD": "XDWD.DE", "VWRA": "VWRA.L",
-    "VUAA":  "VUAA.DE", "VEUR": "VEUR.AS", "VFEM": "VFEM.AS",
-    "VHYL":  "VHYL.AS", "VDIV": "VDIV.AS", "VAGP": "VAGP.L",
-    "IMAE":  "IMAE.AS", "IUSQ": "IUSQ.DE", "IQQQ": "IQQQ.DE",
-    "EMIM":  "EMIM.L",  "AGGH": "AGGH.L",  "SSAC": "SSAC.L",
-    "CNDX":  "CNDX.L",  "MEUD": "MEUD.PA", "SPYY": "SPYY.DE",
-    "SPYW":  "SPYW.DE", "EQQQ": "EQQQ.L",  "SMEA": "SMEA.DE",
+    "MUd":   "MU",     "VSTd":  "VST",     "VRTd":  "VRT",
+    "CCJd":  "CCJ",
+    # ETFs europeus frequentes
+    "VWCE":  "VWCE.DE", "VWRA": "VWRA.L",  "VUAA": "VUAA.DE",
+    "VUSA":  "VUSA.AS", "VEUR": "VEUR.AS",  "VFEM": "VFEM.AS",
+    "CSPX":  "CSPX.L",  "IWDA": "IWDA.AS",  "EUNL": "EUNL.DE",
+    "SXR8":  "SXR8.DE", "IUSQ": "IUSQ.DE",  "SPPW": "SPPW.DE",
+    "XDWD":  "XDWD.DE", "EQQQ": "EQQQ.L",   "MEUD": "MEUD.PA",
+    "VHYL":  "VHYL.AS", "VDIV": "VDIV.AS",  "VAGP": "VAGP.L",
+    "IMAE":  "IMAE.AS", "IQQQ": "IQQQ.DE",  "EMIM": "EMIM.L",
+    "AGGH":  "AGGH.L",  "SSAC": "SSAC.L",   "CNDX": "CNDX.L",
+    "SPYY":  "SPYY.DE", "SPYW": "SPYW.DE",  "SMEA": "SMEA.DE",
 }
-# Corrigir: 0V6d → VRT (Vertiv), não pode ser duplicado com VWCE
-# O dicionário Python usa o último valor para chaves duplicadas,
-# por isso garantimos a ordem correcta sobrepondo no final:
-T212_TO_YF["0V6d"] = "VRT"   # Vertiv Holdings
-T212_TO_YF["CJ6d"] = "CCJ"   # Cameco Corp
 
 YF_NAMES = {
-    # --- Portfólio actual ---
     "MU":      "Micron Technology",
     "VST":     "Vistra Corp",
     "VRT":     "Vertiv Holdings",
     "CCJ":     "Cameco Corp",
     "ASML":    "ASML Holding",
-    # --- Outros stocks ---
-    "AAPL":   "Apple Inc.",
-    "MSFT":   "Microsoft",
-    "TSLA":   "Tesla",
-    "AMZN":   "Amazon",
-    "GOOGL":  "Alphabet",
-    "AMD":    "AMD",
-    "AVGO":   "Broadcom",
-    "NVDA":   "NVIDIA",
-    "META":   "Meta Platforms",
-    "JPM":    "JPMorgan Chase",
-    "V":      "Visa",
-    "MA":     "Mastercard",
-    "LLY":    "Eli Lilly",
-    "UNH":    "UnitedHealth",
-    "XOM":    "ExxonMobil",
-    "NEE":    "NextEra Energy",
-    "CEG":    "Constellation Energy",
-    "NRG":    "NRG Energy",
-    # --- ETFs europeus ---
+    "AAPL":    "Apple Inc.",
+    "MSFT":    "Microsoft",
+    "TSLA":    "Tesla",
+    "AMZN":    "Amazon",
+    "GOOGL":   "Alphabet",
+    "AMD":     "AMD",
+    "AVGO":    "Broadcom",
+    "NVDA":    "NVIDIA",
+    "META":    "Meta Platforms",
+    "JPM":     "JPMorgan Chase",
+    "V":       "Visa",
+    "MA":      "Mastercard",
+    "LLY":     "Eli Lilly",
+    "UNH":     "UnitedHealth",
+    "XOM":     "ExxonMobil",
+    "NEE":     "NextEra Energy",
+    "CEG":     "Constellation Energy",
+    "NRG":     "NRG Energy",
     "VWCE.DE": "Vanguard FTSE All-World Acc (Xetra)",
     "IWDA.AS": "iShares Core MSCI World (AMS)",
     "EUNL.DE": "iShares Core MSCI World (Xetra)",
@@ -115,8 +105,219 @@ YF_NAMES = {
     "VUAA.DE": "Vanguard S&P 500 UCITS Acc (Xetra)",
 }
 
+# moeda nativa conhecida por ticker yfinance
+YF_CURRENCY = {
+    "MU":"USD","VST":"USD","VRT":"USD","CCJ":"USD","ASML":"EUR",
+    "AAPL":"USD","MSFT":"USD","TSLA":"USD","AMZN":"USD","GOOGL":"USD",
+    "AMD":"USD","AVGO":"USD","NVDA":"USD","META":"USD","JPM":"USD",
+    "V":"USD","MA":"USD","LLY":"USD","UNH":"USD","XOM":"USD",
+    "NEE":"USD","CEG":"USD","NRG":"USD",
+    "VWCE.DE":"EUR","IWDA.AS":"USD","EUNL.DE":"USD","CSPX.L":"USD",
+    "SXR8.DE":"USD","VUSA.AS":"USD","SPPW.DE":"USD","XDWD.DE":"USD",
+    "VWRA.L":"USD","VUAA.DE":"USD",
+}
+
+SYMBOL_CACHE_FILE = "symbol_cache.json"
+
+
+# ===========================================================
+# SYMBOL CACHE  (persiste entre runs no repo)
+# ===========================================================
+def load_symbol_cache():
+    try:
+        with open(SYMBOL_CACHE_FILE, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except Exception:
+        return {}
+
+def save_symbol_cache(cache):
+    with open(SYMBOL_CACHE_FILE, "w", encoding="utf-8") as f:
+        json.dump(cache, f, ensure_ascii=False, indent=2)
+
+
+# ===========================================================
+# T212 INSTRUMENTS  (metadados: isin, name, currencyCode, type)
+# ===========================================================
+def fetch_t212_instruments():
+    """Devolve dict  ticker_t212 → {isin, name, currencyCode, type}."""
+    try:
+        r = requests.get(f"{T212_BASE}/equity/metadata/instruments",
+                         headers={"Authorization": T212_AUTH}, timeout=20)
+        r.raise_for_status()
+        data = r.json()
+        result = {}
+        for item in (data if isinstance(data, list) else []):
+            t = item.get("ticker") or item.get("symbol") or ""
+            if t:
+                result[t] = {
+                    "isin":         item.get("isin", ""),
+                    "name":         item.get("name", "") or item.get("fullName", ""),
+                    "currencyCode": item.get("currencyCode", ""),
+                    "type":         item.get("type", ""),
+                    "exchange":     item.get("exchange", "") or item.get("marketName", ""),
+                }
+        print(f"  T212 instruments: {len(result)} entradas carregadas")
+        return result
+    except Exception as e:
+        print(f"  [AVISO] fetch_t212_instruments falhou: {e}")
+        return {}
+
+
+# ===========================================================
+# GEMINI SYMBOL RESOLVER
+# ===========================================================
+def gemini_resolve_symbol(ticker_t212, isin, t212_name, currency_code, exchange):
+    """
+    Usa Gemini para resolver um ticker T212 desconhecido.
+    Devolve dict: {yf_ticker, display_name, currency, exchange_std}
+    """
+    if not gemini_client:
+        return None
+
+    prompt = f"""Tens um instrumento financeiro da corretora Trading212 com os seguintes dados:
+- Ticker T212: {ticker_t212}
+- ISIN: {isin}
+- Nome T212: {t212_name}
+- Moeda nativa (T212): {currency_code}
+- Bolsa/mercado (T212): {exchange}
+
+A conta do investidor está cotada em EUR, mas o título pode ser cotado em USD, EUR, GBP ou outra moeda.
+
+Responde APENAS com um objecto JSON válido com estes campos exactos:
+{{
+  "yf_ticker": "<ticker para usar no Yahoo Finance, ex: AMZN, META, VWCE.DE, CSPX.L>",
+  "display_name": "<nome legível da empresa ou ETF, ex: Amazon, Meta Platforms, Vanguard FTSE All-World>",
+  "currency": "<moeda nativa do título, ex: USD, EUR, GBP>",
+  "exchange_std": "<bolsa padronizada, ex: NASDAQ, NYSE, XETRA, LSE, EURONEXT>"
+}}
+Se não souberes com certeza, faz a melhor estimativa com base no ISIN e no nome."""
+
+    try:
+        response = gemini_client.models.generate_content(
+            model="gemini-2.0-flash",
+            contents=prompt,
+            config=genai_types.GenerateContentConfig(
+                response_mime_type="application/json", temperature=0.1))
+        raw = response.text.strip()
+        # limpar possível markdown
+        raw = re.sub(r'^```json\s*', '', raw)
+        raw = re.sub(r'```$', '', raw).strip()
+        result = json.loads(raw)
+        if "yf_ticker" in result and "currency" in result:
+            print(f"    [Gemini] {ticker_t212} → {result['yf_ticker']} ({result['currency']}) | {result.get('display_name','')}")
+            return result
+    except Exception as e:
+        print(f"    [Gemini resolver] {ticker_t212}: {e}")
+    return None
+
+
+# ===========================================================
+# MAPEAMENTO PRINCIPAL
+# ===========================================================
+def clean_t212_key(ticker_t212):
+    """Remove sufixos de bolsa do ticker T212."""
+    clean = ticker_t212
+    for suffix in ["_US_EQ", "_GBX_EQ", "_EUR_EQ", "_GBP_EQ", "_EQ"]:
+        if clean.endswith(suffix):
+            clean = clean[:-len(suffix)]
+            break
+    return clean
+
+
+def resolve_position(p, instruments_meta, symbol_cache):
+    """
+    Resolve yf_ticker, display_name, currency para uma posição T212.
+    Modifica p in-place e devolve True se houve resolução por Gemini (cache updated).
+    """
+    t212 = p["ticker_t212"]
+    clean = clean_t212_key(t212)
+    cache_updated = False
+
+    # ── 1. Mapa estático ────────────────────────────────────
+    if clean in T212_TO_YF:
+        yf = T212_TO_YF[clean]
+        p["ticker"]         = yf
+        p["ticker_display"] = yf.split(".")[0]
+        p["display_name"]   = YF_NAMES.get(yf, YF_NAMES.get(yf.split(".")[0], yf.split(".")[0]))
+        p["currency"]       = YF_CURRENCY.get(yf, YF_CURRENCY.get(yf.split(".")[0], "USD"))
+        print(f"  [mapa] {t212} → {yf} ({p['currency']})")
+        return False
+
+    # ── 2. Cache Gemini ─────────────────────────────────────
+    if t212 in symbol_cache:
+        cached = symbol_cache[t212]
+        yf = cached["yf_ticker"]
+        p["ticker"]         = yf
+        p["ticker_display"] = cached.get("ticker_display", yf.split(".")[0])
+        p["display_name"]   = cached.get("display_name", yf.split(".")[0])
+        p["currency"]       = cached.get("currency", "USD")
+        print(f"  [cache] {t212} → {yf} ({p['currency']})")
+        return False
+
+    # ── 3. Metadados T212 + Gemini ───────────────────────────
+    meta = instruments_meta.get(t212, {})
+    isin     = meta.get("isin", "")
+    t212_name= meta.get("name", clean)   # nome real da T212
+    currency = meta.get("currencyCode", "USD")
+    exchange = meta.get("exchange", "")
+
+    # Tenta já usar o nome/currency da T212 sem Gemini
+    # para casos simples (ticker limpo já é um símbolo válido)
+    if re.match(r'^[A-Z]{1,5}$', clean):
+        # parece um ticker US standard — tentar directamente
+        p["ticker"]         = clean
+        p["ticker_display"] = clean
+        p["display_name"]   = t212_name or clean
+        p["currency"]       = currency or "USD"
+        print(f"  [auto] {t212} → {clean} ({p['currency']}) [sem Gemini]")
+        # Guardar na cache para não repetir
+        symbol_cache[t212] = {
+            "yf_ticker":     clean,
+            "ticker_display":clean,
+            "display_name":  t212_name or clean,
+            "currency":      currency or "USD",
+            "source":        "auto"
+        }
+        return True
+
+    # ── 4. Gemini (último recurso) ───────────────────────────
+    print(f"  [Gemini] a resolver {t212} (isin={isin}, nome='{t212_name}', moeda={currency})...")
+    resolved = gemini_resolve_symbol(t212, isin, t212_name, currency, exchange)
+
+    if resolved:
+        yf = resolved["yf_ticker"]
+        p["ticker"]         = yf
+        p["ticker_display"] = resolved.get("ticker_display", yf.split(".")[0])
+        if not p["ticker_display"]:
+            p["ticker_display"] = yf.split(".")[0]
+        p["display_name"]   = resolved.get("display_name", yf.split(".")[0])
+        p["currency"]       = resolved.get("currency", "USD")
+        symbol_cache[t212] = {
+            "yf_ticker":      yf,
+            "ticker_display": p["ticker_display"],
+            "display_name":   p["display_name"],
+            "currency":       p["currency"],
+            "exchange_std":   resolved.get("exchange_std", ""),
+            "source":         "gemini"
+        }
+        cache_updated = True
+    else:
+        # fallback total: usar código T212 limpo
+        p["ticker"]         = clean
+        p["ticker_display"] = clean
+        p["display_name"]   = t212_name or clean
+        p["currency"]       = currency or "USD"
+        print(f"  [fallback] {t212} → {clean}")
+
+    return cache_updated
+
+
+# ===========================================================
+# T212 / yfinance helpers
+# ===========================================================
 def t212_get(path):
-    r = requests.get(f"{T212_BASE}{path}", headers={"Authorization": T212_AUTH}, timeout=15)
+    r = requests.get(f"{T212_BASE}{path}",
+                     headers={"Authorization": T212_AUTH}, timeout=15)
     r.raise_for_status()
     return r.json()
 
@@ -136,44 +337,6 @@ def fetch_t212_positions():
             "fx_ppl":        round(float(p.get("fxPpl", 0) or 0), 2),
         })
     return positions
-
-def map_t212_ticker(t212_ticker):
-    """Converte ticker T212 (ex: MTEd_EQ) para ticker yfinance (ex: MU)."""
-    clean = t212_ticker
-    for suffix in ["_US_EQ", "_GBX_EQ", "_EUR_EQ", "_GBP_EQ", "_EQ"]:
-        if clean.endswith(suffix):
-            clean = clean[:-len(suffix)]
-            break
-    if clean in T212_TO_YF:
-        return T212_TO_YF[clean]
-    # Fallback: tentar como ticker directo (ex: ASML, VWCE)
-    eu_etfs = {
-        "VWCE": "VWCE.DE", "VWRA": "VWRA.L",  "VUAA": "VUAA.DE",
-        "VUSA": "VUSA.AS", "VEUR": "VEUR.AS",  "VFEM": "VFEM.AS",
-        "CSPX": "CSPX.L",  "IWDA": "IWDA.AS",  "EUNL": "EUNL.DE",
-        "SXR8": "SXR8.DE", "IUSQ": "IUSQ.DE",  "SPPW": "SPPW.DE",
-        "XDWD": "XDWD.DE", "EQQQ": "EQQQ.L",   "MEUD": "MEUD.PA",
-    }
-    if clean in eu_etfs:
-        return eu_etfs[clean]
-    # Último recurso: devolver o código limpo e registar aviso
-    print(f"  [AVISO] Ticker T212 desconhecido: {t212_ticker} (clean={clean}) — usar como está")
-    return clean
-
-def get_display_name(ticker_yf, ticker_t212):
-    if ticker_yf in YF_NAMES:
-        return YF_NAMES[ticker_yf]
-    base = ticker_yf.split(".")[0]
-    if base in YF_NAMES:
-        return YF_NAMES[base]
-    try:
-        info = yf.Ticker(ticker_yf).info
-        name = info.get("longName") or info.get("shortName") or ""
-        if name:
-            return name
-    except Exception:
-        pass
-    return base
 
 def fetch_quotes_yf(yf_tickers):
     if not yf_tickers:
@@ -240,6 +403,22 @@ def fetch_dividends(yf_ticker):
     except Exception:
         return []
 
+def get_display_name_yf(ticker_yf):
+    """Tenta obter nome via yfinance se não estiver no mapa estático."""
+    if ticker_yf in YF_NAMES:
+        return YF_NAMES[ticker_yf]
+    base = ticker_yf.split(".")[0]
+    if base in YF_NAMES:
+        return YF_NAMES[base]
+    try:
+        info = yf.Ticker(ticker_yf).info
+        name = info.get("longName") or info.get("shortName") or ""
+        if name:
+            return name
+    except Exception:
+        pass
+    return base
+
 def fh_news(ticker_yf, frm, to, limit=5):
     base_symbol = ticker_yf.split(".")[0]
     try:
@@ -301,6 +480,10 @@ def update_history(history, total_value):
     history.append({"date": today, "value": round(total_value, 2)})
     return sorted(history, key=lambda x: x["date"])[-365:]
 
+
+# ===========================================================
+# MAIN
+# ===========================================================
 def main():
     now   = datetime.datetime.utcnow()
     today = now.date()
@@ -310,6 +493,10 @@ def main():
     print("=== FundScope Portfolio Update ===")
     print(f"UTC: {now.isoformat()}")
 
+    # Carregar cache de símbolos
+    symbol_cache = load_symbol_cache()
+    print(f"[cache] {len(symbol_cache)} símbolos em cache")
+
     print("\n[1] A buscar posições T212 (live)...")
     positions = fetch_t212_positions()
     print(f"    {len(positions)} posições encontradas")
@@ -317,14 +504,27 @@ def main():
         print("    Nenhuma posição — a terminar.")
         return
 
-    print("\n[2] A enriquecer com yfinance...")
-    for p in positions:
-        yf_ticker = map_t212_ticker(p["ticker_t212"])
-        p["ticker"]         = yf_ticker
-        p["display_name"]   = get_display_name(yf_ticker, p["ticker_t212"])
-        p["ticker_display"] = yf_ticker.split(".")[0]
-        print(f"  T212={p['ticker_t212']} → yf={yf_ticker} ({p['display_name']})")
+    print("\n[2] A buscar metadados de instrumentos T212...")
+    instruments_meta = fetch_t212_instruments()
 
+    print("\n[3] A resolver tickers (mapa → cache → Gemini)...")
+    cache_dirty = False
+    for p in positions:
+        updated = resolve_position(p, instruments_meta, symbol_cache)
+        if updated:
+            cache_dirty = True
+
+    # Guardar cache actualizada no repo (commit feito pelo workflow)
+    if cache_dirty:
+        save_symbol_cache(symbol_cache)
+        print(f"  [cache] guardada ({len(symbol_cache)} entradas)")
+
+    # Enriquecer display_name com yfinance se ainda for necessário
+    for p in positions:
+        if not p.get("display_name") or p["display_name"] == p.get("ticker"):
+            p["display_name"] = get_display_name_yf(p["ticker"])
+
+    print("\n[4] A buscar cotações yfinance...")
     yf_tickers = list(dict.fromkeys(p["ticker"] for p in positions))
     quotes = fetch_quotes_yf(yf_tickers)
     for p in positions:
@@ -351,7 +551,7 @@ def main():
         p["allocation_pct"] = round(p["value_eur"] / total_value * 100, 2) if total_value > 0 else 0
     positions.sort(key=lambda x: x["value_eur"], reverse=True)
 
-    print("\n[3] Notícias + Earnings + Gemini...")
+    print("\n[5] Notícias + Earnings + Gemini análise...")
     for p in positions:
         ticker    = p["ticker"]
         disp_name = p["display_name"]
@@ -366,7 +566,7 @@ def main():
             p["gain_eur"], p["change_pct"])
         time.sleep(1)
 
-    print("\n[4] Histórico...")
+    print("\n[6] Histórico...")
     history = update_history(load_history(), total_value)
 
     out = {
@@ -388,9 +588,9 @@ def main():
 
     print(f"\n✅ Concluído!")
     print(f"   Valor: {total_value:.2f}€ | P&L: {total_gain:+.2f}€ | Posições: {len(positions)}")
-    print("   Mapeamento utilizado:")
+    print("\n   Mapeamento final:")
     for p in positions:
-        print(f"   {p['ticker_t212']} → {p['ticker']} ({p['display_name']})")
+        print(f"   {p['ticker_t212']} → {p['ticker']} | {p['display_name']} | {p.get('currency','?')}")
 
 if __name__ == "__main__":
     main()
