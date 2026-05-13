@@ -149,9 +149,10 @@
     .pos-ticker{font-weight:700;letter-spacing:.02em;font-size:var(--text-sm);} 
     .pos-name{font-size:var(--text-xs);color:var(--color-text-muted);margin-top:2px;} 
     .pos-num{text-align:right;font-variant-numeric:tabular-nums;} 
-    .pos-gain.up,.up{color:var(--color-success);} .pos-gain.down,.down{color:var(--color-notification);} 
+    .pos-gain.up{color:var(--color-success);} .pos-gain.down{color:var(--color-notification);} 
     .chip{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:var(--radius-full);font-size:11px;} 
-    .chip.intraday{background:var(--color-surface-offset);color:var(--color-text-muted);} 
+    .chip.intraday.up{background:var(--color-success-highlight);color:var(--color-success);} 
+    .chip.intraday.down{background:var(--color-notification-highlight);color:var(--color-notification);} 
     .chip.total{background:var(--color-success-highlight);color:var(--color-success);} 
 
     .updated-badge{font-size:var(--text-xs);color:var(--color-text-muted);} 
@@ -669,15 +670,25 @@ function renderPositions(positions) {
       <td class="pos-num">${fmt(p.quantity, p.quantity<1 ? 4 : 2)}</td>
       <td class="pos-num">${fmt(p.avg_price,2)}€</td>
       <td class="pos-num ${todayClass}">${fmt(p.current_price,2)}€<br><span style="font-size:10px">${sign(p.change_pct)}${fmt(p.change_pct)}%</span></td>
-      <td class="pos-num ${todayClass}"><span class="chip intraday">${sign(dayGainEur)}${fmtEur(Math.abs(dayGainEur))}</span></td>
+      <td class="pos-num"><span class="chip intraday ${todayClass}">${sign(dayGainEur)}${fmtEur(Math.abs(dayGainEur))}</span></td>
       <td class="pos-num pos-gain ${gainClass}"><span class="chip total">${sign(p.gain_eur)}${fmtEur(Math.abs(p.gain_eur))}</span><br><span style="font-size:10px">${sign(p.gain_pct)}${fmt(p.gain_pct)}%</span></td>
       <td class="pos-num">${fmt(p.allocation_pct)}%</td>
-      <td class="hide-md"><span class="sentiment-badge ${sent}">${sent==='positivo'?'↑ Positivo':sent==='negativo'?'↓ Negativo':'→ Neutro'}</span></td>
+      <td class="hide-md"><button type="button" class="sentiment-cell" data-idx="${i}"><span class="sentiment-badge ${sent}">${sent==='positivo'?'↑ Positivo':sent==='negativo'?'↓ Negativo':'→ Neutro'}</span></button></td>
     </tr>`;
   }).join('');
 
   document.querySelectorAll('#posBody .pos-row').forEach(row => {
-    row.addEventListener('click', () => openDrawer(allPositions[parseInt(row.dataset.idx,10)]));
+    row.addEventListener('click', e => {
+      if (e.target.closest('.sentiment-cell')) return; // deixa o sentimento abrir o drawer via botão próprio
+      openDrawer(allPositions[parseInt(row.dataset.idx,10)]);
+    });
+  });
+
+  document.querySelectorAll('#posBody .sentiment-cell').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      openDrawer(allPositions[parseInt(btn.dataset.idx,10)]);
+    });
   });
 }
 
