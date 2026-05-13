@@ -500,25 +500,40 @@ function renderSummary() {
   totSub.textContent  = `${sign(s.total_gain_pct)}${fmt(s.total_gain_pct)}% vs. investido`;
 }
 
-// Histórico baseado apenas em pontos reais (sem síntese)
+// Histórico: pontos reais + preenchimento diário com último valor conhecido
 function prepareHistory(history, currentValue) {
-  if (!Array.isArray(history) || history.length === 0) {
-    const today = new Date().toISOString().split('T')[0];
-    return [{ date: today, value: currentValue }];
-  }
+  const out = [];
+  if (!Array.isArray(history)) history = [];
 
+  // mapa data -> valor explícito
   const map = new Map();
   for (const h of history) {
     if (h && h.date && h.value != null) map.set(h.date, h.value);
   }
-  const sorted = [...map.entries()]
-    .sort((a, b) => a[0].localeCompare(b[0]))
-    .map(([date, value]) => ({ date, value }));
+  if (map.size === 0) {
+    const today = new Date().toISOString().split('T')[0];
+    return [{ date: today, value: currentValue }];
+  }
+
+  const entries = [...map.entries()].sort((a,b) => a[0].localeCompare(b[0]));
+  let curDate   = new Date(entries[0][0] + 'T00:00:00');
+  const lastKey = entries[entries.length-1][0];
+  const lastDay = new Date(lastKey + 'T00:00:00');
+  let lastVal   = entries[0][1];
+
+  while (curDate <= lastDay) {
+    const key = curDate.toISOString().split('T')[0];
+    if (map.has(key)) lastVal = map.get(key);
+    out.push({ date:key, value:lastVal });
+    curDate.setDate(curDate.getDate()+1);
+  }
 
   const today = new Date().toISOString().split('T')[0];
-  const last  = sorted[sorted.length - 1];
-  if (last.date === today) last.value = currentValue; else sorted.push({ date: today, value: currentValue });
-  return sorted;
+  const last  = out[out.length-1];
+  if (today > last.date) out.push({ date: today, value: currentValue });
+  else if (today === last.date) last.value = currentValue;
+
+  return out;
 }
 
 function renderHistoryChart(history, days) {
@@ -568,7 +583,7 @@ function renderHistoryChart(history, days) {
     `<div class="history-stat"><span class="history-stat-label">Início do período</span><span class="history-stat-val">${fmtEur(first)}</span></div>` +
     `<div class="history-stat"><span class="history-stat-label">Valor actual</span><span class="history-stat-val">${fmtEur(last)}</span></div>` +
     `<div class="history-stat"><span class="history-stat-label">Variação</span><span class="history-stat-val ${gainTotal>=0?'up':'down'}">${sign(gainTotal)}${fmtEur(gainTotal)} (${sign(gainPct)}${fmt(gainPct)}%)</span></div>` +
-    `<div class="history-stat"><span class="history-note">Dados diários agregados — não é streaming em tempo real.</span></div>`;
+    `<div class="history-stat"><span class="history-note">Dias sem dados são preenchidos com o último valor conhecido.</span></div>`;
 
   const cvs = document.getElementById('historyChart');
   const ctx = cvs.getContext('2d');
@@ -576,13 +591,13 @@ function renderHistoryChart(history, days) {
   grad.addColorStop(0, lineClr+'30'); grad.addColorStop(1, lineClr+'00');
   if (histChart) histChart.destroy();
 
-  const ptRadius  = slice.length <= 15 ? 4 : 0;
-  const ptHover   = slice.length <= 15 ? 6 : 5;
+  const ptRadius  = slice.length <= 30 ? 3 : 0;
+  const ptHover   = slice.length <= 30 ? 5 : 4;
 
   histChart = new Chart(ctx, {
     type:'line',
-    data:{ labels, datasets:[{ data:values, borderColor:lineClr, borderWidth:2, backgroundColor:grad, fill:true, tension: slice.length <= 4 ? 0 : 0.35, pointRadius:ptRadius, pointBackgroundColor:lineClr, pointHoverRadius:ptHover, pointHoverBackgroundColor:lineClr, pointHoverBorderColor: isDark?'#1a1917':'#f9f8f5', pointHoverBorderWidth:2 }] },
-    options:{ responsive:true, maintainAspectRatio:false, interaction:{mode:'index',intersect:false}, plugins:{ legend:{display:false}, tooltip:{ backgroundColor: isDark?'#1c1b19':'#fff', borderColor: isDark?'#393836':'#d4d1ca', borderWidth:1, titleColor:textClr, bodyColor: isDark?'#cdccca':'#28251d', padding:10, callbacks:{ label: ctx => '  ' + fmtEur(ctx.raw) } } }, scales:{ x:{ grid:{color:gridClr}, ticks:{color:textClr, maxTicksLimit: Math.min(slice.length, 7), font:{size:11}} }, y:{ grid:{color:gridClr}, ticks:{color:textClr, font:{size:11}, callback:v => fmt(v/1000,1)+'k€'}, border:{dash:[4,4]} } } }
+    data:{ labels, datasets:[{ data:values, borderColor:lineClr, borderWidth:2, backgroundColor:grad, fill:true, tension: 0.25, pointRadius:ptRadius, pointBackgroundColor:lineClr, pointHoverRadius:ptHover, pointHoverBackgroundColor:lineClr, pointHoverBorderColor: isDark?'#1a1917':'#f9f8f5', pointHoverBorderWidth:2 }] },
+    options:{ responsive:true, maintainAspectRatio:false, interaction:{mode:'index',intersect:false}, plugins:{ legend:{display:false}, tooltip:{ backgroundColor: isDark?'#1c1b19':'#fff', borderColor: isDark?'#393836':'#d4d1ca', borderWidth:1, titleColor:textClr, bodyColor: isDark?'#cdccca':'#28251d', padding:10, callbacks:{ label: ctx => '  ' + fmtEur(ctx.raw) } } }, scales:{ x:{ grid:{color:gridClr}, ticks:{color:textClr, maxTicksLimit: 8, font:{size:11}} }, y:{ grid:{color:gridClr}, ticks:{color:textClr, font:{size:11}, callback:v => fmt(v/1000,1)+'k€'}, border:{dash:[4,4]} } } }
   });
 }
 
