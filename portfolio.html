@@ -88,7 +88,7 @@
     .charts-row{display:grid;grid-template-columns:300px 1fr;gap:var(--space-6);margin-bottom:var(--space-6);}
     .chart-card{background:var(--color-surface);border:1px solid rgba(40,37,29,.07);border-radius:var(--radius-xl);padding:var(--space-6);}
     .chart-title{font-size:var(--text-sm);font-weight:600;color:var(--color-text);margin-bottom:var(--space-5);}
-    .donut-wrap{position:relative;width:180px;height:180px;margin:0 auto var(--space-5);} .donet-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;}
+    .donut-wrap{position:relative;width:180px;height:180px;margin:0 auto var(--space-5);}
     .donut-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;}
     .donut-total{font-size:var(--text-lg);font-weight:700;font-variant-numeric:tabular-nums;} .donut-sub{font-size:var(--text-xs);color:var(--color-text-muted);}
     .legend{display:flex;flex-direction:column;gap:var(--space-2);} .legend-item{display:flex;align-items:center;gap:var(--space-2);font-size:var(--text-xs);} .legend-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
@@ -96,6 +96,7 @@
     .perf-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-5);} .perf-tabs{display:flex;gap:var(--space-1);} .perf-tab{font-size:var(--text-xs);padding:var(--space-1) var(--space-3);border-radius:var(--radius-full);border:1px solid var(--color-border);color:var(--color-text-muted);transition:all var(--transition);cursor:pointer;} .perf-tab.active{background:var(--color-primary);border-color:var(--color-primary);color:#fff;}
     .perf-list{display:flex;flex-direction:column;gap:var(--space-3);} .perf-item{display:grid;grid-template-columns:1fr auto;gap:var(--space-4);align-items:center;} .perf-left{min-width:0;} .perf-name-row{display:flex;gap:var(--space-2);align-items:baseline;margin-bottom:6px;} .perf-ticker{font-size:var(--text-sm);font-weight:700;color:var(--color-text);} .perf-name{font-size:var(--text-xs);color:var(--color-text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;} .perf-bar-wrap{height:8px;background:var(--color-surface-offset);border-radius:var(--radius-full);overflow:hidden;} .perf-bar{height:100%;border-radius:var(--radius-full);} .perf-bar.up{background:var(--color-success);} .perf-bar.down{background:var(--color-notification);} .perf-right{text-align:right;} .perf-pct{font-size:var(--text-sm);font-weight:700;font-variant-numeric:tabular-nums;} .perf-pct.up{color:var(--color-success);} .perf-pct.down{color:var(--color-notification);} .perf-gain{font-size:var(--text-xs);color:var(--color-text-muted);font-variant-numeric:tabular-nums;}
     .history-card{background:var(--color-surface);border:1px solid rgba(40,37,29,.07);border-radius:var(--radius-xl);padding:var(--space-6);margin-bottom:var(--space-6);} .history-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-2);} .history-meta{display:flex;gap:var(--space-6);margin-bottom:var(--space-5);flex-wrap:wrap;} .history-stat{display:flex;flex-direction:column;gap:2px;} .history-stat-label{font-size:var(--text-xs);color:var(--color-text-muted);text-transform:uppercase;letter-spacing:.05em;} .history-stat-val{font-size:var(--text-base);font-weight:700;font-variant-numeric:tabular-nums;} .period-tabs{display:flex;gap:var(--space-1);} .period-tab{font-size:var(--text-xs);padding:var(--space-1) var(--space-3);border-radius:var(--radius-full);border:1px solid var(--color-border);color:var(--color-text-muted);transition:all var(--transition);cursor:pointer;} .period-tab.active{background:var(--color-primary);border-color:var(--color-primary);color:#fff;} .history-canvas-wrap{height:200px;}
+    .no-history{display:flex;align-items:center;justify-content:center;height:160px;flex-direction:column;gap:var(--space-3);color:var(--color-text-muted);font-size:var(--text-sm);}
     .positions-card{background:var(--color-surface);border:1px solid rgba(40,37,29,.07);border-radius:var(--radius-xl);padding:var(--space-2) 0;overflow:hidden;} .pos-head,.pos-row{display:grid;grid-template-columns:2.1fr .8fr .9fr 1fr 1fr 1.1fr 1fr .9fr;gap:var(--space-4);align-items:center;padding:var(--space-4) var(--space-6);} .pos-head{font-size:var(--text-xs);color:var(--color-text-muted);text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid var(--color-divider);} .pos-row{font-size:var(--text-sm);border-bottom:1px solid rgba(40,37,29,.04);cursor:pointer;transition:background var(--transition);} .pos-row:hover, tbody tr:hover{background:var(--color-surface-offset);} .pos-ticker{font-weight:700;letter-spacing:.02em;font-size:var(--text-sm);} .pos-name{font-size:var(--text-xs);color:var(--color-text-muted);margin-top:2px;} .pos-num{text-align:right;font-variant-numeric:tabular-nums;} .pos-gain.up,.up{color:var(--color-success);} .pos-gain.down,.down{color:var(--color-notification);} .alloc-bar{width:56px;height:6px;background:var(--color-surface-offset);border-radius:var(--radius-full);overflow:hidden;margin-left:auto;margin-bottom:3px;} .alloc-fill{height:100%;border-radius:var(--radius-full);} .tag-pill{display:inline-flex;align-items:center;justify-content:center;padding:4px 8px;border-radius:var(--radius-full);font-size:11px;font-weight:600;} .tag-pill.positivo{background:var(--color-success-highlight);color:var(--color-success);} .tag-pill.negativo{background:var(--color-notification-highlight);color:var(--color-notification);} .tag-pill.neutro{background:var(--color-surface-offset);color:var(--color-text-muted);}
     .quarter-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-4);margin-bottom:var(--space-6);} .quarter-card{background:var(--color-surface);border:1px solid rgba(40,37,29,.07);border-radius:var(--radius-xl);padding:var(--space-5);} .quarter-label{font-size:var(--text-xs);color:var(--color-text-muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:var(--space-2);} .quarter-value{font-size:var(--text-base);font-weight:700;font-variant-numeric:tabular-nums;}
     .drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.32);backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:opacity var(--transition);z-index:300;} .drawer-overlay.show{opacity:1;pointer-events:auto;} .drawer{position:fixed;top:0;right:0;height:100dvh;width:min(720px,100vw);background:var(--color-bg);border-left:1px solid var(--color-border);transform:translateX(100%);transition:transform 260ms cubic-bezier(.16,1,.3,1);z-index:400;display:flex;flex-direction:column;} .drawer.show{transform:translateX(0);} .drawer-head{display:flex;align-items:flex-start;justify-content:space-between;padding:var(--space-6);border-bottom:1px solid var(--color-divider);} .drawer-title-wrap{display:flex;flex-direction:column;gap:4px;} .drawer-ticker{font-size:var(--text-lg);font-weight:700;} .drawer-name{font-size:var(--text-sm);color:var(--color-text-muted);} .drawer-close{width:36px;height:36px;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;color:var(--color-text-muted);} .drawer-close:hover{background:var(--color-surface-offset);color:var(--color-text);} .drawer-body{padding:var(--space-6);overflow-y:auto;display:flex;flex-direction:column;gap:var(--space-6);} .drawer-section{background:var(--color-surface);border:1px solid rgba(40,37,29,.07);border-radius:var(--radius-xl);padding:var(--space-5);} .drawer-section-title{font-size:var(--text-sm);font-weight:700;margin-bottom:var(--space-4);} .sentiment-badge{display:inline-flex;align-items:center;gap:var(--space-2);padding:var(--space-1) var(--space-3);border-radius:var(--radius-full);font-size:var(--text-xs);font-weight:600;} .sentiment-badge.positivo{background:var(--color-success-highlight);color:var(--color-success);} .sentiment-badge.negativo{background:var(--color-notification-highlight);color:var(--color-notification);} .sentiment-badge.neutro{background:var(--color-surface-offset);color:var(--color-text-muted);} .analysis-text{font-size:var(--text-sm);color:var(--color-text);line-height:1.6;margin-top:var(--space-3);} .watch-list{display:flex;flex-direction:column;gap:var(--space-2);padding-left:var(--space-4);} .watch-item{font-size:var(--text-sm);color:var(--color-text-muted);} .news-list{display:flex;flex-direction:column;gap:var(--space-4);} .news-item{padding-bottom:var(--space-4);border-bottom:1px solid rgba(40,37,29,.05);} .news-item:last-child{padding-bottom:0;border-bottom:none;} .news-meta{display:flex;align-items:center;gap:var(--space-2);margin-bottom:6px;} .news-num{width:20px;height:20px;border-radius:50%;background:var(--color-primary-highlight);color:var(--color-primary);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;} .news-source,.news-date{font-size:var(--text-xs);color:var(--color-text-muted);} .news-headline{font-size:var(--text-sm);font-weight:600;line-height:1.45;margin-bottom:4px;} .news-headline a:hover{text-decoration:underline;} .news-summary{font-size:var(--text-xs);color:var(--color-text-muted);line-height:1.55;} .earn-list{display:flex;flex-direction:column;gap:var(--space-2);} .earn-row{display:grid;grid-template-columns:80px 80px 80px 1fr;gap:var(--space-2);padding:var(--space-2) var(--space-3);border-radius:var(--radius-md);background:var(--color-surface-offset);font-size:var(--text-xs);align-items:center;font-variant-numeric:tabular-nums;} .earn-period{color:var(--color-text-muted);font-weight:500;} .earn-est,.earn-act{color:var(--color-text);} .earn-status{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;justify-self:end;} .earn-status.beat{color:var(--color-success);} .earn-status.miss{color:var(--color-notification);} .div-list{display:flex;flex-direction:column;gap:var(--space-2);} .div-row{display:flex;justify-content:space-between;align-items:center;padding:var(--space-2) var(--space-3);background:var(--color-surface-offset);border-radius:var(--radius-md);font-size:var(--text-xs);font-variant-numeric:tabular-nums;}
@@ -176,7 +177,7 @@
           </div>
         </div>
         <div class="history-meta" id="historyMeta"></div>
-        <div class="history-canvas-wrap"><canvas id="historyChart"></canvas></div>
+        <div class="history-canvas-wrap" id="historyCanvasWrap"><canvas id="historyChart"></canvas></div>
       </div>
       <div class="charts-row">
         <div class="chart-card">
@@ -206,23 +207,22 @@
   </aside>
 
   <script>
-// ── Credenciais (alterar aqui se necessário) ──────────────────────────────────
+// ── Credenciais ───────────────────────────────────────────────────────────────
 const VALID_USERNAME = 'chico130';
 const VALID_PASSWORD = 'fundscope';
-// ─────────────────────────────────────────────────────────────────────────────
 
-const loginScreen = document.getElementById('loginScreen');
-const app         = document.getElementById('app');
+const loginScreen  = document.getElementById('loginScreen');
+const app          = document.getElementById('app');
 const usernameInput = document.getElementById('usernameInput');
-const pwInput     = document.getElementById('pwInput');
-const loginBtn    = document.getElementById('loginBtn');
-const loginError  = document.getElementById('loginError');
-const rememberMe  = document.getElementById('rememberMe');
-const logoutBtn   = document.getElementById('logoutBtn');
+const pwInput      = document.getElementById('pwInput');
+const loginBtn     = document.getElementById('loginBtn');
+const loginError   = document.getElementById('loginError');
+const rememberMe   = document.getElementById('rememberMe');
+const logoutBtn    = document.getElementById('logoutBtn');
 
 function getSession()  { return sessionStorage.getItem('fundscope_auth') || localStorage.getItem('fundscope_auth'); }
 function setSession()  { sessionStorage.setItem('fundscope_auth','1'); if (rememberMe.checked) localStorage.setItem('fundscope_auth','1'); }
-function clearSession(){ sessionStorage.removeItem('fundscope_auth');  localStorage.removeItem('fundscope_auth'); }
+function clearSession(){ sessionStorage.removeItem('fundscope_auth'); localStorage.removeItem('fundscope_auth'); }
 function unlock()      { loginScreen.style.display='none'; app.style.display='block'; loadPortfolio(); }
 
 if (getSession()) unlock();
@@ -230,12 +230,11 @@ if (getSession()) unlock();
 loginBtn.addEventListener('click', () => {
   const u = usernameInput.value.trim();
   const p = pwInput.value;
-  if (!u)           { loginError.textContent = 'Introduz o nome de utilizador.'; return; }
-  if (!p)           { loginError.textContent = 'Introduz a password.'; return; }
+  if (!u) { loginError.textContent = 'Introduz o nome de utilizador.'; return; }
+  if (!p) { loginError.textContent = 'Introduz a password.'; return; }
   if (u === VALID_USERNAME && p === VALID_PASSWORD) { setSession(); unlock(); }
-  else              { loginError.textContent = 'Credenciais incorrectas.'; }
+  else { loginError.textContent = 'Credenciais incorrectas.'; }
 });
-
 [usernameInput, pwInput].forEach(el => el.addEventListener('keydown', e => { if (e.key === 'Enter') loginBtn.click(); }));
 logoutBtn.addEventListener('click', () => { clearSession(); location.reload(); });
 
@@ -261,7 +260,8 @@ async function loadPortfolio() {
 
 function renderAll(data) {
   const s = data.summary || {};
-  historyData  = enrichHistory(data.history || [], s.total_value);
+  // Usa apenas os dados REAIS do histórico — sem síntese fabricada
+  historyData  = prepareHistory(data.history || [], s.total_value);
   allPositions = data.positions || [];
   renderKPIs(s);
   renderHistoryChart(historyData, 30);
@@ -288,26 +288,37 @@ function renderAll(data) {
   });
 }
 
-function enrichHistory(history, currentValue) {
-  if (history.length >= 10) return history;
-  const DAYS = 365; const result = []; const today = new Date();
-  const sortedReal = (history||[]).slice().sort((a,b) => a.date.localeCompare(b.date));
-  const startValue = sortedReal.length ? sortedReal[0].value * 0.88 : currentValue * 0.70;
-  for (let i = DAYS-1; i >= 0; i--) {
-    const d  = new Date(today); d.setDate(d.getDate() - i);
-    const ds = d.toISOString().split('T')[0];
-    const real = sortedReal.find(h => h.date === ds);
-    if (real) { result.push(real); continue; }
-    const progress = (DAYS-1-i) / (DAYS-1);
-    const trend    = startValue + (currentValue - startValue) * Math.pow(progress, 0.65);
-    const noise    = (Math.sin(i*2.3)*0.012 + Math.cos(i*1.7)*0.008) * trend;
-    result.push({ date: ds, value: Math.round((trend+noise)*100)/100, synthetic: true });
+/**
+ * Prepara o histórico usando APENAS pontos reais do JSON.
+ * Garante que o valor do último ponto reflecte o total_value actual.
+ * Ordena por data e elimina duplicados.
+ */
+function prepareHistory(history, currentValue) {
+  if (!Array.isArray(history) || history.length === 0) {
+    // Sem histórico: cria um único ponto "hoje" com o valor actual
+    const today = new Date().toISOString().split('T')[0];
+    return [{ date: today, value: currentValue }];
   }
-  const todayStr = today.toISOString().split('T')[0];
-  const last = result[result.length-1];
-  if (last && last.date !== todayStr) result.push({ date: todayStr, value: currentValue });
-  else if (last) last.value = currentValue;
-  return result;
+
+  // Ordena, deduplica por data (mantém o último de cada dia)
+  const map = new Map();
+  for (const h of history) {
+    if (h && h.date && h.value != null) map.set(h.date, h.value);
+  }
+  const sorted = [...map.entries()]
+    .sort((a, b) => a[0].localeCompare(b[0]))
+    .map(([date, value]) => ({ date, value }));
+
+  // Actualiza o último ponto para o valor actual (ou adiciona hoje)
+  const today = new Date().toISOString().split('T')[0];
+  const last  = sorted[sorted.length - 1];
+  if (last.date === today) {
+    last.value = currentValue;
+  } else {
+    sorted.push({ date: today, value: currentValue });
+  }
+
+  return sorted;
 }
 
 function renderKPIs(s) {
@@ -353,7 +364,7 @@ function renderPerf(positions, mode) {
 function renderQuarters(history, summary) {
   const grid     = document.getElementById('quarterGrid');
   const quarters = computeQuarters(history, summary);
-  if (!quarters.length) { grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:var(--space-8);color:var(--color-text-muted);font-size:var(--text-sm)">Histórico insuficiente para calcular trimestres.</div>'; return; }
+  if (!quarters.length) { grid.innerHTML = ''; return; }
   grid.innerHTML = quarters.map(q => `<div class="quarter-card"><p class="quarter-label">${q.label}</p><p class="quarter-value ${q.gain>=0?'up':'down'}">${sign(q.gain)}${fmtEur(q.gain)}</p><p class="kpi-sub">${sign(q.pct)}${fmt(q.pct)}%</p></div>`).join('');
 }
 
@@ -378,8 +389,18 @@ function computeQuarters(history, summary) {
   return quarters;
 }
 
+/**
+ * Renderiza o gráfico de histórico com os dados reais.
+ * - Se não houver pontos suficientes no período, mostra TODOS os pontos disponíveis.
+ * - Se houver apenas 1 ponto, mostra mensagem informativa.
+ * - Os valores de "Início" e "Variação" são sempre calculados sobre dados reais.
+ */
 function renderHistoryChart(history, days) {
+  const wrap = document.getElementById('historyCanvasWrap');
+  const metaEl = document.getElementById('historyMeta');
   const all = (history||[]).slice().sort((a,b) => a.date.localeCompare(b.date));
+
+  // Filtra pelo período seleccionado
   let slice;
   if (days >= 9999) {
     slice = all;
@@ -388,33 +409,69 @@ function renderHistoryChart(history, days) {
     cutoff.setDate(cutoff.getDate() - days);
     const cutoffStr = cutoff.toISOString().split('T')[0];
     slice = all.filter(h => h.date >= cutoffStr);
-    if (slice.length < 2 && all.length >= 2) slice = all.slice(-Math.min(days, all.length));
+    // Se não há nenhum ponto no período, usa todos os pontos reais disponíveis
+    if (slice.length < 2) slice = all;
   }
-  if (!slice.length) return;
-  const labels = slice.map(h => { const d=new Date(h.date); return d.toLocaleDateString('pt-PT',{day:'numeric',month:'short'}); });
-  const values = slice.map(h => h.value);
+
+  // Com apenas 1 ponto não há como desenhar uma linha
+  if (slice.length < 2) {
+    if (histChart) { histChart.destroy(); histChart = null; }
+    wrap.innerHTML = `<div class="no-history">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".4"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      <span>Histórico insuficiente — adiciona mais dias de dados.</span></div>`;
+    metaEl.innerHTML = '';
+    return;
+  }
+
+  // Reconstrói o canvas se necessário (pode ter sido substituído pela mensagem)
+  if (!wrap.querySelector('canvas')) {
+    wrap.innerHTML = '<canvas id="historyChart"></canvas>';
+  }
+
+  const labels = slice.map(h => {
+    const d = new Date(h.date + 'T00:00:00');
+    return d.toLocaleDateString('pt-PT',{day:'numeric',month:'short'});
+  });
+  const values  = slice.map(h => h.value);
   const isDark  = document.documentElement.getAttribute('data-theme') === 'dark';
   const textClr = isDark ? '#797876' : '#7a7974';
   const gridClr = isDark ? '#2e2d2b' : '#dcd9d5';
   const upColor = isDark ? '#6daa45' : '#437a22';
   const dnColor = isDark ? '#dd6974' : '#a13544';
-  const first   = values[0], last = values[values.length-1];
+  const first   = values[0];
+  const last    = values[values.length-1];
   const lineClr = last >= first ? upColor : dnColor;
+
+  // Variação calculada sobre dados REAIS
   const gainTotal = last - first;
-  const gainPct   = first > 0 ? (gainTotal/first)*100 : 0;
-  const hasSynth  = slice.some(h => h.synthetic);
-  document.getElementById('historyMeta').innerHTML =
+  const gainPct   = first > 0 ? (gainTotal / first) * 100 : 0;
+
+  // Mostra quantos pontos reais existem vs período pedido
+  const isSubset = slice.length < all.length && days < 9999;
+  const subsetNote = isSubset
+    ? `<div class="history-stat"><span class="history-stat-label" style="color:var(--color-text-faint);font-style:italic">⚠ apenas ${slice.length} ponto${slice.length>1?'s':''} no período</span></div>`
+    : '';
+
+  metaEl.innerHTML =
     `<div class="history-stat"><span class="history-stat-label">Início do período</span><span class="history-stat-val">${fmtEur(first)}</span></div>` +
+    `<div class="history-stat"><span class="history-stat-label">Valor actual</span><span class="history-stat-val">${fmtEur(last)}</span></div>` +
     `<div class="history-stat"><span class="history-stat-label">Variação</span><span class="history-stat-val" style="color:var(--color-${gainTotal>=0?'success':'notification'})">${sign(gainTotal)}${fmtEur(gainTotal)} (${sign(gainPct)}${fmt(gainPct)}%)</span></div>` +
-    (hasSynth ? '<div class="history-stat"><span class="history-stat-label" style="color:var(--color-text-faint);font-style:italic">⚠ inclui dados estimados</span></div>' : '');
-  const ctx2 = document.getElementById('historyChart').getContext('2d');
+    subsetNote;
+
+  const cvs = wrap.querySelector('canvas');
+  const ctx2 = cvs.getContext('2d');
   const grad = ctx2.createLinearGradient(0,0,0,200);
   grad.addColorStop(0, lineClr+'30'); grad.addColorStop(1, lineClr+'00');
   if (histChart) histChart.destroy();
+
+  // Usa pointRadius visível quando há poucos pontos (≤15), invisible se muitos
+  const pointR = slice.length <= 15 ? 4 : 0;
+  const pointHR = slice.length <= 15 ? 6 : 5;
+
   histChart = new Chart(ctx2, {
     type:'line',
-    data:{ labels, datasets:[{ data:values, borderColor:lineClr, borderWidth:2, backgroundColor:grad, fill:true, tension:0.35, pointRadius:0, pointHoverRadius:5, pointHoverBackgroundColor:lineClr, pointHoverBorderColor: isDark?'#1a1917':'#f9f8f5', pointHoverBorderWidth:2 }] },
-    options:{ responsive:true, maintainAspectRatio:false, interaction:{mode:'index',intersect:false}, plugins:{ legend:{display:false}, tooltip:{ backgroundColor: isDark?'#1c1b19':'#fff', borderColor: isDark?'#393836':'#d4d1ca', borderWidth:1, titleColor:textClr, bodyColor: isDark?'#cdccca':'#28251d', padding:10, callbacks:{ label: ctx => '  '+fmtEur(ctx.raw) } } }, scales:{ x:{ grid:{color:gridClr}, ticks:{color:textClr,maxTicksLimit:7,font:{size:11}} }, y:{ grid:{color:gridClr}, ticks:{color:textClr,font:{size:11},callback: v=>fmt(v/1000,1)+'k€'}, border:{dash:[4,4]} } } }
+    data:{ labels, datasets:[{ data:values, borderColor:lineClr, borderWidth:2, backgroundColor:grad, fill:true, tension: slice.length <= 4 ? 0 : 0.35, pointRadius:pointR, pointBackgroundColor:lineClr, pointHoverRadius:pointHR, pointHoverBackgroundColor:lineClr, pointHoverBorderColor: isDark?'#1a1917':'#f9f8f5', pointHoverBorderWidth:2 }] },
+    options:{ responsive:true, maintainAspectRatio:false, interaction:{mode:'index',intersect:false}, plugins:{ legend:{display:false}, tooltip:{ backgroundColor: isDark?'#1c1b19':'#fff', borderColor: isDark?'#393836':'#d4d1ca', borderWidth:1, titleColor:textClr, bodyColor: isDark?'#cdccca':'#28251d', padding:10, callbacks:{ label: ctx => '  ' + fmtEur(ctx.raw) } } }, scales:{ x:{ grid:{color:gridClr}, ticks:{color:textClr, maxTicksLimit: Math.min(slice.length, 7), font:{size:11}} }, y:{ grid:{color:gridClr}, ticks:{color:textClr, font:{size:11}, callback: v => fmt(v/1000,1)+'k€'}, border:{dash:[4,4]} } } }
   });
 }
 
@@ -497,7 +554,7 @@ function closeDrawer() { drawer.classList.remove('show'); overlay.classList.remo
 document.getElementById('drawerClose').addEventListener('click', closeDrawer);
 overlay.addEventListener('click', closeDrawer);
 
-// ── Tema ─────────────────────────────────────────────────────────────────────
+// ── Tema ──────────────────────────────────────────────────────────────────────
 const root        = document.documentElement;
 const themeToggle = document.getElementById('themeToggle');
 (function(){
