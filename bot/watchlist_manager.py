@@ -35,8 +35,8 @@ SECTOR_TICKERS: dict[str, list[str]] = {
         "RSG", "FAST", "GWW", "CTAS", "SWK", "IR", "XYL", "OTIS", "CARR", "TT",
     ],
     "XLE": [  # Energy
-        "XOM", "CVX", "COP", "SLB", "EOG", "MPC", "PSX", "VLO", "OXY", "PXD",
-        "HES", "DVN", "FANG", "APA", "HAL", "BKR", "MRO", "OKE", "WMB", "KMI",
+        "XOM", "CVX", "COP", "SLB", "EOG", "MPC", "PSX", "VLO", "OXY", "DVN",
+        "FANG", "APA", "HAL", "BKR", "OKE", "WMB", "KMI",
         "TRGP", "LNG", "CVI", "SM", "RRC", "AR", "EQT", "CNX", "CTRA", "PR",
     ],
 }
@@ -106,9 +106,13 @@ def _fetch_fundamentals(tickers: list[str]) -> dict[str, dict]:
         try:
             info = yf.Ticker(ticker).info
             result[ticker] = {
-                "returnOnEquity": info.get("returnOnEquity"),
-                "debtToEquity":   info.get("debtToEquity"),
-                "revenueGrowth":  info.get("revenueGrowth"),
+                "returnOnEquity":   info.get("returnOnEquity"),
+                "debtToEquity":     info.get("debtToEquity"),
+                "revenueGrowth":    info.get("revenueGrowth"),
+                "targetMeanPrice":  info.get("targetMeanPrice"),
+                "targetMedianPrice":info.get("targetMedianPrice"),
+                "targetHighPrice":  info.get("targetHighPrice"),
+                "targetLowPrice":   info.get("targetLowPrice"),
             }
         except Exception:
             result[ticker] = {}
@@ -171,15 +175,96 @@ def score_candidates(
         + weights["quality"]     * qual_norm
     )
 
+    target_mean   = [fund_data.get(t, {}).get("targetMeanPrice")   for t in tickers]
+    target_median = [fund_data.get(t, {}).get("targetMedianPrice") for t in tickers]
+    target_high   = [fund_data.get(t, {}).get("targetHighPrice")   for t in tickers]
+    target_low    = [fund_data.get(t, {}).get("targetLowPrice")    for t in tickers]
+
     return pd.DataFrame({
-        "ticker":       tickers,
-        "sector":       [_TICKER_TO_SECTOR.get(t, "UNKNOWN") for t in tickers],
-        "price":        last_price.round(2).values,
-        "mom_1m":       mom_1m.round(4).values,
-        "mom_3m":       mom_3m.round(4).values,
-        "liq_usd_avg":  liq_usd.round(0).values,
-        "score":        composite.round(4).values,
+        "ticker":         tickers,
+        "sector":         [_TICKER_TO_SECTOR.get(t, "UNKNOWN") for t in tickers],
+        "price":          last_price.round(2).values,
+        "mom_1m":         mom_1m.round(4).values,
+        "mom_3m":         mom_3m.round(4).values,
+        "liq_usd_avg":    liq_usd.round(0).values,
+        "score":          composite.round(4).values,
+        "target_mean":    target_mean,
+        "target_median":  target_median,
+        "target_high":    target_high,
+        "target_low":     target_low,
     }).sort_values("score", ascending=False).reset_index(drop=True)
+
+
+# ---------------------------------------------------------------------------
+# Earnings summary (yfinance fallback for watchlist.html Earnings AI tab)
+# ---------------------------------------------------------------------------
+
+def _compute_earnings_summary(tickers: list[str]) -> dict:
+    result: dict = {}
+    for ticker in tickers:
+        try:
+            t     = yf.Ticker(ticker)
+            edf   = t.earnings_dates
+            if edf is None or edf.empty:
+                result[ticker] = None
+                continue
+
+            reported_col  = next((c for c in edf.columns if "reported" in c.lower()), None)
+            estimate_col  = next((c for c in edf.columns if "estimate" in c.lower()), None)
+            surprise_col  = next((c for c in edf.columns if "surprise" in c.lower()), None)
+
+            if reported_col and estimate_col:
+                edf = edf.dropna(subset=[reported_col]).sort_index(ascending=False).head(4)
+            else:
+                result[ticker] = None
+                continue
+
+            if edf.empty:
+                result[ticker] = None
+                continue
+
+            beats  = int((edf[reported_col] > edf[estimate_col]).sum())
+            total  = len(edf)
+            misses = total - beats
+
+            last_reported = float(edf.iloc[0][reported_col])
+            last_est      = float(edf.iloc[0][estimate_col]) if pd.notna(edf.iloc[0][estimate_col]) else None
+            last_surprise = float(edf.iloc[0][surprise_col]) if surprise_col and pd.notna(edf.iloc[0][surprise_col]) else None
+
+            correu_bem: list[str] = []
+            correu_mal: list[str] = []
+            vigiar: list[str]    = ["Acompanhar próximos earnings para confirmação de tendência"]
+
+            if beats >= 3:
+                correu_bem.append(f"Bateu as estimativas em {beats} dos últimos {total} trimestres")
+            if last_surprise is not None and last_surprise > 0:
+                correu_bem.append(f"Último earnings {last_surprise:+.1f}% acima da estimativa")
+            elif last_surprise is not None and last_surprise < -5:
+                correu_mal.append(f"Último earnings {last_surprise:+.1f}% abaixo da estimativa")
+            if misses >= 2:
+                correu_mal.append(f"Falhou as estimativas em {misses} dos últimos {total} trimestres")
+
+            tone  = "maioritariamente positivo" if beats >= 3 else ("misto" if beats >= 2 else "maioritariamente fraco")
+            resumo = f"Histórico de earnings {tone} ({beats}/{total} beats)"
+
+            result[ticker] = {
+                "analysis": {
+                    "resumo":     resumo,
+                    "correu_bem": correu_bem or ["Dados insuficientes para análise"],
+                    "correu_mal": correu_mal,
+                    "vigiar":     vigiar,
+                }
+            }
+        except Exception:
+            result[ticker] = None
+        time.sleep(0.05)
+    return result
+
+
+def _save_earnings_ai(data: dict) -> None:
+    DATA_BETA_DIR.mkdir(parents=True, exist_ok=True)
+    path = DATA_BETA_DIR / "earnings_ai.json"
+    path.write_text(json.dumps(data, indent=2, default=str), encoding="utf-8")
 
 
 # ---------------------------------------------------------------------------
@@ -222,4 +307,9 @@ def build_watchlist() -> list[dict]:
 
     _save_watchlist(candidates)
     logger.info("Watchlist saved: %d candidates → %s", len(candidates), WATCHLIST_PATH)
+
+    earnings = _compute_earnings_summary([c["ticker"] for c in candidates])
+    _save_earnings_ai(earnings)
+    logger.info("Earnings AI summary saved for %d tickers", len(earnings))
+
     return candidates

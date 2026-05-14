@@ -524,6 +524,87 @@ def fetch_finnhub():
     return articles
 
 
+# ─── Finnhub company news ─────────────────────────────────────────────────────
+
+def fetch_finnhub_company(tickers: list) -> list:
+    if not FH_TOKEN:
+        print("  [SKIP] FINNHUB_TOKEN nao definido (company news)")
+        return []
+
+    today     = datetime.date.today()
+    from_date = (today - datetime.timedelta(days=7)).isoformat()
+    to_date   = today.isoformat()
+
+    articles, seen = [], set()
+    for ticker in tickers[:10]:
+        try:
+            r = requests.get(
+                "https://finnhub.io/api/v1/company-news",
+                params={"symbol": ticker, "from": from_date, "to": to_date, "token": FH_TOKEN},
+                timeout=10,
+            )
+            r.raise_for_status()
+            data = r.json()
+        except Exception:
+            print(f"  [WARN Finnhub company {ticker}]:\n{traceback.format_exc()}")
+            time.sleep(0.5)
+            continue
+
+        for a in data[:5]:
+            title = sanitize((a.get("headline") or "").strip())
+            if not title or title in seen:
+                continue
+            seen.add(title)
+            summary = clean_text(a.get("summary") or "")
+            link    = sanitize(a.get("url", ""))
+            img     = sanitize(a.get("image") or "")
+            pub     = ts_to_iso(a.get("datetime", 0))
+            source  = sanitize(a.get("source", "Finnhub"))
+
+            full_text = title + " " + summary
+            cat, icon = classify(full_text)
+            impact    = get_impact(full_text)
+
+            if ticker not in impact["tickers"]:
+                impact["tickers"].insert(0, ticker)
+
+            if not img or len(img) < 12:
+                img = fallback_img(cat)
+
+            articles.append({
+                "id":          make_id(title),
+                "source":      source,
+                "title":       title[:200],
+                "summary":     summary[:600],
+                "content":     summary[:5000],
+                "url":         link,
+                "image":       img,
+                "publishedAt": pub,
+                "category":    cat,
+                "icon":        icon,
+                "impact":      impact,
+                "heat":        heat_score(impact),
+                "feed":        "finnhub_company",
+            })
+
+        time.sleep(0.15)
+
+    print(f"  Finnhub company: {len(articles)} artigos ({min(len(tickers),10)} tickers)")
+    return articles
+
+
+def _load_watchlist_tickers() -> list:
+    try:
+        p = os.path.join("data", "beta", "watchlist.json")
+        if not os.path.exists(p):
+            return []
+        with open(p, encoding="utf-8") as f:
+            data = json.load(f)
+        return [c["ticker"] for c in data.get("candidates", [])]
+    except Exception:
+        return []
+
+
 # ─── Merge & Sort ────────────────────────────────────────────────────────────
 
 def merge_and_sort(*sources):
@@ -542,7 +623,7 @@ def merge_and_sort(*sources):
 
 def main():
     print("=== FundScope News Update ===")
-    rss_arts = ma_arts = av_arts = fh_arts = []
+    rss_arts = ma_arts = av_arts = fh_arts = fhc_arts = []
 
     try:    rss_arts = fetch_rss()
     except: print(traceback.format_exc())
@@ -552,8 +633,13 @@ def main():
     except: print(traceback.format_exc())
     try:    fh_arts  = fetch_finnhub()
     except: print(traceback.format_exc())
+    try:
+        wl_tickers = _load_watchlist_tickers()
+        if wl_tickers:
+            fhc_arts = fetch_finnhub_company(wl_tickers)
+    except: print(traceback.format_exc())
 
-    articles = merge_and_sort(rss_arts, ma_arts, av_arts, fh_arts)
+    articles = merge_and_sort(rss_arts, ma_arts, av_arts, fh_arts, fhc_arts)
     print(f"\nTotal final: {len(articles)} artigos")
 
     from collections import Counter

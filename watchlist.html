@@ -229,6 +229,29 @@ async function fetchQuote(ticker){
     return j?.quoteSummary?.result?.[0]||null;
   }catch{return null;}
 }
+async function fetchProfile(ticker){
+  try{
+    const r=await fetchWithTimeout(`${WORKER}?ticker=${encodeURIComponent(ticker)}&modules=summaryProfile`,8000);
+    if(!r.ok)return null;
+    const j=await r.json();
+    if(j?.quoteSummary?.error)return null;
+    return j?.quoteSummary?.result?.[0]?.summaryProfile||null;
+  }catch{return null;}
+}
+function tryLoadClearbitLogo(ticker, profile, wrapId){
+  const website=profile?.website;
+  if(!website)return;
+  try{
+    const domain=new URL(website).hostname.replace(/^www\./,'');
+    const img=new Image();
+    img.onload=()=>{
+      const wrap=document.getElementById(wrapId);
+      if(wrap)wrap.innerHTML=`<img src="https://logo.clearbit.com/${domain}" alt="${ticker}" style="width:100%;height:100%;object-fit:contain;">`;
+    };
+    img.onerror=()=>{};
+    img.src=`https://logo.clearbit.com/${domain}`;
+  }catch(e){}
+}
 async function fetchAnalysts(ticker){
   try{
     const r=await fetchWithTimeout(`${WORKER}?ticker=${encodeURIComponent(ticker)}&modules=financialData,recommendationTrend`,12000);
@@ -297,8 +320,13 @@ async function fetchNews(ticker){
 async function fetchEarningsAI(ticker){
   try{
     const r=await fetchWithTimeout(`${WORKER}?ticker=${encodeURIComponent(ticker)}&action=earnings-ai`,25000);
+    if(r.ok){const j=await r.json();if(j)return j;}
+  }catch{}
+  try{
+    const r=await fetchWithTimeout('data/beta/earnings_ai.json',6000);
     if(!r.ok)return null;
-    return await r.json();
+    const j=await r.json();
+    return j?.[ticker]||null;
   }catch{return null;}
 }
 
@@ -496,6 +524,7 @@ async function init(){
   if(!tickers.length){renderEmpty();return;}
   tickers.forEach(t=>buildCardPlaceholder(t));
   await Promise.all(tickers.map(async t=>{ const stats=await fetchQuote(t); const price=fillCard(t,stats); _cardPrices[t]=price; }));
+  tickers.forEach(t=>fetchProfile(t).then(profile=>tryLoadClearbitLogo(t,profile,'logo-'+t)));
   setInterval(async()=>{ const current = getWatchlist(); for(const t of current){ const stats=await fetchQuote(t); if(!stats)continue; const price=fillCard(t,stats); _cardPrices[t]=price; } },60000);
 }
 init();

@@ -403,7 +403,7 @@ async function doSearch(q){
 }
 
 document.getElementById('searchBtn').addEventListener('click',()=>openPanel(mainIn.value));
-mainIn.addEventListener('keydown',e=>{if(e.key==='Enter')openPanel(mainIn.value);});
+mainIn.addEventListener('keydown',e=>{if(e.key==='Enter'){const v=mainIn.value.trim();if(v)location.href='stock.html?ticker='+encodeURIComponent(v.toUpperCase());}});
 mainIn.addEventListener('input',()=>{if(mainIn.value.trim())openPanel(mainIn.value);});
 resIn.addEventListener('input',()=>{clearTimeout(timer);timer=setTimeout(()=>doSearch(resIn.value),400);});
 closeBtn.addEventListener('click',closePanel);
