@@ -42,12 +42,12 @@ if GEMINI_AVAILABLE and GEMINI_KEY:
 # Chave = ticker_t212 sem sufixo (_EQ, _US_EQ, etc.)
 # ===========================================================
 T212_TO_YF = {
-    # — Portfólio actual —
+    # — Portfólio actual: códigos opacos T212 → yfinance —
     "MTEd":  "MU",
     "49Vd":  "VST",
     "0V6d":  "VRT",
     "CJ6d":  "CCJ",
-    "ASMLa": "ASML",
+    "ASMLa": "ASML.AS",   # Euronext Amsterdam (EUR), não NASDAQ
     # Tickers directos US (sem código especial)
     "AAPLd": "AAPL",   "MSFTd": "MSFT",   "TSLAd": "TSLA",
     "AMZNd": "AMZN",   "GOOGLd":"GOOGL",  "AMDd":  "AMD",
@@ -55,7 +55,6 @@ T212_TO_YF = {
     "JPMd":  "JPM",    "Vd":    "V",       "MAd":   "MA",
     "LLYd":  "LLY",    "UNHd":  "UNH",    "XOMd":  "XOM",
     "NEEd":  "NEE",    "CEGd":  "CEG",     "NRGd":  "NRG",
-    "MUd":   "MU",     "VSTd":  "VST",     "VRTd":  "VRT",
     "CCJd":  "CCJ",
     # ETFs europeus frequentes
     "VWCE":  "VWCE.DE", "VWRA": "VWRA.L",  "VUAA": "VUAA.DE",

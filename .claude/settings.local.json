@@ -13,7 +13,16 @@
       "Bash(pip install *)",
       "PowerShell(python --version; python -m pip install requests 2>&1)",
       "PowerShell(cd \"C:\\\\Users\\\\arauj\\\\OneDrive\\\\Ambiente de Trabalho\\\\Fundscope\"; python -c \"from bot.phase0 import run; run\\(\\)\" 2>&1; echo \"Exit: $LASTEXITCODE\")",
-      "PowerShell(python -m pip install python-dotenv 2>&1)"
+      "PowerShell(python -m pip install python-dotenv 2>&1)",
+      "Bash(python -c \"import json; d=json.load\\(open\\('data/beta/watchlist.json'\\)\\); c=d['candidates'][0]; print\\(list\\(c.keys\\(\\)\\)\\); print\\('target_mean:', c.get\\('target_mean'\\)\\); print\\('earnings_ai exists:', \\(lambda p: __import__\\('os'\\).path.exists\\(p\\)\\)\\('data/beta/earnings_ai.json'\\)\\)\")",
+      "Bash(python -c \"import json; d=json.load\\(open\\('data/beta/watchlist.json'\\)\\); print\\('Last updated:', d['last_updated']\\); print\\('Count:', d['count']\\)\")",
+      "Bash(python update_portfolio.py)",
+      "Bash(python -c \"from dotenv import load_dotenv; load_dotenv\\('.env'\\); import os; print\\('T212_KEY_ID:', bool\\(os.getenv\\('T212_KEY_ID'\\)\\)\\); print\\('T212_API_KEY_DEMO:', bool\\(os.getenv\\('T212_API_KEY_DEMO'\\)\\)\\)\")",
+      "Bash(python -c \"from dotenv import load_dotenv; load_dotenv\\('.env'\\); import subprocess; result=subprocess.run\\(['python','update_portfolio.py'],capture_output=True,text=True,timeout=60\\); print\\(result.stdout[-1000:] if result.stdout else ''\\); print\\(result.stderr[-500:] if result.stderr else ''\\)\")",
+      "Bash(python -c \"import json; d=json.load\\(open\\('data.json'\\)\\); print\\(list\\(d['stocks'].keys\\(\\)\\)[:20]\\)\")",
+      "Bash(python -c \"import json; d=json.load\\(open\\('data.json',encoding='utf-8'\\)\\); print\\(list\\(d['stocks'].keys\\(\\)\\)[:20]\\)\")",
+      "Bash(python -c \"import json; d=json.load\\(open\\('portfolio.json',encoding='utf-8'\\)\\); [print\\(p['ticker_t212'],'->',p['ticker'],'|',p['display_name'],'|',p.get\\('currency','?'\\)\\) for p in d['positions']]\")",
+      "Bash(python -c \"import json; d=json.load\\(open\\('data.json',encoding='utf-8'\\)\\); stocks=d.get\\('stocks',{}\\); print\\('VST' in stocks, 'VRT' in stocks, 'MU' in stocks, 'ASML' in stocks\\)\")"
     ]
   }
 }

@@ -38,13 +38,24 @@ _T212_MARKET_SUFFIX: dict[str, str] = {
     "PT": ".LS",
 }
 
+# T212 opaque prefix → correct yfinance symbol (for codes where parts[0] is garbage)
+_T212_OPAQUE_TO_YF: dict[str, str] = {
+    "MTEd":  "MU",
+    "49Vd":  "VST",
+    "0V6d":  "VRT",
+    "CJ6d":  "CCJ",
+    "ASMLa": "ASML.AS",  # Euronext Amsterdam (EUR), não NASDAQ
+}
+
 
 def _t212_to_yfinance(ticker: str) -> str:
     """Convert T212 ticker (e.g. GOOGL_US_EQ, VUSA_GBP_ETF) to yfinance symbol."""
     parts = ticker.split("_")
-    symbol = parts[0]
+    clean = parts[0]
+    if clean in _T212_OPAQUE_TO_YF:
+        return _T212_OPAQUE_TO_YF[clean]
     market = parts[1] if len(parts) >= 2 else "US"
-    return f"{symbol}{_T212_MARKET_SUFFIX.get(market, '')}"
+    return f"{clean}{_T212_MARKET_SUFFIX.get(market, '')}"
 
 
 _auth_str = f"{T212_KEY_ID}:{T212_API_KEY_DEMO}"
