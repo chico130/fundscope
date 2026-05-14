@@ -11,7 +11,8 @@ from bot.config import DATA_BETA_DIR, WATCHLIST_CONFIG
 
 logger = logging.getLogger(__name__)
 
-WATCHLIST_PATH = DATA_BETA_DIR / "watchlist.json"
+WATCHLIST_PATH      = DATA_BETA_DIR / "watchlist.json"
+FUNDAMENTALS_PATH   = DATA_BETA_DIR / "watchlist_fundamentals.json"
 
 SECTOR_TICKERS: dict[str, list[str]] = {
     "XLK": [  # Technology
@@ -62,6 +63,36 @@ def _is_stale() -> bool:
         return age_days >= WATCHLIST_CONFIG["update_frequency_days"]
     except (KeyError, ValueError, OSError):
         return True
+
+
+def _fundamentals_are_stale() -> bool:
+    if not FUNDAMENTALS_PATH.exists():
+        return True
+    try:
+        data = json.loads(FUNDAMENTALS_PATH.read_text(encoding="utf-8"))
+        last_updated = datetime.fromisoformat(data["last_updated"])
+        age_days = (datetime.now(timezone.utc) - last_updated).days
+        return age_days >= WATCHLIST_CONFIG["fundamentals_frequency_days"]
+    except (KeyError, ValueError, OSError):
+        return True
+
+
+def _load_fundamentals_cache() -> dict[str, dict]:
+    try:
+        data = json.loads(FUNDAMENTALS_PATH.read_text(encoding="utf-8"))
+        return data.get("fund_data", {})
+    except Exception:
+        return {}
+
+
+def _save_fundamentals_cache(fund_data: dict[str, dict]) -> None:
+    DATA_BETA_DIR.mkdir(parents=True, exist_ok=True)
+    payload = {
+        "last_updated": datetime.now(timezone.utc).isoformat(),
+        "count":        len(fund_data),
+        "fund_data":    fund_data,
+    }
+    FUNDAMENTALS_PATH.write_text(json.dumps(payload, indent=2, default=str), encoding="utf-8")
 
 
 def _minmax_normalize(series: pd.Series) -> pd.Series:
@@ -286,30 +317,41 @@ def _save_watchlist(candidates: list[dict]) -> None:
 # ---------------------------------------------------------------------------
 
 def build_watchlist() -> list[dict]:
-    """Return watchlist candidates. Loads from cache if file is fresh; rebuilds otherwise."""
+    """Return watchlist candidates. Loads from cache if fresh; rebuilds scores daily, fundamentals weekly."""
     if not _is_stale():
         logger.info("Watchlist is fresh — loading from cache.")
         return json.loads(WATCHLIST_PATH.read_text(encoding="utf-8"))["candidates"]
 
-    logger.info("Rebuilding watchlist...")
+    logger.info("Rebuilding watchlist scores with fresh price data...")
     all_tickers = [t for tickers in SECTOR_TICKERS.values() for t in tickers]
 
     closes, volumes = _fetch_price_volume(all_tickers)
-
     eligible = filter_quality(closes, volumes)
     logger.info("After quality filter: %d/%d tickers eligible", len(eligible), len(all_tickers))
 
-    fund_data = _fetch_fundamentals(eligible)
+    if _fundamentals_are_stale():
+        logger.info("Fetching fresh fundamentals (%d tickers)...", len(eligible))
+        fund_data = _fetch_fundamentals(eligible)
+        _save_fundamentals_cache(fund_data)
+        logger.info("Fundamentals cache saved → %s", FUNDAMENTALS_PATH)
 
-    scored    = score_candidates(closes, volumes, fund_data, eligible)
-    top       = scored.head(WATCHLIST_CONFIG["max_size"])
+        earnings = _compute_earnings_summary([t for t in eligible[:WATCHLIST_CONFIG["max_size"]]])
+        _save_earnings_ai(earnings)
+        logger.info("Earnings AI summary saved for %d tickers", len(earnings))
+    else:
+        logger.info("Fundamentals cache is fresh — reusing (next full refresh in ≤%d days).",
+                    WATCHLIST_CONFIG["fundamentals_frequency_days"])
+        fund_data = _load_fundamentals_cache()
+        missing = [t for t in eligible if t not in fund_data]
+        if missing:
+            logger.info("Fetching fundamentals for %d new tickers not in cache...", len(missing))
+            fund_data.update(_fetch_fundamentals(missing))
+
+    scored     = score_candidates(closes, volumes, fund_data, eligible)
+    top        = scored.head(WATCHLIST_CONFIG["max_size"])
     candidates = top.to_dict(orient="records")
 
     _save_watchlist(candidates)
     logger.info("Watchlist saved: %d candidates → %s", len(candidates), WATCHLIST_PATH)
-
-    earnings = _compute_earnings_summary([c["ticker"] for c in candidates])
-    _save_earnings_ai(earnings)
-    logger.info("Earnings AI summary saved for %d tickers", len(earnings))
 
     return candidates

@@ -2,8 +2,9 @@ name: Atualizar preços
 
 on:
   schedule:
-    - cron: '0 * * * *'   # cada hora
-    - cron: '30 * * * *'  # meia hora
+    - cron: '0 12 * * 1-5'       # 12:00 UTC pré-abertura US
+    - cron: '0,30 13-20 * * 1-5' # cada 30min durante sessão US
+    - cron: '0 21 * * 1-5'       # 21:00 UTC pós-fecho US
   workflow_dispatch:
 
 jobs:

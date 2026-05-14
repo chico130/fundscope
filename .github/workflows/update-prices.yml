@@ -1,46 +1,40 @@
 # .github/workflows/update-prices.yml
-# Atualiza preços E notícias automaticamente.
+# Rebuild diário da watchlist + análise beta após fecho do mercado US.
+# Substitui o workflow anterior que era redundante com update.yml e update-news.yml.
 
-name: Atualizar Preços e Notícias
+name: Daily Bot Rebuild
 
 on:
   schedule:
-    # Preços: todos os dias de semana às 22:00 UTC (após fecho do mercado US)
-    - cron: '0 22 * * 1-5'
-    # Notícias: segunda, quarta e sexta às 08:00 UTC (manhã em Lisboa)
-    - cron: '0 8 * * 1,3,5'
-  workflow_dispatch:  # Permite correr manualmente
+    - cron: '30 21 * * 1-5'  # 21:30 UTC — após fecho US (20:00) e limpeza de dados
+  workflow_dispatch:
 
 jobs:
-  update:
+  rebuild:
     runs-on: ubuntu-latest
-    
     permissions:
       contents: write
-    
-    steps:
-      - name: Fazer checkout do repositório
-        uses: actions/checkout@v4
 
-      - name: Instalar Python
-        uses: actions/setup-python@v5
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: '3.12'
 
       - name: Instalar dependências
-        run: pip install yfinance
+        run: pip install yfinance numpy pandas requests python-dotenv
 
-      - name: Atualizar preços (só em dias de semana às 22h)
-        if: github.event.schedule != '0 8 * * 1,3,5'
-        run: python update_prices.py
+      - name: Rebuild watchlist e análise beta
+        env:
+          T212_API_KEY_DEMO: ${{ secrets.T212_API_KEY_DEMO }}
+          T212_KEY_ID:       ${{ secrets.T212_KEY_ID }}
+        run: python -m bot.phase0
 
-      - name: Atualizar notícias
-        run: python update_news.py
-
-      - name: Fazer commit e push
+      - name: Commit data/beta/
         run: |
-          git config user.name "github-actions[bot]"
+          git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add -A
-          git diff --staged --quiet || git commit -m "Auto-update $(date -u '+%Y-%m-%d %H:%M UTC')"
+          git add data/beta/
+          git diff --staged --quiet || git commit -m "Auto-update beta data $(date -u '+%Y-%m-%d %H:%M UTC')"
           git push

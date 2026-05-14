@@ -22,7 +22,10 @@
       "Bash(python -c \"import json; d=json.load\\(open\\('data.json'\\)\\); print\\(list\\(d['stocks'].keys\\(\\)\\)[:20]\\)\")",
       "Bash(python -c \"import json; d=json.load\\(open\\('data.json',encoding='utf-8'\\)\\); print\\(list\\(d['stocks'].keys\\(\\)\\)[:20]\\)\")",
       "Bash(python -c \"import json; d=json.load\\(open\\('portfolio.json',encoding='utf-8'\\)\\); [print\\(p['ticker_t212'],'->',p['ticker'],'|',p['display_name'],'|',p.get\\('currency','?'\\)\\) for p in d['positions']]\")",
-      "Bash(python -c \"import json; d=json.load\\(open\\('data.json',encoding='utf-8'\\)\\); stocks=d.get\\('stocks',{}\\); print\\('VST' in stocks, 'VRT' in stocks, 'MU' in stocks, 'ASML' in stocks\\)\")"
+      "Bash(python -c \"import json; d=json.load\\(open\\('data.json',encoding='utf-8'\\)\\); stocks=d.get\\('stocks',{}\\); print\\('VST' in stocks, 'VRT' in stocks, 'MU' in stocks, 'ASML' in stocks\\)\")",
+      "Bash(python -c \"from bot.watchlist_manager import build_watchlist; print\\('import OK'\\)\")",
+      "Bash(python -c \"import update_portfolio; print\\('import OK'\\)\")",
+      "Bash(python -c ' *)"
     ]
   }
 }

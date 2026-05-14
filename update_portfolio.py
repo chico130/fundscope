@@ -418,6 +418,82 @@ def get_display_name_yf(ticker_yf):
         pass
     return base
 
+def fetch_ticker_info(yf_ticker):
+    """Enriched metadata from yfinance.info — PE, beta, 52w range, short ratio, dividend yield."""
+    try:
+        info = yf.Ticker(yf_ticker).info
+        hi52 = info.get("fiftyTwoWeekHigh")
+        lo52 = info.get("fiftyTwoWeekLow")
+        price = info.get("currentPrice") or info.get("regularMarketPrice")
+        pct_from_hi = round((price - hi52) / hi52 * 100, 2) if (price and hi52) else None
+        return {
+            "trailingPE":       info.get("trailingPE"),
+            "forwardPE":        info.get("forwardPE"),
+            "marketCap":        info.get("marketCap"),
+            "beta":             info.get("beta"),
+            "fiftyTwoWeekHigh": hi52,
+            "fiftyTwoWeekLow":  lo52,
+            "pctFromHigh":      pct_from_hi,
+            "shortRatio":       info.get("shortRatio"),
+            "dividendYield":    info.get("dividendYield"),
+        }
+    except Exception as e:
+        print(f"  [ticker_info] {yf_ticker}: {e}")
+        return {}
+
+
+def fh_recommendation(ticker_yf):
+    """Latest analyst recommendation counts from Finnhub."""
+    base = ticker_yf.split(".")[0]
+    if not FH_TOKEN:
+        return {}
+    try:
+        r = requests.get(f"{FH_BASE}/recommendation",
+                         params={"symbol": base, "token": FH_TOKEN}, timeout=10)
+        r.raise_for_status()
+        data = r.json()
+        if data:
+            latest = data[0]
+            return {
+                "strongBuy":  latest.get("strongBuy", 0),
+                "buy":        latest.get("buy", 0),
+                "hold":       latest.get("hold", 0),
+                "sell":       latest.get("sell", 0),
+                "strongSell": latest.get("strongSell", 0),
+                "period":     latest.get("period", ""),
+            }
+    except Exception as e:
+        print(f"  [FH rec] {base}: {e}")
+    return {}
+
+
+def fh_insider_sentiment(ticker_yf):
+    """Net insider buy/sell sentiment (MSPR) for the last 3 months from Finnhub."""
+    base = ticker_yf.split(".")[0]
+    if not FH_TOKEN:
+        return {}
+    try:
+        today  = datetime.date.today()
+        frm_3m = (today - datetime.timedelta(days=90)).isoformat()
+        r = requests.get(f"{FH_BASE}/stock/insider-sentiment",
+                         params={"symbol": base, "from": frm_3m, "to": today.isoformat(), "token": FH_TOKEN},
+                         timeout=10)
+        r.raise_for_status()
+        data   = r.json()
+        points = [d.get("mspr", 0) for d in (data.get("data") or []) if d.get("mspr") is not None]
+        if not points:
+            return {}
+        avg = sum(points) / len(points)
+        return {
+            "mspr_avg": round(avg, 4),
+            "signal":   "buying" if avg > 0 else ("selling" if avg < 0 else "neutral"),
+            "months":   len(points),
+        }
+    except Exception as e:
+        print(f"  [FH insider] {base}: {e}")
+    return {}
+
+
 def fh_news(ticker_yf, frm, to, limit=5):
     base_symbol = ticker_yf.split(".")[0]
     try:
@@ -550,20 +626,24 @@ def main():
         p["allocation_pct"] = round(p["value_eur"] / total_value * 100, 2) if total_value > 0 else 0
     positions.sort(key=lambda x: x["value_eur"], reverse=True)
 
-    print("\n[5] Notícias + Earnings + Gemini análise...")
+    print("\n[5] Notícias + Earnings + Fundamentais + Gemini análise...")
     for p in positions:
         ticker    = p["ticker"]
         disp_name = p["display_name"]
         print(f"  → {ticker} ({disp_name})")
-        p["news"]      = fh_news(ticker, frm, to)
-        time.sleep(0.3)
-        p["earnings"]  = fetch_earnings(ticker)
-        p["dividends"] = fetch_dividends(ticker)
-        p["analysis"]  = gemini_analyze(
+        p["news"]        = fh_news(ticker, frm, to)
+        time.sleep(0.2)
+        p["earnings"]    = fetch_earnings(ticker)
+        p["dividends"]   = fetch_dividends(ticker)
+        p["ticker_info"] = fetch_ticker_info(ticker)
+        time.sleep(0.2)
+        p["analysts"]    = fh_recommendation(ticker)
+        p["insider"]     = fh_insider_sentiment(ticker)
+        p["analysis"]    = gemini_analyze(
             p["ticker_display"], disp_name,
             p["news"], p["earnings"],
             p["gain_eur"], p["change_pct"])
-        time.sleep(1)
+        time.sleep(0.8)
 
     print("\n[6] Histórico...")
     history = update_history(load_history(), total_value)

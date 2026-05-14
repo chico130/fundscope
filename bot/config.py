@@ -40,7 +40,8 @@ WATCHLIST_CONFIG = {
     "min_avg_volume_usd": 10_000_000,
     "min_price_usd": 5.0,
     "score_weights": {"momentum_1m": 0.4, "momentum_3m": 0.3, "liquidity": 0.2, "quality": 0.1},
-    "update_frequency_days": 7,
+    "update_frequency_days": 1,          # momentum scores rebuilt daily
+    "fundamentals_frequency_days": 7,    # yfinance.info per-ticker (ROE, D/E, targets) weekly
 }
 
 REGIME_CONFIG = {

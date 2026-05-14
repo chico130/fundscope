@@ -34,10 +34,10 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python update_portfolio.py
 
-      - name: Commit portfolio.json
+      - name: Commit portfolio.json + symbol_cache.json
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add portfolio.json
+          git add portfolio.json symbol_cache.json
           git diff --staged --quiet || git commit -m "chore: update portfolio [skip ci]"
           git push
