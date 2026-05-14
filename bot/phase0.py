@@ -7,6 +7,7 @@ Uso: python -m bot.phase0   (a partir da raiz do projecto)
 from __future__ import annotations
 
 import json
+import subprocess
 from datetime import datetime, timezone
 
 from .data_layer import get_full_portfolio_state, enrich_with_technicals, read_beta_trades
@@ -51,6 +52,7 @@ def run() -> dict:
         "risk_ok": risk_status.get("ok", True),
     })
     _print_report(report)
+    _git_sync(report["timestamp"])
     return report
 
 
@@ -179,6 +181,28 @@ def _print_report(report: dict) -> None:
 
     print(f"\n{report['note']}")
     print(f"{'='*60}\n")
+
+
+def _git_sync(timestamp: str) -> None:
+    """Commit all changes and push to origin/main. Skips if nothing to commit."""
+    try:
+        root = DATA_BETA_DIR.parent.parent  # project root
+        status = subprocess.run(
+            ["git", "status", "--porcelain"],
+            cwd=root, capture_output=True, text=True
+        )
+        if not status.stdout.strip():
+            print("Git: nada para commitar.")
+            return
+
+        subprocess.run(["git", "add", "-A"], cwd=root, check=True)
+        msg = f"Auto-update {timestamp[:16].replace('T', ' ')} UTC"
+        subprocess.run(["git", "commit", "-m", msg], cwd=root, check=True)
+        subprocess.run(["git", "push", "origin", "main"], cwd=root, check=True)
+        print(f"Git: push efectuado — '{msg}'")
+    except subprocess.CalledProcessError as exc:
+        log_error("git_sync_failed", {"error": str(exc)})
+        print(f"Git: erro no push — {exc}")
 
 
 if __name__ == "__main__":

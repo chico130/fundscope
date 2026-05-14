@@ -1,0 +1,82 @@
+[
+  {
+    "datetime": "2026-05-13T23:38:41.920819+00:00",
+    "type": "api_get_failed",
+    "detail": {
+      "endpoint": "/equity/portfolio",
+      "error": "401 Client Error: Unauthorized for url: https://demo.trading212.com/api/v0/equity/portfolio"
+    }
+  },
+  {
+    "datetime": "2026-05-13T23:38:43.171945+00:00",
+    "type": "api_get_failed",
+    "detail": {
+      "endpoint": "/equity/account/cash",
+      "error": "401 Client Error: Unauthorized for url: https://demo.trading212.com/api/v0/equity/account/cash"
+    }
+  },
+  {
+    "datetime": "2026-05-13T23:39:12.361341+00:00",
+    "type": "api_get_failed",
+    "detail": {
+      "endpoint": "/equity/portfolio",
+      "error": "401 Client Error: Unauthorized for url: https://demo.trading212.com/api/v0/equity/portfolio"
+    }
+  },
+  {
+    "datetime": "2026-05-13T23:39:13.618712+00:00",
+    "type": "api_get_failed",
+    "detail": {
+      "endpoint": "/equity/account/cash",
+      "error": "401 Client Error: Unauthorized for url: https://demo.trading212.com/api/v0/equity/account/cash"
+    }
+  },
+  {
+    "datetime": "2026-05-13T23:39:37.413534+00:00",
+    "type": "api_get_failed",
+    "detail": {
+      "endpoint": "/equity/portfolio",
+      "error": "401 Client Error: Unauthorized for url: https://demo.trading212.com/api/v0/equity/portfolio"
+    }
+  },
+  {
+    "datetime": "2026-05-13T23:39:38.674542+00:00",
+    "type": "api_get_failed",
+    "detail": {
+      "endpoint": "/equity/account/cash",
+      "error": "401 Client Error: Unauthorized for url: https://demo.trading212.com/api/v0/equity/account/cash"
+    }
+  },
+  {
+    "datetime": "2026-05-13T23:43:29.280622+00:00",
+    "type": "api_get_failed",
+    "detail": {
+      "endpoint": "/equity/portfolio",
+      "error": "401 Client Error: Unauthorized for url: https://demo.trading212.com/api/v0/equity/portfolio"
+    }
+  },
+  {
+    "datetime": "2026-05-13T23:43:30.528585+00:00",
+    "type": "api_get_failed",
+    "detail": {
+      "endpoint": "/equity/account/cash",
+      "error": "401 Client Error: Unauthorized for url: https://demo.trading212.com/api/v0/equity/account/cash"
+    }
+  },
+  {
+    "datetime": "2026-05-13T23:43:41.200820+00:00",
+    "type": "api_get_failed",
+    "detail": {
+      "endpoint": "/equity/portfolio",
+      "error": "401 Client Error: Unauthorized for url: https://demo.trading212.com/api/v0/equity/portfolio"
+    }
+  },
+  {
+    "datetime": "2026-05-13T23:43:42.465177+00:00",
+    "type": "api_get_failed",
+    "detail": {
+      "endpoint": "/equity/account/cash",
+      "error": "401 Client Error: Unauthorized for url: https://demo.trading212.com/api/v0/equity/account/cash"
+    }
+  }
+]

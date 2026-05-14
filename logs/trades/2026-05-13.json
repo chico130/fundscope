@@ -1,0 +1,47 @@
+[
+  {
+    "datetime": "2026-05-13T23:38:40.339864+00:00",
+    "type": "decision",
+    "reason": "phase0_start",
+    "action": "read_portfolio"
+  },
+  {
+    "datetime": "2026-05-13T23:38:43.181976+00:00",
+    "type": "decision",
+    "reason": "phase0_abort",
+    "action": "no_data",
+    "context": {
+      "reason": "T212 API indisponível — sem acção"
+    }
+  },
+  {
+    "datetime": "2026-05-13T23:39:10.823598+00:00",
+    "type": "decision",
+    "reason": "phase0_start",
+    "action": "read_portfolio"
+  },
+  {
+    "datetime": "2026-05-13T23:39:13.627759+00:00",
+    "type": "decision",
+    "reason": "phase0_abort",
+    "action": "no_data",
+    "context": {
+      "reason": "T212 API indisponível — sem acção"
+    }
+  },
+  {
+    "datetime": "2026-05-13T23:43:27.725629+00:00",
+    "type": "decision",
+    "reason": "phase0_start",
+    "action": "read_portfolio"
+  },
+  {
+    "datetime": "2026-05-13T23:43:30.538995+00:00",
+    "type": "decision",
+    "reason": "phase0_abort",
+    "action": "no_data",
+    "context": {
+      "reason": "T212 API indisponível — sem acção"
+    }
+  }
+]

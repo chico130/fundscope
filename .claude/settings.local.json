@@ -4,7 +4,16 @@
       "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:8080/portfolio.html)",
       "Bash(python serve.py)",
       "Bash(curl -s -o nul -w \"%{http_code}\" http://localhost:8080/portfolio.html)",
-      "Bash(git add *)"
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git push *)",
+      "Bash(git pull *)",
+      "Bash(git stash *)",
+      "Bash(python -m bot.phase0)",
+      "Bash(pip install *)",
+      "PowerShell(python --version; python -m pip install requests 2>&1)",
+      "PowerShell(cd \"C:\\\\Users\\\\arauj\\\\OneDrive\\\\Ambiente de Trabalho\\\\Fundscope\"; python -c \"from bot.phase0 import run; run\\(\\)\" 2>&1; echo \"Exit: $LASTEXITCODE\")",
+      "PowerShell(python -m pip install python-dotenv 2>&1)"
     ]
   }
 }

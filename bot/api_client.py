@@ -9,19 +9,50 @@ does not expose a price-quote or candlestick endpoint for arbitrary tickers.
 """
 from __future__ import annotations
 
+import base64
 import time
 import requests
 
 from .config import (
+    T212_KEY_ID,
     T212_API_KEY_DEMO,
     T212_BASE_URL_DEMO,
     LIVE_TRADING,
     REQUEST_DELAY_SECONDS,
 )
 
+# T212 ticker suffix → yfinance market suffix
+_T212_MARKET_SUFFIX: dict[str, str] = {
+    "US": "",
+    "GBP": ".L",
+    "GBX": ".L",
+    "DE": ".DE",
+    "FR": ".PA",
+    "NL": ".AS",
+    "IT": ".MI",
+    "ES": ".MC",
+    "SE": ".ST",
+    "DK": ".CO",
+    "NO": ".OL",
+    "FI": ".HE",
+    "PT": ".LS",
+}
+
+
+def _t212_to_yfinance(ticker: str) -> str:
+    """Convert T212 ticker (e.g. GOOGL_US_EQ, VUSA_GBP_ETF) to yfinance symbol."""
+    parts = ticker.split("_")
+    symbol = parts[0]
+    market = parts[1] if len(parts) >= 2 else "US"
+    return f"{symbol}{_T212_MARKET_SUFFIX.get(market, '')}"
+
+
+_auth_str = f"{T212_KEY_ID}:{T212_API_KEY_DEMO}"
+_encoded = base64.b64encode(_auth_str.encode()).decode()
+
 _session = requests.Session()
 _session.headers.update({
-    "Authorization": T212_API_KEY_DEMO,
+    "Authorization": f"Basic {_encoded}",
     "Content-Type": "application/json",
 })
 
@@ -105,7 +136,7 @@ def get_market_snapshot(tickers: list[str]) -> dict[str, dict]:
     for ticker in tickers:
         try:
             time.sleep(0.25)
-            info = yf.Ticker(ticker).fast_info
+            info = yf.Ticker(_t212_to_yfinance(ticker)).fast_info
             last = getattr(info, "last_price", None)
             prev = getattr(info, "previous_close", None)
             change_pct = None
@@ -137,7 +168,7 @@ def get_historical_data(ticker: str, days: int = 60) -> list[dict]:
         return []
 
     try:
-        df = yf.Ticker(ticker).history(period=f"{days}d", interval="1d")
+        df = yf.Ticker(_t212_to_yfinance(ticker)).history(period=f"{days}d", interval="1d")
         if df.empty:
             return []
         records = []

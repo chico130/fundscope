@@ -1,0 +1,28 @@
+{
+  "timestamp": "2026-05-14T00:21:54.529517+00:00",
+  "mode": "phase0_readonly",
+  "strategy_version": "v0.1.0",
+  "note": "Fase 0 — apenas leitura e sugestão. Nenhuma ordem foi submetida.",
+  "n_positions": 1,
+  "open_trades": 4,
+  "risk_status": {
+    "ok": true,
+    "total_equity_eur": 4900.0,
+    "warnings": []
+  },
+  "signals": [
+    {
+      "ticker": "GOOGL_US_EQ",
+      "signals": [
+        "RSI-14 sobrecomprado (75.6) — risco de correcção",
+        "Tendência ascendente: EMA-50 > EMA-200"
+      ],
+      "action": "reduce_watch",
+      "technicals": {
+        "rsi_14": 75.58,
+        "ema50_above_ema200": true,
+        "volume_ratio_vs_avg": 0.98
+      }
+    }
+  ]
+}

@@ -1,8 +1,11 @@
 import os
 from pathlib import Path
+from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).parent.parent
+load_dotenv(BASE_DIR / ".env", override=True)
 
+T212_KEY_ID = os.getenv("T212_KEY_ID", "")
 T212_API_KEY_DEMO = os.getenv("T212_API_KEY_DEMO", "")
 T212_BASE_URL_DEMO = "https://demo.trading212.com/api/v0"
 

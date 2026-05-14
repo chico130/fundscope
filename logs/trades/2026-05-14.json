@@ -1,0 +1,107 @@
+[
+  {
+    "datetime": "2026-05-14T00:01:58.330295+00:00",
+    "type": "decision",
+    "reason": "phase0_start",
+    "action": "read_portfolio"
+  },
+  {
+    "datetime": "2026-05-14T00:02:01.142101+00:00",
+    "type": "decision",
+    "reason": "phase0_abort",
+    "action": "no_data",
+    "context": {
+      "reason": "T212 API indisponível — sem acção"
+    }
+  },
+  {
+    "datetime": "2026-05-14T00:12:25.612435+00:00",
+    "type": "decision",
+    "reason": "phase0_start",
+    "action": "read_portfolio"
+  },
+  {
+    "datetime": "2026-05-14T00:12:28.551667+00:00",
+    "type": "decision",
+    "reason": "phase0_abort",
+    "action": "no_data",
+    "context": {
+      "reason": "T212 API indisponível — sem acção"
+    }
+  },
+  {
+    "datetime": "2026-05-14T00:15:23.532197+00:00",
+    "type": "decision",
+    "reason": "phase0_start",
+    "action": "read_portfolio"
+  },
+  {
+    "datetime": "2026-05-14T00:15:26.478421+00:00",
+    "type": "decision",
+    "reason": "phase0_enrich",
+    "action": "compute_technicals",
+    "context": {
+      "n_positions": 1
+    }
+  },
+  {
+    "datetime": "2026-05-14T00:15:26.501511+00:00",
+    "type": "decision",
+    "reason": "phase0_complete",
+    "action": "report_generated",
+    "context": {
+      "n_signals": 1,
+      "risk_ok": true
+    }
+  },
+  {
+    "datetime": "2026-05-14T00:18:26.432198+00:00",
+    "type": "decision",
+    "reason": "phase0_start",
+    "action": "read_portfolio"
+  },
+  {
+    "datetime": "2026-05-14T00:18:37.708133+00:00",
+    "type": "decision",
+    "reason": "phase0_enrich",
+    "action": "compute_technicals",
+    "context": {
+      "n_positions": 1
+    }
+  },
+  {
+    "datetime": "2026-05-14T00:18:37.805390+00:00",
+    "type": "decision",
+    "reason": "phase0_complete",
+    "action": "report_generated",
+    "context": {
+      "n_signals": 1,
+      "risk_ok": true
+    }
+  },
+  {
+    "datetime": "2026-05-14T00:21:49.931945+00:00",
+    "type": "decision",
+    "reason": "phase0_start",
+    "action": "read_portfolio"
+  },
+  {
+    "datetime": "2026-05-14T00:21:54.419596+00:00",
+    "type": "decision",
+    "reason": "phase0_enrich",
+    "action": "compute_technicals",
+    "context": {
+      "n_positions": 1
+    }
+  },
+  {
+    "datetime": "2026-05-14T00:21:54.530554+00:00",
+    "type": "decision",
+    "reason": "phase0_complete",
+    "action": "report_generated",
+    "context": {
+      "n_signals": 1,
+      "risk_ok": true
+    }
+  }
+]
