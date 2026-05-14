@@ -1,12 +1,12 @@
 {
-  "updated": "2026-05-13T17:12:02.046506Z",
+  "updated": "2026-05-14T11:14:09.120626Z",
   "t212_mode": "live",
   "summary": {
-    "total_value": 9439.88,
+    "total_value": 7252.87,
     "total_invested": 3385.23,
-    "total_gain_eur": 3845.96,
-    "total_gain_pct": 113.61,
-    "daily_gain_eur": 222.99,
+    "total_gain_eur": 3868.89,
+    "total_gain_pct": 114.29,
+    "daily_gain_eur": 0.0,
     "n_positions": 7
   },
   "positions": [
@@ -14,223 +14,63 @@
       "ticker_t212": "MTEd_EQ",
       "quantity": 5.823397,
       "avg_price": 123.7851,
-      "current_price": 798.38,
-      "ppl": 3222.17,
+      "current_price": 679.8,
+      "ppl": 3237.9,
       "fx_ppl": 0.0,
       "ticker": "MU",
       "ticker_display": "MU",
       "display_name": "Micron Technology",
       "currency": "USD",
-      "change_pct": 4.15,
+      "change_pct": 0.0,
       "invested": 720.85,
-      "value_eur": 4649.28,
-      "gain_eur": 3222.17,
-      "gain_pct": 447.0,
-      "allocation_pct": 49.25,
+      "value_eur": 3958.75,
+      "gain_eur": 3237.9,
+      "gain_pct": 449.18,
+      "allocation_pct": 54.58,
       "news": [
         {
           "source": "ChartMill",
-          "headline": "Exploring the top movers within the S&P500 index during today's session.",
-          "summary": "Get insights into the S&P500 index performance on Wednesday. Explore the top gainers and losers within the S&P500 index in today's session.",
-          "url": "https://finnhub.io/api/news?id=0972736fd04a3972a56928578f47d83f700169da890cc164e6b942d72fbdf55f",
-          "datetime": 1778690104,
-          "image": "https://www.chartmill.com/images/uploads/CM_Top_Movers_Small_free_2b4ff2fc22.webp"
+          "headline": "AI Gold Rush Goes Public - Cerebras Storms Nasdaq as Cisco Rewrites the Rulebook",
+          "summary": "Twenty times oversubscribed. That's what happened when investors got the chance to buy into Cerebras Systems before it hit Nasdaq.",
+          "url": "https://finnhub.io/api/news?id=47da1ad3937af7bf70c16de15f15b9ec8fa8368078de83db01142044fa2857c3",
+          "datetime": 1778755643,
+          "image": "https://www.chartmill.com/images/uploads/THUMBNAILS_CHARTMILL_1000_528_48_f9993c78de.webp"
         },
         {
           "source": "Yahoo",
-          "headline": "Nvidia Rallies As CEO Jensen Huang Joins Trump's China Trip",
-          "summary": "Nvidia and other chip stocks tied to the artificial intelligence megatrend received positive analyst reports on Wednesday.",
-          "url": "https://finnhub.io/api/news?id=ed98e45b66ce85d6b8091ce0201be3042f0a5b4c9feaebe461a81a18a03379d8",
-          "datetime": 1778686952,
+          "headline": "The Profit Margins for These 3 AI Infrastructure Stocks Are Off the Charts",
+          "summary": "Highly profitable AI stocks with surging demand are within reach.",
+          "url": "https://finnhub.io/api/news?id=f1c1ef25ed53f8fc5e6ebe59565996295b38603367d92fd74b804343f58c234a",
+          "datetime": 1778749200,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
           "source": "Yahoo",
-          "headline": "Stock Market Today: Nasdaq Up As Nvidia, Micron Rise; Solar Play Breaks Out (Live Coverage)",
-          "summary": "The Dow Jones fell but Nvidia, Sandisk, Micron and Intel buoyed techs as the Trump-Xi summit looms. Nextpower, Nebius are big earnings winners.",
-          "url": "https://finnhub.io/api/news?id=20b8bd48962090ce8fca922b98d359bcb9ad0a9ad3002c6d7c2739a073162d99",
-          "datetime": 1778685701,
+          "headline": "Why Micron (MU) Stock Is Up Today",
+          "summary": "Shares of memory chips maker Micron (NASDAQ:MU) jumped 5.3% in the morning session after reports revealed a potential global chip shortage stemming from a competitor's labor issues.",
+          "url": "https://finnhub.io/api/news?id=03355c37f1f1560a2a323ef09538ef3a388b300e0b00168bf80619bde88dadcf",
+          "datetime": 1778747335,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
           "source": "Yahoo",
-          "headline": "Micron Just Got A New $950 Price Tag: BofA Raised 4 Other AI Chip Stocks Too",
-          "summary": "One of Wall Street’s top semiconductor analysts just made one of the most aggressive price-target revisions in this AI cycle. Bank of America analyst Vivek Arya nearly doubled its price target on Micron Technology Inc. (NASDAQ:MU), lifting it from $500 to $950 on Wednesday. The move arrived alongsid",
-          "url": "https://finnhub.io/api/news?id=be6e5788a0d9e28886411858755e8db3d42957cc43db899e2f9d492be43d7f15",
-          "datetime": 1778685449,
+          "headline": "Xi Tells US CEOs Accompanying Trump That China Will Open Up More",
+          "summary": "(Bloomberg) -- Xi Jinping signaled China is moving toward greater openness, striking an upbeat note during his meeting with US business leaders accompanying Donald Trump as the two presidents wrapped up morning talks that featured more divisive issues like trade and Taiwan.Most Read from BloombergIr",
+          "url": "https://finnhub.io/api/news?id=b8c553cc47b8a5756db79334da8202b1199e62db56de5597fe5fe9b5a91869c0",
+          "datetime": 1778742133,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
           "source": "Yahoo",
-          "headline": "SanDisk And Micron Had Their Run – This New 'Photonics' ETF Has 15 Triple-Digit Gainers Inside",
-          "summary": "Memory was the first major AI bottleneck, as seen in explosive moves in Micron Technology Inc. (NASDAQ:MU) and SanDisk Corp. (NASDAQ:SNDK). Photonics could be the next one, and a new exchange-traded fund just opened for business to play it. The Corgi Lithography & Semiconductor Photonics ETF (CBOE: ",
-          "url": "https://finnhub.io/api/news?id=00eda2a2d72abba9a7f305ae66788f7c8148090bfca81ddd598f2969aacdebdc",
-          "datetime": 1778684740,
+          "headline": "Why I'd Rather Own Micron Stock Than Sandisk",
+          "summary": "Memory stocks have skyrocketed. Can the rally keep going?",
+          "url": "https://finnhub.io/api/news?id=394fac95bf2a190e126e3610e041dba94628e62f38d21154b6a62b489db8782b",
+          "datetime": 1778734200,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         }
       ],
-      "earnings": [
-        {
-          "period": "",
-          "estimate": 1.595,
-          "actual": 1.91,
-          "surprise": 0.2,
-          "beat": true
-        },
-        {
-          "period": "",
-          "estimate": 2.86,
-          "actual": 3.03,
-          "surprise": 0.06,
-          "beat": true
-        },
-        {
-          "period": "",
-          "estimate": 3.964,
-          "actual": 4.78,
-          "surprise": 0.21,
-          "beat": true
-        },
-        {
-          "period": "",
-          "estimate": 9.159,
-          "actual": 12.2,
-          "surprise": 0.33,
-          "beat": true
-        }
-      ],
-      "dividends": [
-        {
-          "date": "2026-03-30",
-          "amount": 0.15
-        },
-        {
-          "date": "2025-12-29",
-          "amount": 0.115
-        },
-        {
-          "date": "2025-10-03",
-          "amount": 0.115
-        },
-        {
-          "date": "2025-07-07",
-          "amount": 0.115
-        }
-      ],
-      "analysis": {
-        "sentiment": "neutro",
-        "news_comment": "Indisponível.",
-        "earnings_comment": "Indisponível.",
-        "watch_points": []
-      }
-    },
-    {
-      "ticker_t212": "0V6d_EQ",
-      "quantity": 8.814727,
-      "avg_price": 137.7683,
-      "current_price": 372.185,
-      "ppl": -138.2,
-      "fx_ppl": 0.0,
-      "ticker": "VRT",
-      "ticker_display": "VRT",
-      "display_name": "Vertiv Holdings",
-      "currency": "USD",
-      "change_pct": 1.38,
-      "invested": 1214.39,
-      "value_eur": 3280.71,
-      "gain_eur": -138.2,
-      "gain_pct": -11.38,
-      "allocation_pct": 34.75,
-      "news": [
-        {
-          "source": "Yahoo",
-          "headline": "Tecogen Q1 2026 Earnings Call: Complete Transcript",
-          "summary": "On Wednesday, Tecogen (AMEX:TGEN) discussed first-quarter financial results during its earnings call. The full transcript is provided below. This content is powered by Benzinga APIs. For comprehensive financial data and transcripts, visit https://www.benzinga.com/apis/. The full earnings call is ava",
-          "url": "https://finnhub.io/api/news?id=c8f8a9fd5d68cad96f7913cf12968e08549368164ccedc2bfadb2b577507b348",
-          "datetime": 1778682425,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Yahoo",
-          "headline": "Wall Street Analysts See Vertiv (VRT) as a Buy: Should You Invest?",
-          "summary": "According to the average brokerage recommendation (ABR), one should invest in Vertiv (VRT). It is debatable whether this highly sought-after metric is effective because Wall Street analysts' recommendations tend to be overly optimistic. Would it be worth investing in the stock?",
-          "url": "https://finnhub.io/api/news?id=a9be5ebc6df89d68671aa7d88d3797c93132404651b6f7d899e82e2132614b5b",
-          "datetime": 1778679005,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Yahoo",
-          "headline": "Why Vertiv (VRT) Is Becoming More Important to AI Data Center Buildouts",
-          "summary": "Vertiv Holdings Co (NYSE:VRT) is one of the best AI enabler stocks to buy now. The latest AI infrastructure angle came on May 6, when Reuters reported that Hut 8 signed a 15-year, $9.8 billion lease for its Beacon Point data center campus in Texas, with the first phase covering 352 megawatts of IT c",
-          "url": "https://finnhub.io/api/news?id=1fb596a61cccdbe02785f38dacea8375d0cc625ef8325853c760a4f84326658a",
-          "datetime": 1778669825,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Benzinga",
-          "headline": "Why Jim Cramer Says 'Pull The Trigger' On Chevron",
-          "summary": "Cramer recommends buying Chevron (CVX) due to good cash flow and limited downside, and waiting to buy Vertiv (VRT) on a decline. GoodRx (GDRX) reports mixed earnings, Sterling Infrastructure (STRL) can&#39;t be bought now after a 52% increase.",
-          "url": "https://finnhub.io/api/news?id=f6c281811aaf382d9a20ca8ba807457c4b243e130197d4d6820a9be8d4fa0703",
-          "datetime": 1778658722,
-          "image": "https://cdn.benzinga.com/files/images/story/2026/05/13/Jim-Cramer.jpeg?width=2048&height=1536"
-        },
-        {
-          "source": "SeekingAlpha",
-          "headline": "Allspring Premier Large Company Growth Fund Q1 2026 Contributors And Detractors",
-          "summary": "Allspring's fund beat the Russell 1000 Growth Index in Q1 2026 behind AI infrastructure gains. Read the full analysis for more details.",
-          "url": "https://finnhub.io/api/news?id=f9e33fd0f5bf00b5e63231690de917ae94df9431f238716d820622cff0eb1a54",
-          "datetime": 1778633700,
-          "image": "https://static.seekingalpha.com/cdn/s3/uploads/getty_images/2182047245/image_2182047245.jpg?io=getty-c-w1536"
-        }
-      ],
-      "earnings": [
-        {
-          "period": "",
-          "estimate": 0.831,
-          "actual": 0.95,
-          "surprise": 0.14,
-          "beat": true
-        },
-        {
-          "period": "",
-          "estimate": 0.992,
-          "actual": 1.24,
-          "surprise": 0.25,
-          "beat": true
-        },
-        {
-          "period": "",
-          "estimate": 1.296,
-          "actual": 1.36,
-          "surprise": 0.05,
-          "beat": true
-        },
-        {
-          "period": "",
-          "estimate": 1.012,
-          "actual": 1.17,
-          "surprise": 0.16,
-          "beat": true
-        }
-      ],
-      "dividends": [
-        {
-          "date": "2026-03-17",
-          "amount": 0.063
-        },
-        {
-          "date": "2025-11-25",
-          "amount": 0.063
-        },
-        {
-          "date": "2025-09-15",
-          "amount": 0.038
-        },
-        {
-          "date": "2025-06-16",
-          "amount": 0.038
-        }
-      ],
+      "earnings": [],
+      "dividends": [],
       "analysis": {
         "sentiment": "neutro",
         "news_comment": "Indisponível.",
@@ -242,20 +82,28 @@
       "ticker_t212": "49Vd_EQ",
       "quantity": 4.008083,
       "avg_price": 125.7334,
-      "current_price": 142.855,
-      "ppl": 771.5,
+      "current_price": 318.17,
+      "ppl": 771.3,
       "fx_ppl": 0.0,
       "ticker": "VST",
       "ticker_display": "VST",
       "display_name": "Vistra Corp",
       "currency": "USD",
-      "change_pct": -2.73,
+      "change_pct": 0.0,
       "invested": 503.95,
-      "value_eur": 572.57,
-      "gain_eur": 771.5,
-      "gain_pct": 153.09,
-      "allocation_pct": 6.07,
+      "value_eur": 1275.25,
+      "gain_eur": 771.3,
+      "gain_pct": 153.05,
+      "allocation_pct": 17.58,
       "news": [
+        {
+          "source": "Yahoo",
+          "headline": "Is Vistra (VST) Still a Good AI Stock to Buy? Grok Says Yes",
+          "summary": "We just covered Grok’s Latest Stock Portfolio in 2026: Elon Musk’s AI Chatbot’s Top 10 Stock Picks. Vistra Corp (NYSE:VST) ranks #3 (see Grok’s Latest Stock Portfolio in 2026: AI Assistant’s Top 5 Stock Picks). Number of Hedge Funds: 102 Surging electricity demand amid the AI data center boom drives",
+          "url": "https://finnhub.io/api/news?id=0db1071211469a435b1f859d937ab85f7769dbb3e333fc6c983f0dcb8699bb9f",
+          "datetime": 1778703419,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
         {
           "source": "Yahoo",
           "headline": "Is Trending Stock Vistra Corp. (VST) a Buy Now?",
@@ -287,64 +135,78 @@
           "url": "https://finnhub.io/api/news?id=c33915520e84bcb4019ed3cf325e3f6cc937a181d0e845a0b13fde1be048d376",
           "datetime": 1778584780,
           "image": "https://static.seekingalpha.com/cdn/s3/uploads/getty_images/2247821090/image_2247821090.jpg?io=getty-c-w1536"
+        }
+      ],
+      "earnings": [],
+      "dividends": [],
+      "analysis": {
+        "sentiment": "neutro",
+        "news_comment": "Indisponível.",
+        "earnings_comment": "Indisponível.",
+        "watch_points": []
+      }
+    },
+    {
+      "ticker_t212": "0V6d_EQ",
+      "quantity": 8.814727,
+      "avg_price": 137.7683,
+      "current_price": 122.28,
+      "ppl": -136.53,
+      "fx_ppl": 0.0,
+      "ticker": "VRT",
+      "ticker_display": "VRT",
+      "display_name": "Vertiv Holdings",
+      "currency": "USD",
+      "change_pct": 0.0,
+      "invested": 1214.39,
+      "value_eur": 1077.86,
+      "gain_eur": -136.53,
+      "gain_pct": -11.24,
+      "allocation_pct": 14.86,
+      "news": [
+        {
+          "source": "Yahoo",
+          "headline": "Vertiv Holdings (VRT) Is The Most Popular GPU-As-A-Service Stock To Buy",
+          "summary": "Vertiv Holdings Co. (NYSE:VRT) is one of the 7 Best Data Center GPU-as-a-Service Stocks To Buy. On April 28, Amit Daryanani of Evercore ISI reaffirmed a Buy rating and set a target price of $350 on Vertiv Holdings Co. (NYSE:VRT). This reflects an upside of 5% from here on. This followed the company’",
+          "url": "https://finnhub.io/api/news?id=ca6d35efeece3a814342ffbc49acf752752ce56457c74fee62cfe4092735cf1e",
+          "datetime": 1778747298,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
           "source": "Yahoo",
-          "headline": "Vistra Corp. (VST) – Among the 10 Best Robinhood Stocks to Buy According to Billionaires",
-          "summary": "Vistra Corp. (NYSE:VST) is included among the 10 Best Robinhood Stocks to Buy According to Billionaires. On May 7, Reuters reported that Vistra Corp. (NYSE:VST) swung to a quarterly profit as rising power demand and higher electricity prices lifted results. The company’s shares climbed 4.2% in prema",
-          "url": "https://finnhub.io/api/news?id=8107ec1f961525c7b9a00e916120df56d000abb7903a812122709ee4df8768bb",
-          "datetime": 1778568290,
+          "headline": "Why Vertiv (VRT) Stock Is Trading Up Today",
+          "summary": "Shares of data center products and services company Vertiv (NYSE:VRT) jumped 6.5% in the morning session after the stock hit an all-time high as investor confidence grew following blowout first-quarter results and multiple analyst price target increases, all fueled by surging AI-driven data center d",
+          "url": "https://finnhub.io/api/news?id=2334dd673faa4c06201f7e6633bd67375adc01ebd92fd89fda68470915dba5a0",
+          "datetime": 1778744935,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "headline": "Vertiv News Ties AI Cooling Deals To Premium Valuation Debate",
+          "summary": "Vertiv Holdings Co (NYSE:VRT) has acquired Strategic Thermal Labs to expand its liquid cooling and high-density thermal management offerings for AI and high-performance computing data centers. The company has also been named a key infrastructure partner for Hut 8's Beacon Point campus AI project. Fo",
+          "url": "https://finnhub.io/api/news?id=e42e8b5a5c2668eb63f4261d7096de2bb9994c51906c6b252be8119cc9d66851",
+          "datetime": 1778718687,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "headline": "Tecogen Inc (TGEN) Q1 2026 Earnings Call Highlights: Profit Margins Shine Amid Revenue Challenges",
+          "summary": "Tecogen Inc (TGEN) reports strong gross profit margins and growing demand for chillers, despite a decline in total revenues and increased operating expenses.",
+          "url": "https://finnhub.io/api/news?id=c7961c966b3d20a04dbb59b85e7d9a3076ba6a7bfb12fb833fca493a804ff4c4",
+          "datetime": 1778713467,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "SeekingAlpha",
+          "headline": "Alger Mid Cap 40 ETF Q1 2026 Portfolio Movers",
+          "summary": "The Alger Mid Cap 40 ETF underperformed its index in Q1 2026 despite strength in data center holdings. Read the full analysis for more details.",
+          "url": "https://finnhub.io/api/news?id=27ea484a1745f6c0eb9c51381f4e0ce09994970f135b7a82105d4d8355eadcf8",
+          "datetime": 1778712600,
+          "image": "https://static.seekingalpha.com/cdn/s3/uploads/getty_images/2262913202/image_2262913202.jpg?io=getty-c-w1536"
         }
       ],
-      "earnings": [
-        {
-          "period": "",
-          "estimate": 0.898,
-          "actual": 0.81,
-          "surprise": -0.1,
-          "beat": false
-        },
-        {
-          "period": "",
-          "estimate": 1.956,
-          "actual": 1.75,
-          "surprise": -0.11,
-          "beat": false
-        },
-        {
-          "period": "",
-          "estimate": 2.3,
-          "actual": 0.54,
-          "surprise": -0.77,
-          "beat": false
-        },
-        {
-          "period": "",
-          "estimate": 1.871,
-          "actual": 2.87,
-          "surprise": 0.53,
-          "beat": true
-        }
-      ],
-      "dividends": [
-        {
-          "date": "2026-03-20",
-          "amount": 0.228
-        },
-        {
-          "date": "2025-12-22",
-          "amount": 0.227
-        },
-        {
-          "date": "2025-09-19",
-          "amount": 0.226
-        },
-        {
-          "date": "2025-06-18",
-          "amount": 0.225
-        }
-      ],
+      "earnings": [],
+      "dividends": [],
       "analysis": {
         "sentiment": "neutro",
         "news_comment": "Indisponível.",
@@ -356,8 +218,8 @@
       "ticker_t212": "AMZd_EQ",
       "quantity": 1.803283,
       "avg_price": 230.5462,
-      "current_price": 228.25,
-      "ppl": -4.14,
+      "current_price": 230.88,
+      "ppl": 0.6,
       "fx_ppl": 0.0,
       "ticker": "AMZd",
       "ticker_display": "AMZd",
@@ -365,30 +227,13 @@
       "currency": "EUR",
       "change_pct": 0.0,
       "invested": 415.74,
-      "value_eur": 411.6,
-      "gain_eur": -4.14,
-      "gain_pct": -1.0,
-      "allocation_pct": 4.36,
+      "value_eur": 416.34,
+      "gain_eur": 0.6,
+      "gain_pct": 0.14,
+      "allocation_pct": 5.74,
       "news": [],
       "earnings": [],
-      "dividends": [
-        {
-          "date": "2026-03-24",
-          "amount": 0.054
-        },
-        {
-          "date": "2025-12-23",
-          "amount": 0.077
-        },
-        {
-          "date": "2025-09-23",
-          "amount": 0.115
-        },
-        {
-          "date": "2025-06-24",
-          "amount": 0.068
-        }
-      ],
+      "dividends": [],
       "analysis": {
         "sentiment": "neutro",
         "news_comment": "Indisponível.",
@@ -400,8 +245,8 @@
       "ticker_t212": "M4Id_EQ",
       "quantity": 0.947418,
       "avg_price": 422.2,
-      "current_price": 419.8,
-      "ppl": -2.27,
+      "current_price": 420.6,
+      "ppl": -1.52,
       "fx_ppl": 0.0,
       "ticker": "M4Id",
       "ticker_display": "M4Id",
@@ -409,10 +254,10 @@
       "currency": "EUR",
       "change_pct": 0.0,
       "invested": 400.0,
-      "value_eur": 397.73,
-      "gain_eur": -2.27,
-      "gain_pct": -0.57,
-      "allocation_pct": 4.21,
+      "value_eur": 398.48,
+      "gain_eur": -1.52,
+      "gain_pct": -0.38,
+      "allocation_pct": 5.49,
       "news": [],
       "earnings": [],
       "dividends": [],
@@ -427,19 +272,19 @@
       "ticker_t212": "SVFC_US_EQ",
       "quantity": 2.293839,
       "avg_price": 52.2007,
-      "current_price": 49.99,
-      "ppl": -3.82,
-      "fx_ppl": 0.51,
+      "current_price": 50.04,
+      "ppl": -3.71,
+      "fx_ppl": 0.52,
       "ticker": "SVFC",
       "ticker_display": "SVFC",
       "display_name": "Symbotic",
       "currency": "USD",
       "change_pct": 0.0,
       "invested": 119.74,
-      "value_eur": 114.67,
-      "gain_eur": -3.82,
-      "gain_pct": -3.19,
-      "allocation_pct": 1.21,
+      "value_eur": 114.78,
+      "gain_eur": -3.71,
+      "gain_pct": -3.1,
+      "allocation_pct": 1.58,
       "news": [],
       "earnings": [],
       "dividends": [],
@@ -454,109 +299,63 @@
       "ticker_t212": "ASMLa_EQ",
       "quantity": 0.008498,
       "avg_price": 1242.6015,
-      "current_price": 1567.245,
-      "ppl": 0.72,
+      "current_price": 1342.8,
+      "ppl": 0.85,
       "fx_ppl": 0.0,
       "ticker": "ASML",
       "ticker_display": "ASML",
       "display_name": "ASML Holding",
       "currency": "EUR",
-      "change_pct": 3.04,
+      "change_pct": 0.0,
       "invested": 10.56,
-      "value_eur": 13.32,
-      "gain_eur": 0.72,
-      "gain_pct": 6.82,
-      "allocation_pct": 0.14,
+      "value_eur": 11.41,
+      "gain_eur": 0.85,
+      "gain_pct": 8.05,
+      "allocation_pct": 0.16,
       "news": [
         {
+          "source": "ChartMill",
+          "headline": "ASML Holding (NASDAQ:ASML) Leads the Caviar Cruise Quality Screen with Extraordinary Returns and Financial Strength",
+          "summary": "Discover how ASML passes the \"Caviar Cruise\" stock screen with 13.75% revenue CAGR, 181.2% ROIC, and 0.42 debt-to-FCF, highlighting durable competitive advantages for long-term investors.",
+          "url": "https://finnhub.io/api/news?id=5497a79cf8df4703c95d276d5bb51a3b58c85eb3022b1053a836751993674ac5",
+          "datetime": 1778748033,
+          "image": "https://www.chartmill.com/images/uploads/thumbnail_article_luc_kroeze_c1f44c837d.webp"
+        },
+        {
           "source": "Yahoo",
-          "headline": "Jim Cramer on ASML: “Let’s Just Hope for a Down Day and Get In”",
-          "summary": "ASML Holding N.V. (NASDAQ:ASML) was among Jim Cramer’s stock calls on Mad Money as he discussed how semiconductor and AI infrastructure stocks are driving the market higher. Answering a caller’s question about the stock, Cramer said: Jeez, you know, now, this is the great problem right now. That sto",
-          "url": "https://finnhub.io/api/news?id=70ed1e1ea8efaada22e47a223a924f208536f8119477ca684769dd7aa226a697",
-          "datetime": 1778682532,
+          "headline": "ASML Lifts 2026 Sales Outlook As AI Demand And EU Policy Focus Grow",
+          "summary": "ASML Holding (NasdaqGS:ASML) raised its 2026 net sales outlook, tying its guidance to stronger demand for equipment used in AI-related semiconductor production. At the same time, the company joined other European tech firms in calling on regional governments to move faster on policies that support a",
+          "url": "https://finnhub.io/api/news?id=49d725131e71155e32b5e7b894d2cbd1f3dc581f1f9cf132f4b07fab17a1285f",
+          "datetime": 1778724808,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
           "source": "Yahoo",
-          "headline": "What Makes ASML Holding N.V. (ASML) a Strong Bet?",
-          "summary": "Weitz Investment Management, an investment management firm, released its “Large Cap Equity Fund” first-quarter 2026 investor letter. A copy of the letter can be downloaded here. The Fund’s Institutional Class returned -12.04% in the quarter, compared to -4.22% for the Bloomberg U.S. 1000 Index. Desp",
-          "url": "https://finnhub.io/api/news?id=37dd18b59713ef6537bab67d3c9f2d4e1b857b4a53323e9766f72fb19181870d",
-          "datetime": 1778678054,
+          "headline": "Wall Street Is Worried About a ‘Sizzling’ Semiconductor Trade. History Says Cooling Periods Like This Set Up the Next Leg Higher",
+          "summary": "Although the chip complex has spent the last six months looking unstoppable, Wall Street is starting to whisper that the heat may finally be coming out of the trade. A Reuters analysis is warning that the “sizzling” semiconductor trade is at risk of cooling and could stall the broader US stocks rall",
+          "url": "https://finnhub.io/api/news?id=194cbb7af3179977c806865a7f613d2f6e1651cbe7346b45b32a5eb733badfe2",
+          "datetime": 1778717015,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
           "source": "Yahoo",
-          "headline": "Wall Street Is Sleeping on This AI Stock, and That's Your Opportunity This Year",
-          "summary": "This company is often overshadowed by Nvidia and other chipmakers, but AI chips don't get made without it.",
-          "url": "https://finnhub.io/api/news?id=32c0391a92c639c2741eb0b45cb1046a0c7cdaecb587d878816215d0ff24f92a",
-          "datetime": 1778677500,
+          "headline": "S&P 500 and Nasdaq 100 Post New Record Highs on Chip Stock Strength",
+          "summary": "The S&P 500 Index ($SPX ) (SPY ) on Wednesday closed up +0.58%, the Dow Jones Industrial Average ($DOWI ) (DIA ) closed down -0.14%, and the Nasdaq 100 Index ($IUXX ) (QQQ ) closed up +1.04%. June E-mini S&P futures (ESM26 ) rose +0.62%, and June E-mini Nasdaq futures...",
+          "url": "https://finnhub.io/api/news?id=16aea46517c1eba10ef324e71dba2923534a5c81e4782aff2787432c0b55313d",
+          "datetime": 1778704660,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
           "source": "Yahoo",
-          "headline": "Truly Unique AI Powerhouse Etches Buy Zone. Now Comes This Test.",
-          "summary": "ASML is the sole provider of EUV lithography machines vital to advanced AI chips from Nvidia and more. ASML stock is testing a breakout to a record high.",
-          "url": "https://finnhub.io/api/news?id=f8d2d6602688f3d5346ebcd6214debe885e97bf85b595e20be327d2ddbe25317",
-          "datetime": 1778671534,
+          "headline": "ASML Holding Trades Above 50-Day SMA: What Should Investors Know?",
+          "summary": "ASML trades above its 50-day SMA as AI-driven chip demand supports strong guidance and a solid order backlog, despite a premium valuation.",
+          "url": "https://finnhub.io/api/news?id=cf28b5e9f287b64fc2a150a7310eeb5c5ec38916a5eb336b87c67654cb09c6d0",
+          "datetime": 1778696640,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Benzinga",
-          "headline": "SanDisk And Micron Had Their Run – This New 'Photonics' ETF Has 15 Triple-Digit Gainers Inside",
-          "summary": "The first US-listed photonics ETF debuts as Lumentum, Coherent and AAOI fly. 15 of EUV&#39;s 40 holdings are already up over 100% YTD.",
-          "url": "https://finnhub.io/api/news?id=caf02b3bb849c63e6da3dd3929aca1f870468c8d3c6850f0a34a4f9eda4351c5",
-          "datetime": 1778670340,
-          "image": "https://cdn.benzinga.com/files/images/story/2026/05/13/Data-CenterHardware-Cables-Connected-To-.jpeg?width=2048&height=1536"
         }
       ],
-      "earnings": [
-        {
-          "period": "",
-          "estimate": 5.251,
-          "actual": 5.9,
-          "surprise": 0.12,
-          "beat": true
-        },
-        {
-          "period": "",
-          "estimate": 5.375,
-          "actual": 5.49,
-          "surprise": 0.02,
-          "beat": true
-        },
-        {
-          "period": "",
-          "estimate": 7.545,
-          "actual": 7.34,
-          "surprise": -0.03,
-          "beat": false
-        },
-        {
-          "period": "",
-          "estimate": 6.621,
-          "actual": 7.15,
-          "surprise": 0.08,
-          "beat": true
-        }
-      ],
-      "dividends": [
-        {
-          "date": "2026-04-27",
-          "amount": 3.177
-        },
-        {
-          "date": "2026-02-10",
-          "amount": 1.883
-        },
-        {
-          "date": "2025-10-29",
-          "amount": 1.864
-        },
-        {
-          "date": "2025-07-29",
-          "amount": 1.847
-        }
-      ],
+      "earnings": [],
+      "dividends": [],
       "analysis": {
         "sentiment": "neutro",
         "news_comment": "Indisponível.",
@@ -585,6 +384,10 @@
     {
       "date": "2026-05-13",
       "value": 9439.88
+    },
+    {
+      "date": "2026-05-14",
+      "value": 7252.87
     }
   ]
 }
