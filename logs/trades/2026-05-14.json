@@ -162,5 +162,39 @@
       "n_signals": 1,
       "risk_ok": true
     }
+  },
+  {
+    "datetime": "2026-05-14T00:42:48.859455+00:00",
+    "type": "decision",
+    "reason": "bot_start",
+    "action": "phase0_loop",
+    "context": {
+      "strategy_version": "v0.1.0"
+    }
+  },
+  {
+    "datetime": "2026-05-14T00:42:48.867859+00:00",
+    "type": "decision",
+    "reason": "phase0_start",
+    "action": "read_portfolio"
+  },
+  {
+    "datetime": "2026-05-14T00:42:53.363931+00:00",
+    "type": "decision",
+    "reason": "phase0_enrich",
+    "action": "compute_technicals",
+    "context": {
+      "n_positions": 1
+    }
+  },
+  {
+    "datetime": "2026-05-14T00:42:53.454915+00:00",
+    "type": "decision",
+    "reason": "phase0_complete",
+    "action": "report_generated",
+    "context": {
+      "n_signals": 1,
+      "risk_ok": true
+    }
   }
 ]
