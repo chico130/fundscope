@@ -863,5 +863,31 @@
       "n_signals": 1,
       "risk_ok": true
     }
+  },
+  {
+    "datetime": "2026-05-14T19:56:00.822693+00:00",
+    "type": "decision",
+    "reason": "phase0_start",
+    "action": "read_portfolio"
+  },
+  {
+    "datetime": "2026-05-14T19:56:04.952983+00:00",
+    "type": "decision",
+    "reason": "phase0_enrich",
+    "action": "compute_technicals",
+    "context": {
+      "n_positions": 1
+    }
+  },
+  {
+    "datetime": "2026-05-14T19:56:05.060938+00:00",
+    "type": "decision",
+    "reason": "phase0_complete",
+    "action": "report_generated",
+    "context": {
+      "regime": "bull_lateral",
+      "n_signals": 1,
+      "risk_ok": true
+    }
   }
 ]

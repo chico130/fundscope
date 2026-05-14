@@ -418,6 +418,25 @@ def get_display_name_yf(ticker_yf):
         pass
     return base
 
+def _fh_get(endpoint, params, retries=3):
+    """Finnhub GET with exponential backoff on 429 rate-limit responses."""
+    for attempt in range(retries):
+        try:
+            r = requests.get(f"{FH_BASE}{endpoint}", params={**params, "token": FH_TOKEN}, timeout=10)
+            if r.status_code == 429:
+                wait = 2 ** attempt   # 1s → 2s → 4s
+                print(f"  [Finnhub] 429 rate-limit on {endpoint} — retry in {wait}s")
+                time.sleep(wait)
+                continue
+            r.raise_for_status()
+            return r
+        except requests.exceptions.Timeout:
+            if attempt < retries - 1:
+                time.sleep(1)
+                continue
+    return None
+
+
 def fetch_ticker_info(yf_ticker):
     """Enriched metadata from yfinance.info — PE, beta, 52w range, short ratio, dividend yield."""
     try:
@@ -448,9 +467,9 @@ def fh_recommendation(ticker_yf):
     if not FH_TOKEN:
         return {}
     try:
-        r = requests.get(f"{FH_BASE}/recommendation",
-                         params={"symbol": base, "token": FH_TOKEN}, timeout=10)
-        r.raise_for_status()
+        r = _fh_get("/recommendation", {"symbol": base})
+        if r is None:
+            return {}
         data = r.json()
         if data:
             latest = data[0]
@@ -475,10 +494,9 @@ def fh_insider_sentiment(ticker_yf):
     try:
         today  = datetime.date.today()
         frm_3m = (today - datetime.timedelta(days=90)).isoformat()
-        r = requests.get(f"{FH_BASE}/stock/insider-sentiment",
-                         params={"symbol": base, "from": frm_3m, "to": today.isoformat(), "token": FH_TOKEN},
-                         timeout=10)
-        r.raise_for_status()
+        r = _fh_get("/stock/insider-sentiment", {"symbol": base, "from": frm_3m, "to": today.isoformat()})
+        if r is None:
+            return {}
         data   = r.json()
         points = [d.get("mspr", 0) for d in (data.get("data") or []) if d.get("mspr") is not None]
         if not points:
@@ -497,10 +515,9 @@ def fh_insider_sentiment(ticker_yf):
 def fh_news(ticker_yf, frm, to, limit=5):
     base_symbol = ticker_yf.split(".")[0]
     try:
-        r = requests.get(f"{FH_BASE}/company-news",
-                         params={"symbol": base_symbol, "from": frm, "to": to, "token": FH_TOKEN},
-                         timeout=10)
-        r.raise_for_status()
+        r = _fh_get("/company-news", {"symbol": base_symbol, "from": frm, "to": to})
+        if r is None:
+            return []
         data = r.json()
     except Exception as e:
         print(f"  [FH news] {base_symbol}: {e}")

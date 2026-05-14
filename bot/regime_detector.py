@@ -80,6 +80,7 @@ def _fetch_market_data() -> tuple[pd.DataFrame, pd.DataFrame]:
 
     RSP (Invesco S&P 500 Equal Weight ETF) is the breadth proxy:
     when RSP keeps up with cap-weighted SPY, participation is broad.
+    Falls back to SPY-only breadth (breadth assumed neutral) if RSP download fails.
     """
     raw = yf.download(
         ["SPY", "RSP"],
@@ -93,7 +94,16 @@ def _fetch_market_data() -> tuple[pd.DataFrame, pd.DataFrame]:
         "High":   raw["High"]["SPY"],
         "Low":    raw["Low"]["SPY"],
     }).dropna()
+
+    if spy.empty:
+        raise RuntimeError("SPY data returned empty from yfinance — cannot classify regime.")
+
     rsp_close = raw["Close"]["RSP"].dropna()
+    if rsp_close.empty:
+        # RSP unavailable: use SPY itself so ratio stays flat (breadth = neutral)
+        logger.warning("RSP download returned empty — using SPY as fallback breadth proxy.")
+        rsp_close = spy["Close"].copy()
+
     return spy, rsp_close
 
 
@@ -113,8 +123,20 @@ def get_current_regime() -> Regime:
     bull_breadth_threshold_pct from REGIME_CONFIG represents healthy breadth.
     Here it maps to RSP/SPY ratio not losing more than 2% relative to SPY
     over the last 20 days (qualitative proxy, not the raw 60% figure).
+
+    Falls back to the last cached regime (or bear_correction as safety default)
+    if yfinance download fails completely.
     """
-    spy, rsp_close = _fetch_market_data()
+    try:
+        spy, rsp_close = _fetch_market_data()
+    except Exception as exc:
+        logger.error("_fetch_market_data failed (%s) — activating safe fallback.", exc)
+        cached = load_cached_regime()
+        if cached:
+            logger.warning("Using last cached regime: %s", cached)
+            return cached
+        logger.warning("No cached regime available — defaulting to bear_correction (safe mode).")
+        return "bear_correction"
 
     spy_close = spy["Close"]
     spy_last  = float(spy_close.iloc[-1])

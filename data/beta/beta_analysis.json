@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-05-14T19:27:34.103766+00:00",
+  "timestamp": "2026-05-14T19:56:05.060218+00:00",
   "mode": "phase0_readonly",
   "strategy_version": "v0.1.0",
   "note": "Fase 0 — apenas leitura e sugestão. Nenhuma ordem foi submetida.",
@@ -65,13 +65,13 @@
       "action": "hold",
       "size_factor": 0.6,
       "signals": [
-        "RSI-14 elevado (74.1) — monitorizar pressão de venda",
+        "RSI-14 elevado (73.8) — monitorizar pressão de venda",
         "Tendência ascendente: EMA-50 > EMA-200"
       ],
       "technicals": {
-        "rsi_14": 74.14,
+        "rsi_14": 73.78,
         "ema50_above_ema200": true,
-        "volume_ratio_vs_avg": 0.59
+        "volume_ratio_vs_avg": 0.63
       }
     }
   ]

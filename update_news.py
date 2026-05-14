@@ -536,7 +536,7 @@ def fetch_finnhub_company(tickers: list) -> list:
     to_date   = today.isoformat()
 
     articles, seen = [], set()
-    for ticker in tickers[:10]:
+    for ticker in tickers:
         try:
             r = requests.get(
                 "https://finnhub.io/api/v1/company-news",

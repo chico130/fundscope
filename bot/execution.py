@@ -78,13 +78,24 @@ def execute_trade(proposed: ProposedTrade, portfolio_state: dict) -> dict | None
 
 
 def execute_exit(ticker: str, position: dict, reason: str) -> dict | None:
-    """Closes an entire position at market price."""
+    """Closes an entire position using a LIMIT order 0.3% below current price to avoid slippage.
+    Falls back to MARKET only if no current price is available."""
     qty = position.get("quantity", 0)
     if qty <= 0:
         return None
+
+    current_price = position.get("current_price")
+    if current_price and current_price > 0:
+        # 0.3% below market — aggressive enough to fill in normal conditions
+        limit_price = round(float(current_price) * 0.997, 4)
+        order_type = "LIMIT"
+    else:
+        limit_price = None
+        order_type = "MARKET"
+
     proposed = ProposedTrade(
         ticker=ticker, side="SELL", qty=qty,
-        order_type="MARKET", price=None,
+        order_type=order_type, price=limit_price,
         reason=reason, context={}, signal_strength=1.0,
     )
     # Minimal portfolio_state — exit always passes the size check

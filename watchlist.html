@@ -238,30 +238,61 @@ async function fetchProfile(ticker){
     return j?.quoteSummary?.result?.[0]?.summaryProfile||null;
   }catch{return null;}
 }
+function _setLogoImg(wrapId, url, alt){
+  const wrap=document.getElementById(wrapId);
+  if(wrap)wrap.innerHTML=`<img src="${url}" alt="${alt}" style="width:100%;height:100%;object-fit:contain;">`;
+}
+function tryParqetLogo(ticker, wrapId){
+  const base=String(ticker||'').split('.')[0].toUpperCase();
+  const img=new Image();
+  img.onload=()=>_setLogoImg(wrapId,`https://assets.parqet.com/logos/symbol/${base}`,base);
+  img.onerror=()=>{};
+  img.src=`https://assets.parqet.com/logos/symbol/${base}`;
+}
 function tryLoadClearbitLogo(ticker, profile, wrapId){
-  const website=profile?.website;
-  if(!website)return;
-  try{
-    const domain=new URL(website).hostname.replace(/^www\./,'');
-    const img=new Image();
-    img.onload=()=>{
-      const wrap=document.getElementById(wrapId);
-      if(wrap)wrap.innerHTML=`<img src="https://logo.clearbit.com/${domain}" alt="${ticker}" style="width:100%;height:100%;object-fit:contain;">`;
-    };
-    img.onerror=()=>{};
-    img.src=`https://logo.clearbit.com/${domain}`;
-  }catch(e){}
+  if(profile?.website){
+    try{
+      const domain=new URL(profile.website).hostname.replace(/^www\./,'');
+      const img=new Image();
+      img.onload=()=>_setLogoImg(wrapId,`https://logo.clearbit.com/${domain}`,ticker);
+      img.onerror=()=>tryParqetLogo(ticker,wrapId);
+      img.src=`https://logo.clearbit.com/${domain}`;
+      return;
+    }catch(e){}
+  }
+  tryParqetLogo(ticker,wrapId);
 }
 async function fetchAnalysts(ticker){
   try{
     const r=await fetchWithTimeout(`${WORKER}?ticker=${encodeURIComponent(ticker)}&modules=financialData,recommendationTrend`,12000);
+    if(r.ok){
+      const j=await r.json();
+      if(!j?.quoteSummary?.error){
+        const res=j?.quoteSummary?.result?.[0]||{};
+        const fd=res.financialData;
+        if(fd?.targetMeanPrice||fd?.targetHighPrice){
+          return {financialData:fd,recommendationTrend:res.recommendationTrend||null};
+        }
+      }
+    }
+  }catch{}
+  // Fallback: watchlist.json has pre-computed analyst targets
+  try{
+    const r=await fetchWithTimeout('data/beta/watchlist.json',6000);
     if(!r.ok)return null;
     const j=await r.json();
-    if(j?.quoteSummary?.error)return null;
-    const res = j?.quoteSummary?.result?.[0] || {};
+    const c=(j?.candidates||[]).find(x=>x.ticker===ticker);
+    if(!c)return null;
     return {
-      financialData: res.financialData || null,
-      recommendationTrend: res.recommendationTrend || null
+      financialData:{
+        targetMeanPrice:   c.target_mean,
+        targetMedianPrice: c.target_median,
+        targetHighPrice:   c.target_high,
+        targetLowPrice:    c.target_low,
+        recommendationKey:'',
+        numberOfAnalystOpinions:null,
+      },
+      fromCache:true
     };
   }catch{return null;}
 }
@@ -319,9 +350,15 @@ async function fetchNews(ticker){
 }
 async function fetchEarningsAI(ticker){
   try{
-    const r=await fetchWithTimeout(`${WORKER}?ticker=${encodeURIComponent(ticker)}&action=earnings-ai`,25000);
-    if(r.ok){const j=await r.json();if(j)return j;}
+    const r=await fetchWithTimeout(`${WORKER}?ticker=${encodeURIComponent(ticker)}&action=earnings-ai`,15000);
+    if(r.ok){
+      const j=await r.json();
+      const a=j?.analysis||j;
+      // Only accept if it has actual content
+      if(a?.resumo||Array.isArray(a?.correu_bem))return j;
+    }
   }catch{}
+  // Local fallback from daily bot rebuild
   try{
     const r=await fetchWithTimeout('data/beta/earnings_ai.json',6000);
     if(!r.ok)return null;
@@ -474,7 +511,7 @@ function fillCard(ticker,stats){
   const nameEl=document.getElementById('name-'+ticker), priceEl=document.getElementById('price-'+ticker), changeEl=document.getElementById('change-'+ticker), statsEl=document.getElementById('panel-stats-'+ticker);
   if(nameEl)nameEl.textContent=name;
   if(priceEl)priceEl.textContent=price?'$'+fmtNum(price):'—';
-  if(changeEl){changeEl.className='wl-change '+(up?'up':'down');changeEl.innerHTML=`${up?'▲':'▼'} ${up?'+':''}${fmtNum(Math.abs(change))} (${up?'+':''}${fmtNum(Math.abs(changePct))}%)`;}
+  if(changeEl){changeEl.removeAttribute('style');changeEl.className='wl-change '+(up?'up':'down');changeEl.innerHTML=`${up?'▲':'▼'} ${up?'+':''}${fmtNum(Math.abs(change))} (${up?'+':''}${fmtNum(Math.abs(changePct))}%)`;}
   if(statsEl)statsEl.innerHTML=buildStatsHTML(stats);
   return price;
 }
@@ -524,7 +561,10 @@ async function init(){
   if(!tickers.length){renderEmpty();return;}
   tickers.forEach(t=>buildCardPlaceholder(t));
   await Promise.all(tickers.map(async t=>{ const stats=await fetchQuote(t); const price=fillCard(t,stats); _cardPrices[t]=price; }));
-  tickers.forEach(t=>fetchProfile(t).then(profile=>tryLoadClearbitLogo(t,profile,'logo-'+t)));
+  tickers.forEach(t=>{
+    tryParqetLogo(t,'logo-'+t); // immediate attempt without WORKER
+    fetchProfile(t).then(profile=>tryLoadClearbitLogo(t,profile,'logo-'+t)); // upgrade to Clearbit if profile available
+  });
   setInterval(async()=>{ const current = getWatchlist(); for(const t of current){ const stats=await fetchQuote(t); if(!stats)continue; const price=fillCard(t,stats); _cardPrices[t]=price; } },60000);
 }
 init();

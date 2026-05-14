@@ -7,6 +7,10 @@ on:
     - cron: '0 21 * * 1-5'       # 21:00 UTC pós-fecho US
   workflow_dispatch:
 
+concurrency:
+  group: fundscope-update
+  cancel-in-progress: false
+
 jobs:
   update:
     runs-on: ubuntu-latest
