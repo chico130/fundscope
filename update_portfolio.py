@@ -461,6 +461,46 @@ def fetch_ticker_info(yf_ticker):
         return {}
 
 
+def fh_basic_financials(ticker_yf):
+    """
+    Finnhub /stock/metric?metric=all — fundamentais ricos disponíveis no Basic plan.
+    Complementa fetch_ticker_info (yfinance) com dados mais fiáveis e granulares.
+    """
+    base = ticker_yf.split(".")[0]
+    if not FH_TOKEN:
+        return {}
+    try:
+        r = _fh_get("/stock/metric", {"symbol": base, "metric": "all"})
+        if r is None:
+            return {}
+        m = r.json().get("metric") or {}
+        return {
+            "52WeekHigh":              m.get("52WeekHigh"),
+            "52WeekLow":               m.get("52WeekLow"),
+            "52WeekHighDate":          m.get("52WeekHighDate"),
+            "52WeekLowDate":           m.get("52WeekLowDate"),
+            "beta":                    m.get("beta"),
+            "peAnnual":                m.get("peAnnual"),
+            "peTTM":                   m.get("peTTM"),
+            "pbAnnual":                m.get("pbAnnual"),
+            "epsGrowthTTMYoy":         m.get("epsGrowthTTMYoy"),
+            "epsGrowth3Y":             m.get("epsGrowth3Y"),
+            "revenueGrowthTTMYoy":     m.get("revenueGrowthTTMYoy"),
+            "revenueGrowth3Y":         m.get("revenueGrowth3Y"),
+            "grossMarginTTM":          m.get("grossMarginTTM"),
+            "netMarginTTM":            m.get("netMarginTTM"),
+            "roeTTM":                  m.get("roeTTM"),
+            "roaRfy":                  m.get("roaRfy"),
+            "currentRatioAnnual":      m.get("currentRatioAnnual"),
+            "debtToEquityAnnual":      m.get("totalDebt/totalEquityAnnual"),
+            "dividendYieldIndicated":  m.get("dividendYieldIndicatedAnnual"),
+            "marketCapitalization":    m.get("marketCapitalization"),
+        }
+    except Exception as e:
+        print(f"  [FH metric] {base}: {e}")
+    return {}
+
+
 def fh_recommendation(ticker_yf):
     """Latest analyst recommendation counts from Finnhub."""
     base = ticker_yf.split(".")[0]
@@ -652,7 +692,8 @@ def main():
         time.sleep(0.2)
         p["earnings"]    = fetch_earnings(ticker)
         p["dividends"]   = fetch_dividends(ticker)
-        p["ticker_info"] = fetch_ticker_info(ticker)
+        p["ticker_info"]      = fetch_ticker_info(ticker)
+        p["fh_fundamentals"]  = fh_basic_financials(ticker)
         time.sleep(0.2)
         p["analysts"]    = fh_recommendation(ticker)
         p["insider"]     = fh_insider_sentiment(ticker)

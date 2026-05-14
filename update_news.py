@@ -20,10 +20,12 @@ except ImportError:
 MARKETAUX_TOKEN    = os.environ.get("MARKETAUX_TOKEN",    "").strip()
 ALPHAVANTAGE_TOKEN = os.environ.get("ALPHAVANTAGE_TOKEN", "").strip()
 FH_TOKEN           = os.environ.get("FINNHUB_TOKEN",      "").strip()
+NEWSAPI_TOKEN      = os.environ.get("NEWSAPI_TOKEN",      "").strip()
 
 print(f"Tokens: MarketAux={'sim' if MARKETAUX_TOKEN else 'NAO'} | "
       f"AlphaVantage={'sim' if ALPHAVANTAGE_TOKEN else 'NAO'} | "
-      f"Finnhub={'sim' if FH_TOKEN else 'NAO'}")
+      f"Finnhub={'sim' if FH_TOKEN else 'NAO'} | "
+      f"NewsAPI={'sim' if NEWSAPI_TOKEN else 'NAO'}")
 
 # ─── RSS Feeds ─────────────────────────────────────────────────────────────────
 RSS_FEEDS = [
@@ -593,6 +595,100 @@ def fetch_finnhub_company(tickers: list) -> list:
     return articles
 
 
+# ─── NewsAPI.org ─────────────────────────────────────────────────────────────
+
+def fetch_newsapi(tickers: list) -> list:
+    """
+    Fetch company-specific news from NewsAPI.org.
+    Batches tickers in groups of 5 → max 5 requests/run × 4 runs/day = 20 req/day
+    (developer plan limit: 100 req/day).
+    """
+    if not NEWSAPI_TOKEN:
+        print("  [SKIP] NEWSAPI_TOKEN não definido")
+        return []
+
+    articles, seen = [], set()
+    batch_size = 5
+
+    for i in range(0, len(tickers), batch_size):
+        batch = tickers[i:i + batch_size]
+        query = " OR ".join(batch)
+        try:
+            r = requests.get(
+                "https://newsapi.org/v2/everything",
+                params={
+                    "q":        query,
+                    "language": "en",
+                    "sortBy":   "publishedAt",
+                    "pageSize": 20,
+                    "apiKey":   NEWSAPI_TOKEN,
+                },
+                timeout=12,
+            )
+            if r.status_code == 426:
+                print("  [NewsAPI] 426 — plano developer requer query diferente, a tentar top-headlines")
+                break
+            if r.status_code == 429:
+                print("  [NewsAPI] 429 — limite diário atingido")
+                break
+            r.raise_for_status()
+            data = r.json()
+
+            for a in (data.get("articles") or []):
+                title = sanitize((a.get("title") or "").strip())
+                if not title or title in seen or "[Removed]" in title:
+                    continue
+                seen.add(title)
+
+                desc   = clean_text(a.get("description") or "")
+                link   = sanitize(a.get("url") or "")
+                img    = sanitize(a.get("urlToImage") or "")
+                pub    = sanitize(a.get("publishedAt") or "")
+                source = sanitize((a.get("source") or {}).get("name") or "NewsAPI")
+
+                # Which tickers from this batch are mentioned?
+                full_upper = (title + " " + desc).upper()
+                matched = [t for t in batch if t.upper() in full_upper]
+
+                full_text = title + " " + desc
+                cat, icon = classify(full_text)
+                impact    = get_impact(full_text)
+                for t in matched:
+                    if t not in impact["tickers"]:
+                        impact["tickers"].insert(0, t)
+
+                if not img or len(img) < 12:
+                    img = fallback_img(cat)
+
+                articles.append({
+                    "id":          make_id(title),
+                    "source":      source,
+                    "title":       title[:200],
+                    "summary":     desc[:600],
+                    "content":     desc[:5000],
+                    "url":         link,
+                    "image":       img,
+                    "publishedAt": pub,
+                    "category":    cat,
+                    "icon":        icon,
+                    "impact":      impact,
+                    "heat":        heat_score(impact),
+                    "feed":        "newsapi",
+                })
+
+            batch_n = i // batch_size + 1
+            batch_total = (len(tickers) + batch_size - 1) // batch_size
+            print(f"  [NewsAPI batch {batch_n}/{batch_total}] query='{query[:40]}…': "
+                  f"{data.get('totalResults',0)} resultados disponíveis")
+            time.sleep(0.5)
+
+        except Exception:
+            print(f"  [WARN NewsAPI batch {batch}]:\n{traceback.format_exc()}")
+
+    print(f"  NewsAPI: {len(articles)} artigos ({len(tickers)} tickers)")
+    return articles
+
+
 def _load_watchlist_tickers() -> list:
     try:
         p = os.path.join("data", "beta", "watchlist.json")
@@ -623,7 +719,7 @@ def merge_and_sort(*sources):
 
 def main():
     print("=== FundScope News Update ===")
-    rss_arts = ma_arts = av_arts = fh_arts = fhc_arts = []
+    rss_arts = ma_arts = av_arts = fh_arts = fhc_arts = na_arts = []
 
     try:    rss_arts = fetch_rss()
     except: print(traceback.format_exc())
@@ -637,9 +733,10 @@ def main():
         wl_tickers = _load_watchlist_tickers()
         if wl_tickers:
             fhc_arts = fetch_finnhub_company(wl_tickers)
+            na_arts  = fetch_newsapi(wl_tickers)
     except: print(traceback.format_exc())
 
-    articles = merge_and_sort(rss_arts, ma_arts, av_arts, fh_arts, fhc_arts)
+    articles = merge_and_sort(rss_arts, ma_arts, av_arts, fh_arts, fhc_arts, na_arts)
     print(f"\nTotal final: {len(articles)} artigos")
 
     from collections import Counter

@@ -8,6 +8,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: fundscope-news
+  cancel-in-progress: false
+
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
@@ -29,9 +33,10 @@ jobs:
 
       - name: Correr update_news.py
         env:
-          FINNHUB_TOKEN:     ${{ secrets.FINNHUB_TOKEN }}
-          MARKETAUX_TOKEN:   ${{ secrets.MARKETAUX_TOKEN }}
+          FINNHUB_TOKEN:      ${{ secrets.FINNHUB_TOKEN }}
+          MARKETAUX_TOKEN:    ${{ secrets.MARKETAUX_TOKEN }}
           ALPHAVANTAGE_TOKEN: ${{ secrets.ALPHAVANTAGE_TOKEN }}
+          NEWSAPI_TOKEN:      ${{ secrets.NEWSAPI_TOKEN }}
         run: python update_news.py
 
       - name: Mostrar news.json
