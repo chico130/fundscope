@@ -103,5 +103,30 @@
       "n_signals": 1,
       "risk_ok": true
     }
+  },
+  {
+    "datetime": "2026-05-14T00:22:05.677195+00:00",
+    "type": "decision",
+    "reason": "phase0_start",
+    "action": "read_portfolio"
+  },
+  {
+    "datetime": "2026-05-14T00:22:10.155734+00:00",
+    "type": "decision",
+    "reason": "phase0_enrich",
+    "action": "compute_technicals",
+    "context": {
+      "n_positions": 1
+    }
+  },
+  {
+    "datetime": "2026-05-14T00:22:10.274564+00:00",
+    "type": "decision",
+    "reason": "phase0_complete",
+    "action": "report_generated",
+    "context": {
+      "n_signals": 1,
+      "risk_ok": true
+    }
   }
 ]

@@ -198,6 +198,7 @@ def _git_sync(timestamp: str) -> None:
         subprocess.run(["git", "add", "-A"], cwd=root, check=True)
         msg = f"Auto-update {timestamp[:16].replace('T', ' ')} UTC"
         subprocess.run(["git", "commit", "-m", msg], cwd=root, check=True)
+        subprocess.run(["git", "pull", "--rebase", "origin", "main"], cwd=root, check=True)
         subprocess.run(["git", "push", "origin", "main"], cwd=root, check=True)
         print(f"Git: push efectuado — '{msg}'")
     except subprocess.CalledProcessError as exc:
