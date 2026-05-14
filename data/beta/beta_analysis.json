@@ -1,9 +1,9 @@
 {
-  "timestamp": "2026-05-14T19:56:05.060218+00:00",
+  "timestamp": "2026-05-14T22:36:01.209678+00:00",
   "mode": "phase0_readonly",
   "strategy_version": "v0.1.0",
   "note": "Fase 0 — apenas leitura e sugestão. Nenhuma ordem foi submetida.",
-  "regime": "bull_lateral",
+  "regime": "bull_trending",
   "regime_alert": false,
   "watchlist_top5": [
     {
@@ -52,27 +52,12 @@
       "score": 0.5745
     }
   ],
-  "n_positions": 1,
+  "n_positions": 0,
   "open_trades": 4,
   "risk_status": {
     "ok": true,
-    "total_equity_eur": 4900.0,
+    "total_equity_eur": 0,
     "warnings": []
   },
-  "signals": [
-    {
-      "ticker": "GOOGL_US_EQ",
-      "action": "hold",
-      "size_factor": 0.6,
-      "signals": [
-        "RSI-14 elevado (73.8) — monitorizar pressão de venda",
-        "Tendência ascendente: EMA-50 > EMA-200"
-      ],
-      "technicals": {
-        "rsi_14": 73.78,
-        "ema50_above_ema200": true,
-        "volume_ratio_vs_avg": 0.63
-      }
-    }
-  ]
+  "signals": []
 }
