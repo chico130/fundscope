@@ -1,12 +1,12 @@
 {
-  "updated": "2026-05-14T20:26:41.125064Z",
+  "updated": "2026-05-15T11:22:20.489757Z",
   "t212_mode": "live",
   "summary": {
-    "total_value": 9342.97,
+    "total_value": 7042.1,
     "total_invested": 3385.23,
-    "total_gain_eur": 3850.24,
-    "total_gain_pct": 113.74,
-    "daily_gain_eur": -101.9,
+    "total_gain_eur": 3658.68,
+    "total_gain_pct": 108.08,
+    "daily_gain_eur": 0.0,
     "n_positions": 7
   },
   "positions": [
@@ -14,128 +14,72 @@
       "ticker_t212": "MTEd_EQ",
       "quantity": 5.823397,
       "avg_price": 123.7851,
-      "current_price": 776.01,
-      "ppl": 3209.94,
+      "current_price": 648.2,
+      "ppl": 3053.88,
       "fx_ppl": 0.0,
       "ticker": "MU",
       "ticker_display": "MU",
       "display_name": "Micron Technology",
       "currency": "USD",
-      "change_pct": -3.44,
+      "change_pct": 0.0,
       "invested": 720.85,
-      "value_eur": 4519.01,
-      "gain_eur": 3209.94,
-      "gain_pct": 445.3,
-      "allocation_pct": 48.37,
+      "value_eur": 3774.73,
+      "gain_eur": 3053.88,
+      "gain_pct": 423.65,
+      "allocation_pct": 53.6,
       "news": [
         {
           "source": "Yahoo",
-          "headline": "Prediction: Micron Will Trade at This Price At The End of The Year",
-          "summary": "Memory has gone from commodity to strategic asset, and Micron Technology (NASDAQ:MU) has been the biggest beneficiary on the public markets. Shares have rocketed 828.56% over the past year, and the AI memory supercycle has investors asking how much further this can run. Our model says the easy money",
-          "url": "https://finnhub.io/api/news?id=729244f7b9f7ae82543fbe3264d99b43b493577c0f6362352c158e9415a6747c",
-          "datetime": 1778788442,
+          "headline": "Zacks Investment Ideas feature highlights: Micron, Sandisk and Nvidia",
+          "summary": "MU and SNDK are surging as AI-driven demand for HBM, DRAM and SSD storage tightens supply across the memory market.",
+          "url": "https://finnhub.io/api/news?id=ce576a2cc6f41c8da579be355f54f975a38c70b6d4b3c4ad69dd06870b6988ce",
+          "datetime": 1778827140,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
           "source": "Yahoo",
-          "headline": "Jim Cramer Reveals Why Micron (MU) Is Better Than The Firm That Makes Betty Crocker Mixes",
-          "summary": "We recently published Jim Cramer Revealed His Big AI Investing Fear & Discussed These 20 Stocks. Micron Technology, Inc. (NASDAQ:MU) is one of the stocks discussed by Jim Cramer. Memory chip manufacturer Micron Technology, Inc. (NASDAQ:MU) is one of the hottest stocks in the AI era. The shares are u",
-          "url": "https://finnhub.io/api/news?id=187b1b929b2b5b3a8303fcecdd1b129d6f309c22491e14da7b8d74ad8f6c9230",
-          "datetime": 1778787656,
+          "headline": "The Cheapest AI Stocks Right Now",
+          "summary": "Value investors don't have to be left out of the AI Revolution. These companies have cheap valuations.",
+          "url": "https://finnhub.io/api/news?id=a1556e06081a61e2861b602b528a3ad49d2bd7499dbdf2934041ef1c867d871b",
+          "datetime": 1778810160,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
           "source": "Yahoo",
-          "headline": "Here's Why Micron Can Reach a $1 Trillion Market Cap This Year",
-          "summary": "The maker of memory chips is on course for a $1 trillion valuation, which seemed extremely unlikely one year ago.",
-          "url": "https://finnhub.io/api/news?id=c28a64a82e1bf6a683e3f81845c25b039d01afaad0fb253710ff38e049ed332e",
-          "datetime": 1778787180,
+          "headline": "A Look At Micron Technology (MU) Valuation As AI Memory Demand Drives Record Results And Long Term HBM Contracts",
+          "summary": "Micron Technology (MU) is back in focus after reporting record results, along with news that its entire 2026 high bandwidth memory output is contracted to major tech platforms. This underscores AI driven demand and tight DRAM and NAND supply. See our latest analysis for Micron Technology. That AI dr",
+          "url": "https://finnhub.io/api/news?id=5277878addce014f4a1f2980f003f99a528bdb5dc46247361ebbde10653a1b2b",
+          "datetime": 1778796853,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
           "source": "Yahoo",
-          "headline": "Bank of America massively resets Micron stock price target after surge",
-          "summary": "On May 12, I wrote about Micron's relative strength index, or RSI, hitting 85. That was one of the most extreme overbought readings on the daily chart, before the stock pulled back over 7% during the session to breathe. The technical signal was real. So was the concern about chasing a stock up 700% ",
-          "url": "https://finnhub.io/api/news?id=5052fe8b10647c2bc3cb5c87e8e8f0f8e23024817ea13690d68b99d0d6b59b85",
-          "datetime": 1778784420,
+          "headline": "Micron (MU) Stock Sinks As Market Gains: Here's Why",
+          "summary": "In the closing of the recent trading day, Micron (MU) stood at $776.01, denoting a -3.44% move from the preceding trading day.",
+          "url": "https://finnhub.io/api/news?id=59c0bc847b0dc02451950edc62a29798abbb5039000a9abc16ba4ed036214ea9",
+          "datetime": 1778795101,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
-          "source": "ChartMill",
-          "headline": "Most active S&P500 stocks in Thursday's session",
-          "summary": "Stay informed about the most active stocks in the S&P500 index on Thursday's session. Discover the stocks that are generating the highest trading volume and driving market activity.",
-          "url": "https://finnhub.io/api/news?id=6d706c62677ba861cd17ffd2aae3002634c606cd077bead020b5f09be103fe1f",
-          "datetime": 1778781902,
-          "image": "https://www.chartmill.com/images/uploads/CM_Most_Active_Stocks_Small_free_fec0650b7f.webp"
+          "source": "Yahoo",
+          "headline": "Applied Materials Stock Rises On Strong Earnings and Outlook",
+          "summary": "Applied Materials reports earnings Thursday as investors look for signs that AI-driven chip spending can outweigh slowing sales growth in China.",
+          "url": "https://finnhub.io/api/news?id=f6fd394ca2a4b0d212063a703d1547cd690d8a2f98e58c747beba4d9ced74a0f",
+          "datetime": 1778790300,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         }
       ],
-      "earnings": [
-        {
-          "period": "",
-          "estimate": 1.595,
-          "actual": 1.91,
-          "surprise": 0.2,
-          "beat": true
-        },
-        {
-          "period": "",
-          "estimate": 2.86,
-          "actual": 3.03,
-          "surprise": 0.06,
-          "beat": true
-        },
-        {
-          "period": "",
-          "estimate": 3.964,
-          "actual": 4.78,
-          "surprise": 0.21,
-          "beat": true
-        },
-        {
-          "period": "",
-          "estimate": 9.159,
-          "actual": 12.2,
-          "surprise": 0.33,
-          "beat": true
-        }
-      ],
-      "dividends": [
-        {
-          "date": "2026-03-30",
-          "amount": 0.15
-        },
-        {
-          "date": "2025-12-29",
-          "amount": 0.115
-        },
-        {
-          "date": "2025-10-03",
-          "amount": 0.115
-        },
-        {
-          "date": "2025-07-07",
-          "amount": 0.115
-        }
-      ],
-      "ticker_info": {
-        "trailingPE": 36.569748,
-        "forwardPE": 7.624229,
-        "marketCap": 875132878848,
-        "beta": 1.919,
-        "fiftyTwoWeekHigh": 818.67,
-        "fiftyTwoWeekLow": 90.93,
-        "pctFromHigh": -5.21,
-        "shortRatio": 0.84,
-        "dividendYield": 0.07
-      },
+      "earnings": [],
+      "dividends": [],
+      "ticker_info": {},
       "fh_fundamentals": {
         "52WeekHigh": 818.67,
         "52WeekLow": 90.93,
         "52WeekHighDate": "2026-05-11",
         "52WeekLowDate": "2025-05-23",
-        "beta": 2.021003,
-        "peAnnual": 105.5486,
-        "peTTM": 37.3804,
+        "beta": 2.0341282,
+        "peAnnual": 104.4729,
+        "peTTM": 36.9995,
         "pbAnnual": 2.5207,
         "epsGrowthTTMYoy": 412.05,
         "epsGrowth3Y": -0.66,
@@ -147,157 +91,8 @@
         "roaRfy": 10.31,
         "currentRatioAnnual": 2.518,
         "debtToEquityAnnual": 0.2691,
-        "dividendYieldIndicated": 0.061595510371688464,
-        "marketCapitalization": 901279.4
-      },
-      "analysts": {},
-      "insider": {},
-      "analysis": {
-        "sentiment": "neutro",
-        "news_comment": "Indisponível.",
-        "earnings_comment": "Indisponível.",
-        "watch_points": []
-      }
-    },
-    {
-      "ticker_t212": "0V6d_EQ",
-      "quantity": 8.814727,
-      "avg_price": 137.7683,
-      "current_price": 376.23,
-      "ppl": -143.49,
-      "fx_ppl": 0.0,
-      "ticker": "VRT",
-      "ticker_display": "VRT",
-      "display_name": "Vertiv Holdings",
-      "currency": "USD",
-      "change_pct": 1.69,
-      "invested": 1214.39,
-      "value_eur": 3316.36,
-      "gain_eur": -143.49,
-      "gain_pct": -11.82,
-      "allocation_pct": 35.5,
-      "news": [
-        {
-          "source": "Yahoo",
-          "headline": "Vertiv (VRT) Names Frieda He as Chief Procurement Officer",
-          "summary": "Vertiv Holdings Co. (NYSE:VRT) is one of the unstoppable AI stocks to buy now. On May 5, Vertiv appointed Frieda He as Chief Procurement Officer to lead its global procurement organization. In this role, she will focus on strengthening supply chain resilience, optimizing costs, and driving supplier ",
-          "url": "https://finnhub.io/api/news?id=34b9c06a67c4aa082c11812fe58cb9159b3c831c1de654155416b23baaa28b52",
-          "datetime": 1778775279,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Yahoo",
-          "headline": "Vinson & Elkins: Accelerating AI Infrastructure & Power Constraints Reshape the Market",
-          "summary": "By Karen Roman The growing tension between AI-driven data center development and power availability constraints is reshaping the market, according to a survey published by Vinson & Elkins. The survey also found 96% of infrastructure developers preview power constraints to pivot data center developme",
-          "url": "https://finnhub.io/api/news?id=d71406deb0ae926d2d9796c2521605618c2c2b9723fec88bed876e55b74300c7",
-          "datetime": 1778773499,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Yahoo",
-          "headline": "Jim Cramer on Vertiv: “You Buy Half and Then You Wait for a Decline”",
-          "summary": "Vertiv Holdings Co (NYSE:VRT) was among the stocks on Jim Cramer’s radar as he highlighted the importance of lower interest rates in sustaining the broader market rally. During the lightning round, a caller inquired about the stock, and in response, Cramer said: Okay, here’s what I want you to do wi",
-          "url": "https://finnhub.io/api/news?id=4a422dafe26ae62030f5b8f836f708020598aa10c43ae73baa0d49330c06d896",
-          "datetime": 1778773220,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Benzinga",
-          "headline": "Trump's Trading Disclosure Shows Activity In Nvidia, AMD, Microsoft, Oracle And Other Major Stocks",
-          "summary": "Whether the transactions reflected direct trading activity by Trump or activity conducted through managed accounts is not clear.",
-          "url": "https://finnhub.io/api/news?id=ec32ca8013d8fc3c91c62c50ebeef925c5c2be070a6b7c1b81bf7ab5872503f1",
-          "datetime": 1778770096,
-          "image": "https://cdn.benzinga.com/files/images/story/2026/05/14/Washington-Dc--2026-February-24--Preside.jpeg?width=2048&height=1536"
-        },
-        {
-          "source": "Yahoo",
-          "headline": "Russell 1000 Is Hiding Some Big AI Winners",
-          "summary": "The Russell 1000--an index tracking the top 1,000 stocks with a small market value--has 16 members that have gained more than 1,000% since Oct. 12, 2022, when the broad market bottomed.  At the top of the list is Vertiv Holdings, a stock that has gained 3,307% in that period.  \"Almost all of these s",
-          "url": "https://finnhub.io/api/news?id=c58d2a205d7b099597bccd745464d42f35e44ab4962e8147dbbf3788dd62aeb9",
-          "datetime": 1778769228,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        }
-      ],
-      "earnings": [
-        {
-          "period": "",
-          "estimate": 0.831,
-          "actual": 0.95,
-          "surprise": 0.14,
-          "beat": true
-        },
-        {
-          "period": "",
-          "estimate": 0.992,
-          "actual": 1.24,
-          "surprise": 0.25,
-          "beat": true
-        },
-        {
-          "period": "",
-          "estimate": 1.296,
-          "actual": 1.36,
-          "surprise": 0.05,
-          "beat": true
-        },
-        {
-          "period": "",
-          "estimate": 1.012,
-          "actual": 1.17,
-          "surprise": 0.16,
-          "beat": true
-        }
-      ],
-      "dividends": [
-        {
-          "date": "2026-03-17",
-          "amount": 0.063
-        },
-        {
-          "date": "2025-11-25",
-          "amount": 0.063
-        },
-        {
-          "date": "2025-09-15",
-          "amount": 0.038
-        },
-        {
-          "date": "2025-06-16",
-          "amount": 0.038
-        }
-      ],
-      "ticker_info": {
-        "trailingPE": 94.0575,
-        "forwardPE": 43.015316,
-        "marketCap": 144513253376,
-        "beta": 2.099,
-        "fiftyTwoWeekHigh": 379.93,
-        "fiftyTwoWeekLow": 101.0,
-        "pctFromHigh": -0.97,
-        "shortRatio": 2.12,
-        "dividendYield": 0.07
-      },
-      "fh_fundamentals": {
-        "52WeekHigh": 377.77,
-        "52WeekLow": 100.9,
-        "52WeekHighDate": "2026-05-13",
-        "52WeekLowDate": "2025-05-13",
-        "beta": 2.121352,
-        "peAnnual": 106.63,
-        "peTTM": 91.1938,
-        "pbAnnual": 15.7163,
-        "epsGrowthTTMYoy": 130.99,
-        "epsGrowth3Y": 156.36,
-        "revenueGrowthTTMYoy": 28.95,
-        "revenueGrowth3Y": 21.59,
-        "grossMarginTTM": 37.15,
-        "netMarginTTM": null,
-        "roeTTM": 42.059999999999995,
-        "roaRfy": 10.91,
-        "currentRatioAnnual": 1.5474,
-        "debtToEquityAnnual": 0.7391,
-        "dividendYieldIndicated": 0.0696534046584197,
-        "marketCapitalization": 142116.44
+        "dividendYieldIndicated": 0.06378783778559555,
+        "marketCapitalization": 892094
       },
       "analysts": {},
       "insider": {},
@@ -312,20 +107,28 @@
       "ticker_t212": "49Vd_EQ",
       "quantity": 4.008083,
       "avg_price": 125.7334,
-      "current_price": 141.9,
-      "ppl": 789.38,
+      "current_price": 319.01,
+      "ppl": 774.67,
       "fx_ppl": 0.0,
       "ticker": "VST",
       "ticker_display": "VST",
       "display_name": "Vistra Corp",
       "currency": "USD",
-      "change_pct": -0.5,
+      "change_pct": 0.0,
       "invested": 503.95,
-      "value_eur": 568.75,
-      "gain_eur": 789.38,
-      "gain_pct": 156.64,
-      "allocation_pct": 6.09,
+      "value_eur": 1278.62,
+      "gain_eur": 774.67,
+      "gain_pct": 153.72,
+      "allocation_pct": 18.16,
       "news": [
+        {
+          "source": "Yahoo",
+          "headline": "Looking for Nuclear Stock Exposure? Use This Zacks Tool",
+          "summary": "Nuclear energy stands at the cusp of the global push for a low-carbon, greener, and more resilient energy future.",
+          "url": "https://finnhub.io/api/news?id=bbd331beac954721463a3ca22feef89f99bdee56262af5d2dcb791e2ae729ffe",
+          "datetime": 1778799300,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
         {
           "source": "Yahoo",
           "headline": "Vinson & Elkins: Accelerating AI Infrastructure & Power Constraints Reshape the Market",
@@ -357,83 +160,19 @@
           "url": "https://finnhub.io/api/news?id=66d5e7a7a53894b3edbb1602303c3e4f11c8ffa9c17cbe8e027661da0ba726d6",
           "datetime": 1778677206,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Yahoo",
-          "headline": "Vistra Expands Gas Capacity And Data Center Ties With AI Power Deals",
-          "summary": "Vistra (NYSE:VST) is pursuing the acquisition of Cogentrix Energy's 5.5 GW natural gas portfolio, adding a large set of gas fired generation assets to its platform. The company has also entered new long term power agreements with hyperscale data center partners to supply electricity to major technol",
-          "url": "https://finnhub.io/api/news?id=cfbe1fab12ada97a026e2fab512b3e413acdc280fdcbffd2c0a2b4adefc64e6f",
-          "datetime": 1778595193,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         }
       ],
-      "earnings": [
-        {
-          "period": "",
-          "estimate": 0.898,
-          "actual": 0.81,
-          "surprise": -0.1,
-          "beat": false
-        },
-        {
-          "period": "",
-          "estimate": 1.956,
-          "actual": 1.75,
-          "surprise": -0.11,
-          "beat": false
-        },
-        {
-          "period": "",
-          "estimate": 2.3,
-          "actual": 0.54,
-          "surprise": -0.77,
-          "beat": false
-        },
-        {
-          "period": "",
-          "estimate": 1.871,
-          "actual": 2.87,
-          "surprise": 0.53,
-          "beat": true
-        }
-      ],
-      "dividends": [
-        {
-          "date": "2026-03-20",
-          "amount": 0.228
-        },
-        {
-          "date": "2025-12-22",
-          "amount": 0.227
-        },
-        {
-          "date": "2025-09-19",
-          "amount": 0.226
-        },
-        {
-          "date": "2025-06-18",
-          "amount": 0.225
-        }
-      ],
-      "ticker_info": {
-        "trailingPE": 23.729095,
-        "forwardPE": 12.572141,
-        "marketCap": 47846191104,
-        "beta": 1.447,
-        "fiftyTwoWeekHigh": 219.82,
-        "fiftyTwoWeekLow": 138.53,
-        "pctFromHigh": -35.45,
-        "shortRatio": 3.33,
-        "dividendYield": 0.64
-      },
+      "earnings": [],
+      "dividends": [],
+      "ticker_info": {},
       "fh_fundamentals": {
         "52WeekHigh": 219.82,
         "52WeekLow": 138.53,
         "52WeekHighDate": "2025-09-22",
         "52WeekLowDate": "2026-02-05",
-        "beta": 1.4145237,
-        "peAnnual": 50.9381,
-        "peTTM": 50.9381,
+        "beta": 1.3992403,
+        "peAnnual": 50.6845,
+        "peTTM": 50.6845,
         "pbAnnual": 10.7245,
         "epsGrowthTTMYoy": -64.07,
         "epsGrowth3Y": null,
@@ -446,7 +185,100 @@
         "currentRatioAnnual": 0.777,
         "debtToEquityAnnual": 4.1048,
         "dividendYieldIndicated": 0.5711435341064971,
-        "marketCapitalization": 48085.594
+        "marketCapitalization": 47846.195
+      },
+      "analysts": {},
+      "insider": {},
+      "analysis": {
+        "sentiment": "neutro",
+        "news_comment": "Indisponível.",
+        "earnings_comment": "Indisponível.",
+        "watch_points": []
+      }
+    },
+    {
+      "ticker_t212": "0V6d_EQ",
+      "quantity": 8.814727,
+      "avg_price": 137.7683,
+      "current_price": 119.82,
+      "ppl": -158.21,
+      "fx_ppl": 0.0,
+      "ticker": "VRT",
+      "ticker_display": "VRT",
+      "display_name": "Vertiv Holdings",
+      "currency": "USD",
+      "change_pct": 0.0,
+      "invested": 1214.39,
+      "value_eur": 1056.18,
+      "gain_eur": -158.21,
+      "gain_pct": -13.03,
+      "allocation_pct": 15.0,
+      "news": [
+        {
+          "source": "Yahoo",
+          "headline": "CIBC Capital Markets CDRs Closes the Market",
+          "summary": "Toronto, Ontario--(Newsfile Corp. - May 14, 2026) - Elliot Scherer, Managing Director and Head, Wealth Solutions Group, CIBC Capital Markets, and his team, joined Graham MacKenzie, Managing Director, Exchange Traded Products, Toronto Stock Exchange (\"TSX\") to close the market to celebrate the recent",
+          "url": "https://finnhub.io/api/news?id=8f9dd28cd3c7d7a8671c136047f10337952f226d4a77ef87af9eb5e8730f40a6",
+          "datetime": 1778793480,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "headline": "The AI Boom Has a Power Problem. This Stock May Be the Biggest Winner.",
+          "summary": "AI needs more than chips now, it needs massive power and cooling, and Vertiv is keeping them running.",
+          "url": "https://finnhub.io/api/news?id=722999b0855b8e9942ecd23cf7c900ec1faa513b1b6771e83b118ed4eeb57e37",
+          "datetime": 1778779247,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "headline": "Vertiv (VRT) Names Frieda He as Chief Procurement Officer",
+          "summary": "Vertiv Holdings Co. (NYSE:VRT) is one of the unstoppable AI stocks to buy now. On May 5, Vertiv appointed Frieda He as Chief Procurement Officer to lead its global procurement organization. In this role, she will focus on strengthening supply chain resilience, optimizing costs, and driving supplier ",
+          "url": "https://finnhub.io/api/news?id=34b9c06a67c4aa082c11812fe58cb9159b3c831c1de654155416b23baaa28b52",
+          "datetime": 1778775279,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "headline": "Vinson & Elkins: Accelerating AI Infrastructure & Power Constraints Reshape the Market",
+          "summary": "By Karen Roman The growing tension between AI-driven data center development and power availability constraints is reshaping the market, according to a survey published by Vinson & Elkins. The survey also found 96% of infrastructure developers preview power constraints to pivot data center developme",
+          "url": "https://finnhub.io/api/news?id=d71406deb0ae926d2d9796c2521605618c2c2b9723fec88bed876e55b74300c7",
+          "datetime": 1778773499,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "headline": "Jim Cramer on Vertiv: “You Buy Half and Then You Wait for a Decline”",
+          "summary": "Vertiv Holdings Co (NYSE:VRT) was among the stocks on Jim Cramer’s radar as he highlighted the importance of lower interest rates in sustaining the broader market rally. During the lightning round, a caller inquired about the stock, and in response, Cramer said: Okay, here’s what I want you to do wi",
+          "url": "https://finnhub.io/api/news?id=4a422dafe26ae62030f5b8f836f708020598aa10c43ae73baa0d49330c06d896",
+          "datetime": 1778773220,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        }
+      ],
+      "earnings": [],
+      "dividends": [],
+      "ticker_info": {},
+      "fh_fundamentals": {
+        "52WeekHigh": 377.77,
+        "52WeekLow": 100.9,
+        "52WeekHighDate": "2026-05-13",
+        "52WeekLowDate": "2025-05-13",
+        "beta": 2.121352,
+        "peAnnual": 108.4283,
+        "peTTM": 92.7318,
+        "pbAnnual": 15.7163,
+        "epsGrowthTTMYoy": 130.99,
+        "epsGrowth3Y": 156.36,
+        "revenueGrowthTTMYoy": 28.95,
+        "revenueGrowth3Y": 21.59,
+        "grossMarginTTM": 37.15,
+        "netMarginTTM": null,
+        "roeTTM": 42.059999999999995,
+        "roaRfy": 10.91,
+        "currentRatioAnnual": 1.5474,
+        "debtToEquityAnnual": 0.7391,
+        "dividendYieldIndicated": 0.0696534046584197,
+        "marketCapitalization": 144513.28
       },
       "analysts": {},
       "insider": {},
@@ -461,8 +293,8 @@
       "ticker_t212": "AMZd_EQ",
       "quantity": 1.803283,
       "avg_price": 230.5462,
-      "current_price": 229.3,
-      "ppl": -2.25,
+      "current_price": 225.89,
+      "ppl": -8.4,
       "fx_ppl": 0.0,
       "ticker": "AMZd",
       "ticker_display": "AMZd",
@@ -470,47 +302,20 @@
       "currency": "EUR",
       "change_pct": 0.0,
       "invested": 415.74,
-      "value_eur": 413.49,
-      "gain_eur": -2.25,
-      "gain_pct": -0.54,
-      "allocation_pct": 4.43,
+      "value_eur": 407.34,
+      "gain_eur": -8.4,
+      "gain_pct": -2.02,
+      "allocation_pct": 5.78,
       "news": [],
       "earnings": [],
-      "dividends": [
-        {
-          "date": "2026-03-24",
-          "amount": 0.054
-        },
-        {
-          "date": "2025-12-23",
-          "amount": 0.077
-        },
-        {
-          "date": "2025-09-23",
-          "amount": 0.115
-        },
-        {
-          "date": "2025-06-24",
-          "amount": 0.068
-        }
-      ],
-      "ticker_info": {
-        "trailingPE": null,
-        "forwardPE": null,
-        "marketCap": null,
-        "beta": null,
-        "fiftyTwoWeekHigh": 12.13,
-        "fiftyTwoWeekLow": 8.195,
-        "pctFromHigh": -29.51,
-        "shortRatio": null,
-        "dividendYield": 3.64
-      },
+      "dividends": [],
+      "ticker_info": {},
       "fh_fundamentals": {
         "52WeekHigh": 12.13,
         "52WeekLow": 8.195,
         "52WeekHighDate": "2025-05-23",
         "52WeekLowDate": "2026-05-05",
-        "beta": -1.210512,
+        "beta": -1.2002423,
         "peAnnual": null,
         "peTTM": null,
         "pbAnnual": null,
@@ -540,8 +345,8 @@
       "ticker_t212": "M4Id_EQ",
       "quantity": 0.947418,
       "avg_price": 422.2,
-      "current_price": 421.2,
-      "ppl": -0.95,
+      "current_price": 421.6,
+      "ppl": -0.57,
       "fx_ppl": 0.0,
       "ticker": "M4Id",
       "ticker_display": "M4Id",
@@ -549,10 +354,10 @@
       "currency": "EUR",
       "change_pct": 0.0,
       "invested": 400.0,
-      "value_eur": 399.05,
-      "gain_eur": -0.95,
-      "gain_pct": -0.24,
-      "allocation_pct": 4.27,
+      "value_eur": 399.43,
+      "gain_eur": -0.57,
+      "gain_pct": -0.14,
+      "allocation_pct": 5.67,
       "news": [],
       "earnings": [],
       "dividends": [],
@@ -592,33 +397,23 @@
       "ticker_t212": "SVFC_US_EQ",
       "quantity": 2.293839,
       "avg_price": 52.2007,
-      "current_price": 50.0,
-      "ppl": -3.45,
-      "fx_ppl": 0.88,
+      "current_price": 49.99,
+      "ppl": -3.26,
+      "fx_ppl": 1.1,
       "ticker": "SVFC",
       "ticker_display": "SVFC",
       "display_name": "Symbotic",
       "currency": "USD",
       "change_pct": 0.0,
       "invested": 119.74,
-      "value_eur": 114.69,
-      "gain_eur": -3.45,
-      "gain_pct": -2.88,
-      "allocation_pct": 1.23,
+      "value_eur": 114.67,
+      "gain_eur": -3.26,
+      "gain_pct": -2.72,
+      "allocation_pct": 1.63,
       "news": [],
       "earnings": [],
       "dividends": [],
-      "ticker_info": {
-        "trailingPE": null,
-        "forwardPE": null,
-        "marketCap": null,
-        "beta": null,
-        "fiftyTwoWeekHigh": null,
-        "fiftyTwoWeekLow": null,
-        "pctFromHigh": null,
-        "shortRatio": null,
-        "dividendYield": null
-      },
+      "ticker_info": {},
       "fh_fundamentals": {
         "52WeekHigh": 10.19,
         "52WeekLow": 9.01,
@@ -654,20 +449,44 @@
       "ticker_t212": "ASMLa_EQ",
       "quantity": 0.008498,
       "avg_price": 1242.6015,
-      "current_price": 1367.0,
-      "ppl": 1.06,
+      "current_price": 1309.4,
+      "ppl": 0.57,
       "fx_ppl": 0.0,
       "ticker": "ASML.AS",
       "ticker_display": "ASML",
       "display_name": "ASML Holding",
       "currency": "EUR",
-      "change_pct": 3.01,
+      "change_pct": 0.0,
       "invested": 10.56,
-      "value_eur": 11.62,
-      "gain_eur": 1.06,
-      "gain_pct": 10.04,
-      "allocation_pct": 0.12,
+      "value_eur": 11.13,
+      "gain_eur": 0.57,
+      "gain_pct": 5.4,
+      "allocation_pct": 0.16,
       "news": [
+        {
+          "source": "Yahoo",
+          "headline": "Global chip stocks dragged lower by KOSPI selloff, stalled US-Iran talks",
+          "summary": "Investing.com -- Global semiconductor stocks fell Friday, dragged lower by a sharp selloff in South Korean equities and mounting geopolitical uncertainty as U.S.-Iran talks showed no signs of progress.",
+          "url": "https://finnhub.io/api/news?id=661b797b26b312f6c77619a4a69b6653563205407f1f16970a982c6c7085744b",
+          "datetime": 1778836246,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "headline": "Chip Stocks Broadly Rising",
+          "summary": "A basket of major chip stocks were all higher for the day on bets earnings momentum will keep tech companies flying high. Shares of Nvidia, the poster child of AI enthusiasm, rose 4.4%. Broadcom, Samsung Electronics, Taiwan Semiconductor, ASML, Texas Instruments, and AMD shares were all up, too.",
+          "url": "https://finnhub.io/api/news?id=084c5e6de0356f0e22978180180afec7811be31884fe628a772c0691563e3d3b",
+          "datetime": 1778790899,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "headline": "Xi Warns Of Taiwan Conflict. These Stocks Could Get Crushed.",
+          "summary": "Taiwan Semiconductor Manufacturing sits at the center of the AI boom, linking companies worth roughly $30 trillion in market value to the island’s chip supply chain.",
+          "url": "https://finnhub.io/api/news?id=3afb678b33e7cbfa85e151cf73fb0f4d66bd953fe6f90d31c47e2f6b6c0f0b48",
+          "datetime": 1778787660,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
         {
           "source": "Yahoo",
           "headline": "International Stocks Keep Crushing the S&P. This Cheap ETF Is How You Get In",
@@ -683,91 +502,11 @@
           "url": "https://finnhub.io/api/news?id=3b0272e06acc1c40dd70e9c47439940abc25c1ff7af6971cf68f822e781a5f1a",
           "datetime": 1778774299,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Yahoo",
-          "headline": "Is KLA Becoming the Biggest Beneficiary of AI Semiconductor Spending?",
-          "summary": "KLAC is riding the AI chip boom as soaring demand for advanced packaging and process-control tools boosts growth and backlog visibility.",
-          "url": "https://finnhub.io/api/news?id=b728ff62469cff4cb2dd59ba86c68251b494f46dca846f6de662e2271c1f4afb",
-          "datetime": 1778772720,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Yahoo",
-          "headline": "Just How Important Is Taiwan? About $30 Trillion Important.",
-          "summary": "Taiwan Semiconductor Manufacturing sits at the center of the AI boom, linking companies worth roughly $30 trillion in market value to the island’s chip supply chain.",
-          "url": "https://finnhub.io/api/news?id=bffbb09b64b00d249ebe32ed5f9a6db427adc7e9edb7678e51474536d7d64092",
-          "datetime": 1778771160,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Yahoo",
-          "headline": "Are retail investors leaning away from software amid tech rally?",
-          "summary": "While record-breaking rallies in tech push the US market (^DJI, ^IXIC, ^GSPC) to new heights in 2026, are retail investors still as engaged with these market dynamics that come with these massive valuations? Yahoo Finance Senior Reporters Ines Ferré and Brooke DiPalma comment on the latest trends in",
-          "url": "https://finnhub.io/api/news?id=9834e71e41e17bea9ec01bfe42b1ee8a62b050a6d9baf886f6c1a3764399c3a6",
-          "datetime": 1778768160,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         }
       ],
-      "earnings": [
-        {
-          "period": "",
-          "estimate": 5.251,
-          "actual": 5.9,
-          "surprise": 0.12,
-          "beat": true
-        },
-        {
-          "period": "",
-          "estimate": 5.375,
-          "actual": 5.49,
-          "surprise": 0.02,
-          "beat": true
-        },
-        {
-          "period": "",
-          "estimate": 7.545,
-          "actual": 7.34,
-          "surprise": -0.03,
-          "beat": false
-        },
-        {
-          "period": "",
-          "estimate": 6.621,
-          "actual": 7.15,
-          "surprise": 0.08,
-          "beat": true
-        }
-      ],
-      "dividends": [
-        {
-          "date": "2026-04-24",
-          "amount": 2.7
-        },
-        {
-          "date": "2026-02-09",
-          "amount": 1.6
-        },
-        {
-          "date": "2025-10-28",
-          "amount": 1.6
-        },
-        {
-          "date": "2025-07-28",
-          "amount": 1.6
-        }
-      ],
-      "ticker_info": {
-        "trailingPE": 52.820713,
-        "forwardPE": 33.42296,
-        "marketCap": 526865956864,
-        "beta": 1.373,
-        "fiftyTwoWeekHigh": 1371.6,
-        "fiftyTwoWeekLow": 587.8,
-        "pctFromHigh": -0.34,
-        "shortRatio": null,
-        "dividendYield": 0.81
-      },
+      "earnings": [],
+      "dividends": [],
+      "ticker_info": {},
       "fh_fundamentals": {
         "52WeekHigh": 1344.4,
         "52WeekLow": 587.8,
@@ -787,7 +526,7 @@
         "roaRfy": 18.38,
         "currentRatioAnnual": 1.2374,
         "debtToEquityAnnual": 0.1919,
-        "dividendYieldIndicated": 0.5651846269781462,
+        "dividendYieldIndicated": 0.548646671543526,
         "marketCapitalization": 506893.84
       },
       "analysts": {},
@@ -824,6 +563,10 @@
     {
       "date": "2026-05-14",
       "value": 9342.97
+    },
+    {
+      "date": "2026-05-15",
+      "value": 7042.1
     }
   ]
 }
