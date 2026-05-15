@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import json
 import subprocess
+import time
 from datetime import datetime, timezone
 
 from .data_layer import get_full_portfolio_state, enrich_with_technicals, read_beta_trades
@@ -18,6 +19,44 @@ from .watchlist_manager import build_watchlist
 
 _BEAR_REGIMES = {"bear_correction", "bear_capitulation"}
 _LATERAL_SIZE_FACTOR = 0.6   # redução de posição sugerida em bull_lateral (secção 4, FASE-1.md)
+
+# Backoff schedule: consecutive_failure_count -> wait_minutes before retry.
+# Failures 4+ skip retries and fall back to the normal 15-min cycle.
+_RETRY_WAITS_MIN: dict[int, int] = {1: 2, 2: 5, 3: 10}
+
+_api_fail_count: int = 0  # consecutive T212 API failures across cycles
+
+
+# ---------------------------------------------------------------------------
+# T212 API fetch with exponential backoff
+# ---------------------------------------------------------------------------
+
+def _fetch_portfolio_with_retry() -> dict | None:
+    """Calls get_full_portfolio_state() and retries with backoff on failure.
+
+    Consecutive-failure counter persists across cycles so that after 4+
+    failures the function aborts immediately (no extra waits) and the normal
+    15-min cycle handles the next attempt.
+    """
+    global _api_fail_count
+
+    while True:
+        state = get_full_portfolio_state()
+        if state is not None:
+            _api_fail_count = 0
+            return state
+
+        _api_fail_count += 1
+        wait_min = _RETRY_WAITS_MIN.get(_api_fail_count)
+
+        if wait_min is None:  # 4th+ consecutive failure — give up, cold run
+            log_decision("phase0_abort", "api_unavailable",
+                         {"consecutive_failures": _api_fail_count})
+            return None
+
+        log_decision("phase0_retry", "api_unavailable",
+                     {"attempt": _api_fail_count, "wait_minutes": wait_min})
+        time.sleep(wait_min * 60)
 
 
 # ---------------------------------------------------------------------------
@@ -32,8 +71,8 @@ def run() -> dict:
     regime    = _get_regime_safe()
     watchlist = _get_watchlist_safe()
 
-    # Portfolio T212 é opcional: bot corre "a frio" se a API estiver indisponível
-    state = get_full_portfolio_state()
+    # Portfolio T212 — retries with backoff before declaring cold run
+    state = _fetch_portfolio_with_retry()
     positions: list[dict] = []
     cash: dict = {}
 
@@ -69,6 +108,7 @@ def run() -> dict:
         "regime":    regime,
         "n_signals": len(signals),
         "risk_ok":   risk_status.get("ok", True),
+        "positions": _build_positions_context(positions, signals),
     })
     _print_report(report)
     _git_sync(report["timestamp"])
@@ -175,6 +215,28 @@ def _analyse_all(positions: list[dict], regime: str) -> list[dict]:
             },
         })
     return results
+
+
+def _build_positions_context(positions: list[dict], signals: list[dict]) -> list[dict]:
+    """Builds the per-position technical context array for log_decision."""
+    signal_by_ticker = {s["ticker"]: s.get("action", "hold") for s in signals}
+    result = []
+    for pos in positions:
+        ticker = pos.get("ticker", "?")
+        t = pos.get("technicals") or {}
+        md = pos.get("market_data") or {}
+        price = md.get("last_price") or pos.get("currentPrice") or pos.get("averagePrice")
+        result.append({
+            "ticker":               ticker,
+            "rsi_14":               t.get("rsi_14"),
+            "ema50_above_ema200":   t.get("ema50_above_ema200"),
+            "volume_ratio_vs_avg":  t.get("volume_ratio_vs_avg"),
+            "signal":               signal_by_ticker.get(ticker, "hold"),
+            "price":                round(price, 4) if price is not None else None,
+            "ema_50":               t.get("ema50"),
+            "ema_200":              t.get("ema200"),
+        })
+    return result
 
 
 def _risk_snapshot(positions: list[dict], cash: dict) -> dict:
