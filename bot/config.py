@@ -5,11 +5,11 @@ from dotenv import load_dotenv
 BASE_DIR = Path(__file__).parent.parent
 load_dotenv(BASE_DIR / ".env", override=True)
 
-# T212_KEY_ID não é usada na autenticação — a API da Trading 212 usa apenas
-# o bearer token (T212_API_KEY_DEMO) diretamente no header Authorization.
-# Pode ser removida do .env sem impacto.
+# T212_KEY_ID não é usada na autenticação — a API usa apenas o bearer token.
 T212_KEY_ID = os.getenv("T212_KEY_ID", "")
-T212_API_KEY_DEMO = os.getenv("T212_API_KEY_DEMO", "")
+# T212_DEMO_KEY é o nome canónico; T212_API_KEY_DEMO mantido como fallback.
+T212_DEMO_KEY = os.getenv("T212_DEMO_KEY") or os.getenv("T212_API_KEY_DEMO", "")
+T212_API_KEY_DEMO = T212_DEMO_KEY  # alias de retrocompatibilidade
 T212_BASE_URL_DEMO = "https://demo.trading212.com/api/v0"
 
 # Demo first, always. Never flip to True without extensive testing in demo.
@@ -38,6 +38,12 @@ DATA_ALPHA_DIR = BASE_DIR / "data" / "alpha"
 LOGS_DIR = BASE_DIR / "logs"
 LOGS_TRADES_DIR = LOGS_DIR / "trades"
 LOGS_ERRORS_DIR = LOGS_DIR / "errors"
+
+# Ficheiros na raiz — lidos pelo site via fetch
+DIARIO_TRADES_PATH = BASE_DIR / "diario_trades.json"
+CONFIG_RISCO_PATH = BASE_DIR / "config_risco.json"
+NEWS_PATH = BASE_DIR / "news.json"
+BONNIE_LOG_PATH = LOGS_DIR / "bonnie_log.json"
 
 WATCHLIST_CONFIG = {
     "max_size": 25,

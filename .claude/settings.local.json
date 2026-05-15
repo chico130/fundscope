@@ -28,7 +28,8 @@
       "Bash(python -c ' *)",
       "Bash(python -c \"import ast; ast.parse\\(open\\('bot/phase0.py'\\).read\\(\\)\\); print\\('OK — sem erros de sintaxe'\\)\")",
       "Bash(python bot/main.py)",
-      "Bash(python -m bot.main)"
+      "Bash(python -m bot.main)",
+      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\arauj\\\\OneDrive\\\\Ambiente de Trabalho\\\\Fundscope\\\\bot\" | Where-Object { $_.Extension -eq \".py\" } | Select-Object Name)"
     ]
   }
 }

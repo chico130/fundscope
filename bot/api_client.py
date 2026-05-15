@@ -14,7 +14,7 @@ import requests
 import requests.exceptions as req_exc
 
 from .config import (
-    T212_API_KEY_DEMO,
+    T212_DEMO_KEY,
     T212_BASE_URL_DEMO,
     LIVE_TRADING,
     REQUEST_DELAY_SECONDS,
@@ -59,7 +59,7 @@ def _t212_to_yfinance(ticker: str) -> str:
 
 _session = requests.Session()
 _session.headers.update({
-    "Authorization": T212_API_KEY_DEMO,
+    "Authorization": T212_DEMO_KEY,
     "Content-Type": "application/json",
 })
 
