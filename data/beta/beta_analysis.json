@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-05-15T11:07:20.261541+00:00",
+  "timestamp": "2026-05-15T11:40:14.574765+00:00",
   "mode": "phase0_readonly",
   "strategy_version": "v0.1.0",
   "note": "Fase 0 — apenas leitura e sugestão. Nenhuma ordem foi submetida.",
@@ -52,27 +52,12 @@
       "score": 0.5745
     }
   ],
-  "n_positions": 1,
+  "n_positions": 0,
   "open_trades": 4,
   "risk_status": {
     "ok": true,
-    "total_equity_eur": 4900.0,
+    "total_equity_eur": 0,
     "warnings": []
   },
-  "signals": [
-    {
-      "ticker": "GOOGL_US_EQ",
-      "action": "hold",
-      "size_factor": 0.6,
-      "signals": [
-        "RSI-14 elevado (74.2) — monitorizar pressão de venda",
-        "Tendência ascendente: EMA-50 > EMA-200"
-      ],
-      "technicals": {
-        "rsi_14": 74.16,
-        "ema50_above_ema200": true,
-        "volume_ratio_vs_avg": 0.75
-      }
-    }
-  ]
+  "signals": []
 }

@@ -45,5 +45,71 @@
         }
       ]
     }
+  },
+  {
+    "datetime": "2026-05-15T11:22:23.003198+00:00",
+    "type": "decision",
+    "reason": "phase0_start",
+    "action": "read_portfolio"
+  },
+  {
+    "datetime": "2026-05-15T11:22:36.068800+00:00",
+    "type": "decision",
+    "reason": "phase0_retry",
+    "action": "api_unavailable",
+    "context": {
+      "attempt": 1,
+      "wait_minutes": 2
+    }
+  },
+  {
+    "datetime": "2026-05-15T11:24:48.902144+00:00",
+    "type": "decision",
+    "reason": "phase0_retry",
+    "action": "api_unavailable",
+    "context": {
+      "attempt": 2,
+      "wait_minutes": 5
+    }
+  },
+  {
+    "datetime": "2026-05-15T11:30:01.730537+00:00",
+    "type": "decision",
+    "reason": "phase0_retry",
+    "action": "api_unavailable",
+    "context": {
+      "attempt": 3,
+      "wait_minutes": 10
+    }
+  },
+  {
+    "datetime": "2026-05-15T11:40:14.561790+00:00",
+    "type": "decision",
+    "reason": "phase0_abort",
+    "action": "api_unavailable",
+    "context": {
+      "consecutive_failures": 4
+    }
+  },
+  {
+    "datetime": "2026-05-15T11:40:14.568370+00:00",
+    "type": "decision",
+    "reason": "phase0_t212_unavailable",
+    "action": "cold_run",
+    "context": {
+      "reason": "T212 API indisponível — análise sem portfolio"
+    }
+  },
+  {
+    "datetime": "2026-05-15T11:40:14.575383+00:00",
+    "type": "decision",
+    "reason": "phase0_complete",
+    "action": "report_generated",
+    "context": {
+      "regime": "bull_lateral",
+      "n_signals": 0,
+      "risk_ok": true,
+      "positions": []
+    }
   }
 ]
