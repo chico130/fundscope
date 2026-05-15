@@ -1870,5 +1870,41 @@
       "risk_ok": true,
       "positions": []
     }
+  },
+  {
+    "datetime": "2026-05-15T21:51:53.070017+00:00",
+    "type": "decision",
+    "reason": "phase0_start",
+    "action": "read_portfolio"
+  },
+  {
+    "datetime": "2026-05-15T21:52:15.306669+00:00",
+    "type": "decision",
+    "reason": "phase0_abort",
+    "action": "api_unavailable",
+    "context": {
+      "consecutive_failures": 9
+    }
+  },
+  {
+    "datetime": "2026-05-15T21:52:15.315146+00:00",
+    "type": "decision",
+    "reason": "phase0_t212_unavailable",
+    "action": "cold_run",
+    "context": {
+      "reason": "T212 API indisponível — análise sem portfolio"
+    }
+  },
+  {
+    "datetime": "2026-05-15T21:52:15.324775+00:00",
+    "type": "decision",
+    "reason": "phase0_complete",
+    "action": "report_generated",
+    "context": {
+      "regime": "bull_lateral",
+      "n_signals": 0,
+      "risk_ok": true,
+      "positions": []
+    }
   }
 ]
