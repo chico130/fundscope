@@ -1,206 +1,380 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Portfólio — FundScope</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300..700&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Inter', system-ui, sans-serif; }
-    .serif { font-family: 'Instrument Serif', Georgia, serif; }
-    .score-bar-fill { transition: width .4s ease; }
-    .trade-card { transition: border-color 140ms ease; }
-    .trade-card:hover { border-color: rgb(71 85 105); }
+    /* ── Design tokens (identical to news.html / markets.html) ── */
+    :root,[data-theme="light"]{
+      --color-bg:#f7f6f2;--color-surface:#f9f8f5;--color-surface-2:#fbfbf9;--color-surface-offset:#f0ede8;
+      --color-border:#d4d1ca;--color-divider:#dcd9d5;--color-text:#28251d;--color-text-muted:#7a7974;
+      --color-text-faint:#bab9b4;--color-primary:#01696f;--color-primary-hover:#0c4e54;
+      --color-primary-highlight:#cedcd8;--color-success:#437a22;--color-success-bg:#eaf3e2;
+      --color-notification:#a13544;--color-notification-bg:#f8e8ea;
+      --color-gold:#c47d1a;--color-gold-bg:#fdf3e0;
+      --radius-sm:.375rem;--radius-md:.5rem;--radius-lg:.75rem;--radius-xl:1rem;--radius-2xl:1.5rem;--radius-full:9999px;
+      --shadow-sm:0 1px 2px rgba(40,37,29,.06);--shadow-md:0 4px 12px rgba(40,37,29,.08);--shadow-lg:0 12px 32px rgba(40,37,29,.12);
+      --transition:180ms cubic-bezier(.16,1,.3,1);
+      --font-display:'Instrument Serif',Georgia,serif;--font-body:'Inter','Helvetica Neue',sans-serif;
+      --text-xs:clamp(.75rem,.7rem + .25vw,.875rem);--text-sm:clamp(.875rem,.8rem + .35vw,1rem);
+      --text-base:clamp(1rem,.95rem + .25vw,1.125rem);--text-lg:clamp(1.125rem,1rem + .75vw,1.5rem);
+      --text-xl:clamp(1.5rem,1.2rem + 1.25vw,2.25rem);--text-2xl:clamp(2rem,1.2rem + 2.5vw,3.5rem);
+      --space-1:.25rem;--space-2:.5rem;--space-3:.75rem;--space-4:1rem;--space-5:1.25rem;
+      --space-6:1.5rem;--space-8:2rem;--space-10:2.5rem;--space-12:3rem;--space-16:4rem;
+    }
+    [data-theme="dark"]{
+      --color-bg:#141312;--color-surface:#1a1917;--color-surface-2:#201f1d;--color-surface-offset:#252421;
+      --color-border:#393836;--color-divider:#2e2d2b;--color-text:#cdccca;--color-text-muted:#797876;
+      --color-text-faint:#5a5957;--color-primary:#4f98a3;--color-primary-hover:#63b2be;
+      --color-primary-highlight:#1f3335;--color-success:#6daa45;--color-success-bg:#1a2e10;
+      --color-notification:#dd6974;--color-notification-bg:#2e1015;
+      --color-gold:#e8af34;--color-gold-bg:#2d2208;
+      --shadow-sm:0 1px 2px rgba(0,0,0,.25);--shadow-md:0 4px 12px rgba(0,0,0,.35);--shadow-lg:0 12px 32px rgba(0,0,0,.45);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth;}
+    body{min-height:100dvh;font-family:var(--font-body);font-size:var(--text-base);color:var(--color-text);background:var(--color-bg);transition:background var(--transition),color var(--transition);display:flex;flex-direction:column;}
+    button{cursor:pointer;background:none;border:none;font:inherit;color:inherit;}
+    a{color:inherit;text-decoration:none;}
+    :focus-visible{outline:2px solid var(--color-primary);outline-offset:3px;border-radius:var(--radius-sm);}
+
+    /* ── Header (idêntico ao news.html) ── */
+    .header{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:var(--space-4) var(--space-6);background:color-mix(in oklch,var(--color-bg) 88%,transparent);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--color-divider);}
+    .logo{display:flex;align-items:center;gap:var(--space-2);font-family:var(--font-display);font-size:var(--text-lg);color:var(--color-text);transition:color var(--transition);}
+    .logo:hover{color:var(--color-primary);}
+    .logo-svg{width:26px;height:26px;}
+    .header-actions{display:flex;align-items:center;gap:var(--space-1);}
+    .nav-link{font-size:var(--text-sm);color:var(--color-text-muted);padding:var(--space-2) var(--space-3);border-radius:var(--radius-md);transition:color var(--transition),background var(--transition);font-weight:500;}
+    .nav-link:hover{color:var(--color-primary);background:var(--color-primary-highlight);}
+    .nav-link.active{color:var(--color-primary);background:var(--color-primary-highlight);font-weight:600;}
+    .btn-icon{width:36px;height:36px;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;color:var(--color-text-muted);transition:color var(--transition),background var(--transition);}
+    .btn-icon:hover{color:var(--color-text);background:var(--color-surface-offset);}
+
+    /* ── Login overlay ── */
+    .login-overlay{position:fixed;inset:0;z-index:500;display:flex;align-items:center;justify-content:center;background:var(--color-bg);padding:var(--space-6);}
+    .login-card{width:100%;max-width:380px;background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-2xl);padding:var(--space-10) var(--space-8);box-shadow:var(--shadow-lg);text-align:center;}
+    .login-logo{display:flex;align-items:center;justify-content:center;gap:var(--space-2);font-family:var(--font-display);font-size:var(--text-lg);color:var(--color-primary);margin-bottom:var(--space-6);}
+    .login-title{font-family:var(--font-display);font-size:var(--text-xl);margin-bottom:var(--space-2);}
+    .login-sub{font-size:var(--text-sm);color:var(--color-text-muted);margin-bottom:var(--space-8);}
+    .login-field{text-align:left;margin-bottom:var(--space-4);}
+    .login-field label{display:block;font-size:var(--text-xs);font-weight:600;color:var(--color-text-muted);margin-bottom:var(--space-2);letter-spacing:.06em;text-transform:uppercase;}
+    .login-field input{width:100%;background:var(--color-bg);border:1.5px solid var(--color-border);border-radius:var(--radius-lg);padding:var(--space-3) var(--space-4);font-size:var(--text-sm);color:var(--color-text);font-family:var(--font-body);outline:none;transition:border-color var(--transition),box-shadow var(--transition);}
+    .login-field input:focus{border-color:var(--color-primary);box-shadow:0 0 0 3px var(--color-primary-highlight);}
+    .login-remember{display:flex;align-items:center;gap:var(--space-2);font-size:var(--text-sm);color:var(--color-text-muted);margin-bottom:var(--space-6);cursor:pointer;text-align:left;}
+    .login-remember input{width:16px;height:16px;accent-color:var(--color-primary);cursor:pointer;flex-shrink:0;}
+    .login-btn{width:100%;padding:var(--space-3) var(--space-6);background:var(--color-primary);color:#fff;border-radius:var(--radius-full);font-size:var(--text-sm);font-weight:600;font-family:var(--font-body);transition:background var(--transition),transform var(--transition);}
+    .login-btn:hover{background:var(--color-primary-hover);transform:translateY(-1px);}
+    .login-error{font-size:var(--text-xs);color:var(--color-notification);margin-top:var(--space-3);min-height:1.2em;}
+
+    /* ── Page layout ── */
+    .page{max-width:1200px;margin:0 auto;padding:var(--space-10) var(--space-6) var(--space-16);width:100%;}
+    .page-header{margin-bottom:var(--space-8);}
+    .page-eyebrow{font-size:var(--text-xs);color:var(--color-primary);letter-spacing:.08em;text-transform:uppercase;font-weight:500;margin-bottom:var(--space-2);}
+    .page-title{font-family:var(--font-display);font-size:var(--text-xl);font-weight:400;letter-spacing:-.02em;line-height:1.15;margin-bottom:var(--space-3);}
+    .page-meta{display:flex;align-items:center;gap:var(--space-4);flex-wrap:wrap;}
+    .live-badge{display:inline-flex;align-items:center;gap:5px;font-size:var(--text-xs);color:var(--color-success);font-weight:500;}
+    .live-dot{width:7px;height:7px;border-radius:50%;background:var(--color-success);animation:pulse 2s ease-in-out infinite;}
+    .offline-badge{display:inline-flex;align-items:center;gap:5px;font-size:var(--text-xs);color:var(--color-text-faint);font-weight:500;}
+    @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.85)}}
+    .updated-label{font-size:var(--text-xs);color:var(--color-text-faint);}
+
+    /* ── Tab pills (igual aos filtros do news.html) ── */
+    .tabs{display:flex;gap:var(--space-2);flex-wrap:wrap;margin-bottom:var(--space-8);}
+    .tab-btn{font-size:var(--text-xs);padding:var(--space-2) var(--space-5);border-radius:var(--radius-full);border:1.5px solid var(--color-border);background:var(--color-surface);color:var(--color-text-muted);font-weight:500;font-family:var(--font-body);transition:all var(--transition);white-space:nowrap;cursor:pointer;}
+    .tab-btn:hover{border-color:var(--color-primary);color:var(--color-primary);background:var(--color-primary-highlight);}
+    .tab-btn.active{border-color:var(--color-primary);color:var(--color-primary);background:var(--color-primary-highlight);font-weight:600;}
+
+    /* ── Cards ── */
+    .card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-5);box-shadow:var(--shadow-sm);}
+    .card-label{font-size:var(--text-xs);font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--color-text-faint);margin-bottom:var(--space-4);}
+
+    /* ── KPI grid ── */
+    .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-4);margin-bottom:var(--space-5);}
+    .kpi-val{font-family:var(--font-display);font-size:var(--text-lg);font-weight:400;letter-spacing:-.01em;margin-bottom:2px;}
+    .kpi-sub{font-size:var(--text-xs);color:var(--color-text-muted);font-variant-numeric:tabular-nums;}
+    .up{color:var(--color-success);}
+    .down{color:var(--color-notification);}
+
+    /* ── Two-col layout ── */
+    .two-col{display:grid;grid-template-columns:200px 1fr;gap:var(--space-5);margin-bottom:var(--space-5);}
+
+    /* ── Regime chip ── */
+    .regime-pill{display:inline-flex;align-items:center;padding:3px var(--space-3);border-radius:var(--radius-full);font-size:var(--text-xs);font-weight:600;}
+    .regime-pill.bull_trending{background:var(--color-success-bg);color:var(--color-success);}
+    .regime-pill.bull_lateral{background:var(--color-gold-bg);color:var(--color-gold);}
+    .regime-pill.bear_correction{background:var(--color-notification-bg);color:var(--color-notification);}
+    .regime-pill.bear_capitulation{background:var(--color-notification-bg);color:var(--color-notification);}
+    .regime-pill.unknown{background:var(--color-surface-offset);color:var(--color-text-muted);}
+
+    /* ── Watchlist rows ── */
+    .wl-head,.wl-row{display:grid;grid-template-columns:28px 1fr 140px 70px 70px;gap:var(--space-3);align-items:center;padding:var(--space-2) var(--space-3);border-radius:var(--radius-md);}
+    .wl-head{font-size:10px;color:var(--color-text-faint);text-transform:uppercase;letter-spacing:.05em;font-weight:600;margin-bottom:var(--space-1);}
+    .wl-row{transition:background var(--transition);}
+    .wl-row:hover{background:var(--color-surface-offset);}
+    .wl-rank{font-size:var(--text-xs);color:var(--color-text-faint);font-weight:700;}
+    .wl-ticker{font-size:var(--text-sm);font-weight:700;}
+    .wl-sector{font-size:10px;color:var(--color-text-muted);margin-top:1px;}
+    .wl-score-wrap{display:flex;align-items:center;gap:var(--space-2);}
+    .wl-bar-bg{flex:1;height:4px;background:var(--color-surface-offset);border-radius:2px;overflow:hidden;}
+    .wl-bar-fill{height:100%;border-radius:2px;transition:width .4s ease;}
+    .wl-score-num{font-size:10px;color:var(--color-text-muted);min-width:32px;text-align:right;font-variant-numeric:tabular-nums;}
+    .wl-mom{font-size:var(--text-xs);font-weight:600;text-align:right;font-variant-numeric:tabular-nums;}
+
+    /* ── Trades journal ── */
+    .trades-list{display:flex;flex-direction:column;gap:var(--space-3);}
+    .trade-card{background:var(--color-surface-2);border:1px solid var(--color-divider);border-radius:var(--radius-lg);padding:var(--space-4);transition:border-color var(--transition),box-shadow var(--transition);}
+    .trade-card:hover{border-color:var(--color-primary);box-shadow:var(--shadow-sm);}
+    .trade-head{display:flex;align-items:center;gap:var(--space-2);flex-wrap:wrap;margin-bottom:var(--space-2);}
+    .trade-ticker{font-size:var(--text-sm);font-weight:700;}
+    .trade-side{font-size:10px;font-weight:700;padding:2px 8px;border-radius:var(--radius-full);text-transform:uppercase;letter-spacing:.04em;}
+    .trade-side.buy{background:var(--color-success-bg);color:var(--color-success);}
+    .trade-side.sell{background:var(--color-notification-bg);color:var(--color-notification);}
+    .trade-time{font-size:var(--text-xs);color:var(--color-text-faint);margin-left:auto;}
+    .trade-reason{font-size:var(--text-sm);color:var(--color-text-muted);line-height:1.55;margin-bottom:var(--space-2);}
+    .trade-chips{display:flex;gap:var(--space-2);flex-wrap:wrap;margin-bottom:var(--space-2);}
+    .trade-chip{font-size:10px;padding:2px 8px;border-radius:var(--radius-full);background:var(--color-surface-offset);color:var(--color-text-muted);border:1px solid var(--color-border);}
+    .trade-result-row{display:flex;gap:var(--space-5);padding-top:var(--space-2);border-top:1px solid var(--color-divider);flex-wrap:wrap;}
+    .trade-result-col{display:flex;flex-direction:column;gap:2px;}
+    .trade-result-label{font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--color-text-faint);}
+    .trade-result-val{font-size:var(--text-sm);font-weight:700;font-variant-numeric:tabular-nums;}
+    .trade-postmortem{font-size:var(--text-xs);color:var(--color-text-muted);line-height:1.6;margin-top:var(--space-2);padding:var(--space-2) var(--space-3);background:var(--color-surface);border-radius:var(--radius-md);border-left:2px solid var(--color-primary);}
+
+    /* ── Bonnie locked ── */
+    .bonnie-locked{display:flex;flex-direction:column;align-items:center;gap:var(--space-6);text-align:center;padding:var(--space-12) var(--space-8);}
+    .bonnie-phase{display:inline-flex;align-items:center;gap:var(--space-2);padding:var(--space-2) var(--space-5);border-radius:var(--radius-full);background:var(--color-gold-bg);color:var(--color-gold);border:1px solid color-mix(in oklch,var(--color-gold) 25%,transparent);font-size:var(--text-xs);font-weight:700;letter-spacing:.07em;}
+    .bonnie-title{font-family:var(--font-display);font-size:var(--text-xl);}
+    .bonnie-sub{font-size:var(--text-sm);color:var(--color-text-muted);max-width:380px;line-height:1.65;}
+    .progress-wrap{width:100%;max-width:360px;}
+    .progress-labels{display:flex;justify-content:space-between;font-size:var(--text-xs);color:var(--color-text-muted);margin-bottom:var(--space-2);}
+    .progress-count{font-weight:700;color:var(--color-text);font-variant-numeric:tabular-nums;}
+    .progress-bg{height:6px;background:var(--color-surface-offset);border-radius:var(--radius-full);overflow:hidden;}
+    .progress-fill{height:100%;background:var(--color-gold);border-radius:var(--radius-full);transition:width .5s ease;}
+    .bonnie-btn-locked{padding:var(--space-3) var(--space-8);border-radius:var(--radius-full);border:1.5px solid var(--color-border);font-size:var(--text-sm);font-weight:500;color:var(--color-text-faint);cursor:not-allowed;opacity:.5;}
+
+    /* ── Position items (Bonnie) ── */
+    .pos-item{display:flex;align-items:center;justify-content:space-between;padding:var(--space-3) var(--space-4);border-radius:var(--radius-lg);background:var(--color-surface-2);border:1px solid var(--color-divider);margin-bottom:var(--space-2);transition:border-color var(--transition);}
+    .pos-item:last-child{margin-bottom:0;}
+    .pos-item:hover{border-color:var(--color-primary);}
+    .pos-ticker{font-size:var(--text-sm);font-weight:700;}
+    .pos-alloc{font-size:10px;color:var(--color-text-muted);margin-top:2px;}
+    .pos-val{font-size:var(--text-sm);font-weight:600;font-variant-numeric:tabular-nums;text-align:right;}
+    .pos-gain{font-size:var(--text-xs);font-weight:600;font-variant-numeric:tabular-nums;text-align:right;margin-top:2px;}
+
+    /* ── Empty states ── */
+    .state-box{text-align:center;padding:var(--space-12);color:var(--color-text-muted);}
+    .state-icon{font-size:2.5rem;margin-bottom:var(--space-4);}
+    .state-title{font-family:var(--font-display);font-size:var(--text-lg);color:var(--color-text);margin-bottom:var(--space-2);}
+
+    /* ── Footer ── */
+    .footer{padding:var(--space-6);text-align:center;font-size:var(--text-xs);color:var(--color-text-faint);border-top:1px solid var(--color-divider);margin-top:auto;}
+    .footer a{color:var(--color-text-muted);transition:color var(--transition);}
+    .footer a:hover{color:var(--color-primary);}
+
+    /* ── Logout button in nav ── */
+    #logoutBtn{display:none;}
+
+    /* ── Responsive ── */
+    @media(max-width:900px){.kpi-grid{grid-template-columns:repeat(2,1fr);}.two-col{grid-template-columns:1fr;}.wl-head,.wl-row{grid-template-columns:24px 1fr 100px 60px;}.wl-head .col-3m,.wl-row .col-3m{display:none;}}
+    @media(max-width:640px){.header{padding:var(--space-3) var(--space-4);}.header-actions .nav-link{display:none;}.kpi-grid{grid-template-columns:repeat(2,1fr);}.page{padding:var(--space-8) var(--space-4) var(--space-16);}}
   </style>
 </head>
-<body class="bg-slate-950 text-white antialiased min-h-screen flex flex-col">
+<body>
 
   <!-- ══ LOGIN OVERLAY ══ -->
-  <div id="loginOverlay" class="fixed inset-0 z-50 bg-slate-950 flex items-center justify-center px-4">
-    <div class="w-full max-w-sm bg-slate-900 border border-slate-800 rounded-2xl p-8">
-      <!-- Logo -->
-      <div class="flex items-center gap-2.5 justify-center mb-7">
-        <svg width="26" height="26" viewBox="0 0 28 28" fill="none">
-          <ellipse cx="14" cy="15" rx="9" ry="7.5" fill="#4f98a3" opacity="0.18"/>
-          <ellipse cx="14" cy="14.5" rx="8" ry="6.5" fill="#4f98a3"/>
-          <ellipse cx="14" cy="18.5" rx="3.5" ry="2.5" fill="#3a7a85"/>
-          <circle cx="12.8" cy="18.6" r="0.8" fill="#020617" opacity="0.7"/>
-          <circle cx="15.2" cy="18.6" r="0.8" fill="#020617" opacity="0.7"/>
-          <circle cx="10.8" cy="13" r="1.2" fill="#020617" opacity="0.9"/>
-          <circle cx="11.1" cy="12.8" r="0.5" fill="#e2e8f0"/>
-          <circle cx="17.2" cy="13" r="1.2" fill="#020617" opacity="0.9"/>
-          <circle cx="17.5" cy="12.8" r="0.5" fill="#e2e8f0"/>
-          <ellipse cx="7" cy="11" rx="2.2" ry="2.8" fill="#4f98a3"/>
-          <ellipse cx="21" cy="11" rx="2.2" ry="2.8" fill="#4f98a3"/>
-          <rect x="12" y="8.5" width="4" height="1.2" rx="0.6" fill="#020617" opacity="0.6"/>
-          <path d="M22.5 17 Q25 16 24.5 19 Q24 21 22 20" stroke="#3a7a85" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+  <div class="login-overlay" id="loginOverlay">
+    <div class="login-card">
+      <div class="login-logo">
+        <svg class="logo-svg" viewBox="0 0 28 28" fill="none">
+          <ellipse cx="14" cy="15" rx="9" ry="7.5" fill="var(--color-primary)" opacity="0.18"/>
+          <ellipse cx="14" cy="14.5" rx="8" ry="6.5" fill="var(--color-primary)"/>
+          <ellipse cx="14" cy="18.5" rx="3.5" ry="2.5" fill="var(--color-primary-hover)"/>
+          <circle cx="12.8" cy="18.6" r="0.8" fill="var(--color-bg)" opacity="0.7"/>
+          <circle cx="15.2" cy="18.6" r="0.8" fill="var(--color-bg)" opacity="0.7"/>
+          <circle cx="10.8" cy="13" r="1.2" fill="var(--color-bg)" opacity="0.9"/>
+          <circle cx="11.1" cy="12.8" r="0.5" fill="var(--color-text)"/>
+          <circle cx="17.2" cy="13" r="1.2" fill="var(--color-bg)" opacity="0.9"/>
+          <circle cx="17.5" cy="12.8" r="0.5" fill="var(--color-text)"/>
+          <ellipse cx="7" cy="11" rx="2.2" ry="2.8" fill="var(--color-primary)"/>
+          <ellipse cx="21" cy="11" rx="2.2" ry="2.8" fill="var(--color-primary)"/>
+          <rect x="12" y="8.5" width="4" height="1.2" rx="0.6" fill="var(--color-bg)" opacity="0.6"/>
+          <path d="M22.5 17 Q25 16 24.5 19 Q24 21 22 20" stroke="var(--color-primary-hover)" stroke-width="1.5" stroke-linecap="round" fill="none"/>
         </svg>
-        <span class="serif text-lg text-white">FundScope</span>
+        FundScope
       </div>
-      <h2 class="serif text-2xl text-center mb-1">Área Privada</h2>
-      <p class="text-slate-500 text-xs text-center mb-6">Acesso restrito ao portfólio pessoal.</p>
-      <div class="space-y-3 mb-4">
-        <input id="loginUser" type="text" placeholder="Utilizador"
-          class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2.5 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-slate-600 transition-colors" />
-        <input id="loginPass" type="password" placeholder="Password"
-          class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2.5 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-slate-600 transition-colors" />
+      <h1 class="login-title">Área Privada</h1>
+      <p class="login-sub">Acesso restrito ao portfólio pessoal.</p>
+      <div class="login-field">
+        <label for="loginUser">Utilizador</label>
+        <input id="loginUser" type="text" placeholder="chico130" autocomplete="username" />
       </div>
-      <label class="flex items-center gap-2 text-xs text-slate-500 mb-5 cursor-pointer">
-        <input id="loginRemember" type="checkbox" class="accent-slate-400" />
-        Manter sessão neste browser
-      </label>
-      <button id="loginBtn"
-        class="w-full bg-slate-700 hover:bg-slate-600 text-white text-sm font-semibold rounded-lg py-2.5 transition-colors">
-        Entrar
-      </button>
-      <p id="loginError" class="text-red-400 text-xs text-center mt-3 min-h-[1rem]"></p>
+      <div class="login-field">
+        <label for="loginPass">Password</label>
+        <input id="loginPass" type="password" placeholder="••••••••" autocomplete="current-password" />
+      </div>
+      <label class="login-remember"><input id="loginRemember" type="checkbox" /> Manter sessão neste browser</label>
+      <button class="login-btn" id="loginBtn">Entrar</button>
+      <p class="login-error" id="loginError"></p>
     </div>
   </div>
 
-  <!-- ══ HEADER (clone exacto do index.html) ══ -->
-  <header class="fixed top-0 left-0 right-0 z-40 bg-slate-950/90 backdrop-blur-md border-b border-slate-800/80">
-    <div class="max-w-6xl mx-auto px-5 h-14 flex items-center justify-between gap-6">
-      <a href="index.html" class="flex items-center gap-2.5 shrink-0">
-        <svg width="26" height="26" viewBox="0 0 28 28" fill="none">
-          <ellipse cx="14" cy="15" rx="9" ry="7.5" fill="#4f98a3" opacity="0.18"/>
-          <ellipse cx="14" cy="14.5" rx="8" ry="6.5" fill="#4f98a3"/>
-          <ellipse cx="14" cy="18.5" rx="3.5" ry="2.5" fill="#3a7a85"/>
-          <circle cx="12.8" cy="18.6" r="0.8" fill="#020617" opacity="0.7"/>
-          <circle cx="15.2" cy="18.6" r="0.8" fill="#020617" opacity="0.7"/>
-          <circle cx="10.8" cy="13" r="1.2" fill="#020617" opacity="0.9"/>
-          <circle cx="11.1" cy="12.8" r="0.5" fill="#e2e8f0"/>
-          <circle cx="17.2" cy="13" r="1.2" fill="#020617" opacity="0.9"/>
-          <circle cx="17.5" cy="12.8" r="0.5" fill="#e2e8f0"/>
-          <ellipse cx="7" cy="11" rx="2.2" ry="2.8" fill="#4f98a3"/>
-          <ellipse cx="21" cy="11" rx="2.2" ry="2.8" fill="#4f98a3"/>
-          <rect x="12" y="8.5" width="4" height="1.2" rx="0.6" fill="#020617" opacity="0.6"/>
-          <path d="M22.5 17 Q25 16 24.5 19 Q24 21 22 20" stroke="#3a7a85" stroke-width="1.5" stroke-linecap="round" fill="none"/>
-        </svg>
-        <span class="serif text-lg leading-none text-white">FundScope</span>
-      </a>
-      <nav class="hidden sm:flex items-center gap-0.5 flex-1">
-        <a href="markets.html"   class="px-3 py-1.5 text-sm text-slate-400 hover:text-white hover:bg-slate-800/60 rounded-md transition-colors">Mercados</a>
-        <a href="news.html"      class="px-3 py-1.5 text-sm text-slate-400 hover:text-white hover:bg-slate-800/60 rounded-md transition-colors">Notícias</a>
-        <a href="watchlist.html" class="px-3 py-1.5 text-sm text-slate-400 hover:text-white hover:bg-slate-800/60 rounded-md transition-colors">Watchlist</a>
-        <a href="portfolio.html" class="px-3 py-1.5 text-sm text-white bg-slate-800/60 rounded-md transition-colors">Portfólio</a>
-      </nav>
-      <div class="flex items-center gap-2">
-        <button id="logoutBtn" class="hidden text-xs text-slate-500 hover:text-slate-300 px-3 py-1.5 rounded-md hover:bg-slate-800/60 transition-colors">Sair</button>
-        <a href="search.html" title="Pesquisa avançada" class="p-2 text-slate-600 hover:text-slate-300 hover:bg-slate-800/60 rounded-md transition-colors shrink-0">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
-          </svg>
-        </a>
-      </div>
-    </div>
+  <!-- ══ HEADER (idêntico ao news.html) ══ -->
+  <header class="header">
+    <a href="index.html" class="logo">
+      <svg class="logo-svg" viewBox="0 0 28 28" fill="none">
+        <ellipse cx="14" cy="15" rx="9" ry="7.5" fill="var(--color-primary)" opacity="0.18"/>
+        <ellipse cx="14" cy="14.5" rx="8" ry="6.5" fill="var(--color-primary)"/>
+        <ellipse cx="14" cy="18.5" rx="3.5" ry="2.5" fill="var(--color-primary-hover)"/>
+        <circle cx="12.8" cy="18.6" r="0.8" fill="var(--color-bg)" opacity="0.7"/>
+        <circle cx="15.2" cy="18.6" r="0.8" fill="var(--color-bg)" opacity="0.7"/>
+        <circle cx="10.8" cy="13" r="1.2" fill="var(--color-bg)" opacity="0.9"/>
+        <circle cx="11.1" cy="12.8" r="0.5" fill="var(--color-text)"/>
+        <circle cx="17.2" cy="13" r="1.2" fill="var(--color-bg)" opacity="0.9"/>
+        <circle cx="17.5" cy="12.8" r="0.5" fill="var(--color-text)"/>
+        <ellipse cx="7" cy="11" rx="2.2" ry="2.8" fill="var(--color-primary)"/>
+        <ellipse cx="21" cy="11" rx="2.2" ry="2.8" fill="var(--color-primary)"/>
+        <rect x="12" y="8.5" width="4" height="1.2" rx="0.6" fill="var(--color-bg)" opacity="0.6"/>
+        <path d="M22.5 17 Q25 16 24.5 19 Q24 21 22 20" stroke="var(--color-primary-hover)" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+      </svg>
+      FundScope
+    </a>
+    <nav class="header-actions">
+      <a href="index.html"   class="nav-link">Início</a>
+      <a href="markets.html" class="nav-link">Mercados</a>
+      <a href="news.html"    class="nav-link">Notícias</a>
+      <a href="portfolio.html" class="nav-link active">Portfólio</a>
+      <button class="nav-link" id="logoutBtn">Sair</button>
+      <button class="btn-icon" id="themeToggle" aria-label="Alternar tema">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+      </button>
+    </nav>
   </header>
 
-  <!-- ══ MAIN APP ══ -->
-  <main id="appMain" class="flex-1 pt-14 hidden">
-    <div class="max-w-6xl mx-auto px-5 py-10">
+  <!-- ══ MAIN APP (oculto até login) ══ -->
+  <main class="page" id="appMain" style="display:none">
 
-      <!-- Page title -->
-      <div class="mb-8">
-        <p class="text-[10px] text-slate-600 uppercase tracking-[.18em] font-semibold mb-2">Trading Bot · Conta Demo</p>
-        <h1 class="serif text-4xl sm:text-5xl text-white leading-tight">Portfólio</h1>
-        <p class="text-slate-500 text-sm mt-2">Clyde em observação · Bonnie aguarda activação</p>
-      </div>
-
-      <!-- ── Pill tabs ── -->
-      <div class="flex gap-1 p-1 bg-slate-900 border border-slate-800 rounded-xl w-fit mb-8">
-        <button data-tab="clyde" class="tab-pill px-5 py-2 text-sm font-semibold rounded-lg bg-slate-800 text-white transition-all">🤖 Clyde</button>
-        <button data-tab="bonnie" class="tab-pill px-5 py-2 text-sm font-medium rounded-lg text-slate-500 hover:text-slate-300 transition-all">🧠 Bonnie</button>
-      </div>
-
-      <!-- ══ CLYDE TAB ══ -->
-      <div id="tabClyde">
-
-        <!-- KPI row -->
-        <div id="kpiRow" class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6"></div>
-
-        <!-- Regime + Watchlist row -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
-
-          <!-- Regime card -->
-          <div class="bg-slate-900 border border-slate-800 rounded-xl p-5">
-            <p class="text-[10px] text-slate-500 uppercase tracking-widest font-semibold mb-4">Regime de Mercado</p>
-            <div id="regimeContent" class="space-y-3">
-              <div class="text-slate-600 text-sm">A carregar…</div>
-            </div>
-          </div>
-
-          <!-- Watchlist top-5 -->
-          <div class="lg:col-span-2 bg-slate-900 border border-slate-800 rounded-xl p-5">
-            <p class="text-[10px] text-slate-500 uppercase tracking-widest font-semibold mb-4">Top Watchlist — Clyde</p>
-            <div id="watchlistContent" class="text-slate-600 text-sm">A carregar…</div>
-          </div>
-
-        </div>
-
-        <!-- Trades journal -->
-        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5">
-          <p class="text-[10px] text-slate-500 uppercase tracking-widest font-semibold mb-4">Diário de Trades</p>
-          <div id="tradesContent" class="text-slate-600 text-sm">A carregar…</div>
-        </div>
-
-      </div>
-
-      <!-- ══ BONNIE TAB ══ -->
-      <div id="tabBonnie" class="hidden">
-
-        <!-- Progress toward activation -->
-        <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 mb-4">
-          <div class="flex items-start justify-between gap-4 mb-5">
-            <div>
-              <div class="inline-flex items-center gap-2 px-3 py-1 bg-amber-500/10 border border-amber-500/20 rounded-full text-amber-400 text-xs font-semibold tracking-widest mb-3">FASE 2 — BLOQUEADA</div>
-              <h2 class="serif text-2xl text-white">Bonnie</h2>
-              <p class="text-slate-500 text-sm mt-1 max-w-md">Gestora de risco autónoma para a conta real. Activa após Clyde registar 100 trades validados em demo.</p>
-            </div>
-            <div class="text-5xl opacity-20 shrink-0 hidden sm:block">🧠</div>
-          </div>
-          <div class="max-w-md">
-            <div class="flex justify-between text-xs text-slate-500 mb-1.5">
-              <span>Trades do Clyde</span>
-              <span id="bonnieProgressLabel" class="text-slate-300 font-semibold tabular-nums">— / 100</span>
-            </div>
-            <div class="h-1.5 bg-slate-800 rounded-full overflow-hidden">
-              <div id="bonnieProgressBar" class="h-full bg-amber-500 rounded-full score-bar-fill" style="width:0%"></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Real portfolio positions -->
-        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5">
-          <p class="text-[10px] text-slate-500 uppercase tracking-widest font-semibold mb-4">Posições Actuais — Conta Real</p>
-          <div id="realPositions" class="text-slate-600 text-sm">A carregar…</div>
-        </div>
-
+    <div class="page-header">
+      <p class="page-eyebrow">Trading Bot · Conta Demo</p>
+      <h1 class="page-title">Portfólio</h1>
+      <div class="page-meta">
+        <span id="statusBadge" class="offline-badge">
+          <span style="width:7px;height:7px;border-radius:50%;background:var(--color-text-faint);display:inline-block"></span>
+          A carregar…
+        </span>
+        <span class="updated-label" id="updatedLabel"></span>
       </div>
     </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="clyde">🤖 Clyde — Demo</button>
+      <button class="tab-btn" data-tab="bonnie">🧠 Bonnie — Conta Real</button>
+    </div>
+
+    <!-- ══ CLYDE TAB ══ -->
+    <div id="tabClyde">
+
+      <!-- KPIs -->
+      <div class="kpi-grid" id="kpiGrid">
+        <div class="card"><div class="card-label">A carregar…</div></div>
+        <div class="card"></div><div class="card"></div><div class="card"></div>
+      </div>
+
+      <!-- Regime + Watchlist -->
+      <div class="two-col" style="margin-bottom:var(--space-5)">
+
+        <div class="card">
+          <div class="card-label">Regime</div>
+          <div id="regimeContent" style="color:var(--color-text-muted);font-size:var(--text-sm)">—</div>
+        </div>
+
+        <div class="card">
+          <div class="card-label">Top Watchlist — Clyde</div>
+          <div id="watchlistContent" style="color:var(--color-text-muted);font-size:var(--text-sm)">A carregar…</div>
+        </div>
+
+      </div>
+
+      <!-- Trades journal -->
+      <div class="card">
+        <div class="card-label">Diário de Trades</div>
+        <div id="tradesContent" style="color:var(--color-text-muted);font-size:var(--text-sm)">A carregar…</div>
+      </div>
+
+    </div>
+
+    <!-- ══ BONNIE TAB ══ -->
+    <div id="tabBonnie" style="display:none">
+
+      <!-- Locked header -->
+      <div class="card" style="margin-bottom:var(--space-5)">
+        <div class="bonnie-locked">
+          <span class="bonnie-phase">FASE 2 — BLOQUEADA</span>
+          <div>
+            <h2 class="bonnie-title">Bonnie</h2>
+            <p class="bonnie-sub" style="margin-top:var(--space-3)">Gestora de risco autónoma para a conta real. Activa após Clyde registar 100 trades validados em ambiente demo.</p>
+          </div>
+          <div class="progress-wrap">
+            <div class="progress-labels">
+              <span>Trades do Clyde</span>
+              <span class="progress-count" id="bonnieCount">— / 100</span>
+            </div>
+            <div class="progress-bg">
+              <div class="progress-fill" id="bonnieFill" style="width:0%"></div>
+            </div>
+          </div>
+          <button class="bonnie-btn-locked" disabled>Desbloquear Bonnie</button>
+        </div>
+      </div>
+
+      <!-- Real positions -->
+      <div class="card">
+        <div class="card-label">Posições Actuais — Conta Real</div>
+        <div id="realPositions" style="color:var(--color-text-muted);font-size:var(--text-sm)">A carregar…</div>
+      </div>
+
+    </div>
+
   </main>
 
+  <footer class="footer">
+    <p>© 2026 FundScope · <a href="https://github.com/chico130/fundscope">GitHub</a> · Dados: Trading 212 Demo</p>
+  </footer>
+
   <script>
+// ── Theme toggle ──────────────────────────────────────────────────────────────
+const root = document.documentElement;
+(function(){
+  const saved = localStorage.getItem('fundscope_theme');
+  const sys   = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  root.setAttribute('data-theme', saved || (sys ? 'dark' : 'light'));
+})();
+document.getElementById('themeToggle').addEventListener('click', () => {
+  const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  root.setAttribute('data-theme', next);
+  localStorage.setItem('fundscope_theme', next);
+});
+
 // ── Auth ──────────────────────────────────────────────────────────────────────
 const VALID_U = 'chico130', VALID_P = 'fundscope';
 const loginOverlay = document.getElementById('loginOverlay');
 const appMain      = document.getElementById('appMain');
 const logoutBtn    = document.getElementById('logoutBtn');
 
-function getSession()   { return sessionStorage.getItem('fs_auth') || localStorage.getItem('fs_auth'); }
-function setSession(rem){ sessionStorage.setItem('fs_auth','1'); if(rem) localStorage.setItem('fs_auth','1'); }
-function clearSession() { sessionStorage.removeItem('fs_auth'); localStorage.removeItem('fs_auth'); }
+function getSession()    { return sessionStorage.getItem('fs_auth') || localStorage.getItem('fs_auth'); }
+function setSession(rem) { sessionStorage.setItem('fs_auth','1'); if(rem) localStorage.setItem('fs_auth','1'); }
+function clearSession()  { sessionStorage.removeItem('fs_auth'); localStorage.removeItem('fs_auth'); }
 
 function showApp() {
-  loginOverlay.classList.add('hidden');
-  appMain.classList.remove('hidden');
-  logoutBtn.classList.remove('hidden');
+  loginOverlay.style.display = 'none';
+  appMain.style.display      = '';
+  logoutBtn.style.display    = '';
   initData();
 }
-
 if (getSession()) showApp();
 
 document.getElementById('loginBtn').addEventListener('click', () => {
@@ -208,228 +382,194 @@ document.getElementById('loginBtn').addEventListener('click', () => {
   const p = document.getElementById('loginPass').value;
   const err = document.getElementById('loginError');
   if (!u || !p) { err.textContent = 'Preenche os dois campos.'; return; }
-  if (u === VALID_U && p === VALID_P) {
-    setSession(document.getElementById('loginRemember').checked);
-    showApp();
-  } else {
-    err.textContent = 'Credenciais incorrectas.';
-  }
+  if (u === VALID_U && p === VALID_P) { setSession(document.getElementById('loginRemember').checked); showApp(); }
+  else { err.textContent = 'Credenciais incorrectas.'; }
 });
-['loginUser','loginPass'].forEach(id => {
-  document.getElementById(id).addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('loginBtn').click(); });
-});
+['loginUser','loginPass'].forEach(id =>
+  document.getElementById(id).addEventListener('keydown', e => { if(e.key==='Enter') document.getElementById('loginBtn').click(); })
+);
 logoutBtn.addEventListener('click', () => { clearSession(); location.reload(); });
 
 // ── Tabs ──────────────────────────────────────────────────────────────────────
-document.querySelectorAll('.tab-pill').forEach(btn => {
+let bonnieLoaded = false;
+document.querySelectorAll('.tab-btn').forEach(btn => {
   btn.addEventListener('click', () => {
-    document.querySelectorAll('.tab-pill').forEach(b => {
-      b.classList.remove('bg-slate-800','text-white');
-      b.classList.add('text-slate-500');
-    });
-    btn.classList.add('bg-slate-800','text-white');
-    btn.classList.remove('text-slate-500');
-    const tab = btn.dataset.tab;
-    document.getElementById('tabClyde').classList.toggle('hidden',  tab !== 'clyde');
-    document.getElementById('tabBonnie').classList.toggle('hidden', tab !== 'bonnie');
-    if (tab === 'bonnie') loadBonnie();
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const t = btn.dataset.tab;
+    document.getElementById('tabClyde').style.display  = t === 'clyde'  ? '' : 'none';
+    document.getElementById('tabBonnie').style.display = t === 'bonnie' ? '' : 'none';
+    if (t === 'bonnie' && !bonnieLoaded) { loadBonnie(); bonnieLoaded = true; }
   });
 });
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
-const n2  = (v, d=2) => new Intl.NumberFormat('pt-PT',{minimumFractionDigits:d,maximumFractionDigits:d}).format(v ?? 0);
+const n2   = (v, d=2) => new Intl.NumberFormat('pt-PT',{minimumFractionDigits:d,maximumFractionDigits:d}).format(v ?? 0);
 const eur  = v => n2(v) + '€';
 const sgn  = v => (v >= 0 ? '+' : '') + n2(v);
-const pct  = v => sgn(v) + '%';
-const clrPct = v => v >= 0 ? 'text-emerald-400' : 'text-red-400';
-const ticker = p => p.ticker_display || (p.ticker||'').replace(/\.AS$|\.L$|\.DE$|\.PA$|\.SW$/,'');
+const pctStr = v => (v >= 0 ? '+' : '') + n2(v) + '%';
+const clr  = v => v >= 0 ? 'up' : 'down';
+const tick = p => p.ticker_display || (p.ticker||'').replace(/\.AS$|\.L$|\.DE$|\.PA$|\.SW$/,'');
 
 // ── Data init ─────────────────────────────────────────────────────────────────
+let _trades = [];
 async function initData() {
   const t = Date.now();
   const [anaRes, sumRes, trRes] = await Promise.allSettled([
-    fetch(`data/beta/beta_analysis.json?t=${t}`).then(r => r.ok ? r.json() : null).catch(() => null),
-    fetch(`data/beta/beta_summary.json?t=${t}`).then(r => r.ok ? r.json() : null).catch(() => null),
-    fetch(`data/beta/beta_trades.json?t=${t}`).then(r => r.ok ? r.json() : null).catch(() => null),
+    fetch(`data/beta/beta_analysis.json?t=${t}`).then(r=>r.ok?r.json():null).catch(()=>null),
+    fetch(`data/beta/beta_summary.json?t=${t}`).then(r=>r.ok?r.json():null).catch(()=>null),
+    fetch(`data/beta/beta_trades.json?t=${t}`).then(r=>r.ok?r.json():null).catch(()=>null),
   ]);
   const ana = anaRes.value ?? null;
   const sum = sumRes.value ?? null;
   const trd = trRes.value  ?? null;
+  _trades = trd?.trades ?? [];
 
+  renderStatusBadge(ana);
   renderKPIs(sum);
   renderRegime(ana);
   renderWatchlist(ana);
-  renderTrades(trd);
-  storeTrades(trd);
+  renderTrades(_trades);
+}
+
+// ── Status badge ──────────────────────────────────────────────────────────────
+function renderStatusBadge(ana) {
+  const el = document.getElementById('statusBadge');
+  const lbl = document.getElementById('updatedLabel');
+  if (!ana?.timestamp) return;
+  const ts  = new Date(ana.timestamp);
+  const min = Math.round((Date.now() - ts) / 60000);
+  const online = min < 20;
+  const timeStr = min < 1 ? 'agora mesmo' : min < 60 ? `há ${min}m` : `há ${Math.floor(min/60)}h${min%60}m`;
+  el.className = online ? 'live-badge' : 'offline-badge';
+  el.innerHTML = `<span style="width:7px;height:7px;border-radius:50%;background:${online?'var(--color-success)':'var(--color-text-faint)'};display:inline-block;${online?'animation:pulse 2s ease-in-out infinite':''}"></span> ${online ? 'Online' : 'Offline'} · Clyde · ${timeStr}`;
+  lbl.textContent = ts.toLocaleString('pt-PT',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});
 }
 
 // ── KPIs ──────────────────────────────────────────────────────────────────────
 function renderKPIs(sum) {
-  const s   = sum?.summary ?? {};
+  const s = sum?.summary ?? {};
   const kpis = [
-    { label: 'Capital Demo',   val: eur(s.current_value ?? 10000),   sub: `Inicial: ${eur(s.initial_capital ?? 10000)}` },
-    { label: 'P&L Demo',       val: eur(s.total_gain_eur ?? 0),      sub: pct(s.total_gain_pct ?? 0), color: clrPct(s.total_gain_pct ?? 0) },
-    { label: 'Win Rate',       val: n2(s.win_rate_pct ?? 0) + '%',   sub: `${s.n_trades ?? 0} trades`, color: (s.win_rate_pct ?? 0) >= 50 ? 'text-emerald-400' : 'text-red-400' },
-    { label: 'Max Drawdown',   val: n2(s.max_drawdown_pct ?? 0) + '%', sub: `Melhor: ${eur(s.best_trade_eur ?? 0)}`, color: 'text-red-400' },
+    { label:'Capital Demo',  val:eur(s.current_value ?? 10000), sub:`Inicial: ${eur(s.initial_capital ?? 10000)}`, cls:'' },
+    { label:'P&L Demo',      val:eur(s.total_gain_eur ?? 0),    sub:pctStr(s.total_gain_pct ?? 0), cls:clr(s.total_gain_pct ?? 0) },
+    { label:'Win Rate',      val:n2(s.win_rate_pct ?? 0) + '%', sub:`${s.n_trades ?? 0} trades`,   cls:(s.win_rate_pct??0)>=50?'up':'down' },
+    { label:'Max Drawdown',  val:n2(s.max_drawdown_pct ?? 0) + '%', sub:`Melhor: ${eur(s.best_trade_eur ?? 0)}`, cls:'down' },
   ];
-  document.getElementById('kpiRow').innerHTML = kpis.map(k => `
-    <div class="bg-slate-900 border border-slate-800 rounded-xl p-4">
-      <p class="text-[10px] text-slate-500 uppercase tracking-widest font-semibold mb-2">${k.label}</p>
-      <p class="text-xl font-bold tabular-nums ${k.color ?? 'text-white'}">${k.val}</p>
-      <p class="text-xs text-slate-500 mt-1 tabular-nums ${k.color ?? ''}">${k.sub}</p>
+  document.getElementById('kpiGrid').innerHTML = kpis.map(k => `
+    <div class="card">
+      <div class="card-label">${k.label}</div>
+      <div class="kpi-val ${k.cls}">${k.val}</div>
+      <div class="kpi-sub ${k.cls}">${k.sub}</div>
     </div>`).join('');
 }
 
 // ── Regime ────────────────────────────────────────────────────────────────────
 function renderRegime(ana) {
   const el = document.getElementById('regimeContent');
-  if (!ana) { el.innerHTML = '<p class="text-slate-600 text-sm">Indisponível.</p>'; return; }
-
-  const ts      = ana.timestamp ? new Date(ana.timestamp) : null;
-  const diffMin = ts ? Math.round((Date.now() - ts) / 60000) : Infinity;
-  const online  = diffMin < 20;
-  const lastStr = !ts ? '—' : diffMin < 1 ? 'agora mesmo' : diffMin < 60 ? `há ${diffMin}m` : `há ${Math.floor(diffMin/60)}h${diffMin%60}m`;
-
-  const regimeColors = {
-    bull_trending:    ['text-emerald-400', 'bg-emerald-500/10 border-emerald-500/20'],
-    bull_lateral:     ['text-amber-400',   'bg-amber-500/10 border-amber-500/20'],
-    bear_correction:  ['text-red-400',     'bg-red-500/10 border-red-500/20'],
-    bear_capitulation:['text-red-400',     'bg-red-500/10 border-red-500/20'],
-  };
-  const [rClr, rBg] = regimeColors[ana.regime] ?? ['text-slate-400','bg-slate-800 border-slate-700'];
-  const regLabel = (ana.regime ?? 'desconhecido').replace(/_/g,' ').replace(/\b\w/g, c => c.toUpperCase());
-
+  if (!ana) { el.innerHTML = '<span style="color:var(--color-text-faint)">Indisponível.</span>'; return; }
+  const regime = ana.regime ?? 'unknown';
+  const labelMap = { bull_trending:'Bull Trending', bull_lateral:'Bull Lateral', bear_correction:'Bear Correction', bear_capitulation:'Bear Capitulation' };
+  const label = labelMap[regime] ?? regime.replace(/_/g,' ');
+  const eq    = ana.risk_status?.total_equity_eur;
   el.innerHTML = `
-    <div class="flex items-center gap-2 mb-3">
-      <span class="w-2 h-2 rounded-full ${online ? 'bg-emerald-400 animate-pulse' : 'bg-slate-600'}"></span>
-      <span class="text-xs font-semibold ${online ? 'text-emerald-400' : 'text-slate-500'}">${online ? 'ONLINE' : 'OFFLINE'}</span>
-      <span class="text-xs text-slate-600">${lastStr}</span>
+    <div style="margin-bottom:var(--space-4)">
+      <span class="regime-pill ${regime}">${label}</span>
+      ${ana.regime_alert ? `<p style="font-size:var(--text-xs);color:var(--color-notification);margin-top:var(--space-2)">⚠ Novas entradas bloqueadas</p>` : ''}
     </div>
-    <span class="inline-flex items-center px-3 py-1 rounded-full border text-xs font-semibold ${rClr} ${rBg}">${regLabel}</span>
-    ${ana.regime_alert ? '<p class="text-xs text-red-400 mt-2">⚠ Novas entradas bloqueadas</p>' : ''}
-    <div class="mt-3 pt-3 border-t border-slate-800 text-xs text-slate-500">
-      <div class="flex justify-between"><span>Equity</span><span class="text-slate-300 tabular-nums">${eur(ana.risk_status?.total_equity_eur ?? 0)}</span></div>
-      <div class="flex justify-between mt-1"><span>Posições</span><span class="text-slate-300">${ana.n_positions ?? 0}</span></div>
+    <div style="display:flex;flex-direction:column;gap:var(--space-2);font-size:var(--text-xs)">
+      <div style="display:flex;justify-content:space-between"><span style="color:var(--color-text-muted)">Equity</span><span style="font-variant-numeric:tabular-nums;font-weight:600">${eq != null ? eur(eq) : '—'}</span></div>
+      <div style="display:flex;justify-content:space-between"><span style="color:var(--color-text-muted)">Posições</span><span style="font-weight:600">${ana.n_positions ?? 0}</span></div>
+      <div style="display:flex;justify-content:space-between"><span style="color:var(--color-text-muted)">Versão</span><span style="color:var(--color-text-faint)">${ana.strategy_version ?? '—'}</span></div>
     </div>`;
 }
 
 // ── Watchlist ─────────────────────────────────────────────────────────────────
 function renderWatchlist(ana) {
-  const el = document.getElementById('watchlistContent');
+  const el    = document.getElementById('watchlistContent');
   const items = ana?.watchlist_top5 ?? [];
-  if (!items.length) { el.innerHTML = '<p class="text-slate-600">Watchlist não disponível.</p>'; return; }
-
-  el.innerHTML = `
-    <div class="grid grid-cols-5 text-[10px] text-slate-600 uppercase tracking-wider font-semibold px-1 mb-2">
-      <span>Ticker</span><span>Sector</span><span class="col-span-2">Score</span><span class="text-right">1M / 3M</span>
-    </div>
-    ${items.map(c => {
-      const sc   = Math.max(0, Math.min(1, Number(c.score)||0));
-      const scPct = Math.round(sc * 100);
-      const barClr = scPct >= 70 ? 'bg-emerald-500' : scPct >= 40 ? 'bg-amber-500' : 'bg-red-500';
-      const m1 = Number(c.mom_1m)||0, m3 = Number(c.mom_3m)||0;
-      return `<div class="grid grid-cols-5 items-center py-2.5 px-1 rounded-lg hover:bg-slate-800/50 transition-colors">
-        <span class="font-bold text-sm text-white">${c.ticker}</span>
-        <span class="text-xs text-slate-500">${c.sector}</span>
-        <div class="col-span-2 flex items-center gap-2 pr-2">
-          <div class="flex-1 h-1 bg-slate-800 rounded-full overflow-hidden">
-            <div class="h-full ${barClr} score-bar-fill rounded-full" style="width:${scPct}%"></div>
-          </div>
-          <span class="text-xs text-slate-400 tabular-nums w-10 text-right">${sc.toFixed(3)}</span>
-        </div>
-        <div class="text-right text-xs tabular-nums">
-          <span class="${m1>=0?'text-emerald-400':'text-red-400'}">${m1>=0?'+':''}${(m1*100).toFixed(1)}%</span>
-          <span class="text-slate-600 mx-0.5">/</span>
-          <span class="${m3>=0?'text-emerald-400':'text-red-400'}">${m3>=0?'+':''}${(m3*100).toFixed(1)}%</span>
-        </div>
-      </div>`;
-    }).join('')}`;
+  if (!items.length) { el.innerHTML = '<span style="color:var(--color-text-faint)">Watchlist não disponível.</span>'; return; }
+  const header = `<div class="wl-head">
+    <div></div><div>Ticker</div><div>Score</div><div style="text-align:right">1M</div><div class="col-3m" style="text-align:right">3M</div>
+  </div>`;
+  const rows = items.map((c,i) => {
+    const sc    = Math.max(0,Math.min(1,Number(c.score)||0));
+    const scPct = Math.round(sc*100);
+    const barClr = scPct>=70 ? 'var(--color-success)' : scPct>=40 ? 'var(--color-gold)' : 'var(--color-notification)';
+    const m1 = Number(c.mom_1m)||0, m3 = Number(c.mom_3m)||0;
+    return `<div class="wl-row">
+      <div class="wl-rank">${i+1}</div>
+      <div><div class="wl-ticker">${c.ticker}</div><div class="wl-sector">${c.sector||'—'}</div></div>
+      <div class="wl-score-wrap">
+        <div class="wl-bar-bg"><div class="wl-bar-fill" style="width:${scPct}%;background:${barClr}"></div></div>
+        <span class="wl-score-num">${sc.toFixed(3)}</span>
+      </div>
+      <div class="wl-mom ${clr(m1)}">${m1>=0?'+':''}${(Math.abs(m1)*100).toFixed(1)}%</div>
+      <div class="wl-mom col-3m ${clr(m3)}">${m3>=0?'+':''}${(Math.abs(m3)*100).toFixed(1)}%</div>
+    </div>`;
+  }).join('');
+  el.innerHTML = header + rows;
 }
 
 // ── Trades journal ────────────────────────────────────────────────────────────
-let _allTrades = [];
-function storeTrades(trd) { _allTrades = trd?.trades ?? []; }
-
-function renderTrades(trd) {
-  const el     = document.getElementById('tradesContent');
-  const trades = [...(trd?.trades ?? [])].reverse().slice(0, 8);
-  if (!trades.length) {
-    el.innerHTML = '<p class="text-slate-600">Sem trades registados.</p>';
-    return;
-  }
-  el.innerHTML = `<div class="space-y-3">${trades.map(t => {
-    const dt     = t.datetime ? new Date(t.datetime).toLocaleString('pt-PT',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}) : '';
-    const side   = (t.side||'').toUpperCase();
-    const sideClr = side === 'BUY' ? 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20' : 'text-red-400 bg-red-500/10 border-red-500/20';
-    const hasResult = t.result_eur != null;
-    const rClr   = hasResult ? clrPct(t.result_eur) : 'text-amber-400';
-    const ctx    = t.context ?? {};
-    const chips  = [
-      ctx.rsi_14            != null  ? `RSI ${Number(ctx.rsi_14).toFixed(1)}` : null,
-      ctx.ema50_above_ema200 === true  ? 'EMA50 > EMA200' : ctx.ema50_above_ema200 === false ? 'EMA50 < EMA200' : null,
+function renderTrades(trades) {
+  const el = document.getElementById('tradesContent');
+  const list = [...trades].reverse().slice(0,8);
+  if (!list.length) { el.innerHTML = '<span style="color:var(--color-text-faint)">Sem trades registados.</span>'; return; }
+  el.innerHTML = `<div class="trades-list">${list.map(t => {
+    const dt   = t.datetime ? new Date(t.datetime).toLocaleString('pt-PT',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}) : '';
+    const side = (t.side||'').toUpperCase();
+    const ctx  = t.context ?? {};
+    const chips = [
+      ctx.rsi_14 != null ? `RSI ${Number(ctx.rsi_14).toFixed(1)}` : null,
+      ctx.ema50_above_ema200 === true ? 'EMA50 > EMA200' : ctx.ema50_above_ema200 === false ? 'EMA50 < EMA200' : null,
       ctx.volume_ratio_vs_avg != null ? `Vol ${Number(ctx.volume_ratio_vs_avg).toFixed(1)}×` : null,
     ].filter(Boolean);
-    return `<div class="trade-card bg-slate-800/50 border border-slate-800 rounded-xl p-4">
-      <div class="flex items-center gap-2 flex-wrap mb-2">
-        <span class="font-bold text-white">${t.ticker}</span>
-        <span class="text-[10px] font-bold px-2 py-0.5 rounded-full border ${sideClr}">${side}</span>
-        <span class="text-xs text-slate-500">${n2(t.qty,0)} × ${eur(t.price)}</span>
-        <span class="text-xs text-slate-600 ml-auto">${dt}</span>
+    const hasR = t.result_eur != null;
+    return `<div class="trade-card">
+      <div class="trade-head">
+        <span class="trade-ticker">${t.ticker}</span>
+        <span class="trade-side ${side.toLowerCase()}">${side}</span>
+        <span style="font-size:var(--text-xs);color:var(--color-text-muted)">${n2(t.qty,0)} × ${eur(t.price)}</span>
+        <span class="trade-time">${dt}</span>
       </div>
-      <p class="text-xs text-slate-400 leading-relaxed mb-2">${t.reason}</p>
-      ${chips.length ? `<div class="flex gap-1.5 flex-wrap mb-2">${chips.map(c=>`<span class="text-[10px] px-2 py-0.5 bg-slate-900 text-slate-400 rounded-full border border-slate-700">${c}</span>`).join('')}</div>` : ''}
-      <div class="flex gap-4 pt-2 border-t border-slate-700/50">
-        ${hasResult
-          ? `<div><p class="text-[10px] text-slate-600 uppercase tracking-wider">Resultado</p><p class="text-sm font-bold ${rClr} tabular-nums">${t.result_eur>=0?'+':''}${eur(t.result_eur)}</p></div>
-             <div><p class="text-[10px] text-slate-600 uppercase tracking-wider">P&L%</p><p class="text-sm font-bold ${rClr} tabular-nums">${pct(t.result_pct)}</p></div>`
-          : `<div><p class="text-[10px] text-slate-600 uppercase tracking-wider">Estado</p><p class="text-sm font-semibold text-amber-400">Aberto</p></div>`}
+      <p class="trade-reason">${t.reason}</p>
+      ${chips.length ? `<div class="trade-chips">${chips.map(c=>`<span class="trade-chip">${c}</span>`).join('')}</div>` : ''}
+      <div class="trade-result-row">
+        ${hasR
+          ? `<div class="trade-result-col"><span class="trade-result-label">Resultado</span><span class="trade-result-val ${clr(t.result_eur)}">${t.result_eur>=0?'+':''}${eur(t.result_eur)}</span></div>
+             <div class="trade-result-col"><span class="trade-result-label">P&L%</span><span class="trade-result-val ${clr(t.result_pct)}">${pctStr(t.result_pct)}</span></div>`
+          : `<div class="trade-result-col"><span class="trade-result-label">Estado</span><span class="trade-result-val" style="color:var(--color-gold)">Aberto</span></div>`}
       </div>
-      ${t.postmortem ? `<p class="text-xs text-slate-500 italic mt-2 pt-2 border-t border-slate-700/40 leading-relaxed">${t.postmortem}</p>` : ''}
+      ${t.postmortem ? `<p class="trade-postmortem">${t.postmortem}</p>` : ''}
     </div>`;
   }).join('')}</div>`;
 }
 
 // ── Bonnie ────────────────────────────────────────────────────────────────────
-let bonnieInitialized = false;
 async function loadBonnie() {
-  if (bonnieInitialized) return;
-  bonnieInitialized = true;
+  const n   = _trades.length;
+  const pct = Math.min(100, Math.round(n/100*100));
+  document.getElementById('bonnieCount').textContent = `${n} / 100`;
+  document.getElementById('bonnieFill').style.width  = pct + '%';
 
-  // Progress bar from cached trades count
-  const n   = _allTrades.length;
-  const pct = Math.min(100, Math.round(n / 100 * 100));
-  document.getElementById('bonnieProgressLabel').textContent = `${n} / 100`;
-  document.getElementById('bonnieProgressBar').style.width   = pct + '%';
-
-  // Real portfolio positions
   const el = document.getElementById('realPositions');
   try {
-    const r    = await fetch(`portfolio.json?t=${Date.now()}`);
+    const r   = await fetch(`portfolio.json?t=${Date.now()}`);
     const data = r.ok ? await r.json() : null;
     const pos  = data?.positions ?? [];
     if (!pos.length) {
-      el.innerHTML = `<div class="flex flex-col items-center gap-2 py-8 text-center">
-        <span class="text-3xl opacity-20">👁️</span>
-        <p class="text-slate-500 text-sm">Sem posições abertas na conta real.</p>
-      </div>`;
+      el.innerHTML = `<div class="state-box"><div class="state-icon">👁️</div><p class="state-title">Sem posições abertas</p><p style="font-size:var(--text-sm);color:var(--color-text-muted)">Conta real sem posições activas de momento.</p></div>`;
       return;
     }
-    el.innerHTML = `<div class="space-y-2">${pos.slice(0,15).map(p => {
+    el.innerHTML = pos.slice(0,15).map(p => {
       const gPct = p.gain_pct ?? 0, gEur = p.gain_eur ?? 0;
-      const cClr = clrPct(gPct);
-      return `<div class="flex items-center justify-between px-4 py-3 bg-slate-800/50 border border-slate-800 rounded-xl hover:border-slate-700 transition-colors">
-        <div>
-          <p class="font-bold text-sm text-white">${ticker(p)}</p>
-          <p class="text-xs text-slate-500">${n2(p.allocation_pct ?? 0)}% da carteira</p>
-        </div>
-        <div class="text-right">
-          <p class="text-sm font-semibold text-white tabular-nums">${eur(p.value_eur)}</p>
-          <p class="text-xs font-semibold ${cClr} tabular-nums">${pct(gPct)} · ${gEur>=0?'+':''}${eur(Math.abs(gEur))}</p>
-        </div>
+      return `<div class="pos-item">
+        <div><div class="pos-ticker">${tick(p)}</div><div class="pos-alloc">${n2(p.allocation_pct??0)}% da carteira</div></div>
+        <div><div class="pos-val">${eur(p.value_eur)}</div><div class="pos-gain ${clr(gPct)}">${pctStr(gPct)} · ${gEur>=0?'+':''}${eur(Math.abs(gEur))}</div></div>
       </div>`;
-    }).join('')}</div>`;
+    }).join('');
   } catch {
-    el.innerHTML = '<p class="text-slate-600 text-sm">Portfólio real não disponível.</p>';
+    el.innerHTML = '<span style="color:var(--color-text-faint)">Portfólio real não disponível.</span>';
   }
 }
   </script>
