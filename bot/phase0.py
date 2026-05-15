@@ -266,7 +266,7 @@ def _count_open_trades() -> int:
     data = read_beta_trades()
     if not data:
         return 0
-    return sum(1 for t in data.get("trades", []) if t.get("closed_at") is None)
+    return sum(1 for t in data.get("trades", []) if not t.get("closed_at"))
 
 
 # ---------------------------------------------------------------------------

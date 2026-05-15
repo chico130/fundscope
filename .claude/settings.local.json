@@ -26,7 +26,9 @@
       "Bash(python -c \"from bot.watchlist_manager import build_watchlist; print\\('import OK'\\)\")",
       "Bash(python -c \"import update_portfolio; print\\('import OK'\\)\")",
       "Bash(python -c ' *)",
-      "Bash(python -c \"import ast; ast.parse\\(open\\('bot/phase0.py'\\).read\\(\\)\\); print\\('OK — sem erros de sintaxe'\\)\")"
+      "Bash(python -c \"import ast; ast.parse\\(open\\('bot/phase0.py'\\).read\\(\\)\\); print\\('OK — sem erros de sintaxe'\\)\")",
+      "Bash(python bot/main.py)",
+      "Bash(python -m bot.main)"
     ]
   }
 }

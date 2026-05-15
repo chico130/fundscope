@@ -1158,5 +1158,189 @@
       "risk_ok": true,
       "positions": []
     }
+  },
+  {
+    "datetime": "2026-05-15T20:16:37.409615+00:00",
+    "type": "bot_start",
+    "detail": {
+      "action": "phase0_loop",
+      "context": {
+        "strategy_version": "v0.1.0"
+      }
+    }
+  },
+  {
+    "datetime": "2026-05-15T20:16:37.419880+00:00",
+    "type": "decision",
+    "reason": "phase0_start",
+    "action": "read_portfolio"
+  },
+  {
+    "datetime": "2026-05-15T20:16:40.837226+00:00",
+    "type": "decision",
+    "reason": "phase0_retry",
+    "action": "api_unavailable",
+    "context": {
+      "attempt": 1,
+      "wait_minutes": 2
+    }
+  },
+  {
+    "datetime": "2026-05-15T20:17:01.750262+00:00",
+    "type": "bot_start",
+    "detail": {
+      "action": "phase0_loop",
+      "context": {
+        "strategy_version": "v0.1.0"
+      }
+    }
+  },
+  {
+    "datetime": "2026-05-15T20:17:01.758905+00:00",
+    "type": "decision",
+    "reason": "phase0_start",
+    "action": "read_portfolio"
+  },
+  {
+    "datetime": "2026-05-15T20:17:05.166882+00:00",
+    "type": "decision",
+    "reason": "phase0_retry",
+    "action": "api_unavailable",
+    "context": {
+      "attempt": 1,
+      "wait_minutes": 2
+    }
+  },
+  {
+    "datetime": "2026-05-15T20:17:07.413370+00:00",
+    "type": "bot_start",
+    "detail": {
+      "action": "phase0_loop",
+      "context": {
+        "strategy_version": "v0.1.0"
+      }
+    }
+  },
+  {
+    "datetime": "2026-05-15T20:17:07.422473+00:00",
+    "type": "decision",
+    "reason": "phase0_start",
+    "action": "read_portfolio"
+  },
+  {
+    "datetime": "2026-05-15T20:18:40.318152+00:00",
+    "type": "bot_start",
+    "detail": {
+      "action": "phase0_loop",
+      "context": {
+        "strategy_version": "v0.1.0"
+      }
+    }
+  },
+  {
+    "datetime": "2026-05-15T20:18:40.328073+00:00",
+    "type": "decision",
+    "reason": "phase0_start",
+    "action": "read_portfolio"
+  },
+  {
+    "datetime": "2026-05-15T20:18:43.715588+00:00",
+    "type": "decision",
+    "reason": "phase0_retry",
+    "action": "api_unavailable",
+    "context": {
+      "attempt": 1,
+      "wait_minutes": 2
+    }
+  },
+  {
+    "datetime": "2026-05-15T20:19:02.804130+00:00",
+    "type": "decision",
+    "reason": "phase0_retry",
+    "action": "api_unavailable",
+    "context": {
+      "attempt": 2,
+      "wait_minutes": 5
+    }
+  },
+  {
+    "datetime": "2026-05-15T20:19:27.108020+00:00",
+    "type": "decision",
+    "reason": "phase0_retry",
+    "action": "api_unavailable",
+    "context": {
+      "attempt": 2,
+      "wait_minutes": 5
+    }
+  },
+  {
+    "datetime": "2026-05-15T20:21:05.666374+00:00",
+    "type": "decision",
+    "reason": "phase0_retry",
+    "action": "api_unavailable",
+    "context": {
+      "attempt": 2,
+      "wait_minutes": 5
+    }
+  },
+  {
+    "datetime": "2026-05-15T20:24:24.810852+00:00",
+    "type": "decision",
+    "reason": "phase0_retry",
+    "action": "api_unavailable",
+    "context": {
+      "attempt": 3,
+      "wait_minutes": 10
+    }
+  },
+  {
+    "datetime": "2026-05-15T20:24:49.072964+00:00",
+    "type": "decision",
+    "reason": "phase0_retry",
+    "action": "api_unavailable",
+    "context": {
+      "attempt": 3,
+      "wait_minutes": 10
+    }
+  },
+  {
+    "datetime": "2026-05-15T20:26:27.627584+00:00",
+    "type": "decision",
+    "reason": "phase0_retry",
+    "action": "api_unavailable",
+    "context": {
+      "attempt": 3,
+      "wait_minutes": 10
+    }
+  },
+  {
+    "datetime": "2026-05-15T20:34:46.801179+00:00",
+    "type": "decision",
+    "reason": "phase0_abort",
+    "action": "api_unavailable",
+    "context": {
+      "consecutive_failures": 4
+    }
+  },
+  {
+    "datetime": "2026-05-15T20:34:46.810134+00:00",
+    "type": "decision",
+    "reason": "phase0_t212_unavailable",
+    "action": "cold_run",
+    "context": {
+      "reason": "T212 API indisponível — análise sem portfolio"
+    }
+  },
+  {
+    "datetime": "2026-05-15T20:34:46.819622+00:00",
+    "type": "decision",
+    "reason": "phase0_complete",
+    "action": "report_generated",
+    "context": {
+      "regime": "bull_lateral",
+      "n_signals": 0,
+      "risk_ok": true,
+      "positions": []
+    }
   }
 ]
