@@ -141,7 +141,7 @@
 </head>
 <body>
   <header class="header">
-    <a href="index.html" class="logo">
+    <a href="search.html" class="logo">
       <svg class="logo-svg" viewBox="0 0 28 28" fill="none">
         <ellipse cx="14" cy="15" rx="9" ry="7.5" fill="var(--color-primary)" opacity="0.18"/>
         <ellipse cx="14" cy="14.5" rx="8" ry="6.5" fill="var(--color-primary)"/>
@@ -159,7 +159,7 @@
       FundScope
     </a>
     <div style="display:flex;align-items:center;gap:var(--space-2);">
-      <a id="backBtn" href="index.html" class="back-btn">
+      <a id="backBtn" href="search.html" class="back-btn">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
         <span id="backLabel">Pesquisa</span>
       </a>
@@ -687,7 +687,7 @@ function renderError(ticker,msg){
     <h2>N\u00e3o foi poss\u00edvel carregar "${esc(ticker)}"</h2>
     <p>Este site suporta apenas a\u00e7\u00f5es cotadas em bolsas norte-americanas (NYSE, NASDAQ, AMEX).<br>Exemplos v\u00e1lidos: <strong>AAPL</strong>, <strong>MSFT</strong>, <strong>NVDA</strong>, <strong>SPY</strong>, <strong>BRK-B</strong></p>
     <div class="error-detail">${esc(msg)}</div>
-    <a href="index.html" style="display:inline-flex;align-items:center;gap:8px;margin-top:24px;padding:10px 20px;background:var(--color-primary);color:#fff;border-radius:var(--radius-full);font-size:var(--text-sm);font-weight:600;">
+    <a href="search.html" style="display:inline-flex;align-items:center;gap:8px;margin-top:24px;padding:10px 20px;background:var(--color-primary);color:#fff;border-radius:var(--radius-full);font-size:var(--text-sm);font-weight:600;">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
       Voltar \u00e0 pesquisa
     </a></div>`;
