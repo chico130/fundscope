@@ -46,5 +46,13 @@
       "endpoint": "/equity/portfolio",
       "error": "HTTPSConnectionPool(host='demo.trading212.com', port=443): Read timed out. (read timeout=10)"
     }
+  },
+  {
+    "datetime": "2026-05-15T12:26:00.758617+00:00",
+    "type": "api_get_failed",
+    "detail": {
+      "endpoint": "/equity/portfolio",
+      "error": "HTTPSConnectionPool(host='demo.trading212.com', port=443): Read timed out. (read timeout=10)"
+    }
   }
 ]
