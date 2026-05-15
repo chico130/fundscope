@@ -1,0 +1,49 @@
+[
+  {
+    "datetime": "2026-05-15T11:07:14.175865+00:00",
+    "type": "decision",
+    "reason": "bot_start",
+    "action": "phase0_loop",
+    "context": {
+      "strategy_version": "v0.1.0"
+    }
+  },
+  {
+    "datetime": "2026-05-15T11:07:14.176744+00:00",
+    "type": "decision",
+    "reason": "phase0_start",
+    "action": "read_portfolio"
+  },
+  {
+    "datetime": "2026-05-15T11:07:20.151517+00:00",
+    "type": "decision",
+    "reason": "phase0_enrich",
+    "action": "compute_technicals",
+    "context": {
+      "n_positions": 1
+    }
+  },
+  {
+    "datetime": "2026-05-15T11:07:20.262361+00:00",
+    "type": "decision",
+    "reason": "phase0_complete",
+    "action": "report_generated",
+    "context": {
+      "regime": "bull_lateral",
+      "n_signals": 1,
+      "risk_ok": true,
+      "positions": [
+        {
+          "ticker": "GOOGL_US_EQ",
+          "rsi_14": 74.16,
+          "ema50_above_ema200": true,
+          "volume_ratio_vs_avg": 0.75,
+          "signal": "hold",
+          "price": 401.07,
+          "ema_50": 345.624,
+          "ema_200": 290.6669
+        }
+      ]
+    }
+  }
+]

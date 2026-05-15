@@ -25,7 +25,8 @@
       "Bash(python -c \"import json; d=json.load\\(open\\('data.json',encoding='utf-8'\\)\\); stocks=d.get\\('stocks',{}\\); print\\('VST' in stocks, 'VRT' in stocks, 'MU' in stocks, 'ASML' in stocks\\)\")",
       "Bash(python -c \"from bot.watchlist_manager import build_watchlist; print\\('import OK'\\)\")",
       "Bash(python -c \"import update_portfolio; print\\('import OK'\\)\")",
-      "Bash(python -c ' *)"
+      "Bash(python -c ' *)",
+      "Bash(python -c \"import ast; ast.parse\\(open\\('bot/phase0.py'\\).read\\(\\)\\); print\\('OK — sem erros de sintaxe'\\)\")"
     ]
   }
 }
