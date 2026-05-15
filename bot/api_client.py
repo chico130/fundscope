@@ -9,12 +9,11 @@ does not expose a price-quote or candlestick endpoint for arbitrary tickers.
 """
 from __future__ import annotations
 
-import base64
 import time
 import requests
+import requests.exceptions as req_exc
 
 from .config import (
-    T212_KEY_ID,
     T212_API_KEY_DEMO,
     T212_BASE_URL_DEMO,
     LIVE_TRADING,
@@ -58,12 +57,9 @@ def _t212_to_yfinance(ticker: str) -> str:
     return f"{clean}{_T212_MARKET_SUFFIX.get(market, '')}"
 
 
-_auth_str = f"{T212_KEY_ID}:{T212_API_KEY_DEMO}"
-_encoded = base64.b64encode(_auth_str.encode()).decode()
-
 _session = requests.Session()
 _session.headers.update({
-    "Authorization": f"Basic {_encoded}",
+    "Authorization": T212_API_KEY_DEMO,
     "Content-Type": "application/json",
 })
 
@@ -77,12 +73,24 @@ def _get(endpoint: str) -> dict | list | None:
         raise RuntimeError("LIVE_TRADING is True — aborting to protect live account.")
     time.sleep(REQUEST_DELAY_SECONDS)
     try:
-        resp = _session.get(f"{T212_BASE_URL_DEMO}{endpoint}", timeout=10)
+        resp = _session.get(f"{T212_BASE_URL_DEMO}{endpoint}", timeout=30)
         resp.raise_for_status()
         return resp.json()
     except Exception as exc:
         from .logger import log_error
-        log_error("api_get_failed", {"endpoint": endpoint, "error": str(exc)})
+        if isinstance(exc, req_exc.ConnectTimeout):
+            error_type = "connection_timeout"
+        elif isinstance(exc, req_exc.ReadTimeout):
+            error_type = "read_timeout"
+        elif isinstance(exc, req_exc.ConnectionError):
+            error_type = "connection_refused"
+        else:
+            error_type = "unknown"
+        log_error("api_get_failed", {
+            "endpoint": endpoint,
+            "error": str(exc),
+            "error_type": error_type,
+        })
         return None
 
 
@@ -91,12 +99,25 @@ def _post(endpoint: str, payload: dict) -> dict | None:
         raise RuntimeError("LIVE_TRADING is True — aborting to protect live account.")
     time.sleep(REQUEST_DELAY_SECONDS)
     try:
-        resp = _session.post(f"{T212_BASE_URL_DEMO}{endpoint}", json=payload, timeout=10)
+        resp = _session.post(f"{T212_BASE_URL_DEMO}{endpoint}", json=payload, timeout=30)
         resp.raise_for_status()
         return resp.json()
     except Exception as exc:
         from .logger import log_error
-        log_error("api_post_failed", {"endpoint": endpoint, "payload": payload, "error": str(exc)})
+        if isinstance(exc, req_exc.ConnectTimeout):
+            error_type = "connection_timeout"
+        elif isinstance(exc, req_exc.ReadTimeout):
+            error_type = "read_timeout"
+        elif isinstance(exc, req_exc.ConnectionError):
+            error_type = "connection_refused"
+        else:
+            error_type = "unknown"
+        log_error("api_post_failed", {
+            "endpoint": endpoint,
+            "payload": payload,
+            "error": str(exc),
+            "error_type": error_type,
+        })
         return None
 
 
@@ -105,12 +126,24 @@ def _delete(endpoint: str) -> bool:
         raise RuntimeError("LIVE_TRADING is True — aborting to protect live account.")
     time.sleep(REQUEST_DELAY_SECONDS)
     try:
-        resp = _session.delete(f"{T212_BASE_URL_DEMO}{endpoint}", timeout=10)
+        resp = _session.delete(f"{T212_BASE_URL_DEMO}{endpoint}", timeout=30)
         resp.raise_for_status()
         return True
     except Exception as exc:
         from .logger import log_error
-        log_error("api_delete_failed", {"endpoint": endpoint, "error": str(exc)})
+        if isinstance(exc, req_exc.ConnectTimeout):
+            error_type = "connection_timeout"
+        elif isinstance(exc, req_exc.ReadTimeout):
+            error_type = "read_timeout"
+        elif isinstance(exc, req_exc.ConnectionError):
+            error_type = "connection_refused"
+        else:
+            error_type = "unknown"
+        log_error("api_delete_failed", {
+            "endpoint": endpoint,
+            "error": str(exc),
+            "error_type": error_type,
+        })
         return False
 
 

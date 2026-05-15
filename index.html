@@ -1,415 +1,1110 @@
 <!DOCTYPE html>
-<html lang="pt" data-theme="light">
+<html lang="pt">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FundScope</title>
+  <title>FundScope Beta — Dashboard</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300..700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&display=swap" rel="stylesheet">
   <style>
-    :root,[data-theme="light"]{
-      --color-bg:#f7f6f2;--color-surface:#f9f8f5;--color-surface-2:#fbfbf9;--color-surface-offset:#f0ede8;
-      --color-border:#d4d1ca;--color-divider:#dcd9d5;--color-text:#28251d;--color-text-muted:#7a7974;
-      --color-text-faint:#bab9b4;--color-primary:#01696f;--color-primary-hover:#0c4e54;
-      --color-primary-highlight:#cedcd8;--color-success:#437a22;--color-success-bg:#eaf3e2;
-      --color-notification:#a13544;--color-notification-bg:#f8e8ea;
-      --color-tooltip-bg:#1c1b19;--color-tooltip-text:#e8e7e5;--color-tooltip-border:#2e2d2b;
-      --radius-sm:.375rem;--radius-md:.5rem;--radius-lg:.75rem;--radius-xl:1rem;--radius-2xl:1.5rem;--radius-full:9999px;
-      --shadow-sm:0 1px 2px rgba(40,37,29,.06);--shadow-md:0 4px 12px rgba(40,37,29,.08);--shadow-lg:0 12px 32px rgba(40,37,29,.12);
-      --transition:180ms cubic-bezier(.16,1,.3,1);
-      --font-display:'Instrument Serif',Georgia,serif;--font-body:'Inter','Helvetica Neue',sans-serif;
-      --text-xs:clamp(.75rem,.7rem + .25vw,.875rem);--text-sm:clamp(.875rem,.8rem + .35vw,1rem);
-      --text-base:clamp(1rem,.95rem + .25vw,1.125rem);--text-lg:clamp(1.125rem,1rem + .75vw,1.5rem);
-      --text-xl:clamp(1.5rem,1.2rem + 1.25vw,2.25rem);--text-2xl:clamp(2rem,1.2rem + 2.5vw,3.5rem);
-      --space-1:.25rem;--space-2:.5rem;--space-3:.75rem;--space-4:1rem;--space-5:1.25rem;
-      --space-6:1.5rem;--space-8:2rem;--space-10:2.5rem;--space-12:3rem;--space-16:4rem;--space-24:6rem;
+    body { font-family: 'Inter', system-ui, sans-serif; }
+    .tab-active  { color: #f8fafc; border-bottom: 2px solid #38bdf8; }
+    .tab-inactive{ color: #64748b; border-bottom: 2px solid transparent; }
+    .tab-inactive:hover { color: #94a3b8; }
+    .badge-bull         { background:rgba(34,197,94,.12); color:#22c55e; border:1px solid rgba(34,197,94,.25); }
+    .badge-bull-lateral { background:rgba(234,179,8,.12); color:#eab308; border:1px solid rgba(234,179,8,.25); }
+    .badge-bear         { background:rgba(239,68,68,.12);  color:#ef4444; border:1px solid rgba(239,68,68,.25); }
+    .badge-neutral      { background:rgba(148,163,184,.1); color:#94a3b8; border:1px solid rgba(148,163,184,.2); }
+    .chip-green { background:rgba(34,197,94,.10); color:#4ade80; border:1px solid rgba(34,197,94,.2); }
+    .chip-red   { background:rgba(239,68,68,.10);  color:#f87171; border:1px solid rgba(239,68,68,.2); }
+    /* Watchlist — score badges */
+    .badge-forte { background:rgba(34,197,94,.12); color:#22c55e; border:1px solid rgba(34,197,94,.28); }
+    .badge-medio { background:rgba(234,179,8,.12);  color:#eab308; border:1px solid rgba(234,179,8,.28); }
+    .badge-fraco { background:rgba(239,68,68,.12);  color:#ef4444; border:1px solid rgba(239,68,68,.28); }
+    /* Watchlist — momentum chips */
+    .chip-mom-up   { background:rgba(34,197,94,.08); color:#4ade80; border:1px solid rgba(34,197,94,.18); }
+    .chip-mom-down { background:rgba(239,68,68,.08); color:#f87171; border:1px solid rgba(239,68,68,.18); }
+    /* Slide-over */
+    .slide-over {
+      position:fixed; top:0; right:0; bottom:0; width:400px; max-width:94vw;
+      z-index:300; background:#141820; border-left:1px solid rgba(30,41,59,.9);
+      transform:translateX(100%); transition:transform 300ms cubic-bezier(.16,1,.3,1);
+      overflow-y:auto;
     }
-    [data-theme="dark"]{
-      --color-bg:#141312;--color-surface:#1a1917;--color-surface-2:#201f1d;--color-surface-offset:#252421;
-      --color-border:#393836;--color-divider:#2e2d2b;--color-text:#cdccca;--color-text-muted:#797876;
-      --color-text-faint:#5a5957;--color-primary:#4f98a3;--color-primary-hover:#63b2be;
-      --color-primary-highlight:#1f3335;--color-success:#6daa45;--color-success-bg:#1a2e10;
-      --color-notification:#dd6974;--color-notification-bg:#2e1015;
-      --color-tooltip-bg:#f0ede8;--color-tooltip-text:#28251d;--color-tooltip-border:#d4d1ca;
-      --shadow-sm:0 1px 2px rgba(0,0,0,.25);--shadow-md:0 4px 12px rgba(0,0,0,.35);--shadow-lg:0 12px 32px rgba(0,0,0,.45);
+    .slide-over.open { transform:translateX(0); }
+    .slide-over-bd {
+      position:fixed; inset:0; z-index:299; background:rgba(0,0,0,.45);
+      opacity:0; pointer-events:none; transition:opacity 300ms;
     }
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-    html{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;scroll-behavior:smooth;}
-    body{min-height:100dvh;font-family:var(--font-body);font-size:var(--text-base);color:var(--color-text);background:var(--color-bg);transition:background var(--transition),color var(--transition);display:flex;flex-direction:column;}
-    button{cursor:pointer;background:none;border:none;font:inherit;color:inherit;}
-    a{color:inherit;text-decoration:none;}
-    :focus-visible{outline:2px solid var(--color-primary);outline-offset:3px;border-radius:var(--radius-sm);}
-    .header{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:var(--space-4) var(--space-6);background:color-mix(in oklch,var(--color-bg) 85%,transparent);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(40,37,29,.06);}
-    .logo{display:flex;align-items:center;gap:var(--space-2);font-family:var(--font-display);font-size:var(--text-lg);font-weight:400;letter-spacing:-.01em;color:var(--color-text);transition:color var(--transition);}
-    .logo:hover{color:var(--color-primary);}
-    .logo-svg{width:28px;height:28px;}
-    .header-actions{display:flex;align-items:center;gap:var(--space-3);}
-    .nav-link{font-size:var(--text-sm);color:var(--color-text-muted);padding:var(--space-2) var(--space-3);border-radius:var(--radius-md);transition:color var(--transition),background var(--transition);display:inline-flex;align-items:center;gap:6px;}
-    .nav-link:hover{color:var(--color-text);background:var(--color-surface-offset);}
-    .nav-link.active{color:var(--color-primary);}
-    .theme-toggle{width:36px;height:36px;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;color:var(--color-text-muted);transition:color var(--transition),background var(--transition);}
-    .theme-toggle:hover{color:var(--color-text);background:var(--color-surface-offset);}
-    .main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:var(--space-24) var(--space-6) var(--space-16);text-align:center;}
-    .mascot-wrap{margin-bottom:var(--space-8);display:flex;align-items:center;justify-content:center;}
-    .mascot-gif{width:180px;height:180px;object-fit:contain;filter:drop-shadow(0 14px 28px rgba(230,100,100,.22));animation:pigFloat 3.2s ease-in-out infinite;}
-    @keyframes pigFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
-    .hero-eyebrow{font-size:var(--text-sm);color:var(--color-primary);letter-spacing:.08em;text-transform:uppercase;font-weight:500;margin-bottom:var(--space-3);}
-    .hero-title{font-family:var(--font-display);font-size:var(--text-2xl);font-weight:400;line-height:1.1;letter-spacing:-.02em;color:var(--color-text);margin-bottom:var(--space-4);max-width:14ch;}
-    .hero-title em{font-style:italic;color:var(--color-primary);}
-    .hero-sub{font-size:var(--text-base);color:var(--color-text-muted);max-width:44ch;line-height:1.65;margin-bottom:var(--space-10);}
-    .search-container{width:100%;max-width:560px;position:relative;margin-bottom:var(--space-5);}
-    .search-box{width:100%;background:var(--color-surface);border:1.5px solid var(--color-border);border-radius:var(--radius-full);padding:var(--space-4) var(--space-6) var(--space-4) var(--space-5);font-size:var(--text-base);color:var(--color-text);outline:none;box-shadow:var(--shadow-sm);transition:border-color var(--transition),box-shadow var(--transition);padding-right:calc(var(--space-12) + var(--space-2));}
-    .search-box::placeholder{color:var(--color-text-faint);}
-    .search-box:focus{border-color:var(--color-primary);box-shadow:0 0 0 3px color-mix(in oklch,var(--color-primary) 15%,transparent),var(--shadow-md);}
-    .search-btn{position:absolute;right:var(--space-2);top:50%;transform:translateY(-50%);width:40px;height:40px;border-radius:var(--radius-full);background:var(--color-primary);color:#fff;display:flex;align-items:center;justify-content:center;transition:background var(--transition),transform var(--transition),box-shadow var(--transition);box-shadow:var(--shadow-sm);}
-    .search-btn:hover{background:var(--color-primary-hover);transform:translateY(-50%) scale(1.05);box-shadow:var(--shadow-md);}
-    .quick-chips{display:flex;flex-wrap:wrap;gap:var(--space-2);justify-content:center;margin-bottom:var(--space-12);}
-    .chip{font-size:var(--text-xs);padding:var(--space-1) var(--space-3);border-radius:var(--radius-full);border:1px solid var(--color-border);background:var(--color-surface);color:var(--color-text-muted);cursor:pointer;transition:all var(--transition);font-weight:500;}
-    .chip:hover{border-color:var(--color-primary);color:var(--color-primary);background:var(--color-primary-highlight);}
-    .results-panel{position:fixed;top:0;left:0;right:0;bottom:0;background:color-mix(in oklch,var(--color-bg) 92%,transparent);backdrop-filter:blur(20px);z-index:200;display:flex;align-items:flex-start;justify-content:center;padding-top:clamp(80px,14vh,120px);padding-inline:var(--space-4);opacity:0;pointer-events:none;transition:opacity 240ms ease;}
-    .results-panel.open{opacity:1;pointer-events:all;}
-    .results-box{width:100%;max-width:560px;background:var(--color-surface-2);border:1px solid var(--color-border);border-radius:var(--radius-2xl);box-shadow:var(--shadow-lg);overflow:hidden;transform:translateY(12px);transition:transform 240ms cubic-bezier(.16,1,.3,1);}
-    .results-panel.open .results-box{transform:translateY(0);}
-    .results-search-row{display:flex;align-items:center;padding:var(--space-3) var(--space-4);border-bottom:1px solid var(--color-divider);gap:var(--space-3);}
-    .results-search-input{flex:1;background:none;border:none;outline:none;font:inherit;font-size:var(--text-base);color:var(--color-text);}
-    .results-search-input::placeholder{color:var(--color-text-faint);}
-    .results-close{color:var(--color-text-muted);padding:var(--space-1);border-radius:var(--radius-sm);transition:color var(--transition),background var(--transition);}
-    .results-close:hover{color:var(--color-text);background:var(--color-surface-offset);}
-    .results-list{max-height:420px;overflow-y:auto;}
-    .results-empty{padding:var(--space-12);text-align:center;color:var(--color-text-muted);font-size:var(--text-sm);}
-    .result-item{display:flex;align-items:center;padding:var(--space-3) var(--space-5);gap:var(--space-4);cursor:pointer;transition:background var(--transition);text-decoration:none;color:inherit;}
-    .result-item:hover{background:var(--color-surface-offset);}
-    .result-badge{min-width:52px;text-align:center;font-size:var(--text-xs);font-weight:700;letter-spacing:.04em;padding:var(--space-1) var(--space-2);border-radius:var(--radius-sm);background:var(--color-primary-highlight);color:var(--color-primary);flex-shrink:0;}
-    .result-info{flex:1;min-width:0;}
-    .result-name{font-size:var(--text-sm);font-weight:500;color:var(--color-text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-    .result-type{font-size:var(--text-xs);color:var(--color-text-muted);}
-    .result-price{font-size:var(--text-sm);font-variant-numeric:tabular-nums;color:var(--color-text);font-weight:500;text-align:right;white-space:nowrap;}
-    .result-chg{font-size:var(--text-xs);font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap;}
-    .result-chg.up{color:var(--color-success);}
-    .result-chg.down{color:var(--color-notification);}
-    .btn-watchlist-add{width:32px;height:32px;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;color:var(--color-text-faint);border:1px solid var(--color-border);background:var(--color-surface);transition:all var(--transition);flex-shrink:0;}
-    .btn-watchlist-add:hover{color:var(--color-primary);border-color:var(--color-primary);background:var(--color-primary-highlight);}
-    .btn-watchlist-add.added{color:var(--color-primary);border-color:var(--color-primary);background:var(--color-primary-highlight);}
-    .loading-dots{display:flex;gap:6px;justify-content:center;padding:var(--space-8);}
-    .loading-dots span{width:8px;height:8px;border-radius:50%;background:var(--color-primary);animation:dot-bounce 1.2s ease-in-out infinite;}
-    .loading-dots span:nth-child(2){animation-delay:.15s;}
-    .loading-dots span:nth-child(3){animation-delay:.3s;}
-    @keyframes dot-bounce{0%,80%,100%{transform:scale(.6);opacity:.4}40%{transform:scale(1);opacity:1}}
-    @media(max-width:640px){
-      .header{padding:var(--space-3) var(--space-4);}
-      .nav-link .nav-label{display:none;}
-      .nav-link{padding:0;width:36px;height:36px;justify-content:center;}
-      .mascot-gif{width:130px;height:130px;}
-      .hero-title{font-size:clamp(1.8rem,9vw,3.5rem);}
-      .hero-sub{margin-bottom:var(--space-8);}
-      .quick-chips{margin-bottom:var(--space-8);}
-    }
+    .slide-over-bd.open { opacity:1; pointer-events:all; }
   </style>
 </head>
-<body>
-  <header class="header">
-    <a href="index.html" class="logo">
-      <svg class="logo-svg" viewBox="0 0 28 28" fill="none">
-        <ellipse cx="14" cy="15" rx="9" ry="7.5" fill="var(--color-primary)" opacity="0.18"/>
-        <ellipse cx="14" cy="14.5" rx="8" ry="6.5" fill="var(--color-primary)"/>
-        <ellipse cx="14" cy="18.5" rx="3.5" ry="2.5" fill="var(--color-primary-hover)"/>
-        <circle cx="12.8" cy="18.6" r="0.8" fill="var(--color-bg)" opacity="0.7"/>
-        <circle cx="15.2" cy="18.6" r="0.8" fill="var(--color-bg)" opacity="0.7"/>
-        <circle cx="10.8" cy="13" r="1.2" fill="var(--color-bg)" opacity="0.9"/>
-        <circle cx="11.1" cy="12.8" r="0.5" fill="var(--color-text)"/>
-        <circle cx="17.2" cy="13" r="1.2" fill="var(--color-bg)" opacity="0.9"/>
-        <circle cx="17.5" cy="12.8" r="0.5" fill="var(--color-text)"/>
-        <ellipse cx="7" cy="11" rx="2.2" ry="2.8" fill="var(--color-primary)"/>
-        <ellipse cx="21" cy="11" rx="2.2" ry="2.8" fill="var(--color-primary)"/>
-        <rect x="12" y="8.5" width="4" height="1.2" rx="0.6" fill="var(--color-bg)" opacity="0.6"/>
-        <path d="M22.5 17 Q25 16 24.5 19 Q24 21 22 20" stroke="var(--color-primary-hover)" stroke-width="1.5" stroke-linecap="round" fill="none"/>
-      </svg>
-      FundScope
-    </a>
-    <nav class="header-actions">
-      <a href="watchlist.html" class="nav-link" aria-label="Watchlist">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-        <span class="nav-label">Watchlist</span>
+<body class="bg-[#0B0E14] text-slate-300 min-h-screen antialiased">
+
+  <!-- ── Top Navigation Bar ── -->
+  <header class="fixed top-0 left-0 right-0 z-50 bg-[#0B0E14]/95 backdrop-blur-md border-b border-slate-800/60">
+    <div class="max-w-7xl mx-auto px-5 h-13 flex items-center justify-between gap-4" style="height:52px">
+
+      <!-- Logo -->
+      <a href="index.html" class="flex items-center gap-2.5 shrink-0">
+        <svg width="26" height="26" viewBox="0 0 28 28" fill="none">
+          <ellipse cx="14" cy="15" rx="9" ry="7.5" fill="#38bdf8" opacity="0.15"/>
+          <ellipse cx="14" cy="14.5" rx="8" ry="6.5" fill="#38bdf8"/>
+          <ellipse cx="14" cy="18.5" rx="3.5" ry="2.5" fill="#0ea5e9"/>
+          <circle cx="12.8" cy="18.6" r="0.8" fill="#0B0E14" opacity="0.7"/>
+          <circle cx="15.2" cy="18.6" r="0.8" fill="#0B0E14" opacity="0.7"/>
+          <circle cx="10.8" cy="13" r="1.2" fill="#0B0E14" opacity="0.9"/>
+          <circle cx="11.1" cy="12.8" r="0.5" fill="#e2e8f0"/>
+          <circle cx="17.2" cy="13" r="1.2" fill="#0B0E14" opacity="0.9"/>
+          <circle cx="17.5" cy="12.8" r="0.5" fill="#e2e8f0"/>
+          <ellipse cx="7" cy="11" rx="2.2" ry="2.8" fill="#38bdf8"/>
+          <ellipse cx="21" cy="11" rx="2.2" ry="2.8" fill="#38bdf8"/>
+          <rect x="12" y="8.5" width="4" height="1.2" rx="0.6" fill="#0B0E14" opacity="0.6"/>
+          <path d="M22.5 17 Q25 16 24.5 19 Q24 21 22 20" stroke="#0ea5e9" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+        </svg>
+        <span class="font-semibold text-white text-sm tracking-wide">FundScope</span>
+        <span class="text-xs text-slate-600 font-normal">beta</span>
       </a>
-      <a href="news.html" class="nav-link" aria-label="Not&#237;cias">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 0-2 2zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/></svg>
-        <span class="nav-label">Not&#237;cias</span>
-      </a>
-      <a href="portfolio.html" class="nav-link" aria-label="Portf&#243;lio">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
-        <span class="nav-label">Portf&#243;lio</span>
-      </a>
-      <a href="markets.html" class="nav-link" aria-label="Mercados">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-        <span class="nav-label">Mercados</span>
-      </a>
-      <button class="theme-toggle" data-theme-toggle aria-label="Alternar tema">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
-      </button>
-    </nav>
+
+      <!-- Tabs -->
+      <nav class="flex items-end gap-0 h-full">
+        <button onclick="switchTab('overview')"  id="tab-btn-overview"  class="tab-active  px-4 h-full text-sm font-medium transition-colors duration-150">Visão Geral</button>
+        <button onclick="switchTab('watchlist')" id="tab-btn-watchlist" class="tab-inactive px-4 h-full text-sm font-medium transition-colors duration-150">Watchlist</button>
+        <button onclick="switchTab('alpha')"     id="tab-btn-alpha"     class="tab-inactive px-4 h-full text-sm font-medium transition-colors duration-150">Alpha AI</button>
+        <button onclick="switchTab('logs')"      id="tab-btn-logs"      class="tab-inactive px-4 h-full text-sm font-medium transition-colors duration-150">Logs</button>
+      </nav>
+
+      <!-- Right: updated timestamp + search link -->
+      <div class="flex items-center gap-3 shrink-0">
+        <span id="lastUpdated" class="text-xs text-slate-700 tabular-nums hidden sm:inline">—</span>
+        <a href="search.html" title="Pesquisa de Ativos" class="text-slate-600 hover:text-slate-300 transition-colors p-1.5 rounded-md hover:bg-slate-800">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        </a>
+      </div>
+    </div>
   </header>
 
-  <main class="main">
-    <div class="mascot-wrap" aria-hidden="true">
-      <img class="mascot-gif" src="piggy.gif" alt="" width="180" height="180" />
-    </div>
-    <p class="hero-eyebrow">Stocks &amp; ETFs</p>
-    <h1 class="hero-title">Investe com <em>clareza</em></h1>
-    <p class="hero-sub">Pesquisa qualquer a&#231;&#227;o ou ETF e acompanha a tua watchlist num s&#243; lugar.</p>
-    <div class="search-container">
-      <input type="text" class="search-box" id="mainSearch"
-        placeholder="Pesquisa qualquer ticker &#8212; ex: AAPL, MSFT, SPY&#8230;"
-        autocomplete="off" aria-label="Pesquisar stock ou ETF"/>
-      <button class="search-btn" id="searchBtn" aria-label="Pesquisar">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-      </button>
-    </div>
-    <div class="quick-chips" role="list">
-      <button class="chip" data-query="AAPL">AAPL</button>
-      <button class="chip" data-query="MSFT">MSFT</button>
-      <button class="chip" data-query="VOO">VOO</button>
-      <button class="chip" data-query="NVDA">NVDA</button>
-      <button class="chip" data-query="ASML">ASML</button>
-      <button class="chip" data-query="TSLA">TSLA</button>
-    </div>
-  </main>
+  <!-- ── Main ── -->
+  <main class="pt-[52px]">
 
-  <div class="results-panel" id="resultsPanel" role="dialog" aria-modal="true">
-    <div class="results-box">
-      <div class="results-search-row">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--color-text-muted)" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-        <input type="text" class="results-search-input" id="resultsInput" placeholder="Pesquisa qualquer ticker ou nome&#8230;" autocomplete="off"/>
-        <button class="results-close" id="resultsClose" aria-label="Fechar">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    <!-- ════════════════════ TAB: VISÃO GERAL ════════════════════ -->
+    <div id="panel-overview" class="max-w-7xl mx-auto px-5 py-6 space-y-5">
+
+      <!-- KPI Cards Row -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-3" id="kpiCards">
+
+        <div class="bg-[#141820] rounded-xl border border-slate-800/60 p-4">
+          <p class="text-[10px] text-slate-600 uppercase tracking-widest mb-2">Valor Total</p>
+          <p class="text-xl font-bold text-white tabular-nums leading-none mb-1.5" id="kpi-total-value">—</p>
+          <p class="text-xs text-slate-600" id="kpi-initial">Capital inicial: —</p>
+        </div>
+
+        <div class="bg-[#141820] rounded-xl border border-slate-800/60 p-4">
+          <p class="text-[10px] text-slate-600 uppercase tracking-widest mb-2">Ganho Total</p>
+          <p class="text-xl font-bold tabular-nums leading-none mb-1.5" id="kpi-total-gain">—</p>
+          <p class="text-xs tabular-nums" id="kpi-gain-pct">—</p>
+        </div>
+
+        <div class="bg-[#141820] rounded-xl border border-slate-800/60 p-4">
+          <p class="text-[10px] text-slate-600 uppercase tracking-widest mb-2">Win Rate</p>
+          <p class="text-xl font-bold text-white tabular-nums leading-none mb-1.5" id="kpi-winrate">—</p>
+          <p class="text-xs text-slate-600" id="kpi-trades">— trades</p>
+        </div>
+
+        <div class="bg-[#141820] rounded-xl border border-slate-800/60 p-4">
+          <p class="text-[10px] text-slate-600 uppercase tracking-widest mb-2">Max Drawdown</p>
+          <p class="text-xl font-bold tabular-nums leading-none mb-1.5" id="kpi-drawdown">—</p>
+          <p class="text-xs text-slate-600" id="kpi-avgwin">—</p>
+        </div>
+
+      </div>
+
+      <!-- Two-column layout -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+
+        <!-- ── Market Regime Card (left 1/3) ── -->
+        <div class="lg:col-span-1">
+          <div class="bg-[#141820] rounded-xl border border-slate-800/60 p-5 h-full">
+
+            <div class="flex items-center justify-between mb-4">
+              <h2 class="text-[10px] font-semibold text-slate-600 uppercase tracking-widest">Regime de Mercado</h2>
+              <span id="regime-badge" class="px-3 py-1 rounded-full text-[11px] font-bold tracking-widest badge-neutral">—</span>
+            </div>
+
+            <div class="space-y-0" id="regime-metrics">
+              <div class="flex justify-between items-center py-2.5 border-b border-slate-800/60">
+                <span class="text-xs text-slate-600">SPY Price</span>
+                <span class="text-sm font-mono font-medium text-slate-200" id="rm-spy">—</span>
+              </div>
+              <div class="flex justify-between items-center py-2.5 border-b border-slate-800/60">
+                <span class="text-xs text-slate-600">EMA 200</span>
+                <span class="text-sm font-mono font-medium text-slate-200" id="rm-ema200">—</span>
+              </div>
+              <div class="flex justify-between items-center py-2.5 border-b border-slate-800/60">
+                <span class="text-xs text-slate-600">Dist. EMA200</span>
+                <span class="text-sm font-mono font-medium" id="rm-dist">—</span>
+              </div>
+              <div class="flex justify-between items-center py-2.5 border-b border-slate-800/60">
+                <span class="text-xs text-slate-600">ATR Ratio 60d</span>
+                <span class="text-sm font-mono font-medium text-slate-200" id="rm-atr">—</span>
+              </div>
+              <div class="flex justify-between items-center py-2.5 border-b border-slate-800/60">
+                <span class="text-xs text-slate-600">Retorno SPY 20d</span>
+                <span class="text-sm font-mono font-medium" id="rm-ret20">—</span>
+              </div>
+              <div class="flex justify-between items-center py-2.5">
+                <span class="text-xs text-slate-600">Breadth</span>
+                <span class="text-sm font-mono font-medium" id="rm-breadth">—</span>
+              </div>
+            </div>
+
+            <p class="text-[10px] text-slate-700 mt-4" id="regime-updated">Atualizado: —</p>
+          </div>
+        </div>
+
+        <!-- ── Active Positions Table (right 2/3) ── -->
+        <div class="lg:col-span-2">
+          <div class="bg-[#141820] rounded-xl border border-slate-800/60 p-5">
+
+            <div class="flex items-center justify-between mb-4">
+              <h2 class="text-[10px] font-semibold text-slate-600 uppercase tracking-widest">Posições Ativas</h2>
+              <span class="text-[10px] text-slate-700" id="positions-updated">—</span>
+            </div>
+
+            <div class="overflow-x-auto -mx-1">
+              <table class="w-full text-sm min-w-[520px]">
+                <thead>
+                  <tr class="text-[10px] text-slate-600 uppercase tracking-widest border-b border-slate-800/60">
+                    <th class="text-left pb-3 pl-1 pr-3 font-medium">Ticker</th>
+                    <th class="text-left pb-3 pr-3 font-medium">Nome</th>
+                    <th class="text-right pb-3 pr-3 font-medium">Qtd</th>
+                    <th class="text-right pb-3 pr-3 font-medium">Preço Médio</th>
+                    <th class="text-right pb-3 pr-3 font-medium">Último</th>
+                    <th class="text-right pb-3 pr-3 font-medium">Ganho</th>
+                    <th class="text-right pb-3 pr-1 font-medium">ROI</th>
+                  </tr>
+                </thead>
+                <tbody id="positions-tbody" class="divide-y divide-slate-800/40">
+                  <tr>
+                    <td colspan="7" class="py-10 text-center text-slate-700 text-xs">A carregar posições...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Footer totals -->
+            <div class="mt-4 pt-3 border-t border-slate-800/60 grid grid-cols-2 gap-2">
+              <div>
+                <p class="text-[10px] text-slate-700">Total investido</p>
+                <p class="text-sm font-semibold text-slate-300 tabular-nums" id="pos-total-invested">—</p>
+              </div>
+              <div class="text-right">
+                <p class="text-[10px] text-slate-700">Valor atual</p>
+                <p class="text-sm font-semibold text-slate-300 tabular-nums" id="pos-total-value">—</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div><!-- /panel-overview -->
+
+    <!-- ════════════════════ TAB: WATCHLIST ════════════════════ -->
+    <div id="panel-watchlist" class="hidden max-w-7xl mx-auto px-5 py-6 space-y-4">
+
+      <!-- Header row -->
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-sm font-semibold text-white">Watchlist do Bot</h2>
+          <p class="text-[10px] text-slate-600 mt-0.5" id="wl-meta">A carregar…</p>
+        </div>
+        <button
+          onclick="loadWatchlist()"
+          title="Atualizar"
+          class="text-slate-600 hover:text-slate-300 transition-colors p-1.5 rounded-md hover:bg-slate-800"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-.18-5.2"/>
+          </svg>
         </button>
       </div>
-      <div class="results-list" id="resultsList">
-        <div class="results-empty">Escreve para pesquisar qualquer a&#231;&#227;o ou ETF&#8230;</div>
+
+      <!-- Table card -->
+      <div class="bg-[#141820] rounded-xl border border-slate-800/60 overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm min-w-[580px]">
+            <thead>
+              <tr class="text-[10px] text-slate-600 uppercase tracking-widest border-b border-slate-800/60 bg-[#141820]">
+                <th class="text-left py-3 pl-4 pr-4 font-medium">Ativo</th>
+                <th class="text-right py-3 pr-4 font-medium">Preço</th>
+                <th class="text-center py-3 pr-4 font-medium">Score</th>
+                <th class="text-right py-3 pr-4 font-medium">1M / 3M</th>
+                <th class="text-right py-3 pr-4 font-medium">Liquidez</th>
+              </tr>
+            </thead>
+            <tbody id="wl-tbody" class="divide-y divide-slate-800/40">
+              <tr>
+                <td colspan="5" class="py-10 text-center text-slate-700 text-xs">A carregar watchlist…</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ════════════════════ TAB: ALPHA AI ════════════════════ -->
+    <div id="panel-alpha" class="hidden max-w-7xl mx-auto px-5 py-6">
+      <div class="bg-[#141820] rounded-xl border border-slate-800/60 flex items-center justify-center h-56">
+        <div class="text-center">
+          <p class="text-slate-500 font-medium mb-1">Em desenvolvimento</p>
+          <p class="text-xs text-slate-700">Painel Alpha AI (análise humana + aprendizagem) — em breve.</p>
+        </div>
       </div>
     </div>
-  </div>
+
+    <!-- ════════════════════ TAB: LOGS ════════════════════ -->
+    <div id="panel-logs" class="hidden max-w-7xl mx-auto px-5 py-6 space-y-4">
+
+      <!-- Connectivity alert banner -->
+      <div id="logs-alert" class="hidden rounded-lg bg-amber-900/50 border border-amber-500/60 px-4 py-3">
+        <p class="text-xs text-amber-300 font-mono" id="logs-alert-msg"></p>
+      </div>
+
+      <!-- Header + filters -->
+      <div class="flex items-center justify-between flex-wrap gap-3">
+        <div>
+          <h2 class="text-sm font-semibold text-white">Logs do Sistema</h2>
+          <p class="text-[10px] text-slate-600 mt-0.5" id="logs-meta">A carregar…</p>
+        </div>
+        <div class="flex items-center gap-2 flex-wrap">
+          <button onclick="setLogsFilter('all')"      id="lf-all"      class="px-3 py-1.5 rounded-md text-[11px] font-mono border border-slate-600 text-slate-200 ring-2 ring-blue-500 transition-all">Todos</button>
+          <button onclick="setLogsFilter('errors')"   id="lf-errors"   class="px-3 py-1.5 rounded-md text-[11px] font-mono border border-slate-800 text-slate-600 transition-all">❌ Erros</button>
+          <button onclick="setLogsFilter('timeouts')" id="lf-timeouts" class="px-3 py-1.5 rounded-md text-[11px] font-mono border border-slate-800 text-slate-600 transition-all">⏱ Timeouts</button>
+          <button onclick="setLogsFilter('trades')"   id="lf-trades"   class="px-3 py-1.5 rounded-md text-[11px] font-mono border border-slate-800 text-slate-600 transition-all">✅ Trades</button>
+          <button onclick="setLogsFilter('signals')"  id="lf-signals"  class="px-3 py-1.5 rounded-md text-[11px] font-mono border border-slate-800 text-slate-600 transition-all">📡 Sinais</button>
+        </div>
+      </div>
+
+      <!-- Log feed -->
+      <div class="bg-slate-900 rounded-xl border border-slate-800/60 overflow-hidden">
+        <div id="logs-feed">
+          <div class="py-10 text-center text-slate-700 text-xs font-mono">A carregar logs…</div>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- ════════════════════ WATCHLIST SLIDE-OVER ════════════════════ -->
+  <div id="wl-slide-bd" class="slide-over-bd" onclick="closeWlDetail()"></div>
+
+  <aside id="wl-slide-over" class="slide-over" role="dialog" aria-modal="true" aria-label="Detalhe do ativo">
+    <div class="p-5">
+
+      <!-- Slide-over header -->
+      <div class="flex items-start justify-between mb-5">
+        <div class="flex items-center gap-3">
+          <div id="slo-logo" class="shrink-0"></div>
+          <div>
+            <p id="slo-ticker" class="text-xl font-mono font-bold text-white leading-none">—</p>
+            <p id="slo-sector" class="text-xs text-slate-500 mt-0.5">—</p>
+          </div>
+        </div>
+        <button
+          onclick="closeWlDetail()"
+          class="text-slate-600 hover:text-slate-300 transition-colors p-1.5 rounded-md hover:bg-slate-800 shrink-0"
+          aria-label="Fechar"
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <!-- Section: Available data -->
+      <div class="mb-5">
+        <p class="text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-3">Dados Disponíveis</p>
+        <div class="space-y-0">
+          <div class="flex justify-between items-center py-2.5 border-b border-slate-800/60">
+            <span class="text-xs text-slate-500">Preço Atual</span>
+            <span class="text-sm font-mono font-medium text-slate-200" id="slo-price">—</span>
+          </div>
+          <div class="flex justify-between items-center py-2.5 border-b border-slate-800/60">
+            <span class="text-xs text-slate-500">Score Momentum</span>
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-mono text-slate-500 tabular-nums" id="slo-score-val">—</span>
+              <span id="slo-score-badge"></span>
+            </div>
+          </div>
+          <div class="flex justify-between items-center py-2.5 border-b border-slate-800/60">
+            <span class="text-xs text-slate-500">Momentum 1M</span>
+            <span id="slo-mom1m" class="text-xs">—</span>
+          </div>
+          <div class="flex justify-between items-center py-2.5 border-b border-slate-800/60">
+            <span class="text-xs text-slate-500">Momentum 3M</span>
+            <span id="slo-mom3m" class="text-xs">—</span>
+          </div>
+          <div class="flex justify-between items-center py-2.5">
+            <span class="text-xs text-slate-500">Liquidez Média</span>
+            <span class="text-sm font-mono text-slate-300 tabular-nums" id="slo-liq">—</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section: Fundamentals (dynamic) -->
+      <div class="mb-3 rounded-lg border border-slate-800/50 bg-[#0f131a] p-4">
+        <p class="text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-3">Análise Fundamentalista</p>
+        <div id="slo-fundamentals">
+          <p class="text-xs text-slate-700">A verificar…</p>
+        </div>
+      </div>
+
+      <!-- Section: Earnings AI (dynamic) -->
+      <div class="mb-3 rounded-lg border border-slate-800/50 bg-[#0f131a] p-4">
+        <p class="text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-3">Earnings AI</p>
+        <div id="slo-earnings">
+          <p class="text-xs text-slate-700">A verificar…</p>
+        </div>
+      </div>
+
+      <!-- Section: News (dynamic) -->
+      <div class="mb-3 rounded-lg border border-slate-800/50 bg-[#0f131a] p-4">
+        <p class="text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-3">Notícias Recentes</p>
+        <div id="slo-news">
+          <p class="text-xs text-slate-700">A carregar…</p>
+        </div>
+      </div>
+
+      <!-- Section: Risk Terminal (bottom, always from watchlist.json) -->
+      <div class="rounded-lg border border-slate-800/50 bg-[#080b10] p-4">
+        <p class="text-[10px] font-semibold text-slate-600 uppercase tracking-widest mb-3">Métricas de Risco</p>
+        <div id="slo-risk-terminal">
+          <p class="text-xs text-slate-700">A calcular…</p>
+        </div>
+      </div>
+
+    </div>
+  </aside>
 
 <script>
-(function(){
-  const t=document.querySelector('[data-theme-toggle]'),r=document.documentElement;
-  let d=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
-  r.setAttribute('data-theme',d);
-  const icons={
-    light:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>',
-    dark:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>'
-  };
-  const setTheme=th=>{d=th;r.setAttribute('data-theme',th);if(t)t.innerHTML=icons[th];};
-  setTheme(d);
-  if(t)t.addEventListener('click',()=>setTheme(d==='dark'?'light':'dark'));
-})();
+/* ─────────────────────────────────────────────
+   TAB SWITCHING
+───────────────────────────────────────────── */
+const TABS = ['overview', 'watchlist', 'alpha', 'logs'];
+let wlLoaded = false;
+let logsLoaded = false;
 
-const WORKER='https://stocks.araujo-francisco-fernandes.workers.dev';
-const YF_PROXY='https://query2.finance.yahoo.com/v1/finance/search';
-const CORS_P='https://corsproxy.io/?';
-
-function normalizeWatchlist(items){
-  const arr=Array.isArray(items)?items:[];
-  const seen=new Set();
-  const out=[];
-  for(const item of arr){
-    const t=String(item||'').trim().toUpperCase();
-    if(!t||seen.has(t)) continue;
-    seen.add(t);
-    out.push(t);
+function switchTab(tab) {
+  TABS.forEach(t => {
+    const panel = document.getElementById('panel-' + t);
+    const btn   = document.getElementById('tab-btn-' + t);
+    panel.classList.toggle('hidden', t !== tab);
+    btn.className = (t === tab ? 'tab-active' : 'tab-inactive') +
+      ' px-4 h-full text-sm font-medium transition-colors duration-150';
+  });
+  if (tab === 'watchlist' && !wlLoaded) {
+    wlLoaded = true;
+    loadWatchlist();
   }
-  return out;
-}
-function getWatchlist(){
-  try{
-    const normalized=normalizeWatchlist(JSON.parse(localStorage.getItem('fs_watchlist')||'[]'));
-    localStorage.setItem('fs_watchlist',JSON.stringify(normalized));
-    return normalized;
-  }catch{return[];}
-}
-function saveWatchlist(arr){
-  localStorage.setItem('fs_watchlist',JSON.stringify(normalizeWatchlist(arr)));
-}
-function isInWatchlist(ticker){
-  const t=String(ticker||'').toUpperCase();
-  return getWatchlist().includes(t);
-}
-function toggleWatchlist(ticker){
-  const t=String(ticker||'').toUpperCase();
-  let arr=getWatchlist();
-  if(arr.includes(t)){
-    arr=arr.filter(x=>x!==t);
-  }else{
-    arr.push(t);
+  if (tab === 'logs' && !logsLoaded) {
+    logsLoaded = true;
+    renderLogsFeed();
   }
-  saveWatchlist(arr);
-  return arr.includes(t);
 }
 
-let LOCAL={};
-async function loadLocal(){
-  try{
-    const r=await fetch('data.json?t='+Date.now());
-    if(!r.ok)throw 0;
-    const j=await r.json();
-    LOCAL=j.stocks||{};
-  }catch{}
+/* ─────────────────────────────────────────────
+   HELPERS
+───────────────────────────────────────────── */
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
-async function yfSearch(term){
-  const url=`${CORS_P}${encodeURIComponent(YF_PROXY+'?q='+encodeURIComponent(term)+'&lang=en&region=US&quotesCount=8&newsCount=0&enableFuzzyQuery=true')}`;
-  const r=await fetch(url,{headers:{'Accept':'application/json'}});
-  if(!r.ok)throw new Error('search '+r.status);
-  return r.json();
+function fmtEur(n) {
+  return '€' + Number(n).toLocaleString('pt-PT', {minimumFractionDigits:2, maximumFractionDigits:2});
 }
 
-async function workerQuote(symbol){
-  try{
-    const ctrl=new AbortController();
-    const tid=setTimeout(()=>ctrl.abort(),8000);
-    const r=await fetch(`${WORKER}?ticker=${encodeURIComponent(symbol)}&range=1d&interval=5m`,{signal:ctrl.signal});
-    clearTimeout(tid);
-    if(!r.ok) return null;
-    const j=await r.json();
-    const meta=j?.chart?.result?.[0]?.meta;
-    if(!meta||!meta.regularMarketPrice) return null;
-    const price=meta.regularMarketPrice;
-    const prev=meta.chartPreviousClose||meta.previousClose||price;
-    return{price,chgPct:prev?((price-prev)/prev)*100:0,currency:meta.currency||'USD'};
-  }catch{return null;}
+function fmtPct(n) {
+  const v = Number(n);
+  return (v >= 0 ? '+' : '') + v.toFixed(2) + '%';
 }
 
-function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-function currencySymbol(cur){const m={USD:'$',EUR:'\u20ac',GBP:'\u00a3',CHF:'CHF ',SEK:'SEK ',JPY:'\u00a5',CAD:'CA$',AUD:'A$'};return m[cur]||'$';}
-function quoteTypeLabel(qt){const m={EQUITY:'A\u00e7\u00e3o',ETF:'ETF',MUTUALFUND:'Fundo',INDEX:'\u00cdndice'};return m[qt]||'A\u00e7\u00e3o';}
-
-const panel=document.getElementById('resultsPanel');
-const list=document.getElementById('resultsList');
-const mainIn=document.getElementById('mainSearch');
-const resIn=document.getElementById('resultsInput');
-const closeBtn=document.getElementById('resultsClose');
-let timer=null;
-
-function openPanel(q){
-  panel.classList.add('open');
-  resIn.value=q||'';
-  resIn.focus();
-  if(q) doSearch(q);
-  else list.innerHTML='<div class="results-empty">Escreve para pesquisar qualquer a&#231;&#227;o ou ETF&#8230;</div>';
-}
-function closePanel(){
-  panel.classList.remove('open');
-  mainIn.focus();
+function pctColor(n) {
+  return Number(n) >= 0 ? 'text-emerald-400' : 'text-red-400';
 }
 
-function watchlistBtnHTML(ticker){
-  const added=isInWatchlist(ticker);
-  return `<button class="btn-watchlist-add${added?' added':''}" data-wl="${esc(ticker)}" title="${added?'Remover da Watchlist':'Adicionar \u00e0 Watchlist'}" onclick="event.preventDefault();event.stopPropagation();handleWlToggle(this,'${esc(ticker)}')">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="${added?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-  </button>`;
+function regimeBadgeClass(regime) {
+  if (!regime) return 'badge-neutral';
+  const r = regime.toLowerCase();
+  if (r.includes('bull') && r.includes('lateral')) return 'badge-bull-lateral';
+  if (r.includes('bull')) return 'badge-bull';
+  if (r.includes('bear')) return 'badge-bear';
+  return 'badge-neutral';
 }
 
-window.handleWlToggle=function(btn,ticker){
-  const added=toggleWatchlist(ticker);
-  btn.className='btn-watchlist-add'+(added?' added':'');
-  btn.title=added?'Remover da Watchlist':'Adicionar \u00e0 Watchlist';
-  btn.innerHTML=`<svg width="14" height="14" viewBox="0 0 24 24" fill="${added?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`;
+/* ─────────────────────────────────────────────
+   LOAD: regime.json
+───────────────────────────────────────────── */
+async function loadRegime() {
+  try {
+    const res = await fetch('data/beta/regime.json?t=' + Date.now());
+    if (!res.ok) throw 0;
+    const d = await res.json();
+
+    const badge = document.getElementById('regime-badge');
+    badge.textContent = (d.regime || '—').replace(/_/g, ' ').toUpperCase();
+    badge.className = 'px-3 py-1 rounded-full text-[11px] font-bold tracking-widest ' + regimeBadgeClass(d.regime);
+
+    const m = d.metrics || {};
+
+    document.getElementById('rm-spy').textContent   = m.spy_price  ? '$' + m.spy_price.toFixed(2)  : '—';
+    document.getElementById('rm-ema200').textContent = m.ema200     ? '$' + m.ema200.toFixed(2)      : '—';
+
+    const dist = m.spy_pct_from_ema200;
+    const distEl = document.getElementById('rm-dist');
+    distEl.textContent = dist !== undefined ? fmtPct(dist) : '—';
+    distEl.className = 'text-sm font-mono font-medium ' + (dist !== undefined ? pctColor(dist) : 'text-slate-200');
+
+    document.getElementById('rm-atr').textContent = m.atr_ratio_vs_60d_mean !== undefined
+      ? m.atr_ratio_vs_60d_mean.toFixed(4) : '—';
+
+    const ret20 = m.spy_return_20d;
+    const ret20El = document.getElementById('rm-ret20');
+    if (ret20 !== undefined) {
+      ret20El.textContent = fmtPct(ret20 * 100);
+      ret20El.className = 'text-sm font-mono font-medium ' + pctColor(ret20);
+    }
+
+    const breadthEl = document.getElementById('rm-breadth');
+    if (m.breadth_healthy !== undefined) {
+      breadthEl.textContent = m.breadth_healthy ? 'Saudável' : 'Fraca';
+      breadthEl.className = 'text-sm font-mono font-medium ' + (m.breadth_healthy ? 'text-emerald-400' : 'text-red-400');
+    }
+
+    if (d.last_updated) {
+      document.getElementById('regime-updated').textContent =
+        'Atualizado: ' + new Date(d.last_updated).toLocaleString('pt-PT');
+    }
+  } catch {
+    const b = document.getElementById('regime-badge');
+    b.textContent = 'Sem dados';
+    b.className = 'px-3 py-1 rounded-full text-[11px] font-bold tracking-widest badge-neutral';
+  }
+}
+
+/* ─────────────────────────────────────────────
+   LOAD: beta_summary.json
+───────────────────────────────────────────── */
+async function loadSummary() {
+  try {
+    const res = await fetch('data/beta/beta_summary.json?t=' + Date.now());
+    if (!res.ok) throw 0;
+    const d = await res.json();
+    const s = d.summary || {};
+
+    document.getElementById('kpi-total-value').textContent = fmtEur(s.current_value || 0);
+    document.getElementById('kpi-initial').textContent = 'Capital inicial: ' + fmtEur(s.initial_capital || 0);
+
+    const gain = s.total_gain_eur || 0;
+    const gainEl = document.getElementById('kpi-total-gain');
+    gainEl.textContent = fmtEur(gain);
+    gainEl.className = 'text-xl font-bold tabular-nums leading-none mb-1.5 ' + pctColor(gain);
+
+    const gainPctEl = document.getElementById('kpi-gain-pct');
+    gainPctEl.textContent = fmtPct(s.total_gain_pct || 0);
+    gainPctEl.className = 'text-xs tabular-nums ' + pctColor(s.total_gain_pct || 0);
+
+    document.getElementById('kpi-winrate').textContent = (s.win_rate_pct || 0).toFixed(1) + '%';
+    document.getElementById('kpi-trades').textContent  = (s.n_trades || 0) + ' trades';
+
+    const dd = s.max_drawdown_pct || 0;
+    const ddEl = document.getElementById('kpi-drawdown');
+    ddEl.textContent = fmtPct(dd);
+    ddEl.className = 'text-xl font-bold tabular-nums leading-none mb-1.5 ' + pctColor(dd);
+
+    document.getElementById('kpi-avgwin').textContent =
+      'Avg ↑ ' + fmtEur(s.avg_win_eur || 0) + '  ↓ ' + fmtEur(s.avg_loss_eur || 0);
+
+    if (d.updated) {
+      document.getElementById('lastUpdated').textContent =
+        new Date(d.updated).toLocaleTimeString('pt-PT', {hour:'2-digit', minute:'2-digit'});
+      document.getElementById('lastUpdated').classList.remove('hidden');
+    }
+  } catch { /* silent */ }
+}
+
+/* ─────────────────────────────────────────────
+   LOAD: beta_positions.json
+───────────────────────────────────────────── */
+async function loadPositions() {
+  try {
+    const res = await fetch('data/beta/beta_positions.json?t=' + Date.now());
+    if (!res.ok) throw 0;
+    const d = await res.json();
+    const positions = d.positions || [];
+
+    if (d.updated) {
+      document.getElementById('positions-updated').textContent =
+        new Date(d.updated).toLocaleString('pt-PT');
+    }
+
+    if (!positions.length) {
+      document.getElementById('positions-tbody').innerHTML =
+        '<tr><td colspan="7" class="py-10 text-center text-slate-700 text-xs">Sem posições ativas</td></tr>';
+      return;
+    }
+
+    let totalInvested = 0, totalValue = 0;
+    const rows = positions.map(p => {
+      totalInvested += p.invested || 0;
+      totalValue    += p.value    || 0;
+
+      const roi    = p.gain_pct  || 0;
+      const dayChg = p.change_pct || 0;
+      const roiChip   = roi >= 0 ? 'chip-green' : 'chip-red';
+      const dayArrow  = dayChg >= 0 ? '▲' : '▼';
+      const dayClass  = dayChg >= 0 ? 'text-emerald-500' : 'text-red-500';
+      const gainClass = roi >= 0   ? 'text-emerald-400' : 'text-red-400';
+
+      return `<tr class="hover:bg-slate-800/20 transition-colors">
+        <td class="py-3 pl-1 pr-3">
+          <span class="font-mono font-semibold text-white text-sm">${esc(p.ticker)}</span>
+          <span class="${dayClass} text-[10px] ml-1.5">${dayArrow}${Math.abs(dayChg).toFixed(2)}%</span>
+        </td>
+        <td class="py-3 pr-3 text-slate-500 text-xs whitespace-nowrap overflow-hidden max-w-[120px]">${esc(p.display_name || p.ticker)}</td>
+        <td class="py-3 pr-3 text-right text-slate-400 font-mono text-sm">${p.quantity}</td>
+        <td class="py-3 pr-3 text-right text-slate-500 font-mono text-sm">${fmtEur(p.avg_price)}</td>
+        <td class="py-3 pr-3 text-right text-slate-200 font-mono text-sm font-medium">${fmtEur(p.last_price)}</td>
+        <td class="py-3 pr-3 text-right font-mono text-sm ${gainClass}">${fmtEur(p.gain_eur)}</td>
+        <td class="py-3 pr-1 text-right">
+          <span class="inline-block px-2 py-0.5 rounded text-[11px] font-bold tabular-nums ${roiChip}">
+            ${roi >= 0 ? '+' : ''}${roi.toFixed(2)}%
+          </span>
+        </td>
+      </tr>`;
+    });
+
+    document.getElementById('positions-tbody').innerHTML = rows.join('');
+    document.getElementById('pos-total-invested').textContent = fmtEur(totalInvested);
+    document.getElementById('pos-total-value').textContent    = fmtEur(totalValue);
+
+  } catch {
+    document.getElementById('positions-tbody').innerHTML =
+      '<tr><td colspan="7" class="py-10 text-center text-slate-700 text-xs">Erro ao carregar posições</td></tr>';
+  }
+}
+
+/* ─────────────────────────────────────────────
+   WATCHLIST TAB
+───────────────────────────────────────────── */
+const SECTOR_LABELS = {
+  XLK:'Technology', XLV:'Health Care', XLY:'Consumer Disc.',
+  XLI:'Industrials', XLF:'Financials', XLE:'Energy',
+  XLB:'Materials', XLP:'Consumer Staples', XLU:'Utilities',
+  XLRE:'Real Estate', XLC:'Communication'
 };
 
-function resultHTML(ticker,name,typeLabel,exch,price,chgPct,sym){
-  const up=chgPct>=0,sign=up?'+':'-';
-  return `<a class="result-item" href="stock.html?ticker=${encodeURIComponent(ticker)}">
-    <span class="result-badge">${esc(ticker.slice(0,7))}</span>
-    <div class="result-info">
-      <p class="result-name">${esc(name)}</p>
-      <p class="result-type">${esc(typeLabel)}${exch?' &middot; '+esc(exch):''}</p>
-    </div>
-    <div style="text-align:right;flex-shrink:0;">
-      <p class="result-price">${esc(sym)}${price.toFixed(2)}</p>
-      <p class="result-chg ${up?'up':'down'}">${up?'&#9650;':'&#9660;'} ${sign}${Math.abs(chgPct).toFixed(2)}%</p>
-    </div>
-    ${watchlistBtnHTML(ticker)}
-  </a>`;
+let wlData = [];
+
+function tickerColor(ticker) {
+  const palette = ['#3b82f6','#8b5cf6','#ec4899','#f97316','#06b6d4','#10b981','#f59e0b','#6366f1'];
+  let h = 0;
+  for (const c of String(ticker)) h = (Math.imul(31, h) + c.charCodeAt(0)) | 0;
+  return palette[Math.abs(h) % palette.length];
 }
 
-async function doSearch(q){
-  const term=q.trim();
-  if(!term){
-    list.innerHTML='<div class="results-empty">Escreve para pesquisar&#8230;</div>';
+function logoHTML(ticker) {
+  const domain = ticker.toLowerCase().replace(/[^a-z0-9]/g, '');
+  const initials = ticker.slice(0, 2).toUpperCase();
+  const bg = tickerColor(ticker);
+  return `<span style="position:relative;display:inline-block;width:28px;height:28px;flex-shrink:0">` +
+    `<img src="https://logo.clearbit.com/${domain}.com" width="28" height="28" ` +
+    `style="border-radius:6px;background:#fff;object-fit:contain;position:absolute;inset:0" ` +
+    `onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">` +
+    `<span style="display:none;width:28px;height:28px;border-radius:6px;background:${bg};` +
+    `position:absolute;inset:0;align-items:center;justify-content:center;` +
+    `color:#fff;font-size:9px;font-weight:700">${initials}</span>` +
+    `</span>`;
+}
+
+function scoreBadge(score) {
+  const v = Number(score);
+  if (v >= 0.7) return `<span class="badge-forte px-2 py-0.5 rounded text-[10px] font-bold tracking-wider">FORTE</span>`;
+  if (v >= 0.4) return `<span class="badge-medio px-2 py-0.5 rounded text-[10px] font-bold tracking-wider">MÉDIO</span>`;
+  return `<span class="badge-fraco px-2 py-0.5 rounded text-[10px] font-bold tracking-wider">FRACO</span>`;
+}
+
+function momChip(val) {
+  const v = Number(val);
+  if (isNaN(v)) return '<span class="text-slate-700 text-xs font-mono">—</span>';
+  const up  = v >= 0;
+  const cls = up ? 'chip-mom-up' : 'chip-mom-down';
+  const pct = (v * 100).toFixed(1);
+  const sign = up ? '+' : '';
+  return `<span class="${cls} inline-block px-1.5 py-0.5 rounded text-[10px] font-mono tabular-nums">${up ? '▲' : '▼'} ${sign}${pct}%</span>`;
+}
+
+function fmtLiq(n) {
+  const v = Number(n);
+  if (v >= 1e9) return (v / 1e9).toFixed(1) + 'B';
+  if (v >= 1e6) return (v / 1e6).toFixed(0) + 'M';
+  return (v / 1e3).toFixed(0) + 'K';
+}
+
+async function loadWatchlist() {
+  const tbody = document.getElementById('wl-tbody');
+  const meta  = document.getElementById('wl-meta');
+  if (!tbody) return;
+
+  tbody.innerHTML = '<tr><td colspan="5" class="py-10 text-center text-slate-700 text-xs">A carregar watchlist…</td></tr>';
+
+  /* ── Fetch base data ── */
+  let candidates = [], lastUpdated = null;
+  try {
+    const res = await fetch('data/beta/watchlist.json?t=' + Date.now());
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const d = await res.json();
+    candidates  = Array.isArray(d.candidates) ? d.candidates : [];
+    lastUpdated = d.last_updated;
+    if (meta) {
+      const ts = lastUpdated ? new Date(lastUpdated).toLocaleString('pt-PT') : '—';
+      meta.textContent = (d.count || candidates.length) + ' candidatos · ' + ts;
+    }
+  } catch (e) {
+    tbody.innerHTML =
+      `<tr><td colspan="5" class="py-10 text-center">` +
+      `<p class="text-red-400 text-sm font-medium mb-1">Erro ao carregar watchlist</p>` +
+      `<p class="text-slate-700 text-xs">${esc(String(e.message || e))}</p>` +
+      `</td></tr>`;
     return;
   }
-  list.innerHTML='<div class="loading-dots"><span></span><span></span><span></span></div>';
-  const termUpper=term.toUpperCase();
 
-  const localHits=Object.values(LOCAL).filter(s=>
-    (s.ticker||'').toUpperCase().includes(termUpper)||(s.name||'').toUpperCase().includes(termUpper)
-  );
-  if(localHits.length){
-    list.innerHTML=localHits.map(s=>resultHTML(s.ticker,s.name||s.ticker,s.type||'A\u00e7\u00e3o',s.exchange||'',s.price||0,s.changePct||0,s.symbol||'$')).join('');
+  /* ── Try to merge fundamentals (optional, fails silently) ── */
+  let fundamentals = {};
+  try {
+    const fr = await fetch('data/beta/watchlist_fundamentals.json?t=' + Date.now());
+    if (!fr.ok) throw new Error('not found');
+    const fd = await fr.json();
+    const entries = Array.isArray(fd) ? fd : Object.values(fd);
+    entries.forEach(f => {
+      if (f && f.ticker) fundamentals[String(f.ticker).toUpperCase()] = f;
+    });
+  } catch {
+    fundamentals = {};
   }
 
-  try{
-    const data=await yfSearch(term);
-    const quotes=(data.quotes||[])
-      .filter(q=>['EQUITY','ETF','MUTUALFUND','INDEX'].includes(q.quoteType))
-      .slice(0,7);
+  /* ── Merge and cache ── */
+  wlData = candidates.map(c => ({
+    ...c,
+    ...(fundamentals[String(c.ticker || '').toUpperCase()] || {})
+  }));
 
-    if(!quotes.length){
-      if(!localHits.length) list.innerHTML='<div class="results-empty">Sem resultados para "<strong>'+esc(q)+'</strong>"</div>';
-      return;
-    }
-
-    const results=await Promise.all(quotes.map(async h=>{
-      const sym=h.symbol;
-      const lk=sym.replace(/\.(AS|L|PA|DE|MI|BR|HK|T|BO|NS|F|ST|CO|OL|HE|VI|PR|IS)$/i,'');
-      if(LOCAL[lk]){
-        const s=LOCAL[lk];
-        return{ticker:lk,name:h.longname||h.shortname||s.name,typeLabel:quoteTypeLabel(h.quoteType),exch:h.exchDisp||s.exchange||'',price:s.price,chgPct:s.changePct,sym:s.symbol||'$'};
-      }
-      const q2=await workerQuote(sym);
-      if(!q2) return null;
-      return{
-        ticker:sym,
-        name:h.longname||h.shortname||sym,
-        typeLabel:quoteTypeLabel(h.quoteType),
-        exch:h.exchDisp||'',
-        price:q2.price,
-        chgPct:q2.chgPct,
-        sym:currencySymbol(q2.currency)
-      };
-    }));
-
-    const seen=new Set();
-    const deduped=results.filter(r=>{if(!r||seen.has(r.ticker))return false;seen.add(r.ticker);return true;});
-
-    if(!deduped.length){
-      if(!localHits.length) list.innerHTML='<div class="results-empty">Sem pre\u00e7os dispon\u00edveis. Tenta um ticker exato (ex: AAPL).</div>';
-      return;
-    }
-    list.innerHTML=deduped.map(r=>resultHTML(r.ticker,r.name,r.typeLabel,r.exch,r.price,r.chgPct,r.sym)).join('');
-
-  }catch(err){
-    const t=term.toUpperCase();
-    if(!t.includes(' ')&&!localHits.length){
-      list.innerHTML=`<a class="result-item" href="stock.html?ticker=${encodeURIComponent(t)}">
-        <span class="result-badge">${esc(t)}</span>
-        <div class="result-info"><p class="result-name">Ver p\u00e1gina de ${esc(t)}</p><p class="result-type">Clicar para abrir</p></div>
-      </a>`;
-    } else if(!localHits.length){
-      list.innerHTML='<div class="results-empty">Erro de liga\u00e7\u00e3o. Tenta novamente.</div>';
-    }
+  if (!wlData.length) {
+    tbody.innerHTML = '<tr><td colspan="5" class="py-10 text-center text-slate-700 text-xs">Sem candidatos na watchlist</td></tr>';
+    return;
   }
+
+  tbody.innerHTML = wlData.map((c, i) => {
+    const ticker  = String(c.ticker || '');
+    const sector  = SECTOR_LABELS[c.sector] || c.sector || '—';
+    const price   = c.price != null ? '$' + Number(c.price).toFixed(2) : '—';
+    const liq     = c.liq_usd_avg != null ? fmtLiq(c.liq_usd_avg) : '—';
+
+    return `<tr
+      class="hover:bg-slate-800/25 transition-colors cursor-pointer"
+      onclick="openWlDetail(${i})"
+    >
+      <td class="py-3 pl-4 pr-4">
+        <div class="flex items-center gap-2.5">
+          ${logoHTML(ticker)}
+          <div>
+            <p class="font-mono font-semibold text-white text-sm leading-none">${esc(ticker)}</p>
+            <p class="text-[10px] text-slate-600 mt-0.5">${esc(sector)}</p>
+          </div>
+        </div>
+      </td>
+      <td class="py-3 pr-4 text-right font-mono text-sm text-slate-200 tabular-nums">${esc(price)}</td>
+      <td class="py-3 pr-4 text-center">${scoreBadge(c.score)}</td>
+      <td class="py-3 pr-4">
+        <div class="flex flex-col items-end gap-1">
+          ${momChip(c.mom_1m)}
+          ${momChip(c.mom_3m)}
+        </div>
+      </td>
+      <td class="py-3 pr-4 text-right font-mono text-sm text-slate-500 tabular-nums">${esc(liq)}</td>
+    </tr>`;
+  }).join('');
 }
 
-document.getElementById('searchBtn').addEventListener('click',()=>openPanel(mainIn.value));
-mainIn.addEventListener('keydown',e=>{if(e.key==='Enter'){const v=mainIn.value.trim();if(v)location.href='stock.html?ticker='+encodeURIComponent(v.toUpperCase());}});
-mainIn.addEventListener('input',()=>{if(mainIn.value.trim())openPanel(mainIn.value);});
-resIn.addEventListener('input',()=>{clearTimeout(timer);timer=setTimeout(()=>doSearch(resIn.value),400);});
-closeBtn.addEventListener('click',closePanel);
-panel.addEventListener('click',e=>{if(e.target===panel)closePanel();});
-document.addEventListener('keydown',e=>{if(e.key==='Escape'&&panel.classList.contains('open'))closePanel();});
-document.querySelectorAll('.chip').forEach(c=>c.addEventListener('click',()=>openPanel(c.dataset.query)));
+/* ─────────────────────────────────────────────
+   SLIDE-OVER HELPERS
+───────────────────────────────────────────── */
+
+/* Shared news cache: one fetch per session, reused across tickers */
+let _newsCachePromise = null;
+function _getNews() {
+  if (!_newsCachePromise) {
+    _newsCachePromise = fetch('news.json?t=' + Date.now())
+      .then(r => r.ok ? r.json() : { articles: [] })
+      .then(d => Array.isArray(d.articles) ? d.articles : [])
+      .catch(() => []);
+  }
+  return _newsCachePromise;
+}
+
+function sentimentBadge(s) {
+  if (s === 'positive') return '<span class="badge-forte  px-1.5 py-0.5 rounded text-[10px] font-bold">BULL</span>';
+  if (s === 'negative') return '<span class="badge-fraco  px-1.5 py-0.5 rounded text-[10px] font-bold">BEAR</span>';
+  return                        '<span class="badge-neutral px-1.5 py-0.5 rounded text-[10px] font-bold">NEUTRO</span>';
+}
+
+function _renderNews(ticker, articles) {
+  const el = document.getElementById('slo-news');
+  if (!el) return;
+  const tickerUP = ticker.toUpperCase();
+  const hits = articles.filter(a => {
+    const ts = (a.impact && Array.isArray(a.impact.tickers)) ? a.impact.tickers : [];
+    return ts.some(t => String(t).toUpperCase() === tickerUP);
+  });
+  if (!hits.length) {
+    el.innerHTML = `<p class="text-xs text-slate-600 italic">Sem notícias recentes para ${esc(ticker)}</p>`;
+    return;
+  }
+  el.innerHTML = hits.slice(0, 5).map(a => {
+    const date = new Date(a.publishedAt).toLocaleDateString('pt-PT');
+    const sent = (a.impact && a.impact.sentiment) || 'neutral';
+    return `<div class="pb-3 mb-3 border-b border-slate-800/40 last:border-0 last:pb-0 last:mb-0">
+      <div class="flex items-center justify-between mb-1.5">
+        ${sentimentBadge(sent)}
+        <span class="text-[10px] text-slate-700">${esc(a.source)} · ${date}</span>
+      </div>
+      <a href="${esc(a.url)}" target="_blank" rel="noopener noreferrer"
+         class="text-xs text-slate-400 hover:text-sky-400 transition-colors leading-relaxed block">
+        ${esc(a.title)}
+      </a>
+    </div>`;
+  }).join('');
+}
+
+function _renderFundamentals(ticker, fundsMap) {
+  const el = document.getElementById('slo-fundamentals');
+  if (!el) return;
+  const f = fundsMap && fundsMap[ticker.toUpperCase()];
+  if (!f) {
+    el.innerHTML =
+      `<p class="text-xs text-slate-700 mb-1">Consenso de analistas disponível na Fase 1</p>` +
+      `<p class="text-[11px] text-slate-800 font-mono">Aguarda geração de watchlist_fundamentals.json pelo bot</p>`;
+    return;
+  }
+  /* ── File exists: render buy/hold/sell bars + target ── */
+  const total = ((f.strongBuy||0)+(f.buy||0)+(f.hold||0)+(f.sell||0)+(f.strongSell||0)) || 1;
+  const buyPct  = Math.round(((f.strongBuy||0)+(f.buy||0)) / total * 100);
+  const holdPct = Math.round((f.hold||0) / total * 100);
+  const sellPct = 100 - buyPct - holdPct;
+  const target  = f.targetPrice != null ? '$' + Number(f.targetPrice).toFixed(2) : null;
+  const upside  = (f.targetPrice != null && f.price != null)
+    ? ((f.targetPrice - f.price) / f.price * 100).toFixed(1) : null;
+  el.innerHTML = `
+    <div class="space-y-3">
+      <div>
+        <div class="flex justify-between text-[10px] text-slate-600 mb-1.5">
+          <span>Comprar ${buyPct}%</span>
+          <span>Manter ${holdPct}%</span>
+          <span>Vender ${sellPct}%</span>
+        </div>
+        <div class="flex rounded overflow-hidden h-1.5">
+          <div class="bg-emerald-500/60 transition-all" style="width:${buyPct}%"></div>
+          <div class="bg-yellow-500/60  transition-all" style="width:${holdPct}%"></div>
+          <div class="bg-red-500/60     transition-all" style="width:${sellPct}%"></div>
+        </div>
+      </div>
+      ${target ? `<div class="flex justify-between items-center">
+        <span class="text-xs text-slate-600">Target Price</span>
+        <span class="text-xs font-mono text-slate-300">${esc(target)}
+          ${upside != null ? `<span class="${Number(upside)>=0?'text-emerald-400':'text-red-400'}">(${Number(upside)>=0?'+':''}${upside}%)</span>` : ''}
+        </span>
+      </div>` : ''}
+    </div>`;
+}
+
+function _renderEarnings(ticker, earningsData) {
+  const el = document.getElementById('slo-earnings');
+  if (!el) return;
+  if (!earningsData) {
+    el.innerHTML = `<p class="text-[11px] text-slate-700 italic">Resumo de resultados disponível quando o bot gerar earnings_ai.json</p>`;
+    return;
+  }
+  const entry = Array.isArray(earningsData)
+    ? earningsData.find(e => String(e.ticker||'').toUpperCase() === ticker.toUpperCase())
+    : (earningsData[ticker.toUpperCase()] || earningsData[ticker]);
+  if (!entry) {
+    el.innerHTML = `<p class="text-[11px] text-slate-700 italic">Sem dados de earnings para ${esc(ticker)}</p>`;
+    return;
+  }
+  el.innerHTML = `<p class="text-xs text-slate-400 leading-relaxed">${esc(String(entry.summary || entry.text || JSON.stringify(entry)))}</p>`;
+}
+
+function _renderRiskTerminal(c) {
+  const el = document.getElementById('slo-risk-terminal');
+  if (!el) return;
+  const pctFmt = v => {
+    if (v == null) return '—';
+    const pct = Number(v) * 100;
+    return (pct >= 0 ? '+' : '') + pct.toFixed(2) + '%';
+  };
+  const pctCol = v => v != null ? (Number(v) >= 0 ? '#4ade80' : '#f87171') : '#475569';
+  const scoreBar = s => {
+    const pct = Math.round(Math.max(0, Math.min(1, Number(s) || 0)) * 100);
+    const col  = pct >= 70 ? '#22c55e' : pct >= 40 ? '#eab308' : '#ef4444';
+    return `<div style="display:flex;align-items:center;gap:6px">` +
+      `<div style="width:72px;height:4px;background:#1e293b;border-radius:2px;overflow:hidden">` +
+        `<div style="width:${pct}%;height:100%;background:${col};border-radius:2px"></div>` +
+      `</div>` +
+      `<span style="color:#94a3b8">${(Number(s)||0).toFixed(2)}</span>` +
+    `</div>`;
+  };
+  el.innerHTML = `<div class="font-mono text-xs space-y-1.5 leading-relaxed">
+    <div class="flex justify-between items-center">
+      <span class="text-slate-600">VARIAÇÃO 1M</span>
+      <span style="color:${pctCol(c.mom_1m)}">${pctFmt(c.mom_1m)}</span>
+    </div>
+    <div class="flex justify-between items-center">
+      <span class="text-slate-600">VARIAÇÃO 3M</span>
+      <span style="color:${pctCol(c.mom_3m)}">${pctFmt(c.mom_3m)}</span>
+    </div>
+    <div class="flex justify-between items-center">
+      <span class="text-slate-600">SCORE MOMENTUM</span>
+      ${scoreBar(c.score)}
+    </div>
+    <div class="flex justify-between items-center">
+      <span class="text-slate-600">VOLUME MÉDIO</span>
+      <span class="text-slate-400">${c.liq_usd_avg != null ? fmtLiq(c.liq_usd_avg) : '—'}</span>
+    </div>
+    <div class="border-t border-slate-800/60 pt-1.5 mt-0.5">
+      <div class="flex justify-between items-start gap-2">
+        <span class="text-slate-700 shrink-0">BETA / SHORT / 52W</span>
+        <span style="color:#1e293b;font-style:italic;text-align:right">Aguarda watchlist_fundamentals.json</span>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ── Slide-over open / close ── */
+async function openWlDetail(idx) {
+  const c = wlData[idx];
+  if (!c) return;
+
+  const ticker = String(c.ticker || '');
+  const sector = SECTOR_LABELS[c.sector] || c.sector || '—';
+
+  /* Render static data synchronously — slide-over opens immediately */
+  document.getElementById('slo-logo').innerHTML     = logoHTML(ticker);
+  document.getElementById('slo-ticker').textContent = ticker;
+  document.getElementById('slo-sector').textContent = sector;
+  document.getElementById('slo-price').textContent  =
+    c.price != null ? '$' + Number(c.price).toFixed(2) : '—';
+  document.getElementById('slo-score-val').textContent =
+    c.score != null ? Number(c.score).toFixed(4) : '—';
+  document.getElementById('slo-score-badge').innerHTML = scoreBadge(c.score);
+  document.getElementById('slo-mom1m').innerHTML = momChip(c.mom_1m);
+  document.getElementById('slo-mom3m').innerHTML = momChip(c.mom_3m);
+  document.getElementById('slo-liq').textContent =
+    c.liq_usd_avg != null ? fmtLiq(c.liq_usd_avg) : '—';
+
+  /* Risk terminal — synchronous, all data already in wlData */
+  _renderRiskTerminal(c);
+
+  /* Loading states for async sections */
+  document.getElementById('slo-news').innerHTML         = '<p class="text-xs text-slate-700 italic">A carregar notícias…</p>';
+  document.getElementById('slo-fundamentals').innerHTML = '<p class="text-xs text-slate-700 italic">A verificar…</p>';
+  document.getElementById('slo-earnings').innerHTML     = '<p class="text-xs text-slate-700 italic">A verificar…</p>';
+
+  /* Open immediately — don't block on network */
+  document.getElementById('wl-slide-over').classList.add('open');
+  document.getElementById('wl-slide-bd').classList.add('open');
+
+  /* Load three sources in parallel — all fail silently */
+  const [articles, fundsMap, earningsData] = await Promise.all([
+    _getNews(),
+    fetch('data/beta/watchlist_fundamentals.json?t=' + Date.now())
+      .then(r => r.ok ? r.json() : null)
+      .then(d => {
+        if (!d) return null;
+        const map = {};
+        const entries = Array.isArray(d) ? d : Object.values(d);
+        entries.forEach(f => { if (f && f.ticker) map[String(f.ticker).toUpperCase()] = f; });
+        return map;
+      })
+      .catch(() => null),
+    fetch('data/beta/earnings_ai.json?t=' + Date.now())
+      .then(r => r.ok ? r.json() : null)
+      .catch(() => null),
+  ]);
+
+  _renderNews(ticker, articles);
+  _renderFundamentals(ticker, fundsMap);
+  _renderEarnings(ticker, earningsData);
+}
+
+function closeWlDetail() {
+  document.getElementById('wl-slide-over').classList.remove('open');
+  document.getElementById('wl-slide-bd').classList.remove('open');
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeWlDetail();
+});
+
+/* ─────────────────────────────────────────────
+   LOGS TAB
+───────────────────────────────────────────── */
+let _allLogs   = [];
+let _logsFilter = 'all';
+
+function _logMeta(entry) {
+  const t   = entry.type  || '';
+  const err = (entry.detail && entry.detail.error) || '';
+  if (t === 'api_get_failed') {
+    if (err.toLowerCase().includes('timed out'))
+      return { icon:'⏱', color:'text-amber-400', label:'TIMEOUT',  key:'timeouts' };
+    if (err.includes('Retry'))
+      return { icon:'🔄', color:'text-blue-400',  label:'RETRY',    key:'errors'   };
+    return   { icon:'❌', color:'text-red-400',   label:'API ERRO', key:'errors'   };
+  }
+  if (t === 'trade_executed')   return { icon:'✅', color:'text-green-400', label:'TRADE', key:'trades'  };
+  if (t === 'trade_skipped')    return { icon:'⏭', color:'text-slate-400', label:'SKIP',  key:'trades'  };
+  if (t === 'signal_generated') return { icon:'📡', color:'text-blue-400',  label:'SINAL', key:'signals' };
+  return { icon:'ℹ️', color:'text-slate-400', label:'INFO', key:'info' };
+}
+
+function _logsMatchFilter(entry) {
+  if (_logsFilter === 'all') return true;
+  return _logMeta(entry).key === _logsFilter;
+}
+
+function _renderLogsFeed() {
+  const feed = document.getElementById('logs-feed');
+  if (!feed) return;
+  const visible = _allLogs.filter(_logsMatchFilter);
+  if (!visible.length) {
+    feed.innerHTML = `<div class="py-10 text-center text-slate-700 text-xs font-mono">${
+      _allLogs.length === 0
+        ? 'Sem atividade registada hoje.<br>O bot pode ainda não ter corrido.'
+        : 'Sem entradas para o filtro selecionado.'
+    }</div>`;
+    return;
+  }
+  feed.innerHTML = visible.map(entry => {
+    const meta     = _logMeta(entry);
+    const ts       = new Date(entry.datetime).toLocaleTimeString('pt-PT', {hour:'2-digit', minute:'2-digit', second:'2-digit'});
+    const endpoint = (entry.detail && entry.detail.endpoint) || entry.action || entry.type || '—';
+    const fullMsg  = (entry.detail && entry.detail.error) ||
+      (entry.reason ? (entry.reason + (entry.action ? ' → ' + entry.action : '')) : '') || '';
+    const shortMsg = fullMsg.length > 80 ? fullMsg.slice(0, 80) + '…' : fullMsg;
+    const hasMore  = fullMsg.length > 80;
+    return `<div class="group px-4 py-2.5 hover:bg-slate-800/30 transition-colors ${hasMore ? 'cursor-pointer' : ''}"
+      ${hasMore ? `onclick="this.querySelector('.log-exp').classList.toggle('hidden')"` : ''}>
+      <div class="flex items-baseline gap-3 font-mono text-xs">
+        <span class="text-slate-600 tabular-nums shrink-0 w-[72px]">${esc(ts)}</span>
+        <span class="${meta.color} shrink-0 w-[86px] font-bold">${meta.icon} ${meta.label}</span>
+        <span class="text-slate-500 shrink-0 truncate max-w-[130px]">${esc(String(endpoint))}</span>
+        <span class="text-slate-600 truncate flex-1 min-w-0">${esc(shortMsg)}</span>
+      </div>
+      ${hasMore ? `<div class="log-exp hidden mt-1.5 pl-[160px] text-[11px] font-mono text-slate-500 break-all leading-relaxed">${esc(fullMsg)}</div>` : ''}
+    </div>`;
+  }).join('');
+}
+
+function setLogsFilter(filter) {
+  _logsFilter = filter;
+  ['all','errors','timeouts','trades','signals'].forEach(f => {
+    const btn = document.getElementById('lf-' + f);
+    if (!btn) return;
+    if (f === filter) {
+      btn.className = 'px-3 py-1.5 rounded-md text-[11px] font-mono border border-slate-600 text-slate-200 ring-2 ring-blue-500 transition-all';
+    } else {
+      btn.className = 'px-3 py-1.5 rounded-md text-[11px] font-mono border border-slate-800 text-slate-600 transition-all';
+    }
+  });
+  _renderLogsFeed();
+}
+
+async function renderLogsFeed() {
+  const today = new Date().toISOString().slice(0, 10);
+  const meta  = document.getElementById('logs-meta');
+
+  const [errRes, trdRes] = await Promise.allSettled([
+    fetch(`logs/errors/${today}.json?t=` + Date.now())
+      .then(r => r.ok ? r.json() : []).catch(() => []),
+    fetch(`logs/trades/${today}.json?t=` + Date.now())
+      .then(r => r.ok ? r.json() : []).catch(() => []),
+  ]);
+
+  const errLogs = Array.isArray(errRes.value) ? errRes.value : [];
+  const trdLogs = Array.isArray(trdRes.value) ? trdRes.value : [];
+
+  _allLogs = [...errLogs, ...trdLogs]
+    .filter(e => e && e.datetime)
+    .sort((a, b) => new Date(b.datetime) - new Date(a.datetime));
+
+  if (meta) meta.textContent = `${_allLogs.length} entradas · ${today}`;
+
+  /* Connectivity alert: count most-recent consecutive timeouts */
+  const errDesc = errLogs
+    .filter(e => e && e.datetime)
+    .sort((a, b) => new Date(b.datetime) - new Date(a.datetime));
+  let consecTO = 0, toEndpoint = '';
+  for (const e of errDesc) {
+    const err = (e.detail && e.detail.error) || '';
+    if (e.type === 'api_get_failed' && err.toLowerCase().includes('timed out')) {
+      consecTO++;
+      if (!toEndpoint) toEndpoint = (e.detail && e.detail.endpoint) || '';
+    } else {
+      break;
+    }
+  }
+  const alertEl  = document.getElementById('logs-alert');
+  const alertMsg = document.getElementById('logs-alert-msg');
+  if (alertEl && alertMsg) {
+    if (consecTO >= 5) {
+      alertMsg.textContent = `⚠️ Bot desconectado: ${consecTO} timeouts consecutivos em ${toEndpoint}. Os dados do portfólio podem não estar atualizados.`;
+      alertEl.classList.remove('hidden');
+    } else {
+      alertEl.classList.add('hidden');
+    }
+  }
+
+  _renderLogsFeed();
+}
+
+/* ─────────────────────────────────────────────
+   PRESERVED: Stock search / watchlist utilities
+   (used by search.html and future Watchlist tab)
+───────────────────────────────────────────── */
+const WORKER  = 'https://stocks.araujo-francisco-fernandes.workers.dev';
+const YF_PROXY = 'https://query2.finance.yahoo.com/v1/finance/search';
+const CORS_P  = 'https://corsproxy.io/?';
+
+function normalizeWatchlist(items){const arr=Array.isArray(items)?items:[];const seen=new Set();const out=[];for(const item of arr){const t=String(item||'').trim().toUpperCase();if(!t||seen.has(t))continue;seen.add(t);out.push(t);}return out;}
+function getWatchlist(){try{const n=normalizeWatchlist(JSON.parse(localStorage.getItem('fs_watchlist')||'[]'));localStorage.setItem('fs_watchlist',JSON.stringify(n));return n;}catch{return[];}}
+function saveWatchlist(arr){localStorage.setItem('fs_watchlist',JSON.stringify(normalizeWatchlist(arr)));}
+function isInWatchlist(ticker){return getWatchlist().includes(String(ticker||'').toUpperCase());}
+function toggleWatchlist(ticker){const t=String(ticker||'').toUpperCase();let arr=getWatchlist();if(arr.includes(t)){arr=arr.filter(x=>x!==t);}else{arr.push(t);}saveWatchlist(arr);return arr.includes(t);}
+
+async function workerQuote(symbol){try{const ctrl=new AbortController();const tid=setTimeout(()=>ctrl.abort(),8000);const r=await fetch(`${WORKER}?ticker=${encodeURIComponent(symbol)}&range=1d&interval=5m`,{signal:ctrl.signal});clearTimeout(tid);if(!r.ok)return null;const j=await r.json();const meta=j?.chart?.result?.[0]?.meta;if(!meta||!meta.regularMarketPrice)return null;const price=meta.regularMarketPrice;const prev=meta.chartPreviousClose||meta.previousClose||price;return{price,chgPct:prev?((price-prev)/prev)*100:0,currency:meta.currency||'USD'};}catch{return null;}}
+
+async function yfSearch(term){const url=`${CORS_P}${encodeURIComponent(YF_PROXY+'?q='+encodeURIComponent(term)+'&lang=en&region=US&quotesCount=8&newsCount=0&enableFuzzyQuery=true')}`;const r=await fetch(url,{headers:{'Accept':'application/json'}});if(!r.ok)throw new Error('search '+r.status);return r.json();}
+
+let LOCAL = {};
+async function loadLocal(){try{const r=await fetch('data.json?t='+Date.now());if(!r.ok)throw 0;const j=await r.json();LOCAL=j.stocks||{};}catch{}}
+
+/* ─────────────────────────────────────────────
+   INIT
+───────────────────────────────────────────── */
+loadRegime();
+loadSummary();
+loadPositions();
 loadLocal();
 </script>
 </body>

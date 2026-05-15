@@ -1011,5 +1011,80 @@
       "risk_ok": true,
       "positions": []
     }
+  },
+  {
+    "datetime": "2026-05-15T19:10:58.369436+00:00",
+    "type": "decision",
+    "reason": "bot_start",
+    "action": "phase0_loop",
+    "context": {
+      "strategy_version": "v0.1.0"
+    }
+  },
+  {
+    "datetime": "2026-05-15T19:10:58.371716+00:00",
+    "type": "decision",
+    "reason": "phase0_start",
+    "action": "read_portfolio"
+  },
+  {
+    "datetime": "2026-05-15T19:12:28.308287+00:00",
+    "type": "decision",
+    "reason": "phase0_retry",
+    "action": "api_unavailable",
+    "context": {
+      "attempt": 1,
+      "wait_minutes": 2
+    }
+  },
+  {
+    "datetime": "2026-05-15T19:14:50.260186+00:00",
+    "type": "decision",
+    "reason": "phase0_retry",
+    "action": "api_unavailable",
+    "context": {
+      "attempt": 2,
+      "wait_minutes": 5
+    }
+  },
+  {
+    "datetime": "2026-05-15T19:20:12.187955+00:00",
+    "type": "decision",
+    "reason": "phase0_retry",
+    "action": "api_unavailable",
+    "context": {
+      "attempt": 3,
+      "wait_minutes": 10
+    }
+  },
+  {
+    "datetime": "2026-05-15T19:30:34.098440+00:00",
+    "type": "decision",
+    "reason": "phase0_abort",
+    "action": "api_unavailable",
+    "context": {
+      "consecutive_failures": 4
+    }
+  },
+  {
+    "datetime": "2026-05-15T19:30:34.106367+00:00",
+    "type": "decision",
+    "reason": "phase0_t212_unavailable",
+    "action": "cold_run",
+    "context": {
+      "reason": "T212 API indisponível — análise sem portfolio"
+    }
+  },
+  {
+    "datetime": "2026-05-15T19:30:34.115256+00:00",
+    "type": "decision",
+    "reason": "phase0_complete",
+    "action": "report_generated",
+    "context": {
+      "regime": "bull_lateral",
+      "n_signals": 0,
+      "risk_ok": true,
+      "positions": []
+    }
   }
 ]
