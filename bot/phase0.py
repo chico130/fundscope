@@ -359,5 +359,7 @@ def _git_sync(timestamp: str) -> None:
         print(f"Git: erro no push — {exc}")
 
 
+run_phase0_cycle = run  # alias used by main.py
+
 if __name__ == "__main__":
     run()

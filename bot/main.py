@@ -1,57 +1,62 @@
-"""
-Bot main loop — executa phase0 a cada 15 minutos e faz push para GitHub.
-
-Uso:
-  python -m bot.main
-"""
-from __future__ import annotations
-
 import time
-import requests
+import sys
+import os
+from .logger import log_info, log_error
+from .phase0 import run_phase0_cycle
+from .config import LOOP_INTERVAL_SECONDS
 
-from datetime import datetime, timezone
+LOCK_FILE = "bot.lock"
 
-from .config import STRATEGY_VERSION
-from .logger import log_decision, log_error
-from . import phase0
-
-LOOP_INTERVAL_SECONDS = 900  # 15 minutos
-
-
-def run() -> None:
-    print(f"[FundScope Bot] Iniciado — estratégia: {STRATEGY_VERSION}")
-    print(f"[FundScope Bot] Ciclo a cada {LOOP_INTERVAL_SECONDS // 60} minutos. Ctrl+C para parar.\n")
-    log_decision("bot_start", "phase0_loop", {"strategy_version": STRATEGY_VERSION})
-
-    cycle = 0
-    while True:
-        ts = datetime.now(timezone.utc).strftime("%H:%M:%S")
-        print(f"[{ts} UTC] Ciclo {cycle + 1} — a iniciar análise...")
+def _acquire_lock():
+    """Retorna True se conseguiu o lock, False se já há instância a correr."""
+    if os.path.exists(LOCK_FILE):
         try:
-            phase0.run()
+            with open(LOCK_FILE) as f:
+                old_pid = int(f.read().strip())
+            # Verifica se o processo ainda existe (Windows)
+            import psutil
+            if psutil.pid_exists(old_pid):
+                return False
+            # PID morto — lock fantasma, limpa e continua
+            os.remove(LOCK_FILE)
+        except Exception:
+            os.remove(LOCK_FILE)  # corrompido, limpa
+    with open(LOCK_FILE, "w") as f:
+        f.write(str(os.getpid()))
+    return True
 
-        except KeyboardInterrupt:
-            log_decision("bot_stop", "keyboard_interrupt", {"cycle": cycle})
-            print("\n[FundScope Bot] Interrompido pelo utilizador.")
-            break
+def run():
+    # ✅ Lock dentro do run() — protege independentemente de como é chamado
+    if not _acquire_lock():
+        print(f"❌ Bot já está a correr (bot.lock existe). Termina o processo anterior primeiro.")
+        sys.exit(1)
 
-        except requests.exceptions.ConnectionError as exc:
-            log_error("network_error", {"cycle": cycle, "error": str(exc)})
-            print(f"  Erro de rede — a tentar novamente no próximo ciclo. ({exc})")
+    log_info("bot_start", {"action": "phase0_loop", "context": {"strategy_version": "v0.1.0"}})
+    print("[FundScope Bot] A iniciar...")
+    print(f"[FundScope Bot] Iniciado — estratégia: v0.1.0")
+    print(f"[FundScope Bot] Ciclo a cada {LOOP_INTERVAL_SECONDS // 60} minutos. Ctrl+C para parar.\n")
 
-        except requests.exceptions.Timeout as exc:
-            log_error("network_timeout", {"cycle": cycle, "error": str(exc)})
-            print(f"  Timeout de rede — a tentar novamente no próximo ciclo. ({exc})")
+    cycle = 1
+    try:
+        while True:
+            timestamp = time.strftime("%H:%M:%S")
+            print(f"[{timestamp} UTC] Ciclo {cycle} — a iniciar análise...")
+            try:
+                run_phase0_cycle()
+            except Exception as exc:
+                log_error("main_cycle_failed", {"cycle": cycle, "error": str(exc)})
+                print(f"Erro no ciclo {cycle}: {exc}")
 
-        except Exception as exc:
-            log_error("cycle_unhandled_exception", {"cycle": cycle, "error": str(exc)})
-            print(f"  Erro inesperado no ciclo {cycle + 1}: {exc}")
+            print(f"[{time.strftime('%H:%M:%S')} UTC] Próximo ciclo em {LOOP_INTERVAL_SECONDS // 60} minutos.\n")
+            cycle += 1
+            time.sleep(LOOP_INTERVAL_SECONDS)
 
-        cycle += 1
-        next_ts = datetime.now(timezone.utc).strftime("%H:%M:%S")
-        print(f"[{next_ts} UTC] Próximo ciclo em {LOOP_INTERVAL_SECONDS // 60} minutos.\n")
-        time.sleep(LOOP_INTERVAL_SECONDS)
-
+    except KeyboardInterrupt:
+        print("\nBot parado pelo utilizador.")
+    finally:
+        # ✅ Sempre limpa o lock — mesmo em crash
+        if os.path.exists(LOCK_FILE):
+            os.remove(LOCK_FILE)
 
 if __name__ == "__main__":
     run()

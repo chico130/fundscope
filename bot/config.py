@@ -31,6 +31,8 @@ STRATEGY_VERSION = "v0.1.0"
 # T212 rate limits: ~1 req/s on demo
 REQUEST_DELAY_SECONDS = 1.2
 
+LOOP_INTERVAL_SECONDS = 900  # 15 minutos entre ciclos
+
 DATA_BETA_DIR = BASE_DIR / "data" / "beta"
 DATA_ALPHA_DIR = BASE_DIR / "data" / "alpha"
 LOGS_DIR = BASE_DIR / "logs"

@@ -76,6 +76,17 @@ def log_decision(reason: str, action: str, context: dict | None = None) -> None:
     _append_to_json_list(path, entry)
 
 
+def log_info(info_type: str, detail: dict | None = None) -> None:
+    """Logs an informational event (start, stop, milestone) to today's trade log."""
+    entry = {
+        "datetime": _now_iso(),
+        "type": info_type,
+        "detail": detail or {},
+    }
+    path = LOGS_TRADES_DIR / f"{_today()}.json"
+    _append_to_json_list(path, entry)
+
+
 def log_error(error_type: str, detail: dict | None = None) -> None:
     """Appends an error record to today's error log."""
     entry = {
