@@ -599,5 +599,23 @@
       "error": "401 Client Error: Unauthorized for url: https://demo.trading212.com/api/v0/equity/account/cash",
       "error_type": "unknown"
     }
+  },
+  {
+    "datetime": "2026-05-15T20:52:12.992885+00:00",
+    "type": "api_get_failed",
+    "detail": {
+      "endpoint": "/equity/portfolio",
+      "error": "('Connection aborted.', ConnectionResetError(10054, 'Uma ligação existente foi forçada a fechar pelo anfitrião remoto', None, 10054, None))",
+      "error_type": "connection_refused"
+    }
+  },
+  {
+    "datetime": "2026-05-15T20:52:14.528218+00:00",
+    "type": "api_get_failed",
+    "detail": {
+      "endpoint": "/equity/account/cash",
+      "error": "401 Client Error: Unauthorized for url: https://demo.trading212.com/api/v0/equity/account/cash",
+      "error_type": "unknown"
+    }
   }
 ]
