@@ -1942,5 +1942,71 @@
       "risk_ok": true,
       "positions": []
     }
+  },
+  {
+    "datetime": "2026-05-15T22:29:07.335437+00:00",
+    "type": "decision",
+    "reason": "phase0_start",
+    "action": "read_portfolio"
+  },
+  {
+    "datetime": "2026-05-15T22:29:11.191581+00:00",
+    "type": "decision",
+    "reason": "phase0_retry",
+    "action": "api_unavailable",
+    "context": {
+      "attempt": 1,
+      "wait_minutes": 2
+    }
+  },
+  {
+    "datetime": "2026-05-15T22:31:13.891709+00:00",
+    "type": "decision",
+    "reason": "phase0_retry",
+    "action": "api_unavailable",
+    "context": {
+      "attempt": 2,
+      "wait_minutes": 5
+    }
+  },
+  {
+    "datetime": "2026-05-15T22:36:16.607035+00:00",
+    "type": "decision",
+    "reason": "phase0_retry",
+    "action": "api_unavailable",
+    "context": {
+      "attempt": 3,
+      "wait_minutes": 10
+    }
+  },
+  {
+    "datetime": "2026-05-15T22:46:49.250836+00:00",
+    "type": "decision",
+    "reason": "phase0_abort",
+    "action": "api_unavailable",
+    "context": {
+      "consecutive_failures": 4
+    }
+  },
+  {
+    "datetime": "2026-05-15T22:46:49.254096+00:00",
+    "type": "decision",
+    "reason": "phase0_t212_unavailable",
+    "action": "cold_run",
+    "context": {
+      "reason": "T212 API indisponível — análise sem portfolio"
+    }
+  },
+  {
+    "datetime": "2026-05-15T22:46:49.256771+00:00",
+    "type": "decision",
+    "reason": "phase0_complete",
+    "action": "report_generated",
+    "context": {
+      "regime": "bull_lateral",
+      "n_signals": 0,
+      "risk_ok": true,
+      "positions": []
+    }
   }
 ]

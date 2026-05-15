@@ -833,5 +833,77 @@
       "error": "401 Client Error: Unauthorized for url: https://demo.trading212.com/api/v0/equity/account/cash",
       "error_type": "unknown"
     }
+  },
+  {
+    "datetime": "2026-05-15T22:29:09.841420+00:00",
+    "type": "api_get_failed",
+    "detail": {
+      "endpoint": "/equity/portfolio",
+      "error": "401 Client Error: Unauthorized for url: https://demo.trading212.com/api/v0/equity/portfolio",
+      "error_type": "unknown"
+    }
+  },
+  {
+    "datetime": "2026-05-15T22:29:11.189895+00:00",
+    "type": "api_get_failed",
+    "detail": {
+      "endpoint": "/equity/account/cash",
+      "error": "401 Client Error: Unauthorized for url: https://demo.trading212.com/api/v0/equity/account/cash",
+      "error_type": "unknown"
+    }
+  },
+  {
+    "datetime": "2026-05-15T22:31:12.543789+00:00",
+    "type": "api_get_failed",
+    "detail": {
+      "endpoint": "/equity/portfolio",
+      "error": "401 Client Error: Unauthorized for url: https://demo.trading212.com/api/v0/equity/portfolio",
+      "error_type": "unknown"
+    }
+  },
+  {
+    "datetime": "2026-05-15T22:31:13.890212+00:00",
+    "type": "api_get_failed",
+    "detail": {
+      "endpoint": "/equity/account/cash",
+      "error": "401 Client Error: Unauthorized for url: https://demo.trading212.com/api/v0/equity/account/cash",
+      "error_type": "unknown"
+    }
+  },
+  {
+    "datetime": "2026-05-15T22:36:15.245007+00:00",
+    "type": "api_get_failed",
+    "detail": {
+      "endpoint": "/equity/portfolio",
+      "error": "401 Client Error: Unauthorized for url: https://demo.trading212.com/api/v0/equity/portfolio",
+      "error_type": "unknown"
+    }
+  },
+  {
+    "datetime": "2026-05-15T22:36:16.605457+00:00",
+    "type": "api_get_failed",
+    "detail": {
+      "endpoint": "/equity/account/cash",
+      "error": "401 Client Error: Unauthorized for url: https://demo.trading212.com/api/v0/equity/account/cash",
+      "error_type": "unknown"
+    }
+  },
+  {
+    "datetime": "2026-05-15T22:46:47.840977+00:00",
+    "type": "api_get_failed",
+    "detail": {
+      "endpoint": "/equity/portfolio",
+      "error": "HTTPSConnectionPool(host='demo.trading212.com', port=443): Read timed out. (read timeout=30)",
+      "error_type": "read_timeout"
+    }
+  },
+  {
+    "datetime": "2026-05-15T22:46:49.249317+00:00",
+    "type": "api_get_failed",
+    "detail": {
+      "endpoint": "/equity/account/cash",
+      "error": "401 Client Error: Unauthorized for url: https://demo.trading212.com/api/v0/equity/account/cash",
+      "error_type": "unknown"
+    }
   }
 ]
