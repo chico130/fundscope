@@ -43,6 +43,8 @@ LOGS_ERRORS_DIR = LOGS_DIR / "errors"
 DIARIO_TRADES_PATH = BASE_DIR / "diario_trades.json"
 CONFIG_RISCO_PATH = BASE_DIR / "config_risco.json"
 NEWS_PATH = BASE_DIR / "news.json"
+EARNINGS_PATH = BASE_DIR / "earnings.json"
+PORTFOLIO_PATH = BASE_DIR / "portfolio.json"
 BONNIE_LOG_PATH = LOGS_DIR / "bonnie_log.json"
 
 WATCHLIST_CONFIG = {

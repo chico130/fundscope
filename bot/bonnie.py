@@ -1,7 +1,7 @@
 """
 Bonnie — Fase 0 (Observação Passiva)
 
-Executa independentemente do Clyde, idealmente 1x/hora via Task Scheduler:
+Corre em loop contínuo — audita a cada hora, sem precisar de ser relançada:
     python -m bot.bonnie
 
 Responsabilidades desta fase:
@@ -15,6 +15,9 @@ Não bloqueia ordens nesta fase — apenas observa e regista.
 from __future__ import annotations
 
 import json
+import os
+import sys
+import time
 from collections import defaultdict
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
@@ -23,9 +26,12 @@ from .config import (
     DIARIO_TRADES_PATH,
     CONFIG_RISCO_PATH,
     NEWS_PATH,
+    EARNINGS_PATH,
+    PORTFOLIO_PATH,
     BONNIE_LOG_PATH,
     DATA_BETA_DIR,
     LOGS_DIR,
+    RISK_CONFIG,
 )
 from .logger import log_error
 
@@ -261,12 +267,86 @@ def generate_news_alerts(trades: list[dict], news: list[dict]) -> list[dict]:
 
 
 # ---------------------------------------------------------------------------
-# 5. Escrita do log Bonnie
+# 5. Regra Bonnie/Clyde — earnings_risk
 # ---------------------------------------------------------------------------
 
-def write_bonnie_log(stats: dict, alerts: list[dict], config_risco: dict) -> None:
+def _load_portfolio_tickers() -> set[str]:
+    """Devolve conjunto de tickers com posição aberta no portfólio."""
+    if not PORTFOLIO_PATH.exists():
+        return set()
+    try:
+        with open(PORTFOLIO_PATH, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        tickers: set[str] = set()
+        for pos in data.get("positions", []):
+            for key in ("ticker", "ticker_display"):
+                val = pos.get(key, "")
+                if val:
+                    tickers.add(val.upper())
+        return tickers
+    except (json.JSONDecodeError, OSError):
+        return set()
+
+
+def _load_earnings() -> list[dict]:
+    """Lê earnings.json. Devolve lista vazia se ausente."""
+    if not EARNINGS_PATH.exists():
+        return []
+    try:
+        with open(EARNINGS_PATH, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        return data.get("earnings", []) if isinstance(data, dict) else []
+    except (json.JSONDecodeError, OSError):
+        return []
+
+
+def generate_earnings_alerts(portfolio_tickers: set[str], earnings: list[dict]) -> list[dict]:
+    """Gera alertas earnings_risk para posições abertas com earnings em menos de N dias."""
+    threshold_days = RISK_CONFIG.get("no_trade_before_earnings_days", 2)
+    today = datetime.now(timezone.utc).date()
+    alerts: list[dict] = []
+
+    for entry in earnings:
+        ticker = (entry.get("ticker") or "").upper()
+        if ticker not in portfolio_tickers:
+            continue
+        date_str = entry.get("data", "")
+        try:
+            ed = datetime.strptime(date_str, "%Y-%m-%d").date()
+        except ValueError:
+            continue
+        days_away = (ed - today).days
+        if 0 <= days_away < threshold_days:
+            alerts.append({
+                "tipo": "earnings_risk",
+                "ticker": ticker,
+                "earnings_date": date_str,
+                "days_away": days_away,
+                "hora": entry.get("hora", "N/D"),
+                "eps_estimado": entry.get("eps_estimado"),
+                "severity": "warning",
+                "mensagem": (
+                    f"{ticker} tem earnings em {days_away} dia(s) ({date_str} {entry.get('hora','')}) "
+                    f"e o Clyde tem posição aberta. Risco de volatilidade elevada."
+                ),
+            })
+
+    return alerts
+
+
+# ---------------------------------------------------------------------------
+# 6. Escrita do log Bonnie
+# ---------------------------------------------------------------------------
+
+def write_bonnie_log(
+    stats: dict,
+    alerts: list[dict],
+    config_risco: dict,
+    earnings_alerts: list[dict] | None = None,
+) -> None:
     """Escreve logs/bonnie_log.json em formato consumível pelo site via fetch."""
     LOGS_DIR.mkdir(parents=True, exist_ok=True)
+    earnings_alerts = earnings_alerts or []
 
     payload = {
         "timestamp": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
@@ -274,7 +354,8 @@ def write_bonnie_log(stats: dict, alerts: list[dict], config_risco: dict) -> Non
         "config_risco_atual": config_risco,
         "estatisticas": stats,
         "alertas_noticias": alerts,
-        "total_alertas": len(alerts),
+        "alertas_earnings": earnings_alerts,
+        "total_alertas": len(alerts) + len(earnings_alerts),
     }
 
     tmp = BONNIE_LOG_PATH.with_suffix(".tmp")
@@ -291,7 +372,29 @@ def write_bonnie_log(stats: dict, alerts: list[dict], config_risco: dict) -> Non
 # Ponto de entrada
 # ---------------------------------------------------------------------------
 
-def main() -> None:
+_LOCK_FILE = "bonnie.lock"
+_SLEEP_SECONDS = 60 * 60  # 60 minutos
+
+
+def _acquire_lock() -> bool:
+    if os.path.exists(_LOCK_FILE):
+        try:
+            with open(_LOCK_FILE) as f:
+                old_pid = int(f.read().strip())
+        except Exception:
+            os.remove(_LOCK_FILE)
+        else:
+            try:
+                os.kill(old_pid, 0)
+                return False  # processo ainda vivo
+            except OSError:
+                os.remove(_LOCK_FILE)  # PID morto — lock fantasma
+    with open(_LOCK_FILE, "w") as f:
+        f.write(str(os.getpid()))
+    return True
+
+
+def _run_audit() -> None:
     print(f"[Bonnie] Fase-0 — {datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')}")
 
     config_risco = ensure_config_risco()
@@ -308,7 +411,40 @@ def main() -> None:
     alerts = generate_news_alerts(trades, news)
     print(f"[Bonnie] {len(alerts)} alertas de notícias gerados")
 
-    write_bonnie_log(stats, alerts, config_risco)
+    earnings = _load_earnings()
+    portfolio_tickers = _load_portfolio_tickers()
+    earnings_alerts = generate_earnings_alerts(portfolio_tickers, earnings)
+    if earnings_alerts:
+        print(f"[Bonnie] {len(earnings_alerts)} alerta(s) earnings_risk: "
+              + ", ".join(a["ticker"] for a in earnings_alerts))
+    else:
+        print("[Bonnie] Sem alertas earnings_risk")
+
+    write_bonnie_log(stats, alerts, config_risco, earnings_alerts)
+
+
+def main() -> None:
+    if not _acquire_lock():
+        print("[Bonnie] Já está a correr (bonnie.lock existe). Termina o processo anterior primeiro.")
+        sys.exit(1)
+
+    print("[Bonnie] Iniciada — auditoria a cada 60 minutos. Ctrl+C para parar.\n")
+    try:
+        while True:
+            try:
+                _run_audit()
+            except Exception as exc:
+                log_error("bonnie_audit_failed", {"error": str(exc)})
+                print(f"[Bonnie] Erro na auditoria: {exc}")
+
+            print(f"[Bonnie] Próxima auditoria em 60 minutos...\n")
+            time.sleep(_SLEEP_SECONDS)
+
+    except KeyboardInterrupt:
+        print("\n[Bonnie] Parada pelo utilizador.")
+    finally:
+        if os.path.exists(_LOCK_FILE):
+            os.remove(_LOCK_FILE)
 
 
 if __name__ == "__main__":

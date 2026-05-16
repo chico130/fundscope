@@ -178,6 +178,18 @@
     /* ── Logout button in nav ── */
     #logoutBtn{display:none;}
 
+    /* ── Bonnie log ── */
+    .bl-row{display:flex;justify-content:space-between;align-items:center;padding:var(--space-2) 0;border-bottom:1px solid var(--color-divider);font-size:var(--text-sm);}
+    .bl-row:last-child{border-bottom:none;}
+    .bl-label{color:var(--color-text-muted);}
+    .bl-val{font-weight:600;font-variant-numeric:tabular-nums;}
+    .bl-badge{display:inline-flex;align-items:center;padding:2px 10px;border-radius:var(--radius-full);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;}
+    .bl-badge.ok{background:var(--color-success-bg);color:var(--color-success);}
+    .bl-badge.blocked{background:var(--color-notification-bg);color:var(--color-notification);}
+    .bl-alert{padding:var(--space-3);border-radius:var(--radius-md);border-left:3px solid;margin-bottom:var(--space-2);font-size:var(--text-xs);line-height:1.55;}
+    .bl-alert.warning{border-color:var(--color-notification);background:var(--color-notification-bg);}
+    .bl-alert.info{border-color:var(--color-gold);background:var(--color-gold-bg);}
+
     /* ── Responsive ── */
     @media(max-width:900px){.kpi-grid{grid-template-columns:repeat(2,1fr);}.two-col{grid-template-columns:1fr;}.wl-head,.wl-row{grid-template-columns:24px 1fr 100px 60px;}.wl-head .col-3m,.wl-row .col-3m{display:none;}}
     @media(max-width:640px){.header{padding:var(--space-3) var(--space-4);}.header-actions .nav-link{display:none;}.kpi-grid{grid-template-columns:repeat(2,1fr);}.page{padding:var(--space-8) var(--space-4) var(--space-16);}}
@@ -246,6 +258,7 @@
       <a href="search.html"  class="nav-link">Pesquisa</a>
       <a href="markets.html" class="nav-link">Mercados</a>
       <a href="news.html"    class="nav-link">Notícias</a>
+      <a href="earnings.html" class="nav-link">Earnings</a>
       <a href="portfolio.html" class="nav-link active">Portfólio</a>
       <button class="nav-link" id="logoutBtn">Sair</button>
       <button class="btn-icon" id="themeToggle" aria-label="Alternar tema">
@@ -329,6 +342,12 @@
           </div>
           <button class="bonnie-btn-locked" disabled>Desbloquear Bonnie</button>
         </div>
+      </div>
+
+      <!-- Bonnie log -->
+      <div class="card" style="margin-bottom:var(--space-5)">
+        <div class="card-label">Bonnie — Última Auditoria</div>
+        <div id="bonnieLogContent" style="color:var(--color-text-muted);font-size:var(--text-sm)">A carregar…</div>
       </div>
 
       <!-- Real positions -->
@@ -546,11 +565,74 @@ function renderTrades(trades) {
 }
 
 // ── Bonnie ────────────────────────────────────────────────────────────────────
+function renderBonnieLog(log) {
+  const el = document.getElementById('bonnieLogContent');
+  if (!log) {
+    el.innerHTML = '<span style="color:var(--color-text-faint)">Dados de auditoria não disponíveis.</span>';
+    return;
+  }
+  const ts     = log.timestamp ? new Date(log.timestamp).toLocaleString('pt-PT',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}) : '—';
+  const cr     = log.config_risco_atual ?? {};
+  const stats  = log.estatisticas ?? {};
+  const alerts = log.alertas_noticias ?? [];
+
+  const permiteClass = cr.permite_comprar ? 'ok' : 'blocked';
+  const permiteLabel = cr.permite_comprar ? 'Aberto' : 'Bloqueado';
+  const fator = typeof cr.tamanho_maximo_posicao === 'number' ? (cr.tamanho_maximo_posicao * 100).toFixed(0) + '%' : '—';
+
+  const sectorRows = Object.entries(stats.por_sector ?? {}).map(([sector, d]) => {
+    const wr   = d.win_rate_pct != null ? n2(d.win_rate_pct, 1) + '%' : '—';
+    const barW = d.win_rate_pct ?? 0;
+    const barC = barW >= 60 ? 'var(--color-success)' : barW >= 40 ? 'var(--color-gold)' : 'var(--color-notification)';
+    return `<div class="bl-row">
+      <span class="bl-label">${sector}</span>
+      <div style="display:flex;align-items:center;gap:var(--space-3)">
+        <div style="width:72px;height:4px;background:var(--color-surface-offset);border-radius:2px;overflow:hidden"><div style="width:${barW}%;height:100%;background:${barC};border-radius:2px"></div></div>
+        <span class="bl-val">${wr} <span style="color:var(--color-text-faint);font-weight:400">(${d.total})</span></span>
+      </div>
+    </div>`;
+  }).join('') || '<p style="font-size:var(--text-xs);color:var(--color-text-faint)">Sem trades fechados ainda.</p>';
+
+  const alertsHTML = alerts.length
+    ? alerts.slice(0,5).map(a => `<div class="bl-alert ${a.severity ?? 'info'}">${a.mensagem}</div>`).join('')
+    : '<p style="font-size:var(--text-xs);color:var(--color-text-faint)">Sem alertas de notícias.</p>';
+
+  el.innerHTML = `
+    <div style="margin-bottom:var(--space-4);font-size:var(--text-xs);color:var(--color-text-muted)">
+      Auditada em <strong>${ts}</strong> · <em>${log.fase ?? '—'}</em>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-5);margin-bottom:var(--space-5)">
+      <div>
+        <div class="card-label" style="margin-bottom:var(--space-3)">Config Risco</div>
+        <div class="bl-row"><span class="bl-label">Entradas</span><span class="bl-badge ${permiteClass}">${permiteLabel}</span></div>
+        <div class="bl-row"><span class="bl-label">Tamanho máx.</span><span class="bl-val">${fator}</span></div>
+        <div class="bl-row"><span class="bl-label">Estado emocional</span><span class="bl-val">${cr.estado_emocional ?? '—'}</span></div>
+        ${cr.motivo_bloqueio ? `<div class="bl-row"><span class="bl-label">Motivo bloqueio</span><span class="bl-val" style="color:var(--color-notification)">${cr.motivo_bloqueio}</span></div>` : ''}
+      </div>
+      <div>
+        <div class="card-label" style="margin-bottom:var(--space-3)">Trades Fechados: ${stats.total_closed ?? 0}</div>
+        ${sectorRows}
+      </div>
+    </div>
+    <div>
+      <div class="card-label" style="margin-bottom:var(--space-3)">Alertas de Notícias (${alerts.length})</div>
+      ${alertsHTML}
+    </div>`;
+}
+
 async function loadBonnie() {
   const n   = _trades.length;
   const pct = Math.min(100, Math.round(n/100*100));
   document.getElementById('bonnieCount').textContent = `${n} / 100`;
   document.getElementById('bonnieFill').style.width  = pct + '%';
+
+  try {
+    const r   = await fetch(`logs/bonnie_log.json?t=${Date.now()}`);
+    const log = r.ok ? await r.json() : null;
+    renderBonnieLog(log);
+  } catch {
+    renderBonnieLog(null);
+  }
 
   const el = document.getElementById('realPositions');
   try {
