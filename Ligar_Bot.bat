@@ -1,4 +1,4 @@
 @echo off
-cd /d "C:\Users\arauj\OneDrive\Ambiente de Trabalho\Fundscope"
+cd /d "%~dp0"
 python -m bot.main
 pause
