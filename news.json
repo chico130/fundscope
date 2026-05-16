@@ -1,557 +1,15 @@
 {
-  "updated": "2026-05-15T16:50:27.363508+00:00",
+  "updated": "2026-05-16T08:47:47.103754+00:00",
   "articles": [
     {
-      "id": 715430489,
-      "source": "CNBC",
-      "title": "S&P 500 and Nasdaq fall, strained by tech pullback and yields spike: Live updates",
-      "summary": "Wall Street is coming off yet another positive session, with both the S&P 500 and Nasdaq Composite closing at record highs.",
-      "content": "Wall Street is coming off yet another positive session, with both the S&P 500 and Nasdaq Composite closing at record highs.",
-      "url": "https://www.cnbc.com/2026/05/14/stock-market-today-live-updates.html",
-      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
-      "publishedAt": "2026-05-15T16:47:08+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 358510219,
-      "source": "Yahoo Finance",
-      "title": "Philippines\u2019 renewable capacity to reach 30GW by 2035, forecasts GlobalData",
-      "summary": "",
-      "content": "",
-      "url": "https://finance.yahoo.com/sectors/energy/articles/philippines-renewable-capacity-reach-30gw-164414749.html",
-      "image": "https://images.unsplash.com/photo-1569025743873-ea3a9ade89f9?w=800&q=80",
-      "publishedAt": "2026-05-15T16:44:14+00:00",
-      "category": "Clima",
-      "icon": "\ud83c\udf31",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 978926536,
-      "source": "CNBC",
-      "title": "Trump told Xi \u2018I don't talk about\u2019 whether U.S. would defend Taiwan from China",
-      "summary": "President Donald Trump spoke about Taiwan after a two-day visit to China, where he said he discussed Iran, and trade deals with Chinese President Xi Jingping.",
-      "content": "President Donald Trump spoke about Taiwan after a two-day visit to China, where he said he discussed Iran, and trade deals with Chinese President Xi Jingping.",
-      "url": "https://www.cnbc.com/2026/05/15/trump-china-xi-taiwan.html",
-      "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
-      "publishedAt": "2026-05-15T16:43:25+00:00",
-      "category": "Geopol\u00edtica",
-      "icon": "\ud83c\udf0d",
-      "impact": {
-        "tickers": [
-          "AAPL",
-          "NVDA",
-          "TSLA",
-          "AMD",
-          "XOM"
-        ],
-        "sector": "Tecnologia",
-        "sentiment": "positive"
-      },
-      "heat": 3,
-      "feed": "rss"
-    },
-    {
-      "id": 536349962,
-      "source": "Seeking Alpha",
-      "title": "Presidio Production Company reports Q1 results",
-      "summary": "",
-      "content": "",
-      "url": "https://seekingalpha.com/news/4594006-presidio-production-company-reports-q1-results?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-15T12:42:15-04:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 741830543,
-      "source": "Seeking Alpha",
-      "title": "AI adoption is reshaping margins across industries",
-      "summary": "",
-      "content": "",
-      "url": "https://seekingalpha.com/news/4593883-ai-adoption-is-reshaping-margins-across-industries?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
-      "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
-      "publishedAt": "2026-05-15T12:41:47-04:00",
-      "category": "Tecnologia",
-      "icon": "\ud83d\udcbb",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 792308385,
-      "source": "Seeking Alpha",
-      "title": "Alphabet likely to focus on AI, innovation at Google I/O: BofA",
-      "summary": "",
-      "content": "",
-      "url": "https://seekingalpha.com/news/4593998-alphabet-likely-to-focus-on-ai-innovation-at-google-i-o-bofa?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
-      "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
-      "publishedAt": "2026-05-15T12:40:06-04:00",
-      "category": "Tecnologia",
-      "icon": "\ud83d\udcbb",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 611885752,
-      "source": "Seeking Alpha",
-      "title": "Whale Rock adds Apple, Microsoft; cuts stake in Nvidia as part of Q1 positioning changes",
-      "summary": "",
-      "content": "",
-      "url": "https://seekingalpha.com/news/4593965-whale-rock-adds-apple-microsoft-cuts-stake-in-nvidia-as-part-of-q1-positioning-changes?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
-      "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
-      "publishedAt": "2026-05-15T12:39:44-04:00",
-      "category": "Tecnologia",
-      "icon": "\ud83d\udcbb",
-      "impact": {
-        "tickers": [
-          "NVDA",
-          "AMD",
-          "INTC",
-          "AVGO",
-          "AAPL"
-        ],
-        "sector": "Tecnologia",
-        "sentiment": "neutral"
-      },
-      "heat": 3,
-      "feed": "rss"
-    },
-    {
-      "id": 646552962,
-      "source": "Seeking Alpha",
-      "title": "Dynacor Group GAAP EPS of $0.17, revenue of $154.1M",
-      "summary": "",
-      "content": "",
-      "url": "https://seekingalpha.com/news/4594005-dynacor-group-gaap-eps-of-0_17-revenue-of-154_1m?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-15T12:39:11-04:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 385375235,
-      "source": "Seeking Alpha",
-      "title": "Lithium Americas down 10% in two days after Q1 earnings, flagging higher Thacker Pass capex",
-      "summary": "",
-      "content": "",
-      "url": "https://seekingalpha.com/news/4593992-lithium-americas-down-10-percent-in-two-days-after-q1-earnings-flagging-higher-thacker-pass?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
-      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
-      "publishedAt": "2026-05-15T12:38:42-04:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 636695488,
-      "source": "economictimes.indiatimes.com",
-      "title": "India looks to consolidate East Africa economic partnership amid global supply chain shifts",
-      "summary": "India's engagement with East Africa is becoming increasingly significant, moving past traditional trade to focus on deeper industrial synergies. The region's rich deposits of essential minerals are essential for India's ambitions in clean energy. To capitalize on this, tackling logistical and financial hurdles will be essential.",
-      "content": "India's engagement with East Africa is becoming increasingly significant, moving past traditional trade to focus on deeper industrial synergies. The region's rich deposits of essential minerals are essential for India's ambitions in clean energy. To capitalize on this, tackling logistical and financial hurdles will be essential.",
-      "url": "https://economictimes.indiatimes.com/news/economy/foreign-trade/india-looks-to-consolidate-east-africa-economic-partnership-amid-global-supply-chain-shifts/articleshow/131122843.cms",
-      "image": "https://img.etimg.com/thumb/msid-131122907,width-1200,height-630,imgsize-64894,overlay-economictimes/articleshow.jpg",
-      "publishedAt": "2026-05-15T16:38:36.000000Z",
-      "category": "Energia",
-      "icon": "\u26a1",
-      "impact": {
-        "tickers": [
-          "NEE",
-          "ENPH",
-          "FSLR",
-          "CEG"
-        ],
-        "sector": "Energia",
-        "sentiment": "neutral"
-      },
-      "heat": 3,
-      "feed": "marketaux"
-    },
-    {
-      "id": 338508060,
-      "source": "Financial Times",
-      "title": "Labour approves Andy Burnham as potential by-election candidate",
-      "summary": "Greater Manchester mayor expected to be confirmed as party\u2019s choice in Makerfield next week",
-      "content": "Greater Manchester mayor expected to be confirmed as party\u2019s choice in Makerfield next week",
-      "url": "https://www.ft.com/content/fa8b8226-d9c3-4e98-a869-abbfd8f3d395",
-      "image": "https://images.ft.com/v3/image/raw/https%3A%2F%2Fd1e00ek4ebabms.cloudfront.net%2Fproduction%2F86e4fed5-4365-4c82-a596-4ea3a59aa91f.jpg?source=next-home-page&dpr=2&width=580&fit=scale-down",
-      "publishedAt": "2026-05-15T16:37:30+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 907010825,
-      "source": "CNBC Tech",
-      "title": "Where Cerebras' monster debut puts it among tech's biggest IPOs",
-      "summary": "Cerebras narrowly missed out on joining Facebook-parent Meta and Alibaba with market cap of over $100 billion on the market close of IPO day.",
-      "content": "Cerebras narrowly missed out on joining Facebook-parent Meta and Alibaba with market cap of over $100 billion on the market close of IPO day.",
-      "url": "https://www.cnbc.com/2026/05/14/cerebras-cbrs-ipo-stock-meta-facebook-alibaba.html",
-      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
-      "publishedAt": "2026-05-15T16:36:50+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 704165334,
-      "source": "MarketWatch",
-      "title": "You now need 18 months of emergency savings because of how much AI is disrupting the workforce",
-      "summary": "Artificial intelligence will displace some workers and replace others. Here\u2019s how to make sure you\u2019re on the right side of change.",
-      "content": "Artificial intelligence will displace some workers and replace others. Here\u2019s how to make sure you\u2019re on the right side of change.",
-      "url": "https://www.marketwatch.com/story/you-now-need-18-months-of-emergency-savings-because-of-how-much-ai-is-disrupting-the-workforce-86dbac97?mod=mw_rss_topstories",
-      "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
-      "publishedAt": "2026-05-15T16:36:00+00:00",
-      "category": "Tecnologia",
-      "icon": "\ud83d\udcbb",
-      "impact": {
-        "tickers": [
-          "NVDA",
-          "AMD",
-          "INTC",
-          "AVGO"
-        ],
-        "sector": "Tecnologia",
-        "sentiment": "neutral"
-      },
-      "heat": 3,
-      "feed": "rss"
-    },
-    {
-      "id": 678073880,
-      "source": "Seeking Alpha",
-      "title": "Cheetah Net Supply Chain Services GAAP EPS of -$4.53, revenue of $0.09M",
-      "summary": "",
-      "content": "",
-      "url": "https://seekingalpha.com/news/4594003-cheetah-net-supply-chain-services-gaap-eps-of-4_53-revenue-of-0_09m?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
-      "image": "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=800&q=80",
-      "publishedAt": "2026-05-15T12:35:26-04:00",
-      "category": "Com\u00e9rcio",
-      "icon": "\ud83d\udea2",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 445398860,
-      "source": "businessinsider.com",
-      "title": "My husband and I got a roommate to save money. It worked surprisingly well for a while, but we'd never do it again.",
-      "summary": "The extra income from renting our extra room and getting a roommate helped us financially, but it began affecting our marriage and spending habits.",
-      "content": "The extra income from renting our extra room and getting a roommate helped us financially, but it began affecting our marriage and spending habits.",
-      "url": "https://www.businessinsider.com/couple-rented-spare-room-save-money-mistakes-pros-cons-2026-5",
-      "image": "https://i.insider.com/6a060965abc4e9d88574a1ed?width=1200&format=jpeg",
-      "publishedAt": "2026-05-15T16:35:13.000000Z",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "marketaux"
-    },
-    {
-      "id": 706483630,
-      "source": "businessinsider.com",
-      "title": "Taylor Swift collaborator Jack Antonoff tells people who are making AI art to 'drive right off that cliff'",
-      "summary": "Jack Antonoff, a songwriter for Taylor Swift, criticized AI in music, defending traditional creative processes as a \"holy\" artistic ritual.",
-      "content": "Jack Antonoff, a songwriter for Taylor Swift, criticized AI in music, defending traditional creative processes as a \"holy\" artistic ritual.",
-      "url": "https://www.businessinsider.com/jack-antonoff-slams-ai-in-music-defends-songwriting-process-2026-5",
-      "image": "https://i.insider.com/6a0722bfecd7cc1332bb0063?width=1200&format=jpeg",
-      "publishedAt": "2026-05-15T16:35:13.000000Z",
-      "category": "Tecnologia",
-      "icon": "\ud83d\udcbb",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "marketaux"
-    },
-    {
-      "id": 109104165,
-      "source": "ChartMill",
-      "title": "Uncover the latest developments among S&P500 stocks in today's session.",
-      "summary": "Stay updated with the movement of S&P500 stocks in today's session. Discover which S&P500 stocks are making waves on Friday.",
-      "content": "Stay updated with the movement of S&P500 stocks in today's session. Discover which S&P500 stocks are making waves on Friday.",
-      "url": "https://finnhub.io/api/news?id=d9edb990eae184b6dc3226ce324f6c607fb378fc1c5977fed1b7962d6430671e",
-      "image": "https://www.chartmill.com/images/uploads/CM_Top_Movers_Small_free_2b4ff2fc22.webp",
-      "publishedAt": "2026-05-15T16:35:04+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [
-          "MU"
-        ],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "finnhub_company"
-    },
-    {
-      "id": 50120857,
-      "source": "Yahoo Finance",
-      "title": "DEFT Q1 2026 Earnings Transcript",
-      "summary": "",
-      "content": "",
-      "url": "https://finance.yahoo.com/markets/crypto/articles/deft-q1-2026-earnings-transcript-163404263.html",
-      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
-      "publishedAt": "2026-05-15T16:34:04+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 793444381,
-      "source": "Yahoo Finance",
-      "title": "Wedbush resets Oracle stock price target for the rest of 2026",
-      "summary": "",
-      "content": "",
-      "url": "https://finance.yahoo.com/markets/stocks/articles/wedbush-resets-oracle-stock-price-163300806.html",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-15T16:33:00+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 834975715,
-      "source": "MarketWatch",
-      "title": "The big dogs of the dot-com era are barking again, 25 years later. Will they suffer the same fate?",
-      "summary": "Former dot-com darlings Intel, Cisco, Qualcomm and Texas Instruments are all hitting record highs \u2014 some for the first time since their heyday.",
-      "content": "Former dot-com darlings Intel, Cisco, Qualcomm and Texas Instruments are all hitting record highs \u2014 some for the first time since their heyday.",
-      "url": "https://www.marketwatch.com/story/the-big-dogs-of-the-dot-com-era-are-barking-again-25-years-later-will-they-suffer-the-same-fate-3aa01575?mod=mw_rss_topstories",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-15T16:31:00+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 184436120,
-      "source": "Financial Times",
-      "title": "Gilts fall as traders brace for Burnham to challenge Starmer",
-      "summary": "Greater Manchester mayor is lightning rod for concerns over possible loosening of UK\u2019s self-imposed borrowing limits",
-      "content": "Greater Manchester mayor is lightning rod for concerns over possible loosening of UK\u2019s self-imposed borrowing limits",
-      "url": "https://www.ft.com/content/d9a66be6-fa98-43d0-badc-b23a13cc7525",
-      "image": "https://images.ft.com/v3/image/raw/https%3A%2F%2Fd1e00ek4ebabms.cloudfront.net%2Fproduction%2Fb7b5114d-4c4e-4568-b346-6fffe39a6d6b.jpg?source=next-home-page&dpr=2&width=580&fit=scale-down",
-      "publishedAt": "2026-05-15T16:30:47+00:00",
-      "category": "Com\u00e9rcio",
-      "icon": "\ud83d\udea2",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 376214229,
-      "source": "Yahoo Finance",
-      "title": "Citi's CEO went to China with Trump \u2014 then Beijing finally approved a deal she'd been championing for years",
-      "summary": "",
-      "content": "",
-      "url": "https://finance.yahoo.com/markets/stocks/articles/citis-ceo-went-china-trump-163000102.html",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-15T16:30:00+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [
-          "AAPL",
-          "NVDA",
-          "TSLA",
-          "AMD"
-        ],
-        "sector": "Tecnologia",
-        "sentiment": "positive"
-      },
-      "heat": 3,
-      "feed": "rss"
-    },
-    {
-      "id": 82175543,
-      "source": "Yahoo Finance",
-      "title": "This AI Stock On 30% Run Offers Entry As Earnings Accelerate",
-      "summary": "",
-      "content": "",
-      "url": "https://www.investors.com/stock-lists/stock-spotlight/ai-stock-dycom-industries-dy-offers-entry-earnings-accelerate/?src=A00220&yptr=yahoo",
-      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
-      "publishedAt": "2026-05-15T16:29:10+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 344269709,
-      "source": "CNBC",
-      "title": "NFL wants certain trading contracts banned from prediction markets like 'first play of game,' injuries",
-      "summary": "The letter, which was reviewed by CNBC, calls for banning certain contracts and raising the age requirements for participation on sports-related contracts.",
-      "content": "The letter, which was reviewed by CNBC, calls for banning certain contracts and raising the age requirements for participation on sports-related contracts.",
-      "url": "https://www.cnbc.com/2026/05/15/prediction-markets-nfl-letter-wants-certain-betting-contracts-banned.html",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-15T16:27:26+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 163090276,
+      "id": 147328236,
       "source": "Nasdaq",
-      "title": "Soybeans Continuing Pullback on Friday Morning",
-      "summary": "Soybeans are showing 11 to 13 cents lower trade so far on Friday after collapsing on Thursday. Futures posted 20 to 40 \u00be cent losses across most contracts on Thursday. The cmdtyView national average Cash Bean price was down 36 cents at $11.28. Soymeal futures were back down $3.90 to...",
-      "content": "Soybeans are showing 11 to 13 cents lower trade so far on Friday after collapsing on Thursday. Futures posted 20 to 40 \u00be cent losses across most contracts on Thursday. The cmdtyView national average Cash Bean price was down 36 cents at $11.28. Soymeal futures were back down $3.90 to...",
-      "url": "https://www.nasdaq.com/articles/soybeans-continuing-pullback-friday-morning",
-      "image": "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=800&q=80",
-      "publishedAt": "2026-05-15T16:26:10+00:00",
-      "category": "Com\u00e9rcio",
-      "icon": "\ud83d\udea2",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 359779930,
-      "source": "Nasdaq",
-      "title": "Wheat Falling Lower on Friday AM Trade",
-      "summary": "Wheat is trading with losses across the three exchanges early on Friday. The wheat complex was under pressure with the rest of the grains on Thursday, as the Trump/Xi meeting yielded very few headlines for any potential ag purchases. Chicago SRW futures were down 11 3/4 to 18 cents in...",
-      "content": "Wheat is trading with losses across the three exchanges early on Friday. The wheat complex was under pressure with the rest of the grains on Thursday, as the Trump/Xi meeting yielded very few headlines for any potential ag purchases. Chicago SRW futures were down 11 3/4 to 18 cents in...",
-      "url": "https://www.nasdaq.com/articles/wheat-falling-lower-friday-am-trade",
-      "image": "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=800&q=80",
-      "publishedAt": "2026-05-15T16:26:09+00:00",
-      "category": "Com\u00e9rcio",
-      "icon": "\ud83d\udea2",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 718135522,
-      "source": "Nasdaq",
-      "title": "Corn Extending Losses into Friday Morning",
-      "summary": "Corn price action is down 4 to 5 cents so far on Friday morning. Futures were down 9 to 15 cents in the front months on Thursday, falling with the rest of the grain complex as very few details were announced out of the Trump/Xi meeting. Preliminary open interest was...",
-      "content": "Corn price action is down 4 to 5 cents so far on Friday morning. Futures were down 9 to 15 cents in the front months on Thursday, falling with the rest of the grain complex as very few details were announced out of the Trump/Xi meeting. Preliminary open interest was...",
-      "url": "https://www.nasdaq.com/articles/corn-extending-losses-friday-morning",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-15T16:26:09+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 796991883,
-      "source": "Nasdaq",
-      "title": "Cotton Extending Losses on Friday Morning",
-      "summary": "Cotton prices are down 205 to 275 points early on Friday. Futures saw weakness on Thursday with contracts down 175 to 287 points in the front months. The US dollar index was $0.352 higher at $98.775. Crude oil was up $1 at $102.02. Few details announced following the meeting with...",
-      "content": "Cotton prices are down 205 to 275 points early on Friday. Futures saw weakness on Thursday with contracts down 175 to 287 points in the front months. The US dollar index was $0.352 higher at $98.775. Crude oil was up $1 at $102.02. Few details announced following the meeting with...",
-      "url": "https://www.nasdaq.com/articles/cotton-extending-losses-friday-morning",
+      "title": "Cotton Pushes Losses into the Friday Close",
+      "summary": "Cotton futures rounded out the Friday session with contracts down 151 to 333 points. July was 412 points in the red this week, with December falling 355 points. The US dollar index was $0.467 higher at $99.195. Crude oil was up $4.49 at $105.66 on the day. Few details announced...",
+      "content": "Cotton futures rounded out the Friday session with contracts down 151 to 333 points. July was 412 points in the red this week, with December falling 355 points. The US dollar index was $0.467 higher at $99.195. Crude oil was up $4.49 at $105.66 on the day. Few details announced...",
+      "url": "https://www.nasdaq.com/articles/cotton-pushes-losses-friday-close",
       "image": "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80",
-      "publishedAt": "2026-05-15T16:26:09+00:00",
+      "publishedAt": "2026-05-16T08:37:17+00:00",
       "category": "Energia",
       "icon": "\u26a1",
       "impact": {
@@ -569,483 +27,18 @@
       "feed": "rss"
     },
     {
-      "id": 501741897,
+      "id": 73811999,
       "source": "Nasdaq",
-      "title": "Soybeans Collapse Following Little News Out of Trump/Xi Meeting",
-      "summary": "Soybeans posted 20 to 40 \u00be cent losses across most contracts on Thursday. The cmdtyView national average Cash Bean price was down 36 cents at $11.28. Soymeal futures were back down $3.90 to $6, with Soy Oil futures falling 44 to 83 points. May futures expired today. A meeting between...",
-      "content": "Soybeans posted 20 to 40 \u00be cent losses across most contracts on Thursday. The cmdtyView national average Cash Bean price was down 36 cents at $11.28. Soymeal futures were back down $3.90 to $6, with Soy Oil futures falling 44 to 83 points. May futures expired today. A meeting between...",
-      "url": "https://www.nasdaq.com/articles/soybeans-collapse-following-little-news-out-trump-xi-meeting",
-      "image": "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80",
-      "publishedAt": "2026-05-15T16:26:09+00:00",
-      "category": "Energia",
-      "icon": "\u26a1",
-      "impact": {
-        "tickers": [
-          "XOM",
-          "CVX",
-          "COP",
-          "OXY",
-          "SLB"
-        ],
-        "sector": "Energia",
-        "sentiment": "negative"
-      },
-      "heat": 3,
-      "feed": "rss"
-    },
-    {
-      "id": 464311126,
-      "source": "Nasdaq",
-      "title": "Cotton Corrects Lower on Thursday",
-      "summary": "Cotton futures saw weakness on Thursday with contracts down 175 to 287 points in the front months. The US dollar index was $0.352 higher at $98.775. Crude oil was up $1 at $102.02. A meeting between President Trump and China\u2019s President Xi in Beijing concluded early this morning. Few details...",
-      "content": "Cotton futures saw weakness on Thursday with contracts down 175 to 287 points in the front months. The US dollar index was $0.352 higher at $98.775. Crude oil was up $1 at $102.02. A meeting between President Trump and China\u2019s President Xi in Beijing concluded early this morning. Few details...",
-      "url": "https://www.nasdaq.com/articles/cotton-corrects-lower-thursday",
-      "image": "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80",
-      "publishedAt": "2026-05-15T16:26:08+00:00",
-      "category": "Energia",
-      "icon": "\u26a1",
-      "impact": {
-        "tickers": [
-          "XOM",
-          "CVX",
-          "COP",
-          "OXY",
-          "SLB"
-        ],
-        "sector": "Energia",
-        "sentiment": "neutral"
-      },
-      "heat": 3,
-      "feed": "rss"
-    },
-    {
-      "id": 509438996,
-      "source": "Nasdaq",
-      "title": "Wheat Longs Retreat on Thursday",
-      "summary": "The wheat complex was under pressure with the rest of the grains on Thursday, as the Trump/Xi meeting yielded very few headlines for any potential ag purchases. Chicago SRW futures were down 11 3/4 to 18 cents in the front months. KC HRW futures were leading the charge, with 11...",
-      "content": "The wheat complex was under pressure with the rest of the grains on Thursday, as the Trump/Xi meeting yielded very few headlines for any potential ag purchases. Chicago SRW futures were down 11 3/4 to 18 cents in the front months. KC HRW futures were leading the charge, with 11...",
-      "url": "https://www.nasdaq.com/articles/wheat-longs-retreat-thursday",
-      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
-      "publishedAt": "2026-05-15T16:26:08+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 330564258,
-      "source": "Nasdaq",
-      "title": "Corn Falls Back on Thursday",
-      "summary": "Corn futures were down 9 to 15 cents in the front months on Thursday, falling with the rest of the grain complex as very few details were announced out of the Trump/Xi meeting. May futures expired today. The CmdtyView national average Cash Corn price was down 13 cents to $4.27....",
-      "content": "Corn futures were down 9 to 15 cents in the front months on Thursday, falling with the rest of the grain complex as very few details were announced out of the Trump/Xi meeting. May futures expired today. The CmdtyView national average Cash Corn price was down 13 cents to $4.27....",
-      "url": "https://www.nasdaq.com/articles/corn-falls-back-thursday",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-15T16:26:08+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 263999423,
-      "source": "Nasdaq",
-      "title": "Crude Oil Prices Supported by Closure of Hormuz",
-      "summary": "June WTI crude oil (CLM26 ) on Thursday closed up +0.15 (+0.15%), and June RBOB gasoline (RBM26 ) closed down -0.0130 (-0.36%). Crude oil and gasoline prices settled mixed on Thursday. Crude prices pushed higher on Thursday as peace talks between the US and Iran remain in limbo, keeping global...",
-      "content": "June WTI crude oil (CLM26 ) on Thursday closed up +0.15 (+0.15%), and June RBOB gasoline (RBM26 ) closed down -0.0130 (-0.36%). Crude oil and gasoline prices settled mixed on Thursday. Crude prices pushed higher on Thursday as peace talks between the US and Iran remain in limbo, keeping global...",
-      "url": "https://www.nasdaq.com/articles/crude-oil-prices-supported-closure-hormuz",
-      "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
-      "publishedAt": "2026-05-15T16:26:08+00:00",
-      "category": "Geopol\u00edtica",
-      "icon": "\ud83c\udf0d",
-      "impact": {
-        "tickers": [
-          "XOM",
-          "CVX",
-          "COP",
-          "OXY",
-          "SLB"
-        ],
-        "sector": "Energia",
-        "sentiment": "neutral"
-      },
-      "heat": 3,
-      "feed": "rss"
-    },
-    {
-      "id": 365687538,
-      "source": "Yahoo Finance",
-      "title": "Gemini Space Station shares rise on narrower-than-expected Q1 loss, strategic investment",
-      "summary": "",
-      "content": "",
-      "url": "https://finance.yahoo.com/markets/stocks/articles/gemini-space-station-shares-rise-162500524.html",
-      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
-      "publishedAt": "2026-05-15T16:25:00+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 920135195,
-      "source": "Yahoo Finance",
-      "title": "Strategy Announces $1.5B Bond Buyback, Contemplates BTC Sales",
-      "summary": "",
-      "content": "",
-      "url": "https://finance.yahoo.com/markets/stocks/articles/strategy-announces-1-5b-bond-162123661.html",
-      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
-      "publishedAt": "2026-05-15T16:21:23+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 70198745,
-      "source": "Nasdaq",
-      "title": "Stocks Tumble on Inflation Jitters",
-      "summary": "The S&P 500 Index ($SPX ) (SPY ) today is down -1.17%, the Dow Jones Industrial Average ($DOWI ) (DIA ) is down -0.96%, and the Nasdaq 100 Index ($IUXX ) (QQQ ) is down -1.64%. June E-mini S&P futures (ESM26 ) are down -1.07%, and June E-mini Nasdaq futures...",
-      "content": "The S&P 500 Index ($SPX ) (SPY ) today is down -1.17%, the Dow Jones Industrial Average ($DOWI ) (DIA ) is down -0.96%, and the Nasdaq 100 Index ($IUXX ) (QQQ ) is down -1.64%. June E-mini S&P futures (ESM26 ) are down -1.07%, and June E-mini Nasdaq futures...",
-      "url": "https://www.nasdaq.com/articles/stocks-tumble-inflation-jitters",
+      "title": "Dollar Rallies as Inflation Risks Push Bond Yields Higher",
+      "summary": "The dollar index (DXY00 ) rallied to a 2.5-week high on Friday and finished up by +0.47%. The dollar rallied on Friday on concerns that strong US economic news and soaring crude oil prices will prompt the Fed to tighten monetary policy, a bullish factor for the dollar. Friday's economic...",
+      "content": "The dollar index (DXY00 ) rallied to a 2.5-week high on Friday and finished up by +0.47%. The dollar rallied on Friday on concerns that strong US economic news and soaring crude oil prices will prompt the Fed to tighten monetary policy, a bullish factor for the dollar. Friday's economic...",
+      "url": "https://www.nasdaq.com/articles/dollar-rallies-inflation-risks-push-bond-yields-higher",
       "image": "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&q=80",
-      "publishedAt": "2026-05-15T16:20:43+00:00",
+      "publishedAt": "2026-05-16T08:37:17+00:00",
       "category": "Macro",
       "icon": "\ud83d\udcca",
       "impact": {
         "tickers": [
-          "JPM",
-          "GS",
-          "BAC",
-          "TLT"
-        ],
-        "sector": "Finan\u00e7as",
-        "sentiment": "neutral"
-      },
-      "heat": 3,
-      "feed": "rss"
-    },
-    {
-      "id": 877956884,
-      "source": "Nasdaq",
-      "title": "Cattle Look to Round Out the Week After Retreating on Thursday",
-      "summary": "Live cattle futures retreated from early gains on Thursday with contracts down 32 to 72 cents at the close. Open interest suggested a rotation of ownership, down just 813 contracts. Cash trade has seen some $260 sales in the South this week with, with northern trade at $408-415 dressed and...",
-      "content": "Live cattle futures retreated from early gains on Thursday with contracts down 32 to 72 cents at the close. Open interest suggested a rotation of ownership, down just 813 contracts. Cash trade has seen some $260 sales in the South this week with, with northern trade at $408-415 dressed and...",
-      "url": "https://www.nasdaq.com/articles/cattle-look-round-out-week-after-retreating-thursday",
-      "image": "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=800&q=80",
-      "publishedAt": "2026-05-15T16:20:43+00:00",
-      "category": "Com\u00e9rcio",
-      "icon": "\ud83d\udea2",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 382234701,
-      "source": "Nasdaq",
-      "title": "Hogs Look to Friday Trade",
-      "summary": "Lean hog futures saw losses of 45 cents to $1.35 in the front months on Thursday. USDA\u2019s national base hog price was reported at $93.32 on Thursday afternoon, down $2.19 from the day prior. The CME Lean Hog Index was back up 26 cents on May 12 at $90.74. Export...",
-      "content": "Lean hog futures saw losses of 45 cents to $1.35 in the front months on Thursday. USDA\u2019s national base hog price was reported at $93.32 on Thursday afternoon, down $2.19 from the day prior. The CME Lean Hog Index was back up 26 cents on May 12 at $90.74. Export...",
-      "url": "https://www.nasdaq.com/articles/hogs-look-friday-trade-3",
-      "image": "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=800&q=80",
-      "publishedAt": "2026-05-15T16:20:43+00:00",
-      "category": "Com\u00e9rcio",
-      "icon": "\ud83d\udea2",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 259838170,
-      "source": "Nasdaq",
-      "title": "Cattle Fall Back into the Thursday Close",
-      "summary": "Live cattle futures retreated from early gains on Thursday with contracts down 32 to 72 cents at the close. Cash trade has seen some $260 sales in the South this week with, with northern trade at $408-415 dressed and $265 live. Feeder cattle futures posted $1.20 to $2.92 losses on...",
-      "content": "Live cattle futures retreated from early gains on Thursday with contracts down 32 to 72 cents at the close. Cash trade has seen some $260 sales in the South this week with, with northern trade at $408-415 dressed and $265 live. Feeder cattle futures posted $1.20 to $2.92 losses on...",
-      "url": "https://www.nasdaq.com/articles/cattle-fall-back-thursday-close",
-      "image": "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=800&q=80",
-      "publishedAt": "2026-05-15T16:20:41+00:00",
-      "category": "Com\u00e9rcio",
-      "icon": "\ud83d\udea2",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 776239989,
-      "source": "Nasdaq",
-      "title": "Hogs Slip Lower into Thursday\u2019s Close",
-      "summary": "Lean hog futures saw losses of 45 cents to $1.35 in the front months on Thursday. USDA\u2019s national base hog price was reported at $93.32 on Thursday afternoon, down $2.19 from the day prior. The CME Lean Hog Index was back up 26 cents on May 12 at $90.74. Export...",
-      "content": "Lean hog futures saw losses of 45 cents to $1.35 in the front months on Thursday. USDA\u2019s national base hog price was reported at $93.32 on Thursday afternoon, down $2.19 from the day prior. The CME Lean Hog Index was back up 26 cents on May 12 at $90.74. Export...",
-      "url": "https://www.nasdaq.com/articles/hogs-slip-lower-thursdays-close",
-      "image": "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=800&q=80",
-      "publishedAt": "2026-05-15T16:20:41+00:00",
-      "category": "Com\u00e9rcio",
-      "icon": "\ud83d\udea2",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 719331121,
-      "source": "Nasdaq",
-      "title": "Stocks Settle Higher on Strong Tech Earnings and Economic Resilience",
-      "summary": "The S&P 500 Index ($SPX ) (SPY ) on Thursday closed up +0.77%, the Dow Jones Industrial Average ($DOWI ) (DIA ) closed up +0.75%, and the Nasdaq 100 Index ($IUXX ) (QQQ ) closed up +0.73%. June E-mini S&P futures (ESM26 ) rose +0.78%, and June E-mini Nasdaq futures...",
-      "content": "The S&P 500 Index ($SPX ) (SPY ) on Thursday closed up +0.77%, the Dow Jones Industrial Average ($DOWI ) (DIA ) closed up +0.75%, and the Nasdaq 100 Index ($IUXX ) (QQQ ) closed up +0.73%. June E-mini S&P futures (ESM26 ) rose +0.78%, and June E-mini Nasdaq futures...",
-      "url": "https://www.nasdaq.com/articles/stocks-settle-higher-strong-tech-earnings-and-economic-resilience",
-      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
-      "publishedAt": "2026-05-15T16:20:41+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 486129570,
-      "source": "Yahoo Finance",
-      "title": "This Tech Stock Has Outperformed the Nasdaq 3 Years Running, but Is Down 25% in 2026. Is Now the Time to Buy?",
-      "summary": "",
-      "content": "",
-      "url": "https://finance.yahoo.com/markets/stocks/articles/tech-stock-outperformed-nasdaq-3-162000427.html",
-      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
-      "publishedAt": "2026-05-15T16:20:00+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 566927772,
-      "source": "CNBC",
-      "title": "Bristol Myers Squibb turns to China to develop new drugs in newest cross-continent collaboration",
-      "summary": "U.S. drugmaker Bristol Myers Squibb inked a partnership with a Chinese company that some say could mark the next wave of collaboration across continents.",
-      "content": "U.S. drugmaker Bristol Myers Squibb inked a partnership with a Chinese company that some say could mark the next wave of collaboration across continents.",
-      "url": "https://www.cnbc.com/2026/05/15/bristol-myers-squibb-turns-to-chinas-hengrui-to-replenish-pipeline.html",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-15T16:19:15+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [
-          "AAPL",
-          "NVDA",
-          "TSLA",
-          "AMD",
-          "PFE"
-        ],
-        "sector": "Tecnologia",
-        "sentiment": "neutral"
-      },
-      "heat": 3,
-      "feed": "rss"
-    },
-    {
-      "id": 995808465,
-      "source": "Yahoo Finance",
-      "title": "Cerebras Stock Slides A Day After Blockbuster IPO",
-      "summary": "",
-      "content": "",
-      "url": "https://www.investors.com/news/technology/cerebras-ipo-cbrs-stock-begins-trading/?src=A00220&yptr=yahoo",
-      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
-      "publishedAt": "2026-05-15T16:19:13+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 308118141,
-      "source": "Financial Times",
-      "title": "Global bonds tumble on fears of inflation shock from Iran war",
-      "summary": "Stocks dragged lower as traders price in US interest rate rises after worse than expected data releases",
-      "content": "Stocks dragged lower as traders price in US interest rate rises after worse than expected data releases",
-      "url": "https://www.ft.com/content/02015e49-fe11-488f-9e45-9fe70943d155",
-      "image": "https://images.ft.com/v3/image/raw/https%3A%2F%2Fd1e00ek4ebabms.cloudfront.net%2Fproduction%2F696f344f-4ee2-4e21-99b1-787d42071553.jpg?source=next-home-page&dpr=2&width=580&fit=scale-down",
-      "publishedAt": "2026-05-15T16:17:53+00:00",
-      "category": "Geopol\u00edtica",
-      "icon": "\ud83c\udf0d",
-      "impact": {
-        "tickers": [
-          "JPM",
-          "GS",
-          "BAC",
-          "TLT",
-          "LMT"
-        ],
-        "sector": "Finan\u00e7as",
-        "sentiment": "neutral"
-      },
-      "heat": 3,
-      "feed": "rss"
-    },
-    {
-      "id": 886593188,
-      "source": "Nasdaq",
-      "title": "RBC (RBC) Q4 2026 Earnings Call Transcript",
-      "summary": "@media (max-width: 768px) { .image-container { width: 100% !important; float: none !important; margin: 0 0 1rem 0 !important; } } Image source: The Mo",
-      "content": "@media (max-width: 768px) { .image-container { width: 100% !important; float: none !important; margin: 0 0 1rem 0 !important; } } Image source: The Mo",
-      "url": "https://www.nasdaq.com/articles/rbc-rbc-q4-2026-earnings-call-transcript",
-      "image": "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=800&q=80",
-      "publishedAt": "2026-05-15T16:14:15+00:00",
-      "category": "Com\u00e9rcio",
-      "icon": "\ud83d\udea2",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 223769556,
-      "source": "Quiver Quantitative",
-      "title": "FRSH | Freshworks Inc. Class A Stock Data, Price & News",
-      "summary": "This page provides comprehensive data for Freshworks Inc. (FRSH) Class A stock, including real-time price (N/A), financial statements, insider trading activity, institutional holdings, and analyst ratings. It also details the company's business model, offering software-as-a-service for customer and employee support across various regions, with North America being its largest revenue contributor. The platform offers tools like Smart Score and Bull vs. Bear cases for premium subscribers, though detailed financial figures and specific analyst forecasts are indicated as unavailable or requiring su",
-      "content": "This page provides comprehensive data for Freshworks Inc. (FRSH) Class A stock, including real-time price (N/A), financial statements, insider trading activity, institutional holdings, and analyst ratings. It also details the company's business model, offering software-as-a-service for customer and employee support across various regions, with North America being its largest revenue contributor. The platform offers tools like Smart Score and Bull vs. Bear cases for premium subscribers, though detailed financial figures and specific analyst forecasts are indicated as unavailable or requiring subscription access.",
-      "url": "https://www.quiverquant.com/stock/FRSH/",
-      "image": "https://www.quiverquant.com/images/frsh_new.png",
-      "publishedAt": "2026-05-15T16:10:11+00:00",
-      "category": "Geopol\u00edtica",
-      "icon": "\ud83c\udf0d",
-      "impact": {
-        "tickers": [
-          "FRSH"
-        ],
-        "sector": "Defesa",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 335758304,
-      "source": "CNBC Tech",
-      "title": "Jim Cramer says it's time to trim this volatile AI chipmaker",
-      "summary": "The Investing Club holds its \"Morning Meeting\" every weekday at 10:20 a.m. ET.",
-      "content": "The Investing Club holds its \"Morning Meeting\" every weekday at 10:20 a.m. ET.",
-      "url": "https://www.cnbc.com/2026/05/15/jim-cramer-says-its-time-to-trim-this-volatile-ai-chipmaker-.html",
-      "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
-      "publishedAt": "2026-05-15T16:10:06+00:00",
-      "category": "Tecnologia",
-      "icon": "\ud83d\udcbb",
-      "impact": {
-        "tickers": [
-          "NVDA",
-          "AMD",
-          "INTC",
-          "AVGO"
-        ],
-        "sector": "Tecnologia",
-        "sentiment": "positive"
-      },
-      "heat": 3,
-      "feed": "rss"
-    },
-    {
-      "id": 782823640,
-      "source": "Financial Times",
-      "title": "Trump undecided on Taiwan arms sale after summit with Xi",
-      "summary": "US president raises doubts about $14bn weapons package for Taipei after two days of meetings in China",
-      "content": "US president raises doubts about $14bn weapons package for Taipei after two days of meetings in China",
-      "url": "https://www.ft.com/content/66933e51-e06d-475c-aed2-f808f9443dea",
-      "image": "https://images.ft.com/v3/image/raw/https%3A%2F%2Fd1e00ek4ebabms.cloudfront.net%2Fproduction%2Fd3927c5d-5105-4959-8281-95f9acc20468.jpg?source=next-home-page&dpr=2&width=580&fit=scale-down",
-      "publishedAt": "2026-05-15T16:08:18+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [
-          "AAPL",
-          "NVDA",
-          "TSLA",
-          "AMD"
-        ],
-        "sector": "Tecnologia",
-        "sentiment": "neutral"
-      },
-      "heat": 3,
-      "feed": "rss"
-    },
-    {
-      "id": 674128123,
-      "source": "Nasdaq",
-      "title": "Is It Too Late to Buy Sandisk Stock?",
-      "summary": "Key PointsSandisk is moving to increase its multi-year agreements to lock in revenue.",
-      "content": "Key PointsSandisk is moving to increase its multi-year agreements to lock in revenue.",
-      "url": "https://www.nasdaq.com/articles/it-too-late-buy-sandisk-stock-0",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-15T16:06:00+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 108076387,
-      "source": "Yahoo Finance",
-      "title": "Stock Market Today: Dow Under Pressure With Surging Yields, Oil Prices; Nvidia Slides (Live Coverage)",
-      "summary": "",
-      "content": "",
-      "url": "https://www.investors.com/market-trend/stock-market-today/stock-market-today-dow-jones-sp500-nasdaq-oil-prices-yields-applied-materials-nvidia-cerebras-ipo/?src=A00220&yptr=yahoo",
-      "image": "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80",
-      "publishedAt": "2026-05-15T16:05:40+00:00",
-      "category": "Energia",
-      "icon": "\u26a1",
-      "impact": {
-        "tickers": [
           "XOM",
           "CVX",
           "COP",
@@ -1059,14 +52,39 @@
       "feed": "rss"
     },
     {
-      "id": 148416914,
-      "source": "Yahoo Finance",
-      "title": "Motor vehicles, AI boost US manufacturing production; supply shortages from war loom",
-      "summary": "",
-      "content": "",
-      "url": "https://finance.yahoo.com/economy/articles/us-manufacturing-output-accelerates-auto-133312459.html",
+      "id": 272844670,
+      "source": "Nasdaq",
+      "title": "Crude Oil Prices Surge on Concern of a Prolonged Disruption to Global Supplies",
+      "summary": "June WTI crude oil (CLM26 ) on Friday closed up +4.25 (+4.20%), and June RBOB gasoline (RBM26 ) closed up +0.0962 (+2.67%). Crude oil and gasoline prices rallied sharply on Friday, with crude posting a 1.5-week high. Crude prices are surging as the lack of negotiations to end the US-Iran...",
+      "content": "June WTI crude oil (CLM26 ) on Friday closed up +4.25 (+4.20%), and June RBOB gasoline (RBM26 ) closed up +0.0962 (+2.67%). Crude oil and gasoline prices rallied sharply on Friday, with crude posting a 1.5-week high. Crude prices are surging as the lack of negotiations to end the US-Iran...",
+      "url": "https://www.nasdaq.com/articles/crude-oil-prices-surge-concern-prolonged-disruption-global-supplies",
       "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
-      "publishedAt": "2026-05-15T16:04:31+00:00",
+      "publishedAt": "2026-05-16T08:37:17+00:00",
+      "category": "Geopol\u00edtica",
+      "icon": "\ud83c\udf0d",
+      "impact": {
+        "tickers": [
+          "XOM",
+          "CVX",
+          "COP",
+          "OXY",
+          "SLB"
+        ],
+        "sector": "Energia",
+        "sentiment": "positive"
+      },
+      "heat": 3,
+      "feed": "rss"
+    },
+    {
+      "id": 967761768,
+      "source": "Nasdaq",
+      "title": "Nat-Gas Prices Climb on Forecasts for Warm US Temps",
+      "summary": "June Nymex natural gas (NGM26 ) on Friday closed up +0.066 (+2.28%). Nat-gas prices rallied to a 6-week nearest-future high on Friday and settled sharply higher. Expectations of above-normal temperatures that could boost nat-gas demand from electricity providers to power increased air-conditioning use are underpinning nat-gas prices. Forecaster Vaisala said...",
+      "content": "June Nymex natural gas (NGM26 ) on Friday closed up +0.066 (+2.28%). Nat-gas prices rallied to a 6-week nearest-future high on Friday and settled sharply higher. Expectations of above-normal temperatures that could boost nat-gas demand from electricity providers to power increased air-conditioning use are underpinning nat-gas prices. Forecaster Vaisala said...",
+      "url": "https://www.nasdaq.com/articles/nat-gas-prices-climb-forecasts-warm-us-temps",
+      "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
+      "publishedAt": "2026-05-16T08:37:17+00:00",
       "category": "Geopol\u00edtica",
       "icon": "\ud83c\udf0d",
       "impact": {
@@ -1083,35 +101,663 @@
       "feed": "rss"
     },
     {
-      "id": 225548192,
-      "source": "Class Action Lawsuits",
-      "title": "Santa Clara County sues Meta for profits from alleged scam ads",
-      "summary": "Santa Clara County has filed a lawsuit against Meta Platforms Inc. and Instagram LLC, alleging that Meta knowingly profits from scam ads on its platforms while falsely claiming to combat them. The complaint claims Meta's platforms are responsible for one-third of all internet scams in the U.S., generating $7 billion in annual \"violating revenue,\" and that Meta actively facilitates these scams through practices like charging \"penalty bids\" and disbanding anti-scam teams. The county is seeking an injunction, restitution, and civil penalties under California's False Advertising Law and Unfair Com",
-      "content": "Santa Clara County has filed a lawsuit against Meta Platforms Inc. and Instagram LLC, alleging that Meta knowingly profits from scam ads on its platforms while falsely claiming to combat them. The complaint claims Meta's platforms are responsible for one-third of all internet scams in the U.S., generating $7 billion in annual \"violating revenue,\" and that Meta actively facilitates these scams through practices like charging \"penalty bids\" and disbanding anti-scam teams. The county is seeking an injunction, restitution, and civil penalties under California's False Advertising Law and Unfair Competition Law.",
-      "url": "https://topclassactions.com/lawsuit-settlements/lawsuit-news/santa-clara-county-sues-meta-for-profits-from-alleged-scam-ads/",
-      "image": "https://topclassactions.com/wp-content/uploads/2026/05/shutterstock_2532009137-1024x576.jpg",
-      "publishedAt": "2026-05-15T16:03:07+00:00",
+      "id": 349788921,
+      "source": "Nasdaq",
+      "title": "Wheat Falls into the Weekend",
+      "summary": "The wheat market retreated lower into the Friday close, with the three exchanges posting losses. Chicago SRW futures were down 11 to 22 1/4 cents on the day, with July 16 \u00be cents higher on the week. KC HRW futures posted 12 to 19 1/2 cent losses across the board...",
+      "content": "The wheat market retreated lower into the Friday close, with the three exchanges posting losses. Chicago SRW futures were down 11 to 22 1/4 cents on the day, with July 16 \u00be cents higher on the week. KC HRW futures posted 12 to 19 1/2 cent losses across the board...",
+      "url": "https://www.nasdaq.com/articles/wheat-falls-weekend",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-16T08:37:16+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 172887436,
+      "source": "Nasdaq",
+      "title": "Soybeans Close Friday with Bears Pushing Lower",
+      "summary": "Soybeans were extending the late week losses with close Friday with contracts down 7 to 15 1/12 cents. July was down 31 cents on the week, as November was down 18 \u00be cents. The cmdtyView national average Cash Bean price was down 19 cents at $11.09 1/4. Soymeal futures were...",
+      "content": "Soybeans were extending the late week losses with close Friday with contracts down 7 to 15 1/12 cents. July was down 31 cents on the week, as November was down 18 \u00be cents. The cmdtyView national average Cash Bean price was down 19 cents at $11.09 1/4. Soymeal futures were...",
+      "url": "https://www.nasdaq.com/articles/soybeans-close-friday-bears-pushing-lower",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-16T08:37:16+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 591657362,
+      "source": "Nasdaq",
+      "title": "Stocks Settle Sharply Lower as Bond Yields Jump on Inflation Fears",
+      "summary": "The S&P 500 Index ($SPX ) (SPY ) on Friday closed down -1.24%, the Dow Jones Industrial Average ($DOWI ) (DIA ) closed down -1.07%, and the Nasdaq 100 Index ($IUXX ) (QQQ ) closed down -1.54%. June E-mini S&P futures (ESM26 ) fell -1.26%, and June E-mini Nasdaq futures...",
+      "content": "The S&P 500 Index ($SPX ) (SPY ) on Friday closed down -1.24%, the Dow Jones Industrial Average ($DOWI ) (DIA ) closed down -1.07%, and the Nasdaq 100 Index ($IUXX ) (QQQ ) closed down -1.54%. June E-mini S&P futures (ESM26 ) fell -1.26%, and June E-mini Nasdaq futures...",
+      "url": "https://www.nasdaq.com/articles/stocks-settle-sharply-lower-bond-yields-jump-inflation-fears",
+      "image": "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&q=80",
+      "publishedAt": "2026-05-16T08:37:16+00:00",
+      "category": "Macro",
+      "icon": "\ud83d\udcca",
+      "impact": {
+        "tickers": [
+          "JPM",
+          "GS",
+          "BAC",
+          "TLT"
+        ],
+        "sector": "Finan\u00e7as",
+        "sentiment": "neutral"
+      },
+      "heat": 3,
+      "feed": "rss"
+    },
+    {
+      "id": 673588248,
+      "source": "Nasdaq",
+      "title": "Cotton Bouncing Off Limit Losses at Midday",
+      "summary": "Cotton futures are trading with 281 top 381 point losses at midday, with nearby July bouncing off early limit losses. The US dollar index is $0.407 higher at $98.135. Crude oil is up $4.01 at $105.18 midday. Few details announced following the meeting with President Trump and China\u2019s President Xi...",
+      "content": "Cotton futures are trading with 281 top 381 point losses at midday, with nearby July bouncing off early limit losses. The US dollar index is $0.407 higher at $98.135. Crude oil is up $4.01 at $105.18 midday. Few details announced following the meeting with President Trump and China\u2019s President Xi...",
+      "url": "https://www.nasdaq.com/articles/cotton-bouncing-limit-losses-midday",
+      "image": "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80",
+      "publishedAt": "2026-05-16T08:37:16+00:00",
+      "category": "Energia",
+      "icon": "\u26a1",
+      "impact": {
+        "tickers": [
+          "XOM",
+          "CVX",
+          "COP",
+          "OXY",
+          "SLB"
+        ],
+        "sector": "Energia",
+        "sentiment": "negative"
+      },
+      "heat": 3,
+      "feed": "rss"
+    },
+    {
+      "id": 809815673,
+      "source": "Nasdaq",
+      "title": "Sugar Prices Pressured by Brazilian Real Weakness",
+      "summary": "July NY world sugar #11 (SBN26 ) on Friday closed down -0.19 (-1.27%), and Aug London ICE white sugar #5 (SWQ26 ) closed down -4.40 (-0.99%). Sugar prices settled sharply lower for a second day on Friday amid weakness in the Brazilian real. The real (^USDBRL ) tumbled to a...",
+      "content": "July NY world sugar #11 (SBN26 ) on Friday closed down -0.19 (-1.27%), and Aug London ICE white sugar #5 (SWQ26 ) closed down -4.40 (-0.99%). Sugar prices settled sharply lower for a second day on Friday amid weakness in the Brazilian real. The real (^USDBRL ) tumbled to a...",
+      "url": "https://www.nasdaq.com/articles/sugar-prices-pressured-brazilian-real-weakness",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-16T08:37:15+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 118409104,
+      "source": "Nasdaq",
+      "title": "Cocoa Prices Plummet on Abundant Global Supplies",
+      "summary": "July ICE NY cocoa (CCN26 ) on Friday closed down -187 (-4.46%), and July ICE London cocoa #7 (CAN26 ) closed down -76 (-2.44%). Cocoa prices fell sharply on Friday, posting 1.5-week lows. Since posting 3.5-month highs on Monday, cocoa prices have retreated amid an outlook for abundant supplies. On...",
+      "content": "July ICE NY cocoa (CCN26 ) on Friday closed down -187 (-4.46%), and July ICE London cocoa #7 (CAN26 ) closed down -76 (-2.44%). Cocoa prices fell sharply on Friday, posting 1.5-week lows. Since posting 3.5-month highs on Monday, cocoa prices have retreated amid an outlook for abundant supplies. On...",
+      "url": "https://www.nasdaq.com/articles/cocoa-prices-plummet-abundant-global-supplies",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-16T08:37:15+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 787822910,
+      "source": "Nasdaq",
+      "title": "Soybeans Pushing Correction to Midday",
+      "summary": "Soybeans are pushing the retreat to Friday, with contracts down 14 to 15 cents at midday. The cmdtyView national average Cash Bean price is down 19 cents at $11.09 1/4. Soymeal futures are back up 70 cents to $1.70, with Soy Oil futures falling steady at midday. There was 1...",
+      "content": "Soybeans are pushing the retreat to Friday, with contracts down 14 to 15 cents at midday. The cmdtyView national average Cash Bean price is down 19 cents at $11.09 1/4. Soymeal futures are back up 70 cents to $1.70, with Soy Oil futures falling steady at midday. There was 1...",
+      "url": "https://www.nasdaq.com/articles/soybeans-pushing-correction-midday",
+      "image": "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80",
+      "publishedAt": "2026-05-16T08:37:15+00:00",
+      "category": "Energia",
+      "icon": "\u26a1",
+      "impact": {
+        "tickers": [
+          "XOM",
+          "CVX",
+          "COP",
+          "OXY",
+          "SLB"
+        ],
+        "sector": "Energia",
+        "sentiment": "negative"
+      },
+      "heat": 3,
+      "feed": "rss"
+    },
+    {
+      "id": 556612265,
+      "source": "Nasdaq",
+      "title": "Sugar Prices Retreat as the Brazilian Real Weakens",
+      "summary": "July NY world sugar #11 (SBN26 ) today is down -0.24 (-1.60%), and Aug London ICE white sugar #5 (SWQ26 ) is down -5.30 (-1.20%). Sugar prices are sharply lower for a second day today amid weakness in the Brazilian real. The real (^USDBRL ) tumbled to a 5-week low...",
+      "content": "July NY world sugar #11 (SBN26 ) today is down -0.24 (-1.60%), and Aug London ICE white sugar #5 (SWQ26 ) is down -5.30 (-1.20%). Sugar prices are sharply lower for a second day today amid weakness in the Brazilian real. The real (^USDBRL ) tumbled to a 5-week low...",
+      "url": "https://www.nasdaq.com/articles/sugar-prices-retreat-brazilian-real-weakens",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-16T08:37:15+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 310060555,
+      "source": "argaam.com",
+      "title": "US stocks end lower; Dow Jones loses 540 points",
+      "summary": "US stocks end lower; Dow Jones loses 540 points",
+      "content": "US stocks end lower; Dow Jones loses 540 points",
+      "url": "https://www.argaam.com/en/reports/international_market_daily_report/58560?preview=true",
+      "image": "https://www.argaam.com/content/en/images/argaam-plus-social1.jpg",
+      "publishedAt": "2026-05-16T08:34:00.000000Z",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "positive"
+      },
+      "heat": 1,
+      "feed": "marketaux"
+    },
+    {
+      "id": 843942396,
+      "source": "seekingalpha.com",
+      "title": "The Charles Schwab Corporation (SCHW) Analyst/Investor Day Transcript",
+      "summary": "The Charles Schwab Corporation (SCHW) Analyst/Investor Day May 14, 2026 9:30 AM EDTCompany ParticipantsJeff Edwards - MD & Head of Investor...",
+      "content": "The Charles Schwab Corporation (SCHW) Analyst/Investor Day May 14, 2026 9:30 AM EDTCompany ParticipantsJeff Edwards - MD & Head of Investor...",
+      "url": "https://seekingalpha.com/article/4905571-the-charles-schwab-corporation-schw-analyst-investor-day-transcript",
+      "image": "https://static.seekingalpha.com/assets/og_image_1200-29b2bfe1a595477db6826bd2126c63ac2091efb7ec76347a8e7f81ba17e3de6c.png",
+      "publishedAt": "2026-05-16T08:31:01.000000Z",
+      "category": "Geopol\u00edtica",
+      "icon": "\ud83c\udf0d",
+      "impact": {
+        "tickers": [
+          "LMT",
+          "RTX",
+          "NOC",
+          "XOM"
+        ],
+        "sector": "Defesa",
+        "sentiment": "neutral"
+      },
+      "heat": 3,
+      "feed": "marketaux"
+    },
+    {
+      "id": 645851495,
+      "source": "Nasdaq",
+      "title": "Hogs Falls into the Friday Close",
+      "summary": "Lean hog futures posted 12 cent to $1.32 losses across the board on Friday, with June settling with a 12 cent gain on the week. USDA\u2019s national base hog price was reported at $91.52 on Friday afternoon, down $1.80 from the day. The CME Lean Hog Index was back down...",
+      "content": "Lean hog futures posted 12 cent to $1.32 losses across the board on Friday, with June settling with a 12 cent gain on the week. USDA\u2019s national base hog price was reported at $91.52 on Friday afternoon, down $1.80 from the day. The CME Lean Hog Index was back down...",
+      "url": "https://www.nasdaq.com/articles/hogs-falls-friday-close",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-16T08:25:57+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 119504348,
+      "source": "Nasdaq",
+      "title": "Corn Falls Lower into the Weekend",
+      "summary": "Corn futures closed the Friday session with contracts falling 7 to 11 \u00be vents as July ended the week with losses of 15 \u00bd cents. December was12 \u00bd cents lower. The CmdtyView national average Cash Corn price was down 11 cents to $4.16 3/4. The weekly CFTC update from Friday...",
+      "content": "Corn futures closed the Friday session with contracts falling 7 to 11 \u00be vents as July ended the week with losses of 15 \u00bd cents. December was12 \u00bd cents lower. The CmdtyView national average Cash Corn price was down 11 cents to $4.16 3/4. The weekly CFTC update from Friday...",
+      "url": "https://www.nasdaq.com/articles/corn-falls-lower-weekend",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-16T08:25:57+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 447945177,
+      "source": "Nasdaq",
+      "title": "Wheat Extends Losses at Midday",
+      "summary": "The wheat market is retreating lower on Friday, with contracts down across the three exchanges at midday. Chicago SRW futures are trading with 24 to 25 cents in the red. KC HRW futures are 22 to 24 cents lower in the front months at midday. MPLS spring wheat is trading...",
+      "content": "The wheat market is retreating lower on Friday, with contracts down across the three exchanges at midday. Chicago SRW futures are trading with 24 to 25 cents in the red. KC HRW futures are 22 to 24 cents lower in the front months at midday. MPLS spring wheat is trading...",
+      "url": "https://www.nasdaq.com/articles/wheat-extends-losses-midday",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-16T08:25:55+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 759403388,
+      "source": "seekingalpha.com",
+      "title": "April U.S. Retail Sales Rise As Expected; Default Risk Climbs",
+      "summary": "US retail and food services sales rose in April with increases in nine of 13 categories. Read more here.",
+      "content": "US retail and food services sales rose in April with increases in nine of 13 categories. Read more here.",
+      "url": "https://seekingalpha.com/article/4905617-april-us-retail-sales-rise-as-expected-default-risk-climbs",
+      "image": "https://static.seekingalpha.com/cdn/s3/uploads/getty_images/2248780587/image_2248780587.jpg?io=getty-c-w1536",
+      "publishedAt": "2026-05-16T08:20:00.000000Z",
       "category": "Global",
       "icon": "\ud83c\udf10",
       "impact": {
         "tickers": [
-          "META"
+          "AMZN",
+          "WMT",
+          "TGT",
+          "COST"
         ],
-        "sector": "",
+        "sector": "Consumo",
+        "sentiment": "neutral"
+      },
+      "heat": 3,
+      "feed": "marketaux"
+    },
+    {
+      "id": 287551639,
+      "source": "MarketBeat",
+      "title": "Bank Julius Baer & Co. Ltd Zurich Trims Stake in F5, Inc. $FFIV",
+      "summary": "Bank Julius Baer & Co. Ltd Zurich reduced its stake in F5, Inc. (NASDAQ:FFIV) by 38.4% in the fourth quarter, selling 5,086 shares and retaining 8,142 shares valued at $2.1 million. This comes as F5 reported better-than-expected quarterly results for Q1, with EPS of $3.90 and revenue of $811.7 million, and raised its fiscal 2026 guidance. Despite the trimming of shares by Bank Julius Baer, other institutional investors increased their holdings, and analysts maintain a mixed but generally constructive outlook with a \"Hold\" average rating and an average price target of $316.44.",
+      "content": "Bank Julius Baer & Co. Ltd Zurich reduced its stake in F5, Inc. (NASDAQ:FFIV) by 38.4% in the fourth quarter, selling 5,086 shares and retaining 8,142 shares valued at $2.1 million. This comes as F5 reported better-than-expected quarterly results for Q1, with EPS of $3.90 and revenue of $811.7 million, and raised its fiscal 2026 guidance. Despite the trimming of shares by Bank Julius Baer, other institutional investors increased their holdings, and analysts maintain a mixed but generally constructive outlook with a \"Hold\" average rating and an average price target of $316.44.",
+      "url": "https://www.marketbeat.com/instant-alerts/filing-bank-julius-baer-co-ltd-zurich-trims-stake-in-f5-inc-ffiv-2026-05-16/",
+      "image": "https://www.marketbeat.com/logos/f5-networks-logo-1200x675.jpg",
+      "publishedAt": "2026-05-16T08:07:02+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [
+          "FFIV"
+        ],
+        "sector": "Finan\u00e7as",
+        "sentiment": "positive"
+      },
+      "heat": 1,
+      "feed": "alphavantage"
+    },
+    {
+      "id": 514950726,
+      "source": "MarketBeat",
+      "title": "Bank Julius Baer & Co. Ltd Zurich Reduces Stake in NetApp, Inc. $NTAP",
+      "summary": "Bank Julius Baer & Co. Ltd Zurich significantly reduced its stake in NetApp, Inc. by 41.4% in the fourth quarter of 2025, selling over 18,000 shares. Despite this, NetApp reported better-than-expected quarterly earnings with a 4.4% year-over-year revenue increase. The company currently holds a consensus \"Hold\" rating from analysts with an average price target of $122.64, and insiders have also sold shares recently.",
+      "content": "Bank Julius Baer & Co. Ltd Zurich significantly reduced its stake in NetApp, Inc. by 41.4% in the fourth quarter of 2025, selling over 18,000 shares. Despite this, NetApp reported better-than-expected quarterly earnings with a 4.4% year-over-year revenue increase. The company currently holds a consensus \"Hold\" rating from analysts with an average price target of $122.64, and insiders have also sold shares recently.",
+      "url": "https://www.marketbeat.com/instant-alerts/filing-bank-julius-baer-co-ltd-zurich-reduces-stake-in-netapp-inc-ntap-2026-05-16/",
+      "image": "https://www.marketbeat.com/logos/netapp-inc-logo-1200x675.jpg?v=20221104135632",
+      "publishedAt": "2026-05-16T08:06:44+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [
+          "NTAP"
+        ],
+        "sector": "Finan\u00e7as",
         "sentiment": "negative"
       },
       "heat": 1,
       "feed": "alphavantage"
     },
     {
-      "id": 435043199,
-      "source": "Nasdaq",
-      "title": "Nvidia Just Surpassed Silver as the World's 2nd-Largest Asset. Could $6 Trillion Be Next?",
-      "summary": "Key PointsNvidia's market cap recently topped $5.7 trillion, eclipsing silver.",
-      "content": "Key PointsNvidia's market cap recently topped $5.7 trillion, eclipsing silver.",
-      "url": "https://www.nasdaq.com/articles/nvidia-just-surpassed-silver-worlds-2nd-largest-asset-could-6-trillion-be-next",
+      "id": 620937834,
+      "source": "MarketBeat",
+      "title": "Bank Julius Baer & Co. Ltd Zurich Has $4.52 Million Position in MSCI Inc $MSCI",
+      "summary": "Bank Julius Baer & Co. Ltd Zurich significantly reduced its stake in MSCI Inc. by 96.4% in the fourth quarter, now holding 7,884 shares valued at approximately $4.52 million. This comes after MSCI reported strong quarterly earnings, surpassing analyst estimates for both EPS and revenue, and declared a quarterly dividend of $2.05 per share. Analysts generally maintain a \"Moderate Buy\" rating for MSCI, with a consensus target price of $692.70.",
+      "content": "Bank Julius Baer & Co. Ltd Zurich significantly reduced its stake in MSCI Inc. by 96.4% in the fourth quarter, now holding 7,884 shares valued at approximately $4.52 million. This comes after MSCI reported strong quarterly earnings, surpassing analyst estimates for both EPS and revenue, and declared a quarterly dividend of $2.05 per share. Analysts generally maintain a \"Moderate Buy\" rating for MSCI, with a consensus target price of $692.70.",
+      "url": "https://www.marketbeat.com/instant-alerts/filing-bank-julius-baer-co-ltd-zurich-has-452-million-position-in-msci-inc-msci-2026-05-16/",
+      "image": "https://www.marketbeat.com/logos/msci-inc-logo-1200x675.png?v=20221026154357",
+      "publishedAt": "2026-05-16T08:06:41+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [
+          "MSCI"
+        ],
+        "sector": "Finan\u00e7as",
+        "sentiment": "positive"
+      },
+      "heat": 1,
+      "feed": "alphavantage"
+    },
+    {
+      "id": 276231171,
+      "source": "MarketBeat",
+      "title": "Allegion PLC $ALLE Shares Sold by Bank Julius Baer & Co. Ltd Zurich",
+      "summary": "Bank Julius Baer & Co. Ltd Zurich significantly reduced its stake in Allegion PLC by 47.4% in the fourth quarter, selling 13,265 shares. Allegion reported a mixed earnings quarter, missing EPS estimates but seeing revenue increase by 9.7% year-over-year, and announced a quarterly dividend and a new share repurchase program. Despite cautious \"Hold\" ratings from analysts, institutional investors and hedge funds own a substantial portion of the company's stock.",
+      "content": "Bank Julius Baer & Co. Ltd Zurich significantly reduced its stake in Allegion PLC by 47.4% in the fourth quarter, selling 13,265 shares. Allegion reported a mixed earnings quarter, missing EPS estimates but seeing revenue increase by 9.7% year-over-year, and announced a quarterly dividend and a new share repurchase program. Despite cautious \"Hold\" ratings from analysts, institutional investors and hedge funds own a substantial portion of the company's stock.",
+      "url": "https://www.marketbeat.com/instant-alerts/filing-allegion-plc-alle-shares-sold-by-bank-julius-baer-co-ltd-zurich-2026-05-16/",
+      "image": "https://www.marketbeat.com/logos/allegion-plc-logo-1200x675.png?v=20221109142310",
+      "publishedAt": "2026-05-16T08:06:34+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [
+          "ALLE"
+        ],
+        "sector": "Finan\u00e7as",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "alphavantage"
+    },
+    {
+      "id": 651622866,
+      "source": "MarketBeat",
+      "title": "Cornerstone Wealth Management LLC Raises Stock Position in Salesforce Inc. $CRM",
+      "summary": "Cornerstone Wealth Management LLC significantly increased its stake in Salesforce Inc. by 137.5%, bringing their total holdings to $2.798 million. This move comes as Salesforce reported strong quarterly earnings, beating expectations with an EPS of $3.81 and revenue of $11.20 billion, and announced a new $25 billion share repurchase program and an increased quarterly dividend to $0.44 per share. Hedge funds and other institutional investors collectively own 80.43% of Salesforce, highlighting strong institutional confidence in the company.",
+      "content": "Cornerstone Wealth Management LLC significantly increased its stake in Salesforce Inc. by 137.5%, bringing their total holdings to $2.798 million. This move comes as Salesforce reported strong quarterly earnings, beating expectations with an EPS of $3.81 and revenue of $11.20 billion, and announced a new $25 billion share repurchase program and an increased quarterly dividend to $0.44 per share. Hedge funds and other institutional investors collectively own 80.43% of Salesforce, highlighting strong institutional confidence in the company.",
+      "url": "https://www.marketbeat.com/instant-alerts/filing-cornerstone-wealth-management-llc-raises-stock-position-in-salesforce-inc-crm-2026-05-16/",
+      "image": "https://www.marketbeat.com/logos/salesforcecom-inc-logo-1200x675.png",
+      "publishedAt": "2026-05-16T08:06:34+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [
+          "CRM"
+        ],
+        "sector": "",
+        "sentiment": "positive"
+      },
+      "heat": 1,
+      "feed": "alphavantage"
+    },
+    {
+      "id": 573274589,
+      "source": "MarketBeat",
+      "title": "Bank Julius Baer & Co. Ltd Zurich Sells 3,513 Shares of Amgen Inc. $AMGN",
+      "summary": "Bank Julius Baer & Co. Ltd Zurich has reduced its stake in Amgen Inc. by 17.9%, selling 3,513 shares and retaining 16,068 shares valued at approximately $5.28 million. Amgen recently exceeded quarterly expectations with an EPS of $5.15 and revenue of $8.62 billion, and announced a quarterly dividend of $2.52 per share. Analysts currently give Amgen a consensus \"Hold\" rating with an average target price of $356.15.",
+      "content": "Bank Julius Baer & Co. Ltd Zurich has reduced its stake in Amgen Inc. by 17.9%, selling 3,513 shares and retaining 16,068 shares valued at approximately $5.28 million. Amgen recently exceeded quarterly expectations with an EPS of $5.15 and revenue of $8.62 billion, and announced a quarterly dividend of $2.52 per share. Analysts currently give Amgen a consensus \"Hold\" rating with an average target price of $356.15.",
+      "url": "https://www.marketbeat.com/instant-alerts/filing-bank-julius-baer-co-ltd-zurich-sells-3513-shares-of-amgen-inc-amgn-2026-05-16/",
+      "image": "https://www.marketbeat.com/logos/amgen-inc-logo-1200x675.jpg?v=20231228113741",
+      "publishedAt": "2026-05-16T08:06:31+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [
+          "AMGN"
+        ],
+        "sector": "Finan\u00e7as",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "alphavantage"
+    },
+    {
+      "id": 786197593,
+      "source": "MarketBeat",
+      "title": "Bank Julius Baer & Co. Ltd Zurich Grows Stake in Microchip Technology Incorporated $MCHP",
+      "summary": "Bank Julius Baer & Co. Ltd Zurich significantly increased its stake in Microchip Technology Incorporated (MCHP) by 391.9% in the fourth quarter, now holding 35,406 shares valued at $2.28 million. Microchip Technology reported strong quarterly earnings, beating expectations with highlights including $0.57 EPS on $1.31 billion revenue, a 35.1% year-over-year revenue increase, and raised future guidance. While institutional investors are increasing their positions, corporate insiders have been selling shares, with analysts offering mixed but generally bullish ratings for the semiconductor company",
+      "content": "Bank Julius Baer & Co. Ltd Zurich significantly increased its stake in Microchip Technology Incorporated (MCHP) by 391.9% in the fourth quarter, now holding 35,406 shares valued at $2.28 million. Microchip Technology reported strong quarterly earnings, beating expectations with highlights including $0.57 EPS on $1.31 billion revenue, a 35.1% year-over-year revenue increase, and raised future guidance. While institutional investors are increasing their positions, corporate insiders have been selling shares, with analysts offering mixed but generally bullish ratings for the semiconductor company.",
+      "url": "https://www.marketbeat.com/instant-alerts/filing-bank-julius-baer-co-ltd-zurich-grows-stake-in-microchip-technology-incorporated-mchp-2026-05-16/",
+      "image": "https://www.marketbeat.com/logos/microchip-technology-inc-logo-1200x675.png",
+      "publishedAt": "2026-05-16T08:06:31+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [
+          "MCHP"
+        ],
+        "sector": "Tecnologia",
+        "sentiment": "positive"
+      },
+      "heat": 1,
+      "feed": "alphavantage"
+    },
+    {
+      "id": 627430153,
+      "source": "MarketBeat",
+      "title": "Bank Julius Baer & Co. Ltd Zurich Sells 135,943 Shares of Ingersoll Rand Inc. $IR",
+      "summary": "Bank Julius Baer & Co. Ltd Zurich significantly reduced its stake in Ingersoll Rand Inc., selling 135,943 shares, though the company's Q1 earnings exceeded expectations. Despite the earnings beat, analysts maintain a cautious \"Hold\" rating with a consensus price target of $93.38. Recent insider selling also occurred, with Kathleen M. Keene and Vicente Reynal selling substantial amounts of company stock.",
+      "content": "Bank Julius Baer & Co. Ltd Zurich significantly reduced its stake in Ingersoll Rand Inc., selling 135,943 shares, though the company's Q1 earnings exceeded expectations. Despite the earnings beat, analysts maintain a cautious \"Hold\" rating with a consensus price target of $93.38. Recent insider selling also occurred, with Kathleen M. Keene and Vicente Reynal selling substantial amounts of company stock.",
+      "url": "https://www.marketbeat.com/instant-alerts/filing-bank-julius-baer-co-ltd-zurich-sells-135943-shares-of-ingersoll-rand-inc-ir-2026-05-16/",
+      "image": "https://www.marketbeat.com/logos/IngersollRand_logo-1200x675.jpg",
+      "publishedAt": "2026-05-16T08:06:17+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [
+          "IR"
+        ],
+        "sector": "Finan\u00e7as",
+        "sentiment": "negative"
+      },
+      "heat": 1,
+      "feed": "alphavantage"
+    },
+    {
+      "id": 31152453,
+      "source": "MarketBeat",
+      "title": "Bank Julius Baer & Co. Ltd Zurich Sells 2,880 Shares of Snap-On Incorporated $SNA",
+      "summary": "Bank Julius Baer & Co. Ltd Zurich has decreased its stake in Snap-On Incorporated (NYSE:SNA) by 29.2% in the fourth quarter, selling 2,880 shares and now owning 6,989 shares valued at approximately $2.44 million. Snap-On reported mixed quarterly results, missing EPS estimates but exceeding revenue expectations, and also authorized a $500 million share buyback and declared a quarterly dividend of $2.44 per share. Several other institutional investors also adjusted their positions in SNA, while company insiders made significant sales.",
+      "content": "Bank Julius Baer & Co. Ltd Zurich has decreased its stake in Snap-On Incorporated (NYSE:SNA) by 29.2% in the fourth quarter, selling 2,880 shares and now owning 6,989 shares valued at approximately $2.44 million. Snap-On reported mixed quarterly results, missing EPS estimates but exceeding revenue expectations, and also authorized a $500 million share buyback and declared a quarterly dividend of $2.44 per share. Several other institutional investors also adjusted their positions in SNA, while company insiders made significant sales.",
+      "url": "https://www.marketbeat.com/instant-alerts/filing-bank-julius-baer-co-ltd-zurich-sells-2880-shares-of-snap-on-incorporated-sna-2026-05-16/",
+      "image": "https://www.marketbeat.com/logos/snap-on-incorporated-logo-1200x675.gif",
+      "publishedAt": "2026-05-16T08:06:11+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [
+          "SNA"
+        ],
+        "sector": "Finan\u00e7as",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "alphavantage"
+    },
+    {
+      "id": 307175409,
+      "source": "Simply Wall Street",
+      "title": "Is OFG Bancorp\u2019s (OFG) Dividend Riches and Director Equity Pay Revealing Its True Priorities?",
+      "summary": "OFG Bancorp continues to demonstrate its commitment to capital returns through consistent dividends and equity-based compensation for directors. Despite the dividend yield surpassing the industry average and frequent increases, the company's investment narrative remains closely tied to the concentrated regional risk of Puerto Rico's economy and rising net charge-offs. Various fair value estimates exist for OFG Bancorp, ranging from $47.75 to $108.38, underscoring the mixed perspectives on its future performance.",
+      "content": "OFG Bancorp continues to demonstrate its commitment to capital returns through consistent dividends and equity-based compensation for directors. Despite the dividend yield surpassing the industry average and frequent increases, the company's investment narrative remains closely tied to the concentrated regional risk of Puerto Rico's economy and rising net charge-offs. Various fair value estimates exist for OFG Bancorp, ranging from $47.75 to $108.38, underscoring the mixed perspectives on its future performance.",
+      "url": "https://simplywall.st/stocks/us/banks/nyse-ofg/ofg-bancorp/news/is-ofg-bancorps-ofg-dividend-riches-and-director-equity-pay",
+      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
+      "publishedAt": "2026-05-16T08:03:49+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [
+          "OFG"
+        ],
+        "sector": "",
+        "sentiment": "positive"
+      },
+      "heat": 1,
+      "feed": "alphavantage"
+    },
+    {
+      "id": 192200582,
+      "source": "Simply Wall Street",
+      "title": "Verisk Analytics (VRSK) Valuation Check After Zen Insurance Launch And Recent AI Partnerships",
+      "summary": "Verisk Analytics (VRSK) is being re-evaluated following the launch of Zen Insurance, built on Verisk Ignite, and recent AI partnerships. The stock has seen a recent 3.64% gain contrasting with a significant year-to-date decline. While one narrative suggests VRSK is 133.2% overvalued at $69.70, an internal estimate places it 33.1% below fair value with a 23.4x P/E ratio, indicating mixed signals for investors.",
+      "content": "Verisk Analytics (VRSK) is being re-evaluated following the launch of Zen Insurance, built on Verisk Ignite, and recent AI partnerships. The stock has seen a recent 3.64% gain contrasting with a significant year-to-date decline. While one narrative suggests VRSK is 133.2% overvalued at $69.70, an internal estimate places it 33.1% below fair value with a 23.4x P/E ratio, indicating mixed signals for investors.",
+      "url": "https://simplywall.st/stocks/us/commercial-services/nasdaq-vrsk/verisk-analytics/news/verisk-analytics-vrsk-valuation-check-after-zen-insurance-la",
       "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
-      "publishedAt": "2026-05-15T16:03:00+00:00",
+      "publishedAt": "2026-05-16T08:00:38+00:00",
+      "category": "Tecnologia",
+      "icon": "\ud83d\udcbb",
+      "impact": {
+        "tickers": [
+          "VRSK"
+        ],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "alphavantage"
+    },
+    {
+      "id": 171665686,
+      "source": "Simply Wall Street",
+      "title": "Owens Corning (OC) Valuation Check After Q1 Results Guidance And Buyback Update",
+      "summary": "Owens Corning (OC) is under investor scrutiny after its Q1 2026 results showed weaker sales and profitability, accompanied by Q2 guidance and a share repurchase program update. The stock has seen a double-digit decline over the past year, prompting questions about whether it is undervalued, with a \"most popular narrative\" suggesting it is 21.2% undervalued with a fair value of $144.81. However, mixed signals from valuation, growth, and industry risks, including softer residential construction and potential oversupply, indicate that investors should look closer at the underlying data.",
+      "content": "Owens Corning (OC) is under investor scrutiny after its Q1 2026 results showed weaker sales and profitability, accompanied by Q2 guidance and a share repurchase program update. The stock has seen a double-digit decline over the past year, prompting questions about whether it is undervalued, with a \"most popular narrative\" suggesting it is 21.2% undervalued with a fair value of $144.81. However, mixed signals from valuation, growth, and industry risks, including softer residential construction and potential oversupply, indicate that investors should look closer at the underlying data.",
+      "url": "https://simplywall.st/stocks/us/capital-goods/nyse-oc/owens-corning/news/owens-corning-oc-valuation-check-after-q1-results-guidance-a",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-16T08:00:04+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [
+          "OC"
+        ],
+        "sector": "",
+        "sentiment": "positive"
+      },
+      "heat": 1,
+      "feed": "alphavantage"
+    },
+    {
+      "id": 735622409,
+      "source": "MarketBeat",
+      "title": "Crossmark Global Holdings Inc. Sells 20,769 Shares of F5, Inc. $FFIV",
+      "summary": "Crossmark Global Holdings Inc. significantly reduced its stake in F5, Inc. by selling 20,769 shares, decreasing its holdings by 92.7% to 1,640 shares. This comes as F5 reported strong Q4 earnings, beating estimates with EPS of $3.90 and revenue up 11% year-over-year, and analysts have been raising future earnings expectations. Despite insider selling by the CEO and CTO, the stock holds a \"Hold\" consensus rating with a price target of $316.44.",
+      "content": "Crossmark Global Holdings Inc. significantly reduced its stake in F5, Inc. by selling 20,769 shares, decreasing its holdings by 92.7% to 1,640 shares. This comes as F5 reported strong Q4 earnings, beating estimates with EPS of $3.90 and revenue up 11% year-over-year, and analysts have been raising future earnings expectations. Despite insider selling by the CEO and CTO, the stock holds a \"Hold\" consensus rating with a price target of $316.44.",
+      "url": "https://www.marketbeat.com/instant-alerts/filing-crossmark-global-holdings-inc-sells-20769-shares-of-f5-inc-ffiv-2026-05-16/",
+      "image": "https://www.marketbeat.com/logos/f5-networks-logo-1200x675.jpg",
+      "publishedAt": "2026-05-16T07:57:02+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [
+          "FFIV"
+        ],
+        "sector": "",
+        "sentiment": "positive"
+      },
+      "heat": 1,
+      "feed": "alphavantage"
+    },
+    {
+      "id": 865690253,
+      "source": "MarketBeat",
+      "title": "Atria Investments Inc Purchases 20,261 Shares of Altria Group, Inc. $MO",
+      "summary": "Atria Investments Inc. increased its stake in Altria Group, Inc. by 19.1% in the fourth quarter, purchasing an additional 20,261 shares and bringing its total holdings to 126,190 shares valued at approximately $7.28 million. The company reported strong quarterly earnings of $1.32 per share and revenue of $4.76 billion, exceeding analyst expectations, and declared a quarterly dividend of $1.06 per share, yielding 5.8%. Analyst sentiment on Altria Group is mixed, with some firms raising price targets while others issued \"Hold\" ratings, resulting in a consensus \"Hold\" with an average target price",
+      "content": "Atria Investments Inc. increased its stake in Altria Group, Inc. by 19.1% in the fourth quarter, purchasing an additional 20,261 shares and bringing its total holdings to 126,190 shares valued at approximately $7.28 million. The company reported strong quarterly earnings of $1.32 per share and revenue of $4.76 billion, exceeding analyst expectations, and declared a quarterly dividend of $1.06 per share, yielding 5.8%. Analyst sentiment on Altria Group is mixed, with some firms raising price targets while others issued \"Hold\" ratings, resulting in a consensus \"Hold\" with an average target price of $69.33.",
+      "url": "https://www.marketbeat.com/instant-alerts/filing-atria-investments-inc-purchases-20261-shares-of-altria-group-inc-mo-2026-05-16/",
+      "image": "https://www.marketbeat.com/logos/altria-group-logo-1200x675.jpg",
+      "publishedAt": "2026-05-16T07:56:52+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [
+          "MO"
+        ],
+        "sector": "",
+        "sentiment": "positive"
+      },
+      "heat": 1,
+      "feed": "alphavantage"
+    },
+    {
+      "id": 697249484,
+      "source": "MarketBeat",
+      "title": "Williams Companies, Inc. (The) $WMB Shares Sold by Atria Investments Inc",
+      "summary": "Atria Investments Inc reduced its stake in Williams Companies, Inc. (WMB) by 12.3% in the fourth quarter of 2025, holding 128,895 shares valued at $7.75 million. Despite insider selling and a slight revenue miss, Williams Companies reported a strong Q1 earnings beat with adjusted EPS of $0.73 versus estimates of $0.63, reaffirmed full-year guidance, and increased its quarterly dividend by 5%. Analysts maintain a consensus \"Buy\" rating with an average price target of $80.47, reflecting positive sentiment on its valuation and new power project announcements.",
+      "content": "Atria Investments Inc reduced its stake in Williams Companies, Inc. (WMB) by 12.3% in the fourth quarter of 2025, holding 128,895 shares valued at $7.75 million. Despite insider selling and a slight revenue miss, Williams Companies reported a strong Q1 earnings beat with adjusted EPS of $0.73 versus estimates of $0.63, reaffirmed full-year guidance, and increased its quarterly dividend by 5%. Analysts maintain a consensus \"Buy\" rating with an average price target of $80.47, reflecting positive sentiment on its valuation and new power project announcements.",
+      "url": "https://www.marketbeat.com/instant-alerts/filing-williams-companies-inc-the-wmb-shares-sold-by-atria-investments-inc-2026-05-16/",
+      "image": "https://www.marketbeat.com/logos/williams-logo-1200x675.jpg",
+      "publishedAt": "2026-05-16T07:56:35+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [
+          "WMB",
+          "CVX"
+        ],
+        "sector": "",
+        "sentiment": "positive"
+      },
+      "heat": 2,
+      "feed": "alphavantage"
+    },
+    {
+      "id": 847272130,
+      "source": "MarketWatch",
+      "title": "My husband took out a $100,000 Parent PLUS loan for his daughter. She dropped out, citing mental-health issues. Should we refinance?",
+      "summary": "\u201cThere is little to no chance that she will ever be able to repay these loans.\u201d",
+      "content": "\u201cThere is little to no chance that she will ever be able to repay these loans.\u201d",
+      "url": "https://www.marketwatch.com/story/my-husband-took-out-a-100-000-parent-plus-loan-for-his-daughter-she-dropped-out-should-we-refinance-bea7dc6e?mod=mw_rss_topstories",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-16T07:55:00+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 855633678,
+      "source": "BBN Times",
+      "title": "Antonio Neri: Argentine-Sicilian Engineer, Edge-to-Cloud Architect, and President and CEO of Hewlett Packard Enterprise",
+      "summary": "Antonio Neri, the President and CEO of Hewlett Packard Enterprise (HPE), is an Argentine-Sicilian engineer who rose from a customer service role to lead a major technology company. His strategic vision has transformed HPE into an \"edge-to-cloud company\" focusing on hybrid architectures, the HPE GreenLake as-a-service model, and AI integration, highlighted by the Juniper Networks acquisition. Neri's journey reflects a commitment to technical expertise, resilience, and a global perspective, driving HPE's innovation in a rapidly evolving technological landscape.",
+      "content": "Antonio Neri, the President and CEO of Hewlett Packard Enterprise (HPE), is an Argentine-Sicilian engineer who rose from a customer service role to lead a major technology company. His strategic vision has transformed HPE into an \"edge-to-cloud company\" focusing on hybrid architectures, the HPE GreenLake as-a-service model, and AI integration, highlighted by the Juniper Networks acquisition. Neri's journey reflects a commitment to technical expertise, resilience, and a global perspective, driving HPE's innovation in a rapidly evolving technological landscape.",
+      "url": "https://www.bbntimes.com/technology/antonio-neri-argentine-sicilian-engineer-edge-to-cloud-architect-and-president-and-ceo-of-hewlett-packard-enterprise",
+      "image": "https://www.bbntimes.com/images/articles/global-economy/Rayson_Choo_1.jpg",
+      "publishedAt": "2026-05-16T07:54:16+00:00",
+      "category": "Tecnologia",
+      "icon": "\ud83d\udcbb",
+      "impact": {
+        "tickers": [
+          "HPE"
+        ],
+        "sector": "",
+        "sentiment": "positive"
+      },
+      "heat": 1,
+      "feed": "alphavantage"
+    },
+    {
+      "id": 657198162,
+      "source": "Nasdaq",
+      "title": "Nvidia vs. Alphabet: Which Will Be the World's Biggest Company By the End of 2026?",
+      "summary": "Key PointsAlphabet has strong momentum thanks to its fast-growing cloud computing business.",
+      "content": "Key PointsAlphabet has strong momentum thanks to its fast-growing cloud computing business.",
+      "url": "https://www.nasdaq.com/articles/nvidia-vs-alphabet-which-will-be-worlds-biggest-company-end-2026",
+      "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
+      "publishedAt": "2026-05-16T07:50:00+00:00",
       "category": "Tecnologia",
       "icon": "\ud83d\udcbb",
       "impact": {
@@ -1119,8 +765,7 @@
           "NVDA",
           "AMD",
           "INTC",
-          "AVGO",
-          "NEM"
+          "AVGO"
         ],
         "sector": "Tecnologia",
         "sentiment": "neutral"
@@ -1129,38 +774,86 @@
       "feed": "rss"
     },
     {
-      "id": 109174148,
-      "source": "Yahoo Finance",
-      "title": "Phantom Data Centers Didn't Break the Power Grid\u2014They Proved it Was Already Broken",
-      "summary": "",
-      "content": "",
-      "url": "https://finance.yahoo.com/sectors/energy/articles/phantom-data-centers-didnt-break-160139124.html",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-15T16:01:39+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
+      "id": 385737815,
+      "source": "MarketBeat",
+      "title": "Applied Finance Capital Management LLC Acquires 4,773 Shares of Roper Technologies, Inc. $ROP",
+      "summary": "Applied Finance Capital Management LLC has increased its stake in Roper Technologies, Inc. by 9.0% during the fourth quarter, acquiring an additional 4,773 shares. This makes Roper Technologies the 14th largest position in their investment portfolio, valuing their total holding at $25.614 million. Other institutional investors like Vanguard Group Inc. and JPMorgan Chase & Co. also significantly increased their positions in Roper Technologies.",
+      "content": "Applied Finance Capital Management LLC has increased its stake in Roper Technologies, Inc. by 9.0% during the fourth quarter, acquiring an additional 4,773 shares. This makes Roper Technologies the 14th largest position in their investment portfolio, valuing their total holding at $25.614 million. Other institutional investors like Vanguard Group Inc. and JPMorgan Chase & Co. also significantly increased their positions in Roper Technologies.",
+      "url": "https://www.marketbeat.com/instant-alerts/filing-applied-finance-capital-management-llc-acquires-4773-shares-of-roper-technologies-inc-rop-2026-05-16/",
+      "image": "https://www.marketbeat.com/logos/roper-technologies-inc-logo-1200x675.jpg?v=20231214130029",
+      "publishedAt": "2026-05-16T07:41:11+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
       "impact": {
-        "tickers": [],
+        "tickers": [
+          "ROP",
+          "MSFT",
+          "JPM",
+          "V",
+          "CRM"
+        ],
         "sector": "",
         "sentiment": "neutral"
       },
-      "heat": 1,
-      "feed": "rss"
+      "heat": 3,
+      "feed": "alphavantage"
     },
     {
-      "id": 453530270,
-      "source": "AD HOC NEWS",
-      "title": "Amgen Inc. stock (US0311621009): focus on Repatha growth as first-quarter 2026 results mix",
-      "summary": "Amgen Inc. reported mixed first-quarter 2026 results, showing solid revenue growth driven by therapies like Repatha but facing pressure on profitability due to higher operating and R&D costs. The company emphasized the continued double-digit expansion of Repatha sales and progress in integrating Horizon Therapeutics, including rare disease treatments like Tepezza. Amgen also reaffirmed its full-year 2026 revenue guidance, navigating a shifting portfolio mix and competitive biosimilar landscape.",
-      "content": "Amgen Inc. reported mixed first-quarter 2026 results, showing solid revenue growth driven by therapies like Repatha but facing pressure on profitability due to higher operating and R&D costs. The company emphasized the continued double-digit expansion of Repatha sales and progress in integrating Horizon Therapeutics, including rare disease treatments like Tepezza. Amgen also reaffirmed its full-year 2026 revenue guidance, navigating a shifting portfolio mix and competitive biosimilar landscape.",
-      "url": "https://www.ad-hoc-news.de/boerse/news/ueberblick/amgen-inc-stock-us0311621009-focus-on-repatha-growth-as-first-quarter/69343746",
-      "image": "https://mdb.ad-hoc-news.de/bild/bild-2405020_480_300.webp",
-      "publishedAt": "2026-05-15T16:01:07+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
+      "id": 192936505,
+      "source": "MarketBeat",
+      "title": "Arbejdsmarkedets Tillaegspension Takes $22.23 Million Position in HCA Healthcare, Inc. $HCA",
+      "summary": "Arbejdsmarkedets Tillaegspension initiated a new $22.23 million position in HCA Healthcare during the fourth quarter, purchasing 47,613 shares. Institutional investors collectively own 62.73% of the company, and despite a recent insider sale by EVP Michael R. McAlevy, analysts maintain a \"Moderate Buy\" rating with an average price target of $517.82. HCA Healthcare recently reported earnings, missing analyst estimates slightly, and declared a quarterly dividend of $0.78 per share.",
+      "content": "Arbejdsmarkedets Tillaegspension initiated a new $22.23 million position in HCA Healthcare during the fourth quarter, purchasing 47,613 shares. Institutional investors collectively own 62.73% of the company, and despite a recent insider sale by EVP Michael R. McAlevy, analysts maintain a \"Moderate Buy\" rating with an average price target of $517.82. HCA Healthcare recently reported earnings, missing analyst estimates slightly, and declared a quarterly dividend of $0.78 per share.",
+      "url": "https://www.marketbeat.com/instant-alerts/filing-arbejdsmarkedets-tillaegspension-takes-2223-million-position-in-hca-healthcare-inc-hca-2026-05-16/",
+      "image": "https://www.marketbeat.com/logos/hca-healthcare-inc-logo-1200x675.png?v=20231226131558",
+      "publishedAt": "2026-05-16T07:41:10+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [
+          "HCA"
+        ],
+        "sector": "",
+        "sentiment": "positive"
+      },
+      "heat": 1,
+      "feed": "alphavantage"
+    },
+    {
+      "id": 716811276,
+      "source": "MarketBeat",
+      "title": "Applied Finance Capital Management LLC Acquires 3,069 Shares of Amgen Inc. $AMGN",
+      "summary": "Applied Finance Capital Management LLC increased its stake in Amgen Inc. by 49.7% in the fourth quarter, acquiring an additional 3,069 shares. This brings the fund's total holdings to 9,246 shares, valued at $3.026 million. The article also provides a financial overview of Amgen, including its earnings, dividend information, insider transactions, and recent analyst ratings.",
+      "content": "Applied Finance Capital Management LLC increased its stake in Amgen Inc. by 49.7% in the fourth quarter, acquiring an additional 3,069 shares. This brings the fund's total holdings to 9,246 shares, valued at $3.026 million. The article also provides a financial overview of Amgen, including its earnings, dividend information, insider transactions, and recent analyst ratings.",
+      "url": "https://www.marketbeat.com/instant-alerts/filing-applied-finance-capital-management-llc-acquires-3069-shares-of-amgen-inc-amgn-2026-05-16/",
+      "image": "https://www.marketbeat.com/logos/amgen-inc-logo-1200x675.jpg?v=20231228113741",
+      "publishedAt": "2026-05-16T07:41:07+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
       "impact": {
         "tickers": [
           "AMGN"
+        ],
+        "sector": "",
+        "sentiment": "positive"
+      },
+      "heat": 1,
+      "feed": "alphavantage"
+    },
+    {
+      "id": 474419945,
+      "source": "MarketBeat",
+      "title": "Arnold Financial Planning LLC Buys Shares of 3,734 Apple Inc. $AAPL",
+      "summary": "Arnold Financial Planning LLC has acquired 3,734 shares of Apple Inc. (NASDAQ:AAPL) in the fourth quarter, representing a new stake worth approximately $1.015 million. This investment makes Apple the firm's 15th-largest holding, accounting for 1.0% of its total holdings. The purchase follows Apple's strong Q4 performance, which saw EPS and revenue exceed analyst expectations, a 16.6% year-over-year revenue increase, and a raised quarterly dividend.",
+      "content": "Arnold Financial Planning LLC has acquired 3,734 shares of Apple Inc. (NASDAQ:AAPL) in the fourth quarter, representing a new stake worth approximately $1.015 million. This investment makes Apple the firm's 15th-largest holding, accounting for 1.0% of its total holdings. The purchase follows Apple's strong Q4 performance, which saw EPS and revenue exceed analyst expectations, a 16.6% year-over-year revenue increase, and a raised quarterly dividend.",
+      "url": "https://www.marketbeat.com/instant-alerts/filing-arnold-financial-planning-llc-buys-shares-of-3734-apple-inc-aapl-2026-05-16/",
+      "image": "https://www.marketbeat.com/logos/apple-inc-logo-1200x675.png",
+      "publishedAt": "2026-05-16T07:41:02+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [
+          "AAPL"
         ],
         "sector": "Tecnologia",
         "sentiment": "positive"
@@ -1169,21 +862,257 @@
       "feed": "alphavantage"
     },
     {
-      "id": 415958327,
-      "source": "24/7 Wall St.",
-      "title": "JPMorgan Just Hiked Hewlett Packard Enterprise Price Target to $37: Memory Reversal Powers IT Hardware Rally",
-      "summary": "JPMorgan raised its price target for Hewlett Packard Enterprise (HPE) to $37 from $27, maintaining an Overweight rating, attributing the increase to easing memory cost pressures and strong earnings momentum. This positive outlook is shared with Dell Technologies, as the entire IT hardware group benefits from a rebalancing of memory supply and fading margin headwinds. HPE's strong Q1 FY2026 performance and the strategic Juniper Networks acquisition support the bullish case, despite integration risks.",
-      "content": "JPMorgan raised its price target for Hewlett Packard Enterprise (HPE) to $37 from $27, maintaining an Overweight rating, attributing the increase to easing memory cost pressures and strong earnings momentum. This positive outlook is shared with Dell Technologies, as the entire IT hardware group benefits from a rebalancing of memory supply and fading margin headwinds. HPE's strong Q1 FY2026 performance and the strategic Juniper Networks acquisition support the bullish case, despite integration risks.",
-      "url": "https://247wallst.com/investing/2026/05/15/jpmorgan-just-hiked-hewlett-packard-enterprise-price-target-to-37-memory-reversal-powers-it-hardware-rally/",
-      "image": "https://247wallst.com/wp-content/uploads/2022/10/imageForEntry1-ID1.jpg",
-      "publishedAt": "2026-05-15T16:00:50+00:00",
+      "id": 925108734,
+      "source": "MarketBeat",
+      "title": "Arjuna Capital Purchases New Stake in Qualcomm Incorporated $QCOM",
+      "summary": "Arjuna Capital has bought a new stake in Qualcomm, acquiring 9,488 shares valued at approximately $1.62 million in the fourth quarter. This comes as Qualcomm reported strong quarterly earnings, beating EPS estimates and announcing a $20 billion share buyback program and an increased quarterly dividend to $0.92 per share. Analyst sentiment is mixed, with some upgrading price targets due to strong performance and AI prospects, while others downgraded to \"hold\" following recent stock surges.",
+      "content": "Arjuna Capital has bought a new stake in Qualcomm, acquiring 9,488 shares valued at approximately $1.62 million in the fourth quarter. This comes as Qualcomm reported strong quarterly earnings, beating EPS estimates and announcing a $20 billion share buyback program and an increased quarterly dividend to $0.92 per share. Analyst sentiment is mixed, with some upgrading price targets due to strong performance and AI prospects, while others downgraded to \"hold\" following recent stock surges.",
+      "url": "https://www.marketbeat.com/instant-alerts/filing-arjuna-capital-purchases-new-stake-in-qualcomm-incorporated-qcom-2026-05-16/",
+      "image": "https://www.marketbeat.com/logos/qualcomm-incorporated-logo-1200x675.png?v=20221020155845",
+      "publishedAt": "2026-05-16T07:41:02+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [
+          "QCOM"
+        ],
+        "sector": "",
+        "sentiment": "positive"
+      },
+      "heat": 1,
+      "feed": "alphavantage"
+    },
+    {
+      "id": 981166466,
+      "source": "MarketBeat",
+      "title": "Arbejdsmarkedets Tillaegspension Invests $23.14 Million in Fastenal Company $FAST",
+      "summary": "Arbejdsmarkedets Tillaegspension has acquired a new stake of 576,573 shares, valued at $23.14 million, in Fastenal Company ($FAST) during the fourth quarter. Fastenal recently reported quarterly results that met expectations, with an EPS of $0.30 and revenue of $2.20 billion, representing a 12.4% year-over-year sales increase. The company also declared a quarterly dividend of $0.24 per share, and analysts currently hold a consensus \"Hold\" rating with an average price target of $49.77.",
+      "content": "Arbejdsmarkedets Tillaegspension has acquired a new stake of 576,573 shares, valued at $23.14 million, in Fastenal Company ($FAST) during the fourth quarter. Fastenal recently reported quarterly results that met expectations, with an EPS of $0.30 and revenue of $2.20 billion, representing a 12.4% year-over-year sales increase. The company also declared a quarterly dividend of $0.24 per share, and analysts currently hold a consensus \"Hold\" rating with an average price target of $49.77.",
+      "url": "https://www.marketbeat.com/instant-alerts/filing-arbejdsmarkedets-tillaegspension-invests-2314-million-in-fastenal-company-fast-2026-05-16/",
+      "image": "https://www.marketbeat.com/logos/fastenal-logo-1200x675.jpg",
+      "publishedAt": "2026-05-16T07:40:57+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [
+          "FAST",
+          "GPC"
+        ],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 2,
+      "feed": "alphavantage"
+    },
+    {
+      "id": 315700224,
+      "source": "MarketBeat",
+      "title": "Applied Finance Capital Management LLC Boosts Position in EOG Resources, Inc. $EOG",
+      "summary": "Applied Finance Capital Management LLC significantly increased its stake in EOG Resources, Inc. by 96.8% during the fourth quarter, bringing their total holdings to 15,951 shares valued at $1.675 million. Other institutional investors like Capital World Investors and Vanguard Group Inc. also made notable changes to their positions. The article also provides financial details for EOG Resources, including its market capitalization, P/E ratio, recent earnings, upcoming dividend, and analyst ratings.",
+      "content": "Applied Finance Capital Management LLC significantly increased its stake in EOG Resources, Inc. by 96.8% during the fourth quarter, bringing their total holdings to 15,951 shares valued at $1.675 million. Other institutional investors like Capital World Investors and Vanguard Group Inc. also made notable changes to their positions. The article also provides financial details for EOG Resources, including its market capitalization, P/E ratio, recent earnings, upcoming dividend, and analyst ratings.",
+      "url": "https://www.marketbeat.com/instant-alerts/filing-applied-finance-capital-management-llc-boosts-position-in-eog-resources-inc-eog-2026-05-16/",
+      "image": "https://www.marketbeat.com/logos/eog-resources-inc-logo-1200x675.png?v=20221021083622",
+      "publishedAt": "2026-05-16T07:40:55+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [
+          "EOG"
+        ],
+        "sector": "",
+        "sentiment": "positive"
+      },
+      "heat": 1,
+      "feed": "alphavantage"
+    },
+    {
+      "id": 177075629,
+      "source": "MarketBeat",
+      "title": "Arbejdsmarkedets Tillaegspension Takes Position in O'Reilly Automotive, Inc. $ORLY",
+      "summary": "Arbejdsmarkedets Tillaegspension initiated a new position in O'Reilly Automotive, Inc. (NASDAQ:ORLY) during Q4, acquiring 246,779 shares valued at $22.5 million. This move comes as O'Reilly Automotive reported better-than-expected quarterly results, with EPS of $0.72 and revenue of $4.56 billion, exceeding analyst consensus. Wall Street maintains a \"Moderate Buy\" rating for the stock, with an average price target of $112.25, and several analysts have recently raised their targets.",
+      "content": "Arbejdsmarkedets Tillaegspension initiated a new position in O'Reilly Automotive, Inc. (NASDAQ:ORLY) during Q4, acquiring 246,779 shares valued at $22.5 million. This move comes as O'Reilly Automotive reported better-than-expected quarterly results, with EPS of $0.72 and revenue of $4.56 billion, exceeding analyst consensus. Wall Street maintains a \"Moderate Buy\" rating for the stock, with an average price target of $112.25, and several analysts have recently raised their targets.",
+      "url": "https://www.marketbeat.com/instant-alerts/filing-arbejdsmarkedets-tillaegspension-takes-position-in-oreilly-automotive-inc-orly-2026-05-16/",
+      "image": "https://www.marketbeat.com/logos/oreilly-automotive-inc-logo-1200x675.png?v=20221021151440",
+      "publishedAt": "2026-05-16T07:40:55+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [
+          "ORLY",
+          "GPC"
+        ],
+        "sector": "",
+        "sentiment": "positive"
+      },
+      "heat": 2,
+      "feed": "alphavantage"
+    },
+    {
+      "id": 905723528,
+      "source": "MarketBeat",
+      "title": "Arbejdsmarkedets Tillaegspension Invests $22.55 Million in Netflix, Inc. $NFLX",
+      "summary": "Arbejdsmarkedets Tillaegspension has invested $22.55 million in Netflix, acquiring 240,502 shares in the fourth quarter. This move is part of a broader trend of institutional investors increasing their stakes, with hedge funds and institutions now owning 80.93% of Netflix. The investment comes as Netflix beats earnings expectations and analysts maintain a \"Moderate Buy\" rating with an average target price of $114.82.",
+      "content": "Arbejdsmarkedets Tillaegspension has invested $22.55 million in Netflix, acquiring 240,502 shares in the fourth quarter. This move is part of a broader trend of institutional investors increasing their stakes, with hedge funds and institutions now owning 80.93% of Netflix. The investment comes as Netflix beats earnings expectations and analysts maintain a \"Moderate Buy\" rating with an average target price of $114.82.",
+      "url": "https://www.marketbeat.com/instant-alerts/filing-arbejdsmarkedets-tillaegspension-invests-2255-million-in-netflix-inc-nflx-2026-05-16/",
+      "image": "https://www.marketbeat.com/logos/netflix-inc-logo-1200x675.png?v=20231213130542",
+      "publishedAt": "2026-05-16T07:40:49+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [
+          "NFLX"
+        ],
+        "sector": "",
+        "sentiment": "positive"
+      },
+      "heat": 1,
+      "feed": "alphavantage"
+    },
+    {
+      "id": 310815995,
+      "source": "MarketBeat",
+      "title": "Applied Finance Capital Management LLC Raises Stock Holdings in The Walt Disney Company $DIS",
+      "summary": "Applied Finance Capital Management LLC increased its holdings in The Walt Disney Company by 10.1% in the fourth quarter of 2025, purchasing 21,233 additional shares to reach a total of 231,511 shares valued at $26.3 million. Other institutional investors also raised their stakes, bringing total institutional ownership to 65.71%. This increased interest comes as Disney reported strong quarterly earnings, beating analyst expectations with $1.57 EPS and $25.17 billion in revenue, leading analysts to maintain a \"Moderate Buy\" rating with an average price target of $134.47.",
+      "content": "Applied Finance Capital Management LLC increased its holdings in The Walt Disney Company by 10.1% in the fourth quarter of 2025, purchasing 21,233 additional shares to reach a total of 231,511 shares valued at $26.3 million. Other institutional investors also raised their stakes, bringing total institutional ownership to 65.71%. This increased interest comes as Disney reported strong quarterly earnings, beating analyst expectations with $1.57 EPS and $25.17 billion in revenue, leading analysts to maintain a \"Moderate Buy\" rating with an average price target of $134.47.",
+      "url": "https://www.marketbeat.com/instant-alerts/filing-applied-finance-capital-management-llc-raises-stock-holdings-in-the-walt-disney-company-dis-2026-05-16/",
+      "image": "https://www.marketbeat.com/logos/the-walt-disney-company-logo-1200x675.png?v=20201229105326",
+      "publishedAt": "2026-05-16T07:40:42+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [
+          "DIS"
+        ],
+        "sector": "",
+        "sentiment": "positive"
+      },
+      "heat": 1,
+      "feed": "alphavantage"
+    },
+    {
+      "id": 911057277,
+      "source": "MarketBeat",
+      "title": "Arbejdsmarkedets Tillaegspension Makes New Investment in Domino's Pizza Inc $DPZ",
+      "summary": "Arbejdsmarkedets Tillaegspension has made a new investment in Domino's Pizza Inc., acquiring 55,751 shares valued at approximately $23.2 million during the fourth quarter. This move comes as Domino's Pizza reported Q1 earnings per share of $4.13, missing analyst expectations, despite a 3.5% year-over-year revenue increase to $1.15 billion. The company also declared a quarterly dividend of $1.99 per share, while analysts maintain a consensus \"Hold\" rating on the stock with an average target price of $419.74.",
+      "content": "Arbejdsmarkedets Tillaegspension has made a new investment in Domino's Pizza Inc., acquiring 55,751 shares valued at approximately $23.2 million during the fourth quarter. This move comes as Domino's Pizza reported Q1 earnings per share of $4.13, missing analyst expectations, despite a 3.5% year-over-year revenue increase to $1.15 billion. The company also declared a quarterly dividend of $1.99 per share, while analysts maintain a consensus \"Hold\" rating on the stock with an average target price of $419.74.",
+      "url": "https://www.marketbeat.com/instant-alerts/filing-arbejdsmarkedets-tillaegspension-makes-new-investment-in-dominos-pizza-inc-dpz-2026-05-16/",
+      "image": "https://www.marketbeat.com/logos/dominos-pizza-inc-logo-1200x675.png?v=20221107151655",
+      "publishedAt": "2026-05-16T07:40:42+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [
+          "DPZ"
+        ],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "alphavantage"
+    },
+    {
+      "id": 226316248,
+      "source": "MarketBeat",
+      "title": "Arbejdsmarkedets Tillaegspension Makes New Investment in Medtronic PLC $MDT",
+      "summary": "Arbejdsmarkedets Tillaegspension (ATP) has made a new investment in Medtronic PLC, purchasing 233,477 shares valued at approximately $22.4 million during the fourth quarter. Medtronic's quarterly earnings surpassed expectations, and the company announced a quarterly dividend of $0.71, translating to an annualized yield of 3.7%. Analyst sentiment for Medtronic remains mixed but generally positive, with an average rating of \"Moderate Buy\" and a price target of $107.80.",
+      "content": "Arbejdsmarkedets Tillaegspension (ATP) has made a new investment in Medtronic PLC, purchasing 233,477 shares valued at approximately $22.4 million during the fourth quarter. Medtronic's quarterly earnings surpassed expectations, and the company announced a quarterly dividend of $0.71, translating to an annualized yield of 3.7%. Analyst sentiment for Medtronic remains mixed but generally positive, with an average rating of \"Moderate Buy\" and a price target of $107.80.",
+      "url": "https://www.marketbeat.com/instant-alerts/filing-arbejdsmarkedets-tillaegspension-makes-new-investment-in-medtronic-plc-mdt-2026-05-16/",
+      "image": "https://www.marketbeat.com/logos/medtronic-inc-logo-1200x675.jpg",
+      "publishedAt": "2026-05-16T07:40:37+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [
+          "MDT"
+        ],
+        "sector": "",
+        "sentiment": "positive"
+      },
+      "heat": 1,
+      "feed": "alphavantage"
+    },
+    {
+      "id": 607996564,
+      "source": "MarketBeat",
+      "title": "lululemon athletica inc. (NASDAQ:LULU) Receives Average Recommendation of \"Hold\" from Analysts",
+      "summary": "lululemon athletica inc. (NASDAQ:LULU) has received an average \"Hold\" recommendation from thirty-three research firms, with a 12-month average price target of $203.80. Despite recent earnings beating expectations, the stock has fallen sharply, trading near its 52-week low. Company insiders have recently acquired shares, including the Director and CEO.",
+      "content": "lululemon athletica inc. (NASDAQ:LULU) has received an average \"Hold\" recommendation from thirty-three research firms, with a 12-month average price target of $203.80. Despite recent earnings beating expectations, the stock has fallen sharply, trading near its 52-week low. Company insiders have recently acquired shares, including the Director and CEO.",
+      "url": "https://www.marketbeat.com/instant-alerts/lululemon-athletica-inc-nasdaqlulu-receives-average-recommendation-of-hold-from-analysts-2026-05-16/",
+      "image": "https://www.marketbeat.com/logos/lululemon-logo-1200x675.jpg",
+      "publishedAt": "2026-05-16T07:40:35+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [
+          "LULU"
+        ],
+        "sector": "",
+        "sentiment": "negative"
+      },
+      "heat": 1,
+      "feed": "alphavantage"
+    },
+    {
+      "id": 808079768,
+      "source": "MarketBeat",
+      "title": "Arbejdsmarkedets Tillaegspension Makes New Investment in Cisco Systems, Inc. $CSCO",
+      "summary": "Arbejdsmarkedets Tillaegspension has made a new investment in Cisco Systems, purchasing over 292,000 shares worth approximately $22.5 million during the fourth quarter. This comes as Cisco reported strong quarterly results, beating EPS and revenue estimates, and raised its guidance for both Q4 and FY 2026. Following these positive developments, multiple analysts have increased their price targets for the company, and Cisco's stock has shown significant growth over the past year.",
+      "content": "Arbejdsmarkedets Tillaegspension has made a new investment in Cisco Systems, purchasing over 292,000 shares worth approximately $22.5 million during the fourth quarter. This comes as Cisco reported strong quarterly results, beating EPS and revenue estimates, and raised its guidance for both Q4 and FY 2026. Following these positive developments, multiple analysts have increased their price targets for the company, and Cisco's stock has shown significant growth over the past year.",
+      "url": "https://www.marketbeat.com/instant-alerts/filing-arbejdsmarkedets-tillaegspension-makes-new-investment-in-cisco-systems-inc-csco-2026-05-16/",
+      "image": "https://www.marketbeat.com/logos/cisco-systems-inc-logo-1200x675.jpg",
+      "publishedAt": "2026-05-16T07:40:33+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [
+          "CSCO"
+        ],
+        "sector": "",
+        "sentiment": "positive"
+      },
+      "heat": 1,
+      "feed": "alphavantage"
+    },
+    {
+      "id": 305372990,
+      "source": "MarketBeat",
+      "title": "Applied Finance Capital Management LLC Sells 3,904 Shares of United Rentals, Inc. $URI",
+      "summary": "Applied Finance Capital Management LLC reduced its stake in United Rentals, Inc. (NYSE:URI) by 15.8% in the fourth quarter, selling 3,904 shares and holding 20,745 shares valued at $16.79 million. Despite this, other institutional investors increased their positions in URI. The company reported a stock buyback plan and a quarterly dividend, while facing mixed analyst ratings and insider share sales.",
+      "content": "Applied Finance Capital Management LLC reduced its stake in United Rentals, Inc. (NYSE:URI) by 15.8% in the fourth quarter, selling 3,904 shares and holding 20,745 shares valued at $16.79 million. Despite this, other institutional investors increased their positions in URI. The company reported a stock buyback plan and a quarterly dividend, while facing mixed analyst ratings and insider share sales.",
+      "url": "https://www.marketbeat.com/instant-alerts/filing-applied-finance-capital-management-llc-sells-3904-shares-of-united-rentals-inc-uri-2026-05-16/",
+      "image": "https://www.marketbeat.com/logos/united-rentals-inc-logo-1200x675.png?v=20231226132533",
+      "publishedAt": "2026-05-16T07:40:30+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [
+          "URI",
+          "MS",
+          "JPM",
+          "C",
+          "BAC"
+        ],
+        "sector": "",
+        "sentiment": "positive"
+      },
+      "heat": 3,
+      "feed": "alphavantage"
+    },
+    {
+      "id": 432050326,
+      "source": "MarketBeat",
+      "title": "Arjuna Capital Has $2.99 Million Stock Holdings in Costco Wholesale Corporation $COST",
+      "summary": "Arjuna Capital reduced its stake in Costco Wholesale Corporation by 32.5% in the fourth quarter, selling 1,665 shares and retaining 3,462 shares valued at approximately $2.99 million. Despite this reduction, Costco continues to expand its footprint with new warehouses and reported strong financial results, including increased earnings, revenue, and a raised quarterly dividend. The company's stock performance and analyst ratings reflect a \"Moderate Buy\" consensus, though some express concerns about its premium valuation.",
+      "content": "Arjuna Capital reduced its stake in Costco Wholesale Corporation by 32.5% in the fourth quarter, selling 1,665 shares and retaining 3,462 shares valued at approximately $2.99 million. Despite this reduction, Costco continues to expand its footprint with new warehouses and reported strong financial results, including increased earnings, revenue, and a raised quarterly dividend. The company's stock performance and analyst ratings reflect a \"Moderate Buy\" consensus, though some express concerns about its premium valuation.",
+      "url": "https://www.marketbeat.com/instant-alerts/filing-arjuna-capital-has-299-million-stock-holdings-in-costco-wholesale-corporation-cost-2026-05-16/",
+      "image": "https://www.marketbeat.com/logos/costco-logo-1200x675.jpg",
+      "publishedAt": "2026-05-16T07:40:27+00:00",
       "category": "Geopol\u00edtica",
       "icon": "\ud83c\udf0d",
       "impact": {
         "tickers": [
-          "HPE",
-          "DELL",
-          "MU"
+          "COST",
+          "WMT"
         ],
         "sector": "Defesa",
         "sentiment": "positive"
@@ -1192,57 +1121,170 @@
       "feed": "alphavantage"
     },
     {
-      "id": 483002412,
-      "source": "Nasdaq",
-      "title": "Assurant Takes Over #61 Spot From PG&E",
-      "summary": "In a study of analyst recommendations at the major brokerages, for the underlying components of the S&amp;P 500, Assurant Inc (Symbol: AIZ) has taken over the #61 spot from PG&amp;E Corp (Symbol: PCG), according to ETF Channel. Below is a chart of Assurant Inc versus PG&amp;E C",
-      "content": "In a study of analyst recommendations at the major brokerages, for the underlying components of the S&amp;P 500, Assurant Inc (Symbol: AIZ) has taken over the #61 spot from PG&amp;E Corp (Symbol: PCG), according to ETF Channel. Below is a chart of Assurant Inc versus PG&amp;E C",
-      "url": "https://www.nasdaq.com/articles/assurant-takes-over-61-spot-pge",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-15T15:58:53+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 761411223,
-      "source": "Nasdaq",
-      "title": "S&P 500 Analyst Moves: AIZ",
-      "summary": "The latest tally of analyst opinions from the major brokerage houses shows that among the components of the S&amp;P 500 index, Assurant is now the #61 analyst pick, moving up by 44 spots. This rank is formed by averaging the analyst opinions for each component from each",
-      "content": "The latest tally of analyst opinions from the major brokerage houses shows that among the components of the S&amp;P 500 index, Assurant is now the #61 analyst pick, moving up by 44 spots. This rank is formed by averaging the analyst opinions for each component from each",
-      "url": "https://www.nasdaq.com/articles/sp-500-analyst-moves-aiz",
-      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
-      "publishedAt": "2026-05-15T15:58:44+00:00",
+      "id": 185434553,
+      "source": "MarketBeat",
+      "title": "Arbejdsmarkedets Tillaegspension Makes New Investment in The TJX Companies, Inc. $TJX",
+      "summary": "Arbejdsmarkedets Tillaegspension has made a new investment in The TJX Companies, Inc. (NYSE:TJX), acquiring 151,347 shares valued at approximately $23.25 million in the fourth quarter. This comes as TJX reported strong quarterly results, with EPS and revenue exceeding estimates, and an 8.5% year-over-year revenue increase. The company also raised its quarterly dividend, and analysts maintain a positive outlook with an average \"Buy\" rating and a price target of $167.55.",
+      "content": "Arbejdsmarkedets Tillaegspension has made a new investment in The TJX Companies, Inc. (NYSE:TJX), acquiring 151,347 shares valued at approximately $23.25 million in the fourth quarter. This comes as TJX reported strong quarterly results, with EPS and revenue exceeding estimates, and an 8.5% year-over-year revenue increase. The company also raised its quarterly dividend, and analysts maintain a positive outlook with an average \"Buy\" rating and a price target of $167.55.",
+      "url": "https://www.marketbeat.com/instant-alerts/filing-arbejdsmarkedets-tillaegspension-makes-new-investment-in-the-tjx-companies-inc-tjx-2026-05-16/",
+      "image": "https://www.marketbeat.com/logos/the-tjx-companies-inc-logo-1200x675.png?v=20240102162711",
+      "publishedAt": "2026-05-16T07:40:25+00:00",
       "category": "Mercados",
       "icon": "\ud83d\udcb0",
       "impact": {
-        "tickers": [],
+        "tickers": [
+          "TJX",
+          "JPM",
+          "IBM",
+          "CMCSA",
+          "GOOGL"
+        ],
+        "sector": "",
+        "sentiment": "positive"
+      },
+      "heat": 3,
+      "feed": "alphavantage"
+    },
+    {
+      "id": 693161448,
+      "source": "MarketBeat",
+      "title": "Applied Finance Capital Management LLC Takes Position in The Kroger Co. $KR",
+      "summary": "Applied Finance Capital Management LLC reported acquiring a new position of 15,941 shares in The Kroger Co. (NYSE:KR) during the fourth quarter, valued at approximately $996,000. Other institutional investors also adjusted their holdings in Kroger, which currently has 80.93% institutional ownership. The company recently announced a quarterly dividend of $0.35 per share, and analysts have issued various ratings and price targets, with a consensus \"Hold\" rating.",
+      "content": "Applied Finance Capital Management LLC reported acquiring a new position of 15,941 shares in The Kroger Co. (NYSE:KR) during the fourth quarter, valued at approximately $996,000. Other institutional investors also adjusted their holdings in Kroger, which currently has 80.93% institutional ownership. The company recently announced a quarterly dividend of $0.35 per share, and analysts have issued various ratings and price targets, with a consensus \"Hold\" rating.",
+      "url": "https://www.marketbeat.com/instant-alerts/filing-applied-finance-capital-management-llc-takes-position-in-the-kroger-co-kr-2026-05-16/",
+      "image": "https://www.marketbeat.com/logos/the-kroger-co-logo-1200x675.png?v=20221101143339",
+      "publishedAt": "2026-05-16T07:40:24+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [
+          "KR"
+        ],
         "sector": "",
         "sentiment": "neutral"
       },
       "heat": 1,
-      "feed": "rss"
+      "feed": "alphavantage"
     },
     {
-      "id": 435610567,
-      "source": "AD HOC NEWS",
-      "title": "Equinix stock (US29444U7033): Data-center demand stays in focus after recent company updates",
-      "summary": "Equinix remains a key focus for investors due to robust data-center demand, especially with the growth in AI infrastructure. The company's business model, driven by recurring colocation and interconnection services, positions it at the center of cloud computing and enterprise IT. Investors are closely monitoring Equinix's capacity expansion, capital spending, and ability to meet the increasing demand for secure and low-latency digital infrastructure.",
-      "content": "Equinix remains a key focus for investors due to robust data-center demand, especially with the growth in AI infrastructure. The company's business model, driven by recurring colocation and interconnection services, positions it at the center of cloud computing and enterprise IT. Investors are closely monitoring Equinix's capacity expansion, capital spending, and ability to meet the increasing demand for secure and low-latency digital infrastructure.",
-      "url": "https://www.ad-hoc-news.de/boerse/news/ueberblick/equinix-stock-us29444u7033-data-center-demand-stays-in-focus-after/69343715",
-      "image": "https://mdb.ad-hoc-news.de/bild/bild-2405019_480_300.webp",
-      "publishedAt": "2026-05-15T15:55:38+00:00",
-      "category": "Tecnologia",
-      "icon": "\ud83d\udcbb",
+      "id": 579202295,
+      "source": "MarketBeat",
+      "title": "Arbejdsmarkedets Tillaegspension Makes New $23.10 Million Investment in The Kroger Co. $KR",
+      "summary": "Arbejdsmarkedets Tillaegspension has made a new $23.10 million investment in The Kroger Co. (NYSE:KR) by purchasing 369,777 shares during the fourth quarter. Kroger recently reported better-than-expected earnings of $1.28 per share, though revenue slightly missed estimates, and guided for FY2026 EPS at $5.10-$5.30. The company also announced a quarterly dividend of $0.35 per share, payable on June 1st, representing an annualized yield of approximately 2.1%.",
+      "content": "Arbejdsmarkedets Tillaegspension has made a new $23.10 million investment in The Kroger Co. (NYSE:KR) by purchasing 369,777 shares during the fourth quarter. Kroger recently reported better-than-expected earnings of $1.28 per share, though revenue slightly missed estimates, and guided for FY2026 EPS at $5.10-$5.30. The company also announced a quarterly dividend of $0.35 per share, payable on June 1st, representing an annualized yield of approximately 2.1%.",
+      "url": "https://www.marketbeat.com/instant-alerts/filing-arbejdsmarkedets-tillaegspension-makes-new-2310-million-investment-in-the-kroger-co-kr-2026-05-16/",
+      "image": "https://www.marketbeat.com/logos/the-kroger-co-logo-1200x675.png?v=20221101143339",
+      "publishedAt": "2026-05-16T07:40:24+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
       "impact": {
         "tickers": [
-          "EQIX"
+          "KR"
+        ],
+        "sector": "",
+        "sentiment": "positive"
+      },
+      "heat": 1,
+      "feed": "alphavantage"
+    },
+    {
+      "id": 951584111,
+      "source": "MarketBeat",
+      "title": "Take-Two Interactive Software, Inc. $TTWO is AMJ Financial Wealth Management's 3rd Largest Position",
+      "summary": "AMJ Financial Wealth Management significantly increased its holdings in Take-Two Interactive Software, making TTWO its third-largest position. Institutional ownership in Take-Two remains high, with 95.46% of shares held by institutions and hedge funds. Despite some insider selling, analysts maintain a \"Moderate Buy\" rating with an average target price of $287.93 for the video game publisher.",
+      "content": "AMJ Financial Wealth Management significantly increased its holdings in Take-Two Interactive Software, making TTWO its third-largest position. Institutional ownership in Take-Two remains high, with 95.46% of shares held by institutions and hedge funds. Despite some insider selling, analysts maintain a \"Moderate Buy\" rating with an average target price of $287.93 for the video game publisher.",
+      "url": "https://www.marketbeat.com/instant-alerts/filing-take-two-interactive-software-inc-ttwo-is-amj-financial-wealth-managements-3rd-largest-position-2026-05-16/",
+      "image": "https://www.marketbeat.com/logos/take-two-interactive-software-inc-logo-1200x675.jpg?v=20221107151438",
+      "publishedAt": "2026-05-16T07:40:24+00:00",
+      "category": "Geopol\u00edtica",
+      "icon": "\ud83c\udf0d",
+      "impact": {
+        "tickers": [
+          "TTWO"
+        ],
+        "sector": "Defesa",
+        "sentiment": "positive"
+      },
+      "heat": 1,
+      "feed": "alphavantage"
+    },
+    {
+      "id": 598711077,
+      "source": "MarketBeat",
+      "title": "Church & Dwight Co., Inc. (NYSE:CHD) Receives Average Recommendation of \"Hold\" from Brokerages",
+      "summary": "Church & Dwight Co., Inc. (NYSE:CHD) has received an average \"Hold\" rating from brokerages, with a consensus 12-month price target of approximately $102.53. The company recently exceeded earnings and revenue estimates, reporting $0.95 EPS and $1.47 billion in revenue, and reaffirmed its annual guidance. Insider transactions include a director selling 5,960 shares, while institutional investors show varied activity.",
+      "content": "Church & Dwight Co., Inc. (NYSE:CHD) has received an average \"Hold\" rating from brokerages, with a consensus 12-month price target of approximately $102.53. The company recently exceeded earnings and revenue estimates, reporting $0.95 EPS and $1.47 billion in revenue, and reaffirmed its annual guidance. Insider transactions include a director selling 5,960 shares, while institutional investors show varied activity.",
+      "url": "https://www.marketbeat.com/instant-alerts/church-dwight-co-inc-nysechd-receives-average-recommendation-of-hold-from-brokerages-2026-05-16/",
+      "image": "https://www.marketbeat.com/logos/church--dwight-co-inc-logo-1200x675.png?v=20240104073448",
+      "publishedAt": "2026-05-16T07:40:22+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [
+          "CHD"
+        ],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "alphavantage"
+    },
+    {
+      "id": 196943076,
+      "source": "MarketBeat",
+      "title": "Johnson Controls International plc (NYSE:JCI) Given Consensus Recommendation of \"Hold\" by Analysts",
+      "summary": "Johnson Controls International plc (NYSE:JCI) has received a consensus \"Hold\" recommendation from 22 brokerages, with an average 12-month price target of $147.63. The company, which recently traded near its 52-week high, reported quarterly EPS of $1.19 on revenue of $6.14 billion and pays a quarterly dividend of $0.40 per share. Recent insider selling was also noted, including a significant sale by VP Lei Zhang Schlitz.",
+      "content": "Johnson Controls International plc (NYSE:JCI) has received a consensus \"Hold\" recommendation from 22 brokerages, with an average 12-month price target of $147.63. The company, which recently traded near its 52-week high, reported quarterly EPS of $1.19 on revenue of $6.14 billion and pays a quarterly dividend of $0.40 per share. Recent insider selling was also noted, including a significant sale by VP Lei Zhang Schlitz.",
+      "url": "https://www.marketbeat.com/instant-alerts/johnson-controls-international-plc-nysejci-given-consensus-recommendation-of-hold-by-analysts-2026-05-16/",
+      "image": "https://www.marketbeat.com/logos/jci_logo-1200x675.jpg",
+      "publishedAt": "2026-05-16T07:40:21+00:00",
+      "category": "Com\u00e9rcio",
+      "icon": "\ud83d\udea2",
+      "impact": {
+        "tickers": [
+          "JCI"
+        ],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "alphavantage"
+    },
+    {
+      "id": 898223067,
+      "source": "MarketBeat",
+      "title": "Arjuna Capital Sells 2,534 Shares of International Business Machines Corporation $IBM",
+      "summary": "Arjuna Capital reduced its stake in International Business Machines Corporation (IBM) by 18.4% in the fourth quarter, selling 2,534 shares and holding 11,209 shares valued at $3.32 million. IBM is highlighted for its AI and cloud initiatives, recent earnings beat, increased dividend, and a \"Moderate Buy\" consensus analyst rating. Other institutional investors have also adjusted their holdings in the company.",
+      "content": "Arjuna Capital reduced its stake in International Business Machines Corporation (IBM) by 18.4% in the fourth quarter, selling 2,534 shares and holding 11,209 shares valued at $3.32 million. IBM is highlighted for its AI and cloud initiatives, recent earnings beat, increased dividend, and a \"Moderate Buy\" consensus analyst rating. Other institutional investors have also adjusted their holdings in the company.",
+      "url": "https://www.marketbeat.com/instant-alerts/filing-arjuna-capital-sells-2534-shares-of-international-business-machines-corporation-ibm-2026-05-16/",
+      "image": "https://www.marketbeat.com/logos/international-business-machines-co-logo-1200x675.png?v=20221020160751",
+      "publishedAt": "2026-05-16T07:40:13+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [
+          "IBM"
+        ],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "alphavantage"
+    },
+    {
+      "id": 278555862,
+      "source": "MarketBeat",
+      "title": "69,581 Shares in General Dynamics Corporation $GD Bought by Arbejdsmarkedets Tillaegspension",
+      "summary": "Arbejdsmarkedets Tillaegspension recently acquired 69,581 shares of General Dynamics Corporation (NYSE:GD) for approximately $23.425 million during the 4th quarter. This comes as other hedge funds have also adjusted their holdings in the aerospace company, and insider sales by top executives have been reported. General Dynamics has shown robust financial performance, beating earnings estimates and increasing its quarterly dividend.",
+      "content": "Arbejdsmarkedets Tillaegspension recently acquired 69,581 shares of General Dynamics Corporation (NYSE:GD) for approximately $23.425 million during the 4th quarter. This comes as other hedge funds have also adjusted their holdings in the aerospace company, and insider sales by top executives have been reported. General Dynamics has shown robust financial performance, beating earnings estimates and increasing its quarterly dividend.",
+      "url": "https://www.marketbeat.com/instant-alerts/filing-69581-shares-in-general-dynamics-corporation-gd-bought-by-arbejdsmarkedets-tillaegspension-2026-05-16/",
+      "image": "https://www.marketbeat.com/logos/general-dynamics-co-logo-1200x675.png?v=20240108101551",
+      "publishedAt": "2026-05-16T07:40:07+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [
+          "GD"
         ],
         "sector": "",
         "sentiment": "positive"
