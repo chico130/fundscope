@@ -5,6 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>FundScope &mdash; Watchlist</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="manifest" href="/fundscope/manifest.json">
+  <meta name="theme-color" content="#01696f">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="FundScope">
+  <link rel="apple-touch-icon" href="/fundscope/icon-192.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300..700&display=swap" rel="stylesheet">
@@ -222,7 +228,16 @@ async function fetchWithTimeout(url,ms=12000){
 }
 async function fetchQuote(ticker){
   try{
-    const r=await fetchWithTimeout(`${WORKER}?ticker=${encodeURIComponent(ticker)}&modules=price,summaryDetail,defaultKeyStatistics`,12000);
+    const r=await fetchWithTimeout(`${WORKER}?ticker=${encodeURIComponent(ticker)}&modules=price`,12000);
+    if(!r.ok)return null;
+    const j=await r.json();
+    if(j?.quoteSummary?.error)return null;
+    return j?.quoteSummary?.result?.[0]||null;
+  }catch{return null;}
+}
+async function fetchStats(ticker){
+  try{
+    const r=await fetchWithTimeout(`${WORKER}?ticker=${encodeURIComponent(ticker)}&modules=summaryDetail,defaultKeyStatistics`,10000);
     if(!r.ok)return null;
     const j=await r.json();
     if(j?.quoteSummary?.error)return null;
@@ -382,13 +397,14 @@ function renderMiniChart(wrapperId,pts){
   _charts[wrapperId]=new Chart(cvs,{type:'line',data:{labels:pts.map(()=>''),datasets:[{data:pts.map(p=>p.v),borderColor:color,borderWidth:1.5,pointRadius:0,tension:.3,fill:false}]},options:{responsive:false,animation:false,plugins:{legend:{display:false},tooltip:{enabled:false}},scales:{x:{display:false},y:{display:false}}}});
 }
 
-function buildStatsHTML(stats){
-  const p=stats?.price||{},s=stats?.summaryDetail||{},k=stats?.defaultKeyStatistics||{};
-  const pe=rawVal(s.trailingPE)??rawVal(k.trailingPE);
+function buildStatsHTML(base,ext){
+  const p=base?.price||{},s=ext?.summaryDetail||{},k=ext?.defaultKeyStatistics||{};
+  const pe=rawVal(s.trailingPE)??rawVal(k.trailingPE)??rawVal(p.trailingPE);
   const eps=rawVal(k.trailingEps);
-  const beta=rawVal(k.beta)??rawVal(s.beta);
+  const beta=rawVal(k.beta)??rawVal(s.beta)??rawVal(p.beta);
   const mktCap=rawVal(p.marketCap);
-  const w52h=rawVal(s.fiftyTwoWeekHigh),w52l=rawVal(s.fiftyTwoWeekLow);
+  const w52h=rawVal(s.fiftyTwoWeekHigh)??rawVal(p.fiftyTwoWeekHigh);
+  const w52l=rawVal(s.fiftyTwoWeekLow)??rawVal(p.fiftyTwoWeekLow);
   const divRate=rawVal(s.dividendRate),divYield=rawVal(s.dividendYield);
   let divStr='—';
   if(divRate&&divRate>0){const pct=divYield?(divYield<1?divYield*100:divYield):null;divStr='$'+divRate.toFixed(2)+(pct?' ('+pct.toFixed(2)+'%)':'');}
@@ -508,11 +524,10 @@ function fillCard(ticker,stats){
   const changePct=prev?parseFloat(((change/prev)*100).toFixed(2)):0;
   const name=rawVal(priceM.longName)||rawVal(priceM.shortName)||ticker;
   const up=changePct>=0;
-  const nameEl=document.getElementById('name-'+ticker), priceEl=document.getElementById('price-'+ticker), changeEl=document.getElementById('change-'+ticker), statsEl=document.getElementById('panel-stats-'+ticker);
+  const nameEl=document.getElementById('name-'+ticker), priceEl=document.getElementById('price-'+ticker), changeEl=document.getElementById('change-'+ticker);
   if(nameEl)nameEl.textContent=name;
   if(priceEl)priceEl.textContent=price?'$'+fmtNum(price):'—';
   if(changeEl){changeEl.removeAttribute('style');changeEl.className='wl-change '+(up?'up':'down');changeEl.innerHTML=`${up?'▲':'▼'} ${up?'+':''}${fmtNum(Math.abs(change))} (${up?'+':''}${fmtNum(Math.abs(changePct))}%)`;}
-  if(statsEl)statsEl.innerHTML=buildStatsHTML(stats);
   return price;
 }
 
@@ -522,7 +537,7 @@ window.toggleCard=function(ticker){
   if(!isOpen){ lazyLoadTabs(ticker); fetchChart(ticker).then(pts=>renderMiniChart('minichart-wrap-'+ticker,pts)); }
 };
 
-const _loaded={}; const _cardPrices={};
+const _loaded={}; const _cardPrices={}; const _priceData={};
 function lazyLoadTabs(ticker){
   if(_loaded[ticker])return;
   _loaded[ticker]=true;
@@ -536,6 +551,8 @@ function lazyLoadTabs(ticker){
     }
   }
 
+  const base=_priceData[ticker];
+  fetchStats(ticker).then(ext=>{ const el=document.getElementById('panel-stats-'+ticker); if(el)el.innerHTML=buildStatsHTML(base,ext); });
   fetchNews(ticker).then(news=>{ const el=document.getElementById('panel-news-'+ticker); if(el)el.innerHTML=buildNewsHTML(news); });
   fetchAnalysts(ticker).then(analystData=>{ const el=document.getElementById('panel-targets-'+ticker); if(el)el.innerHTML=buildTargetsHTML(analystData,price); });
   fetchEarningsAI(ticker).then(data=>{ const el=document.getElementById('panel-ai-'+ticker); if(el)el.innerHTML=buildAIHTML(data); });
@@ -560,14 +577,21 @@ async function init(){
   const tickers=getWatchlist();
   if(!tickers.length){renderEmpty();return;}
   tickers.forEach(t=>buildCardPlaceholder(t));
-  await Promise.all(tickers.map(async t=>{ const stats=await fetchQuote(t); const price=fillCard(t,stats); _cardPrices[t]=price; }));
+  await Promise.all(tickers.map(async t=>{ const stats=await fetchQuote(t); _priceData[t]=stats; const price=fillCard(t,stats); _cardPrices[t]=price; }));
   tickers.forEach(t=>{
-    tryParqetLogo(t,'logo-'+t); // immediate attempt without WORKER
-    fetchProfile(t).then(profile=>tryLoadClearbitLogo(t,profile,'logo-'+t)); // upgrade to Clearbit if profile available
+    tryParqetLogo(t,'logo-'+t);
+    fetchProfile(t).then(profile=>tryLoadClearbitLogo(t,profile,'logo-'+t));
   });
-  setInterval(async()=>{ const current = getWatchlist(); for(const t of current){ const stats=await fetchQuote(t); if(!stats)continue; const price=fillCard(t,stats); _cardPrices[t]=price; } },60000);
+  setInterval(async()=>{ const current=getWatchlist(); for(const t of current){ const stats=await fetchQuote(t); if(!stats)continue; _priceData[t]=stats; const price=fillCard(t,stats); _cardPrices[t]=price; } },60000);
 }
 init();
 </script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/fundscope/sw.js');
+      });
+    }
+  </script>
 </body>
 </html>

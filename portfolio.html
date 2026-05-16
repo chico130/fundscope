@@ -5,6 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Portfólio — FundScope</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="manifest" href="/fundscope/manifest.json">
+  <meta name="theme-color" content="#01696f">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="FundScope">
+  <link rel="apple-touch-icon" href="/fundscope/icon-192.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300..700&display=swap" rel="stylesheet">
@@ -190,9 +196,79 @@
     .bl-alert.warning{border-color:var(--color-notification);background:var(--color-notification-bg);}
     .bl-alert.info{border-color:var(--color-gold);background:var(--color-gold-bg);}
 
+    /* ── Estado emocional hero ── */
+    .emocional-hero{display:flex;align-items:center;gap:var(--space-5);padding:var(--space-4) var(--space-5);background:var(--color-surface-offset);border-radius:var(--radius-xl);margin-bottom:var(--space-5);}
+    .emocional-emoji{font-size:2.2rem;line-height:1;flex-shrink:0;}
+    .emocional-badge{display:inline-flex;align-items:center;padding:3px var(--space-4);border-radius:var(--radius-full);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;}
+    .emocional-badge.neutro{background:var(--color-surface);color:var(--color-text-muted);border:1px solid var(--color-border);}
+    .emocional-badge.cauteloso{background:var(--color-gold-bg);color:var(--color-gold);}
+    .emocional-badge.defensivo{background:var(--color-notification-bg);color:var(--color-notification);}
+    .emocional-badge.confiante{background:var(--color-success-bg);color:var(--color-success);}
+    .emocional-label{font-size:var(--text-xs);color:var(--color-text-muted);margin-top:var(--space-1);}
+
+    /* ── Veto items ── */
+    .veto-item{display:flex;gap:var(--space-3);padding:var(--space-3);background:var(--color-surface-2);border-radius:var(--radius-lg);border:1px solid var(--color-divider);margin-bottom:var(--space-2);}
+    .veto-item:last-child{margin-bottom:0;}
+    .veto-icon{width:28px;height:28px;border-radius:var(--radius-full);background:var(--color-notification-bg);color:var(--color-notification);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;margin-top:2px;}
+    .veto-ticker{font-size:var(--text-sm);font-weight:700;}
+    .veto-motivo{font-size:var(--text-xs);color:var(--color-notification);font-weight:600;}
+    .veto-chips{display:flex;gap:var(--space-2);flex-wrap:wrap;margin-top:var(--space-1);}
+    .veto-chip{display:inline-flex;padding:1px 7px;border-radius:var(--radius-full);background:var(--color-surface-offset);color:var(--color-text-muted);font-size:10px;border:1px solid var(--color-border);}
+    .veto-meta{font-size:10px;color:var(--color-text-faint);margin-top:3px;}
+
+    /* ── Drawdown visual bar ── */
+    .dd-bar-wrap{margin-top:var(--space-3);}
+    .dd-track{height:5px;background:var(--color-surface-offset);border-radius:var(--radius-full);overflow:hidden;}
+    .dd-fill{height:100%;border-radius:var(--radius-full);transition:width .5s ease;}
+    .dd-limits{display:flex;justify-content:space-between;font-size:9px;color:var(--color-text-faint);margin-top:3px;}
+
+    /* ── Near misses ── */
+    .nm-list{display:flex;flex-direction:column;gap:var(--space-2);}
+    .nm-row{display:grid;grid-template-columns:1fr 90px;gap:var(--space-3);align-items:center;padding:var(--space-3);border-radius:var(--radius-lg);background:var(--color-surface-2);border:1px solid var(--color-divider);transition:border-color var(--transition);}
+    .nm-row:hover{border-color:var(--color-warn);}
+    .nm-ticker{font-size:var(--text-sm);font-weight:700;}
+    .nm-sector{font-size:10px;color:var(--color-text-muted);}
+    .nm-reason{font-size:var(--text-xs);color:var(--color-warn);margin-top:3px;line-height:1.4;}
+    .nm-proximity{display:flex;flex-direction:column;align-items:flex-end;gap:4px;}
+    .nm-bar-bg{width:72px;height:4px;background:var(--color-surface-offset);border-radius:2px;overflow:hidden;}
+    .nm-bar-fill{height:100%;border-radius:2px;}
+    .nm-pct{font-size:10px;color:var(--color-text-muted);font-variant-numeric:tabular-nums;}
+    .nm-rule{display:inline-flex;align-items:center;padding:1px 6px;border-radius:var(--radius-full);font-size:10px;font-weight:700;background:var(--color-warn-bg);color:var(--color-warn);border:1px solid color-mix(in oklch,var(--color-warn) 25%,transparent);}
+
+    /* ── OOS Backtest Results ── */
+    .oos-badge{display:inline-flex;align-items:center;padding:2px var(--space-3);border-radius:var(--radius-full);font-size:10px;font-weight:700;letter-spacing:.07em;background:var(--color-primary-highlight);color:var(--color-primary);border:1px solid color-mix(in oklch,var(--color-primary) 25%,transparent);}
+    .oos-sub-label{font-size:var(--text-xs);font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--color-text-muted);margin-bottom:var(--space-3);}
+    .oos-stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-3);}
+    .oos-stat{background:var(--color-surface-offset);border-radius:var(--radius-lg);padding:var(--space-3) var(--space-4);border:1px solid transparent;}
+    .oos-stat-val{font-family:var(--font-display);font-size:var(--text-lg);letter-spacing:-.01em;line-height:1.15;margin-bottom:3px;}
+    .oos-stat-key{font-size:var(--text-xs);color:var(--color-text-muted);line-height:1.5;}
+    .perf-table{width:100%;border-collapse:collapse;}
+    .perf-table thead th{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--color-text-faint);padding:var(--space-2) var(--space-3);text-align:right;border-bottom:1.5px solid var(--color-border);}
+    .perf-table thead th:first-child{text-align:left;}
+    .perf-table tbody td{font-size:var(--text-sm);padding:var(--space-3) var(--space-3);border-bottom:1px solid var(--color-divider);text-align:right;font-variant-numeric:tabular-nums;}
+    .perf-table tbody td:first-child{text-align:left;color:var(--color-text-muted);font-size:var(--text-xs);font-weight:500;}
+    .perf-table tbody tr:last-child td{border-bottom:none;}
+    .perf-table tbody tr:last-child td{font-weight:700;}
+    .t-bonnie{color:var(--color-primary);font-weight:700;}
+    .t-improve{color:var(--color-success);font-weight:700;}
+    .shield-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-3);}
+    .shield-card{border-radius:var(--radius-lg);padding:var(--space-5) var(--space-4);text-align:center;border:1px solid transparent;}
+    .shield-card.s-avoided{background:var(--color-success-bg);border-color:color-mix(in oklch,var(--color-success) 22%,transparent);}
+    .shield-card.s-missed{background:var(--color-notification-bg);border-color:color-mix(in oklch,var(--color-notification) 22%,transparent);}
+    .shield-card.s-veto{background:var(--color-primary-highlight);border-color:color-mix(in oklch,var(--color-primary) 25%,transparent);}
+    .shield-num{font-family:var(--font-display);font-size:var(--text-xl);line-height:1;margin-bottom:var(--space-2);}
+    .shield-num.s-avoided{color:var(--color-success);}
+    .shield-num.s-missed{color:var(--color-notification);}
+    .shield-num.s-veto{color:var(--color-primary);}
+    .shield-label{font-size:var(--text-xs);font-weight:700;margin-bottom:var(--space-2);}
+    .shield-label.s-avoided{color:var(--color-success);}
+    .shield-label.s-missed{color:var(--color-notification);}
+    .shield-label.s-veto{color:var(--color-primary);}
+    .shield-sub{font-size:10px;color:var(--color-text-faint);line-height:1.55;}
+
     /* ── Responsive ── */
-    @media(max-width:900px){.kpi-grid{grid-template-columns:repeat(2,1fr);}.two-col{grid-template-columns:1fr;}.wl-head,.wl-row{grid-template-columns:24px 1fr 100px 60px;}.wl-head .col-3m,.wl-row .col-3m{display:none;}}
-    @media(max-width:640px){.header{padding:var(--space-3) var(--space-4);}.header-actions .nav-link{display:none;}.kpi-grid{grid-template-columns:repeat(2,1fr);}.page{padding:var(--space-8) var(--space-4) var(--space-16);}}
+    @media(max-width:900px){.kpi-grid{grid-template-columns:repeat(2,1fr);}.two-col{grid-template-columns:1fr;}.wl-head,.wl-row{grid-template-columns:24px 1fr 100px 60px;}.wl-head .col-3m,.wl-row .col-3m{display:none;}.oos-stat-grid{grid-template-columns:repeat(2,1fr);}.shield-grid{grid-template-columns:repeat(2,1fr);}}
+    @media(max-width:640px){.header{padding:var(--space-3) var(--space-4);}.header-actions .nav-link{display:none;}.kpi-grid{grid-template-columns:repeat(2,1fr);}.page{padding:var(--space-8) var(--space-4) var(--space-16);}.oos-stat-grid{grid-template-columns:repeat(2,1fr);}.shield-grid{grid-template-columns:1fr;}.perf-table tbody td,.perf-table thead th{padding:var(--space-2) var(--space-2);}}
   </style>
 </head>
 <body>
@@ -312,6 +388,12 @@
 
       </div>
 
+      <!-- Near Misses -->
+      <div class="card" style="margin-bottom:var(--space-5)">
+        <div class="card-label">🎯 Quase Ativados — Near Misses</div>
+        <div id="nearMissesContent" style="color:var(--color-text-muted);font-size:var(--text-sm)">A carregar…</div>
+      </div>
+
       <!-- Trades journal -->
       <div class="card">
         <div class="card-label">Diário de Trades</div>
@@ -341,6 +423,102 @@
             </div>
           </div>
           <button class="bonnie-btn-locked" disabled>Desbloquear Bonnie</button>
+        </div>
+      </div>
+
+      <!-- ── OOS Backtest Results ── -->
+      <div class="card" style="margin-bottom:var(--space-5)">
+        <div style="display:flex;align-items:center;gap:var(--space-3);margin-bottom:var(--space-6);flex-wrap:wrap;">
+          <div class="card-label" style="margin-bottom:0">Validação Out-of-Sample · Backtest 10 Anos</div>
+          <span class="oos-badge">RELATÓRIO OOS OFICIAL</span>
+        </div>
+
+        <!-- 1. Resumo Estatístico -->
+        <div style="margin-bottom:var(--space-6)">
+          <div class="oos-sub-label">1 · Resumo Estatístico do Modelo</div>
+          <div class="oos-stat-grid">
+            <div class="oos-stat">
+              <div class="oos-stat-val">2.641</div>
+              <div class="oos-stat-key">Observações Totais<br><span style="color:var(--color-text-faint)">222 antigas + 2.419 novas</span></div>
+            </div>
+            <div class="oos-stat">
+              <div class="oos-stat-val" style="font-size:var(--text-base);padding-top:3px">Mai 2016 → Out 2024</div>
+              <div class="oos-stat-key">Período de Treino<br><span style="color:var(--color-text-faint)">2.112 observações</span></div>
+            </div>
+            <div class="oos-stat">
+              <div class="oos-stat-val" style="font-size:var(--text-base);padding-top:3px">Out 2024 → Abr 2026</div>
+              <div class="oos-stat-key">Período de Teste OOS<br><span style="color:var(--color-text-faint)">529 observações</span></div>
+            </div>
+            <div class="oos-stat" style="border-color:color-mix(in oklch,var(--color-success) 30%,transparent)">
+              <div class="oos-stat-val up">61.8% <span style="font-size:var(--text-sm);opacity:.75">± 1.1%</span></div>
+              <div class="oos-stat-key">Estabilidade · Validação Cruzada<br><span style="color:var(--color-success);font-weight:600">Sem Overfitting detectado</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Tabela Comparativa -->
+        <div style="margin-bottom:var(--space-6)">
+          <div class="oos-sub-label">2 · Performance Comparativa — Período OOS</div>
+          <div style="overflow-x:auto;border-radius:var(--radius-lg);border:1px solid var(--color-border)">
+            <table class="perf-table">
+              <thead>
+                <tr>
+                  <th style="text-align:left">Métrica</th>
+                  <th>Clyde Puro</th>
+                  <th>Bonnie Filtrada</th>
+                  <th>Melhoria</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Trades Totais</td>
+                  <td>529</td>
+                  <td class="t-bonnie">381</td>
+                  <td style="color:var(--color-text-faint);font-weight:400">—</td>
+                </tr>
+                <tr>
+                  <td>Vitórias</td>
+                  <td>296</td>
+                  <td class="t-bonnie">223</td>
+                  <td style="color:var(--color-text-faint);font-weight:400">—</td>
+                </tr>
+                <tr>
+                  <td>Derrotas</td>
+                  <td>233</td>
+                  <td class="t-bonnie">158</td>
+                  <td style="color:var(--color-text-faint);font-weight:400">—</td>
+                </tr>
+                <tr>
+                  <td>Win Rate Real</td>
+                  <td>56.0%</td>
+                  <td class="t-bonnie">58.5%</td>
+                  <td class="t-improve">+2.6 pp</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 3. Eficiência do Escudo -->
+        <div>
+          <div class="oos-sub-label">3 · Eficiência do Escudo de Risco da Bonnie</div>
+          <div class="shield-grid">
+            <div class="shield-card s-avoided">
+              <div class="shield-num s-avoided">75</div>
+              <div class="shield-label s-avoided">Derrotas Evitadas</div>
+              <div class="shield-sub">32% dos prejuízos eliminados<br>de um total de 233 derrotas</div>
+            </div>
+            <div class="shield-card s-missed">
+              <div class="shield-num s-missed">73</div>
+              <div class="shield-label s-missed">Vitórias Perdidas</div>
+              <div class="shield-sub">Custo de oportunidade · 25%<br>de um total de 296 vitórias</div>
+            </div>
+            <div class="shield-card s-veto">
+              <div class="shield-num s-veto">148</div>
+              <div class="shield-label s-veto">Trades Vetados</div>
+              <div class="shield-sub">Taxa de veto activa de 28%<br>de 529 trades analisados</div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -448,6 +626,7 @@ async function initData() {
   renderKPIs(sum);
   renderRegime(ana);
   renderWatchlist(ana);
+  renderNearMisses(ana);
   renderTrades(_trades);
 }
 
@@ -468,18 +647,84 @@ function renderStatusBadge(ana) {
 // ── KPIs ──────────────────────────────────────────────────────────────────────
 function renderKPIs(sum) {
   const s = sum?.summary ?? {};
-  const kpis = [
-    { label:'Capital Demo',  val:eur(s.current_value ?? 10000), sub:`Inicial: ${eur(s.initial_capital ?? 10000)}`, cls:'' },
-    { label:'P&L Demo',      val:eur(s.total_gain_eur ?? 0),    sub:pctStr(s.total_gain_pct ?? 0), cls:clr(s.total_gain_pct ?? 0) },
-    { label:'Win Rate',      val:n2(s.win_rate_pct ?? 0) + '%', sub:`${s.n_trades ?? 0} trades`,   cls:(s.win_rate_pct??0)>=50?'up':'down' },
-    { label:'Max Drawdown',  val:n2(s.max_drawdown_pct ?? 0) + '%', sub:`Melhor: ${eur(s.best_trade_eur ?? 0)}`, cls:'down' },
-  ];
-  document.getElementById('kpiGrid').innerHTML = kpis.map(k => `
+
+  // Max drawdown visual bar (escala: 0–15%; acima disso é crítico)
+  const dd    = Math.abs(s.max_drawdown_pct ?? 0);
+  const ddMax = 15;
+  const ddPct = Math.min(100, Math.round(dd / ddMax * 100));
+  const ddClr = ddPct <= 20 ? 'var(--color-success)' : ddPct <= 55 ? 'var(--color-warn)' : 'var(--color-notification)';
+  const ddCard = `
     <div class="card">
-      <div class="card-label">${k.label}</div>
-      <div class="kpi-val ${k.cls}">${k.val}</div>
-      <div class="kpi-sub ${k.cls}">${k.sub}</div>
-    </div>`).join('');
+      <div class="card-label">Max Drawdown</div>
+      <div class="kpi-val down">-${n2(dd)}%</div>
+      <div class="kpi-sub down">Melhor trade: ${eur(s.best_trade_eur ?? 0)}</div>
+      <div class="dd-bar-wrap">
+        <div class="dd-track"><div class="dd-fill" style="width:${ddPct}%;background:${ddClr}"></div></div>
+        <div class="dd-limits"><span>0%</span><span>Referência: ${ddMax}%</span></div>
+      </div>
+    </div>`;
+
+  const standardKpis = [
+    { label:'Capital Demo', val:eur(s.current_value ?? 10000), sub:`Inicial: ${eur(s.initial_capital ?? 10000)}`, cls:'' },
+    { label:'P&L Demo',     val:eur(s.total_gain_eur ?? 0),   sub:pctStr(s.total_gain_pct ?? 0), cls:clr(s.total_gain_pct ?? 0) },
+    { label:'Win Rate',     val:n2(s.win_rate_pct ?? 0) + '%',sub:`${s.n_trades ?? 0} trades`,  cls:(s.win_rate_pct??0)>=50?'up':'down' },
+  ];
+
+  document.getElementById('kpiGrid').innerHTML =
+    standardKpis.map(k => `
+      <div class="card">
+        <div class="card-label">${k.label}</div>
+        <div class="kpi-val ${k.cls}">${k.val}</div>
+        <div class="kpi-sub ${k.cls}">${k.sub}</div>
+      </div>`).join('') + ddCard;
+}
+
+// ── Near Misses ───────────────────────────────────────────────────────────────
+function renderNearMisses(ana) {
+  const el    = document.getElementById('nearMissesContent');
+  const items = ana?.near_misses ?? [];
+
+  if (ana?.regime_alert) {
+    el.innerHTML = '<span style="color:var(--color-text-faint)">Regime Bear activo — entradas bloqueadas. Near-misses suspensas.</span>';
+    return;
+  }
+  if (!items.length) {
+    el.innerHTML = '<span style="color:var(--color-text-faint)">Nenhum candidato próximo da activação. O bot monitoriza a watchlist a cada ciclo de 15 min.</span>';
+    return;
+  }
+
+  const rows = items.map(m => {
+    const tech  = m.technicals ?? {};
+    const prx   = m.proximity_pct ?? 0;
+    const barClr = prx >= 80 ? 'var(--color-notification)' : prx >= 50 ? 'var(--color-warn)' : 'var(--color-text-faint)';
+    const chips  = [
+      tech.rsi_14           != null ? `RSI ${n2(tech.rsi_14, 1)}` : null,
+      tech.volume_ratio_vs_avg != null ? `Vol ${n2(tech.volume_ratio_vs_avg, 1)}×` : null,
+    ].filter(Boolean).map(c => `<span class="trade-chip">${c}</span>`).join('');
+
+    return `<div class="nm-row">
+      <div>
+        <div style="display:flex;align-items:center;gap:var(--space-2);margin-bottom:3px">
+          <span class="nm-ticker">${m.ticker}</span>
+          ${m.sector ? `<span class="nm-sector">[${m.sector}]</span>` : ''}
+          <span class="nm-rule">Regra ${m.rule}</span>
+          ${m.last_price ? `<span style="font-size:var(--text-xs);color:var(--color-text-muted)">$${n2(m.last_price)}</span>` : ''}
+        </div>
+        <div class="nm-reason">${m.blocking_reason}</div>
+        ${chips ? `<div class="trade-chips" style="margin-top:var(--space-2)">${chips}</div>` : ''}
+      </div>
+      <div class="nm-proximity">
+        <div class="nm-bar-bg"><div class="nm-bar-fill" style="width:${prx}%;background:${barClr}"></div></div>
+        <span class="nm-pct">${prx}% próximo</span>
+      </div>
+    </div>`;
+  }).join('');
+
+  el.innerHTML = `
+    <p style="font-size:var(--text-xs);color:var(--color-text-faint);margin-bottom:var(--space-4)">
+      Candidatos que quase ativaram sinal — monitorização ao milímetro
+    </p>
+    <div class="nm-list">${rows}</div>`;
 }
 
 // ── Regime ────────────────────────────────────────────────────────────────────
@@ -565,20 +810,71 @@ function renderTrades(trades) {
 }
 
 // ── Bonnie ────────────────────────────────────────────────────────────────────
+function buildEvoChart(data) {
+  if (!data || data.length < 2) return '<p style="font-size:var(--text-xs);color:var(--color-text-faint);text-align:center;padding:var(--space-6) 0">Sem dados suficientes — necessário acumular 2+ períodos.</p>';
+  const W = 600, H = 120;
+  const pad = {t:12, r:16, b:26, l:36};
+  const cW = W - pad.l - pad.r, cH = H - pad.t - pad.b;
+  const vals = data.map(d => d.win_rate_pct ?? 0);
+  const minV = Math.min(0, ...vals), maxV = Math.max(100, ...vals);
+  const range = maxV - minV || 1;
+  const sx = i => pad.l + (i / (data.length - 1)) * cW;
+  const sy = v => pad.t + cH - ((v - minV) / range) * cH;
+  const y50 = sy(50);
+  const pts = data.map((d,i) => `${sx(i).toFixed(1)},${sy(d.win_rate_pct ?? 0).toFixed(1)}`);
+  const linePath = 'M' + pts.join(' L');
+  const areaPath = `M${sx(0).toFixed(1)},${(pad.t+cH).toFixed(1)} L${pts.join(' L')} L${sx(data.length-1).toFixed(1)},${(pad.t+cH).toFixed(1)} Z`;
+  const idxs = data.length <= 6 ? data.map((_,i)=>i) : [0, Math.floor(data.length/4), Math.floor(data.length/2), Math.floor(data.length*3/4), data.length-1];
+  const xLabels = [...new Set(idxs)].map(i => {
+    const w = data[i]?.semana ?? '';
+    const short = w.includes('-W') ? 'W'+w.split('-W')[1] : w.slice(-5);
+    return `<text x="${sx(i).toFixed(1)}" y="${H-2}" text-anchor="middle" font-size="9" fill="var(--color-text-faint)">${short}</text>`;
+  }).join('');
+  const dots = data.map((d,i) => {
+    const v = d.win_rate_pct ?? 0;
+    const c = v >= 60 ? 'var(--color-success)' : v >= 40 ? 'var(--color-primary)' : 'var(--color-notification)';
+    return `<circle cx="${sx(i).toFixed(1)}" cy="${sy(v).toFixed(1)}" r="3" fill="${c}" stroke="var(--color-surface)" stroke-width="1.5"/>`;
+  }).join('');
+  return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" style="width:100%;height:${H}px;display:block">
+    <defs><linearGradient id="evoFill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--color-primary)" stop-opacity=".18"/>
+      <stop offset="100%" stop-color="var(--color-primary)" stop-opacity="0"/>
+    </linearGradient></defs>
+    <line x1="${pad.l}" y1="${y50.toFixed(1)}" x2="${W-pad.r}" y2="${y50.toFixed(1)}" stroke="var(--color-divider)" stroke-width="1" stroke-dasharray="4 3"/>
+    <text x="${pad.l-3}" y="${(y50+3).toFixed(1)}" text-anchor="end" font-size="9" fill="var(--color-text-faint)">50%</text>
+    <path d="${areaPath}" fill="url(#evoFill)"/>
+    <path d="${linePath}" fill="none" stroke="var(--color-primary)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+    ${dots}
+    ${xLabels}
+  </svg>`;
+}
+
 function renderBonnieLog(log) {
   const el = document.getElementById('bonnieLogContent');
   if (!log) {
     el.innerHTML = '<span style="color:var(--color-text-faint)">Dados de auditoria não disponíveis.</span>';
     return;
   }
-  const ts     = log.timestamp ? new Date(log.timestamp).toLocaleString('pt-PT',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}) : '—';
-  const cr     = log.config_risco_atual ?? {};
-  const stats  = log.estatisticas ?? {};
-  const alerts = log.alertas_noticias ?? [];
+  const ts        = log.timestamp ? new Date(log.timestamp).toLocaleString('pt-PT',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}) : '—';
+  const cr        = log.config_risco_atual ?? {};
+  const stats     = log.estatisticas ?? {};
+  const alerts    = log.alertas_noticias ?? [];
+  const earAlerts = log.alertas_earnings ?? [];
+  const vetos     = log.vetos ?? [];
+  const evolucao  = log.evolucao_win_rate ?? [];
 
   const permiteClass = cr.permite_comprar ? 'ok' : 'blocked';
   const permiteLabel = cr.permite_comprar ? 'Aberto' : 'Bloqueado';
   const fator = typeof cr.tamanho_maximo_posicao === 'number' ? (cr.tamanho_maximo_posicao * 100).toFixed(0) + '%' : '—';
+
+  const estadoMap = {
+    neutro:    { emoji: '😐', label: 'Neutro',    cls: 'neutro',    desc: 'Win rate estável, sem preocupações.' },
+    cauteloso: { emoji: '⚠️', label: 'Cauteloso', cls: 'cauteloso', desc: 'Win rate em queda — Bonnie a apertar o crivo.' },
+    defensivo: { emoji: '🛑', label: 'Defensivo', cls: 'defensivo', desc: 'Entradas bloqueadas ou win rate crítico.' },
+    confiante: { emoji: '✅', label: 'Confiante', cls: 'confiante', desc: 'Win rate elevado — modelo a performar bem.' },
+  };
+  const eKey  = cr.estado_emocional ?? 'neutro';
+  const eData = estadoMap[eKey] ?? estadoMap.neutro;
 
   const sectorRows = Object.entries(stats.por_sector ?? {}).map(([sector, d]) => {
     const wr   = d.win_rate_pct != null ? n2(d.win_rate_pct, 1) + '%' : '—';
@@ -597,23 +893,72 @@ function renderBonnieLog(log) {
     ? alerts.slice(0,5).map(a => `<div class="bl-alert ${a.severity ?? 'info'}">${a.mensagem}</div>`).join('')
     : '<p style="font-size:var(--text-xs);color:var(--color-text-faint)">Sem alertas de notícias.</p>';
 
+  const earHTML = earAlerts.length
+    ? earAlerts.map(a => `<div class="bl-alert warning">${a.mensagem}</div>`).join('')
+    : '';
+
+  const vetoHTML = vetos.length
+    ? [...vetos].reverse().slice(0,8).map(v => {
+        const dt  = v.timestamp ? new Date(v.timestamp).toLocaleString('pt-PT',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}) : '';
+        const ctx = v.contexto ?? {};
+        const chips = [
+          ctx.rsi_14 != null ? `RSI ${Number(ctx.rsi_14).toFixed(1)}` : null,
+          ctx.regime ?? null,
+        ].filter(Boolean);
+        return `<div class="veto-item">
+          <div class="veto-icon">🚫</div>
+          <div style="flex:1;min-width:0">
+            <div class="veto-ticker">${v.ativo ?? '—'}</div>
+            <div class="veto-motivo">${v.motivo || 'bloqueio_bonnie'}</div>
+            ${v.reason ? `<div style="font-size:var(--text-xs);color:var(--color-text-muted);margin-top:2px">${v.reason}</div>` : ''}
+            ${chips.length ? `<div class="veto-chips">${chips.map(c=>`<span class="veto-chip">${c}</span>`).join('')}</div>` : ''}
+            <div class="veto-meta">${dt}</div>
+          </div>
+        </div>`;
+      }).join('')
+    : '<p style="font-size:var(--text-xs);color:var(--color-text-faint)">Nenhum trade bloqueado registado.</p>';
+
   el.innerHTML = `
     <div style="margin-bottom:var(--space-4);font-size:var(--text-xs);color:var(--color-text-muted)">
       Auditada em <strong>${ts}</strong> · <em>${log.fase ?? '—'}</em>
     </div>
+
+    <div class="emocional-hero">
+      <span class="emocional-emoji">${eData.emoji}</span>
+      <div>
+        <div><span class="emocional-badge ${eData.cls}">${eData.label}</span></div>
+        <div class="emocional-label">${eData.desc}</div>
+      </div>
+    </div>
+
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-5);margin-bottom:var(--space-5)">
       <div>
         <div class="card-label" style="margin-bottom:var(--space-3)">Config Risco</div>
         <div class="bl-row"><span class="bl-label">Entradas</span><span class="bl-badge ${permiteClass}">${permiteLabel}</span></div>
         <div class="bl-row"><span class="bl-label">Tamanho máx.</span><span class="bl-val">${fator}</span></div>
-        <div class="bl-row"><span class="bl-label">Estado emocional</span><span class="bl-val">${cr.estado_emocional ?? '—'}</span></div>
-        ${cr.motivo_bloqueio ? `<div class="bl-row"><span class="bl-label">Motivo bloqueio</span><span class="bl-val" style="color:var(--color-notification)">${cr.motivo_bloqueio}</span></div>` : ''}
+        ${cr.motivo_bloqueio ? `<div class="bl-row"><span class="bl-label">Motivo</span><span class="bl-val" style="color:var(--color-notification)">${cr.motivo_bloqueio}</span></div>` : ''}
       </div>
       <div>
-        <div class="card-label" style="margin-bottom:var(--space-3)">Trades Fechados: ${stats.total_closed ?? 0}</div>
+        <div class="card-label" style="margin-bottom:var(--space-3)">Win Rate por Sector (${stats.total_closed ?? 0} trades)</div>
         ${sectorRows}
       </div>
     </div>
+
+    <div style="margin-bottom:var(--space-5)">
+      <div class="card-label" style="margin-bottom:var(--space-3)">Filtro de Veto — Bloqueados pela Bonnie (${vetos.length})</div>
+      ${vetoHTML}
+    </div>
+
+    <div style="margin-bottom:var(--space-5)">
+      <div class="card-label" style="margin-bottom:var(--space-3)">Métricas de Evolução — Win Rate ao Longo do Tempo</div>
+      ${buildEvoChart(evolucao)}
+    </div>
+
+    ${earHTML ? `<div style="margin-bottom:var(--space-5)">
+      <div class="card-label" style="margin-bottom:var(--space-3)">Alertas Earnings (${earAlerts.length})</div>
+      ${earHTML}
+    </div>` : ''}
+
     <div>
       <div class="card-label" style="margin-bottom:var(--space-3)">Alertas de Notícias (${alerts.length})</div>
       ${alertsHTML}
@@ -654,6 +999,13 @@ async function loadBonnie() {
     el.innerHTML = '<span style="color:var(--color-text-faint)">Portfólio real não disponível.</span>';
   }
 }
+  </script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/fundscope/sw.js');
+      });
+    }
   </script>
 </body>
 </html>

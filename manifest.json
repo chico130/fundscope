@@ -1,0 +1,14 @@
+{
+  "name": "FundScope",
+  "short_name": "FundScope",
+  "start_url": "/fundscope/",
+  "scope": "/fundscope/",
+  "display": "standalone",
+  "background_color": "#141312",
+  "theme_color": "#01696f",
+  "orientation": "portrait",
+  "icons": [
+    { "src": "/fundscope/icon-192.png", "type": "image/png", "sizes": "192x192", "purpose": "any maskable" },
+    { "src": "/fundscope/icon-512.png", "type": "image/png", "sizes": "512x512", "purpose": "any maskable" }
+  ]
+}
