@@ -1,4 +1,4 @@
 @echo off
 cd /d "%~dp0"
-python -m bot.bonnie
+py -m bot.bonnie
 pause
