@@ -28,7 +28,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install --upgrade pip
-          pip install yfinance==0.2.54 requests google-genai>=1.10.0
+          pip install yfinance==0.2.54 requests google-genai>=1.10.0 python-dotenv
 
       - name: Run portfolio update
         env:

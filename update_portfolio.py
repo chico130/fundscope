@@ -10,7 +10,6 @@ Symbol resolution flow:
 
 import json, os, re, sys, time, datetime, requests, base64
 import yfinance as yf
-from dotenv import load_dotenv
 
 # Força UTF-8 no terminal Windows
 if hasattr(sys.stdout, "reconfigure"):
@@ -18,7 +17,11 @@ if hasattr(sys.stdout, "reconfigure"):
 if hasattr(sys.stderr, "reconfigure"):
     sys.stderr.reconfigure(encoding="utf-8")
 
-load_dotenv()
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass  # GitHub Actions injeta as variáveis directamente; dotenv só é necessário localmente
 
 try:
     from google import genai
