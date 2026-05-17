@@ -1,3 +1,4 @@
+import base64
 import os
 from pathlib import Path
 from dotenv import load_dotenv
@@ -5,11 +6,19 @@ from dotenv import load_dotenv
 BASE_DIR = Path(__file__).parent.parent
 load_dotenv(BASE_DIR / ".env", override=True)
 
-# T212_KEY_ID não é usada na autenticação — a API usa apenas o bearer token.
-T212_KEY_ID = os.getenv("T212_KEY_ID", "")
-# T212_DEMO_KEY é o nome canónico; T212_API_KEY_DEMO mantido como fallback.
-T212_DEMO_KEY = os.getenv("T212_DEMO_KEY") or os.getenv("T212_API_KEY_DEMO", "")
-T212_API_KEY_DEMO = T212_DEMO_KEY  # alias de retrocompatibilidade
+# T212 usa HTTP Basic Auth: Authorization: Basic base64(API_ID:API_SECRET)
+# Variáveis de ambiente: T212_API_ID + T212_API_KEY (GitHub Actions e .env local).
+_t212_id     = os.getenv("T212_API_ID", "")
+_t212_secret = os.getenv("T212_API_KEY", "")
+
+if _t212_id and _t212_secret:
+    _creds = base64.b64encode(f"{_t212_id}:{_t212_secret}".encode()).decode()
+    T212_DEMO_KEY = f"Basic {_creds}"
+else:
+    # Fallback: chave única (formato legado) — produz 401 se vazia
+    T212_DEMO_KEY = os.getenv("T212_DEMO_KEY") or os.getenv("T212_API_KEY_DEMO", "")
+
+T212_API_KEY_DEMO  = T212_DEMO_KEY   # alias de retrocompatibilidade
 T212_BASE_URL_DEMO = "https://demo.trading212.com/api/v0"
 
 # Finnhub: feed de preços em tempo real (free tier: 60 req/min).
@@ -66,4 +75,16 @@ REGIME_CONFIG = {
     "bear_threshold_spy_ema200_pct": 0.0,
     "bull_breadth_threshold_pct": 60.0,
     "lateral_atr_multiplier": 0.8,
+}
+
+CRO_CONFIG = {
+    "max_drawdown_limit_pct":    15.0,  # drawdown onde risk_factor atinge mínimo (0.3×)
+    # Janela Deslizante Adaptativa — alvo dinâmico (substitui target_win_rate_pct fixo)
+    "elastic_window_n":          25,    # N trades para calcular WR alvo da janela
+    "elastic_fallback_wr":       0.48,  # WR base temporária quando < N trades disponíveis
+    # Hierarquia CRO → Bonnie (controlo de frequência de entradas)
+    "bonnie_base_threshold":     0.60,  # threshold standard de veto da Bonnie
+    "bonnie_strict_threshold":   0.64,  # threshold apertado em mercado adverso
+    "bonnie_strict_trigger_wr":  0.45,  # WR(N) abaixo da qual o CRO aperta a Bonnie
+    "cro_insights_path":         DATA_BETA_DIR / "cro_insights.json",
 }

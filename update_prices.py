@@ -5,7 +5,7 @@ Gera: data.json com preços, variações, volume, metadata e histórico de preç
 
 import yfinance as yf
 import json
-import sys
+import os
 from datetime import datetime, timezone
 
 TICKERS = [
@@ -167,13 +167,20 @@ def main():
             result[display] = data
             print(f"  ✓ {display}: {data['symbol']}{data['price']} ({'+' if data['changePct']>=0 else ''}{data['changePct']}%)")
 
+    threshold = len(TICKERS) // 2
+    if len(result) < threshold:
+        print(f"  ⚠️  Apenas {len(result)}/{len(TICKERS)} tickers obtidos — data.json mantido sem alteração.")
+        return
+
     output = {
         "updated": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "stocks": result
     }
 
-    with open("data.json", "w", encoding="utf-8") as f:
+    tmp = "data.json.tmp"
+    with open(tmp, "w", encoding="utf-8") as f:
         json.dump(output, f, ensure_ascii=False, indent=2)
+    os.replace(tmp, "data.json")
 
     print(f"\n  data.json gerado com {len(result)} tickers (com histórico).")
 

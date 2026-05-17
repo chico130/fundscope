@@ -87,7 +87,9 @@ def enrich_with_technicals(positions: list[dict], days: int = 60) -> list[dict]:
             pos["technicals"] = None
             continue
 
-        closes = [bar["close"] for bar in history]
+        highs   = [bar["high"]   for bar in history]
+        lows    = [bar["low"]    for bar in history]
+        closes  = [bar["close"]  for bar in history]
         volumes = [bar["volume"] for bar in history]
 
         ema50 = compute_ema(closes, 50)
@@ -101,6 +103,7 @@ def enrich_with_technicals(positions: list[dict], days: int = 60) -> list[dict]:
             "ema200": ema200,
             "ema50_above_ema200": (ema50 > ema200) if (ema50 is not None and ema200 is not None) else None,
             "volume_ratio_vs_avg": round(last_vol / avg_vol, 2) if (last_vol and avg_vol) else None,
+            "atr_14": compute_atr(highs, lows, closes),
         }
 
     return positions
@@ -143,6 +146,22 @@ def compute_ema(closes: list[float], period: int) -> float | None:
     return round(ema, 4)
 
 
+def compute_atr(highs: list[float], lows: list[float], closes: list[float], period: int = 14) -> float | None:
+    """Wilder's ATR (Average True Range). Requires at least period+1 bars."""
+    if len(highs) < period + 1:
+        return None
+    trs = [
+        max(highs[i] - lows[i],
+            abs(highs[i] - closes[i - 1]),
+            abs(lows[i]  - closes[i - 1]))
+        for i in range(1, len(closes))
+    ]
+    atr = sum(trs[:period]) / period
+    for tr in trs[period:]:
+        atr = (atr * (period - 1) + tr) / period
+    return round(atr, 4)
+
+
 # ---------------------------------------------------------------------------
 # Watchlist candidate technicals
 # ---------------------------------------------------------------------------
@@ -163,6 +182,8 @@ def fetch_candidate_market_data(tickers: list[str]) -> dict[str, dict]:
         if len(history) < min_pts:
             continue
 
+        highs   = [bar["high"]   for bar in history]
+        lows    = [bar["low"]    for bar in history]
         closes  = [bar["close"]  for bar in history]
         volumes = [bar["volume"] for bar in history]
 
@@ -178,6 +199,7 @@ def fetch_candidate_market_data(tickers: list[str]) -> dict[str, dict]:
                 "ema200":              ema200,
                 "ema50_above_ema200":  (ema50 > ema200) if (ema50 is not None and ema200 is not None) else None,
                 "volume_ratio_vs_avg": round(last_vol / avg_vol, 2) if (last_vol and avg_vol) else None,
+                "atr_14":              compute_atr(highs, lows, closes),
             },
             "last_price": closes[-1] if closes else None,
         }

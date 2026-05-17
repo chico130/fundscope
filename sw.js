@@ -91,6 +91,6 @@ async function networkFirstWithTimeout(request, timeoutMs) {
   } catch {
     clearTimeout(timer);
     const cached = await caches.match(request);
-    return cached ?? new Response('{}', { status: 200, headers: { 'Content-Type': 'application/json' } });
+    return cached ?? new Response('{}', { status: 503, headers: { 'Content-Type': 'application/json' } });
   }
 }

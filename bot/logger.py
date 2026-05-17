@@ -43,8 +43,10 @@ def _append_to_json_list(path: Path, entry: dict) -> None:
         except (json.JSONDecodeError, OSError):
             records = []
     records.append(entry)
-    with open(path, "w", encoding="utf-8") as f:
+    tmp = path.with_name(path.name + ".tmp")
+    with open(tmp, "w", encoding="utf-8") as f:
         json.dump(records, f, indent=2, ensure_ascii=False)
+    tmp.replace(path)
 
 
 # ---------------------------------------------------------------------------
@@ -137,8 +139,10 @@ def update_postmortem(
         return False
 
     try:
-        with open(trades_path, "w", encoding="utf-8") as f:
+        tmp = trades_path.with_name(trades_path.name + ".tmp")
+        with open(tmp, "w", encoding="utf-8") as f:
             json.dump(data, f, indent=2, ensure_ascii=False)
+        tmp.replace(trades_path)
     except OSError as exc:
         log_error("postmortem_write_error", {"trade_id": trade_id, "error": str(exc)})
         return False

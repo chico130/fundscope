@@ -25,6 +25,7 @@ from .config import (
     STRATEGY_VERSION,
 )
 from .logger import log_decision, log_error, log_trade
+from .notifier import enviar_alerta
 from .strategy import ProposedTrade, check_risk_limits
 
 _DEFAULT_CONFIG_RISCO: dict = {
@@ -138,6 +139,11 @@ def execute_trade(proposed: ProposedTrade, portfolio_state: dict) -> dict | None
 
     # ── Bonnie gate (apenas para BUY) ─────────────────────────────────────
     if proposed.side.upper() == "BUY":
+        preco_str = f"${proposed.price:.2f}" if proposed.price else "N/D"
+        enviar_alerta(
+            f"[CLYDE] 📈 Sinal de COMPRA detetado em {proposed.ticker}!"
+            f" Preço: {preco_str}. A aguardar auditoria da Bonnie..."
+        )
         cfg = _read_config_risco()
         if not cfg.get("permite_comprar", True):
             motivo = cfg.get("motivo_bloqueio", "bloqueio_bonnie")
@@ -160,6 +166,11 @@ def execute_trade(proposed: ProposedTrade, portfolio_state: dict) -> dict | None
                 "ticker": proposed.ticker,
                 "motivo": motivo,
             })
+            enviar_alerta(
+                f"[BONNIE VETO] 🚨 Compra de {proposed.ticker} BLOQUEADA!"
+                f" Probabilidade de sucesso estimada abaixo do threshold"
+                f" (ou mercado em Bear regime)."
+            )
             return None
 
         # Aplica fator de tamanho
@@ -224,7 +235,21 @@ def execute_trade(proposed: ProposedTrade, portfolio_state: dict) -> dict | None
         "result_after_minutes": 1440,
         "closed_at": None,
         "postmortem": None,
+        # ATR barriers — populated for BUY orders when ATR is available at entry
+        "atr_at_entry":      None,
+        "stop_loss_price":   None,
+        "atr_trigger_price": None,
+        "atr_target_price":  None,
+        "break_even_active": False,
     }
+
+    if proposed.side.upper() == "BUY" and fill_price:
+        atr = (proposed.context or {}).get("atr_14")
+        if atr:
+            trade_record["atr_at_entry"]      = round(atr, 4)
+            trade_record["stop_loss_price"]   = round(fill_price - 1.5 * atr, 4)
+            trade_record["atr_trigger_price"] = round(fill_price + 1.0 * atr, 4)
+            trade_record["atr_target_price"]  = round(fill_price + 3.0 * atr, 4)
 
     # ── Diário público (raiz) ──────────────────────────────────────────────
     _append_to_diario_trades({
@@ -240,6 +265,13 @@ def execute_trade(proposed: ProposedTrade, portfolio_state: dict) -> dict | None
 
     log_trade(trade_record)
     _append_to_beta_trades(trade_record)
+
+    if proposed.side.upper() == "BUY":
+        enviar_alerta(
+            f"[BONNIE APROVADO] ✅ Compra de {proposed.ticker} AUTORIZADA!"
+            f" Ordem enviada para execução."
+        )
+
     return trade_record
 
 
