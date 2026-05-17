@@ -1,97 +1,81 @@
 {
-  "updated": "2026-05-17T09:04:05.463261+00:00",
+  "updated": "2026-05-17T11:59:29.748490+00:00",
   "articles": [
     {
-      "id": 433473601,
-      "source": "businessinsider.com",
-      "title": "I Quit Google After 18 Years. I Felt Pressured to Adopt AI Too Quickly",
-      "summary": "A man who worked at Google for nearly 20 years quit because he felt unhappy with its AI policy.",
-      "content": "A man who worked at Google for nearly 20 years quit because he felt unhappy with its AI policy.",
-      "url": "https://www.businessinsider.com/quit-google-adopt-ai-engineer-productivity-2026-5",
-      "image": "https://i.insider.com/6a030612ba7ef34b41f374ad?width=1200&format=jpeg",
-      "publishedAt": "2026-05-17T08:59:52.000000Z",
-      "category": "Tecnologia",
-      "icon": "\ud83d\udcbb",
+      "id": 998392953,
+      "source": "seekingalpha.com",
+      "title": "Sprott: A Quality Commodity Cycle Play, But Valuation Leaves Little Margin Of Safety",
+      "summary": "Sprott Inc. hit $65.5B AUM in Q1, but precious metals concentration risks amplify its high 43.6x P/E. Read the analysis on SII stock here.",
+      "content": "Sprott Inc. hit $65.5B AUM in Q1, but precious metals concentration risks amplify its high 43.6x P/E. Read the analysis on SII stock here.",
+      "url": "https://seekingalpha.com/article/4905802-sprott-stock-quality-commodity-cycle-play-but-valuation-leaves-little-margin-of-safety",
+      "image": "https://static.seekingalpha.com/cdn/s3/uploads/getty_images/2253483135/image_2253483135.jpg?io=getty-c-w1536",
+      "publishedAt": "2026-05-17T11:50:20.000000Z",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
       "impact": {
-        "tickers": [],
-        "sector": "",
+        "tickers": [
+          "NEM",
+          "FCX",
+          "GOLD",
+          "WPM"
+        ],
+        "sector": "Commodities",
         "sentiment": "neutral"
+      },
+      "heat": 3,
+      "feed": "marketaux"
+    },
+    {
+      "id": 563417614,
+      "source": "argaam.com",
+      "title": "Saudi Kayan sees negotiated deal worth SAR 3.2M",
+      "summary": "The Saudi Exchange (Tadawul) saw a negotiated deal today, May 17, on Saudi Kayan Petrochemical Co.worth SAR 3.2 million. Key F",
+      "content": "The Saudi Exchange (Tadawul) saw a negotiated deal today, May 17, on Saudi Kayan Petrochemical Co.worth SAR 3.2 million. Key F",
+      "url": "https://www.argaam.com/en/article/articledetail/id/1906442",
+      "image": "https://argaamplus.s3.amazonaws.com/89d09428-925d-48ea-a4e7-f2cec2ba2828.png",
+      "publishedAt": "2026-05-17T11:44:00.000000Z",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [
+          "2350.SR"
+        ],
+        "sector": "",
+        "sentiment": "positive"
       },
       "heat": 1,
       "feed": "marketaux"
     },
     {
-      "id": 523099828,
-      "source": "Nasdaq",
-      "title": "Cotton Pushes Losses into the Friday Close",
-      "summary": "Cotton futures rounded out the Friday session with contracts down 151 to 333 points. July was 412 points in the red this week, with December falling 355 points. The US dollar index was $0.467 higher at $99.195. Crude oil was up $4.49 at $105.66 on the day. Few details announced...",
-      "content": "Cotton futures rounded out the Friday session with contracts down 151 to 333 points. July was 412 points in the red this week, with December falling 355 points. The US dollar index was $0.467 higher at $99.195. Crude oil was up $4.49 at $105.66 on the day. Few details announced...",
-      "url": "https://www.nasdaq.com/articles/cotton-pushes-losses-friday-close",
-      "image": "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80",
-      "publishedAt": "2026-05-17T08:56:12+00:00",
-      "category": "Energia",
-      "icon": "\u26a1",
+      "id": 76161682,
+      "source": "argaam.com",
+      "title": "TASI: 7 stocks fall to lowest levels since debut",
+      "summary": "Shares of seven TASI-listed companies fell today, May 17, to their lowest levels since their debut, data compiled by Argaam showed.",
+      "content": "Shares of seven TASI-listed companies fell today, May 17, to their lowest levels since their debut, data compiled by Argaam showed.",
+      "url": "https://www.argaam.com/en/article/articledetail/id/1906439",
+      "image": "https://argaamplus.s3.amazonaws.com/daaa257b-2407-4951-b288-9b053145d626.png",
+      "publishedAt": "2026-05-17T11:40:00.000000Z",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
       "impact": {
         "tickers": [
-          "XOM",
-          "CVX",
-          "COP",
-          "OXY",
-          "SLB"
+          "4012.SR"
         ],
-        "sector": "Energia",
+        "sector": "",
         "sentiment": "negative"
       },
-      "heat": 3,
-      "feed": "rss"
-    },
-    {
-      "id": 41243627,
-      "source": "Nasdaq",
-      "title": "Soybeans Close Friday with Bears Pushing Lower",
-      "summary": "Soybeans were extending the late week losses with close Friday with contracts down 7 to 15 1/12 cents. July was down 31 cents on the week, as November was down 18 \u00be cents. The cmdtyView national average Cash Bean price was down 19 cents at $11.09 1/4. Soymeal futures were...",
-      "content": "Soybeans were extending the late week losses with close Friday with contracts down 7 to 15 1/12 cents. July was down 31 cents on the week, as November was down 18 \u00be cents. The cmdtyView national average Cash Bean price was down 19 cents at $11.09 1/4. Soymeal futures were...",
-      "url": "https://www.nasdaq.com/articles/soybeans-close-friday-bears-pushing-lower",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-17T08:56:12+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
       "heat": 1,
-      "feed": "rss"
+      "feed": "marketaux"
     },
     {
-      "id": 575460062,
-      "source": "Nasdaq",
-      "title": "Corn Falls Lower into the Weekend",
-      "summary": "Corn futures closed the Friday session with contracts falling 7 to 11 \u00be vents as July ended the week with losses of 15 \u00bd cents. December was12 \u00bd cents lower. The CmdtyView national average Cash Corn price was down 11 cents to $4.16 3/4. The weekly CFTC update from Friday...",
-      "content": "Corn futures closed the Friday session with contracts falling 7 to 11 \u00be vents as July ended the week with losses of 15 \u00bd cents. December was12 \u00bd cents lower. The CmdtyView national average Cash Corn price was down 11 cents to $4.16 3/4. The weekly CFTC update from Friday...",
-      "url": "https://www.nasdaq.com/articles/corn-falls-lower-weekend",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-17T08:56:12+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 321213106,
+      "id": 245728308,
       "source": "Nasdaq",
       "title": "Wheat Falls into the Weekend",
       "summary": "The wheat market retreated lower into the Friday close, with the three exchanges posting losses. Chicago SRW futures were down 11 to 22 1/4 cents on the day, with July 16 \u00be cents higher on the week. KC HRW futures posted 12 to 19 1/2 cent losses across the board...",
       "content": "The wheat market retreated lower into the Friday close, with the three exchanges posting losses. Chicago SRW futures were down 11 to 22 1/4 cents on the day, with July 16 \u00be cents higher on the week. KC HRW futures posted 12 to 19 1/2 cent losses across the board...",
       "url": "https://www.nasdaq.com/articles/wheat-falls-weekend",
       "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-17T08:56:11+00:00",
+      "publishedAt": "2026-05-17T11:36:01+00:00",
       "category": "Global",
       "icon": "\ud83c\udf10",
       "impact": {
@@ -103,14 +87,14 @@
       "feed": "rss"
     },
     {
-      "id": 869756905,
+      "id": 154090609,
       "source": "Nasdaq",
       "title": "Stocks Settle Sharply Lower as Bond Yields Jump on Inflation Fears",
       "summary": "The S&P 500 Index ($SPX ) (SPY ) on Friday closed down -1.24%, the Dow Jones Industrial Average ($DOWI ) (DIA ) closed down -1.07%, and the Nasdaq 100 Index ($IUXX ) (QQQ ) closed down -1.54%. June E-mini S&P futures (ESM26 ) fell -1.26%, and June E-mini Nasdaq futures...",
       "content": "The S&P 500 Index ($SPX ) (SPY ) on Friday closed down -1.24%, the Dow Jones Industrial Average ($DOWI ) (DIA ) closed down -1.07%, and the Nasdaq 100 Index ($IUXX ) (QQQ ) closed down -1.54%. June E-mini S&P futures (ESM26 ) fell -1.26%, and June E-mini Nasdaq futures...",
       "url": "https://www.nasdaq.com/articles/stocks-settle-sharply-lower-bond-yields-jump-inflation-fears",
       "image": "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&q=80",
-      "publishedAt": "2026-05-17T08:56:11+00:00",
+      "publishedAt": "2026-05-17T11:36:01+00:00",
       "category": "Macro",
       "icon": "\ud83d\udcca",
       "impact": {
@@ -127,83 +111,14 @@
       "feed": "rss"
     },
     {
-      "id": 217695695,
-      "source": "Nasdaq",
-      "title": "Wheat Extends Losses at Midday",
-      "summary": "The wheat market is retreating lower on Friday, with contracts down across the three exchanges at midday. Chicago SRW futures are trading with 24 to 25 cents in the red. KC HRW futures are 22 to 24 cents lower in the front months at midday. MPLS spring wheat is trading...",
-      "content": "The wheat market is retreating lower on Friday, with contracts down across the three exchanges at midday. Chicago SRW futures are trading with 24 to 25 cents in the red. KC HRW futures are 22 to 24 cents lower in the front months at midday. MPLS spring wheat is trading...",
-      "url": "https://www.nasdaq.com/articles/wheat-extends-losses-midday",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-17T08:56:11+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 619276775,
-      "source": "Nasdaq",
-      "title": "Soybeans Pushing Correction to Midday",
-      "summary": "Soybeans are pushing the retreat to Friday, with contracts down 14 to 15 cents at midday. The cmdtyView national average Cash Bean price is down 19 cents at $11.09 1/4. Soymeal futures are back up 70 cents to $1.70, with Soy Oil futures falling steady at midday. There was 1...",
-      "content": "Soybeans are pushing the retreat to Friday, with contracts down 14 to 15 cents at midday. The cmdtyView national average Cash Bean price is down 19 cents at $11.09 1/4. Soymeal futures are back up 70 cents to $1.70, with Soy Oil futures falling steady at midday. There was 1...",
-      "url": "https://www.nasdaq.com/articles/soybeans-pushing-correction-midday",
-      "image": "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80",
-      "publishedAt": "2026-05-17T08:56:11+00:00",
-      "category": "Energia",
-      "icon": "\u26a1",
-      "impact": {
-        "tickers": [
-          "XOM",
-          "CVX",
-          "COP",
-          "OXY",
-          "SLB"
-        ],
-        "sector": "Energia",
-        "sentiment": "negative"
-      },
-      "heat": 3,
-      "feed": "rss"
-    },
-    {
-      "id": 676049001,
-      "source": "Nasdaq",
-      "title": "Cotton Bouncing Off Limit Losses at Midday",
-      "summary": "Cotton futures are trading with 281 top 381 point losses at midday, with nearby July bouncing off early limit losses. The US dollar index is $0.407 higher at $98.135. Crude oil is up $4.01 at $105.18 midday. Few details announced following the meeting with President Trump and China\u2019s President Xi...",
-      "content": "Cotton futures are trading with 281 top 381 point losses at midday, with nearby July bouncing off early limit losses. The US dollar index is $0.407 higher at $98.135. Crude oil is up $4.01 at $105.18 midday. Few details announced following the meeting with President Trump and China\u2019s President Xi...",
-      "url": "https://www.nasdaq.com/articles/cotton-bouncing-limit-losses-midday",
-      "image": "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80",
-      "publishedAt": "2026-05-17T08:56:10+00:00",
-      "category": "Energia",
-      "icon": "\u26a1",
-      "impact": {
-        "tickers": [
-          "XOM",
-          "CVX",
-          "COP",
-          "OXY",
-          "SLB"
-        ],
-        "sector": "Energia",
-        "sentiment": "negative"
-      },
-      "heat": 3,
-      "feed": "rss"
-    },
-    {
-      "id": 387749464,
+      "id": 6396473,
       "source": "Nasdaq",
       "title": "Corn Continuing Weakness to Friday",
       "summary": "Corn futures are down 9 to 11 cents in the front months on Friday. There were 124 deliveries issued for May corn futures overnight. The CmdtyView national average Cash Corn price is down 11 cents to $4.16 3/4. Export Sales data showed total corn commitments at 77.748 MMT as of...",
       "content": "Corn futures are down 9 to 11 cents in the front months on Friday. There were 124 deliveries issued for May corn futures overnight. The CmdtyView national average Cash Corn price is down 11 cents to $4.16 3/4. Export Sales data showed total corn commitments at 77.748 MMT as of...",
       "url": "https://www.nasdaq.com/articles/corn-continuing-weakness-friday",
       "image": "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=800&q=80",
-      "publishedAt": "2026-05-17T08:56:10+00:00",
+      "publishedAt": "2026-05-17T11:36:01+00:00",
       "category": "Com\u00e9rcio",
       "icon": "\ud83d\udea2",
       "impact": {
@@ -215,54 +130,16 @@
       "feed": "rss"
     },
     {
-      "id": 161240551,
-      "source": "thehindu.com",
-      "title": "India becomes largest market for KitKat globally for Nestle",
-      "summary": "India has become the largest global market for KitKat, surpassing previous rankings with strong growth and innovative strategies.",
-      "content": "India has become the largest global market for KitKat, surpassing previous rankings with strong growth and innovative strategies.",
-      "url": "https://www.thehindu.com/business/india-becomes-largest-market-for-kitkat-globally-for-nestle/article70989916.ece",
-      "image": "https://th-i.thgim.com/public/incoming/5mjhf4/article70989950.ece/alternates/LANDSCAPE_1200/spencer5_31.jpg",
-      "publishedAt": "2026-05-17T08:50:35.000000Z",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "marketaux"
-    },
-    {
-      "id": 452981095,
-      "source": "thehindubusinessline.com",
-      "title": "Hybrid MFs attract \u20b91.55 lakh cr in FY26 on diversified investment appeal",
-      "summary": "Investors turn to diversified strategies amid West Asia tensions and market volatility",
-      "content": "Investors turn to diversified strategies amid West Asia tensions and market volatility",
-      "url": "https://www.thehindubusinessline.com/markets/hybrid-mfs-attract-155-lakh-cr-in-fy26-on-diversified-investment-appeal/article70989920.ece",
-      "image": "https://bl-i.thgim.com/public/incoming/xob5vr/article70965422.ece/alternates/LANDSCAPE_1200/PO07_MF.jpg",
-      "publishedAt": "2026-05-17T08:47:33.000000Z",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "marketaux"
-    },
-    {
-      "id": 693168842,
+      "id": 803057333,
       "source": "Nasdaq",
-      "title": "Dollar Rallies as Inflation Risks Push Bond Yields Higher",
-      "summary": "The dollar index (DXY00 ) rallied to a 2.5-week high on Friday and finished up by +0.47%. The dollar rallied on Friday on concerns that strong US economic news and soaring crude oil prices will prompt the Fed to tighten monetary policy, a bullish factor for the dollar. Friday's economic...",
-      "content": "The dollar index (DXY00 ) rallied to a 2.5-week high on Friday and finished up by +0.47%. The dollar rallied on Friday on concerns that strong US economic news and soaring crude oil prices will prompt the Fed to tighten monetary policy, a bullish factor for the dollar. Friday's economic...",
-      "url": "https://www.nasdaq.com/articles/dollar-rallies-inflation-risks-push-bond-yields-higher",
-      "image": "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&q=80",
-      "publishedAt": "2026-05-17T08:45:05+00:00",
-      "category": "Macro",
-      "icon": "\ud83d\udcca",
+      "title": "Soybeans Pushing Correction to Midday",
+      "summary": "Soybeans are pushing the retreat to Friday, with contracts down 14 to 15 cents at midday. The cmdtyView national average Cash Bean price is down 19 cents at $11.09 1/4. Soymeal futures are back up 70 cents to $1.70, with Soy Oil futures falling steady at midday. There was 1...",
+      "content": "Soybeans are pushing the retreat to Friday, with contracts down 14 to 15 cents at midday. The cmdtyView national average Cash Bean price is down 19 cents at $11.09 1/4. Soymeal futures are back up 70 cents to $1.70, with Soy Oil futures falling steady at midday. There was 1...",
+      "url": "https://www.nasdaq.com/articles/soybeans-pushing-correction-midday",
+      "image": "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80",
+      "publishedAt": "2026-05-17T11:36:01+00:00",
+      "category": "Energia",
+      "icon": "\u26a1",
       "impact": {
         "tickers": [
           "XOM",
@@ -272,20 +149,254 @@
           "SLB"
         ],
         "sector": "Energia",
-        "sentiment": "neutral"
+        "sentiment": "negative"
       },
       "heat": 3,
       "feed": "rss"
     },
     {
-      "id": 471566270,
+      "id": 714968701,
+      "source": "Nasdaq",
+      "title": "Soybeans Close Friday with Bears Pushing Lower",
+      "summary": "Soybeans were extending the late week losses with close Friday with contracts down 7 to 15 1/12 cents. July was down 31 cents on the week, as November was down 18 \u00be cents. The cmdtyView national average Cash Bean price was down 19 cents at $11.09 1/4. Soymeal futures were...",
+      "content": "Soybeans were extending the late week losses with close Friday with contracts down 7 to 15 1/12 cents. July was down 31 cents on the week, as November was down 18 \u00be cents. The cmdtyView national average Cash Bean price was down 19 cents at $11.09 1/4. Soymeal futures were...",
+      "url": "https://www.nasdaq.com/articles/soybeans-close-friday-bears-pushing-lower",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-17T11:36:00+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 401476200,
+      "source": "Nasdaq",
+      "title": "Corn Falls Lower into the Weekend",
+      "summary": "Corn futures closed the Friday session with contracts falling 7 to 11 \u00be vents as July ended the week with losses of 15 \u00bd cents. December was12 \u00bd cents lower. The CmdtyView national average Cash Corn price was down 11 cents to $4.16 3/4. The weekly CFTC update from Friday...",
+      "content": "Corn futures closed the Friday session with contracts falling 7 to 11 \u00be vents as July ended the week with losses of 15 \u00bd cents. December was12 \u00bd cents lower. The CmdtyView national average Cash Corn price was down 11 cents to $4.16 3/4. The weekly CFTC update from Friday...",
+      "url": "https://www.nasdaq.com/articles/corn-falls-lower-weekend",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-17T11:36:00+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 415552233,
+      "source": "Nasdaq",
+      "title": "Wheat Extends Losses at Midday",
+      "summary": "The wheat market is retreating lower on Friday, with contracts down across the three exchanges at midday. Chicago SRW futures are trading with 24 to 25 cents in the red. KC HRW futures are 22 to 24 cents lower in the front months at midday. MPLS spring wheat is trading...",
+      "content": "The wheat market is retreating lower on Friday, with contracts down across the three exchanges at midday. Chicago SRW futures are trading with 24 to 25 cents in the red. KC HRW futures are 22 to 24 cents lower in the front months at midday. MPLS spring wheat is trading...",
+      "url": "https://www.nasdaq.com/articles/wheat-extends-losses-midday",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-17T11:36:00+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 231227859,
+      "source": "Nasdaq",
+      "title": "Cotton Bouncing Off Limit Losses at Midday",
+      "summary": "Cotton futures are trading with 281 top 381 point losses at midday, with nearby July bouncing off early limit losses. The US dollar index is $0.407 higher at $98.135. Crude oil is up $4.01 at $105.18 midday. Few details announced following the meeting with President Trump and China\u2019s President Xi...",
+      "content": "Cotton futures are trading with 281 top 381 point losses at midday, with nearby July bouncing off early limit losses. The US dollar index is $0.407 higher at $98.135. Crude oil is up $4.01 at $105.18 midday. Few details announced following the meeting with President Trump and China\u2019s President Xi...",
+      "url": "https://www.nasdaq.com/articles/cotton-bouncing-limit-losses-midday",
+      "image": "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80",
+      "publishedAt": "2026-05-17T11:36:00+00:00",
+      "category": "Energia",
+      "icon": "\u26a1",
+      "impact": {
+        "tickers": [
+          "XOM",
+          "CVX",
+          "COP",
+          "OXY",
+          "SLB"
+        ],
+        "sector": "Energia",
+        "sentiment": "negative"
+      },
+      "heat": 3,
+      "feed": "rss"
+    },
+    {
+      "id": 874585510,
+      "source": "MarketWatch",
+      "title": "My husband took out a $100,000 Parent PLUS loan for his daughter. She dropped out, citing mental-health issues. Should we refinance?",
+      "summary": "\u201cThere is little to no chance that she will ever be able to repay these loans.\u201d",
+      "content": "\u201cThere is little to no chance that she will ever be able to repay these loans.\u201d",
+      "url": "https://www.marketwatch.com/story/my-husband-took-out-a-100-000-parent-plus-loan-for-his-daughter-she-dropped-out-should-we-refinance-bea7dc6e?mod=mw_rss_topstories",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-17T11:30:00+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 372596911,
+      "source": "Nasdaq",
+      "title": "3 Reasons Why Amazon Is a Top AI Investment",
+      "summary": "Key PointsAWS is the primary way Amazon is benefiting from AI demand.",
+      "content": "Key PointsAWS is the primary way Amazon is benefiting from AI demand.",
+      "url": "https://www.nasdaq.com/articles/3-reasons-why-amazon-top-ai-investment",
+      "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
+      "publishedAt": "2026-05-17T11:25:00+00:00",
+      "category": "Tecnologia",
+      "icon": "\ud83d\udcbb",
+      "impact": {
+        "tickers": [
+          "AMZN",
+          "WMT",
+          "TGT",
+          "COST"
+        ],
+        "sector": "Consumo",
+        "sentiment": "positive"
+      },
+      "heat": 3,
+      "feed": "rss"
+    },
+    {
+      "id": 101239342,
+      "source": "Nasdaq",
+      "title": "Cotton Pushes Losses into the Friday Close",
+      "summary": "Cotton futures rounded out the Friday session with contracts down 151 to 333 points. July was 412 points in the red this week, with December falling 355 points. The US dollar index was $0.467 higher at $99.195. Crude oil was up $4.49 at $105.66 on the day. Few details announced...",
+      "content": "Cotton futures rounded out the Friday session with contracts down 151 to 333 points. July was 412 points in the red this week, with December falling 355 points. The US dollar index was $0.467 higher at $99.195. Crude oil was up $4.49 at $105.66 on the day. Few details announced...",
+      "url": "https://www.nasdaq.com/articles/cotton-pushes-losses-friday-close",
+      "image": "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80",
+      "publishedAt": "2026-05-17T11:24:56+00:00",
+      "category": "Energia",
+      "icon": "\u26a1",
+      "impact": {
+        "tickers": [
+          "XOM",
+          "CVX",
+          "COP",
+          "OXY",
+          "SLB"
+        ],
+        "sector": "Energia",
+        "sentiment": "negative"
+      },
+      "heat": 3,
+      "feed": "rss"
+    },
+    {
+      "id": 2302091,
+      "source": "MarketBeat",
+      "title": "WealthPlan Investment Management LLC Buys 62,544 Shares of ExxonMobil Corporation $XOM",
+      "summary": "WealthPlan Investment Management LLC significantly increased its stake in ExxonMobil Corporation, purchasing an additional 62,544 shares in the fourth quarter, bringing its total holdings to 97,326 shares valued at $11.7 million. This move reflects positive sentiment around ExxonMobil, driven by high oil prices, strong production, and favorable legal outcomes, despite a recent price target cut by Bernstein. The company also reported better-than-expected earnings and declared a quarterly dividend of $1.03 per share.",
+      "content": "WealthPlan Investment Management LLC significantly increased its stake in ExxonMobil Corporation, purchasing an additional 62,544 shares in the fourth quarter, bringing its total holdings to 97,326 shares valued at $11.7 million. This move reflects positive sentiment around ExxonMobil, driven by high oil prices, strong production, and favorable legal outcomes, despite a recent price target cut by Bernstein. The company also reported better-than-expected earnings and declared a quarterly dividend of $1.03 per share.",
+      "url": "https://www.marketbeat.com/instant-alerts/filing-wealthplan-investment-management-llc-buys-62544-shares-of-exxonmobil-corporation-xom-2026-05-17/",
+      "image": "https://www.marketbeat.com/logos/exxon-mobil-co-logo-1200x675.png?v=20221020141849",
+      "publishedAt": "2026-05-17T11:23:41+00:00",
+      "category": "Energia",
+      "icon": "\u26a1",
+      "impact": {
+        "tickers": [
+          "XOM"
+        ],
+        "sector": "Energia",
+        "sentiment": "positive"
+      },
+      "heat": 1,
+      "feed": "alphavantage"
+    },
+    {
+      "id": 967927100,
+      "source": "AD HOC NEWS",
+      "title": "Visteon Corp stock (US9283981064): analysts stick with \u201cModerate Buy\u201d consensus",
+      "summary": "Visteon Corp (VC) has received a \"Moderate Buy\" consensus rating from fourteen research firms, highlighting its continued relevance in the automotive technology sector, particularly in connected-car trends. The company specializes in automotive electronics and software solutions for vehicle interiors, focusing on digital cockpits, infotainment, and connectivity systems. Visteon's strategic position as an innovation partner for automakers, coupled with its global presence, makes it an appealing investment for those interested in the digital transformation of the automotive industry.",
+      "content": "Visteon Corp (VC) has received a \"Moderate Buy\" consensus rating from fourteen research firms, highlighting its continued relevance in the automotive technology sector, particularly in connected-car trends. The company specializes in automotive electronics and software solutions for vehicle interiors, focusing on digital cockpits, infotainment, and connectivity systems. Visteon's strategic position as an innovation partner for automakers, coupled with its global presence, makes it an appealing investment for those interested in the digital transformation of the automotive industry.",
+      "url": "https://www.ad-hoc-news.de/boerse/news/ueberblick/visteon-corp-stock-us9283981064-analysts-stick-with-moderate-buy/69355659",
+      "image": "https://mdb.ad-hoc-news.de/bild/bild-2405006_480_300.webp",
+      "publishedAt": "2026-05-17T11:17:31+00:00",
+      "category": "Geopol\u00edtica",
+      "icon": "\ud83c\udf0d",
+      "impact": {
+        "tickers": [
+          "VC"
+        ],
+        "sector": "Defesa",
+        "sentiment": "positive"
+      },
+      "heat": 1,
+      "feed": "alphavantage"
+    },
+    {
+      "id": 675094255,
+      "source": "AD HOC NEWS",
+      "title": "Atmos Energy Corp stock (US0533321024): earnings, gas demand and dividend under the spotlight",
+      "summary": "Atmos Energy Corp, a prominent natural gas distributor in the US, recently reported strong quarterly earnings and updated guidance, reinforcing its position in the S&P 500 utilities sector. The company's predictable, regulated business model, supported by significant capital investments in infrastructure and approved rate increases, drives steady earnings and dividends. Key factors for investors include regulatory relationships, managing the transition to cleaner energy, and the impact of weather on demand.",
+      "content": "Atmos Energy Corp, a prominent natural gas distributor in the US, recently reported strong quarterly earnings and updated guidance, reinforcing its position in the S&P 500 utilities sector. The company's predictable, regulated business model, supported by significant capital investments in infrastructure and approved rate increases, drives steady earnings and dividends. Key factors for investors include regulatory relationships, managing the transition to cleaner energy, and the impact of weather on demand.",
+      "url": "https://www.ad-hoc-news.de/boerse/news/ueberblick/atmos-energy-corp-stock-us0533321024-earnings-gas-demand-and-dividend/69355619",
+      "image": "https://mdb.ad-hoc-news.de/bild/bild-2405014_480_300.webp",
+      "publishedAt": "2026-05-17T11:12:04+00:00",
+      "category": "Energia",
+      "icon": "\u26a1",
+      "impact": {
+        "tickers": [
+          "ATO"
+        ],
+        "sector": "",
+        "sentiment": "positive"
+      },
+      "heat": 1,
+      "feed": "alphavantage"
+    },
+    {
+      "id": 119129184,
+      "source": "MarketBeat",
+      "title": "UBS Group AG Sells 123,486 Shares of Schneider National, Inc. $SNDR",
+      "summary": "UBS Group AG has reduced its stake in Schneider National, Inc. by 24.5% during the fourth quarter, selling 123,486 shares and retaining 379,684 shares valued at approximately $10.1 million. This reduction comes as Schneider National reported Q4 EPS that beat expectations but revenue that missed estimates. The company also announced a $150 million share repurchase program and a quarterly dividend, while analysts maintain a \"Hold\" rating with a consensus price target of $31.71.",
+      "content": "UBS Group AG has reduced its stake in Schneider National, Inc. by 24.5% during the fourth quarter, selling 123,486 shares and retaining 379,684 shares valued at approximately $10.1 million. This reduction comes as Schneider National reported Q4 EPS that beat expectations but revenue that missed estimates. The company also announced a $150 million share repurchase program and a quarterly dividend, while analysts maintain a \"Hold\" rating with a consensus price target of $31.71.",
+      "url": "https://www.marketbeat.com/instant-alerts/filing-ubs-group-ag-sells-123486-shares-of-schneider-national-inc-sndr-2026-05-17/",
+      "image": "https://www.marketbeat.com/logos/schneider-national-inc-logo-1200x675.png",
+      "publishedAt": "2026-05-17T11:11:12+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [
+          "UBS"
+        ],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "alphavantage"
+    },
+    {
+      "id": 92241540,
       "source": "Nasdaq",
       "title": "Crude Oil Prices Surge on Concern of a Prolonged Disruption to Global Supplies",
       "summary": "June WTI crude oil (CLM26 ) on Friday closed up +4.25 (+4.20%), and June RBOB gasoline (RBM26 ) closed up +0.0962 (+2.67%). Crude oil and gasoline prices rallied sharply on Friday, with crude posting a 1.5-week high. Crude prices are surging as the lack of negotiations to end the US-Iran...",
       "content": "June WTI crude oil (CLM26 ) on Friday closed up +4.25 (+4.20%), and June RBOB gasoline (RBM26 ) closed up +0.0962 (+2.67%). Crude oil and gasoline prices rallied sharply on Friday, with crude posting a 1.5-week high. Crude prices are surging as the lack of negotiations to end the US-Iran...",
       "url": "https://www.nasdaq.com/articles/crude-oil-prices-surge-concern-prolonged-disruption-global-supplies",
       "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
-      "publishedAt": "2026-05-17T08:45:05+00:00",
+      "publishedAt": "2026-05-17T11:08:41+00:00",
       "category": "Geopol\u00edtica",
       "icon": "\ud83c\udf0d",
       "impact": {
@@ -303,37 +414,126 @@
       "feed": "rss"
     },
     {
-      "id": 646810533,
-      "source": "Stock Titan",
-      "title": "ORANGEKLOUD TECHNOLOGY (ORKT) Stock News",
-      "summary": "This page provides news and insights on ORANGEKLOUD TECHNOLOGY (ORKT), a Singapore-based software company focusing on AI-driven no-code application development. Recent news highlights include strategic partnerships for AI-powered SME digital transformation, updates on a proposed merger with VeVe, and regaining compliance with Nasdaq listing requirements. The company also announced the launch of its eMOBIQ\u00ae AI platform and various strategic collaborations and contracts aimed at expanding its AI and no-code solutions.",
-      "content": "This page provides news and insights on ORANGEKLOUD TECHNOLOGY (ORKT), a Singapore-based software company focusing on AI-driven no-code application development. Recent news highlights include strategic partnerships for AI-powered SME digital transformation, updates on a proposed merger with VeVe, and regaining compliance with Nasdaq listing requirements. The company also announced the launch of its eMOBIQ\u00ae AI platform and various strategic collaborations and contracts aimed at expanding its AI and no-code solutions.",
-      "url": "https://www.stocktitan.net/news/ORKT/",
-      "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
-      "publishedAt": "2026-05-17T08:39:32+00:00",
-      "category": "Geopol\u00edtica",
-      "icon": "\ud83c\udf0d",
+      "id": 934789882,
+      "source": "MarketBeat",
+      "title": "Soltis Investment Advisors LLC Acquires 190,737 Shares of SLB Limited $SLB",
+      "summary": "Soltis Investment Advisors LLC significantly increased its stake in SLB Limited, adding 190,737 shares to reach a total of 200,497 shares valued at $7.7 million. This move comes as SLB shares trade near their 52-week high, supported by solid financial performance including a quarterly EPS beat and a declared dividend. The company maintains a \"Moderate Buy\" consensus rating from analysts with an average target price of $59.74, despite recent insider share sales.",
+      "content": "Soltis Investment Advisors LLC significantly increased its stake in SLB Limited, adding 190,737 shares to reach a total of 200,497 shares valued at $7.7 million. This move comes as SLB shares trade near their 52-week high, supported by solid financial performance including a quarterly EPS beat and a declared dividend. The company maintains a \"Moderate Buy\" consensus rating from analysts with an average target price of $59.74, despite recent insider share sales.",
+      "url": "https://www.marketbeat.com/instant-alerts/filing-soltis-investment-advisors-llc-acquires-190737-shares-of-slb-limited-slb-2026-05-17/",
+      "image": "https://www.marketbeat.com/logos/slb-limited-logo-1200x675.jpg?v=20260209120603",
+      "publishedAt": "2026-05-17T11:03:25+00:00",
+      "category": "Com\u00e9rcio",
+      "icon": "\ud83d\udea2",
       "impact": {
         "tickers": [
-          "ORKT"
+          "SLB"
         ],
-        "sector": "Defesa",
+        "sector": "",
+        "sentiment": "positive"
+      },
+      "heat": 1,
+      "feed": "alphavantage"
+    },
+    {
+      "id": 793789748,
+      "source": "MarketBeat",
+      "title": "Leuthold Group LLC Takes $5.06 Million Position in SLB Limited $SLB",
+      "summary": "Leuthold Group LLC has acquired a new stake in SLB Limited, purchasing 131,906 shares valued at approximately $5.06 million during the fourth quarter. Other major institutional investors like Vanguard Group Inc. and State Street Corp also increased their holdings in SLB. Analysts generally maintain a \"Moderate Buy\" rating for SLB, with an average price target of $59.74, following the company's recent earnings report which slightly exceeded estimates.",
+      "content": "Leuthold Group LLC has acquired a new stake in SLB Limited, purchasing 131,906 shares valued at approximately $5.06 million during the fourth quarter. Other major institutional investors like Vanguard Group Inc. and State Street Corp also increased their holdings in SLB. Analysts generally maintain a \"Moderate Buy\" rating for SLB, with an average price target of $59.74, following the company's recent earnings report which slightly exceeded estimates.",
+      "url": "https://www.marketbeat.com/instant-alerts/filing-leuthold-group-llc-takes-506-million-position-in-slb-limited-slb-2026-05-17/",
+      "image": "https://www.marketbeat.com/logos/slb-limited-logo-1200x675.jpg?v=20260209120603",
+      "publishedAt": "2026-05-17T11:03:25+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [
+          "SLB",
+          "JPM"
+        ],
+        "sector": "",
+        "sentiment": "positive"
+      },
+      "heat": 2,
+      "feed": "alphavantage"
+    },
+    {
+      "id": 548957552,
+      "source": "MarketBeat",
+      "title": "Eubel Brady & Suttman Asset Management Inc. Sells 74,827 Shares of Kenvue Inc. $KVUE",
+      "summary": "Eubel Brady & Suttman Asset Management Inc. reduced its stake in Kenvue Inc. (NYSE:KVUE) by 5.5% in the fourth quarter, selling 74,827 shares and retaining 1,297,059 shares valued at approximately $22.4 million. Kenvue recently reported strong quarterly results, exceeding analyst expectations with EPS of $0.32 and revenue of $3.91 billion, a 4.5% year-over-year increase. The company also declared a quarterly dividend of $0.2075 per share, representing a 4.9% annualized yield, while analysts currently hold a consensus \"Hold\" rating with an average target price of $19.33.",
+      "content": "Eubel Brady & Suttman Asset Management Inc. reduced its stake in Kenvue Inc. (NYSE:KVUE) by 5.5% in the fourth quarter, selling 74,827 shares and retaining 1,297,059 shares valued at approximately $22.4 million. Kenvue recently reported strong quarterly results, exceeding analyst expectations with EPS of $0.32 and revenue of $3.91 billion, a 4.5% year-over-year increase. The company also declared a quarterly dividend of $0.2075 per share, representing a 4.9% annualized yield, while analysts currently hold a consensus \"Hold\" rating with an average target price of $19.33.",
+      "url": "https://www.marketbeat.com/instant-alerts/filing-eubel-brady-suttman-asset-management-inc-sells-74827-shares-of-kenvue-inc-kvue-2026-05-17/",
+      "image": "https://www.marketbeat.com/logos/kenvue-inc-logo-1200x675.jpg?v=20230508144051",
+      "publishedAt": "2026-05-17T11:02:56+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [
+          "KVUE"
+        ],
+        "sector": "",
         "sentiment": "neutral"
       },
       "heat": 1,
       "feed": "alphavantage"
     },
     {
-      "id": 755007807,
-      "source": "Nasdaq",
-      "title": "Here's Why Venture Global Stock Soared 24.3% This Week",
-      "summary": "Key PointsManagement raised earnings guidance and plans major capacity expansion by 2030.",
-      "content": "Key PointsManagement raised earnings guidance and plans major capacity expansion by 2030.",
-      "url": "https://www.nasdaq.com/articles/heres-why-venture-global-stock-soared-243-week",
-      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
-      "publishedAt": "2026-05-17T08:39:26+00:00",
+      "id": 487913781,
+      "source": "MarketBeat",
+      "title": "L & S Advisors Inc Has $16.65 Million Stock Holdings in Citigroup Inc. $C",
+      "summary": "L & S Advisors Inc significantly increased its stake in Citigroup Inc. during the fourth quarter, now holding 142,653 shares valued at approximately $16.65 million. This increase follows Citigroup's strong quarterly earnings, which surpassed analyst expectations, and coincides with the bank's announcement of a $30 billion share repurchase program. The stock maintains a \"Moderate Buy\" rating from analysts, with several firms raising their price targets, indicating positive sentiment despite some investor focus on post-earnings momentum.",
+      "content": "L & S Advisors Inc significantly increased its stake in Citigroup Inc. during the fourth quarter, now holding 142,653 shares valued at approximately $16.65 million. This increase follows Citigroup's strong quarterly earnings, which surpassed analyst expectations, and coincides with the bank's announcement of a $30 billion share repurchase program. The stock maintains a \"Moderate Buy\" rating from analysts, with several firms raising their price targets, indicating positive sentiment despite some investor focus on post-earnings momentum.",
+      "url": "https://www.marketbeat.com/instant-alerts/filing-l-s-advisors-inc-has-1665-million-stock-holdings-in-citigroup-inc-c-2026-05-17/",
+      "image": "https://www.marketbeat.com/logos/citigroup-inc-logo-1200x675.png",
+      "publishedAt": "2026-05-17T11:01:12+00:00",
       "category": "Mercados",
       "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [
+          "C"
+        ],
+        "sector": "Finan\u00e7as",
+        "sentiment": "positive"
+      },
+      "heat": 1,
+      "feed": "alphavantage"
+    },
+    {
+      "id": 103264321,
+      "source": "Benzinga",
+      "title": "Tim Cook Finds Purpose, OpenAI-Apple Relationship Sours, Intel Strikes Deal: This Week In Appleverse",
+      "summary": "This article provides a recap of recent news involving Apple, including CEO Tim Cook's insights on purpose, a reported souring relationship between OpenAI and Apple, and a new partnership between Apple and Intel to address supply chain issues. Additionally, it highlights the introduction of end-to-end encrypted RCS messaging by Apple and Google, and mentions other stock recommendations.",
+      "content": "This article provides a recap of recent news involving Apple, including CEO Tim Cook's insights on purpose, a reported souring relationship between OpenAI and Apple, and a new partnership between Apple and Intel to address supply chain issues. Additionally, it highlights the introduction of end-to-end encrypted RCS messaging by Apple and Google, and mentions other stock recommendations.",
+      "url": "https://www.benzinga.com/markets/tech/26/05/52624745/tim-cook-finds-purpose-openai-apple-relationship-sours-intel-strikes-deal-this-week-in-appleverse",
+      "image": "https://cdn.benzinga.com/cdn-cgi/image/width=1300,format=auto,quality=85/files/images/story/2025/07/24/article-header-background-image.png",
+      "publishedAt": "2026-05-17T11:01:00+00:00",
+      "category": "Com\u00e9rcio",
+      "icon": "\ud83d\udea2",
+      "impact": {
+        "tickers": [
+          "AAPL",
+          "INTC",
+          "GOOGL",
+          "GOOG",
+          "NOW"
+        ],
+        "sector": "Tecnologia",
+        "sentiment": "positive"
+      },
+      "heat": 3,
+      "feed": "alphavantage"
+    },
+    {
+      "id": 971813114,
+      "source": "Financial Times",
+      "title": "Britain gets the politics it deserves",
+      "summary": "Cakeism, impatience and low-quality public discourse contribute to the UK\u2019s instability",
+      "content": "Cakeism, impatience and low-quality public discourse contribute to the UK\u2019s instability",
+      "url": "https://www.ft.com/content/0cb0f4c5-c324-4626-9b5d-cec7726264b7",
+      "image": "https://images.ft.com/v3/image/raw/https%3A%2F%2Fd1e00ek4ebabms.cloudfront.net%2Fproduction%2F783e609b-aa91-40a6-88fd-2dd3e0c08de9.jpg?source=next-home-page&dpr=2&width=580&fit=scale-down",
+      "publishedAt": "2026-05-17T11:00:05+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
       "impact": {
         "tickers": [],
         "sector": "",
@@ -343,251 +543,19 @@
       "feed": "rss"
     },
     {
-      "id": 232696256,
+      "id": 329107546,
       "source": "MarketBeat",
-      "title": "Canada Post Corp Registered Pension Plan Grows Holdings in Qualcomm Incorporated $QCOM",
-      "summary": "Canada Post Corp Registered Pension Plan has significantly increased its stake in Qualcomm Incorporated, acquiring an additional 7,330 shares to bring its total to 41,236 shares valued at $7.05 million. This follows Qualcomm's strong quarterly earnings, exceeding analyst expectations, and a recent dividend increase. The company's stock performance is influenced by optimism around AI and data centers, despite some analyst caution and insider selling.",
-      "content": "Canada Post Corp Registered Pension Plan has significantly increased its stake in Qualcomm Incorporated, acquiring an additional 7,330 shares to bring its total to 41,236 shares valued at $7.05 million. This follows Qualcomm's strong quarterly earnings, exceeding analyst expectations, and a recent dividend increase. The company's stock performance is influenced by optimism around AI and data centers, despite some analyst caution and insider selling.",
-      "url": "https://www.marketbeat.com/instant-alerts/filing-canada-post-corp-registered-pension-plan-grows-holdings-in-qualcomm-incorporated-qcom-2026-05-17/",
-      "image": "https://www.marketbeat.com/logos/qualcomm-incorporated-logo-1200x675.png?v=20221020155845",
-      "publishedAt": "2026-05-17T08:34:28+00:00",
+      "title": "Eubel Brady & Suttman Asset Management Inc. Decreases Position in Zimmer Biomet Holdings, Inc. $ZBH",
+      "summary": "Eubel Brady & Suttman Asset Management Inc. reduced its stake in Zimmer Biomet Holdings, Inc. by 6.6% in the fourth quarter of the prior year, selling 19,274 shares and now holding 273,475 shares valued at approximately $24.6 million. Zimmer Biomet's recent earnings exceeded expectations, reporting $2.09 EPS against a $1.86 consensus and revenue of $2.09 billion, increasing 9.3% year-over-year. Despite beating earnings, analyst sentiment remains a \"Hold\" with an average price target of $102.80, higher than the recent trading price of $83.73.",
+      "content": "Eubel Brady & Suttman Asset Management Inc. reduced its stake in Zimmer Biomet Holdings, Inc. by 6.6% in the fourth quarter of the prior year, selling 19,274 shares and now holding 273,475 shares valued at approximately $24.6 million. Zimmer Biomet's recent earnings exceeded expectations, reporting $2.09 EPS against a $1.86 consensus and revenue of $2.09 billion, increasing 9.3% year-over-year. Despite beating earnings, analyst sentiment remains a \"Hold\" with an average price target of $102.80, higher than the recent trading price of $83.73.",
+      "url": "https://www.marketbeat.com/instant-alerts/filing-eubel-brady-suttman-asset-management-inc-decreases-position-in-zimmer-biomet-holdings-inc-zbh-2026-05-17/",
+      "image": "https://www.marketbeat.com/logos/zimmer-biomet-holdings-inc-logo-1200x675.jpg",
+      "publishedAt": "2026-05-17T10:59:43+00:00",
       "category": "Mercados",
       "icon": "\ud83d\udcb0",
       "impact": {
         "tickers": [
-          "QCOM"
-        ],
-        "sector": "",
-        "sentiment": "positive"
-      },
-      "heat": 1,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 508680276,
-      "source": "MarketBeat",
-      "title": "Barr E S & Co. Makes New Investment in Qualcomm Incorporated $QCOM",
-      "summary": "Barr E S & Co. initiated a new position in Qualcomm (QCOM) by purchasing 2,790 shares valued at approximately $477,000 in the fourth quarter. This move aligns with other institutional investors increasing their stakes, leading to hedge funds owning a large majority of the stock. Qualcomm recently reported strong Q4 earnings, surpassing estimates, and announced a $20 billion share buyback program along with an increased quarterly dividend of $0.92 per share, signaling confidence in its profitability despite analysts maintaining a \"Hold\" rating.",
-      "content": "Barr E S & Co. initiated a new position in Qualcomm (QCOM) by purchasing 2,790 shares valued at approximately $477,000 in the fourth quarter. This move aligns with other institutional investors increasing their stakes, leading to hedge funds owning a large majority of the stock. Qualcomm recently reported strong Q4 earnings, surpassing estimates, and announced a $20 billion share buyback program along with an increased quarterly dividend of $0.92 per share, signaling confidence in its profitability despite analysts maintaining a \"Hold\" rating.",
-      "url": "https://www.marketbeat.com/instant-alerts/filing-barr-e-s-co-makes-new-investment-in-qualcomm-incorporated-qcom-2026-05-17/",
-      "image": "https://www.marketbeat.com/logos/qualcomm-incorporated-logo-1200x675.png?v=20221020155845",
-      "publishedAt": "2026-05-17T08:34:28+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [
-          "QCOM"
-        ],
-        "sector": "",
-        "sentiment": "positive"
-      },
-      "heat": 1,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 452129773,
-      "source": "MarketBeat",
-      "title": "Beese Fulmer Investment Management Inc. Has $37.75 Million Stake in Philip Morris International Inc. $PM",
-      "summary": "Beese Fulmer Investment Management Inc. significantly increased its stake in Philip Morris International (PM) by 104.4% in the fourth quarter, now holding 235,353 shares valued at $37.75 million. This increased stake makes PM the 12th largest position in Beese Fulmer's portfolio. Philip Morris International recently reported strong Q1 2026 earnings, beating analyst estimates with EPS of $1.96 and revenue of $10.15 billion, and raised its fiscal year EPS guidance.",
-      "content": "Beese Fulmer Investment Management Inc. significantly increased its stake in Philip Morris International (PM) by 104.4% in the fourth quarter, now holding 235,353 shares valued at $37.75 million. This increased stake makes PM the 12th largest position in Beese Fulmer's portfolio. Philip Morris International recently reported strong Q1 2026 earnings, beating analyst estimates with EPS of $1.96 and revenue of $10.15 billion, and raised its fiscal year EPS guidance.",
-      "url": "https://www.marketbeat.com/instant-alerts/filing-beese-fulmer-investment-management-inc-has-3775-million-stake-in-philip-morris-international-inc-pm-2026-05-17/",
-      "image": "https://www.marketbeat.com/logos/philip-morris-international-inc-logo-1200x675.png?v=20221020155554",
-      "publishedAt": "2026-05-17T08:34:23+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [
-          "PM"
-        ],
-        "sector": "",
-        "sentiment": "positive"
-      },
-      "heat": 1,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 219313457,
-      "source": "MarketBeat",
-      "title": "Philip Morris International Inc. $PM Position Boosted by Canada Post Corp Registered Pension Plan",
-      "summary": "Canada Post Corp Registered Pension Plan increased its stake in Philip Morris International Inc. (PM) by 18.3% in the fourth quarter. This comes as Philip Morris International reported strong quarterly earnings, beating analyst expectations, and maintained its quarterly dividend. Analysts widely rate the stock as a \"Moderate Buy\" with an average target price of $192.56.",
-      "content": "Canada Post Corp Registered Pension Plan increased its stake in Philip Morris International Inc. (PM) by 18.3% in the fourth quarter. This comes as Philip Morris International reported strong quarterly earnings, beating analyst expectations, and maintained its quarterly dividend. Analysts widely rate the stock as a \"Moderate Buy\" with an average target price of $192.56.",
-      "url": "https://www.marketbeat.com/instant-alerts/filing-philip-morris-international-inc-pm-position-boosted-by-canada-post-corp-registered-pension-plan-2026-05-17/",
-      "image": "https://www.marketbeat.com/logos/philip-morris-international-inc-logo-1200x675.png?v=20221020155554",
-      "publishedAt": "2026-05-17T08:34:23+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [
-          "PM"
-        ],
-        "sector": "",
-        "sentiment": "positive"
-      },
-      "heat": 1,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 578330574,
-      "source": "MarketBeat",
-      "title": "Barr E S & Co. Has $12.37 Million Stake in PepsiCo, Inc. $PEP",
-      "summary": "Barr E S & Co. reduced its stake in PepsiCo, Inc. by 10.6% in the fourth quarter, holding 86,194 shares valued at $12.37 million. Despite this reduction by one firm, significant institutional interest in PepsiCo remains strong, with several other major institutional investors increasing their holdings. PepsiCo (NASDAQ:PEP) reported strong quarterly results, raised its dividend, and announced a share repurchase program, while analysts currently hold a mixed \"Hold\" rating with an average target price of $170.37.",
-      "content": "Barr E S & Co. reduced its stake in PepsiCo, Inc. by 10.6% in the fourth quarter, holding 86,194 shares valued at $12.37 million. Despite this reduction by one firm, significant institutional interest in PepsiCo remains strong, with several other major institutional investors increasing their holdings. PepsiCo (NASDAQ:PEP) reported strong quarterly results, raised its dividend, and announced a share repurchase program, while analysts currently hold a mixed \"Hold\" rating with an average target price of $170.37.",
-      "url": "https://www.marketbeat.com/instant-alerts/filing-barr-e-s-co-has-1237-million-stake-in-pepsico-inc-pep-2026-05-17/",
-      "image": "https://www.marketbeat.com/logos/pepsico-inc-logo-1200x675.jpg?v=20210728083446",
-      "publishedAt": "2026-05-17T08:34:23+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [
-          "PEP"
-        ],
-        "sector": "",
-        "sentiment": "positive"
-      },
-      "heat": 1,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 774796166,
-      "source": "MarketBeat",
-      "title": "Canada Post Corp Registered Pension Plan Has $6.02 Million Stake in Colgate-Palmolive Company $CL",
-      "summary": "Canada Post Corp Registered Pension Plan significantly increased its stake in Colgate-Palmolive Company, purchasing an additional 20,308 shares to bring its total holdings to 76,130 shares valued at $6.02 million. This comes after Colgate-Palmolive reported strong quarterly results, exceeding EPS and revenue forecasts, and subsequently raised its quarterly dividend. Several other institutional investors also increased their positions in the consumer products giant.",
-      "content": "Canada Post Corp Registered Pension Plan significantly increased its stake in Colgate-Palmolive Company, purchasing an additional 20,308 shares to bring its total holdings to 76,130 shares valued at $6.02 million. This comes after Colgate-Palmolive reported strong quarterly results, exceeding EPS and revenue forecasts, and subsequently raised its quarterly dividend. Several other institutional investors also increased their positions in the consumer products giant.",
-      "url": "https://www.marketbeat.com/instant-alerts/filing-canada-post-corp-registered-pension-plan-has-602-million-stake-in-colgate-palmolive-company-cl-2026-05-17/",
-      "image": "https://www.marketbeat.com/logos/colgate-palmolive-logo-1200x675.png?v=20221021142042",
-      "publishedAt": "2026-05-17T08:34:19+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [
-          "CL"
-        ],
-        "sector": "",
-        "sentiment": "positive"
-      },
-      "heat": 1,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 249854550,
-      "source": "MarketBeat",
-      "title": "Beese Fulmer Investment Management Inc. Purchases 32,049 Shares of Costco Wholesale Corporation $COST",
-      "summary": "Beese Fulmer Investment Management Inc. significantly increased its stake in Costco Wholesale Corporation by purchasing an additional 32,049 shares, bringing its total to 62,706 shares valued at $54.1 million. This comes after Costco reported strong fourth-quarter earnings, beating Wall Street expectations with $4.58 EPS and $69.6 billion in revenue, and raising its quarterly dividend to $1.47 per share. Analysts maintain a \"Moderate Buy\" rating with a target price around $1,047, despite some commentary noting the stock's premium valuation.",
-      "content": "Beese Fulmer Investment Management Inc. significantly increased its stake in Costco Wholesale Corporation by purchasing an additional 32,049 shares, bringing its total to 62,706 shares valued at $54.1 million. This comes after Costco reported strong fourth-quarter earnings, beating Wall Street expectations with $4.58 EPS and $69.6 billion in revenue, and raising its quarterly dividend to $1.47 per share. Analysts maintain a \"Moderate Buy\" rating with a target price around $1,047, despite some commentary noting the stock's premium valuation.",
-      "url": "https://www.marketbeat.com/instant-alerts/filing-beese-fulmer-investment-management-inc-purchases-32049-shares-of-costco-wholesale-corporation-cost-2026-05-17/",
-      "image": "https://www.marketbeat.com/logos/costco-logo-1200x675.jpg",
-      "publishedAt": "2026-05-17T08:34:19+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [
-          "COST"
-        ],
-        "sector": "",
-        "sentiment": "positive"
-      },
-      "heat": 1,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 347633558,
-      "source": "MarketBeat",
-      "title": "Canada Post Corp Registered Pension Plan Sells 42,840 Shares of Oracle Corporation $ORCL",
-      "summary": "Canada Post Corp Registered Pension Plan significantly reduced its stake in Oracle Corporation, selling 42,840 shares, which represents a 50.1% cut to its holdings. This comes as Oracle continues to receive mixed-to-bullish sentiment from Wall Street analysts, despite recent price target adjustments. The company's latest quarterly results exceeded expectations, driven by strong growth in cloud and AI initiatives.",
-      "content": "Canada Post Corp Registered Pension Plan significantly reduced its stake in Oracle Corporation, selling 42,840 shares, which represents a 50.1% cut to its holdings. This comes as Oracle continues to receive mixed-to-bullish sentiment from Wall Street analysts, despite recent price target adjustments. The company's latest quarterly results exceeded expectations, driven by strong growth in cloud and AI initiatives.",
-      "url": "https://www.marketbeat.com/instant-alerts/filing-canada-post-corp-registered-pension-plan-sells-42840-shares-of-oracle-corporation-orcl-2026-05-17/",
-      "image": "https://www.marketbeat.com/logos/oracle-co-logo-1200x675.png?v=20221020143405",
-      "publishedAt": "2026-05-17T08:34:17+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [
-          "ORCL"
-        ],
-        "sector": "",
-        "sentiment": "positive"
-      },
-      "heat": 1,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 365265042,
-      "source": "MarketBeat",
-      "title": "Beese Fulmer Investment Management Inc. Boosts Holdings in Chubb Limited $CB",
-      "summary": "Beese Fulmer Investment Management Inc. significantly increased its stake in Chubb Limited (NYSE:CB) by 105.8% in the fourth quarter, bringing its total holdings to 121,060 shares valued at approximately $37.8 million. Institutional investors collectively own 83.81% of the stock, while analysts maintain a \"Moderate Buy\" consensus rating with an average price target of $349.33. Chubb recently reported strong quarterly earnings per share of $6.82 and declared a quarterly dividend of $0.97 per share.",
-      "content": "Beese Fulmer Investment Management Inc. significantly increased its stake in Chubb Limited (NYSE:CB) by 105.8% in the fourth quarter, bringing its total holdings to 121,060 shares valued at approximately $37.8 million. Institutional investors collectively own 83.81% of the stock, while analysts maintain a \"Moderate Buy\" consensus rating with an average price target of $349.33. Chubb recently reported strong quarterly earnings per share of $6.82 and declared a quarterly dividend of $0.97 per share.",
-      "url": "https://www.marketbeat.com/instant-alerts/filing-beese-fulmer-investment-management-inc-boosts-holdings-in-chubb-limited-cb-2026-05-17/",
-      "image": "https://www.marketbeat.com/logos/chubb-ltd-logo-1200x675.png",
-      "publishedAt": "2026-05-17T08:34:15+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [
-          "CB"
-        ],
-        "sector": "",
-        "sentiment": "positive"
-      },
-      "heat": 1,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 619881060,
-      "source": "MarketBeat",
-      "title": "Canada Post Corp Registered Pension Plan Lowers Holdings in Northrop Grumman Corporation $NOC",
-      "summary": "Canada Post Corp Registered Pension Plan reduced its stake in Northrop Grumman Corporation by 17.1% in the fourth quarter of the previous year, selling 2,142 shares and ending with over 10,400 shares valued at approximately $5.93 million. This comes as Northrop Grumman reported Q1 earnings that surpassed expectations, with EPS of $6.14 and revenue of $9.88 billion, and reaffirmed its FY 2026 EPS guidance. Despite a \"Moderate Buy\" consensus from Wall Street analysts, recent options-market activity and target price adjustments suggest some near-term uncertainty for the stock.",
-      "content": "Canada Post Corp Registered Pension Plan reduced its stake in Northrop Grumman Corporation by 17.1% in the fourth quarter of the previous year, selling 2,142 shares and ending with over 10,400 shares valued at approximately $5.93 million. This comes as Northrop Grumman reported Q1 earnings that surpassed expectations, with EPS of $6.14 and revenue of $9.88 billion, and reaffirmed its FY 2026 EPS guidance. Despite a \"Moderate Buy\" consensus from Wall Street analysts, recent options-market activity and target price adjustments suggest some near-term uncertainty for the stock.",
-      "url": "https://www.marketbeat.com/instant-alerts/filing-canada-post-corp-registered-pension-plan-lowers-holdings-in-northrop-grumman-corporation-noc-2026-05-17/",
-      "image": "https://www.marketbeat.com/logos/northrop-grumman-co-logo-1200x675.png?v=20221021083322",
-      "publishedAt": "2026-05-17T08:34:14+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [
-          "NOC",
-          "LMT"
-        ],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 2,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 360516842,
-      "source": "MarketBeat",
-      "title": "Barr E S & Co. Purchases 57,971 Shares of Brown & Brown, Inc. $BRO",
-      "summary": "Barr E S & Co. increased its stake in Brown & Brown, Inc. by 19% in the fourth quarter, acquiring an additional 57,971 shares to bring its total holding to 362,669 shares valued at approximately $28.9 million. The financial services provider reported strong quarterly results with EPS of $1.39 and revenue of $1.90 billion, exceeding analyst expectations. Despite declaring a quarterly dividend of $0.165 per share, analysts maintain a \"Hold\" rating on the stock with an average price target of $80.73.",
-      "content": "Barr E S & Co. increased its stake in Brown & Brown, Inc. by 19% in the fourth quarter, acquiring an additional 57,971 shares to bring its total holding to 362,669 shares valued at approximately $28.9 million. The financial services provider reported strong quarterly results with EPS of $1.39 and revenue of $1.90 billion, exceeding analyst expectations. Despite declaring a quarterly dividend of $0.165 per share, analysts maintain a \"Hold\" rating on the stock with an average price target of $80.73.",
-      "url": "https://www.marketbeat.com/instant-alerts/filing-barr-e-s-co-purchases-57971-shares-of-brown-brown-inc-bro-2026-05-17/",
-      "image": "https://www.marketbeat.com/logos/brown--brown-inc-logo-1200x675.png?v=20221104115931",
-      "publishedAt": "2026-05-17T08:34:11+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [
-          "BRO"
-        ],
-        "sector": "",
-        "sentiment": "positive"
-      },
-      "heat": 1,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 746097941,
-      "source": "MarketBeat",
-      "title": "Canada Post Corp Registered Pension Plan Decreases Stake in Moody's Corporation $MCO",
-      "summary": "Canada Post Corp Registered Pension Plan significantly cut its stake in Moody's Corporation by 54.2% in the fourth quarter, selling 10,735 shares and retaining 9,088 shares valued at approximately $4.64 million. Despite this reduction, institutional investors and hedge funds still collectively own 92.11% of Moody's stock. The company recently reported strong Q1 earnings, beating expectations with an EPS of $4.33, and declared a quarterly dividend of $1.03 per share.",
-      "content": "Canada Post Corp Registered Pension Plan significantly cut its stake in Moody's Corporation by 54.2% in the fourth quarter, selling 10,735 shares and retaining 9,088 shares valued at approximately $4.64 million. Despite this reduction, institutional investors and hedge funds still collectively own 92.11% of Moody's stock. The company recently reported strong Q1 earnings, beating expectations with an EPS of $4.33, and declared a quarterly dividend of $1.03 per share.",
-      "url": "https://www.marketbeat.com/instant-alerts/filing-canada-post-corp-registered-pension-plan-decreases-stake-in-moodys-corporation-mco-2026-05-17/",
-      "image": "https://www.marketbeat.com/logos/moodys-co-logo-1200x675.png?v=20231220090252",
-      "publishedAt": "2026-05-17T08:34:05+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [
-          "MCO"
+          "ZBH"
         ],
         "sector": "",
         "sentiment": "neutral"
@@ -596,228 +564,60 @@
       "feed": "alphavantage"
     },
     {
-      "id": 230015005,
-      "source": "MarketBeat",
-      "title": "DNB Asset Management AS Grows Position in KKR & Co. Inc. $KKR",
-      "summary": "DNB Asset Management AS increased its stake in KKR & Co. Inc. (NYSE:KKR) by 19.1% in the fourth quarter, bringing its total holdings to 268,202 shares valued at $34.19 million. Other institutional investors also adjusted their positions in KKR, which saw its stock open at $97.16 with a market cap of $87.23 billion. KKR recently reported earnings of $1.24 per share and announced an increased quarterly dividend of $0.195, while company insiders have also engaged in significant share purchases.",
-      "content": "DNB Asset Management AS increased its stake in KKR & Co. Inc. (NYSE:KKR) by 19.1% in the fourth quarter, bringing its total holdings to 268,202 shares valued at $34.19 million. Other institutional investors also adjusted their positions in KKR, which saw its stock open at $97.16 with a market cap of $87.23 billion. KKR recently reported earnings of $1.24 per share and announced an increased quarterly dividend of $0.195, while company insiders have also engaged in significant share purchases.",
-      "url": "https://www.marketbeat.com/instant-alerts/filing-dnb-asset-management-as-grows-position-in-kkr-co-inc-kkr-2026-05-17/",
-      "image": "https://www.marketbeat.com/logos/kkr--co-inc-logo-1200x675.jpg?v=20221024140836",
-      "publishedAt": "2026-05-17T08:33:57+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [
-          "KKR"
-        ],
-        "sector": "",
-        "sentiment": "positive"
-      },
-      "heat": 1,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 292071535,
-      "source": "MarketBeat",
-      "title": "ExxonMobil Corporation $XOM Shares Sold by Barr E S & Co.",
-      "summary": "Barr E S & Co. reduced its stake in ExxonMobil Corporation ($XOM) by 33.8% in the fourth quarter, selling 12,827 shares and holding 25,164 shares valued at $3.03 million. Other institutional investors also adjusted their positions in XOM. The company recently reported strong earnings, beating expectations, and announced a quarterly dividend, with its stock performance reflecting a market capitalization of $653.72 billion.",
-      "content": "Barr E S & Co. reduced its stake in ExxonMobil Corporation ($XOM) by 33.8% in the fourth quarter, selling 12,827 shares and holding 25,164 shares valued at $3.03 million. Other institutional investors also adjusted their positions in XOM. The company recently reported strong earnings, beating expectations, and announced a quarterly dividend, with its stock performance reflecting a market capitalization of $653.72 billion.",
-      "url": "https://www.marketbeat.com/instant-alerts/filing-exxonmobil-corporation-xom-shares-sold-by-barr-e-s-co-2026-05-17/",
-      "image": "https://www.marketbeat.com/logos/exxon-mobil-co-logo-1200x675.png?v=20221020141849",
-      "publishedAt": "2026-05-17T08:33:52+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [
-          "XOM"
-        ],
-        "sector": "",
-        "sentiment": "positive"
-      },
-      "heat": 1,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 914394786,
-      "source": "MarketBeat",
-      "title": "Canada Post Corp Registered Pension Plan Buys 22,380 Shares of Verizon Communications Inc. $VZ",
-      "summary": "Canada Post Corp Registered Pension Plan increased its stake in Verizon Communications Inc. by 20.2% in the fourth quarter, purchasing 22,380 additional shares to bring its total holdings to 133,276 shares valued at $5.43 million. Other institutional investors have also shown interest in Verizon, while company insiders have recently sold shares. Analysts maintain a \"Moderate Buy\" rating for Verizon with an average price target of $50.59, following positive financial performance.",
-      "content": "Canada Post Corp Registered Pension Plan increased its stake in Verizon Communications Inc. by 20.2% in the fourth quarter, purchasing 22,380 additional shares to bring its total holdings to 133,276 shares valued at $5.43 million. Other institutional investors have also shown interest in Verizon, while company insiders have recently sold shares. Analysts maintain a \"Moderate Buy\" rating for Verizon with an average price target of $50.59, following positive financial performance.",
-      "url": "https://www.marketbeat.com/instant-alerts/filing-canada-post-corp-registered-pension-plan-buys-22380-shares-of-verizon-communications-inc-vz-2026-05-17/",
-      "image": "https://www.marketbeat.com/logos/verizonwireless-1200x675.jpg",
-      "publishedAt": "2026-05-17T08:33:48+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [
-          "VZ"
-        ],
-        "sector": "",
-        "sentiment": "positive"
-      },
-      "heat": 1,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 534708233,
-      "source": "MarketBeat",
-      "title": "Barr E S & Co. Sells 2,597 Shares of The Goldman Sachs Group, Inc. $GS",
-      "summary": "Barr E S & Co. reduced its stake in The Goldman Sachs Group by 1.7% in the fourth quarter, selling 2,597 shares but still maintaining a substantial holding of 146,426 shares valued at $128.7 million. Despite mixed analyst sentiment with a \"Hold\" consensus and a target price of $942.24, Goldman Sachs reported strong quarterly earnings, beating EPS estimates and achieving significant revenue growth. The company also announced a quarterly dividend of $4.50 per share.",
-      "content": "Barr E S & Co. reduced its stake in The Goldman Sachs Group by 1.7% in the fourth quarter, selling 2,597 shares but still maintaining a substantial holding of 146,426 shares valued at $128.7 million. Despite mixed analyst sentiment with a \"Hold\" consensus and a target price of $942.24, Goldman Sachs reported strong quarterly earnings, beating EPS estimates and achieving significant revenue growth. The company also announced a quarterly dividend of $4.50 per share.",
-      "url": "https://www.marketbeat.com/instant-alerts/filing-barr-e-s-co-sells-2597-shares-of-the-goldman-sachs-group-inc-gs-2026-05-17/",
-      "image": "https://www.marketbeat.com/logos/the-goldman-sachs-group-inc-logo-1200x675.png?v=20251107120127",
-      "publishedAt": "2026-05-17T08:33:46+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [
-          "GS"
-        ],
-        "sector": "Commodities",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 718940171,
-      "source": "Simply Wall Street",
-      "title": "Autodesk Expands AI Security With Permiso Partnership As Shares Trade Below Target",
-      "summary": "Autodesk has partnered with Permiso Security to enhance its AI security capabilities, focusing on AI agent monitoring tools to protect its platform and customer data. This move addresses growing concerns about AI risks in enterprise environments, aiming to position Autodesk for long-term trust and adoption among customers. The stock trades below its analyst target and fair value, suggesting potential upside, but has shown weak near-term momentum.",
-      "content": "Autodesk has partnered with Permiso Security to enhance its AI security capabilities, focusing on AI agent monitoring tools to protect its platform and customer data. This move addresses growing concerns about AI risks in enterprise environments, aiming to position Autodesk for long-term trust and adoption among customers. The stock trades below its analyst target and fair value, suggesting potential upside, but has shown weak near-term momentum.",
-      "url": "https://simplywall.st/stocks/us/software/nasdaq-adsk/autodesk/news/autodesk-expands-ai-security-with-permiso-partnership-as-sha",
-      "image": "https://images.ctfassets.net/n07nr2koi959/6YVpCWgrk0c9DenG6UgW8m/d79e37d527c71a95e08b9ce1071ba986/Image_from_iOS.jpg?fit=thumb&w=64&h=64",
-      "publishedAt": "2026-05-17T08:32:00+00:00",
-      "category": "Com\u00e9rcio",
-      "icon": "\ud83d\udea2",
-      "impact": {
-        "tickers": [
-          "ADSK"
-        ],
-        "sector": "",
-        "sentiment": "positive"
-      },
-      "heat": 1,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 193635647,
-      "source": "Simply Wall Street",
-      "title": "How Investors Are Reacting To FactSet (FDS) Partnering With Valutico On Private-Market Valuation Workflows",
-      "summary": "FactSet Research Systems Inc. announced a partnership with Valutico to streamline private-market valuation workflows, integrating Valutico's tools and FactSet's market data with its Cobalt platform. This collaboration aims to consolidate fragmented processes into a single system, providing more frequent and robust portfolio valuations for private-market investors. While the partnership strengthens FactSet's offering, the immediate investment narrative is also influenced by its recent dividend increase and ongoing challenges like mixed capital market conditions and rising tech costs.",
-      "content": "FactSet Research Systems Inc. announced a partnership with Valutico to streamline private-market valuation workflows, integrating Valutico's tools and FactSet's market data with its Cobalt platform. This collaboration aims to consolidate fragmented processes into a single system, providing more frequent and robust portfolio valuations for private-market investors. While the partnership strengthens FactSet's offering, the immediate investment narrative is also influenced by its recent dividend increase and ongoing challenges like mixed capital market conditions and rising tech costs.",
-      "url": "https://simplywall.st/stocks/us/diversified-financials/nyse-fds/factset-research-systems/news/how-investors-are-reacting-to-factset-fds-partnering-with-va",
-      "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
-      "publishedAt": "2026-05-17T08:31:39+00:00",
-      "category": "Tecnologia",
-      "icon": "\ud83d\udcbb",
-      "impact": {
-        "tickers": [
-          "FDS",
-          "SPGI",
-          "CME"
-        ],
-        "sector": "",
-        "sentiment": "positive"
-      },
-      "heat": 2,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 620728759,
-      "source": "Simply Wall Street",
-      "title": "Assessing Revvity (RVTY) Valuation After Recent Share Price Weakness",
-      "summary": "Revvity (RVTY) has experienced recent share price weakness, with the stock down 2.5% over the past day and 7% over the past week, prompting a re-evaluation of its valuation. While Simply Wall St's narrative suggests the stock is 21.4% undervalued with a fair value of $119.56 due to expected margin expansion and a shift towards higher-margin offerings, its current P/E ratio is significantly above fair value and industry averages. Investors are encouraged to consider both the discounted cash flow model suggesting a 31.8% discount and the high P/E ratio when making decisions.",
-      "content": "Revvity (RVTY) has experienced recent share price weakness, with the stock down 2.5% over the past day and 7% over the past week, prompting a re-evaluation of its valuation. While Simply Wall St's narrative suggests the stock is 21.4% undervalued with a fair value of $119.56 due to expected margin expansion and a shift towards higher-margin offerings, its current P/E ratio is significantly above fair value and industry averages. Investors are encouraged to consider both the discounted cash flow model suggesting a 31.8% discount and the high P/E ratio when making decisions.",
-      "url": "https://simplywall.st/stocks/us/pharmaceuticals-biotech/nyse-rvty/revvity/news/assessing-revvity-rvty-valuation-after-recent-share-price-we-1",
-      "image": "https://images.ctfassets.net/n07nr2koi959/1txW1Rnk3fUjh2FW939y6e/a1bb305c92d46eae2c7f925893392fdd/avatar-v2.png?w=64&h=64&q=90&fit=fill&f=top",
-      "publishedAt": "2026-05-17T08:31:32+00:00",
+      "id": 190995349,
+      "source": "Nasdaq",
+      "title": "There's a Mammoth Disagreement Brewing Within the Federal Reserve Over Artificial Intelligence (AI) -- and It May Reshape Monetary Policy",
+      "summary": "Key PointsEmpowering software and systems with the tools to make split-second, autonomous decisions is a $15.7 trillion global opportunity by 2030.",
+      "content": "Key PointsEmpowering software and systems with the tools to make split-second, autonomous decisions is a $15.7 trillion global opportunity by 2030.",
+      "url": "https://www.nasdaq.com/articles/theres-mammoth-disagreement-brewing-within-federal-reserve-over-artificial-intelligence-ai",
+      "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
+      "publishedAt": "2026-05-17T10:56:00+00:00",
       "category": "Geopol\u00edtica",
       "icon": "\ud83c\udf0d",
       "impact": {
         "tickers": [
-          "RVTY",
-          "TMO",
-          "DHR"
+          "JPM",
+          "GS",
+          "BAC",
+          "TLT",
+          "NVDA"
         ],
-        "sector": "Defesa",
+        "sector": "Finan\u00e7as",
         "sentiment": "neutral"
       },
-      "heat": 2,
-      "feed": "alphavantage"
+      "heat": 3,
+      "feed": "rss"
     },
     {
-      "id": 323021915,
-      "source": "Gotrade",
-      "title": "Proficient Auto Logistics, Inc. Common Stock (PAL) Stock Price Today & Analysis",
-      "summary": "This article provides an analysis of Proficient Auto Logistics, Inc. (PAL) stock, including its current price, fundamental financials, and corporate information. It details how to buy PAL stock via the Gotrade app, explains fractional share investment, and clarifies that PAL currently does not pay dividends as it is considered a growth stock. The company is a specialized freight company focusing on auto transportation and logistics services in North America.",
-      "content": "This article provides an analysis of Proficient Auto Logistics, Inc. (PAL) stock, including its current price, fundamental financials, and corporate information. It details how to buy PAL stock via the Gotrade app, explains fractional share investment, and clarifies that PAL currently does not pay dividends as it is considered a growth stock. The company is a specialized freight company focusing on auto transportation and logistics services in North America.",
-      "url": "https://www.heygotrade.com/en/us-stock/pal/",
-      "image": "https://s3-ap-southeast-1.amazonaws.com/files-tr8/stocks/pal/icon.png",
-      "publishedAt": "2026-05-17T08:31:30+00:00",
-      "category": "Com\u00e9rcio",
-      "icon": "\ud83d\udea2",
-      "impact": {
-        "tickers": [
-          "PAL"
-        ],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 26504021,
+      "id": 565353674,
       "source": "MarketBeat",
-      "title": "DNB Asset Management AS Acquires 56,975 Shares of Aflac Incorporated $AFL",
-      "summary": "DNB Asset Management AS significantly increased its stake in Aflac Incorporated, purchasing an additional 56,975 shares and bringing its total holdings to 168,003 shares valued at approximately $18.5 million. This increase occurred despite Aflac reporting mixed Q4 results, with revenue beating expectations but earnings per share missing estimates. The company also announced a quarterly dividend of $0.61 per share and issued $500 million in senior notes.",
-      "content": "DNB Asset Management AS significantly increased its stake in Aflac Incorporated, purchasing an additional 56,975 shares and bringing its total holdings to 168,003 shares valued at approximately $18.5 million. This increase occurred despite Aflac reporting mixed Q4 results, with revenue beating expectations but earnings per share missing estimates. The company also announced a quarterly dividend of $0.61 per share and issued $500 million in senior notes.",
-      "url": "https://www.marketbeat.com/instant-alerts/filing-dnb-asset-management-as-acquires-56975-shares-of-aflac-incorporated-afl-2026-05-17/",
-      "image": "https://www.marketbeat.com/logos/aflac-logo-1200x675.jpg",
-      "publishedAt": "2026-05-17T08:29:59+00:00",
+      "title": "L & S Advisors Inc Sells 8,432 Shares of Cummins Inc. $CMI",
+      "summary": "L & S Advisors Inc reduced its stake in Cummins Inc. by 34.3% in the fourth quarter, selling 8,432 shares and retaining 16,160 shares valued at approximately $8.25 million. Analysts maintain a \"Moderate Buy\" rating for Cummins with an average price target of $677.87. Additionally, the company reported strong quarterly earnings of $6.15 per share on $8.40 billion in revenue and declared a quarterly dividend of $2.00 per share.",
+      "content": "L & S Advisors Inc reduced its stake in Cummins Inc. by 34.3% in the fourth quarter, selling 8,432 shares and retaining 16,160 shares valued at approximately $8.25 million. Analysts maintain a \"Moderate Buy\" rating for Cummins with an average price target of $677.87. Additionally, the company reported strong quarterly earnings of $6.15 per share on $8.40 billion in revenue and declared a quarterly dividend of $2.00 per share.",
+      "url": "https://www.marketbeat.com/instant-alerts/filing-l-s-advisors-inc-sells-8432-shares-of-cummins-inc-cmi-2026-05-17/",
+      "image": "https://www.marketbeat.com/logos/cummins-inc-logo-1200x675.png?v=20231228134629",
+      "publishedAt": "2026-05-17T10:54:18+00:00",
       "category": "Mercados",
       "icon": "\ud83d\udcb0",
       "impact": {
         "tickers": [
-          "AFL"
+          "CMI"
         ],
         "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 140787268,
-      "source": "Kalkine Media",
-      "title": "Newell Brands Eyes Stability Amid Consumer Market Shifts",
-      "summary": "Newell Brands is attracting market attention due to its diversified portfolio of household brands, strong operational discipline, and ability to adapt to changes in retail and consumer demand within the North American consumer staples market. The company is focused on maintaining stability amid evolving market shifts, supported by its various product offerings across household, writing, kitchen, outdoor, and commercial sectors, and its visible dividend performance.",
-      "content": "Newell Brands is attracting market attention due to its diversified portfolio of household brands, strong operational discipline, and ability to adapt to changes in retail and consumer demand within the North American consumer staples market. The company is focused on maintaining stability amid evolving market shifts, supported by its various product offerings across household, writing, kitchen, outdoor, and commercial sectors, and its visible dividend performance.",
-      "url": "https://kalkinemedia.com/us/stocks/consumer/newell-brands-eyes-stability-amid-consumer-market-shifts",
-      "image": "https://kalkinemedia.com/storage/uploads/large/Supermarketnn_04_22_2025_21_58_11_695009.jpg",
-      "publishedAt": "2026-05-17T08:29:00+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [
-          "NWL"
-        ],
-        "sector": "Consumo",
         "sentiment": "positive"
       },
       "heat": 1,
       "feed": "alphavantage"
     },
     {
-      "id": 60309327,
+      "id": 595123888,
       "source": "MarketBeat",
-      "title": "Regeneron Pharmaceuticals, Inc. $REGN Shares Acquired by Dana Investment Advisors Inc.",
-      "summary": "Dana Investment Advisors Inc. significantly increased its stake in Regeneron Pharmaceuticals (NASDAQ:REGN) by 58% in the fourth quarter, now holding 8,395 shares valued at $6.48 million. This increase follows strong quarterly results where Regeneron exceeded revenue and EPS forecasts. Analyst sentiment remains largely positive, maintaining a \"Moderate Buy\" consensus and an average target price of $826.59, despite the stock trading below its 52-week high.",
-      "content": "Dana Investment Advisors Inc. significantly increased its stake in Regeneron Pharmaceuticals (NASDAQ:REGN) by 58% in the fourth quarter, now holding 8,395 shares valued at $6.48 million. This increase follows strong quarterly results where Regeneron exceeded revenue and EPS forecasts. Analyst sentiment remains largely positive, maintaining a \"Moderate Buy\" consensus and an average target price of $826.59, despite the stock trading below its 52-week high.",
-      "url": "https://www.marketbeat.com/instant-alerts/filing-regeneron-pharmaceuticals-inc-regn-shares-acquired-by-dana-investment-advisors-inc-2026-05-17/",
+      "title": "Leuthold Group LLC Increases Stake in Regeneron Pharmaceuticals, Inc. $REGN",
+      "summary": "Leuthold Group LLC significantly increased its stake in Regeneron Pharmaceuticals (NASDAQ:REGN) by 56.2% in the fourth quarter, reaching 9,439 shares valued at $7.29 million. Regeneron recently reported strong quarterly results, with EPS of $9.47 beating estimates and revenue up 19% year-over-year, and declared a quarterly dividend of $0.94 per share. Analysts maintain a \"Moderate Buy\" rating for REGN, with an average target price of $826.59.",
+      "content": "Leuthold Group LLC significantly increased its stake in Regeneron Pharmaceuticals (NASDAQ:REGN) by 56.2% in the fourth quarter, reaching 9,439 shares valued at $7.29 million. Regeneron recently reported strong quarterly results, with EPS of $9.47 beating estimates and revenue up 19% year-over-year, and declared a quarterly dividend of $0.94 per share. Analysts maintain a \"Moderate Buy\" rating for REGN, with an average target price of $826.59.",
+      "url": "https://www.marketbeat.com/instant-alerts/filing-leuthold-group-llc-increases-stake-in-regeneron-pharmaceuticals-inc-regn-2026-05-17/",
       "image": "https://www.marketbeat.com/logos/regeneron-pharmaceuticals-inc-logo-1200x675.png?v=20221021082404",
-      "publishedAt": "2026-05-17T08:28:32+00:00",
+      "publishedAt": "2026-05-17T10:53:22+00:00",
       "category": "Mercados",
       "icon": "\ud83d\udcb0",
       "impact": {
@@ -831,191 +631,61 @@
       "feed": "alphavantage"
     },
     {
-      "id": 547670981,
-      "source": "Nasdaq",
-      "title": "Prediction: May 21 Will Be a Huge Day for the Stock Market. Here's What You Need to Know.",
-      "summary": "Key PointsArtificial intelligence stocks have set the tone for the S&amp;P 500 over the past few years.",
-      "content": "Key PointsArtificial intelligence stocks have set the tone for the S&amp;P 500 over the past few years.",
-      "url": "https://www.nasdaq.com/articles/prediction-may-21-will-be-huge-day-stock-market-heres-what-you-need-know",
-      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
-      "publishedAt": "2026-05-17T08:28:00+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [
-          "NVDA",
-          "AMD",
-          "INTC",
-          "AVGO"
-        ],
-        "sector": "Tecnologia",
-        "sentiment": "neutral"
-      },
-      "heat": 3,
-      "feed": "rss"
-    },
-    {
-      "id": 78794563,
+      "id": 632264484,
       "source": "AD HOC NEWS",
-      "title": "American Tower Corp stock (US0304201033): 2026 dividend plans and tower portfolio in focus",
-      "summary": "American Tower Corp (AMT) has updated its 2026 outlook, affirming its REIT dividend profile and expanding its global tower footprint. The company, an independent owner of wireless communication towers, focuses on long-term lease contracts with mobile network operators, leveraging its REIT status to distribute a significant portion of its taxable income as dividends. Its strategy includes geographic diversification and adaptation to 5G deployments and 4G densification, which drive demand for its infrastructure.",
-      "content": "American Tower Corp (AMT) has updated its 2026 outlook, affirming its REIT dividend profile and expanding its global tower footprint. The company, an independent owner of wireless communication towers, focuses on long-term lease contracts with mobile network operators, leveraging its REIT status to distribute a significant portion of its taxable income as dividends. Its strategy includes geographic diversification and adaptation to 5G deployments and 4G densification, which drive demand for its infrastructure.",
-      "url": "https://www.ad-hoc-news.de/boerse/news/ueberblick/american-tower-corp-stock-us0304201033-2026-dividend-plans-and-tower/69354375",
-      "image": "https://mdb.ad-hoc-news.de/bild/bild-2405051_480_300.webp",
-      "publishedAt": "2026-05-17T08:26:56+00:00",
+      "title": "Fox Corp Class B stock (US35137L2043): Shareholders await the next catalyst",
+      "summary": "Fox Corp Class B (US35137L2043) remains a key stock for investors interested in US media, particularly due to its focus on live news and sports, which attract premium audiences and advertisers. The company's revenue is driven by advertising, affiliate fees, and sports rights, balancing legacy TV economics with digital distribution. Investors are currently looking for catalysts such as upcoming earnings reports, advertising trend analysis, and updates on sports programming to gauge the stock's future performance.",
+      "content": "Fox Corp Class B (US35137L2043) remains a key stock for investors interested in US media, particularly due to its focus on live news and sports, which attract premium audiences and advertisers. The company's revenue is driven by advertising, affiliate fees, and sports rights, balancing legacy TV economics with digital distribution. Investors are currently looking for catalysts such as upcoming earnings reports, advertising trend analysis, and updates on sports programming to gauge the stock's future performance.",
+      "url": "https://www.ad-hoc-news.de/boerse/news/ueberblick/fox-corp-class-b-stock-us35137l2043-shareholders-await-the-next/69355456",
+      "image": "https://mdb.ad-hoc-news.de/bild/bild-2405014_480_300.webp",
+      "publishedAt": "2026-05-17T10:51:39+00:00",
       "category": "Mercados",
       "icon": "\ud83d\udcb0",
       "impact": {
         "tickers": [
-          "AMT",
-          "CCI",
-          "SBAC",
-          "AWK"
+          "FOX"
         ],
-        "sector": "",
-        "sentiment": "positive"
-      },
-      "heat": 3,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 463195618,
-      "source": "MarketBeat",
-      "title": "DNB Asset Management AS Buys 3,490 Shares of The Sherwin-Williams Company $SHW",
-      "summary": "DNB Asset Management AS increased its stake in The Sherwin-Williams Company (NYSE:SHW) by 5.6% in the fourth quarter, purchasing an additional 3,490 shares to bring its total holdings to 66,049 shares valued at $21.4 million. Several other institutional investors also adjusted their positions, and institutions collectively own 77.67% of the company's stock. Sherwin-Williams recently reported strong Q1 results with EPS of $2.35 and revenue of $5.67 billion, exceeding analyst expectations, and maintains a \"Moderate Buy\" rating with an average target price of $375.33.",
-      "content": "DNB Asset Management AS increased its stake in The Sherwin-Williams Company (NYSE:SHW) by 5.6% in the fourth quarter, purchasing an additional 3,490 shares to bring its total holdings to 66,049 shares valued at $21.4 million. Several other institutional investors also adjusted their positions, and institutions collectively own 77.67% of the company's stock. Sherwin-Williams recently reported strong Q1 results with EPS of $2.35 and revenue of $5.67 billion, exceeding analyst expectations, and maintains a \"Moderate Buy\" rating with an average target price of $375.33.",
-      "url": "https://www.marketbeat.com/instant-alerts/filing-dnb-asset-management-as-buys-3490-shares-of-the-sherwin-williams-company-shw-2026-05-17/",
-      "image": "https://www.marketbeat.com/logos/sherwin-williams-logo-1200x675.jpg",
-      "publishedAt": "2026-05-17T08:26:32+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [
-          "SHW"
-        ],
-        "sector": "",
-        "sentiment": "positive"
-      },
-      "heat": 1,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 545150980,
-      "source": "Nasdaq",
-      "title": "Prediction: The Trump Bull Market Will Come to an Abrupt End Because of 2 Decisions Made by the President",
-      "summary": "Key PointsThe Dow Jones Industrial Average, S&amp;P 500, and Nasdaq Composite have all soared with Donald Trump in the White House.",
-      "content": "Key PointsThe Dow Jones Industrial Average, S&amp;P 500, and Nasdaq Composite have all soared with Donald Trump in the White House.",
-      "url": "https://www.nasdaq.com/articles/prediction-trump-bull-market-will-come-abrupt-end-because-2-decisions-made-president",
-      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
-      "publishedAt": "2026-05-17T08:26:00+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [],
         "sector": "",
         "sentiment": "neutral"
       },
       "heat": 1,
-      "feed": "rss"
+      "feed": "alphavantage"
     },
     {
-      "id": 8488718,
-      "source": "Seeking Alpha",
-      "title": "Delta Air Lines: Strong Demand Offsets Part Of Fuel Inflation (NYSE:DAL)",
-      "summary": "Delta Air Lines delivered strong Q1 results, exceeding revenue and margin expectations, and is considered undervalued. The company's diversified revenue streams, focus on premium products, and ownership of a refinery contribute to its profitability and resilience against fuel price fluctuations. Despite anticipated margin pressure from rising fuel costs in Q2, strong demand is expected to partially offset these, and the author maintains a buy rating with an $83 target price.",
-      "content": "Delta Air Lines delivered strong Q1 results, exceeding revenue and margin expectations, and is considered undervalued. The company's diversified revenue streams, focus on premium products, and ownership of a refinery contribute to its profitability and resilience against fuel price fluctuations. Despite anticipated margin pressure from rising fuel costs in Q2, strong demand is expected to partially offset these, and the author maintains a buy rating with an $83 target price.",
-      "url": "https://seekingalpha.com/article/4905782-delta-air-lines-stock-strong-demand-offsets-part-of-fuel-inflation",
-      "image": "https://static.seekingalpha.com/cdn/s3/uploads/getty_images/2149962188/image_2149962188.jpg?io=getty-c-w630",
-      "publishedAt": "2026-05-17T08:26:00+00:00",
-      "category": "Macro",
-      "icon": "\ud83d\udcca",
+      "id": 243551872,
+      "source": "TheTravel",
+      "title": "Delta Air Lines Leads The Way In Cancelled U.S. Flights With More Last-Minute Disruptions",
+      "summary": "Delta Air Lines experienced the highest number of flight cancellations among U.S. carriers on Saturday and continued to lead worldwide cancellations on Sunday. These disruptions are particularly puzzling as there are no major weather events or travel alerts, instead being linked to internal employee struggles and changes in pilot behavior, including decreased acceptance rates for extra flights. Delta acknowledges the pilot availability as a major constraint and is implementing changes to improve operational reliability through increased staffing and technology.",
+      "content": "Delta Air Lines experienced the highest number of flight cancellations among U.S. carriers on Saturday and continued to lead worldwide cancellations on Sunday. These disruptions are particularly puzzling as there are no major weather events or travel alerts, instead being linked to internal employee struggles and changes in pilot behavior, including decreased acceptance rates for extra flights. Delta acknowledges the pilot availability as a major constraint and is implementing changes to improve operational reliability through increased staffing and technology.",
+      "url": "https://www.thetravel.com/delta-air-lines-most-cancelled-us-flights-with-more-last-minute-disruptions/",
+      "image": "https://static0.thetravelimages.com/wordpress/wp-content/uploads/2026/05/shutterstock_426496333.jpg?&fit=crop&w=1600&h=900",
+      "publishedAt": "2026-05-17T10:51:22+00:00",
+      "category": "Tecnologia",
+      "icon": "\ud83d\udcbb",
       "impact": {
         "tickers": [
           "DAL"
         ],
-        "sector": "Finan\u00e7as",
-        "sentiment": "positive"
-      },
-      "heat": 1,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 264089302,
-      "source": "MarketBeat",
-      "title": "DNB Asset Management AS Raises Holdings in General Motors Company $GM",
-      "summary": "DNB Asset Management AS significantly increased its stake in General Motors (NYSE:GM) by 37% in Q4, acquiring 66,113 shares to reach a total holding of 244,602 shares valued at approximately $19.9 million. This increase follows strong quarterly results from GM, which reported an EPS of $3.70 surpassing estimates and revenue of $43.62 billion. The company also announced a quarterly dividend of $0.18 per share and a $6 billion stock buyback plan.",
-      "content": "DNB Asset Management AS significantly increased its stake in General Motors (NYSE:GM) by 37% in Q4, acquiring 66,113 shares to reach a total holding of 244,602 shares valued at approximately $19.9 million. This increase follows strong quarterly results from GM, which reported an EPS of $3.70 surpassing estimates and revenue of $43.62 billion. The company also announced a quarterly dividend of $0.18 per share and a $6 billion stock buyback plan.",
-      "url": "https://www.marketbeat.com/instant-alerts/filing-dnb-asset-management-as-raises-holdings-in-general-motors-company-gm-2026-05-17/",
-      "image": "https://www.marketbeat.com/logos/general-motors-company-logo-1200x675.jpg?v=20260129123837",
-      "publishedAt": "2026-05-17T08:25:44+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [
-          "GM"
-        ],
         "sector": "",
-        "sentiment": "positive"
-      },
-      "heat": 1,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 401617984,
-      "source": "AD HOC NEWS",
-      "title": "Ecolab stock (US2788651006): insider buying and business momentum draw attention",
-      "summary": "Ecolab (ECL) shares are gaining attention due to recent insider buying in May 2026 and its strong positioning in the water, hygiene, and energy-efficiency markets, particularly in the US. The company's business model, focused on recurring demand and operational efficiency for diverse sectors like healthcare and food service, makes it a proxy for several key end markets. While insider purchases don't alter fundamentals, they signal internal confidence, with investors also monitoring the company's global footprint and strategies for growth amidst competitive and economic shifts.",
-      "content": "Ecolab (ECL) shares are gaining attention due to recent insider buying in May 2026 and its strong positioning in the water, hygiene, and energy-efficiency markets, particularly in the US. The company's business model, focused on recurring demand and operational efficiency for diverse sectors like healthcare and food service, makes it a proxy for several key end markets. While insider purchases don't alter fundamentals, they signal internal confidence, with investors also monitoring the company's global footprint and strategies for growth amidst competitive and economic shifts.",
-      "url": "https://www.ad-hoc-news.de/boerse/news/ueberblick/ecolab-stock-us2788651006-insider-buying-and-business-momentum-draw/69354310",
-      "image": "https://mdb.ad-hoc-news.de/bild/bild-2404991_480_300.webp",
-      "publishedAt": "2026-05-17T08:17:32+00:00",
-      "category": "Energia",
-      "icon": "\u26a1",
-      "impact": {
-        "tickers": [
-          "ECL"
-        ],
-        "sector": "",
-        "sentiment": "positive"
-      },
-      "heat": 1,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 607748502,
-      "source": "AD HOC NEWS",
-      "title": "BeiGene Ltd stock (US07725L1026): cancer drug approvals and earnings keep spotlight on biotech",
-      "summary": "BeiGene Ltd (BGNE) remains a focal point for biotech investors due to its recent earnings and advancements in its oncology portfolio, including key drugs like Brukinsa and tislelizumab. The company is actively pursuing global expansion and strategic partnerships in the highly competitive cancer drug market, leveraging a vertically integrated business model from research to commercialization. With increasing revenue contributions from the US and other international regions, BeiGene is navigating complex regulatory and reimbursement landscapes to drive growth through new indications and geograph",
-      "content": "BeiGene Ltd (BGNE) remains a focal point for biotech investors due to its recent earnings and advancements in its oncology portfolio, including key drugs like Brukinsa and tislelizumab. The company is actively pursuing global expansion and strategic partnerships in the highly competitive cancer drug market, leveraging a vertically integrated business model from research to commercialization. With increasing revenue contributions from the US and other international regions, BeiGene is navigating complex regulatory and reimbursement landscapes to drive growth through new indications and geographic expansion.",
-      "url": "https://www.ad-hoc-news.de/boerse/news/ueberblick/beigene-ltd-stock-us07725l1026-cancer-drug-approvals-and-earnings-keep/69354309",
-      "image": "https://mdb.ad-hoc-news.de/bild/bild-2404984_480_300.webp",
-      "publishedAt": "2026-05-17T08:17:06+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [
-          "ONC"
-        ],
-        "sector": "Sa\u00fade",
         "sentiment": "neutral"
       },
       "heat": 1,
       "feed": "alphavantage"
     },
     {
-      "id": 276759528,
-      "source": "MarketBeat",
-      "title": "The Charles Schwab Corporation $SCHW Shares Sold by Bessemer Group Inc.",
-      "summary": "Bessemer Group Inc. reduced its stake in The Charles Schwab Corporation by 4.9% in Q4, selling 13,968 shares. This comes amidst other institutional investors modifying their holdings and notable insider selling by Nigel J. Murtagh and Dennis Howard. Despite these sales, Charles Schwab exceeded quarterly earnings expectations, raised its 2026 outlook, and continues to pay a quarterly dividend, while analysts maintain a \"Moderate Buy\" consensus rating for the stock.",
-      "content": "Bessemer Group Inc. reduced its stake in The Charles Schwab Corporation by 4.9% in Q4, selling 13,968 shares. This comes amidst other institutional investors modifying their holdings and notable insider selling by Nigel J. Murtagh and Dennis Howard. Despite these sales, Charles Schwab exceeded quarterly earnings expectations, raised its 2026 outlook, and continues to pay a quarterly dividend, while analysts maintain a \"Moderate Buy\" consensus rating for the stock.",
-      "url": "https://www.marketbeat.com/instant-alerts/filing-the-charles-schwab-corporation-schw-shares-sold-by-bessemer-group-inc-2026-05-17/",
-      "image": "https://www.marketbeat.com/logos/the-charles-schwab-co-logo-1200x675.png?v=20231214125414",
-      "publishedAt": "2026-05-17T08:16:31+00:00",
+      "id": 916972524,
+      "source": "AD HOC NEWS",
+      "title": "Roper Technologies stock (US7782961038): software-focused conglomerate after latest earnings update",
+      "summary": "Roper Technologies has released its latest quarterly earnings, reinforcing its transformation into a software-heavy, asset-light company with continued revenue growth and solid margins. The company updated its full-year outlook, highlighting strong contributions from its recurring revenue portfolio in healthcare, industrial technology, and network software. This strategic shift and focus on niche, high-margin software solutions distinguish it from traditional industrial conglomerates and offer exposure to digitalization trends for US investors.",
+      "content": "Roper Technologies has released its latest quarterly earnings, reinforcing its transformation into a software-heavy, asset-light company with continued revenue growth and solid margins. The company updated its full-year outlook, highlighting strong contributions from its recurring revenue portfolio in healthcare, industrial technology, and network software. This strategic shift and focus on niche, high-margin software solutions distinguish it from traditional industrial conglomerates and offer exposure to digitalization trends for US investors.",
+      "url": "https://www.ad-hoc-news.de/boerse/news/ueberblick/roper-technologies-stock-us7782961038-software-focused-conglomerate/69355446",
+      "image": "https://mdb.ad-hoc-news.de/bild/bild-2404987_480_300.webp",
+      "publishedAt": "2026-05-17T10:50:24+00:00",
       "category": "Geopol\u00edtica",
       "icon": "\ud83c\udf0d",
       "impact": {
         "tickers": [
-          "SCHW"
+          "ROP"
         ],
         "sector": "Defesa",
         "sentiment": "positive"
@@ -1024,21 +694,175 @@
       "feed": "alphavantage"
     },
     {
-      "id": 735474980,
+      "id": 388684988,
+      "source": "Financial Times",
+      "title": "Deadly drone strikes on Moscow \u2018entirely justified\u2019, says Zelenskyy",
+      "summary": "Ukrainian president claims responsibility for attacks in retaliation for Russia\u2019s bombardment of Kyiv",
+      "content": "Ukrainian president claims responsibility for attacks in retaliation for Russia\u2019s bombardment of Kyiv",
+      "url": "https://www.ft.com/content/c7e98e0b-90c4-4602-86d7-5a99b1b0b7ab",
+      "image": "https://images.ft.com/v3/image/raw/https%3A%2F%2Fd1e00ek4ebabms.cloudfront.net%2Fproduction%2F988d5333-7bad-463d-bf98-ba79ed69fadb.jpg?source=next-home-page&dpr=2&width=580&fit=scale-down",
+      "publishedAt": "2026-05-17T10:49:02+00:00",
+      "category": "Geopol\u00edtica",
+      "icon": "\ud83c\udf0d",
+      "impact": {
+        "tickers": [
+          "LMT",
+          "RTX",
+          "NOC",
+          "XOM"
+        ],
+        "sector": "Defesa",
+        "sentiment": "negative"
+      },
+      "heat": 3,
+      "feed": "rss"
+    },
+    {
+      "id": 595121025,
       "source": "MarketBeat",
-      "title": "Convergence Investment Partners LLC Purchases New Position in Devon Energy Corporation $DVN",
-      "summary": "Convergence Investment Partners LLC recently acquired a new stake of 23,867 shares, valued at approximately $874,000, in Devon Energy Corporation during the fourth quarter. Despite missing recent EPS and revenue estimates, analysts anticipate a full-year EPS of $5.25 for Devon Energy, and the company has increased its quarterly dividend to $0.32 per share. Wall Street maintains a \"Moderate Buy\" consensus rating with a price target of $56.41.",
-      "content": "Convergence Investment Partners LLC recently acquired a new stake of 23,867 shares, valued at approximately $874,000, in Devon Energy Corporation during the fourth quarter. Despite missing recent EPS and revenue estimates, analysts anticipate a full-year EPS of $5.25 for Devon Energy, and the company has increased its quarterly dividend to $0.32 per share. Wall Street maintains a \"Moderate Buy\" consensus rating with a price target of $56.41.",
-      "url": "https://www.marketbeat.com/instant-alerts/filing-convergence-investment-partners-llc-purchases-new-position-in-devon-energy-corporation-dvn-2026-05-17/",
-      "image": "https://www.marketbeat.com/logos/devon-energy-co-logo-1200x675.jpg",
-      "publishedAt": "2026-05-17T08:16:31+00:00",
+      "title": "L & S Advisors Inc Acquires New Position in First Solar, Inc. $FSLR",
+      "summary": "L & S Advisors Inc has initiated a new position in First Solar during the fourth quarter, purchasing 9,574 shares valued at approximately $2.5 million. This comes as institutional ownership of First Solar remains high, with other major firms like Vanguard and Viking Global also increasing their stakes. First Solar recently surpassed quarterly expectations with robust earnings per share and revenue, contributing to a \"Moderate Buy\" consensus among analysts.",
+      "content": "L & S Advisors Inc has initiated a new position in First Solar during the fourth quarter, purchasing 9,574 shares valued at approximately $2.5 million. This comes as institutional ownership of First Solar remains high, with other major firms like Vanguard and Viking Global also increasing their stakes. First Solar recently surpassed quarterly expectations with robust earnings per share and revenue, contributing to a \"Moderate Buy\" consensus among analysts.",
+      "url": "https://www.marketbeat.com/instant-alerts/filing-l-s-advisors-inc-acquires-new-position-in-first-solar-inc-fslr-2026-05-17/",
+      "image": "https://www.marketbeat.com/logos/first-solar-inc-logo-1200x675.jpg",
+      "publishedAt": "2026-05-17T10:47:44+00:00",
       "category": "Energia",
       "icon": "\u26a1",
       "impact": {
         "tickers": [
-          "DVN",
-          "CTRA",
-          "CVX"
+          "FSLR"
+        ],
+        "sector": "Energia",
+        "sentiment": "positive"
+      },
+      "heat": 1,
+      "feed": "alphavantage"
+    },
+    {
+      "id": 481369375,
+      "source": "MarketBeat",
+      "title": "L & S Advisors Inc Has $4.77 Million Stock Position in Vistra Corp. $VST",
+      "summary": "L & S Advisors Inc significantly reduced its stake in Vistra Corp. by 59.7% in Q4, selling 43,762 shares and holding 29,581 shares valued at $4.77 million. Despite this cut, Vistra reported strong quarterly results, beating EPS and revenue estimates, and increased its quarterly dividend. The company maintains an average \"Buy\" rating from Wall Street analysts with a mean price target of $233.93.",
+      "content": "L & S Advisors Inc significantly reduced its stake in Vistra Corp. by 59.7% in Q4, selling 43,762 shares and holding 29,581 shares valued at $4.77 million. Despite this cut, Vistra reported strong quarterly results, beating EPS and revenue estimates, and increased its quarterly dividend. The company maintains an average \"Buy\" rating from Wall Street analysts with a mean price target of $233.93.",
+      "url": "https://www.marketbeat.com/instant-alerts/filing-l-s-advisors-inc-has-477-million-stock-position-in-vistra-corp-vst-2026-05-17/",
+      "image": "https://www.marketbeat.com/logos/vistra-energy-corp-logo-1200x675.jpg",
+      "publishedAt": "2026-05-17T10:47:41+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [
+          "VST",
+          "BEN",
+          "MA",
+          "BK",
+          "IVZ"
+        ],
+        "sector": "",
+        "sentiment": "positive"
+      },
+      "heat": 3,
+      "feed": "alphavantage"
+    },
+    {
+      "id": 992603461,
+      "source": "MarketBeat",
+      "title": "L & S Advisors Inc Invests $5.09 Million in Gilead Sciences, Inc. $GILD",
+      "summary": "L & S Advisors Inc has initiated a new position in Gilead Sciences, purchasing 41,466 shares worth approximately $5.09 million during the fourth quarter. This investment follows strong quarterly results from Gilead, which exceeded EPS and revenue estimates, and a declared quarterly dividend of $0.82 per share. Analysts generally maintain a \"Moderate Buy\" consensus rating for the biopharmaceutical company.",
+      "content": "L & S Advisors Inc has initiated a new position in Gilead Sciences, purchasing 41,466 shares worth approximately $5.09 million during the fourth quarter. This investment follows strong quarterly results from Gilead, which exceeded EPS and revenue estimates, and a declared quarterly dividend of $0.82 per share. Analysts generally maintain a \"Moderate Buy\" consensus rating for the biopharmaceutical company.",
+      "url": "https://www.marketbeat.com/instant-alerts/filing-l-s-advisors-inc-invests-509-million-in-gilead-sciences-inc-gild-2026-05-17/",
+      "image": "https://www.marketbeat.com/logos/Gilead_Sciences_Pty_Ltd-1200x675.jpg",
+      "publishedAt": "2026-05-17T10:47:40+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [
+          "GILD"
+        ],
+        "sector": "Sa\u00fade",
+        "sentiment": "positive"
+      },
+      "heat": 1,
+      "feed": "alphavantage"
+    },
+    {
+      "id": 6201857,
+      "source": "MarketBeat",
+      "title": "L & S Advisors Inc Sells 14,724 Shares of The TJX Companies, Inc. $TJX",
+      "summary": "L & S Advisors Inc reduced its stake in The TJX Companies, Inc. by 28.5% in the fourth quarter, selling 14,724 shares and retaining 37,020 shares valued at approximately $5.69 million. Despite this, Wall Street maintains a \"Buy\" consensus for TJX with an average price target of $167.55, following strong quarterly results, an 8.5% year-over-year revenue increase, and a raised quarterly dividend to $0.48. The company's recent earnings beat estimates, though some analysts note a cautious outlook for fiscal 2027 due to softer consumer spending.",
+      "content": "L & S Advisors Inc reduced its stake in The TJX Companies, Inc. by 28.5% in the fourth quarter, selling 14,724 shares and retaining 37,020 shares valued at approximately $5.69 million. Despite this, Wall Street maintains a \"Buy\" consensus for TJX with an average price target of $167.55, following strong quarterly results, an 8.5% year-over-year revenue increase, and a raised quarterly dividend to $0.48. The company's recent earnings beat estimates, though some analysts note a cautious outlook for fiscal 2027 due to softer consumer spending.",
+      "url": "https://www.marketbeat.com/instant-alerts/filing-l-s-advisors-inc-sells-14724-shares-of-the-tjx-companies-inc-tjx-2026-05-17/",
+      "image": "https://www.marketbeat.com/logos/the-tjx-companies-inc-logo-1200x675.png?v=20240102162711",
+      "publishedAt": "2026-05-17T10:47:31+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [
+          "TJX"
+        ],
+        "sector": "Consumo",
+        "sentiment": "positive"
+      },
+      "heat": 1,
+      "feed": "alphavantage"
+    },
+    {
+      "id": 195767962,
+      "source": "MarketBeat",
+      "title": "21,922 Shares in Simon Property Group, Inc. $SPG Bought by L & S Advisors Inc",
+      "summary": "L & S Advisors Inc purchased 21,922 shares of Simon Property Group (NYSE:SPG) in the fourth quarter, valued at approximately $4.06 million, marking a new position for the firm. Other institutional investors like Northwestern Mutual Wealth Management Co. also significantly increased their holdings, contributing to the high institutional ownership of 93.01%. Simon Property Group recently reported strong earnings, raised its quarterly dividend to $2.25 per share, and has an active $2 billion share repurchase program, while analysts maintain a consensus \"Hold\" rating with an average price target o",
+      "content": "L & S Advisors Inc purchased 21,922 shares of Simon Property Group (NYSE:SPG) in the fourth quarter, valued at approximately $4.06 million, marking a new position for the firm. Other institutional investors like Northwestern Mutual Wealth Management Co. also significantly increased their holdings, contributing to the high institutional ownership of 93.01%. Simon Property Group recently reported strong earnings, raised its quarterly dividend to $2.25 per share, and has an active $2 billion share repurchase program, while analysts maintain a consensus \"Hold\" rating with an average price target of $202.57.",
+      "url": "https://www.marketbeat.com/instant-alerts/filing-21922-shares-in-simon-property-group-inc-spg-bought-by-l-s-advisors-inc-2026-05-17/",
+      "image": "https://www.marketbeat.com/logos/simon-property-group-inc-logo-1200x675.png?v=20231227090428",
+      "publishedAt": "2026-05-17T10:47:27+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [
+          "SPG"
+        ],
+        "sector": "",
+        "sentiment": "positive"
+      },
+      "heat": 1,
+      "feed": "alphavantage"
+    },
+    {
+      "id": 450081093,
+      "source": "MarketBeat",
+      "title": "L & S Advisors Inc Makes New $3.59 Million Investment in Regeneron Pharmaceuticals, Inc. $REGN",
+      "summary": "L & S Advisors Inc. has made a new $3.59 million investment in Regeneron Pharmaceuticals (NASDAQ:REGN) by purchasing 4,653 shares during the fourth quarter. This comes as Regeneron Pharmaceuticals exceeded quarterly expectations with solid earnings and revenue growth and announced a quarterly dividend of $0.94 per share. Analysts maintain a \"Moderate Buy\" consensus rating with an average target price of $826.59 for the company.",
+      "content": "L & S Advisors Inc. has made a new $3.59 million investment in Regeneron Pharmaceuticals (NASDAQ:REGN) by purchasing 4,653 shares during the fourth quarter. This comes as Regeneron Pharmaceuticals exceeded quarterly expectations with solid earnings and revenue growth and announced a quarterly dividend of $0.94 per share. Analysts maintain a \"Moderate Buy\" consensus rating with an average target price of $826.59 for the company.",
+      "url": "https://www.marketbeat.com/instant-alerts/filing-l-s-advisors-inc-makes-new-359-million-investment-in-regeneron-pharmaceuticals-inc-regn-2026-05-17/",
+      "image": "https://www.marketbeat.com/logos/regeneron-pharmaceuticals-inc-logo-1200x675.png?v=20221021082404",
+      "publishedAt": "2026-05-17T10:47:22+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [
+          "REGN"
+        ],
+        "sector": "Sa\u00fade",
+        "sentiment": "positive"
+      },
+      "heat": 1,
+      "feed": "alphavantage"
+    },
+    {
+      "id": 267216905,
+      "source": "MarketBeat",
+      "title": "L & S Advisors Inc Has $6.78 Million Stock Position in American Express Company $AXP",
+      "summary": "L & S Advisors Inc significantly increased its stake in American Express Company (AXP) by 80% during the fourth quarter, holding shares valued at about $6.78 million. American Express reported strong Q1 earnings, exceeding estimates with $4.28 per share and an 11.4% revenue increase year-over-year, alongside raising its quarterly dividend to $0.95 per share. While several institutional investors also adjusted their positions, analyst sentiment for AXP remains mixed with a consensus \"Hold\" rating and an average price target of $357.47.",
+      "content": "L & S Advisors Inc significantly increased its stake in American Express Company (AXP) by 80% during the fourth quarter, holding shares valued at about $6.78 million. American Express reported strong Q1 earnings, exceeding estimates with $4.28 per share and an 11.4% revenue increase year-over-year, alongside raising its quarterly dividend to $0.95 per share. While several institutional investors also adjusted their positions, analyst sentiment for AXP remains mixed with a consensus \"Hold\" rating and an average price target of $357.47.",
+      "url": "https://www.marketbeat.com/instant-alerts/filing-l-s-advisors-inc-has-678-million-stock-position-in-american-express-company-axp-2026-05-17/",
+      "image": "https://www.marketbeat.com/logos/american-express-1200x675.jpg",
+      "publishedAt": "2026-05-17T10:47:07+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [
+          "AXP",
+          "GS",
+          "JPM"
         ],
         "sector": "",
         "sentiment": "positive"
@@ -1047,82 +871,19 @@
       "feed": "alphavantage"
     },
     {
-      "id": 126224062,
+      "id": 195188064,
       "source": "MarketBeat",
-      "title": "Bank Julius Baer & Co. Ltd Zurich Sells 56,878 Shares of Darden Restaurants, Inc. $DRI",
-      "summary": "Bank Julius Baer & Co. Ltd Zurich significantly reduced its stake in Darden Restaurants, Inc. (NYSE:DRI) by 97.4% in the fourth quarter, selling 56,878 shares and retaining only 1,530 shares valued at $281,000. This divestment occurred despite Darden Restaurants reporting strong quarterly earnings, beating analyst estimates with $2.95 EPS and $3.35 billion in revenue. The company continues to offer a quarterly dividend of $1.50, and analysts maintain a \"Moderate Buy\" rating with an average price target of $226.24.",
-      "content": "Bank Julius Baer & Co. Ltd Zurich significantly reduced its stake in Darden Restaurants, Inc. (NYSE:DRI) by 97.4% in the fourth quarter, selling 56,878 shares and retaining only 1,530 shares valued at $281,000. This divestment occurred despite Darden Restaurants reporting strong quarterly earnings, beating analyst estimates with $2.95 EPS and $3.35 billion in revenue. The company continues to offer a quarterly dividend of $1.50, and analysts maintain a \"Moderate Buy\" rating with an average price target of $226.24.",
-      "url": "https://www.marketbeat.com/instant-alerts/filing-bank-julius-baer-co-ltd-zurich-sells-56878-shares-of-darden-restaurants-inc-dri-2026-05-17/",
-      "image": "https://www.marketbeat.com/logos/darden-restaurants-inc-logo-1200x675.png?v=20221104063829",
-      "publishedAt": "2026-05-17T08:16:30+00:00",
+      "title": "L & S Advisors Inc Takes Position in Amgen Inc. $AMGN",
+      "summary": "L & S Advisors Inc has acquired a new stake in Amgen Inc. (NASDAQ:AMGN) during the fourth quarter, purchasing 13,104 shares valued at approximately $4.29 million. Amgen reported better-than-expected quarterly results, with EPS of $5.15 and revenue of $8.62 billion, and announced a quarterly dividend of $2.52 per share. Analyst ratings are mixed, with an average \"Hold\" rating and a price target of $356.15.",
+      "content": "L & S Advisors Inc has acquired a new stake in Amgen Inc. (NASDAQ:AMGN) during the fourth quarter, purchasing 13,104 shares valued at approximately $4.29 million. Amgen reported better-than-expected quarterly results, with EPS of $5.15 and revenue of $8.62 billion, and announced a quarterly dividend of $2.52 per share. Analyst ratings are mixed, with an average \"Hold\" rating and a price target of $356.15.",
+      "url": "https://www.marketbeat.com/instant-alerts/filing-l-s-advisors-inc-takes-position-in-amgen-inc-amgn-2026-05-17/",
+      "image": "https://www.marketbeat.com/logos/amgen-inc-logo-1200x675.jpg?v=20231228113741",
+      "publishedAt": "2026-05-17T10:47:01+00:00",
       "category": "Mercados",
       "icon": "\ud83d\udcb0",
       "impact": {
         "tickers": [
-          "DRI"
-        ],
-        "sector": "Finan\u00e7as",
-        "sentiment": "positive"
-      },
-      "heat": 1,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 302168199,
-      "source": "MarketBeat",
-      "title": "Commerzbank Aktiengesellschaft FI Has $2.32 Million Stock Holdings in Deere & Company $DE",
-      "summary": "Commerzbank Aktiengesellschaft FI significantly reduced its stake in Deere & Company by 80.8% in the fourth quarter, holding 4,972 shares valued at approximately $2.32 million. Despite this, Deere & Company reported strong quarterly results, exceeding analyst expectations for both EPS ($2.42) and revenue ($9.61 billion), with revenue up 17.5% year-over-year. The company maintains a \"Moderate Buy\" consensus rating from analysts with an average price target of $655.45.",
-      "content": "Commerzbank Aktiengesellschaft FI significantly reduced its stake in Deere & Company by 80.8% in the fourth quarter, holding 4,972 shares valued at approximately $2.32 million. Despite this, Deere & Company reported strong quarterly results, exceeding analyst expectations for both EPS ($2.42) and revenue ($9.61 billion), with revenue up 17.5% year-over-year. The company maintains a \"Moderate Buy\" consensus rating from analysts with an average price target of $655.45.",
-      "url": "https://www.marketbeat.com/instant-alerts/filing-commerzbank-aktiengesellschaft-fi-has-232-million-stock-holdings-in-deere-company-de-2026-05-17/",
-      "image": "https://www.marketbeat.com/logos/deere--company-logo-1200x675.jpg?v3",
-      "publishedAt": "2026-05-17T08:16:26+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [
-          "DE"
-        ],
-        "sector": "Finan\u00e7as",
-        "sentiment": "positive"
-      },
-      "heat": 1,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 108719141,
-      "source": "MarketBeat",
-      "title": "Commerzbank Aktiengesellschaft FI Purchases New Position in Principal Financial Group, Inc. $PFG",
-      "summary": "Commerzbank Aktiengesellschaft FI has initiated a new position in Principal Financial Group (NASDAQ:PFG), acquiring 14,475 shares valued at approximately $1.28 million in the fourth quarter. This move comes as Principal Financial Group reported strong quarterly earnings, beating EPS estimates, and increased its quarterly dividend to $0.82 per share. The article also details recent activities by other institutional investors and provides an overview of analyst ratings and insider transactions for PFG.",
-      "content": "Commerzbank Aktiengesellschaft FI has initiated a new position in Principal Financial Group (NASDAQ:PFG), acquiring 14,475 shares valued at approximately $1.28 million in the fourth quarter. This move comes as Principal Financial Group reported strong quarterly earnings, beating EPS estimates, and increased its quarterly dividend to $0.82 per share. The article also details recent activities by other institutional investors and provides an overview of analyst ratings and insider transactions for PFG.",
-      "url": "https://www.marketbeat.com/instant-alerts/filing-commerzbank-aktiengesellschaft-fi-purchases-new-position-in-principal-financial-group-inc-pfg-2026-05-17/",
-      "image": "https://www.marketbeat.com/logos/principal-financial-group-inc-logo-1200x675.png?v=20250602062717",
-      "publishedAt": "2026-05-17T08:16:21+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [
-          "PFG"
-        ],
-        "sector": "Finan\u00e7as",
-        "sentiment": "positive"
-      },
-      "heat": 1,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 433471524,
-      "source": "MarketBeat",
-      "title": "Bessemer Group Inc. Has $20.88 Million Stock Holdings in Oracle Corporation $ORCL",
-      "summary": "Bessemer Group Inc. significantly reduced its stake in Oracle Corporation (NYSE:ORCL) by 85.8% in Q4, now holding 107,148 shares valued at approximately $20.88 million. Despite this, Oracle reported strong quarterly results, with EPS of $1.79 and revenue of $17.19 billion, exceeding expectations. Analysts maintain a \"Moderate Buy\" rating for Oracle, citing its cloud and AI momentum, with an average target price of $261.46.",
-      "content": "Bessemer Group Inc. significantly reduced its stake in Oracle Corporation (NYSE:ORCL) by 85.8% in Q4, now holding 107,148 shares valued at approximately $20.88 million. Despite this, Oracle reported strong quarterly results, with EPS of $1.79 and revenue of $17.19 billion, exceeding expectations. Analysts maintain a \"Moderate Buy\" rating for Oracle, citing its cloud and AI momentum, with an average target price of $261.46.",
-      "url": "https://www.marketbeat.com/instant-alerts/filing-bessemer-group-inc-has-2088-million-stock-holdings-in-oracle-corporation-orcl-2026-05-17/",
-      "image": "https://www.marketbeat.com/logos/oracle-co-logo-1200x675.png?v=20221020143405",
-      "publishedAt": "2026-05-17T08:16:17+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [
-          "ORCL"
+          "AMGN"
         ],
         "sector": "",
         "sentiment": "positive"
@@ -1131,19 +892,63 @@
       "feed": "alphavantage"
     },
     {
-      "id": 283194798,
+      "id": 114694613,
       "source": "MarketBeat",
-      "title": "Bessemer Group Inc. Sells 912,570 Shares of Motorola Solutions, Inc. $MSI",
-      "summary": "Bessemer Group Inc. significantly reduced its stake in Motorola Solutions (NYSE: MSI) by 93.6% in the fourth quarter, selling 912,570 shares and retaining 62,407 shares valued at approximately $23.9 million. This sale comes despite Motorola Solutions reporting strong quarterly results, with EPS of $3.37 exceeding estimates and revenue of $2.71 billion, a 7.4% year-over-year increase. Wall Street analysts maintain a \"Buy\" rating on the stock with a consensus price target of $504.67, and the company offers a quarterly dividend of $1.21 per share.",
-      "content": "Bessemer Group Inc. significantly reduced its stake in Motorola Solutions (NYSE: MSI) by 93.6% in the fourth quarter, selling 912,570 shares and retaining 62,407 shares valued at approximately $23.9 million. This sale comes despite Motorola Solutions reporting strong quarterly results, with EPS of $3.37 exceeding estimates and revenue of $2.71 billion, a 7.4% year-over-year increase. Wall Street analysts maintain a \"Buy\" rating on the stock with a consensus price target of $504.67, and the company offers a quarterly dividend of $1.21 per share.",
-      "url": "https://www.marketbeat.com/instant-alerts/filing-bessemer-group-inc-sells-912570-shares-of-motorola-solutions-inc-msi-2026-05-17/",
-      "image": "https://www.marketbeat.com/logos/Motorola-logo-1200x675.jpg",
-      "publishedAt": "2026-05-17T08:16:11+00:00",
+      "title": "L & S Advisors Inc Invests $3.90 Million in Hershey Company (The) $HSY",
+      "summary": "L & S Advisors Inc initiated a new position in Hershey Company (HSY) during the fourth quarter, purchasing 21,436 shares valued at approximately $3.9 million. This investment follows Hershey's stronger-than-expected quarterly results, with EPS of $2.35 and revenue of $3.10 billion. Despite the positive earnings, analysts maintain a cautious outlook, with a consensus \"Hold\" rating and an average target price of $218.33 for the stock.",
+      "content": "L & S Advisors Inc initiated a new position in Hershey Company (HSY) during the fourth quarter, purchasing 21,436 shares valued at approximately $3.9 million. This investment follows Hershey's stronger-than-expected quarterly results, with EPS of $2.35 and revenue of $3.10 billion. Despite the positive earnings, analysts maintain a cautious outlook, with a consensus \"Hold\" rating and an average target price of $218.33 for the stock.",
+      "url": "https://www.marketbeat.com/instant-alerts/filing-l-s-advisors-inc-invests-390-million-in-hershey-company-the-hsy-2026-05-17/",
+      "image": "https://www.marketbeat.com/logos/the-hershey-company-logo-1200x675.png?v=20221021151539",
+      "publishedAt": "2026-05-17T10:46:48+00:00",
       "category": "Mercados",
       "icon": "\ud83d\udcb0",
       "impact": {
         "tickers": [
-          "MSI"
+          "HSY",
+          "MDLZ"
+        ],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 2,
+      "feed": "alphavantage"
+    },
+    {
+      "id": 387623638,
+      "source": "IndexBox",
+      "title": "Consumer Staples Stocks Analysis \u2013 Coty, Colgate-Palmolive, Philip Morris (May 2026) - News and Statistics",
+      "summary": "This article analyzes consumer staples stocks, noting their underperformance compared to the S&P 500 in the last six months. It recommends selling Coty (NYSE: COTY) due to lack of organic growth and declining profitability. Conversely, Colgate-Palmolive (NYSE: CL) and Philip Morris International (NYSE: PM) are identified as stocks to watch, highlighting their strong market positions, pricing power, and efficient business models.",
+      "content": "This article analyzes consumer staples stocks, noting their underperformance compared to the S&P 500 in the last six months. It recommends selling Coty (NYSE: COTY) due to lack of organic growth and declining profitability. Conversely, Colgate-Palmolive (NYSE: CL) and Philip Morris International (NYSE: PM) are identified as stocks to watch, highlighting their strong market positions, pricing power, and efficient business models.",
+      "url": "https://www.indexbox.io/blog/consumer-staples-stocks-one-to-sell-and-two-to-watch/",
+      "image": "https://www.indexbox.io/landing/img/blog/telegram-fallback/dc473c30c3b05b6d757aac005ad50425.webp",
+      "publishedAt": "2026-05-17T10:41:15+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [
+          "CL",
+          "PM"
+        ],
+        "sector": "",
+        "sentiment": "positive"
+      },
+      "heat": 2,
+      "feed": "alphavantage"
+    },
+    {
+      "id": 52907996,
+      "source": "TradingView",
+      "title": "SPKL Stock Price and Chart \u2014 NASDAQ:SPKL",
+      "summary": "This article provides detailed financial information and stock performance data for Spark I Acquisition Corp. (NASDAQ: SPKL). It includes key statistics, company overview, technical analysis, and answers frequently asked questions about its stock price, market capitalization, and financial reports. The company operates as a blank check company, founded in 2021 and headquartered in Palo Alto, CA.",
+      "content": "This article provides detailed financial information and stock performance data for Spark I Acquisition Corp. (NASDAQ: SPKL). It includes key statistics, company overview, technical analysis, and answers frequently asked questions about its stock price, market capitalization, and financial reports. The company operates as a blank check company, founded in 2021 and headquartered in Palo Alto, CA.",
+      "url": "https://www.tradingview.com/symbols/NASDAQ-SPKL/",
+      "image": "https://s3-symbol-logo.tradingview.com/spark-i-acquisition--big.svg",
+      "publishedAt": "2026-05-17T10:40:09+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [
+          "SPKL"
         ],
         "sector": "",
         "sentiment": "positive"
@@ -1152,19 +957,168 @@
       "feed": "alphavantage"
     },
     {
-      "id": 395911718,
+      "id": 118114032,
+      "source": "IndexBox",
+      "title": "Russell 2000 Stock Picks for May 2026: Buy Talos Energy, Sell Select Medical & Azenta - News and Statistics",
+      "summary": "This article provides Russell 2000 stock picks for May 2026, recommending one stock to buy and two to sell based on a Yahoo Finance report. Talos Energy is suggested as a buy due to its operations in offshore oil and natural gas in the Gulf of Mexico and Mexico. Select Medical and Azenta are recommended as sells due to concerns over declining admissions, falling earnings per share, high debt, and cash-burning history, respectively.",
+      "content": "This article provides Russell 2000 stock picks for May 2026, recommending one stock to buy and two to sell based on a Yahoo Finance report. Talos Energy is suggested as a buy due to its operations in offshore oil and natural gas in the Gulf of Mexico and Mexico. Select Medical and Azenta are recommended as sells due to concerns over declining admissions, falling earnings per share, high debt, and cash-burning history, respectively.",
+      "url": "https://www.indexbox.io/blog/russell-2000-stock-picks-one-to-buy-two-to-sell-in-may-2026/",
+      "image": "https://www.indexbox.io/landing/img/blog/telegram-fallback/a7a945716ebbccbf42f69f3ba00335d3.webp",
+      "publishedAt": "2026-05-17T10:39:48+00:00",
+      "category": "Energia",
+      "icon": "\u26a1",
+      "impact": {
+        "tickers": [
+          "TALO"
+        ],
+        "sector": "Energia",
+        "sentiment": "positive"
+      },
+      "heat": 1,
+      "feed": "alphavantage"
+    },
+    {
+      "id": 12437824,
+      "source": "AD HOC NEWS",
+      "title": "Trimble Inc stock (US8962391004): double-digit Q1 2026 growth keeps guidance in focus",
+      "summary": "Trimble Inc reported double-digit organic growth in Q1 2026, driven by strong demand in construction and field systems, leading to a slight upgrade in its full-year 2026 outlook. The industrial technology company is strategically shifting its business model towards more software, subscriptions, and recurring services, aiming for increased revenue visibility and deeper customer engagement. This transition, alongside its strong performance in key sectors like AECO and geospatial products, positions Trimble as an interesting prospect for US investors tracking industrial digitalization and infrast",
+      "content": "Trimble Inc reported double-digit organic growth in Q1 2026, driven by strong demand in construction and field systems, leading to a slight upgrade in its full-year 2026 outlook. The industrial technology company is strategically shifting its business model towards more software, subscriptions, and recurring services, aiming for increased revenue visibility and deeper customer engagement. This transition, alongside its strong performance in key sectors like AECO and geospatial products, positions Trimble as an interesting prospect for US investors tracking industrial digitalization and infrastructure trends.",
+      "url": "https://www.ad-hoc-news.de/boerse/news/ueberblick/trimble-inc-stock-us8962391004-double-digit-q1-2026-growth-keeps/69355361",
+      "image": "https://mdb.ad-hoc-news.de/bild/bild-2405054_480_300.webp",
+      "publishedAt": "2026-05-17T10:38:31+00:00",
+      "category": "Geopol\u00edtica",
+      "icon": "\ud83c\udf0d",
+      "impact": {
+        "tickers": [
+          "TRMB"
+        ],
+        "sector": "Defesa",
+        "sentiment": "positive"
+      },
+      "heat": 1,
+      "feed": "alphavantage"
+    },
+    {
+      "id": 119495363,
       "source": "MarketBeat",
-      "title": "Atria Investments Inc Lowers Stock Holdings in Moody's Corporation $MCO",
-      "summary": "Atria Investments Inc reduced its stake in Moody's Corporation by 29.2% in the fourth quarter, selling 3,487 shares and leaving it with 8,475 shares valued at $4.33 million. Moody's reported better-than-expected earnings of $4.33 EPS, surpassing estimates of $4.22, though revenue of $2.08 billion slightly missed forecasts. The company recently announced a quarterly dividend of $1.03 per share, payable on June 5th, and analysts currently rate the stock a Moderate Buy with an average price target of $544.29.",
-      "content": "Atria Investments Inc reduced its stake in Moody's Corporation by 29.2% in the fourth quarter, selling 3,487 shares and leaving it with 8,475 shares valued at $4.33 million. Moody's reported better-than-expected earnings of $4.33 EPS, surpassing estimates of $4.22, though revenue of $2.08 billion slightly missed forecasts. The company recently announced a quarterly dividend of $1.03 per share, payable on June 5th, and analysts currently rate the stock a Moderate Buy with an average price target of $544.29.",
-      "url": "https://www.marketbeat.com/instant-alerts/filing-atria-investments-inc-lowers-stock-holdings-in-moodys-corporation-mco-2026-05-17/",
-      "image": "https://www.marketbeat.com/logos/moodys-co-logo-1200x675.png?v=20231220090252",
-      "publishedAt": "2026-05-17T08:16:05+00:00",
+      "title": "Independent Solutions Wealth Management LLC Raises Stake in Honeywell International Inc. $HON",
+      "summary": "Independent Solutions Wealth Management LLC significantly increased its holdings in Honeywell International Inc. by 202.5% in the fourth quarter, bringing its total ownership to 9,787 shares valued at approximately $1.91 million. Honeywell recently reported strong quarterly earnings, beating analyst estimates, and raised its guidance for FY 2026 and Q2 2026. The company also declared a quarterly dividend of $1.19 per share, and analysts currently rate the stock as a \"Moderate Buy\" with an average price target of $248.25.",
+      "content": "Independent Solutions Wealth Management LLC significantly increased its holdings in Honeywell International Inc. by 202.5% in the fourth quarter, bringing its total ownership to 9,787 shares valued at approximately $1.91 million. Honeywell recently reported strong quarterly earnings, beating analyst estimates, and raised its guidance for FY 2026 and Q2 2026. The company also declared a quarterly dividend of $1.19 per share, and analysts currently rate the stock as a \"Moderate Buy\" with an average price target of $248.25.",
+      "url": "https://www.marketbeat.com/instant-alerts/filing-independent-solutions-wealth-management-llc-raises-stake-in-honeywell-international-inc-hon-2026-05-17/",
+      "image": "https://www.marketbeat.com/logos/6hon_logo-1200x675.png",
+      "publishedAt": "2026-05-17T10:37:11+00:00",
       "category": "Mercados",
       "icon": "\ud83d\udcb0",
       "impact": {
         "tickers": [
-          "MCO"
+          "HON"
+        ],
+        "sector": "",
+        "sentiment": "positive"
+      },
+      "heat": 1,
+      "feed": "alphavantage"
+    },
+    {
+      "id": 685882966,
+      "source": "MarketBeat",
+      "title": "iA Global Asset Management Inc. Purchases 3,153 Shares of The Goldman Sachs Group, Inc. $GS",
+      "summary": "iA Global Asset Management Inc. increased its stake in The Goldman Sachs Group, Inc. by 18% in the fourth quarter, purchasing an additional 3,153 shares. This brings their total holdings to 20,643 shares, valued at approximately $18.1 million. Despite Goldman Sachs reporting stronger-than-expected quarterly results and raising its dividend, the stock saw a slight dip in price and maintains a consensus \"Hold\" rating from analysts.",
+      "content": "iA Global Asset Management Inc. increased its stake in The Goldman Sachs Group, Inc. by 18% in the fourth quarter, purchasing an additional 3,153 shares. This brings their total holdings to 20,643 shares, valued at approximately $18.1 million. Despite Goldman Sachs reporting stronger-than-expected quarterly results and raising its dividend, the stock saw a slight dip in price and maintains a consensus \"Hold\" rating from analysts.",
+      "url": "https://www.marketbeat.com/instant-alerts/filing-ia-global-asset-management-inc-purchases-3153-shares-of-the-goldman-sachs-group-inc-gs-2026-05-17/",
+      "image": "https://www.marketbeat.com/logos/the-goldman-sachs-group-inc-logo-1200x675.png?v=20251107120127",
+      "publishedAt": "2026-05-17T10:35:43+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [
+          "GS",
+          "UNH",
+          "MPC"
+        ],
+        "sector": "Commodities",
+        "sentiment": "positive"
+      },
+      "heat": 2,
+      "feed": "alphavantage"
+    },
+    {
+      "id": 493180003,
+      "source": "MarketBeat",
+      "title": "iA Global Asset Management Inc. Increases Position in Gilead Sciences, Inc. $GILD",
+      "summary": "iA Global Asset Management Inc. significantly increased its stake in Gilead Sciences, Inc. during the fourth quarter, now holding 235,385 shares valued at $28.9 million. Wall Street analysts maintain a positive outlook on Gilead, with a \"Moderate Buy\" consensus and an average price target of $157.04. The company recently reported strong quarterly earnings, surpassing both EPS and revenue estimates, and declared a quarterly dividend of $0.82 per share.",
+      "content": "iA Global Asset Management Inc. significantly increased its stake in Gilead Sciences, Inc. during the fourth quarter, now holding 235,385 shares valued at $28.9 million. Wall Street analysts maintain a positive outlook on Gilead, with a \"Moderate Buy\" consensus and an average price target of $157.04. The company recently reported strong quarterly earnings, surpassing both EPS and revenue estimates, and declared a quarterly dividend of $0.82 per share.",
+      "url": "https://www.marketbeat.com/instant-alerts/filing-ia-global-asset-management-inc-increases-position-in-gilead-sciences-inc-gild-2026-05-17/",
+      "image": "https://www.marketbeat.com/logos/Gilead_Sciences_Pty_Ltd-1200x675.jpg",
+      "publishedAt": "2026-05-17T10:35:39+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [
+          "GILD"
+        ],
+        "sector": "",
+        "sentiment": "positive"
+      },
+      "heat": 1,
+      "feed": "alphavantage"
+    },
+    {
+      "id": 431012009,
+      "source": "MarketBeat",
+      "title": "iA Global Asset Management Inc. Boosts Stock Holdings in United Rentals, Inc. $URI",
+      "summary": "iA Global Asset Management Inc. significantly increased its stake in United Rentals, Inc. during the fourth quarter, adding 7,335 shares to own a total of 27,491 shares valued at approximately $22.25 million. This increase occurred despite United Rentals reporting mixed quarterly results with EPS and revenue missing analyst expectations, although revenue still grew 7.2% year-over-year. The company has also approved a $5 billion share repurchase plan and declared a quarterly dividend of $1.97 per share, receiving a \"Moderate Buy\" consensus rating from analysts.",
+      "content": "iA Global Asset Management Inc. significantly increased its stake in United Rentals, Inc. during the fourth quarter, adding 7,335 shares to own a total of 27,491 shares valued at approximately $22.25 million. This increase occurred despite United Rentals reporting mixed quarterly results with EPS and revenue missing analyst expectations, although revenue still grew 7.2% year-over-year. The company has also approved a $5 billion share repurchase plan and declared a quarterly dividend of $1.97 per share, receiving a \"Moderate Buy\" consensus rating from analysts.",
+      "url": "https://www.marketbeat.com/instant-alerts/filing-ia-global-asset-management-inc-boosts-stock-holdings-in-united-rentals-inc-uri-2026-05-17/",
+      "image": "https://www.marketbeat.com/logos/united-rentals-inc-logo-1200x675.png?v=20231226132533",
+      "publishedAt": "2026-05-17T10:35:37+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [
+          "URI"
+        ],
+        "sector": "",
+        "sentiment": "positive"
+      },
+      "heat": 1,
+      "feed": "alphavantage"
+    },
+    {
+      "id": 47530914,
+      "source": "MarketBeat",
+      "title": "iA Global Asset Management Inc. Raises Stock Holdings in Republic Services, Inc. $RSG",
+      "summary": "iA Global Asset Management Inc. significantly increased its stake in Republic Services (NYSE:RSG) by 18.5% in the fourth quarter, now holding 64,200 shares valued at $13.6 million. This comes as Republic Services reported strong quarterly earnings, beating expectations with an EPS of $1.70 and revenue of $4.11 billion, and announced a quarterly dividend of $0.625 per share. Analysts currently rate the stock as a \"Hold\" with a consensus target price of $245.15.",
+      "content": "iA Global Asset Management Inc. significantly increased its stake in Republic Services (NYSE:RSG) by 18.5% in the fourth quarter, now holding 64,200 shares valued at $13.6 million. This comes as Republic Services reported strong quarterly earnings, beating expectations with an EPS of $1.70 and revenue of $4.11 billion, and announced a quarterly dividend of $0.625 per share. Analysts currently rate the stock as a \"Hold\" with a consensus target price of $245.15.",
+      "url": "https://www.marketbeat.com/instant-alerts/filing-ia-global-asset-management-inc-raises-stock-holdings-in-republic-services-inc-rsg-2026-05-17/",
+      "image": "https://www.marketbeat.com/logos/republic-services-inc-logo-1200x675.jpg?v=20231227085845",
+      "publishedAt": "2026-05-17T10:35:23+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [
+          "RSG"
+        ],
+        "sector": "",
+        "sentiment": "positive"
+      },
+      "heat": 1,
+      "feed": "alphavantage"
+    },
+    {
+      "id": 783268837,
+      "source": "MarketBeat",
+      "title": "Staley Capital Advisers Inc. Sells 25,870 Shares of The J. M. Smucker Company $SJM",
+      "summary": "Staley Capital Advisers Inc. reduced its stake in The J. M. Smucker Company (NYSE:SJM) by 4.5% in the fourth quarter, selling 25,870 shares and ending with 543,852 shares valued at approximately $53.2 million. Analyst sentiment for SJM is mixed, with a consensus \"Hold\" rating and an average price target of $116.59, despite the company beating recent earnings estimates and announcing a $1.10 quarterly dividend. Several other institutional investors also adjusted their positions in J. M. Smucker, while the stock currently trades at $100.46, with a 4.4% dividend yield.",
+      "content": "Staley Capital Advisers Inc. reduced its stake in The J. M. Smucker Company (NYSE:SJM) by 4.5% in the fourth quarter, selling 25,870 shares and ending with 543,852 shares valued at approximately $53.2 million. Analyst sentiment for SJM is mixed, with a consensus \"Hold\" rating and an average price target of $116.59, despite the company beating recent earnings estimates and announcing a $1.10 quarterly dividend. Several other institutional investors also adjusted their positions in J. M. Smucker, while the stock currently trades at $100.46, with a 4.4% dividend yield.",
+      "url": "https://www.marketbeat.com/instant-alerts/filing-staley-capital-advisers-inc-sells-25870-shares-of-the-j-m-smucker-company-sjm-2026-05-17/",
+      "image": "https://www.marketbeat.com/logos/the-j-m-smucker-company-logo-1200x675.png?v=20221104115037",
+      "publishedAt": "2026-05-17T10:35:22+00:00",
+      "category": "Com\u00e9rcio",
+      "icon": "\ud83d\udea2",
+      "impact": {
+        "tickers": [
+          "SJM"
         ],
         "sector": "",
         "sentiment": "neutral"
@@ -1173,61 +1127,127 @@
       "feed": "alphavantage"
     },
     {
-      "id": 769290327,
+      "id": 721371942,
       "source": "MarketBeat",
-      "title": "Commerzbank Aktiengesellschaft FI Acquires 5,814 Shares of Lam Research Corporation $LRCX",
-      "summary": "Commerzbank Aktiengesellschaft FI has increased its stake in Lam Research Corporation by 48.8% in Q4, acquiring 5,814 additional shares to own a total of 17,721 shares valued at $3.03 million. Other institutional investors like Vanguard Group Inc., State Street Corp, and Invesco Ltd. also expanded their positions, contributing to significant institutional ownership of 84.61%. Lam Research benefits from bullish analyst sentiment, strong operating results driven by AI-related semiconductor equipment demand, and a recent earnings beat.",
-      "content": "Commerzbank Aktiengesellschaft FI has increased its stake in Lam Research Corporation by 48.8% in Q4, acquiring 5,814 additional shares to own a total of 17,721 shares valued at $3.03 million. Other institutional investors like Vanguard Group Inc., State Street Corp, and Invesco Ltd. also expanded their positions, contributing to significant institutional ownership of 84.61%. Lam Research benefits from bullish analyst sentiment, strong operating results driven by AI-related semiconductor equipment demand, and a recent earnings beat.",
-      "url": "https://www.marketbeat.com/instant-alerts/filing-commerzbank-aktiengesellschaft-fi-acquires-5814-shares-of-lam-research-corporation-lrcx-2026-05-17/",
-      "image": "https://www.marketbeat.com/logos/lam-research-co-logo-1200x675.png?v=20231214125532",
-      "publishedAt": "2026-05-17T08:16:03+00:00",
+      "title": "Costco Wholesale Corporation $COST Shares Sold by STF Management LP",
+      "summary": "STF Management LP significantly reduced its stake in Costco by 64.4% in the fourth quarter, selling 4,271 shares and ending the period with 2,361 shares valued at $2.04 million. Despite this, Wall Street holds a \"Moderate Buy\" rating for Costco, with an average price target of $1,047.27. The company recently exceeded earnings and revenue estimates, raised its quarterly dividend to $1.47 per share, and continues to expand with new store openings.",
+      "content": "STF Management LP significantly reduced its stake in Costco by 64.4% in the fourth quarter, selling 4,271 shares and ending the period with 2,361 shares valued at $2.04 million. Despite this, Wall Street holds a \"Moderate Buy\" rating for Costco, with an average price target of $1,047.27. The company recently exceeded earnings and revenue estimates, raised its quarterly dividend to $1.47 per share, and continues to expand with new store openings.",
+      "url": "https://www.marketbeat.com/instant-alerts/filing-costco-wholesale-corporation-cost-shares-sold-by-stf-management-lp-2026-05-17/",
+      "image": "https://www.marketbeat.com/logos/costco-logo-1200x675.jpg",
+      "publishedAt": "2026-05-17T10:35:20+00:00",
       "category": "Mercados",
       "icon": "\ud83d\udcb0",
       "impact": {
         "tickers": [
-          "LRCX"
+          "COST"
+        ],
+        "sector": "",
+        "sentiment": "positive"
+      },
+      "heat": 1,
+      "feed": "alphavantage"
+    },
+    {
+      "id": 535323031,
+      "source": "MarketBeat",
+      "title": "iA Global Asset Management Inc. Increases Stock Position in PayPal Holdings, Inc. $PYPL",
+      "summary": "iA Global Asset Management Inc. significantly increased its stake in PayPal Holdings, Inc. (NASDAQ:PYPL) by 32.5% in the fourth quarter, acquiring an additional 67,330 shares. This brings their total holdings to 274,507 shares, valued at approximately $16.0 million. Other institutional investors also adjusted their positions, and PayPal recently exceeded Q1 earnings and revenue estimates.",
+      "content": "iA Global Asset Management Inc. significantly increased its stake in PayPal Holdings, Inc. (NASDAQ:PYPL) by 32.5% in the fourth quarter, acquiring an additional 67,330 shares. This brings their total holdings to 274,507 shares, valued at approximately $16.0 million. Other institutional investors also adjusted their positions, and PayPal recently exceeded Q1 earnings and revenue estimates.",
+      "url": "https://www.marketbeat.com/instant-alerts/filing-ia-global-asset-management-inc-increases-stock-position-in-paypal-holdings-inc-pypl-2026-05-17/",
+      "image": "https://www.marketbeat.com/logos/paypal-holdings-inc-logo-1200x675.png?v=20231214083652",
+      "publishedAt": "2026-05-17T10:35:18+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [
+          "PYPL"
+        ],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "alphavantage"
+    },
+    {
+      "id": 132699521,
+      "source": "MarketBeat",
+      "title": "Qualcomm Incorporated $QCOM Shares Sold by Staley Capital Advisers Inc.",
+      "summary": "Staley Capital Advisers Inc. reduced its stake in Qualcomm Incorporated by 1.4% in the fourth quarter, though QCOM remains its fifth-largest holding. The company recently exceeded earnings expectations and authorized a $20 billion share buyback, yet the stock faces mixed sentiment due to insider sales and broader semiconductor market pressures. Despite some analyst upgrades, a downgrade from Freedom Capital and profit-taking in the sector have introduced caution.",
+      "content": "Staley Capital Advisers Inc. reduced its stake in Qualcomm Incorporated by 1.4% in the fourth quarter, though QCOM remains its fifth-largest holding. The company recently exceeded earnings expectations and authorized a $20 billion share buyback, yet the stock faces mixed sentiment due to insider sales and broader semiconductor market pressures. Despite some analyst upgrades, a downgrade from Freedom Capital and profit-taking in the sector have introduced caution.",
+      "url": "https://www.marketbeat.com/instant-alerts/filing-qualcomm-incorporated-qcom-shares-sold-by-staley-capital-advisers-inc-2026-05-17/",
+      "image": "https://www.marketbeat.com/logos/qualcomm-incorporated-logo-1200x675.png?v=20221020155845",
+      "publishedAt": "2026-05-17T10:35:18+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [
+          "QCOM",
+          "INTC"
         ],
         "sector": "Tecnologia",
         "sentiment": "neutral"
       },
-      "heat": 1,
+      "heat": 2,
       "feed": "alphavantage"
     },
     {
-      "id": 85438592,
+      "id": 187912004,
       "source": "MarketBeat",
-      "title": "Commerzbank Aktiengesellschaft FI Has $1.80 Million Stake in Yum! Brands, Inc. $YUM",
-      "summary": "Commerzbank Aktiengesellschaft FI significantly increased its stake in Yum! Brands, Inc. (NYSE: YUM) by 540.1% in the fourth quarter, now holding 11,900 shares valued at approximately $1.8 million. This comes after Yum! Brands reported strong quarterly results, exceeding EPS and revenue estimates, and announced a quarterly dividend of $0.75 per share. Analysts maintain a \"Moderate Buy\" consensus rating with an average target price of $176.22, though insider selling by executives was also noted.",
-      "content": "Commerzbank Aktiengesellschaft FI significantly increased its stake in Yum! Brands, Inc. (NYSE: YUM) by 540.1% in the fourth quarter, now holding 11,900 shares valued at approximately $1.8 million. This comes after Yum! Brands reported strong quarterly results, exceeding EPS and revenue estimates, and announced a quarterly dividend of $0.75 per share. Analysts maintain a \"Moderate Buy\" consensus rating with an average target price of $176.22, though insider selling by executives was also noted.",
-      "url": "https://www.marketbeat.com/instant-alerts/filing-commerzbank-aktiengesellschaft-fi-has-180-million-stake-in-yum-brands-inc-yum-2026-05-17/",
-      "image": "https://www.marketbeat.com/logos/yum!-brands-inc-logo-1200x675.png?v=20231227085937",
-      "publishedAt": "2026-05-17T08:15:52+00:00",
+      "title": "iA Global Asset Management Inc. Increases Holdings in Cadence Design Systems, Inc. $CDNS",
+      "summary": "iA Global Asset Management Inc. dramatically increased its stake in Cadence Design Systems, Inc. by 101.5% in the fourth quarter, bringing its total holdings to 67,268 shares valued at approximately $21 million. This increase follows strong quarterly results from Cadence, which surpassed earnings and revenue estimates and provided positive guidance for fiscal year 2026. Despite recent insider selling, analyst sentiment remains largely positive, with several firms raising price targets and the stock maintaining a \"Moderate Buy\" consensus rating.",
+      "content": "iA Global Asset Management Inc. dramatically increased its stake in Cadence Design Systems, Inc. by 101.5% in the fourth quarter, bringing its total holdings to 67,268 shares valued at approximately $21 million. This increase follows strong quarterly results from Cadence, which surpassed earnings and revenue estimates and provided positive guidance for fiscal year 2026. Despite recent insider selling, analyst sentiment remains largely positive, with several firms raising price targets and the stock maintaining a \"Moderate Buy\" consensus rating.",
+      "url": "https://www.marketbeat.com/instant-alerts/filing-ia-global-asset-management-inc-increases-holdings-in-cadence-design-systems-inc-cdns-2026-05-17/",
+      "image": "https://www.marketbeat.com/logos/cadence-design-syste-logo-1200x675.jpg",
+      "publishedAt": "2026-05-17T10:35:12+00:00",
       "category": "Mercados",
       "icon": "\ud83d\udcb0",
       "impact": {
         "tickers": [
-          "YUM"
+          "CDNS",
+          "KEYS"
         ],
-        "sector": "Finan\u00e7as",
+        "sector": "",
         "sentiment": "positive"
       },
-      "heat": 1,
+      "heat": 2,
       "feed": "alphavantage"
     },
     {
-      "id": 689471874,
+      "id": 365652042,
       "source": "MarketBeat",
-      "title": "Bessemer Group Inc. Has $34.24 Million Holdings in Hershey Company (The) $HSY",
-      "summary": "Bessemer Group Inc. reduced its stake in Hershey Company by 4.2% in Q4 2025, now holding 188,137 shares worth $34.24 million. Hershey reported strong quarterly results with EPS of $2.35 and revenue of $3.10 billion, and declared a quarterly dividend of $1.452 per share. Analysts currently rate Hershey as a \"Hold.\"",
-      "content": "Bessemer Group Inc. reduced its stake in Hershey Company by 4.2% in Q4 2025, now holding 188,137 shares worth $34.24 million. Hershey reported strong quarterly results with EPS of $2.35 and revenue of $3.10 billion, and declared a quarterly dividend of $1.452 per share. Analysts currently rate Hershey as a \"Hold.\"",
-      "url": "https://www.marketbeat.com/instant-alerts/filing-bessemer-group-inc-has-3424-million-holdings-in-hershey-company-the-hsy-2026-05-17/",
-      "image": "https://www.marketbeat.com/logos/the-hershey-company-logo-1200x675.png?v=20221021151539",
-      "publishedAt": "2026-05-17T08:15:50+00:00",
+      "title": "iA Global Asset Management Inc. Purchases 15,885 Shares of Altria Group, Inc. $MO",
+      "summary": "iA Global Asset Management Inc. increased its stake in Altria Group by 6.3% in the fourth quarter of 2025, acquiring an additional 15,885 shares for a total holding of 269,708 shares valued at approximately $15.6 million. Altria Group reported strong quarterly results, surpassing EPS and revenue estimates, and announced a quarterly dividend of $1.06 per share, representing an annualized yield of 5.8%. Analyst consensus currently rates Altria Group as \"Hold\" with a target price of $69.33.",
+      "content": "iA Global Asset Management Inc. increased its stake in Altria Group by 6.3% in the fourth quarter of 2025, acquiring an additional 15,885 shares for a total holding of 269,708 shares valued at approximately $15.6 million. Altria Group reported strong quarterly results, surpassing EPS and revenue estimates, and announced a quarterly dividend of $1.06 per share, representing an annualized yield of 5.8%. Analyst consensus currently rates Altria Group as \"Hold\" with a target price of $69.33.",
+      "url": "https://www.marketbeat.com/instant-alerts/filing-ia-global-asset-management-inc-purchases-15885-shares-of-altria-group-inc-mo-2026-05-17/",
+      "image": "https://www.marketbeat.com/logos/altria-group-logo-1200x675.jpg",
+      "publishedAt": "2026-05-17T10:35:03+00:00",
       "category": "Mercados",
       "icon": "\ud83d\udcb0",
       "impact": {
         "tickers": [
-          "HSY"
+          "MO",
+          "DE"
+        ],
+        "sector": "",
+        "sentiment": "positive"
+      },
+      "heat": 2,
+      "feed": "alphavantage"
+    },
+    {
+      "id": 317082712,
+      "source": "MarketBeat",
+      "title": "iA Global Asset Management Inc. Raises Position in Amgen Inc. $AMGN",
+      "summary": "iA Global Asset Management Inc. has increased its stake in Amgen Inc. by 7.4% in the fourth quarter, bringing its total holdings to 66,947 shares valued at approximately $21.9 million. Amgen recently exceeded quarterly earnings expectations with $5.15 per share on $8.62 billion in revenue and announced a quarterly dividend of $2.52 per share. Wall Street analysts currently hold a consensus \"Hold\" rating for Amgen, with an average target price of $356.15.",
+      "content": "iA Global Asset Management Inc. has increased its stake in Amgen Inc. by 7.4% in the fourth quarter, bringing its total holdings to 66,947 shares valued at approximately $21.9 million. Amgen recently exceeded quarterly earnings expectations with $5.15 per share on $8.62 billion in revenue and announced a quarterly dividend of $2.52 per share. Wall Street analysts currently hold a consensus \"Hold\" rating for Amgen, with an average target price of $356.15.",
+      "url": "https://www.marketbeat.com/instant-alerts/filing-ia-global-asset-management-inc-raises-position-in-amgen-inc-amgn-2026-05-17/",
+      "image": "https://www.marketbeat.com/logos/amgen-inc-logo-1200x675.jpg?v=20231228113741",
+      "publishedAt": "2026-05-17T10:35:03+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [
+          "AMGN"
         ],
         "sector": "",
         "sentiment": "positive"
@@ -1236,42 +1256,45 @@
       "feed": "alphavantage"
     },
     {
-      "id": 542115979,
-      "source": "MarketBeat",
-      "title": "Crossmark Global Holdings Inc. Trims Stock Position in Oshkosh Corporation $OSK",
-      "summary": "Crossmark Global Holdings Inc. significantly reduced its stake in Oshkosh Corporation by 83.8% in the fourth quarter, selling 10,321 shares and holding 1,991 shares valued at $250,000. Despite this, other institutional investors increased their positions in Oshkosh, with hedge funds and institutional investors owning 92.36% of the stock. Oshkosh recently missed EPS expectations but exceeded revenue forecasts and declared a quarterly dividend of $0.57 per share.",
-      "content": "Crossmark Global Holdings Inc. significantly reduced its stake in Oshkosh Corporation by 83.8% in the fourth quarter, selling 10,321 shares and holding 1,991 shares valued at $250,000. Despite this, other institutional investors increased their positions in Oshkosh, with hedge funds and institutional investors owning 92.36% of the stock. Oshkosh recently missed EPS expectations but exceeded revenue forecasts and declared a quarterly dividend of $0.57 per share.",
-      "url": "https://www.marketbeat.com/instant-alerts/filing-crossmark-global-holdings-inc-trims-stock-position-in-oshkosh-corporation-osk-2026-05-17/",
-      "image": "https://www.marketbeat.com/logos/oshkosh-co-logo-1200x675.png?v=20220628094726",
-      "publishedAt": "2026-05-17T08:15:46+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
+      "id": 916682262,
+      "source": "Nasdaq",
+      "title": "2 Growth Stocks to Hold for the Next 5 Years",
+      "summary": "Key PointsShopify's integration with top AI models positions it to capitalize on a $300 billion agentic commerce opportunity.",
+      "content": "Key PointsShopify's integration with top AI models positions it to capitalize on a $300 billion agentic commerce opportunity.",
+      "url": "https://www.nasdaq.com/articles/2-growth-stocks-hold-next-5-years",
+      "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
+      "publishedAt": "2026-05-17T10:35:00+00:00",
+      "category": "Tecnologia",
+      "icon": "\ud83d\udcbb",
       "impact": {
         "tickers": [
-          "OSK"
+          "NVDA",
+          "AMD",
+          "INTC",
+          "AVGO"
         ],
-        "sector": "",
-        "sentiment": "negative"
+        "sector": "Tecnologia",
+        "sentiment": "positive"
       },
-      "heat": 1,
-      "feed": "alphavantage"
+      "heat": 3,
+      "feed": "rss"
     },
     {
-      "id": 830557676,
+      "id": 160552036,
       "source": "MarketBeat",
-      "title": "Fortinet, Inc. $FTNT Shares Sold by Bank Julius Baer & Co. Ltd Zurich",
-      "summary": "Bank Julius Baer & Co. Ltd Zurich significantly reduced its stake in Fortinet, Inc. (FTNT) by 93.2% in the fourth quarter, selling over 174,000 shares. Despite this, Fortinet reported strong quarterly results, exceeding EPS and revenue estimates, and raised its fiscal 2026 guidance. Analysts have raised price targets and upgraded the stock following the positive earnings, while CEO Ken Xie and VP Michael Xie sold shares for tax withholding purposes.",
-      "content": "Bank Julius Baer & Co. Ltd Zurich significantly reduced its stake in Fortinet, Inc. (FTNT) by 93.2% in the fourth quarter, selling over 174,000 shares. Despite this, Fortinet reported strong quarterly results, exceeding EPS and revenue estimates, and raised its fiscal 2026 guidance. Analysts have raised price targets and upgraded the stock following the positive earnings, while CEO Ken Xie and VP Michael Xie sold shares for tax withholding purposes.",
-      "url": "https://www.marketbeat.com/instant-alerts/filing-fortinet-inc-ftnt-shares-sold-by-bank-julius-baer-co-ltd-zurich-2026-05-17/",
-      "image": "https://www.marketbeat.com/logos/fortinet-inc-logo-1200x675.png?v=20231228112222",
-      "publishedAt": "2026-05-17T08:15:44+00:00",
+      "title": "Staley Capital Advisers Inc. Takes $1.05 Million Position in Lamb Weston $LW",
+      "summary": "Staley Capital Advisers Inc. initiated a new position in Lamb Weston (NYSE:LW) during the fourth quarter, purchasing 25,000 shares worth approximately $1.05 million. This move is aligned with other institutional and insider buying, despite analysts maintaining a \"Hold\" rating with an average price target of $48. Lamb Weston recently outperformed earnings and revenue estimates and announced a quarterly dividend of $0.38 per share.",
+      "content": "Staley Capital Advisers Inc. initiated a new position in Lamb Weston (NYSE:LW) during the fourth quarter, purchasing 25,000 shares worth approximately $1.05 million. This move is aligned with other institutional and insider buying, despite analysts maintaining a \"Hold\" rating with an average price target of $48. Lamb Weston recently outperformed earnings and revenue estimates and announced a quarterly dividend of $0.38 per share.",
+      "url": "https://www.marketbeat.com/instant-alerts/filing-staley-capital-advisers-inc-takes-105-million-position-in-lamb-weston-lw-2026-05-17/",
+      "image": "https://www.marketbeat.com/logos/lamb-weston-holdings-inc-logo-1200x675.png",
+      "publishedAt": "2026-05-17T10:34:57+00:00",
       "category": "Mercados",
       "icon": "\ud83d\udcb0",
       "impact": {
         "tickers": [
-          "FTNT"
+          "LW"
         ],
-        "sector": "Finan\u00e7as",
+        "sector": "",
         "sentiment": "positive"
       },
       "heat": 1,
