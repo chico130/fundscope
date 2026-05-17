@@ -189,6 +189,20 @@ Qtd_Acoes            = floor(Risco_Euro_Por_Trade / Risco_Por_Acao)
 
 ---
 
+## 📌 OBSERVAÇÃO: Risco Cambial EUR/USD
+
+> **Contexto:** A conta demo (e futura conta real) está denominada em EUR. A watchlist e a execução operam maioritariamente em acções US cotadas em USD. A conversão EUR/USD é feita automaticamente pela T212 e pelo bot (via `yfinance EURUSD=X`).
+
+**Recomendação para fase futura:** Implementar monitorização do risco cambial como métrica autónoma do CRO, incluindo:
+
+1. **Tracking do câmbio na entrada:** registar o `eurusd` no momento de cada trade BUY em `beta_trades.json` para calcular o impacto cambial no P&L final.
+2. **Alerta de desvio cambial:** se o EUR/USD se mover mais de ±3% desde a entrada numa posição aberta, o CRO deve emitir um insight de alerta no `cro_insights.json`.
+3. **ETFs hedged como alternativa (Fase 2+):** considerar incluir na watchlist ETFs como CSPX (S&P 500 em EUR, LSE) para posições de maior duração onde o risco cambial se acumula.
+
+*Esta nota não implica mudança imediata — os retornos históricos do S&P 500 em EUR continuam positivos a longo prazo. A prioridade é acumular dados reais de performance antes de adicionar camadas de hedging.*
+
+---
+
 ## 🛡️ FASE 2 — DISJUNTOR INSTITUCIONAL (KILL-SWITCH)
 
 Na Fase 2, o CRO ganha autoridade máxima de bloqueio.  
