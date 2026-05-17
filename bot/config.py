@@ -28,6 +28,9 @@ FINNHUB_API_KEY = os.getenv("FINNHUB_API_KEY", "")
 # Demo first, always. Never flip to True without extensive testing in demo.
 LIVE_TRADING = False
 
+# Fase 1 — execução automática em conta demo. Nunca activar com LIVE_TRADING=True.
+PHASE1_EXECUTION = True
+
 RISK_CONFIG = {
     "max_position_pct": 20.0,
     "max_sector_pct": 40.0,

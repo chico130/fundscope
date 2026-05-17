@@ -15,16 +15,197 @@ from datetime import datetime, timezone
 
 from .data_layer import get_full_portfolio_state, enrich_with_technicals, read_beta_trades, fetch_candidate_market_data
 from .logger import log_decision, log_error
-from .config import DATA_BETA_DIR, RISK_CONFIG, STRATEGY_VERSION
+from .config import DATA_BETA_DIR, RISK_CONFIG, STRATEGY_VERSION, PHASE1_EXECUTION
 from .regime_detector import get_current_regime, load_cached_regime, load_regime_metrics
 from .watchlist_manager import build_watchlist
-from .strategy import generate_signals
+from .strategy import generate_signals, ProposedTrade
 from .cro import CRO
+from .execution import execute_trade, execute_exit
 from . import exit_manager, position_ledger
 
 _BEAR_REGIMES = {"bear_correction", "bear_capitulation"}
 _LATERAL_SIZE_FACTOR = 0.6   # redução de posição sugerida em bull_lateral (secção 4, FASE-1.md)
 _WATCHLIST_CANDIDATES_TO_SCAN = 10  # max candidatos da watchlist a analisar por ciclo
+
+# Fase 1 — reverse ticker map (yfinance → T212) para os tickers opacos da T212
+_YF_TO_T212: dict[str, str] = {
+    "MU":   "MTEd",
+    "VST":  "49Vd",
+    "VRT":  "0V6d",
+    "CCJ":  "CJ6d",
+    "ASML": "ASMLa",
+}
+# Fator de alocação por regime: 0.0 bloqueia entradas em bear
+_REGIME_ENTRY_FACTOR: dict[str, float] = {
+    "bull_trending":     1.0,
+    "bull_lateral":      0.6,
+    "bear_correction":   0.0,
+    "bear_capitulation": 0.0,
+}
+
+
+# ---------------------------------------------------------------------------
+# Phase 1 helpers
+# ---------------------------------------------------------------------------
+
+def _yf_to_t212(symbol: str) -> str:
+    """Converte símbolo yfinance para ticker T212 (inclui tickers opacos)."""
+    return _YF_TO_T212.get(symbol, f"{symbol}_US_EQ")
+
+
+def _fetch_eurusd() -> float:
+    """Taxa EUR/USD via yfinance. Fallback conservador 1.12 em caso de erro."""
+    try:
+        import yfinance as yf
+        rate = getattr(yf.Ticker("EURUSD=X").fast_info, "last_price", None)
+        return float(rate) if rate else 1.12
+    except Exception:
+        return 1.12
+
+
+def _execute_phase1(
+    buy_opportunities: list[dict],
+    barrier_exits: list,
+    signals: list[dict],
+    positions: list[dict],
+    state: dict,
+    regime: str,
+    cro_verdict,
+) -> list[dict]:
+    """Executa ordens de compra e venda de forma puramente matemática (Fase 1).
+
+    Ordem de prioridade: (1) saídas urgentes ATR, (2) saídas RSI sobrecomprado,
+    (3) entradas da watchlist. Respeita os limites de risco configurados.
+    """
+    executed: list[dict] = []
+
+    regime_factor = _REGIME_ENTRY_FACTOR.get(regime, 0.0)
+
+    # ── Saídas urgentes (barrier_exits vêm já como ProposedTrade) ─────────
+    for be in barrier_exits:
+        try:
+            result = execute_trade(be, state)
+            if result:
+                executed.append(result)
+                log_decision("phase1_exit", "barrier_exit", {
+                    "ticker": be.ticker, "reason": be.reason,
+                })
+        except Exception as exc:
+            log_error("phase1_barrier_exit_failed", {"ticker": be.ticker, "error": str(exc)})
+
+    # ── Saídas por RSI sobrecomprado (signals com action==reduce_watch) ───
+    position_map: dict[str, dict] = {}
+    for p in positions:
+        position_map[p.get("ticker", "")] = p
+        sym = p.get("price_symbol") or p.get("ticker", "").split("_")[0]
+        position_map[sym] = p
+
+    for sig in signals:
+        if sig.get("action") != "reduce_watch":
+            continue
+        ticker = sig["ticker"]
+        position = position_map.get(ticker)
+        if not position:
+            continue
+        tech = sig.get("technicals", {})
+        rsi  = tech.get("rsi_14")
+        pos_for_exit = {**position, "current_price": position.get("currentPrice")}
+        reason = f"RSI sobrecomprado ({rsi:.1f})" if rsi else "reduce_watch"
+        try:
+            result = execute_exit(ticker, pos_for_exit, reason, rsi)
+            if result:
+                executed.append(result)
+                log_decision("phase1_exit", "rsi_overbought", {"ticker": ticker, "rsi": rsi})
+        except Exception as exc:
+            log_error("phase1_rsi_exit_failed", {"ticker": ticker, "error": str(exc)})
+
+    # ── Entradas (bloqueadas em regime bear) ──────────────────────────────
+    if regime_factor == 0.0:
+        log_decision("phase1_entries_blocked", "bear_regime", {"regime": regime})
+        return executed
+
+    eurusd    = _fetch_eurusd()
+    cash_free = state.get("cash", {}).get("free", 0.0)
+
+    equity = cash_free
+    for p in positions:
+        curr  = p.get("currentPrice", 0.0) or 0.0
+        qty   = p.get("quantity", 0.0) or 0.0
+        native = curr * qty
+        if "_US_" in (p.get("ticker") or ""):
+            equity += native / eurusd if eurusd else native
+        else:
+            equity += native
+
+    if equity <= 0:
+        log_error("phase1_no_equity", {"equity": equity})
+        return executed
+
+    max_trades    = RISK_CONFIG["max_trades_per_day"]
+    min_order_eur = 50.0
+    max_pos_pct   = RISK_CONFIG["max_position_pct"] / 100.0
+
+    for opp in buy_opportunities:
+        if len(executed) >= max_trades:
+            break
+
+        price_usd = opp.get("last_price")
+        if not price_usd or price_usd <= 0:
+            log_error("phase1_no_price", {"ticker": opp["ticker"]})
+            continue
+
+        strength = float(opp.get("signal_strength", 0.5))
+        size_eur = strength * equity * 0.15 * regime_factor * cro_verdict.risk_factor
+        size_eur = min(size_eur, equity * max_pos_pct)
+
+        if size_eur < min_order_eur:
+            log_decision("phase1_skip_small", "order_below_minimum", {
+                "ticker":   opp["ticker"],
+                "size_eur": round(size_eur, 2),
+                "min_eur":  min_order_eur,
+            })
+            continue
+
+        price_eur = price_usd / eurusd if eurusd else price_usd
+        qty = round(size_eur / price_eur, 4)
+        if qty <= 0:
+            continue
+
+        t212_ticker = _yf_to_t212(opp["ticker"])
+        tech = opp.get("technicals", {})
+
+        proposed = ProposedTrade(
+            ticker=t212_ticker,
+            side="BUY",
+            qty=qty,
+            order_type="LIMIT",
+            price=round(price_usd, 4),
+            reason=" | ".join(opp.get("reasons", ["phase1_auto"])),
+            context={
+                "rsi_14":              tech.get("rsi_14"),
+                "atr_14":              tech.get("atr_14"),
+                "volume_ratio_vs_avg": tech.get("volume_ratio_vs_avg"),
+                "regime":              regime,
+                "watchlist_score":     opp.get("watchlist_score"),
+                "signal_strength":     strength,
+            },
+            signal_strength=strength,
+        )
+
+        try:
+            result = execute_trade(proposed, state)
+            if result:
+                executed.append(result)
+                log_decision("phase1_entry", "order_placed", {
+                    "ticker":   t212_ticker,
+                    "qty":      qty,
+                    "price":    price_usd,
+                    "size_eur": round(size_eur, 2),
+                })
+        except Exception as exc:
+            log_error("phase1_entry_failed", {"ticker": t212_ticker, "error": str(exc)})
+
+    return executed
 
 
 # ---------------------------------------------------------------------------
@@ -72,11 +253,23 @@ def run(*, git_sync: bool = True) -> dict:
     cro.observe(DATA_BETA_DIR / "beta_trades.json", state)
     cro_verdict = cro.interpret(state, regime=regime)
 
+    # ── Fase 1: execução automática matemática ────────────────────────────────
+    executed_trades: list[dict] = []
+    if PHASE1_EXECUTION:
+        executed_trades = _execute_phase1(
+            buy_opportunities, barrier_exits, signals,
+            positions, state, regime, cro_verdict,
+        )
+
     report = {
         "timestamp":          datetime.now(timezone.utc).isoformat(),
-        "mode":               "phase0_readonly",
+        "mode":               "phase1_auto" if PHASE1_EXECUTION else "phase0_readonly",
         "strategy_version":   STRATEGY_VERSION,
-        "note":               "Fase 0 — apenas leitura e sugestão. Nenhuma ordem foi submetida.",
+        "note":               (
+            "Fase 1 — execução automática activa. LIVE_TRADING=False (conta demo)."
+            if PHASE1_EXECUTION else
+            "Fase 0 — apenas leitura e sugestão. Nenhuma ordem foi submetida."
+        ),
         "regime":             regime,
         "regime_alert":       regime in _BEAR_REGIMES,
         "regime_details":     regime_payload.get("metrics", {}) if regime_payload else {},
@@ -102,6 +295,7 @@ def run(*, git_sync: bool = True) -> dict:
             "drawdown_pct": cro_verdict.drawdown_pct,
             "insights":     cro_verdict.insights,
         },
+        "executed_trades": executed_trades,
     }
 
     _save_report(report)
@@ -402,7 +596,10 @@ def _notify_opportunities(report: dict) -> None:
         return
     try:
         from bot.notifier import enviar_oportunidade
-        enviar_oportunidade(opps, report.get("regime", "?"))
+        executed = report.get("executed_trades", [])
+        regime   = report.get("regime", "?")
+        label    = f"{regime} | Fase 1 — {len(executed)} ordem(ns) enviada(s)" if PHASE1_EXECUTION else f"{regime} | Fase 0 — só leitura"
+        enviar_oportunidade(opps, label)
     except Exception as exc:
         log_error("notify_opportunity_failed", {"error": str(exc)})
 
@@ -500,6 +697,20 @@ def _print_report(report: dict) -> None:
                 print(f"    · {sig}")
     else:
         print("\nSem posicoes abertas para analisar.")
+
+    # Fase 1 — ordens executadas neste ciclo
+    executed = report.get("executed_trades", [])
+    if executed:
+        print(f"\nFase 1 — {len(executed)} ordem(ns) executada(s) neste ciclo:")
+        for t in executed:
+            side  = t.get("side", "?")
+            tkr   = t.get("ticker", "?")
+            qty   = t.get("qty", 0)
+            price = t.get("price")
+            price_str = f" @ ${price:.4f}" if price else ""
+            print(f"  · {side} {qty} × {tkr}{price_str}  [{t.get('reason','')[:60]}]")
+    elif report.get("mode") == "phase1_auto":
+        print("\nFase 1: nenhuma ordem executada neste ciclo (critérios não cumpridos).")
 
     print(f"\n{report['note']}")
     print(f"{sep}\n")
