@@ -1,12 +1,12 @@
 {
-  "updated": "2026-05-17T02:48:57.675687Z",
+  "updated": "2026-05-17T03:05:48.346082Z",
   "t212_mode": "live",
   "summary": {
-    "total_value": 98.86,
-    "total_invested": 100.58,
+    "total_value": 114.55,
+    "total_invested": 116.99,
     "total_gain_eur": -1.33,
-    "total_gain_pct": -1.32,
-    "daily_gain_eur": -1.06,
+    "total_gain_pct": -1.14,
+    "daily_gain_eur": 0.0,
     "n_positions": 1
   },
   "positions": [
@@ -14,19 +14,19 @@
       "ticker_t212": "GOOGL_US_EQ",
       "quantity": 0.289797,
       "avg_price": 403.696,
-      "current_price": 396.78,
+      "current_price": 395.28,
       "ppl": -1.33,
       "fx_ppl": 0.77,
       "ticker": "GOOGL",
       "ticker_display": "GOOGL",
       "display_name": "Alphabet",
       "currency": "USD",
-      "change_pct": -1.07,
-      "invested": 100.58,
-      "value_eur": 98.86,
+      "change_pct": 0.0,
+      "invested": 116.99,
+      "value_eur": 114.55,
       "gain_eur": -1.33,
-      "gain_pct": -1.71,
-      "fx_rate": 0.859771,
+      "gain_pct": -2.08,
+      "fx_rate": 1.0,
       "currency_native": "USD",
       "allocation_pct": 100.0,
       "news": [
@@ -71,65 +71,9 @@
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         }
       ],
-      "earnings": [
-        {
-          "period": "",
-          "estimate": 2.186,
-          "actual": 2.31,
-          "surprise": 0.06,
-          "beat": true
-        },
-        {
-          "period": "",
-          "estimate": 2.262,
-          "actual": 2.87,
-          "surprise": 0.27,
-          "beat": true
-        },
-        {
-          "period": "",
-          "estimate": 2.635,
-          "actual": 2.82,
-          "surprise": 0.07,
-          "beat": true
-        },
-        {
-          "period": "",
-          "estimate": 2.667,
-          "actual": 5.11,
-          "surprise": 0.92,
-          "beat": true
-        }
-      ],
-      "dividends": [
-        {
-          "date": "2026-03-09",
-          "amount": 0.21
-        },
-        {
-          "date": "2025-12-08",
-          "amount": 0.21
-        },
-        {
-          "date": "2025-09-08",
-          "amount": 0.21
-        },
-        {
-          "date": "2025-06-09",
-          "amount": 0.21
-        }
-      ],
-      "ticker_info": {
-        "trailingPE": 30.311687,
-        "forwardPE": 27.456259,
-        "marketCap": 4807165739008,
-        "beta": 1.267,
-        "fiftyTwoWeekHigh": 403.7,
-        "fiftyTwoWeekLow": 162.0,
-        "pctFromHigh": -1.71,
-        "shortRatio": 2.7,
-        "dividendYield": 0.22
-      },
+      "earnings": [],
+      "dividends": [],
+      "ticker_info": {},
       "fh_fundamentals": {
         "52WeekHigh": 403.7,
         "52WeekLow": 162,
@@ -156,8 +100,8 @@
       "insider": {},
       "analysis": {
         "sentiment": "neutro",
-        "news_comment": "Gemini indisponível.",
-        "earnings_comment": "Gemini indisponível.",
+        "news_comment": "Indisponível.",
+        "earnings_comment": "Indisponível.",
         "watch_points": []
       }
     }
@@ -197,7 +141,7 @@
     },
     {
       "date": "2026-05-17",
-      "value": 98.86
+      "value": 114.55
     }
   ]
 }
