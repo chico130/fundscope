@@ -612,19 +612,21 @@ const tick = p => p.ticker_display || (p.ticker||'').replace(/\.AS$|\.L$|\.DE$|\
 let _trades = [];
 async function initData() {
   const t = Date.now();
-  const [anaRes, sumRes, trRes] = await Promise.allSettled([
+  const [anaRes, sumRes, trRes, regRes] = await Promise.allSettled([
     fetch(`data/beta/beta_analysis.json?t=${t}`).then(r=>r.ok?r.json():null).catch(()=>null),
     fetch(`data/beta/beta_summary.json?t=${t}`).then(r=>r.ok?r.json():null).catch(()=>null),
     fetch(`data/beta/beta_trades.json?t=${t}`).then(r=>r.ok?r.json():null).catch(()=>null),
+    fetch(`data/beta/regime.json?t=${t}`).then(r=>r.ok?r.json():null).catch(()=>null),
   ]);
   const ana = anaRes.value ?? null;
   const sum = sumRes.value ?? null;
   const trd = trRes.value  ?? null;
+  const reg = regRes.value ?? null;
   _trades = trd?.trades ?? [];
 
   renderStatusBadge(ana);
   renderKPIs(sum);
-  renderRegime(ana);
+  renderRegime(ana, reg, sum);
   renderWatchlist(ana);
   renderNearMisses(ana);
   renderTrades(_trades);
@@ -728,23 +730,53 @@ function renderNearMisses(ana) {
 }
 
 // ── Regime ────────────────────────────────────────────────────────────────────
-function renderRegime(ana) {
+function renderRegime(ana, reg, sum) {
   const el = document.getElementById('regimeContent');
-  if (!ana) { el.innerHTML = '<span style="color:var(--color-text-faint)">Indisponível.</span>'; return; }
-  const regime = ana.regime ?? 'unknown';
+  if (!ana && !reg) { el.innerHTML = '<span style="color:var(--color-text-faint)">Indisponível.</span>'; return; }
+
+  const regime = (reg?.regime ?? ana?.regime ?? 'unknown');
   const labelMap = { bull_trending:'Bull Trending', bull_lateral:'Bull Lateral', bear_correction:'Bear Correction', bear_capitulation:'Bear Capitulation' };
   const label = labelMap[regime] ?? regime.replace(/_/g,' ');
-  const eq    = ana.risk_status?.total_equity_eur;
+
+  // Use beta_summary for equity (always fresh) — fall back to stale analysis
+  const equity = sum?.summary?.current_value ?? ana?.risk_status?.total_equity_eur;
+
+  // Market metrics from regime.json
+  const m   = reg?.metrics ?? {};
+  const spy = m.spy_price;
+  const distPct = m.spy_pct_from_ema200;    // e.g. 10.09 → +10.1% acima da EMA-200
+  const atrRatio = m.atr_ratio_vs_60d_mean; // <1 = low vol, >1 = high vol
+  const ret20  = m.spy_return_20d;          // 20-day return (decimal)
+  const breadth = m.breadth_healthy;
+
+  const rowStyle = 'display:flex;justify-content:space-between;align-items:center;padding:3px 0;border-bottom:1px solid var(--color-divider)';
+  const lbl = txt => `<span style="color:var(--color-text-muted);font-size:var(--text-xs)">${txt}</span>`;
+  const val = (txt, cls='') => `<span style="font-variant-numeric:tabular-nums;font-weight:600;font-size:var(--text-xs)${cls ? ';color:var(--color-'+cls+')' : ''}">${txt}</span>`;
+
+  const metricsHTML = reg ? `
+    <div style="margin-top:var(--space-4);display:flex;flex-direction:column;gap:0">
+      ${spy != null ? `<div style="${rowStyle}">${lbl('SPY')}${val('$' + n2(spy))}</div>` : ''}
+      ${distPct != null ? `<div style="${rowStyle}">${lbl('vs EMA-200')}${val((distPct>=0?'+':'')+n2(distPct,1)+'%', distPct>=0?'success':'notification')}</div>` : ''}
+      ${atrRatio != null ? `<div style="${rowStyle}">${lbl('Volatilidade ATR')}${val(n2(atrRatio,2)+'× média', atrRatio > 1.2 ? 'notification' : atrRatio < 0.8 ? 'success' : '')}</div>` : ''}
+      ${ret20 != null ? `<div style="${rowStyle}">${lbl('Retorno 20 dias')}${val((ret20>=0?'+':'')+n2(ret20*100,1)+'%', ret20>=0?'success':'notification')}</div>` : ''}
+      ${breadth != null ? `<div style="${rowStyle}">${lbl('Breadth')}${val(breadth ? '✓ Saudável' : '✗ Fraca', breadth ? 'success' : 'gold')}</div>` : ''}
+    </div>` : '';
+
+  const updatedStr = reg?.last_updated
+    ? (() => { const min = Math.round((Date.now() - new Date(reg.last_updated)) / 60000); return min < 60 ? `há ${min}m` : `há ${Math.floor(min/60)}h`; })()
+    : null;
+
   el.innerHTML = `
-    <div style="margin-bottom:var(--space-4)">
+    <div style="margin-bottom:var(--space-3)">
       <span class="regime-pill ${regime}">${label}</span>
-      ${ana.regime_alert ? `<p style="font-size:var(--text-xs);color:var(--color-notification);margin-top:var(--space-2)">⚠ Novas entradas bloqueadas</p>` : ''}
+      ${ana?.regime_alert ? `<p style="font-size:var(--text-xs);color:var(--color-notification);margin-top:var(--space-2)">⚠ Novas entradas bloqueadas</p>` : ''}
     </div>
-    <div style="display:flex;flex-direction:column;gap:var(--space-2);font-size:var(--text-xs)">
-      <div style="display:flex;justify-content:space-between"><span style="color:var(--color-text-muted)">Equity</span><span style="font-variant-numeric:tabular-nums;font-weight:600">${eq != null ? eur(eq) : '—'}</span></div>
-      <div style="display:flex;justify-content:space-between"><span style="color:var(--color-text-muted)">Posições</span><span style="font-weight:600">${ana.n_positions ?? 0}</span></div>
-      <div style="display:flex;justify-content:space-between"><span style="color:var(--color-text-muted)">Versão</span><span style="color:var(--color-text-faint)">${ana.strategy_version ?? '—'}</span></div>
-    </div>`;
+    ${metricsHTML}
+    <div style="display:flex;flex-direction:column;gap:0;margin-top:var(--space-4)">
+      ${equity != null ? `<div style="${rowStyle}">${lbl('Equity Demo')}${val(eur(equity))}</div>` : ''}
+      <div style="${rowStyle}">${lbl('Versão')}${val(ana?.strategy_version ?? '—')}</div>
+    </div>
+    ${updatedStr ? `<p style="font-size:var(--text-xs);color:var(--color-text-faint);margin-top:var(--space-3);text-align:right">Regime · ${updatedStr}</p>` : ''}`;
 }
 
 // ── Watchlist ─────────────────────────────────────────────────────────────────
