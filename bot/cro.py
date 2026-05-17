@@ -471,25 +471,21 @@ def _whisper(payload: dict) -> None:
     """Formata e envia a narrativa CRO para Telegram via notifier (Whisper)."""
     from .notifier import enviar_alerta
 
-    sep    = "─" * 26
     wr_pct = round(payload["win_rate_7d"] * 100, 1)
     dd_pct = payload["drawdown_atual"]
     n      = payload["trades_analisados"]
+    ts     = payload["generated_at"][:16].replace("T", " ")
 
     linhas = [
-        "🧠 CRO • RELATÓRIO COGNITIVO",
-        sep,
-        f"📊 Win Rate 7d: {wr_pct}%  |  Drawdown: {dd_pct:.1f}%",
-        f"📁 Trades analisados: {n}",
-        sep,
-        "💡 LIÇÕES:",
+        "🧠 Relatório Cognitivo CRO",
+        "",
+        f"Win Rate 7d: {wr_pct}%  ·  Drawdown: {dd_pct:.1f}%",
+        f"Trades analisados: {n}",
+        "",
     ]
-    for i, insight in enumerate(payload.get("insights", []), 1):
-        linhas.append(f"  {i}. {insight}")
-    linhas += [
-        sep,
-        f"Motor FundScope • CRO Fase 0 • {payload['generated_at'][:16].replace('T', ' ')} UTC",
-    ]
+    for insight in payload.get("insights", []):
+        linhas.append(f"• {insight}")
+    linhas += ["", f"FundScope · {ts} UTC"]
 
     enviar_alerta("\n".join(linhas), silencioso=True)
     print(f"[CRO] Narrativa enviada para Telegram ({len(payload.get('insights', []))} insights).")

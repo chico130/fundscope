@@ -43,38 +43,37 @@ def enviar_oportunidade(oportunidades: list[dict], regime: str) -> None:
         return
 
     linhas = []
-    for o in oportunidades[:3]:   # máximo 3 para não spam
+    for o in oportunidades[:3]:
         tech  = o.get("technicals", {})
         rsi   = tech.get("rsi_14")
         vol   = tech.get("volume_ratio_vs_avg")
         price = o.get("last_price")
         forca = round(o.get("signal_strength", 0) * 100)
 
-        linha = f"· {o['ticker']} [{o.get('sector','?')}]"
+        meta = []
         if price:
-            linha += f"  ${price:.2f}"
-        linha += f"  forca={forca}%"
+            meta.append(f"${price:.2f}")
+        meta.append(f"força {forca}%")
         if rsi is not None:
-            linha += f"  RSI={rsi:.1f}"
+            meta.append(f"RSI={rsi:.1f}")
         if vol is not None:
-            linha += f"  Vol={vol:.1f}x"
-        linhas.append(linha)
+            meta.append(f"vol={vol:.1f}×")
+
+        linhas.append(f"• {o['ticker']}  {' · '.join(meta)}")
         for r in o.get("reasons", [])[:1]:
             linhas.append(f"  {r}")
 
     n     = len(oportunidades)
-    extra = f" (+{n - 3} mais)" if n > 3 else ""
+    extra = f"\n+{n - 3} mais sinais detectados" if n > 3 else ""
 
     texto = (
-        f"SINAL DE ENTRADA DETECTADO\n"
-        f"──────────────────────────\n"
-        f"Clyde encontrou {n} oportunidade(s){extra}:\n"
+        f"🚀 Novo Sinal — Clyde\n"
+        f"{regime}\n"
         f"\n"
-        f"{chr(10).join(linhas)}\n"
-        f"\n"
-        f"Regime: {regime} | Fase 0 - so leitura, sem ordens."
+        f"{chr(10).join(linhas)}"
+        f"{extra}"
     )
-    enviar_alerta(texto, silencioso=False)   # com som
+    enviar_alerta(texto, silencioso=False)
 
 
 def enviar_despertar(report: dict) -> None:
@@ -92,21 +91,21 @@ def enviar_despertar(report: dict) -> None:
         "bear_capitulation": "Bear Capitulation",
     }.get(regime, regime)
 
-    opps_str = f"Oportunidades detectadas: {opps}" if opps else "Sem sinais de entrada neste momento."
-    alerta   = "ENTRADAS BLOQUEADAS (regime bear)" if bloqueado else "Entradas abertas"
+    opps_str = f"{opps} oportunidade(s) detectada(s)" if opps else "Sem sinais de entrada agora"
+    entradas = "⛔ Entradas bloqueadas — regime bear" if bloqueado else "Entradas abertas"
 
     texto = (
-        f"BOM DIA, FRANCISCO\n"
-        f"──────────────────────────\n"
-        f"Clyde acordou · Mercados EUA abrem em ~30 min\n"
+        f"☀️ Bom dia, Francisco\n"
         f"\n"
-        f"Estado inicial:\n"
-        f"· Regime: {regime_label}\n"
-        f"· {alerta}\n"
-        f"· Posicoes: {n_pos}  |  Equity Demo: EUR {equity:,.2f}\n"
-        f"· {opps_str}\n"
+        f"Mercados EUA abrem em ~30 min.\n"
         f"\n"
-        f"Ciclos automaticos a cada 30 min ate as 21:00 UTC."
+        f"• Regime: {regime_label}\n"
+        f"• Equity demo: €{equity:,.2f}\n"
+        f"• Posições: {n_pos}\n"
+        f"• {opps_str}\n"
+        f"• {entradas}\n"
+        f"\n"
+        f"Ciclos a cada 15 min até às 21:00 UTC."
     )
     enviar_alerta(texto, silencioso=True)
 
@@ -130,23 +129,20 @@ def enviar_boa_noite(report: dict) -> None:
         "bear_capitulation": "Bear Capitulation",
     }.get(regime, regime)
 
-    status = "Sessao sem incidentes." if risk_ok else f"AVISOS de risco:\n" + "\n".join(f"  · {w}" for w in warnings)
+    avisos = "\n" + "\n".join(f"⚠️ {w}" for w in warnings) if not risk_ok else ""
 
     texto = (
-        f"BOA NOITE, FRANCISCO\n"
-        f"──────────────────────────\n"
-        f"Clyde vai dormir · Resumo da sessao de hoje:\n"
+        f"🌙 Resumo da Sessão\n"
         f"\n"
-        f"Estado final:\n"
-        f"· Regime: {regime_label}\n"
-        f"· Posicoes activas: {n_pos}\n"
-        f"· Oportunidades detectadas: {opps}\n"
-        f"· Near-misses monitorizados: {nm}\n"
+        f"• Regime: {regime_label}\n"
+        f"• Posições activas: {n_pos}\n"
+        f"• Sinais detectados: {opps}\n"
+        f"• Near-misses: {nm}\n"
         f"\n"
-        f"CRO - Factor de risco: {rf:.2f}x  |  Win rate 7d: {wr:.1f}%\n"
+        f"CRO: risk factor {rf:.2f}×  ·  win rate {wr:.1f}%"
+        f"{avisos}\n"
         f"\n"
-        f"{status}\n"
-        f"Ate amanha as 13:00 UTC."
+        f"Até amanhã às 13:00 UTC."
     )
     enviar_alerta(texto)
 
@@ -163,32 +159,28 @@ def enviar_resumo_diario(dados_resumo: dict) -> None:
         poupanca         str  "150.00"
         regime           str  "bull_trending"
     """
-    saldo = str(dados_resumo.get("saldo", "N/D"))
+    saldo    = str(dados_resumo.get("saldo", "N/D"))
     variacao = str(dados_resumo.get("variacao", "N/D"))
-    sinais = dados_resumo.get("sinais_contagem", 0)
-    ordens = dados_resumo.get("ordens_contagem", 0)
-    vetos = dados_resumo.get("vetos_contagem", 0)
+    sinais   = dados_resumo.get("sinais_contagem", 0)
+    ordens   = dados_resumo.get("ordens_contagem", 0)
+    vetos    = dados_resumo.get("vetos_contagem", 0)
     poupanca = str(dados_resumo.get("poupanca", "0.00"))
-    regime = str(dados_resumo.get("regime", "desconhecido"))
-
-    sep = "─" * 26
+    regime   = str(dados_resumo.get("regime", "desconhecido"))
 
     texto = (
-        f"\U0001f933 WHISPER • RELATÓRIO DIÁRIO DO MERCADO \U0001f933\n"
-        f"{sep}\n"
-        f"💰 EVOLUÇÃO DO PORTFÓLIO\n"
-        f"• Saldo Atual: ${saldo}\n"
-        f"• Performance Hoje: {variacao}%\n"
+        f"🤫 Whisper · Resumo Diário\n"
         f"\n"
-        f"📈 ATIVIDADE DO CLYDE\n"
-        f"• Sinais Identificados: {sinais}\n"
-        f"• Ordens Executadas: {ordens}\n"
+        f"💰 Portfólio\n"
+        f"• Saldo: €{saldo}\n"
+        f"• Performance: {variacao}%\n"
         f"\n"
-        f"🛡 ESCUDO DA BONNIE\n"
-        f"• Vetos de Risco Aplicados: {vetos}\n"
-        f"• Prejuízo Estimado Evitado: ${poupanca}\n"
-        f"{sep}\n"
-        f"Motor FundScope • regime: {regime}"
+        f"📈 Clyde\n"
+        f"• Sinais: {sinais}  ·  Ordens: {ordens}\n"
+        f"\n"
+        f"🛡 Bonnie\n"
+        f"• Vetos: {vetos}  ·  Poupança estimada: €{poupanca}\n"
+        f"\n"
+        f"regime: {regime}"
     )
 
     try:
