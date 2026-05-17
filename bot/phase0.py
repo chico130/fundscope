@@ -6,7 +6,9 @@ Uso: python -m bot.phase0   (a partir da raiz do projecto)
 """
 from __future__ import annotations
 
+import argparse
 import json
+import os
 import subprocess
 import time
 from datetime import datetime, timezone
@@ -17,7 +19,8 @@ from .config import DATA_BETA_DIR, RISK_CONFIG, STRATEGY_VERSION
 from .regime_detector import get_current_regime, load_cached_regime, load_regime_metrics
 from .watchlist_manager import build_watchlist
 from .strategy import generate_signals
-from . import position_ledger
+from .cro import CRO
+from . import exit_manager, position_ledger
 
 _BEAR_REGIMES = {"bear_correction", "bear_capitulation"}
 _LATERAL_SIZE_FACTOR = 0.6   # redução de posição sugerida em bull_lateral (secção 4, FASE-1.md)
@@ -28,8 +31,11 @@ _WATCHLIST_CANDIDATES_TO_SCAN = 10  # max candidatos da watchlist a analisar por
 # Public entry point
 # ---------------------------------------------------------------------------
 
-def run() -> dict:
-    """Corre a análise Fase 0. Devolve o relatório e guarda-o em data/beta/beta_analysis.json."""
+def run(*, git_sync: bool = True) -> dict:
+    """Corre a análise Fase 0. Devolve o relatório e guarda-o em data/beta/beta_analysis.json.
+
+    git_sync=False em CI (GitHub Actions) — o workflow YAML trata do commit/push.
+    """
     log_decision("phase0_start", "read_portfolio")
 
     # Regime e watchlist correm sempre
@@ -47,6 +53,13 @@ def run() -> dict:
         log_decision("phase0_enrich", "compute_technicals", {"n_positions": len(positions)})
         positions = enrich_with_technicals(positions)
 
+    # ATR barrier monitor — fires Telegram Whisper and flags break-even updates
+    barrier_exits = []
+    try:
+        barrier_exits = exit_manager.check_exit_barriers(positions)
+    except Exception as exc:
+        log_error("exit_manager_failed", {"error": str(exc)})
+
     # Tickers já possuídos (símbolo puro, ex: "VRT" e não "VRT_US_EQ")
     held_symbols = {p.get("price_symbol", p.get("ticker", "").split("_")[0]) for p in positions}
 
@@ -54,6 +67,10 @@ def run() -> dict:
     buy_opportunities, near_misses = _scan_watchlist_candidates(watchlist, held_symbols, regime)
     risk_status                  = _risk_snapshot(positions, cash)
     open_trades     = _count_open_trades()
+
+    cro         = CRO()
+    cro.observe(DATA_BETA_DIR / "beta_trades.json", state)
+    cro_verdict = cro.interpret(state, regime=regime)
 
     report = {
         "timestamp":          datetime.now(timezone.utc).isoformat(),
@@ -64,6 +81,10 @@ def run() -> dict:
         "regime_alert":       regime in _BEAR_REGIMES,
         "regime_details":     regime_payload.get("metrics", {}) if regime_payload else {},
         "watchlist_top5":     watchlist[:5],
+        "barrier_exits": [
+            {"ticker": p.ticker, "reason": p.reason, "qty": p.qty, "price": p.price}
+            for p in barrier_exits
+        ],
         "buy_opportunities":  buy_opportunities,
         "near_misses":        near_misses,
         "n_positions":        len(positions),
@@ -75,6 +96,12 @@ def run() -> dict:
             "t212_sync":    sync_status.get("last_t212_sync"),
             "stale_prices": [p["ticker"] for p in positions if p.get("price_stale")],
         },
+        "cro": {
+            "risk_factor":  cro_verdict.risk_factor,
+            "win_rate_7d":  cro_verdict.win_rate_7d,
+            "drawdown_pct": cro_verdict.drawdown_pct,
+            "insights":     cro_verdict.insights,
+        },
     }
 
     _save_report(report)
@@ -85,7 +112,9 @@ def run() -> dict:
         "positions": _build_positions_context(positions, signals),
     })
     _print_report(report)
-    _git_sync(report["timestamp"])
+    cro.speak()
+    if git_sync:
+        _git_sync(report["timestamp"])
     return report
 
 
@@ -431,6 +460,14 @@ def _print_report(report: dict) -> None:
     elif report["regime"] not in _BEAR_REGIMES:
         print("\nOportunidades de compra: nenhum candidato da watchlist cumpre os critérios de entrada.")
 
+    # Barreiras ATR — saídas urgentes detectadas
+    bexits = report.get("barrier_exits", [])
+    if bexits:
+        print(f"\n🚨 BARREIRAS ATR — {len(bexits)} saída(s) urgente(s):")
+        for b in bexits:
+            price_str = f" @ ${b['price']:.2f}" if b.get("price") else ""
+            print(f"  ⚡ {b['ticker']}: {b['reason']}{price_str}  (qty={b['qty']})")
+
     # Risco
     rs = report["risk_status"]
     risk_label = "OK" if rs["ok"] else "AVISO"
@@ -483,4 +520,25 @@ def _git_sync(timestamp: str) -> None:
 run_phase0_cycle = run  # alias used by main.py
 
 if __name__ == "__main__":
-    run()
+    parser = argparse.ArgumentParser(description="FundScope Bot — Fase 0")
+    parser.add_argument(
+        "--once",
+        action="store_true",
+        help="Execução única sem git sync (GitHub Actions CI mode)",
+    )
+    args   = parser.parse_args()
+    ci     = args.once or bool(os.getenv("CI"))  # GitHub Actions define CI=true automaticamente
+
+    # Detecção de wake/sleep com base na hora UTC
+    now      = datetime.now(timezone.utc)
+    is_wake  = ci and now.hour == 13 and now.minute < 30   # primeiro ciclo do dia
+    is_sleep = ci and now.hour == 21                        # último ciclo do dia
+
+    report = run(git_sync=not ci)
+
+    if ci:
+        from bot.notifier import enviar_despertar, enviar_boa_noite
+        if is_wake:
+            enviar_despertar(report)
+        if is_sleep:
+            enviar_boa_noite(report)
