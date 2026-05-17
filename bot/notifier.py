@@ -108,7 +108,7 @@ def enviar_despertar(report: dict) -> None:
         f"\n"
         f"Ciclos automaticos a cada 30 min ate as 21:00 UTC."
     )
-    enviar_alerta(texto)
+    enviar_alerta(texto, silencioso=True)
 
 
 def enviar_boa_noite(report: dict) -> None:
