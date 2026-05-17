@@ -19,22 +19,36 @@ def enviar_alerta(mensagem: str, silencioso: bool = False) -> None:
 
     silencioso=True entrega a mensagem sem som/vibração — ideal para
     notificações de rotina que não requerem atenção imediata.
+
+    Retry automático (3 tentativas, 5s entre cada) em falhas de rede.
+    Rejeições da API Telegram (token inválido, chat_id errado) não são
+    retentadas — são erros de configuração, não transitórios.
     Nunca lança excepção.
     """
-    try:
-        r = requests.post(
-            f"{_BASE_URL}/sendMessage",
-            json={
-                "chat_id": _CHAT_ID,
-                "text": mensagem,
-                "disable_notification": silencioso,
-            },
-            timeout=5,
-        )
-        if not r.json().get("ok"):
-            print(f"[notifier] API rejeitou alerta: {r.text}")
-    except Exception as exc:  # noqa: BLE001
-        print(f"[notifier] Falha ao enviar alerta Telegram: {exc}")
+    import time as _time
+
+    for attempt in range(3):
+        try:
+            r = requests.post(
+                f"{_BASE_URL}/sendMessage",
+                json={
+                    "chat_id":              _CHAT_ID,
+                    "text":                 mensagem,
+                    "disable_notification": silencioso,
+                },
+                timeout=8,
+            )
+            data = r.json()
+            if not data.get("ok"):
+                # Rejeição da API — não retentar (problema de configuração)
+                print(f"[notifier] API rejeitou alerta: {r.text}")
+            return
+        except Exception as exc:  # noqa: BLE001
+            if attempt < 2:
+                print(f"[notifier] Rede falhou (tentativa {attempt + 1}/3): {exc} — a aguardar 5s")
+                _time.sleep(5)
+            else:
+                print(f"[notifier] Falha ao enviar alerta Telegram após 3 tentativas: {exc}")
 
 
 def enviar_oportunidade(oportunidades: list[dict], regime: str) -> None:

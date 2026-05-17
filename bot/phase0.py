@@ -754,25 +754,37 @@ def _git_sync(timestamp: str) -> None:
 run_phase0_cycle = run  # alias used by main.py
 
 if __name__ == "__main__":
+    import sys
+    from bot.watchdog import check_quarantine_and_abort, quarantine
+
+    # ── Gate 1: recusa arranque se quarentena activa ──────────────────────────
+    check_quarantine_and_abort()
+
     parser = argparse.ArgumentParser(description="FundScope Bot — Fase 0")
     parser.add_argument(
         "--once",
         action="store_true",
         help="Execução única sem git sync (GitHub Actions CI mode)",
     )
-    args   = parser.parse_args()
-    ci     = args.once or bool(os.getenv("CI"))  # GitHub Actions define CI=true automaticamente
+    args = parser.parse_args()
+    ci   = args.once or bool(os.getenv("CI"))  # GitHub Actions define CI=true automaticamente
 
     # Detecção de wake/sleep com base na hora UTC
     now      = datetime.now(timezone.utc)
     is_wake  = ci and now.hour == 13 and now.minute < 30   # primeiro ciclo do dia
     is_sleep = ci and now.hour == 21                        # último ciclo do dia
 
-    report = run(git_sync=not ci)
+    # ── Gate 2: handler global — qualquer excepção não tratada activa quarentena
+    try:
+        report = run(git_sync=not ci)
 
-    if ci:
-        from bot.notifier import enviar_despertar, enviar_boa_noite
-        if is_wake:
-            enviar_despertar(report)
-        if is_sleep:
-            enviar_boa_noite(report)
+        if ci:
+            from bot.notifier import enviar_despertar, enviar_boa_noite
+            if is_wake:
+                enviar_despertar(report)
+            if is_sleep:
+                enviar_boa_noite(report)
+
+    except Exception as _fatal_exc:
+        quarantine(_fatal_exc, context="phase0.run()")
+        sys.exit(1)

@@ -63,88 +63,127 @@ _session.headers.update({
     "Content-Type": "application/json",
 })
 
+# Erros de rede transitórios — elegíveis para retry em operações idempotentes
+_RETRIABLE = (
+    req_exc.ConnectTimeout,
+    req_exc.ReadTimeout,
+    req_exc.ConnectionError,
+)
+_MAX_RETRY    = 3
+_RETRY_DELAYS = (5, 10)   # segundos entre tentativa 1→2 e 2→3
+
+
+def _classify_error(exc: Exception) -> str:
+    if isinstance(exc, req_exc.ConnectTimeout):
+        return "connection_timeout"
+    if isinstance(exc, req_exc.ReadTimeout):
+        return "read_timeout"
+    if isinstance(exc, req_exc.ConnectionError):
+        return "connection_refused"
+    return "unknown"
+
 
 # ---------------------------------------------------------------------------
 # Internal helpers
 # ---------------------------------------------------------------------------
 
 def _get(endpoint: str) -> dict | list | None:
+    """GET idempotente com retry em erros de rede transitórios (máx. 3 tentativas)."""
     if LIVE_TRADING:
         raise RuntimeError("LIVE_TRADING is True — aborting to protect live account.")
-    time.sleep(REQUEST_DELAY_SECONDS)
-    try:
-        resp = _session.get(f"{T212_BASE_URL_DEMO}{endpoint}", timeout=30)
-        resp.raise_for_status()
-        return resp.json()
-    except Exception as exc:
-        from .logger import log_error
-        if isinstance(exc, req_exc.ConnectTimeout):
-            error_type = "connection_timeout"
-        elif isinstance(exc, req_exc.ReadTimeout):
-            error_type = "read_timeout"
-        elif isinstance(exc, req_exc.ConnectionError):
-            error_type = "connection_refused"
-        else:
-            error_type = "unknown"
-        log_error("api_get_failed", {
-            "endpoint": endpoint,
-            "error": str(exc),
-            "error_type": error_type,
-        })
-        return None
+
+    from .logger import log_error
+
+    for attempt in range(_MAX_RETRY):
+        time.sleep(REQUEST_DELAY_SECONDS)
+        try:
+            resp = _session.get(f"{T212_BASE_URL_DEMO}{endpoint}", timeout=30)
+            resp.raise_for_status()
+            return resp.json()
+        except _RETRIABLE as exc:
+            if attempt < _MAX_RETRY - 1:
+                wait = _RETRY_DELAYS[min(attempt, len(_RETRY_DELAYS) - 1)]
+                print(f"[api] GET {endpoint} — {type(exc).__name__}, retry {attempt + 1}/{_MAX_RETRY} em {wait}s")
+                time.sleep(wait)
+            else:
+                log_error("api_get_failed", {
+                    "endpoint":   endpoint,
+                    "error":      str(exc),
+                    "error_type": _classify_error(exc),
+                    "attempts":   _MAX_RETRY,
+                })
+                return None
+        except Exception as exc:
+            log_error("api_get_failed", {
+                "endpoint":   endpoint,
+                "error":      str(exc),
+                "error_type": _classify_error(exc),
+            })
+            return None
+    return None
 
 
 def _post(endpoint: str, payload: dict) -> dict | None:
+    """POST de ordens — SEM retry deliberado para evitar ordens duplicadas.
+
+    Uma falha de rede no momento exacto de uma ordem é ambígua: a ordem pode
+    ter chegado ao servidor ou não. Retentar arriscaria executar a mesma ordem
+    duas vezes. Retorna None e deixa o ciclo seguinte reconciliar o estado.
+    """
     if LIVE_TRADING:
         raise RuntimeError("LIVE_TRADING is True — aborting to protect live account.")
+
+    from .logger import log_error
+
     time.sleep(REQUEST_DELAY_SECONDS)
     try:
         resp = _session.post(f"{T212_BASE_URL_DEMO}{endpoint}", json=payload, timeout=30)
         resp.raise_for_status()
         return resp.json()
     except Exception as exc:
-        from .logger import log_error
-        if isinstance(exc, req_exc.ConnectTimeout):
-            error_type = "connection_timeout"
-        elif isinstance(exc, req_exc.ReadTimeout):
-            error_type = "read_timeout"
-        elif isinstance(exc, req_exc.ConnectionError):
-            error_type = "connection_refused"
-        else:
-            error_type = "unknown"
         log_error("api_post_failed", {
-            "endpoint": endpoint,
-            "payload": payload,
-            "error": str(exc),
-            "error_type": error_type,
+            "endpoint":   endpoint,
+            "payload":    payload,
+            "error":      str(exc),
+            "error_type": _classify_error(exc),
         })
         return None
 
 
 def _delete(endpoint: str) -> bool:
+    """DELETE idempotente com retry em erros de rede transitórios (máx. 3 tentativas)."""
     if LIVE_TRADING:
         raise RuntimeError("LIVE_TRADING is True — aborting to protect live account.")
-    time.sleep(REQUEST_DELAY_SECONDS)
-    try:
-        resp = _session.delete(f"{T212_BASE_URL_DEMO}{endpoint}", timeout=30)
-        resp.raise_for_status()
-        return True
-    except Exception as exc:
-        from .logger import log_error
-        if isinstance(exc, req_exc.ConnectTimeout):
-            error_type = "connection_timeout"
-        elif isinstance(exc, req_exc.ReadTimeout):
-            error_type = "read_timeout"
-        elif isinstance(exc, req_exc.ConnectionError):
-            error_type = "connection_refused"
-        else:
-            error_type = "unknown"
-        log_error("api_delete_failed", {
-            "endpoint": endpoint,
-            "error": str(exc),
-            "error_type": error_type,
-        })
-        return False
+
+    from .logger import log_error
+
+    for attempt in range(_MAX_RETRY):
+        time.sleep(REQUEST_DELAY_SECONDS)
+        try:
+            resp = _session.delete(f"{T212_BASE_URL_DEMO}{endpoint}", timeout=30)
+            resp.raise_for_status()
+            return True
+        except _RETRIABLE as exc:
+            if attempt < _MAX_RETRY - 1:
+                wait = _RETRY_DELAYS[min(attempt, len(_RETRY_DELAYS) - 1)]
+                print(f"[api] DELETE {endpoint} — {type(exc).__name__}, retry {attempt + 1}/{_MAX_RETRY} em {wait}s")
+                time.sleep(wait)
+            else:
+                log_error("api_delete_failed", {
+                    "endpoint":   endpoint,
+                    "error":      str(exc),
+                    "error_type": _classify_error(exc),
+                    "attempts":   _MAX_RETRY,
+                })
+                return False
+        except Exception as exc:
+            log_error("api_delete_failed", {
+                "endpoint":   endpoint,
+                "error":      str(exc),
+                "error_type": _classify_error(exc),
+            })
+            return False
+    return False
 
 
 # ---------------------------------------------------------------------------
@@ -178,22 +217,29 @@ def get_market_snapshot(tickers: list[str]) -> dict[str, dict]:
 
     result: dict[str, dict] = {}
     for ticker in tickers:
-        try:
-            time.sleep(0.25)
-            info = yf.Ticker(_t212_to_yfinance(ticker)).fast_info
-            last = getattr(info, "last_price", None)
-            prev = getattr(info, "previous_close", None)
-            change_pct = None
-            if last is not None and prev:
-                change_pct = round((last - prev) / prev * 100, 2)
-            result[ticker] = {
-                "last_price": last,
-                "previous_close": prev,
-                "change_pct": change_pct,
-            }
-        except Exception as exc:
-            from .logger import log_error
-            log_error("market_snapshot_ticker_failed", {"ticker": ticker, "error": str(exc)})
+        for attempt in range(_MAX_RETRY):
+            try:
+                time.sleep(0.25)
+                info = yf.Ticker(_t212_to_yfinance(ticker)).fast_info
+                last = getattr(info, "last_price", None)
+                prev = getattr(info, "previous_close", None)
+                change_pct = None
+                if last is not None and prev:
+                    change_pct = round((last - prev) / prev * 100, 2)
+                result[ticker] = {
+                    "last_price":     last,
+                    "previous_close": prev,
+                    "change_pct":     change_pct,
+                }
+                break  # sucesso
+            except Exception as exc:
+                if attempt < _MAX_RETRY - 1:
+                    time.sleep(_RETRY_DELAYS[min(attempt, len(_RETRY_DELAYS) - 1)])
+                else:
+                    from .logger import log_error
+                    log_error("market_snapshot_ticker_failed", {
+                        "ticker": ticker, "error": str(exc), "attempts": _MAX_RETRY,
+                    })
 
     return result
 
@@ -211,25 +257,33 @@ def get_historical_data(ticker: str, days: int = 60) -> list[dict]:
         log_error("missing_dependency", {"package": "yfinance", "pip": "pip install yfinance"})
         return []
 
-    try:
-        df = yf.Ticker(_t212_to_yfinance(ticker)).history(period=f"{days}d", interval="1d")
-        if df.empty:
-            return []
-        records = []
-        for dt, row in df.iterrows():
-            records.append({
-                "date": dt.strftime("%Y-%m-%d"),
-                "open": round(float(row["Open"]), 4),
-                "high": round(float(row["High"]), 4),
-                "low": round(float(row["Low"]), 4),
-                "close": round(float(row["Close"]), 4),
-                "volume": int(row["Volume"]),
-            })
-        return records
-    except Exception as exc:
-        from .logger import log_error
-        log_error("historical_data_failed", {"ticker": ticker, "days": days, "error": str(exc)})
-        return []
+    for attempt in range(_MAX_RETRY):
+        try:
+            df = yf.Ticker(_t212_to_yfinance(ticker)).history(period=f"{days}d", interval="1d")
+            if df.empty:
+                return []
+            return [
+                {
+                    "date":   dt.strftime("%Y-%m-%d"),
+                    "open":   round(float(row["Open"]),   4),
+                    "high":   round(float(row["High"]),   4),
+                    "low":    round(float(row["Low"]),    4),
+                    "close":  round(float(row["Close"]),  4),
+                    "volume": int(row["Volume"]),
+                }
+                for dt, row in df.iterrows()
+            ]
+        except Exception as exc:
+            if attempt < _MAX_RETRY - 1:
+                time.sleep(_RETRY_DELAYS[min(attempt, len(_RETRY_DELAYS) - 1)])
+            else:
+                from .logger import log_error
+                log_error("historical_data_failed", {
+                    "ticker": ticker, "days": days,
+                    "error": str(exc), "attempts": _MAX_RETRY,
+                })
+                return []
+    return []
 
 
 def place_order_demo(
