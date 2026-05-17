@@ -37,8 +37,9 @@ def update_beta_summary() -> bool:
 
     positions = state.get("positions", [])
     free_cash = (state.get("cash", {}).get("free") or 0)
+    eurusd = _get_eurusd()
     total_value = round(
-        sum(p.get("value", p.get("value_eur", 0)) for p in positions) + free_cash, 2
+        sum(_position_value_eur(p, eurusd) for p in positions) + free_cash, 2
     )
 
     existing = read_beta_summary() or {}
@@ -98,22 +99,23 @@ def update_beta_positions() -> bool:
 
     positions = state.get("positions", [])
     free_cash = (state.get("cash", {}).get("free") or 0)
-    total_value = sum(p.get("value", p.get("value_eur", 0)) for p in positions) + free_cash
+    eurusd = _get_eurusd()
+    total_value = sum(_position_value_eur(p, eurusd) for p in positions) + free_cash
 
     formatted = []
     for p in positions:
-        val      = p.get("value", p.get("value_eur", 0))
-        invested = p.get("invested", 0)
-        gain_eur = p.get("gain_eur", p.get("ppl", 0))
+        val      = _position_value_eur(p, eurusd)
+        invested = _position_invested_eur(p, eurusd)
+        gain_eur = round(p.get("ppl") or 0.0, 2)  # T212 already converts ppl to EUR
         gain_pct = round(gain_eur / invested * 100, 2) if invested else 0.0
         alloc    = round(val / total_value * 100, 1) if total_value else 0.0
 
         formatted.append({
-            "ticker":       p.get("ticker", p.get("ticker_t212", "")),
-            "display_name": p.get("display_name", p.get("ticker", "")),
+            "ticker":       p.get("ticker", ""),
+            "display_name": p.get("ticker", "").split("_")[0],
             "quantity":     p.get("quantity", 0),
-            "avg_price":    p.get("avg_price", 0),
-            "last_price":   p.get("current_price", p.get("last_price", 0)),
+            "avg_price":    p.get("averagePrice", 0),
+            "last_price":   p.get("currentPrice", 0),
             "invested":     round(invested, 2),
             "value":        round(val, 2),
             "gain_eur":     round(gain_eur, 2),
@@ -139,8 +141,9 @@ def update_beta_equity() -> bool:
 
     positions  = state.get("positions", [])
     free_cash  = (state.get("cash", {}).get("free") or 0)
+    eurusd = _get_eurusd()
     current_eq = round(
-        sum(p.get("value", p.get("value_eur", 0)) for p in positions) + free_cash, 2
+        sum(_position_value_eur(p, eurusd) for p in positions) + free_cash, 2
     )
 
     existing = read_beta_equity() or {"history": []}
@@ -172,7 +175,7 @@ def update_beta_trades() -> bool:
         return True
 
     price_map = {
-        p.get("ticker"): p.get("current_price", p.get("last_price"))
+        p.get("ticker"): p.get("currentPrice")
         for p in state.get("positions", [])
     }
 
@@ -238,6 +241,40 @@ def _write_json(path: Path, data: dict) -> None:
         log_error("reporter_write_error", {"path": str(path), "error": str(exc)})
         if tmp.exists():
             tmp.unlink(missing_ok=True)
+
+
+def _get_eurusd() -> float:
+    """Fetch EUR/USD rate via yfinance. Returns 1.0 on failure."""
+    try:
+        import yfinance as yf
+        rate = getattr(yf.Ticker("EURUSD=X").fast_info, "last_price", None)
+        return float(rate) if rate else 1.0
+    except Exception:
+        return 1.0
+
+
+def _position_value_eur(p: dict, eurusd: float) -> float:
+    """Compute current position value in EUR from raw T212 API fields.
+
+    T212 exposes currentPrice in the instrument's native currency.
+    US equities (_US_) are in USD; everything else is assumed EUR.
+    """
+    curr_price = p.get("currentPrice") or 0.0
+    qty = p.get("quantity") or 0.0
+    native = curr_price * qty
+    if "_US_" in (p.get("ticker") or ""):
+        return native / eurusd if eurusd else native
+    return native
+
+
+def _position_invested_eur(p: dict, eurusd: float) -> float:
+    """Compute amount invested in EUR from raw T212 API fields."""
+    avg_price = p.get("averagePrice") or 0.0
+    qty = p.get("quantity") or 0.0
+    native = avg_price * qty
+    if "_US_" in (p.get("ticker") or ""):
+        return native / eurusd if eurusd else native
+    return native
 
 
 def _compute_max_drawdown(equity_data: dict | None) -> float:

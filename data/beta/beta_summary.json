@@ -1,19 +1,19 @@
 {
-  "updated": "2026-05-13T18:35:00Z",
+  "updated": "2026-05-17T10:40:26.795147+00:00",
   "env": "demo",
   "strategy_version": "v0.1.0",
   "summary": {
-    "initial_capital": 10000.00,
-    "current_value": 10850.00,
-    "total_gain_eur": 850.00,
-    "total_gain_pct": 8.5,
-    "max_drawdown_pct": -4.2,
-    "n_trades": 57,
-    "win_rate_pct": 62.0,
-    "avg_win_eur": 45.00,
-    "avg_loss_eur": -30.00,
-    "best_trade_eur": 210.00,
-    "worst_trade_eur": -95.00
+    "initial_capital": 5000.0,
+    "current_value": 4998.49,
+    "total_gain_eur": -1.51,
+    "total_gain_pct": -0.03,
+    "max_drawdown_pct": 0.0,
+    "n_trades": 4,
+    "win_rate_pct": 50.0,
+    "avg_win_eur": 300.0,
+    "avg_loss_eur": -71.5,
+    "best_trade_eur": 390.0,
+    "worst_trade_eur": -95.0
   },
   "risk_limits": {
     "max_position_pct": 20.0,
