@@ -37,6 +37,46 @@ def enviar_alerta(mensagem: str, silencioso: bool = False) -> None:
         print(f"[notifier] Falha ao enviar alerta Telegram: {exc}")
 
 
+def enviar_oportunidade(oportunidades: list[dict], regime: str) -> None:
+    """Alerta sonoro quando o Clyde detecta sinais de entrada na watchlist."""
+    if not oportunidades:
+        return
+
+    linhas = []
+    for o in oportunidades[:3]:   # máximo 3 para não spam
+        tech  = o.get("technicals", {})
+        rsi   = tech.get("rsi_14")
+        vol   = tech.get("volume_ratio_vs_avg")
+        price = o.get("last_price")
+        forca = round(o.get("signal_strength", 0) * 100)
+
+        linha = f"· {o['ticker']} [{o.get('sector','?')}]"
+        if price:
+            linha += f"  ${price:.2f}"
+        linha += f"  forca={forca}%"
+        if rsi is not None:
+            linha += f"  RSI={rsi:.1f}"
+        if vol is not None:
+            linha += f"  Vol={vol:.1f}x"
+        linhas.append(linha)
+        for r in o.get("reasons", [])[:1]:
+            linhas.append(f"  {r}")
+
+    n     = len(oportunidades)
+    extra = f" (+{n - 3} mais)" if n > 3 else ""
+
+    texto = (
+        f"SINAL DE ENTRADA DETECTADO\n"
+        f"──────────────────────────\n"
+        f"Clyde encontrou {n} oportunidade(s){extra}:\n"
+        f"\n"
+        f"{chr(10).join(linhas)}\n"
+        f"\n"
+        f"Regime: {regime} | Fase 0 - so leitura, sem ordens."
+    )
+    enviar_alerta(texto, silencioso=False)   # com som
+
+
 def enviar_despertar(report: dict) -> None:
     """Notificação de início de sessão — primeiro ciclo do dia (≈13:00 UTC)."""
     regime   = report.get("regime", "?")

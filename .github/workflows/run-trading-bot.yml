@@ -4,7 +4,7 @@ name: FundScope — Clyde · Fase 0
 # + pré-mercado (13:00) e pós-mercado (20:30–21:00)
 on:
   schedule:
-    - cron: '0,30 13-20 * * 1-5'   # cada 30 min: 13:00 → 20:30 UTC  (seg-sex)
+    - cron: '*/15 13-20 * * 1-5'   # cada 15 min: 13:00 → 20:45 UTC  (seg-sex)
     - cron: '0 21 * * 1-5'          # último ciclo: 21:00 UTC          (seg-sex)
   workflow_dispatch:                 # execução manual via GitHub UI
 

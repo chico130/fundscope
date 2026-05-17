@@ -113,6 +113,7 @@ def run(*, git_sync: bool = True) -> dict:
     })
     _print_report(report)
     cro.speak()
+    _notify_opportunities(report)
     if git_sync:
         _git_sync(report["timestamp"])
     return report
@@ -393,6 +394,18 @@ def _count_open_trades() -> int:
 # ---------------------------------------------------------------------------
 # Output
 # ---------------------------------------------------------------------------
+
+def _notify_opportunities(report: dict) -> None:
+    """Envia alerta sonoro ao Francisco quando o Clyde detecta sinais de entrada."""
+    opps = report.get("buy_opportunities", [])
+    if not opps:
+        return
+    try:
+        from bot.notifier import enviar_oportunidade
+        enviar_oportunidade(opps, report.get("regime", "?"))
+    except Exception as exc:
+        log_error("notify_opportunity_failed", {"error": str(exc)})
+
 
 def _save_report(report: dict) -> None:
     path = DATA_BETA_DIR / "beta_analysis.json"
