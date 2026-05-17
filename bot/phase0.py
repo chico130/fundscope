@@ -21,6 +21,7 @@ from .watchlist_manager import build_watchlist
 from .strategy import generate_signals, ProposedTrade
 from .cro import CRO
 from .execution import execute_trade, execute_exit
+from .learner import run_learner_cycle
 from . import exit_manager, position_ledger
 
 _BEAR_REGIMES = {"bear_correction", "bear_capitulation"}
@@ -307,6 +308,7 @@ def run(*, git_sync: bool = True) -> dict:
     })
     _print_report(report)
     cro.speak()
+    _run_learner_safe()
     _notify_opportunities(report)
     if git_sync:
         _git_sync(report["timestamp"])
@@ -316,6 +318,14 @@ def run(*, git_sync: bool = True) -> dict:
 # ---------------------------------------------------------------------------
 # Safe wrappers — falhas não abortam o ciclo principal
 # ---------------------------------------------------------------------------
+
+def _run_learner_safe() -> None:
+    """Corre o Learner em modo silencioso — nunca interrompe o ciclo principal."""
+    try:
+        run_learner_cycle()
+    except Exception as exc:
+        log_error("learner_cycle_failed", {"error": str(exc)})
+
 
 def _get_regime_safe() -> str:
     try:
