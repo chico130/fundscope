@@ -99,8 +99,8 @@ def generate_signals(
          AND  vol ≥ vol_ratio_momentum_min
 
     Regra de entrada MOMENTUM:
-      M. RSI ≥ momentum_rsi_floor  AND  EMA-20 > EMA-50  AND  price > EMA-20
-         AND  vol ≥ momentum_vol_min
+      M. RSI ≥ momentum_rsi_floor  AND  price > EMA-20 > EMA-50 > EMA-200 (alinhamento total)
+         AND  vol ≥ momentum_vol_min  (anti-choppy: exige tendência limpa em todas as escalas)
 
     Saídas VALUE (posições com style=VALUE):
       C. RSI ≥ rsi_exit_floor              → EXIT
@@ -238,19 +238,20 @@ def _entry_signal(
         reasons.append(f"Volume excepcional {vol_ratio:.1f}× — sinal de momentum")
         strength = min(1.0, 0.55 + (vol_ratio - vol_mom) / 10)
 
-    # Regra M: breakout momentum (MOMENTUM)
+    # Regra M: breakout momentum (MOMENTUM) — alinhamento total obrigatório anti-choppy
     elif (
         "MOMENTUM" in _ENABLED_STYLES
-        and rsi >= _PC.get("momentum_rsi_floor", 65)
-        and ema20_above_ema50
-        and price_above_ema20
+        and rsi >= _PC.get("momentum_rsi_floor", 58)
+        and ema50_above                 # EMA-50 > EMA-200 (tendência longa)
+        and ema20_above_ema50           # EMA-20 > EMA-50  (aceleração média)
+        and price_above_ema20           # price  > EMA-20  (breakout imediato)
         and vol_ratio >= _PC.get("momentum_vol_min", 1.5)
     ):
         style   = "MOMENTUM"
-        m_floor = _PC.get("momentum_rsi_floor", 65)
+        m_floor = _PC.get("momentum_rsi_floor", 58)
         m_vol   = _PC.get("momentum_vol_min", 1.5)
-        reasons.append(f"Breakout: RSI-14 {rsi:.1f} ≥ {m_floor} — momentum forte")
-        reasons.append("EMA-20 > EMA-50, preço acima EMA-20 — estrutura ascendente")
+        reasons.append(f"Breakout: RSI-14 {rsi:.1f} ≥ {m_floor} — momentum validado")
+        reasons.append("Alinhamento total: price > EMA-20 > EMA-50 > EMA-200")
         reasons.append(f"Volume {vol_ratio:.1f}× ≥ {m_vol}× — confirmação de volume")
         strength = min(1.0, 0.65 + (vol_ratio - m_vol) / 10)
 

@@ -75,7 +75,7 @@ _DEFAULT_PARAMS: dict[str, Any] = {
             "vol_ratio_oversold_min":  1.2,
             "vol_ratio_momentum_min":  1.8,
             # MOMENTUM engine params
-            "momentum_rsi_floor":      65,
+            "momentum_rsi_floor":      58,
             "momentum_vol_min":        1.5,
             "momentum_atr_multiplier": 2.5,
         }
@@ -113,7 +113,7 @@ _PARAM_SPACE: dict[str, dict] = {
     "vol_ratio_oversold_min":   {"min": 1.0,  "max": 2.0,  "step": 0.1,  "kind": "float"},
     "vol_ratio_momentum_min":   {"min": 1.4,  "max": 2.8,  "step": 0.1,  "kind": "float"},
     # weekly.clyde — MOMENTUM ──────────────────────────────────────────
-    "momentum_rsi_floor":       {"min": 60,   "max": 75,   "step": 1.0,  "kind": "int"},
+    "momentum_rsi_floor":       {"min": 50,   "max": 70,   "step": 1.0,  "kind": "int"},
     "momentum_vol_min":         {"min": 1.2,  "max": 2.5,  "step": 0.1,  "kind": "float"},
     "momentum_atr_multiplier":  {"min": 1.5,  "max": 4.0,  "step": 0.25, "kind": "float"},
     # monthly.bonnie — VALUE ───────────────────────────────────────────
@@ -568,13 +568,15 @@ def _would_momentum_enter(trade: dict, params: dict) -> bool:
         return False
     rsi               = ctx.get("rsi_14")
     vol               = ctx.get("volume_ratio_vs_avg", 1.0)
-    ema20_above_ema50 = ctx.get("ema20_above_ema50", False)
-    price_above_ema20 = ctx.get("price_above_ema20", False)
+    ema50_above_ema200 = ctx.get("ema50_above_ema200", True)
+    ema20_above_ema50  = ctx.get("ema20_above_ema50",  False)
+    price_above_ema20  = ctx.get("price_above_ema20",  False)
     if rsi is None:
         return True
-    m_floor = params.get("momentum_rsi_floor", 65)
+    m_floor = params.get("momentum_rsi_floor", 58)
     m_vol   = params.get("momentum_vol_min", 1.5)
-    return rsi >= m_floor and ema20_above_ema50 and price_above_ema20 and vol >= m_vol
+    return (rsi >= m_floor and ema50_above_ema200
+            and ema20_above_ema50 and price_above_ema20 and vol >= m_vol)
 
 
 def _fitness_momentum(params: dict, trades: list[dict]) -> float:
