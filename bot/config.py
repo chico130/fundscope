@@ -65,8 +65,8 @@ PORTFOLIO_PATH = BASE_DIR / "portfolio.json"
 BONNIE_LOG_PATH = LOGS_DIR / "bonnie_log.json"
 
 WATCHLIST_CONFIG = {
-    "max_size": 25,
-    "sectors": ["XLK", "XLV", "XLY", "XLI", "XLE"],
+    "max_size": 60,
+    "sectors": ["XLK", "XLV", "XLY", "XLI", "XLE", "XLF", "XLC", "XLU", "XLP"],
     "min_avg_volume_usd": 10_000_000,
     "min_price_usd": 5.0,
     "score_weights": {"momentum_1m": 0.4, "momentum_3m": 0.3, "liquidity": 0.2, "quality": 0.1},

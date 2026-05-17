@@ -92,18 +92,23 @@ def enrich_with_technicals(positions: list[dict], days: int = 60) -> list[dict]:
         closes  = [bar["close"]  for bar in history]
         volumes = [bar["volume"] for bar in history]
 
-        ema50 = compute_ema(closes, 50)
+        ema20  = compute_ema(closes, 20)
+        ema50  = compute_ema(closes, 50)
         ema200 = compute_ema(closes, 200)
-        avg_vol = sum(volumes[-20:]) / 20 if len(volumes) >= 20 else None
+        avg_vol  = sum(volumes[-20:]) / 20 if len(volumes) >= 20 else None
         last_vol = volumes[-1] if volumes else None
 
         pos["technicals"] = {
-            "rsi_14": compute_rsi(closes),
-            "ema50": ema50,
-            "ema200": ema200,
-            "ema50_above_ema200": (ema50 > ema200) if (ema50 is not None and ema200 is not None) else None,
+            "rsi_14":              compute_rsi(closes),
+            "ema_20":              ema20,
+            "ema50":               ema50,
+            "ema200":              ema200,
+            "ema20_above_ema50":   (ema20 > ema50) if (ema20 is not None and ema50 is not None) else None,
+            "ema50_above_ema200":  (ema50 > ema200) if (ema50 is not None and ema200 is not None) else None,
+            "price_above_ema20":   (closes[-1] > ema20) if (ema20 is not None and closes) else None,
             "volume_ratio_vs_avg": round(last_vol / avg_vol, 2) if (last_vol and avg_vol) else None,
-            "atr_14": compute_atr(highs, lows, closes),
+            "atr_14":              compute_atr(highs, lows, closes),
+            "last_price":          closes[-1] if closes else None,
         }
 
     return positions
@@ -187,6 +192,7 @@ def fetch_candidate_market_data(tickers: list[str]) -> dict[str, dict]:
         closes  = [bar["close"]  for bar in history]
         volumes = [bar["volume"] for bar in history]
 
+        ema20  = compute_ema(closes, 20)
         ema50  = compute_ema(closes, 50)
         ema200 = compute_ema(closes, 200)
         avg_vol  = sum(volumes[-20:]) / 20 if len(volumes) >= 20 else None
@@ -195,11 +201,15 @@ def fetch_candidate_market_data(tickers: list[str]) -> dict[str, dict]:
         result[ticker] = {
             "technicals": {
                 "rsi_14":              compute_rsi(closes),
+                "ema_20":              ema20,
                 "ema50":               ema50,
                 "ema200":              ema200,
+                "ema20_above_ema50":   (ema20 > ema50) if (ema20 is not None and ema50 is not None) else None,
                 "ema50_above_ema200":  (ema50 > ema200) if (ema50 is not None and ema200 is not None) else None,
+                "price_above_ema20":   (closes[-1] > ema20) if (ema20 is not None and closes) else None,
                 "volume_ratio_vs_avg": round(last_vol / avg_vol, 2) if (last_vol and avg_vol) else None,
                 "atr_14":              compute_atr(highs, lows, closes),
+                "last_price":          closes[-1] if closes else None,
             },
             "last_price": closes[-1] if closes else None,
         }

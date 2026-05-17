@@ -427,6 +427,67 @@ def write_bonnie_log(
 
 
 # ---------------------------------------------------------------------------
+# 7. Filtro activo de propostas em tempo real
+# ---------------------------------------------------------------------------
+
+def filter_proposals(
+    proposals:     list,
+    market_data:   dict[str, dict],
+    bonnie_params: dict,
+) -> tuple[list, list]:
+    """Separa propostas de entrada em aprovadas e vetadas.
+
+    Apenas filtra BUY — SELL/REDUCE passam sempre (saídas nunca são vetadas).
+
+    VALUE:     veta se signal_strength < base_strength_threshold.
+    MOMENTUM:  veta apenas por volume seco (vol_ratio < momentum_vol_floor)
+               ou gap down acentuado (last_price < prev × (1 - gap_down_pct/100)).
+               RSI elevado nunca veta MOMENTUM — é pré-condição da regra M.
+
+    Retorna (approved: list[ProposedTrade], vetoed: list[tuple[ProposedTrade, str]]).
+    """
+    base_threshold = bonnie_params.get("base_threshold", 0.60)
+    vol_floor      = bonnie_params.get("momentum_vol_floor", 1.0)
+    gap_pct        = bonnie_params.get("momentum_gap_down_pct", 3.0)
+
+    approved: list        = []
+    vetoed:   list        = []
+
+    for trade in proposals:
+        if getattr(trade, "side", "BUY") != "BUY":
+            approved.append(trade)
+            continue
+
+        ticker = getattr(trade, "ticker", "")
+        data   = market_data.get(ticker, {})
+        t      = data.get("technicals", {}) or {}
+        vol    = t.get("volume_ratio_vs_avg") or 1.0
+        last   = t.get("last_price") or data.get("last_price")
+        prev   = data.get("previous_close")
+        style  = getattr(trade, "style", "VALUE")
+
+        if style == "MOMENTUM":
+            if vol < vol_floor:
+                vetoed.append((trade, f"MOMENTUM: volume {vol:.2f}× < mínimo {vol_floor}× — liquidez insuficiente"))
+                continue
+            if last and prev and prev > 0:
+                gap = (prev - last) / prev * 100
+                if gap > gap_pct:
+                    vetoed.append((trade, f"MOMENTUM: gap down {gap:.1f}% > {gap_pct}% — entrada suspensa"))
+                    continue
+
+        else:  # VALUE (ou fallback)
+            strength = getattr(trade, "signal_strength", 0.0)
+            if strength < base_threshold:
+                vetoed.append((trade, f"VALUE: força {strength:.2f} < limiar {base_threshold:.2f}"))
+                continue
+
+        approved.append(trade)
+
+    return approved, vetoed
+
+
+# ---------------------------------------------------------------------------
 # Ponto de entrada
 # ---------------------------------------------------------------------------
 

@@ -15,20 +15,36 @@ WATCHLIST_PATH      = DATA_BETA_DIR / "watchlist.json"
 FUNDAMENTALS_PATH   = DATA_BETA_DIR / "watchlist_fundamentals.json"
 
 SECTOR_TICKERS: dict[str, list[str]] = {
-    "XLK": [  # Technology
+    "XLK": [  # Technology — Value blue-chips + Momentum race horses
         "AAPL", "MSFT", "NVDA", "AVGO", "AMD", "ORCL", "ADBE", "CRM", "CSCO", "INTC",
         "QCOM", "TXN", "NOW", "INTU", "IBM", "AMAT", "LRCX", "MU", "KLAC", "ADI",
         "SNPS", "CDNS", "FTNT", "PANW", "CRWD", "NET", "DDOG", "ZS", "MRVL", "HPE",
+        # Momentum race horses — IA, semis, high-beta software
+        "PLTR", "SMCI", "ARM", "TSM", "SNOW", "APP", "MSTR", "S",
     ],
     "XLV": [  # Healthcare
         "LLY", "UNH", "JNJ", "ABBV", "MRK", "TMO", "ABT", "DHR", "PFE", "AMGN",
         "SYK", "BSX", "ISRG", "MDT", "CVS", "CI", "HUM", "ELV", "VRTX", "REGN",
         "GILD", "BIIB", "IQV", "ZBH", "BDX", "BAX", "DXCM", "HOLX", "MTD", "A",
     ],
-    "XLY": [  # Consumer Discretionary
+    "XLF": [  # Financials — Value anchors + Crypto/Fintech race horses
+        "JPM", "BAC", "GS", "MS", "WFC", "BLK", "BX",
+        "V", "MA", "PYPL", "SQ", "COIN", "HOOD",
+    ],
+    "XLC": [  # Communication Services
+        "META", "GOOGL", "NFLX", "DIS", "CMCSA", "T", "VZ", "SPOT", "RBLX", "TTWO",
+    ],
+    "XLU": [  # Utilities — Data center power plays (race horses da infra IA)
+        "VST", "CEG", "NEE", "AES", "SO", "D", "EXC",
+    ],
+    "XLP": [  # Consumer Staples — Value anchors defensivos
+        "WMT", "COST", "PG", "KO", "PEP", "CL", "MDLZ",
+    ],
+    "XLY": [  # Consumer Discretionary + plataformas de alto crescimento
         "AMZN", "TSLA", "HD", "MCD", "NKE", "LOW", "SBUX", "TJX", "BKNG", "CMG",
         "ORLY", "AZO", "GM", "F", "ROST", "DHI", "LEN", "PHM", "NVR", "TOL",
         "EXPE", "ABNB", "LVS", "MGM", "WYNN", "HLT", "MAR", "H", "DRI", "YUM",
+        "SHOP", "MELI",
     ],
     "XLI": [  # Industrials
         "GE", "RTX", "HON", "UPS", "BA", "CAT", "DE", "LMT", "NOC", "GD",

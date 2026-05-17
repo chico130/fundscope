@@ -1,5 +1,5 @@
 """
-Strategy module — Fase 1 rule-based signals com injecção de parâmetros do Learner.
+Strategy module — Dual-Engine rule-based signals com injecção de parâmetros do Learner.
 
 Pipeline:
   market_data  ──► generate_signals()  ──► list[Signal]
@@ -10,7 +10,7 @@ automático aos defaults hardcoded em caso de ausência, corrupção ou bounds v
 O módulo nunca crasha por falha do Learner — a rede de segurança é sempre os defaults.
 
 Parâmetros aprendíveis (Fase 3):
-  _PC  ← weekly.clyde   → limiares RSI e volume de entrada/saída
+  _PC  ← weekly.clyde   → limiares RSI e volume de entrada/saída (VALUE + MOMENTUM)
   _PB  ← monthly.bonnie → size_factor_pct e thresholds de aprovação
 """
 from __future__ import annotations
@@ -35,6 +35,7 @@ except Exception:
 
 _PC = _P["weekly"]["clyde"]     # thresholds técnicos do Clyde
 _PB = _P["monthly"]["bonnie"]   # size factor e thresholds da Bonnie
+_ENABLED_STYLES: list[str] = _P.get("enabled_styles", ["VALUE", "MOMENTUM"])
 
 # ---------------------------------------------------------------------------
 # Constantes não aprendíveis (lógica de regime — estáveis por design)
@@ -61,6 +62,7 @@ class Signal:
     direction:   Literal["LONG"]
     strength:    float
     reasons:     list[str]
+    style:       Literal["VALUE", "MOMENTUM"] = "VALUE"
     context:     dict = field(default_factory=dict)
 
 
@@ -74,6 +76,7 @@ class ProposedTrade:
     reason:           str
     context:          dict
     signal_strength:  float
+    style:            Literal["VALUE", "MOMENTUM"] = "VALUE"
     strategy_version: str = STRATEGY_VERSION
 
 
@@ -82,33 +85,47 @@ class ProposedTrade:
 # ---------------------------------------------------------------------------
 
 def generate_signals(
-    market_data:     dict[str, dict],
-    portfolio_state: dict,
-    regime:          str = "bull_trending",
+    market_data:      dict[str, dict],
+    portfolio_state:  dict,
+    regime:           str = "bull_trending",
+    position_styles:  dict[str, str] | None = None,
+    position_peaks:   dict[str, float] | None = None,
 ) -> list[Signal]:
     """Gera sinais BUY / EXIT / REDUCE a partir de indicadores técnicos.
 
-    Regras de entrada (uma deve ser satisfeita):
+    Regras de entrada VALUE:
       A. RSI ≤ rsi_oversold_ceiling  AND  EMA-50 > EMA-200  AND  vol ≥ vol_ratio_oversold_min
       B. rsi_momentum_min ≤ RSI ≤ rsi_momentum_max  AND  EMA-50 > EMA-200
          AND  vol ≥ vol_ratio_momentum_min
 
-    Saídas / reduções (apenas em posições detidas):
+    Regra de entrada MOMENTUM:
+      M. RSI ≥ momentum_rsi_floor  AND  EMA-20 > EMA-50  AND  price > EMA-20
+         AND  vol ≥ momentum_vol_min
+
+    Saídas VALUE (posições com style=VALUE):
       C. RSI ≥ rsi_exit_floor              → EXIT
-      D. EMA-50 < EMA-200 numa posição     → REDUCE (vende metade)
+      D. EMA-50 < EMA-200                  → REDUCE (vende metade)
+
+    Saídas MOMENTUM (posições com style=MOMENTUM):
+      E. close < peak_high_since_entry − multiplier × ATR_14  → EXIT (trailing stop)
     """
-    signals: list[Signal] = []
-    held = {p.get("ticker") for p in portfolio_state.get("positions", [])}
+    signals:    list[Signal] = []
+    held        = {p.get("ticker") for p in portfolio_state.get("positions", [])}
+    pos_styles  = position_styles or {}
+    pos_peaks   = position_peaks  or {}
 
     for ticker, data in market_data.items():
         t = data.get("technicals")
         if t is None:
             continue
 
-        rsi         = t.get("rsi_14")
-        ema50_above = t.get("ema50_above_ema200")
-        vol_ratio   = t.get("volume_ratio_vs_avg") or 1.0
-        atr         = t.get("atr_14")
+        rsi               = t.get("rsi_14")
+        ema50_above       = t.get("ema50_above_ema200")
+        ema20_above_ema50 = t.get("ema20_above_ema50")
+        price_above_ema20 = t.get("price_above_ema20")
+        vol_ratio         = t.get("volume_ratio_vs_avg") or 1.0
+        atr               = t.get("atr_14")
+        last_price        = t.get("last_price") or data.get("last_price")
 
         if rsi is None or ema50_above is None:
             continue
@@ -116,40 +133,72 @@ def generate_signals(
         base_ctx = {
             "rsi_14":              rsi,
             "ema50_above_ema200":  ema50_above,
+            "ema20_above_ema50":   ema20_above_ema50,
+            "price_above_ema20":   price_above_ema20,
             "volume_ratio_vs_avg": vol_ratio,
             "atr_14":              atr,
         }
 
         # ── Saídas / reduções em posições detidas ───────────────────────
         if ticker in held:
-            exit_floor = _PC["rsi_exit_floor"]
-            if rsi >= exit_floor:
-                signals.append(Signal(
-                    ticker=ticker,
-                    signal_type="EXIT",
-                    direction="LONG",
-                    strength=min(1.0, (rsi - exit_floor) / max(1, 100 - exit_floor)),
-                    reasons=[f"RSI-14 sobrecomprado ({rsi:.1f} ≥ {exit_floor}) — risco de correcção"],
-                    context=base_ctx,
-                ))
-                continue
+            pos_style = pos_styles.get(ticker, "VALUE")
 
-            if ema50_above is False:
-                signals.append(Signal(
-                    ticker=ticker,
-                    signal_type="REDUCE",
-                    direction="LONG",
-                    strength=0.5,
-                    reasons=["EMA-50 abaixo de EMA-200 — tendência invertida, reduzir exposição"],
-                    context=base_ctx,
-                ))
-                continue
+            if pos_style == "MOMENTUM":
+                peak_high  = pos_peaks.get(ticker, 0.0)
+                multiplier = _PC.get("momentum_atr_multiplier", 2.5)
+                if atr and last_price and peak_high > 0:
+                    trailing_stop = peak_high - multiplier * atr
+                    if last_price < trailing_stop:
+                        signals.append(Signal(
+                            ticker=ticker,
+                            signal_type="EXIT",
+                            direction="LONG",
+                            strength=1.0,
+                            style="MOMENTUM",
+                            reasons=[
+                                f"ATR Trailing Stop atingido: preço {last_price:.2f} < "
+                                f"stop {trailing_stop:.2f} "
+                                f"(peak {peak_high:.2f} − {multiplier}×ATR {atr:.2f})"
+                            ],
+                            context={**base_ctx, "trailing_stop": trailing_stop, "peak_high": peak_high},
+                        ))
+                        continue
+
+            else:  # VALUE (ou estilo desconhecido — fallback seguro)
+                exit_floor = _PC["rsi_exit_floor"]
+                if rsi >= exit_floor:
+                    signals.append(Signal(
+                        ticker=ticker,
+                        signal_type="EXIT",
+                        direction="LONG",
+                        strength=min(1.0, (rsi - exit_floor) / max(1, 100 - exit_floor)),
+                        style="VALUE",
+                        reasons=[f"RSI-14 sobrecomprado ({rsi:.1f} ≥ {exit_floor}) — risco de correcção"],
+                        context=base_ctx,
+                    ))
+                    continue
+
+                if ema50_above is False:
+                    signals.append(Signal(
+                        ticker=ticker,
+                        signal_type="REDUCE",
+                        direction="LONG",
+                        strength=0.5,
+                        style="VALUE",
+                        reasons=["EMA-50 abaixo de EMA-200 — tendência invertida, reduzir exposição"],
+                        context=base_ctx,
+                    ))
+                    continue
 
         # ── Entradas (posição nova ou add abaixo do meio do máximo) ─────
         if ticker not in held or _below_half_max(ticker, portfolio_state):
             if regime in _BEAR_REGIMES:
                 continue
-            sig = _entry_signal(ticker, rsi, ema50_above, vol_ratio, atr=atr)
+            sig = _entry_signal(
+                ticker, rsi, ema50_above, vol_ratio, atr=atr,
+                ema20_above_ema50=ema20_above_ema50,
+                price_above_ema20=price_above_ema20,
+            )
             if sig:
                 signals.append(sig)
 
@@ -157,15 +206,18 @@ def generate_signals(
 
 
 def _entry_signal(
-    ticker:      str,
-    rsi:         float,
-    ema50_above: bool,
-    vol_ratio:   float,
-    atr:         float | None = None,
+    ticker:            str,
+    rsi:               float,
+    ema50_above:       bool,
+    vol_ratio:         float,
+    atr:               float | None = None,
+    ema20_above_ema50: bool | None = None,
+    price_above_ema20: bool | None = None,
 ) -> Signal | None:
-    """Avalia regras A e B com parâmetros injectados pelo Learner."""
-    reasons:  list[str] = []
-    strength: float     = 0.0
+    """Avalia regras A, B (VALUE) e M (MOMENTUM) com parâmetros do Learner."""
+    reasons: list[str] = []
+    strength: float    = 0.0
+    style: str         = "VALUE"
 
     rsi_ceil  = _PC["rsi_oversold_ceiling"]
     vol_os    = _PC["vol_ratio_oversold_min"]
@@ -173,18 +225,34 @@ def _entry_signal(
     rsi_m_max = _PC["rsi_momentum_max"]
     vol_mom   = _PC["vol_ratio_momentum_min"]
 
-    # Regra A: sobrevendido em tendência ascendente
-    if rsi <= rsi_ceil and ema50_above and vol_ratio >= vol_os:
+    # Regra A: sobrevendido em tendência ascendente (VALUE)
+    if "VALUE" in _ENABLED_STYLES and rsi <= rsi_ceil and ema50_above and vol_ratio >= vol_os:
         reasons.append(f"RSI-14 sobrevendido ({rsi:.1f} ≤ {rsi_ceil}) — zona de entrada")
         reasons.append("Tendência ascendente: EMA-50 > EMA-200")
         reasons.append(f"Volume {vol_ratio:.1f}× acima da média — confirmação presente")
         strength = min(1.0, 0.70 + (rsi_ceil - rsi) / 100)
 
-    # Regra B: RSI neutro + surge de volume (momentum)
-    elif rsi_m_min <= rsi <= rsi_m_max and ema50_above and vol_ratio >= vol_mom:
+    # Regra B: RSI neutro + surge de volume (VALUE)
+    elif "VALUE" in _ENABLED_STYLES and rsi_m_min <= rsi <= rsi_m_max and ema50_above and vol_ratio >= vol_mom:
         reasons.append(f"RSI-14 neutro ({rsi:.1f}) em tendência ascendente")
         reasons.append(f"Volume excepcional {vol_ratio:.1f}× — sinal de momentum")
         strength = min(1.0, 0.55 + (vol_ratio - vol_mom) / 10)
+
+    # Regra M: breakout momentum (MOMENTUM)
+    elif (
+        "MOMENTUM" in _ENABLED_STYLES
+        and rsi >= _PC.get("momentum_rsi_floor", 65)
+        and ema20_above_ema50
+        and price_above_ema20
+        and vol_ratio >= _PC.get("momentum_vol_min", 1.5)
+    ):
+        style   = "MOMENTUM"
+        m_floor = _PC.get("momentum_rsi_floor", 65)
+        m_vol   = _PC.get("momentum_vol_min", 1.5)
+        reasons.append(f"Breakout: RSI-14 {rsi:.1f} ≥ {m_floor} — momentum forte")
+        reasons.append("EMA-20 > EMA-50, preço acima EMA-20 — estrutura ascendente")
+        reasons.append(f"Volume {vol_ratio:.1f}× ≥ {m_vol}× — confirmação de volume")
+        strength = min(1.0, 0.65 + (vol_ratio - m_vol) / 10)
 
     if not reasons:
         return None
@@ -194,10 +262,13 @@ def _entry_signal(
         signal_type="ENTRY",
         direction="LONG",
         strength=strength,
+        style=style,  # type: ignore[arg-type]
         reasons=reasons,
         context={
             "rsi_14":              rsi,
             "ema50_above_ema200":  ema50_above,
+            "ema20_above_ema50":   ema20_above_ema50,
+            "price_above_ema20":   price_above_ema20,
             "volume_ratio_vs_avg": vol_ratio,
             "atr_14":              atr,
         },
@@ -242,10 +313,10 @@ def propose_trades(
     if total_equity == 0:
         return []
 
-    max_pos_eur  = total_equity * RISK_CONFIG["max_position_pct"] / 100
-    size_factor  = _PB["size_factor_pct"]          # learnable (default 0.15)
-    regime_mult  = _REGIME_SIZE_FACTOR.get(regime, 1.0)
-    proposals:   list[ProposedTrade] = []
+    max_pos_eur = total_equity * RISK_CONFIG["max_position_pct"] / 100
+    size_factor = _PB["size_factor_pct"]
+    regime_mult = _REGIME_SIZE_FACTOR.get(regime, 1.0)
+    proposals:  list[ProposedTrade] = []
 
     for sig in signals:
         if sig.signal_type == "ENTRY":
@@ -267,6 +338,7 @@ def propose_trades(
                 order_type="MARKET", price=None,
                 reason=" | ".join(sig.reasons),
                 context=sig.context, signal_strength=sig.strength,
+                style=sig.style,
             ))
 
         elif sig.signal_type in ("EXIT", "REDUCE"):
@@ -283,6 +355,7 @@ def propose_trades(
                 order_type="MARKET", price=None,
                 reason=" | ".join(sig.reasons),
                 context=sig.context, signal_strength=sig.strength,
+                style=sig.style,
             ))
 
     return proposals

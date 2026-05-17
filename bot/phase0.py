@@ -18,11 +18,13 @@ from .logger import log_decision, log_error
 from .config import DATA_BETA_DIR, RISK_CONFIG, STRATEGY_VERSION, PHASE1_EXECUTION
 from .regime_detector import get_current_regime, load_cached_regime, load_regime_metrics
 from .watchlist_manager import build_watchlist
-from .strategy import generate_signals, ProposedTrade
+from .strategy import generate_signals, propose_trades, ProposedTrade
 from .cro import CRO
 from .execution import execute_trade, execute_exit
 from .learner import run_learner_cycle
 from . import exit_manager, position_ledger
+
+POSITION_META_PATH = DATA_BETA_DIR / "position_meta.json"
 
 _BEAR_REGIMES = {"bear_correction", "bear_capitulation"}
 _LATERAL_SIZE_FACTOR = 0.6   # redução de posição sugerida em bull_lateral (secção 4, FASE-1.md)
@@ -43,6 +45,121 @@ _REGIME_ENTRY_FACTOR: dict[str, float] = {
     "bear_correction":   0.0,
     "bear_capitulation": 0.0,
 }
+
+
+# ---------------------------------------------------------------------------
+# Position meta — persiste style e peak_high por ticker entre ciclos
+# ---------------------------------------------------------------------------
+
+def _load_position_meta() -> dict:
+    """Carrega {t212_ticker: {style, peak_high, entry_date}} de position_meta.json."""
+    if not POSITION_META_PATH.exists():
+        return {}
+    try:
+        with open(POSITION_META_PATH, encoding="utf-8") as f:
+            data = json.load(f)
+        return data if isinstance(data, dict) else {}
+    except (json.JSONDecodeError, OSError):
+        return {}
+
+
+def _save_position_meta(meta: dict) -> None:
+    """Escrita atómica de position_meta.json."""
+    tmp = POSITION_META_PATH.with_suffix(".tmp")
+    try:
+        POSITION_META_PATH.parent.mkdir(parents=True, exist_ok=True)
+        with open(tmp, "w", encoding="utf-8") as f:
+            json.dump(meta, f, indent=2, ensure_ascii=False)
+        tmp.replace(POSITION_META_PATH)
+    except OSError as exc:
+        log_error("position_meta_save_error", {"error": str(exc)})
+
+
+def _update_position_peaks(
+    positions: list[dict], position_meta: dict, position_styles: dict
+) -> None:
+    """Actualiza peak_high em position_meta para posições MOMENTUM (in-place)."""
+    for pos in positions:
+        ticker = pos.get("ticker")
+        if ticker and position_styles.get(ticker) == "MOMENTUM":
+            t       = pos.get("technicals") or {}
+            current = t.get("last_price")
+            if current:
+                meta = position_meta.setdefault(
+                    ticker, {"style": "MOMENTUM", "peak_high": 0.0}
+                )
+                if current > meta.get("peak_high", 0.0):
+                    meta["peak_high"] = current
+
+
+def _check_momentum_exits(
+    positions: list[dict],
+    position_meta: dict,
+    position_styles: dict,
+    position_peaks: dict,
+    regime: str,
+) -> list:
+    """Gera propostas de saída ATR Trailing Stop para posições MOMENTUM detidas."""
+    momentum_pos = [
+        p for p in positions if position_styles.get(p.get("ticker")) == "MOMENTUM"
+    ]
+    if not momentum_pos:
+        return []
+
+    market_data_held: dict = {
+        pos["ticker"]: {"technicals": pos.get("technicals") or {}}
+        for pos in momentum_pos
+        if pos.get("ticker")
+    }
+    portfolio = {"positions": positions, "cash": {"free": 0}}
+    signals   = generate_signals(
+        market_data_held, portfolio, regime=regime,
+        position_styles=position_styles, position_peaks=position_peaks,
+    )
+    exit_signals = [s for s in signals if s.signal_type in ("EXIT", "REDUCE")]
+    return propose_trades(exit_signals, portfolio, regime=regime)
+
+
+def _apply_bonnie_filter(opportunities: list[dict]) -> list[dict]:
+    """Filtra buy_opportunities através de bonnie.filter_proposals(). Fail-open."""
+    if not opportunities:
+        return opportunities
+    try:
+        from .bonnie import filter_proposals
+        from .learner import get_active_params
+
+        bonnie_params = get_active_params().get("monthly", {}).get("bonnie", {})
+
+        proposals = [
+            ProposedTrade(
+                ticker=opp["ticker"], side="BUY", qty=1,
+                order_type="MARKET", price=opp.get("last_price"), reason="",
+                context=opp.get("technicals", {}),
+                signal_strength=opp.get("signal_strength", 0.5),
+                style=opp.get("style", "VALUE"),
+            )
+            for opp in opportunities
+        ]
+        market_data = {
+            opp["ticker"]: {
+                "technicals": opp.get("technicals", {}),
+                "last_price": opp.get("last_price"),
+            }
+            for opp in opportunities
+        }
+
+        approved_trades, vetoed = filter_proposals(proposals, market_data, bonnie_params)
+        approved_tickers = {t.ticker for t in approved_trades}
+
+        for trade, reason in vetoed:
+            log_decision("bonnie_veto", "opportunity_filtered",
+                         {"ticker": trade.ticker, "reason": reason})
+
+        return [opp for opp in opportunities if opp["ticker"] in approved_tickers]
+
+    except Exception as exc:
+        log_error("bonnie_filter_failed", {"error": str(exc)})
+        return opportunities  # fail-open
 
 
 # ---------------------------------------------------------------------------
@@ -72,6 +189,7 @@ def _execute_phase1(
     state: dict,
     regime: str,
     cro_verdict,
+    position_meta: dict | None = None,
 ) -> list[dict]:
     """Executa ordens de compra e venda de forma puramente matemática (Fase 1).
 
@@ -82,12 +200,15 @@ def _execute_phase1(
 
     regime_factor = _REGIME_ENTRY_FACTOR.get(regime, 0.0)
 
+    _meta = position_meta if isinstance(position_meta, dict) else {}
+
     # ── Saídas urgentes (barrier_exits vêm já como ProposedTrade) ─────────
     for be in barrier_exits:
         try:
             result = execute_trade(be, state)
             if result:
                 executed.append(result)
+                _meta.pop(be.ticker, None)
                 log_decision("phase1_exit", "barrier_exit", {
                     "ticker": be.ticker, "reason": be.reason,
                 })
@@ -116,6 +237,7 @@ def _execute_phase1(
             result = execute_exit(ticker, pos_for_exit, reason, rsi)
             if result:
                 executed.append(result)
+                _meta.pop(ticker, None)
                 log_decision("phase1_exit", "rsi_overbought", {"ticker": ticker, "rsi": rsi})
         except Exception as exc:
             log_error("phase1_rsi_exit_failed", {"ticker": ticker, "error": str(exc)})
@@ -175,7 +297,8 @@ def _execute_phase1(
         t212_ticker = _yf_to_t212(opp["ticker"])
         tech = opp.get("technicals", {})
 
-        proposed = ProposedTrade(
+        opp_style = opp.get("style", "VALUE")
+        proposed  = ProposedTrade(
             ticker=t212_ticker,
             side="BUY",
             qty=qty,
@@ -186,22 +309,32 @@ def _execute_phase1(
                 "rsi_14":              tech.get("rsi_14"),
                 "atr_14":              tech.get("atr_14"),
                 "volume_ratio_vs_avg": tech.get("volume_ratio_vs_avg"),
+                "ema20_above_ema50":   tech.get("ema20_above_ema50"),
+                "price_above_ema20":   tech.get("price_above_ema20"),
                 "regime":              regime,
                 "watchlist_score":     opp.get("watchlist_score"),
                 "signal_strength":     strength,
+                "style":               opp_style,
             },
             signal_strength=strength,
+            style=opp_style,
         )
 
         try:
             result = execute_trade(proposed, state)
             if result:
                 executed.append(result)
+                _meta[t212_ticker] = {
+                    "style":      opp_style,
+                    "peak_high":  price_usd,
+                    "entry_date": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+                }
                 log_decision("phase1_entry", "order_placed", {
                     "ticker":   t212_ticker,
                     "qty":      qty,
                     "price":    price_usd,
                     "size_eur": round(size_eur, 2),
+                    "style":    opp_style,
                 })
         except Exception as exc:
             log_error("phase1_entry_failed", {"ticker": t212_ticker, "error": str(exc)})
@@ -225,6 +358,11 @@ def run(*, git_sync: bool = True) -> dict:
     regime_payload = load_regime_metrics()  # full metrics written by regime_detector
     watchlist      = _get_watchlist_safe()
 
+    # Position meta — persiste style e peak_high por ticker entre ciclos
+    position_meta   = _load_position_meta()
+    position_styles = {t: m.get("style", "VALUE") for t, m in position_meta.items()}
+    position_peaks  = {t: float(m.get("peak_high", 0.0)) for t, m in position_meta.items()}
+
     # Portfolio: ledger local + Finnhub prices (T212 sync tentado em background)
     state     = get_full_portfolio_state()
     positions = state.get("positions", [])
@@ -235,6 +373,10 @@ def run(*, git_sync: bool = True) -> dict:
         log_decision("phase0_enrich", "compute_technicals", {"n_positions": len(positions)})
         positions = enrich_with_technicals(positions)
 
+    # Actualizar peak_high para posições MOMENTUM (in-place no position_meta)
+    _update_position_peaks(positions, position_meta, position_styles)
+    position_peaks = {t: float(m.get("peak_high", 0.0)) for t, m in position_meta.items()}
+
     # ATR barrier monitor — fires Telegram Whisper and flags break-even updates
     barrier_exits = []
     try:
@@ -242,13 +384,26 @@ def run(*, git_sync: bool = True) -> dict:
     except Exception as exc:
         log_error("exit_manager_failed", {"error": str(exc)})
 
+    # MOMENTUM ATR Trailing Stop exits para posições detidas
+    try:
+        momentum_exits = _check_momentum_exits(
+            positions, position_meta, position_styles, position_peaks, regime
+        )
+        barrier_exits = barrier_exits + momentum_exits
+    except Exception as exc:
+        log_error("momentum_exit_check_failed", {"error": str(exc)})
+
     # Tickers já possuídos (símbolo puro, ex: "VRT" e não "VRT_US_EQ")
     held_symbols = {p.get("price_symbol", p.get("ticker", "").split("_")[0]) for p in positions}
 
-    signals                      = _analyse_all(positions, regime)
+    signals                        = _analyse_all(positions, regime)
     buy_opportunities, near_misses = _scan_watchlist_candidates(watchlist, held_symbols, regime)
-    risk_status                  = _risk_snapshot(positions, cash)
-    open_trades     = _count_open_trades()
+
+    # Filtro Bonnie: remove oportunidades que não passam os limiares por estilo
+    buy_opportunities = _apply_bonnie_filter(buy_opportunities)
+
+    risk_status = _risk_snapshot(positions, cash)
+    open_trades = _count_open_trades()
 
     cro         = CRO()
     cro.observe(DATA_BETA_DIR / "beta_trades.json", state)
@@ -260,7 +415,10 @@ def run(*, git_sync: bool = True) -> dict:
         executed_trades = _execute_phase1(
             buy_opportunities, barrier_exits, signals,
             positions, state, regime, cro_verdict,
+            position_meta=position_meta,
         )
+
+    _save_position_meta(position_meta)
 
     report = {
         "timestamp":          datetime.now(timezone.utc).isoformat(),
@@ -399,6 +557,7 @@ def _scan_watchlist_candidates(
             "mom_1m":          round(mom1m_map.get(sig.ticker, 0), 4),
             "mom_3m":          round(mom3m_map.get(sig.ticker, 0), 4),
             "signal_strength": round(sig.strength, 3),
+            "style":           sig.style,
             "reasons":         sig.reasons,
             "technicals":      sig.context,
             "last_price":      md.get("last_price"),

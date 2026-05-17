@@ -89,6 +89,13 @@ def _t1_strategy():
     assert callable(m.propose_trades),    "propose_trades em falta"
     assert hasattr(m, "_PC"),             "_PC (clyde params) em falta"
     assert hasattr(m, "_PB"),             "_PB (bonnie params) em falta"
+    assert hasattr(m, "_ENABLED_STYLES"), "_ENABLED_STYLES em falta"
+    # Signal deve ter campo style
+    import dataclasses
+    signal_fields = {f.name for f in dataclasses.fields(m.Signal)}
+    assert "style" in signal_fields, "Signal.style em falta"
+    trade_fields  = {f.name for f in dataclasses.fields(m.ProposedTrade)}
+    assert "style" in trade_fields, "ProposedTrade.style em falta"
 
 
 def _t1_learner():
@@ -118,7 +125,7 @@ def _t1_watchdog():
     assert hasattr(m, "EMERGENCY_LOCK_PATH"),       "EMERGENCY_LOCK_PATH em falta"
 
 
-check("bot.strategy — generate_signals, propose_trades, _PC, _PB", _t1_strategy)
+check("bot.strategy — generate_signals, propose_trades, _PC, _PB, _ENABLED_STYLES, Signal.style", _t1_strategy)
 check("bot.learner  — get_active_params, run_learner_cycle, _DEFAULT_PARAMS", _t1_learner)
 check("bot.cro      — classe CRO", _t1_cro)
 check("bot.notifier — enviar_alerta, enviar_oportunidade", _t1_notifier)
@@ -264,17 +271,35 @@ def _t4_clyde_pipeline():
             "technicals": {
                 "rsi_14":              compute_rsi(closes),
                 "ema50_above_ema200":  (ema50 > ema200) if (ema50 and ema200) else True,
+                "ema20_above_ema50":   None,
+                "price_above_ema20":   None,
                 "volume_ratio_vs_avg": round(volumes[-1] / avg_vol, 2),
                 "atr_14":              compute_atr(highs, lows, closes),
+                "last_price":          closes[-1],
             }
         },
-        # Ticker com RSI sobrevendido (forced) para garantir sinal gerado
+        # Ticker com RSI sobrevendido (forced) → Rule A (VALUE)
         "MSFT_US_EQ": {
             "technicals": {
-                "rsi_14":              31.0,   # ≤ 35 → Rule A
+                "rsi_14":              31.0,
                 "ema50_above_ema200":  True,
-                "volume_ratio_vs_avg": 1.5,    # ≥ 1.2 → confirmação
+                "ema20_above_ema50":   None,
+                "price_above_ema20":   None,
+                "volume_ratio_vs_avg": 1.5,
                 "atr_14":              3.2,
+                "last_price":          155.0,
+            }
+        },
+        # Ticker com condições MOMENTUM → Rule M
+        "NVDA_US_EQ": {
+            "technicals": {
+                "rsi_14":              70.0,   # ≥ 65 → Rule M
+                "ema50_above_ema200":  True,
+                "ema20_above_ema50":   True,   # EMA-20 > EMA-50 ✓
+                "price_above_ema20":   True,   # preço > EMA-20 ✓
+                "volume_ratio_vs_avg": 2.0,    # ≥ 1.5 → confirmação
+                "atr_14":              4.5,
+                "last_price":          480.0,
             }
         },
     }
@@ -285,10 +310,16 @@ def _t4_clyde_pipeline():
     assert isinstance(signals,   list), "generate_signals devia devolver list"
     assert isinstance(proposals, list), "propose_trades devia devolver list"
 
-    # Com RSI=31, EMA up, vol=1.5×, deve gerar pelo menos 1 sinal de entrada
-    entry_signals = [s for s in signals if s.signal_type == "ENTRY"]
-    assert len(entry_signals) >= 1, (
-        f"Esperava ≥1 sinal ENTRY com RSI=31 — obteve {len(signals)} sinais"
+    # VALUE: RSI=31, EMA up, vol=1.5× → ≥1 sinal ENTRY VALUE
+    value_entries = [s for s in signals if s.signal_type == "ENTRY" and s.style == "VALUE"]
+    assert len(value_entries) >= 1, (
+        f"Esperava ≥1 sinal ENTRY VALUE com RSI=31 — obteve {signals}"
+    )
+
+    # MOMENTUM: RSI=70, EMA20>EMA50, price>EMA20, vol=2.0× → ≥1 sinal ENTRY MOMENTUM
+    momentum_entries = [s for s in signals if s.signal_type == "ENTRY" and s.style == "MOMENTUM"]
+    assert len(momentum_entries) >= 1, (
+        f"Esperava ≥1 sinal ENTRY MOMENTUM com RSI=70 — obteve {signals}"
     )
 
 
@@ -359,7 +390,7 @@ def _t4_strategy_params_injected():
     assert "size_factor_pct" in _PB, "size_factor_pct em falta em _PB"
 
 
-check("Clyde — generate_signals() gera sinal ENTRY com RSI=31 (Rule A)",   _t4_clyde_pipeline)
+check("Clyde — VALUE (Rule A, RSI=31) e MOMENTUM (Rule M, RSI=70) geram ENTRY", _t4_clyde_pipeline)
 check("CRO   — interpret() devolve Verdict aprovado com risk_factor válido", _t4_cro_verdict)
 check("Watchdog — quarentena inactiva + retry recupera na 2ª tentativa",    _t4_watchdog_quarantine_inactive)
 check("Learner — run_learner_cycle() com 0 trades termina em silêncio",     _t4_learner_skip_with_zero_trades)

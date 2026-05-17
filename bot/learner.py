@@ -65,22 +65,30 @@ _N_ITER: dict[str, int] = {"weekly": 60, "monthly": 80, "quarterly": 40}
 # ---------------------------------------------------------------------------
 
 _DEFAULT_PARAMS: dict[str, Any] = {
+    "enabled_styles": ["VALUE", "MOMENTUM"],
     "weekly": {
         "clyde": {
-            "rsi_oversold_ceiling":   35,
-            "rsi_momentum_min":       40,
-            "rsi_momentum_max":       55,
-            "rsi_exit_floor":         72,
-            "vol_ratio_oversold_min": 1.2,
-            "vol_ratio_momentum_min": 1.8,
+            "rsi_oversold_ceiling":    35,
+            "rsi_momentum_min":        40,
+            "rsi_momentum_max":        55,
+            "rsi_exit_floor":          72,
+            "vol_ratio_oversold_min":  1.2,
+            "vol_ratio_momentum_min":  1.8,
+            # MOMENTUM engine params
+            "momentum_rsi_floor":      65,
+            "momentum_vol_min":        1.5,
+            "momentum_atr_multiplier": 2.5,
         }
     },
     "monthly": {
         "bonnie": {
-            "base_threshold":     0.60,
-            "strict_threshold":   0.64,
-            "strict_trigger_wr":  0.45,
-            "size_factor_pct":    0.15,
+            "base_threshold":        0.60,
+            "strict_threshold":      0.64,
+            "strict_trigger_wr":     0.45,
+            "size_factor_pct":       0.15,
+            # MOMENTUM filter params
+            "momentum_vol_floor":    1.0,
+            "momentum_gap_down_pct": 3.0,
         }
     },
     "quarterly": {
@@ -97,18 +105,25 @@ _DEFAULT_PARAMS: dict[str, Any] = {
 
 # Hard bounds — nenhum valor pode sair daqui (sanity check E coordinate descent)
 _PARAM_SPACE: dict[str, dict] = {
-    # weekly.clyde ─────────────────────────────────────────────────────
+    # weekly.clyde — VALUE ─────────────────────────────────────────────
     "rsi_oversold_ceiling":     {"min": 28,   "max": 45,   "step": 1.0,  "kind": "int"},
     "rsi_momentum_min":         {"min": 35,   "max": 52,   "step": 1.0,  "kind": "int"},
     "rsi_momentum_max":         {"min": 50,   "max": 65,   "step": 1.0,  "kind": "int"},
     "rsi_exit_floor":           {"min": 65,   "max": 82,   "step": 1.0,  "kind": "int"},
     "vol_ratio_oversold_min":   {"min": 1.0,  "max": 2.0,  "step": 0.1,  "kind": "float"},
     "vol_ratio_momentum_min":   {"min": 1.4,  "max": 2.8,  "step": 0.1,  "kind": "float"},
-    # monthly.bonnie ───────────────────────────────────────────────────
+    # weekly.clyde — MOMENTUM ──────────────────────────────────────────
+    "momentum_rsi_floor":       {"min": 60,   "max": 75,   "step": 1.0,  "kind": "int"},
+    "momentum_vol_min":         {"min": 1.2,  "max": 2.5,  "step": 0.1,  "kind": "float"},
+    "momentum_atr_multiplier":  {"min": 1.5,  "max": 4.0,  "step": 0.25, "kind": "float"},
+    # monthly.bonnie — VALUE ───────────────────────────────────────────
     "base_threshold":           {"min": 0.52, "max": 0.72, "step": 0.01, "kind": "float"},
     "strict_threshold":         {"min": 0.58, "max": 0.78, "step": 0.01, "kind": "float"},
     "strict_trigger_wr":        {"min": 0.35, "max": 0.55, "step": 0.01, "kind": "float"},
     "size_factor_pct":          {"min": 0.08, "max": 0.22, "step": 0.01, "kind": "float"},
+    # monthly.bonnie — MOMENTUM ────────────────────────────────────────
+    "momentum_vol_floor":       {"min": 0.8,  "max": 1.5,  "step": 0.1,  "kind": "float"},
+    "momentum_gap_down_pct":    {"min": 1.5,  "max": 6.0,  "step": 0.5,  "kind": "float"},
     # quarterly.cro ────────────────────────────────────────────────────
     "max_drawdown_limit_pct":   {"min": 10.0, "max": 20.0, "step": 0.5,  "kind": "float"},
     "elastic_window_n":         {"min": 15,   "max": 40,   "step": 1.0,  "kind": "int"},
@@ -208,8 +223,17 @@ def _merge_with_defaults(stored: dict) -> dict[str, Any]:
     """Deep merge: stored sobrepõe defaults; chaves ausentes herdam defaults.
 
     Apenas aceita chaves conhecidas do _DEFAULT_PARAMS — previne injecção.
+    enabled_styles é gerido ao nível raiz; failsafe: nunca desactiva ambos.
     """
     result = copy.deepcopy(_DEFAULT_PARAMS)
+
+    # Top-level enabled_styles — validar antes de aceitar
+    stored_styles = stored.get("enabled_styles")
+    if isinstance(stored_styles, list):
+        valid = [s for s in stored_styles if s in ("VALUE", "MOMENTUM")]
+        if valid:  # nunca desactiva ambos os estilos
+            result["enabled_styles"] = valid
+
     for horizon in ("weekly", "monthly", "quarterly"):
         stored_h = stored.get(horizon, {})
         for sub_key in result[horizon]:
@@ -302,7 +326,8 @@ def _run_weekly(trades: list[dict]) -> None:
         n_iter=_N_ITER["weekly"],
     )
 
-    if f_after > f_before * (1 + _MIN_GAIN_PCT):
+    params_changed = f_after > f_before * (1 + _MIN_GAIN_PCT)
+    if params_changed:
         stored["weekly"]["clyde"] = optimized
         stored["weekly"].update({
             "last_optimized": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
@@ -311,7 +336,6 @@ def _run_weekly(trades: list[dict]) -> None:
             "fitness_before": round(f_before, 4),
             "fitness_after":  round(f_after, 4),
         })
-        _save_params(stored)
         _notify_mutation("Semanal · Clyde", current, optimized, f_before, f_after, len(trades))
         log_decision("learner_weekly", "params_updated", {
             "f_before": round(f_before, 4), "f_after": round(f_after, 4),
@@ -320,6 +344,12 @@ def _run_weekly(trades: list[dict]) -> None:
         log_decision("learner_weekly", "no_improvement", {
             "f_before": round(f_before, 4), "f_after": round(f_after, 4),
         })
+
+    # Avalia activação/desactivação por estilo (independente da optimização de params)
+    style_changed = _evaluate_style_toggle(trades, stored)
+
+    if params_changed or style_changed:
+        _save_params(stored)
 
 
 def _run_monthly(trades: list[dict]) -> None:
@@ -514,6 +544,80 @@ def _fitness_cro(params: dict, trades: list[dict]) -> float:
     annualised = total_pnl / max(1, len(trades)) * 52  # proxy semanal
     calmar     = annualised / max(drawdown, 0.01)
     return max(0.01, min(calmar * dd_penalty, 10.0))
+
+
+def _calmar_from_trades(trades: list[dict]) -> float:
+    """Calmar Ratio = total_return / max_drawdown. Retorna 0.0 com < 3 trades."""
+    if len(trades) < 3:
+        return 0.0
+    results  = [t.get("result_eur", 0) or 0 for t in trades]
+    total    = sum(results)
+    drawdown = _max_drawdown_from_results(results)
+    if drawdown < 0.01:
+        return 1.0 if total >= 0 else -1.0
+    return round(total / drawdown, 4)
+
+
+def _would_momentum_enter(trade: dict, params: dict) -> bool:
+    """True se o trade MOMENTUM teria sido gerado com os params dados."""
+    if trade.get("side") != "BUY":
+        return True
+    ctx   = trade.get("context", {})
+    style = trade.get("style", "VALUE")
+    if style != "MOMENTUM":
+        return False
+    rsi               = ctx.get("rsi_14")
+    vol               = ctx.get("volume_ratio_vs_avg", 1.0)
+    ema20_above_ema50 = ctx.get("ema20_above_ema50", False)
+    price_above_ema20 = ctx.get("price_above_ema20", False)
+    if rsi is None:
+        return True
+    m_floor = params.get("momentum_rsi_floor", 65)
+    m_vol   = params.get("momentum_vol_min", 1.5)
+    return rsi >= m_floor and ema20_above_ema50 and price_above_ema20 and vol >= m_vol
+
+
+def _fitness_momentum(params: dict, trades: list[dict]) -> float:
+    """Profit Factor × Calmar Factor para trades MOMENTUM com trailing stop."""
+    accepted = [t for t in trades if _would_momentum_enter(t, params)]
+    return _profit_factor_calmar(accepted)
+
+
+def _evaluate_style_toggle(trades: list[dict], stored: dict) -> bool:
+    """Actualiza enabled_styles com base no Calmar Ratio por estilo.
+
+    Desactiva um estilo se o seu Calmar for negativo (capital destruction).
+    Failsafe: nunca desactiva ambos — mantém pelo menos um estilo activo.
+
+    Retorna True se houve alteração em enabled_styles.
+    """
+    value_trades    = [t for t in trades if t.get("style", "VALUE") == "VALUE"]
+    momentum_trades = [t for t in trades if t.get("style") == "MOMENTUM"]
+
+    calmar_v = _calmar_from_trades(value_trades)    if len(value_trades)    >= 10 else None
+    calmar_m = _calmar_from_trades(momentum_trades) if len(momentum_trades) >= 10 else None
+
+    current_styles = stored.get("enabled_styles", ["VALUE", "MOMENTUM"])
+    new_styles     = list(current_styles)
+
+    if calmar_v is not None and calmar_v < 0 and "MOMENTUM" in new_styles:
+        new_styles = [s for s in new_styles if s != "VALUE"]
+    if calmar_m is not None and calmar_m < 0 and "VALUE" in new_styles:
+        new_styles = [s for s in new_styles if s != "MOMENTUM"]
+
+    if not new_styles:  # failsafe: nunca desactiva ambos
+        new_styles = ["VALUE"]
+
+    changed = sorted(new_styles) != sorted(current_styles)
+    if changed:
+        stored["enabled_styles"] = new_styles
+        log_decision("learner_style_toggle", "updated", {
+            "calmar_value":    calmar_v,
+            "calmar_momentum": calmar_m,
+            "old_styles":      current_styles,
+            "new_styles":      new_styles,
+        })
+    return changed
 
 
 def _would_clyde_enter(trade: dict, params: dict) -> bool:
