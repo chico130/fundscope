@@ -8,8 +8,17 @@ Symbol resolution flow:
   4. Gemini 2.0 Flash   (last resort — only for unknown symbols)
 """
 
-import json, os, re, time, datetime, requests, base64
+import json, os, re, sys, time, datetime, requests, base64
 import yfinance as yf
+from dotenv import load_dotenv
+
+# Força UTF-8 no terminal Windows
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
+if hasattr(sys.stderr, "reconfigure"):
+    sys.stderr.reconfigure(encoding="utf-8")
+
+load_dotenv()
 
 try:
     from google import genai
@@ -19,15 +28,20 @@ except ImportError:
     GEMINI_AVAILABLE = False
     print("[AVISO] google-genai não instalado")
 
-T212_KEY_ID = os.environ.get("T212_API_ID", "")
-T212_SECRET = os.environ["T212_API_KEY"]
-FH_TOKEN    = os.environ.get("FINNHUB_TOKEN", "")
-GEMINI_KEY  = os.environ.get("GEMINI_API_KEY", "")
-FH_BASE     = "https://finnhub.io/api/v1"
-T212_BASE   = "https://live.trading212.com/api/v0"
-
-_creds    = base64.b64encode(f"{T212_KEY_ID}:{T212_SECRET}".encode()).decode()
+# T212 usa HTTP Basic Auth: Authorization: Basic base64(API_KEY_ID:API_SECRET)
+# Variáveis: T212_API_ID (key ID) + T212_API_KEY (secret) — igual ao GitHub Actions.
+_t212_id     = os.getenv("T212_API_ID", "")
+_t212_secret = os.getenv("T212_API_KEY", "")
+if not _t212_id or not _t212_secret:
+    print("[ERRO] T212_API_ID e/ou T212_API_KEY não encontrados no .env")
+    raise SystemExit(1)
+_creds    = base64.b64encode(f"{_t212_id}:{_t212_secret}".encode()).decode()
 T212_AUTH = f"Basic {_creds}"
+
+FH_TOKEN   = os.getenv("FINNHUB_TOKEN") or os.getenv("FINNHUB_API_KEY") or ""
+GEMINI_KEY = os.getenv("GEMINI_API_KEY", "")
+FH_BASE    = "https://finnhub.io/api/v1"
+T212_BASE  = "https://demo.trading212.com/api/v0"   # Demo — NUNCA apontar para live
 
 gemini_client = None
 if GEMINI_AVAILABLE and GEMINI_KEY:
@@ -321,7 +335,11 @@ def t212_get(path):
     return r.json()
 
 def fetch_t212_positions():
-    data = t212_get("/equity/portfolio")
+    try:
+        data = t212_get("/equity/portfolio")
+    except Exception as e:
+        print(f"  [ERRO] T212 API inacessível: {e}")
+        return []
     positions = []
     for p in data:
         quantity = float(p.get("quantity", 0))
@@ -656,9 +674,13 @@ def main():
         if not p.get("display_name") or p["display_name"] == p.get("ticker"):
             p["display_name"] = get_display_name_yf(p["ticker"])
 
-    print("\n[4] A buscar cotações yfinance...")
+    print("\n[4] A buscar cotações yfinance + taxa EURUSD...")
     yf_tickers = list(dict.fromkeys(p["ticker"] for p in positions))
-    quotes = fetch_quotes_yf(yf_tickers)
+    # EURUSD=X garante conversão correcta para posições denominadas em USD
+    quotes = fetch_quotes_yf(yf_tickers + ["EURUSD=X"])
+    eurusd = quotes.get("EURUSD=X", {}).get("price") or 1.0
+    print(f"  Taxa EURUSD: {eurusd:.4f}")
+
     for p in positions:
         q = quotes.get(p["ticker"], {})
         if q.get("price"):
@@ -666,13 +688,25 @@ def main():
         p["change_pct"] = q.get("changePct", 0.0)
 
     for p in positions:
-        invested   = p["avg_price"] * p["quantity"]
-        curr_value = p["current_price"] * p["quantity"]
-        gain_eur   = p["ppl"]
-        p["invested"]  = round(invested, 2)
-        p["value_eur"] = round(curr_value, 2)
+        native_currency = p.get("currency", "USD")
+        # Converter preços USD → EUR; posições já em EUR ficam inalteradas
+        fx = (1.0 / eurusd) if native_currency == "USD" and eurusd else 1.0
+
+        invested_native   = p["avg_price"]     * p["quantity"]
+        curr_value_native = p["current_price"] * p["quantity"]
+
+        gain_eur = p["ppl"]   # T212 entrega P&L já em EUR (inclui efeito cambial)
+
+        p["invested"]  = round(invested_native * fx, 2)
+        p["value_eur"] = round(curr_value_native * fx, 2)
         p["gain_eur"]  = round(gain_eur, 2)
-        p["gain_pct"]  = round((gain_eur / invested * 100) if invested > 0 else 0, 2)
+        # gain_pct em moeda nativa — reflecte performance da acção sem ruído cambial
+        p["gain_pct"]  = round(
+            (curr_value_native - invested_native) / invested_native * 100
+            if invested_native > 0 else 0, 2
+        )
+        p["fx_rate"]   = round(fx, 6)
+        p["currency_native"] = native_currency
 
     total_value    = sum(p["value_eur"] for p in positions)
     total_invested = sum(p["invested"]  for p in positions)
@@ -720,8 +754,10 @@ def main():
         "positions": positions,
         "history":   history
     }
-    with open("portfolio.json", "w", encoding="utf-8") as f:
+    tmp = "portfolio.json.tmp"
+    with open(tmp, "w", encoding="utf-8") as f:
         json.dump(out, f, ensure_ascii=False, indent=2)
+    os.replace(tmp, "portfolio.json")
 
     print(f"\n✅ Concluído!")
     print(f"   Valor: {total_value:.2f}€ | P&L: {total_gain:+.2f}€ | Posições: {len(positions)}")

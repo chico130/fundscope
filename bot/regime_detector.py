@@ -1,6 +1,6 @@
 import json
 import logging
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from typing import Literal
 
 import pandas as pd
@@ -10,7 +10,10 @@ from bot.config import DATA_BETA_DIR, REGIME_CONFIG
 
 logger = logging.getLogger(__name__)
 
-REGIME_PATH = DATA_BETA_DIR / "regime.json"
+REGIME_PATH        = DATA_BETA_DIR / "regime.json"
+BETA_ANALYSIS_PATH = DATA_BETA_DIR / "beta_analysis.json"
+
+_BEAR_REGIMES = {"bear_correction", "bear_capitulation"}
 
 Regime = Literal["bull_trending", "bull_lateral", "bear_correction", "bear_capitulation"]
 
@@ -41,31 +44,43 @@ def _atr(high: pd.Series, low: pd.Series, close: pd.Series, period: int = 14) ->
 
 def _classify(
     spy_pct_from_ema200: float,
+    ema50_above_ema200: bool,
     breadth_healthy: bool,
     atr_ratio: float,
     spy_return_20d: float,
 ) -> Regime:
     """
-    Decision tree based on REGIME_CONFIG thresholds.
+    Regime classification via dual-EMA structural health test.
+
+    Threshold:
+      • SPY > EMA-200  →  Saúde Estrutural (Bull zone)
+      • SPY < EMA-200  →  Modo Protecção de Capital (Bear zone)
+
+    Within each zone, EMA-50 vs EMA-200 (golden/death cross) refines the state:
+      Bull zone:
+        – EMA-50 > EMA-200 + breadth healthy + low vol  →  bull_trending
+        – anything else                                  →  bull_lateral
+      Bear zone:
+        – death cross (EMA-50 < EMA-200) OR sharp drop OR extreme vol  →  bear_capitulation
+        – golden cross still intact (EMA-50 > EMA-200)                 →  bear_correction
 
     lateral_atr_multiplier (0.8) is used inverted: ATR ratio above 1/0.8 = 1.25
-    signals elevated volatility → lateral or worse conditions.
+    signals elevated volatility → lateral or worse.
     """
-    bear_thresh    = REGIME_CONFIG["bear_threshold_spy_ema200_pct"]   # -5.0
-    atr_chop_thresh = 1.0 / REGIME_CONFIG["lateral_atr_multiplier"]   # 1.0/0.8 = 1.25
+    atr_chop_thresh = 1.0 / REGIME_CONFIG["lateral_atr_multiplier"]  # 1.25
 
-    # --- Bear zone ---
-    if spy_pct_from_ema200 <= bear_thresh:
-        if atr_ratio > 2.0 or spy_return_20d < -0.10:
+    # ── Capital Protection (Bear) ────────────────────────────────────────────
+    # Triggered as soon as SPY crosses below its EMA-200 (threshold = 0.0)
+    if spy_pct_from_ema200 < REGIME_CONFIG["bear_threshold_spy_ema200_pct"]:
+        # Death cross (EMA-50 < EMA-200), fast drop, or extreme volatility → capitulation
+        if not ema50_above_ema200 or spy_return_20d < -0.10 or atr_ratio > 2.0:
             return "bear_capitulation"
+        # Golden cross still intact → early/shallow correction, not full collapse
         return "bear_correction"
 
-    # --- Borderline zone (between bear_thresh and 0%) ---
-    if spy_pct_from_ema200 < 0.0:
-        return "bull_lateral"
-
-    # --- Bull zone (SPY above EMA-200) ---
-    if breadth_healthy and atr_ratio <= atr_chop_thresh:
+    # ── Structural Health (Bull) ──────────────────────────────────────────────
+    # SPY above its EMA-200; further classified by EMA-50, breadth, and volatility
+    if ema50_above_ema200 and breadth_healthy and atr_ratio <= atr_chop_thresh:
         return "bull_trending"
     return "bull_lateral"
 
@@ -82,9 +97,11 @@ def _fetch_market_data() -> tuple[pd.DataFrame, pd.DataFrame]:
     when RSP keeps up with cap-weighted SPY, participation is broad.
     Falls back to SPY-only breadth (breadth assumed neutral) if RSP download fails.
     """
+    # 300 calendar days ≈ 210 trading days — enough warmup for EMA-200
+    _start = (datetime.now(timezone.utc) - timedelta(days=300)).strftime("%Y-%m-%d")
     raw = yf.download(
         ["SPY", "RSP"],
-        period="1y",
+        start=_start,
         interval="1d",
         progress=False,
         auto_adjust=True,
@@ -141,9 +158,12 @@ def get_current_regime() -> Regime:
     spy_close = spy["Close"]
     spy_last  = float(spy_close.iloc[-1])
 
-    # SPY vs its EMA-200
+    # SPY vs its EMA-200 and EMA-50
     ema200 = float(_ema(spy_close, 200).iloc[-1])
     spy_pct_from_ema200 = (spy_last - ema200) / ema200 * 100.0
+
+    ema50 = float(_ema(spy_close, 50).iloc[-1])
+    ema50_above_ema200 = ema50 > ema200
 
     # ATR ratio: current ATR-14 vs its own 60-day rolling mean
     atr_series   = _atr(spy["High"], spy["Low"], spy_close)
@@ -168,11 +188,13 @@ def get_current_regime() -> Regime:
     # RSP is healthy if it hasn't lost more than 2% relative to SPY over 20 days
     breadth_healthy = ratio_chg_20d >= -0.02
 
-    regime = _classify(spy_pct_from_ema200, breadth_healthy, atr_ratio, spy_return_20d)
+    regime = _classify(spy_pct_from_ema200, ema50_above_ema200, breadth_healthy, atr_ratio, spy_return_20d)
 
     metrics = {
         "spy_price":              round(spy_last, 2),
         "ema200":                 round(ema200, 2),
+        "ema50":                  round(ema50, 2),
+        "ema50_above_ema200":     ema50_above_ema200,
         "spy_pct_from_ema200":    round(spy_pct_from_ema200, 2),
         "atr_current":            round(atr_current, 4),
         "atr_ratio_vs_60d_mean":  round(atr_ratio, 4),
@@ -190,7 +212,7 @@ def get_current_regime() -> Regime:
 
 
 def load_cached_regime() -> Regime | None:
-    """Return the last persisted regime without any network calls."""
+    """Return the last persisted regime string without any network calls."""
     try:
         data = json.loads(REGIME_PATH.read_text(encoding="utf-8"))
         return data["regime"]
@@ -198,9 +220,54 @@ def load_cached_regime() -> Regime | None:
         return None
 
 
+def load_regime_metrics() -> dict | None:
+    """Return the full regime payload (regime + metrics) from the last cached run.
+
+    Callers (e.g. phase0) use this to embed regime_details into beta_analysis.json
+    without triggering a new network download.
+    """
+    try:
+        return json.loads(REGIME_PATH.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return None
+
+
 # ---------------------------------------------------------------------------
 # Persistence
 # ---------------------------------------------------------------------------
+
+def _patch_beta_analysis_regime(regime: Regime, metrics: dict) -> None:
+    """Merge regime verdict into beta_analysis.json without clobbering other fields.
+
+    Uses read-modify-write so that phase0's position/signal data is preserved.
+    Falls back silently if the file is locked or corrupt.
+    """
+    try:
+        existing: dict = {}
+        if BETA_ANALYSIS_PATH.exists():
+            try:
+                existing = json.loads(BETA_ANALYSIS_PATH.read_text(encoding="utf-8"))
+            except (ValueError, OSError):
+                existing = {}
+
+        existing["regime"]       = regime
+        existing["regime_alert"] = regime in _BEAR_REGIMES
+        existing["regime_details"] = {
+            "last_updated":        datetime.now(timezone.utc).isoformat(),
+            "spy_price":           metrics.get("spy_price"),
+            "ema200":              metrics.get("ema200"),
+            "ema50":               metrics.get("ema50"),
+            "spy_pct_from_ema200": metrics.get("spy_pct_from_ema200"),
+            "breadth_healthy":     metrics.get("breadth_healthy"),
+            "atr_ratio_vs_60d_mean": metrics.get("atr_ratio_vs_60d_mean"),
+        }
+
+        tmp = BETA_ANALYSIS_PATH.with_suffix(".tmp")
+        tmp.write_text(json.dumps(existing, indent=2, ensure_ascii=False), encoding="utf-8")
+        tmp.replace(BETA_ANALYSIS_PATH)
+    except OSError as exc:
+        logger.warning("Could not patch beta_analysis.json with regime data: %s", exc)
+
 
 def _save_regime(regime: Regime, metrics: dict) -> None:
     DATA_BETA_DIR.mkdir(parents=True, exist_ok=True)
@@ -210,3 +277,4 @@ def _save_regime(regime: Regime, metrics: dict) -> None:
         "metrics":      metrics,
     }
     REGIME_PATH.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+    _patch_beta_analysis_regime(regime, metrics)

@@ -18,6 +18,14 @@ from typing import Literal
 
 from .config import LOGS_TRADES_DIR, RISK_CONFIG, STRATEGY_VERSION
 
+_BEAR_REGIMES = {"bear_correction", "bear_capitulation"}
+_REGIME_SIZE_FACTOR: dict[str, float] = {
+    "bull_trending":     1.0,
+    "bull_lateral":      0.6,
+    "bear_correction":   0.0,
+    "bear_capitulation": 0.0,
+}
+
 
 # ---------------------------------------------------------------------------
 # Data types
@@ -53,6 +61,7 @@ class ProposedTrade:
 def generate_signals(
     market_data: dict[str, dict],
     portfolio_state: dict,
+    regime: str = "bull_trending",
 ) -> list[Signal]:
     """Generates BUY / EXIT / REDUCE signals from technical indicators.
 
@@ -105,6 +114,8 @@ def generate_signals(
 
         # ── Entry (new position or add to existing) ──────────────────────
         if ticker not in held or _below_half_max(ticker, portfolio_state):
+            if regime in _BEAR_REGIMES:
+                continue
             sig = _entry_signal(ticker, rsi, ema50_above, vol_ratio)
             if sig:
                 signals.append(sig)
@@ -160,7 +171,7 @@ def _below_half_max(ticker: str, portfolio_state: dict) -> bool:
 # Trade proposals
 # ---------------------------------------------------------------------------
 
-def propose_trades(signals: list[Signal], portfolio_state: dict) -> list[ProposedTrade]:
+def propose_trades(signals: list[Signal], portfolio_state: dict, regime: str = "bull_trending") -> list[ProposedTrade]:
     """Converts signals into concrete proposals with position sizing.
 
     Position size for ENTRY = signal_strength × 15% of equity,
@@ -179,9 +190,11 @@ def propose_trades(signals: list[Signal], portfolio_state: dict) -> list[Propose
     max_pos_eur = total_equity * RISK_CONFIG["max_position_pct"] / 100
     proposals: list[ProposedTrade] = []
 
+    size_factor = _REGIME_SIZE_FACTOR.get(regime, 1.0)
+
     for sig in signals:
         if sig.signal_type == "ENTRY":
-            size_eur = min(sig.strength * total_equity * 0.15, max_pos_eur, free_cash * 0.95)
+            size_eur = min(sig.strength * total_equity * 0.15 * size_factor, max_pos_eur, free_cash * 0.95)
             if size_eur < 50:
                 continue
             price = _last_price(sig.ticker, portfolio_state)
@@ -279,12 +292,59 @@ def check_risk_limits(proposed: ProposedTrade, portfolio_state: dict) -> bool:
         })
         return False
 
+    # 5. Sector concentration (BUY only)
+    if not check_sector_correlation(proposed, portfolio_state):
+        return False
+
     return True
 
 
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
+
+def _ticker_sector(ticker: str) -> str:
+    """Return the sector ETF key (e.g. 'XLK') for a ticker, or 'UNKNOWN'."""
+    from .watchlist_manager import _TICKER_TO_SECTOR
+    # T212 format: 'VRT_US_EQ' → pure symbol 'VRT'
+    symbol = ticker.split("_")[0]
+    return _TICKER_TO_SECTOR.get(symbol, "UNKNOWN")
+
+
+def _count_sector_positions(sector: str, portfolio_state: dict) -> int:
+    """Count open positions belonging to the given sector."""
+    if sector == "UNKNOWN":
+        return 0
+    return sum(
+        1
+        for p in portfolio_state.get("positions", [])
+        if _ticker_sector(p.get("ticker", "")) == sector
+    )
+
+
+def check_sector_correlation(proposed: ProposedTrade, portfolio_state: dict) -> bool:
+    """Returns False (and logs a block) if adding this BUY would exceed max_positions_per_sector."""
+    if proposed.side != "BUY":
+        return True
+
+    sector = _ticker_sector(proposed.ticker)
+    if sector == "UNKNOWN":
+        return True
+
+    limit = RISK_CONFIG["max_positions_per_sector"]
+    count = _count_sector_positions(sector, portfolio_state)
+
+    if count >= limit:
+        from .logger import log_decision
+        log_decision("risk_block", "sector_concentration", {
+            "ticker": proposed.ticker,
+            "sector": sector,
+            "open_positions_in_sector": count,
+            "limit": limit,
+        })
+        return False
+    return True
+
 
 def _last_price(ticker: str, portfolio_state: dict) -> float | None:
     for p in portfolio_state.get("positions", []):

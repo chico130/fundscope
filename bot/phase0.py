@@ -11,52 +11,17 @@ import subprocess
 import time
 from datetime import datetime, timezone
 
-from .data_layer import get_full_portfolio_state, enrich_with_technicals, read_beta_trades
+from .data_layer import get_full_portfolio_state, enrich_with_technicals, read_beta_trades, fetch_candidate_market_data
 from .logger import log_decision, log_error
 from .config import DATA_BETA_DIR, RISK_CONFIG, STRATEGY_VERSION
-from .regime_detector import get_current_regime, load_cached_regime
+from .regime_detector import get_current_regime, load_cached_regime, load_regime_metrics
 from .watchlist_manager import build_watchlist
+from .strategy import generate_signals
+from . import position_ledger
 
 _BEAR_REGIMES = {"bear_correction", "bear_capitulation"}
 _LATERAL_SIZE_FACTOR = 0.6   # redução de posição sugerida em bull_lateral (secção 4, FASE-1.md)
-
-# Backoff schedule: consecutive_failure_count -> wait_minutes before retry.
-# Failures 4+ skip retries and fall back to the normal 15-min cycle.
-_RETRY_WAITS_MIN: dict[int, int] = {1: 2, 2: 5, 3: 10}
-
-_api_fail_count: int = 0  # consecutive T212 API failures across cycles
-
-
-# ---------------------------------------------------------------------------
-# T212 API fetch with exponential backoff
-# ---------------------------------------------------------------------------
-
-def _fetch_portfolio_with_retry() -> dict | None:
-    """Calls get_full_portfolio_state() and retries with backoff on failure.
-
-    Consecutive-failure counter persists across cycles so that after 4+
-    failures the function aborts immediately (no extra waits) and the normal
-    15-min cycle handles the next attempt.
-    """
-    global _api_fail_count
-
-    while True:
-        state = get_full_portfolio_state()
-        if state is not None:
-            _api_fail_count = 0
-            return state
-
-        _api_fail_count += 1
-        wait_min = _RETRY_WAITS_MIN.get(_api_fail_count)
-
-        if wait_min is None:  # 4th+ consecutive failure — give up, cold run
-            log_decision("phase0_abort", "api_unavailable",
-                         {"consecutive_failures": _api_fail_count})
-            return None
-
-        log_decision("phase0_retry", "api_unavailable",
-                     {"attempt": _api_fail_count, "wait_minutes": wait_min})
-        time.sleep(wait_min * 60)
+_WATCHLIST_CANDIDATES_TO_SCAN = 10  # max candidatos da watchlist a analisar por ciclo
 
 
 # ---------------------------------------------------------------------------
@@ -67,40 +32,49 @@ def run() -> dict:
     """Corre a análise Fase 0. Devolve o relatório e guarda-o em data/beta/beta_analysis.json."""
     log_decision("phase0_start", "read_portfolio")
 
-    # Regime e watchlist correm sempre — mesmo sem portfolio T212
-    regime    = _get_regime_safe()
-    watchlist = _get_watchlist_safe()
+    # Regime e watchlist correm sempre
+    regime         = _get_regime_safe()
+    regime_payload = load_regime_metrics()  # full metrics written by regime_detector
+    watchlist      = _get_watchlist_safe()
 
-    # Portfolio T212 — retries with backoff before declaring cold run
-    state = _fetch_portfolio_with_retry()
-    positions: list[dict] = []
-    cash: dict = {}
+    # Portfolio: ledger local + Finnhub prices (T212 sync tentado em background)
+    state     = get_full_portfolio_state()
+    positions = state.get("positions", [])
+    cash      = state.get("cash", {})
 
-    if state is None:
-        log_decision("phase0_t212_unavailable", "cold_run",
-                     {"reason": "T212 API indisponível — análise sem portfolio"})
-    else:
-        positions = state.get("positions", [])
-        cash      = state.get("cash", {})
+    sync_status = position_ledger.get_sync_status()
+    if positions:
         log_decision("phase0_enrich", "compute_technicals", {"n_positions": len(positions)})
         positions = enrich_with_technicals(positions)
 
-    signals      = _analyse_all(positions, regime)
-    risk_status  = _risk_snapshot(positions, cash)
-    open_trades  = _count_open_trades()
+    # Tickers já possuídos (símbolo puro, ex: "VRT" e não "VRT_US_EQ")
+    held_symbols = {p.get("price_symbol", p.get("ticker", "").split("_")[0]) for p in positions}
+
+    signals                      = _analyse_all(positions, regime)
+    buy_opportunities, near_misses = _scan_watchlist_candidates(watchlist, held_symbols, regime)
+    risk_status                  = _risk_snapshot(positions, cash)
+    open_trades     = _count_open_trades()
 
     report = {
-        "timestamp":        datetime.now(timezone.utc).isoformat(),
-        "mode":             "phase0_readonly",
-        "strategy_version": STRATEGY_VERSION,
-        "note":             "Fase 0 — apenas leitura e sugestão. Nenhuma ordem foi submetida.",
-        "regime":           regime,
-        "regime_alert":     regime in _BEAR_REGIMES,
-        "watchlist_top5":   watchlist[:5],
-        "n_positions":      len(positions),
-        "open_trades":      open_trades,
-        "risk_status":      risk_status,
-        "signals":          signals,
+        "timestamp":          datetime.now(timezone.utc).isoformat(),
+        "mode":               "phase0_readonly",
+        "strategy_version":   STRATEGY_VERSION,
+        "note":               "Fase 0 — apenas leitura e sugestão. Nenhuma ordem foi submetida.",
+        "regime":             regime,
+        "regime_alert":       regime in _BEAR_REGIMES,
+        "regime_details":     regime_payload.get("metrics", {}) if regime_payload else {},
+        "watchlist_top5":     watchlist[:5],
+        "buy_opportunities":  buy_opportunities,
+        "near_misses":        near_misses,
+        "n_positions":        len(positions),
+        "open_trades":        open_trades,
+        "risk_status":        risk_status,
+        "signals":            signals,
+        "data_sources": {
+            "prices":       "finnhub+yfinance",
+            "t212_sync":    sync_status.get("last_t212_sync"),
+            "stale_prices": [p["ticker"] for p in positions if p.get("price_stale")],
+        },
     }
 
     _save_report(report)
@@ -137,6 +111,124 @@ def _get_watchlist_safe() -> list[dict]:
     except Exception as exc:
         log_error("watchlist_build_failed", {"error": str(exc)})
         return []
+
+
+def _scan_watchlist_candidates(
+    watchlist: list[dict], held_symbols: set[str], regime: str
+) -> tuple[list[dict], list[dict]]:
+    """Gera sinais de entrada e near-misses para candidatos da watchlist não possuídos.
+
+    Retorna (opportunities, near_misses) — ambas ordenadas por relevância.
+    Em regimes Bear, retorna ([], []) pois entradas estão bloqueadas.
+    """
+    if regime in _BEAR_REGIMES:
+        log_decision("watchlist_scan_skipped", "bear_regime_no_entries", {"regime": regime})
+        return [], []
+
+    candidates = [c for c in watchlist if c.get("ticker") not in held_symbols]
+    candidates = candidates[:_WATCHLIST_CANDIDATES_TO_SCAN]
+
+    if not candidates:
+        return [], []
+
+    tickers = [c["ticker"] for c in candidates]
+    log_decision("watchlist_scan_start", "fetching_technicals", {"n": len(tickers), "regime": regime})
+
+    try:
+        market_data = fetch_candidate_market_data(tickers)
+    except Exception as exc:
+        log_error("watchlist_scan_failed", {"error": str(exc)})
+        return [], []
+
+    if not market_data:
+        return [], []
+
+    signals = generate_signals(market_data, {"positions": []}, regime)
+
+    score_map  = {c["ticker"]: c.get("score", 0)   for c in candidates}
+    sector_map = {c["ticker"]: c.get("sector", "?") for c in candidates}
+    mom1m_map  = {c["ticker"]: c.get("mom_1m", 0)  for c in candidates}
+    mom3m_map  = {c["ticker"]: c.get("mom_3m", 0)  for c in candidates}
+
+    # ── Oportunidades de entrada ───────────────────────────────────────────────
+    signal_tickers: set[str] = set()
+    opportunities: list[dict] = []
+    for sig in signals:
+        if sig.signal_type != "ENTRY":
+            continue
+        signal_tickers.add(sig.ticker)
+        md = market_data.get(sig.ticker, {})
+        opportunities.append({
+            "ticker":          sig.ticker,
+            "sector":          sector_map.get(sig.ticker, "?"),
+            "watchlist_score": round(score_map.get(sig.ticker, 0), 4),
+            "mom_1m":          round(mom1m_map.get(sig.ticker, 0), 4),
+            "mom_3m":          round(mom3m_map.get(sig.ticker, 0), 4),
+            "signal_strength": round(sig.strength, 3),
+            "reasons":         sig.reasons,
+            "technicals":      sig.context,
+            "last_price":      md.get("last_price"),
+        })
+    opportunities.sort(key=lambda x: x["signal_strength"], reverse=True)
+
+    # ── Near-misses: candidatos que quase ativaram sinal ──────────────────────
+    near_misses: list[dict] = []
+    for ticker, md in market_data.items():
+        if ticker in signal_tickers:
+            continue
+        tech      = md.get("technicals", {})
+        rsi       = tech.get("rsi_14")
+        ema_above = tech.get("ema50_above_ema200")
+        vol_ratio = tech.get("volume_ratio_vs_avg") or 1.0
+
+        if rsi is None or not ema_above:
+            # A tendência tem de ser ascendente para ser "quase lá"
+            continue
+
+        rule: str | None    = None
+        blocking: str       = ""
+        proximity: float    = 0.0
+
+        if 35 < rsi <= 45 and vol_ratio >= 1.0:
+            # Rule A near-miss: RSI ligeiramente acima do limiar ≤35
+            rule     = "A"
+            delta    = round(rsi - 35, 1)
+            blocking = f"RSI-14={rsi:.1f} — faltam {delta:.1f} pts para ≤35"
+            proximity = max(0.0, 1.0 - (rsi - 35) / 10)
+
+        elif rsi <= 35 and 0.8 <= vol_ratio < 1.2:
+            # Rule A': RSI ok, volume insuficiente
+            rule     = "A"
+            blocking = f"Volume {vol_ratio:.1f}× — falta {round(1.2 - vol_ratio, 2):.2f}× para ≥1.2"
+            proximity = vol_ratio / 1.2
+
+        elif 40 <= rsi <= 55 and 1.3 <= vol_ratio < 1.8:
+            # Rule B near-miss: momentum mas volume ainda abaixo de 1.8×
+            rule     = "B"
+            blocking = f"Volume {vol_ratio:.1f}× — falta {round(1.8 - vol_ratio, 2):.2f}× para ≥1.8"
+            proximity = vol_ratio / 1.8
+
+        if rule:
+            near_misses.append({
+                "ticker":          ticker,
+                "sector":          sector_map.get(ticker, "?"),
+                "watchlist_score": round(score_map.get(ticker, 0), 4),
+                "rule":            rule,
+                "blocking_reason": blocking,
+                "proximity_pct":   round(proximity * 100),
+                "technicals":      tech,
+                "last_price":      md.get("last_price"),
+            })
+
+    near_misses.sort(key=lambda x: x["proximity_pct"], reverse=True)
+    near_misses = near_misses[:5]
+
+    log_decision("watchlist_scan_done", "results", {
+        "opportunities": len(opportunities),
+        "near_misses":   len(near_misses),
+        "regime":        regime,
+    })
+    return opportunities, near_misses
 
 
 # ---------------------------------------------------------------------------
@@ -289,6 +381,13 @@ def _print_report(report: dict) -> None:
     print(f"FundScope Bot — Fase 0 — {report['timestamp']}")
     print(f"Estrategia: {report['strategy_version']} | Posicoes: {report['n_positions']} | Trades abertos: {report['open_trades']}")
 
+    ds = report.get("data_sources", {})
+    t212_sync = ds.get("t212_sync") or "sem sync"
+    stale = ds.get("stale_prices", [])
+    print(f"Precos: {ds.get('prices', '?')} | T212 sync: {t212_sync[:16] if t212_sync != 'sem sync' else t212_sync}")
+    if stale:
+        print(f"  ! Precos indisponiveis: {', '.join(stale)}")
+
     # Regime
     regime = report["regime"]
     regime_label = f"[ALERTA] {regime.upper()}" if report["regime_alert"] else regime
@@ -311,6 +410,26 @@ def _print_report(report: dict) -> None:
             )
     else:
         print("\nWatchlist: sem dados disponíveis.")
+
+    # Oportunidades de compra (candidatos da watchlist com sinal de entrada)
+    opps = report.get("buy_opportunities", [])
+    if opps:
+        print(f"\nOportunidades de compra detectadas ({len(opps)}):")
+        for i, o in enumerate(opps, 1):
+            tech = o.get("technicals", {})
+            price_str = f"  ${o['last_price']:.2f}" if o.get("last_price") else ""
+            print(
+                f"\n  {i}. {o['ticker']:<6} [{o['sector']}]{price_str}  "
+                f"forca={o['signal_strength']:.2f}  score_watchlist={o['watchlist_score']:.3f}"
+            )
+            for r in o["reasons"]:
+                print(f"     · {r}")
+            rsi = tech.get("rsi_14")
+            vr  = tech.get("volume_ratio_vs_avg")
+            if rsi is not None:
+                print(f"     RSI-14={rsi:.1f}  vol_ratio={vr:.1f}x" if vr else f"     RSI-14={rsi:.1f}")
+    elif report["regime"] not in _BEAR_REGIMES:
+        print("\nOportunidades de compra: nenhum candidato da watchlist cumpre os critérios de entrada.")
 
     # Risco
     rs = report["risk_status"]
@@ -342,18 +461,20 @@ def _git_sync(timestamp: str) -> None:
         root   = DATA_BETA_DIR.parent.parent
         status = subprocess.run(
             ["git", "status", "--porcelain"],
-            cwd=root, capture_output=True, text=True,
+            cwd=root, capture_output=True, text=True, shell=True,
         )
         if not status.stdout.strip():
             print("Git: nada para commitar.")
             return
 
-        subprocess.run(["git", "add", "-A"], cwd=root, check=True)
+        subprocess.run(["git", "add", "-A"], cwd=root, check=True, shell=True)
         msg = f"Auto-update {timestamp[:16].replace('T', ' ')} UTC"
-        subprocess.run(["git", "commit", "-m", msg], cwd=root, check=True)
-        subprocess.run(["git", "pull", "--rebase", "origin", "main"], cwd=root, check=True)
-        subprocess.run(["git", "push", "origin", "main"], cwd=root, check=True)
+        subprocess.run(["git", "commit", "-m", msg], cwd=root, check=True, shell=True)
+        subprocess.run(["git", "pull", "--rebase", "origin", "main"], cwd=root, check=True, shell=True)
+        subprocess.run(["git", "push", "origin", "main"], cwd=root, check=True, shell=True)
         print(f"Git: push efectuado — '{msg}'")
+    except FileNotFoundError:
+        print("Aviso: Git não encontrado localmente, o sync foi ignorado.")
     except subprocess.CalledProcessError as exc:
         log_error("git_sync_failed", {"error": str(exc)})
         print(f"Git: erro no push — {exc}")

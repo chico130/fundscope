@@ -1,40 +1,69 @@
 """
-Data layer: aggregates T212 portfolio state with technical indicators,
+Data layer: aggregates portfolio state with technical indicators,
 and provides read access to the data/beta/ JSON files.
 
-Technical indicators are computed in pure Python to avoid heavy dependencies.
+Price data: Finnhub REST (real-time) → yfinance (fallback). No T212 dependency.
+T212 API: called opportunistically for position sync; never blocks the cycle.
+Technical indicators: pure Python from yfinance historical bars.
 """
 from __future__ import annotations
 
 import json
 from pathlib import Path
 
-from . import api_client
+from . import api_client, position_ledger
 from .config import DATA_BETA_DIR, RISK_CONFIG
+from .logger import log_decision
 
 
 # ---------------------------------------------------------------------------
 # Portfolio state
 # ---------------------------------------------------------------------------
 
-def get_full_portfolio_state() -> dict | None:
-    """Fetches T212 demo portfolio and enriches each position with a market snapshot.
-
-    Returns None if the T212 API is unavailable (conservative default: do nothing).
+def get_full_portfolio_state() -> dict:
     """
-    state = api_client.get_portfolio_state_demo()
-    if state is None:
-        return None
+    Returns portfolio state using the local position ledger + Finnhub prices.
 
-    tickers = [p.get("ticker") for p in state.get("positions", []) if p.get("ticker")]
-    if tickers:
-        snapshot = api_client.get_market_snapshot(tickers)
-        for pos in state["positions"]:
-            ticker = pos.get("ticker")
-            if ticker and ticker in snapshot:
-                pos["market_data"] = snapshot[ticker]
+    T212 API sync is attempted in the background; if it fails, the last known
+    ledger data is used — the cycle is never blocked or delayed.
 
-    return state
+    Always returns a dict (never None); positions list may be empty.
+    """
+    _try_t212_sync()
+
+    positions, cash = position_ledger.get_positions_with_prices()
+
+    stale = [p["ticker"] for p in positions if p.get("price_stale")]
+    if stale:
+        log_decision("price_feed_stale", "some_prices_unavailable", {"tickers": stale})
+
+    return {"positions": positions, "cash": cash}
+
+
+def _try_t212_sync() -> None:
+    """
+    Attempt T212 sync during market hours only.
+
+    T212 demo API is unreliable outside market hours (weekends, overnight).
+    Skipping the sync avoids 60 s of timeout wait when the API is known to be down.
+    During market hours a failed sync is still caught silently — the ledger
+    data is used as-is without blocking the main analysis cycle.
+    """
+    from . import price_feed
+    if not price_feed.is_market_hours():
+        return
+
+    try:
+        state = api_client.get_portfolio_state_demo()
+        if state is None:
+            return
+        t212_positions = state.get("positions", [])
+        t212_cash      = state.get("cash", {})
+        position_ledger.sync_from_t212(t212_positions, t212_cash)
+        log_decision("t212_sync_ok", "ledger_updated",
+                     {"n_positions": len(t212_positions)})
+    except Exception:
+        pass  # T212 unavailable — ledger data is used as-is
 
 
 def enrich_with_technicals(positions: list[dict], days: int = 60) -> list[dict]:
@@ -112,6 +141,48 @@ def compute_ema(closes: list[float], period: int) -> float | None:
     for price in closes[period:]:
         ema = price * k + ema * (1 - k)
     return round(ema, 4)
+
+
+# ---------------------------------------------------------------------------
+# Watchlist candidate technicals
+# ---------------------------------------------------------------------------
+
+def fetch_candidate_market_data(tickers: list[str]) -> dict[str, dict]:
+    """Fetch technical indicators for watchlist candidate tickers.
+
+    Returns a market_data dict compatible with strategy.generate_signals():
+      {ticker: {"technicals": {...}, "last_price": float}}
+
+    Tickers with insufficient historical data are silently omitted.
+    """
+    min_pts = RISK_CONFIG["min_data_points_required"]
+    result: dict[str, dict] = {}
+
+    for ticker in tickers:
+        history = api_client.get_historical_data(ticker, days=210)
+        if len(history) < min_pts:
+            continue
+
+        closes  = [bar["close"]  for bar in history]
+        volumes = [bar["volume"] for bar in history]
+
+        ema50  = compute_ema(closes, 50)
+        ema200 = compute_ema(closes, 200)
+        avg_vol  = sum(volumes[-20:]) / 20 if len(volumes) >= 20 else None
+        last_vol = volumes[-1] if volumes else None
+
+        result[ticker] = {
+            "technicals": {
+                "rsi_14":              compute_rsi(closes),
+                "ema50":               ema50,
+                "ema200":              ema200,
+                "ema50_above_ema200":  (ema50 > ema200) if (ema50 is not None and ema200 is not None) else None,
+                "volume_ratio_vs_avg": round(last_vol / avg_vol, 2) if (last_vol and avg_vol) else None,
+            },
+            "last_price": closes[-1] if closes else None,
+        }
+
+    return result
 
 
 # ---------------------------------------------------------------------------

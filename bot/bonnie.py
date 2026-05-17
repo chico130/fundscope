@@ -169,6 +169,60 @@ def calc_stats(trades: list[dict]) -> dict:
     }
 
 
+def calc_estado_emocional(stats: dict, config_risco: dict) -> str:
+    """Deriva o estado_emocional com base no win rate dos últimos 7 dias."""
+    if not config_risco.get("permite_comprar", True):
+        return "defensivo"
+    por_dia = stats.get("por_dia", {})
+    recent = sorted(por_dia.keys())[-7:]
+    wins  = sum(por_dia[d]["wins"]  for d in recent if d in por_dia)
+    total = sum(por_dia[d]["total"] for d in recent if d in por_dia)
+    if total < 3:
+        return "neutro"
+    wr = wins / total
+    if wr >= 0.65:
+        return "confiante"
+    if wr >= 0.50:
+        return "neutro"
+    if wr >= 0.35:
+        return "cauteloso"
+    return "defensivo"
+
+
+def get_vetos(trades: list[dict]) -> list[dict]:
+    """Devolve os últimos 20 trades bloqueados pela Bonnie."""
+    return [t for t in trades if t.get("tipo") == "bloqueado"][-20:]
+
+
+def build_evolucao(stats: dict) -> list[dict]:
+    """Série temporal de win rate por semana para gráfico de evolução."""
+    por_semana = stats.get("por_semana", {})
+    series = [
+        {
+            "semana": k,
+            "win_rate_pct": v["win_rate_pct"],
+            "total": v["total"],
+            "wins": v["wins"],
+        }
+        for k, v in sorted(por_semana.items())
+        if v["total"] >= 1
+    ]
+    # fallback para diário quando há menos de 2 semanas
+    if len(series) < 2:
+        por_dia = stats.get("por_dia", {})
+        series = [
+            {
+                "semana": k,
+                "win_rate_pct": v["win_rate_pct"],
+                "total": v["total"],
+                "wins": v["wins"],
+            }
+            for k, v in sorted(por_dia.items())
+            if v["total"] >= 1
+        ]
+    return series
+
+
 # ---------------------------------------------------------------------------
 # 4. Alertas passivos baseados em notícias
 # ---------------------------------------------------------------------------
@@ -343,6 +397,8 @@ def write_bonnie_log(
     alerts: list[dict],
     config_risco: dict,
     earnings_alerts: list[dict] | None = None,
+    vetos: list[dict] | None = None,
+    evolucao: list[dict] | None = None,
 ) -> None:
     """Escreve logs/bonnie_log.json em formato consumível pelo site via fetch."""
     LOGS_DIR.mkdir(parents=True, exist_ok=True)
@@ -353,6 +409,8 @@ def write_bonnie_log(
         "fase": "fase0_observacao",
         "config_risco_atual": config_risco,
         "estatisticas": stats,
+        "vetos": vetos or [],
+        "evolucao_win_rate": evolucao or [],
         "alertas_noticias": alerts,
         "alertas_earnings": earnings_alerts,
         "total_alertas": len(alerts) + len(earnings_alerts),
@@ -407,6 +465,21 @@ def _run_audit() -> None:
     stats = calc_stats(trades)
     print(f"[Bonnie] Trades fechados: {stats['total_closed']}")
 
+    # Actualiza estado_emocional com base no win rate recente
+    novo_estado = calc_estado_emocional(stats, config_risco)
+    if config_risco.get("estado_emocional") != novo_estado:
+        config_risco["estado_emocional"] = novo_estado
+        try:
+            with open(CONFIG_RISCO_PATH, "w", encoding="utf-8") as f:
+                json.dump(config_risco, f, indent=2, ensure_ascii=False)
+        except OSError as exc:
+            log_error("bonnie_estado_write", {"error": str(exc)})
+    print(f"[Bonnie] Estado emocional: {novo_estado}")
+
+    vetos = get_vetos(trades)
+    evolucao = build_evolucao(stats)
+    print(f"[Bonnie] {len(vetos)} veto(s) registados")
+
     news = _load_news()
     alerts = generate_news_alerts(trades, news)
     print(f"[Bonnie] {len(alerts)} alertas de notícias gerados")
@@ -420,7 +493,7 @@ def _run_audit() -> None:
     else:
         print("[Bonnie] Sem alertas earnings_risk")
 
-    write_bonnie_log(stats, alerts, config_risco, earnings_alerts)
+    write_bonnie_log(stats, alerts, config_risco, earnings_alerts, vetos=vetos, evolucao=evolucao)
 
 
 def main() -> None:

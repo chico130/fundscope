@@ -12,6 +12,10 @@ T212_DEMO_KEY = os.getenv("T212_DEMO_KEY") or os.getenv("T212_API_KEY_DEMO", "")
 T212_API_KEY_DEMO = T212_DEMO_KEY  # alias de retrocompatibilidade
 T212_BASE_URL_DEMO = "https://demo.trading212.com/api/v0"
 
+# Finnhub: feed de preços em tempo real (free tier: 60 req/min).
+# Registo gratuito em https://finnhub.io/register
+FINNHUB_API_KEY = os.getenv("FINNHUB_API_KEY", "")
+
 # Demo first, always. Never flip to True without extensive testing in demo.
 LIVE_TRADING = False
 
@@ -24,6 +28,7 @@ RISK_CONFIG = {
     "take_profit_pct": 10.0,
     "no_trade_before_earnings_days": 2,
     "min_data_points_required": 20,
+    "max_positions_per_sector": 2,
 }
 
 STRATEGY_VERSION = "v0.1.0"
@@ -58,7 +63,7 @@ WATCHLIST_CONFIG = {
 }
 
 REGIME_CONFIG = {
-    "bear_threshold_spy_ema200_pct": -5.0,
+    "bear_threshold_spy_ema200_pct": 0.0,
     "bull_breadth_threshold_pct": 60.0,
     "lateral_atr_multiplier": 0.8,
 }

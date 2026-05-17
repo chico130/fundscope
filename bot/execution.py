@@ -141,12 +141,20 @@ def execute_trade(proposed: ProposedTrade, portfolio_state: dict) -> dict | None
         cfg = _read_config_risco()
         if not cfg.get("permite_comprar", True):
             motivo = cfg.get("motivo_bloqueio", "bloqueio_bonnie")
+            ctx = proposed.context or {}
+            contexto: dict = {}
+            if rsi_now is not None:
+                contexto["rsi_14"] = rsi_now
+            if ctx.get("regime"):
+                contexto["regime"] = ctx["regime"]
             _append_to_diario_trades({
                 "tipo": "bloqueado",
                 "bloqueado_por": "bonnie",
                 "motivo": motivo,
                 "ativo": proposed.ticker,
                 "timestamp": ts,
+                "reason": proposed.reason,
+                "contexto": contexto,
             })
             log_decision("bonnie_block", "skip_buy", {
                 "ticker": proposed.ticker,
