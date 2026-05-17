@@ -566,162 +566,7 @@
 
     <!-- ══ ABOUT TAB ══ -->
     <div id="tabAbout" style="display:none">
-
-      <!-- Intro -->
-      <div class="card" style="margin-bottom:var(--space-5)">
-        <div class="card-label" style="margin-bottom:var(--space-3)">FundScope — Sistema Multi-Agente de Trading</div>
-        <p class="about-intro">
-          O FundScope é um sistema autónomo de trading em bolsa composto por três agentes com papéis distintos e hierárquicos.
-          Cada agente evolui por fases progressivas — as fases seguintes só se activam quando as condições da fase anterior estão cumpridas.
-          Todo o capital em risco é <strong>fictício (conta demo)</strong> até aprovação manual explícita para conta real.
-        </p>
-      </div>
-
-      <!-- Clyde -->
-      <div class="card" style="margin-bottom:var(--space-5)">
-        <div class="bot-header-row">
-          <div class="bot-emoji-big">🤖</div>
-          <div>
-            <div class="bot-name">Clyde</div>
-            <div class="bot-role">Gerador de sinais e executor de ordens — cérebro operacional</div>
-            <div style="margin-top:var(--space-2);display:flex;gap:var(--space-2);flex-wrap:wrap">
-              <span class="phase-badge done">Fase 0 ✓</span>
-              <span class="phase-badge active" id="clydePhase1Badge">Fase 1 — Em curso</span>
-              <span class="phase-badge locked">Fase 2</span>
-              <span class="phase-badge locked">Fase 3 — Live</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="phase-entry done">
-          <div class="phase-head done">Fase 0 — Observação ✅ Concluída</div>
-          <div class="phase-body">Leitura dos dados T212 demo, cálculo de RSI/EMA/volume, geração de sugestões em texto. Nenhuma ordem enviada. Duração: 2–4 semanas de observação contínua.</div>
-        </div>
-
-        <div class="phase-entry active">
-          <div class="phase-head active">Fase 1 — Execução Demo 🔄 Em curso</div>
-          <div class="phase-body">
-            Clyde compra e vende automaticamente na conta T212 demo com decisões puramente matemáticas.<br>
-            Fórmula de dimensionamento: <strong>signal_strength × equity × 15% × regime_factor × CRO.risk_factor</strong><br>
-            Regime bear bloqueia entradas. Mínimo €50 por ordem. Máximo 20% equity por posição.
-          </div>
-          <div class="phase-prog">
-            <div class="progress-labels">
-              <span style="font-size:10px;color:var(--color-text-muted)">Trades validados para Fase 2</span>
-              <span class="progress-count" style="font-size:10px" id="clydeTradeCount">— / 100</span>
-            </div>
-            <div class="progress-bg"><div class="progress-fill" id="clydeTradeFill" style="width:0%;background:var(--color-primary)"></div></div>
-          </div>
-        </div>
-
-        <div class="phase-entry locked">
-          <div class="phase-head locked">Fase 2 — Filtro ML 🔒 Bloqueada</div>
-          <div class="phase-body">Adicionar XGBoost como camada de filtro extra às regras técnicas. O modelo aprende a prever retornos a 5 dias. Threshold de confiança mínima: 60%. Walk-forward validation obrigatório. Requer Fase 1 completa (100 trades).</div>
-        </div>
-
-        <div class="phase-entry locked">
-          <div class="phase-head locked">Fase 3 — Live Trading 🔒 Bloqueada</div>
-          <div class="phase-body">
-            Execução com capital real. Parâmetros ultra-conservadores de arranque (posição máx. 10%, 3 trades/dia, stop 4%).<br>
-            Condições obrigatórias: win rate &gt; 50% · rácio ganho/perda &gt; 1.5 · sem dia &gt; -3% · Sharpe &gt; 0.8 · aprovação manual em config.py.
-          </div>
-        </div>
-      </div>
-
-      <!-- Bonnie -->
-      <div class="card" style="margin-bottom:var(--space-5)">
-        <div class="bot-header-row">
-          <div class="bot-emoji-big">🧠</div>
-          <div>
-            <div class="bot-name">Bonnie</div>
-            <div class="bot-role">Gestora de risco e filtro de compras — escudo defensivo</div>
-            <div style="margin-top:var(--space-2);display:flex;gap:var(--space-2);flex-wrap:wrap">
-              <span class="phase-badge done">Fase 0 ✓</span>
-              <span class="phase-badge locked">Fase 1</span>
-              <span class="phase-badge locked">Fase 2 — Real</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="phase-entry done">
-          <div class="phase-head done">Fase 0 — Shadow Mode ✅ Activa</div>
-          <div class="phase-body">Lê <code>config_risco.json</code> e bloqueia ordens do Clyde quando <code>permite_comprar = false</code>. Regista todos os vetos, estado emocional (neutro/cauteloso/defensivo/confiante) e evolução do win rate por sector. A Bonnie vê tudo mas só bloqueia quando instruída.</div>
-        </div>
-
-        <div class="phase-entry locked">
-          <div class="phase-head locked">Fase 1 — Veto Autónomo 🔒 Aguarda 100 trades do Clyde</div>
-          <div class="phase-body">
-            Bonnie bloqueia entradas autonomamente com base no CRO e win rate, sem intervenção humana.<br>
-            Threshold de veto standard: 60% · Threshold apertado (mercado adverso): 64%.
-          </div>
-          <div class="phase-prog">
-            <div class="progress-labels">
-              <span style="font-size:10px;color:var(--color-text-muted)">Trades do Clyde para desbloquear Bonnie</span>
-              <span class="progress-count" style="font-size:10px" id="bonnieAboutCount">— / 100</span>
-            </div>
-            <div class="progress-bg"><div class="progress-fill" id="bonnieAboutFill" style="width:0%;background:var(--color-gold)"></div></div>
-          </div>
-        </div>
-
-        <div class="phase-entry locked">
-          <div class="phase-head locked">Fase 2 — Conta Real 🔒 Bloqueada</div>
-          <div class="phase-body">Gestora de risco com autoridade total sobre a conta real. Kill-switch activo: pode suspender todas as compras escrevendo em <code>config_risco.json</code>. Humano mantém sempre override manual.</div>
-        </div>
-      </div>
-
-      <!-- CRO -->
-      <div class="card" style="margin-bottom:var(--space-5)">
-        <div class="bot-header-row">
-          <div class="bot-emoji-big">🏛️</div>
-          <div>
-            <div class="bot-name">CRO — Chief Risk Officer</div>
-            <div class="bot-role">Controlador de risco sistémico — árbitro supremo</div>
-            <div style="margin-top:var(--space-2);display:flex;gap:var(--space-2);flex-wrap:wrap">
-              <span class="phase-badge done">Fase 0 ✓</span>
-              <span class="phase-badge active">Fase 1 ✓</span>
-              <span class="phase-badge locked">Fase 2</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="phase-entry done">
-          <div class="phase-head done">Fase 0 — Narrative Engine ✅ Concluída</div>
-          <div class="phase-body">Observa todos os trades, gera insights cognitivos em JSON, envia "dicas" para o Telegram. Detecta padrões como: entradas com RSI alto em regime bear, sequências de perdas, exposição excessiva por sector.</div>
-        </div>
-
-        <div class="phase-entry done">
-          <div class="phase-head done">Fase 1 — Position Sizing Dinâmico ✅ Activa</div>
-          <div class="phase-body">
-            Calcula o <strong>risk_factor</strong> a cada ciclo com base em win rate e drawdown. Este fator é multiplicado no dimensionamento de cada ordem do Clyde.<br>
-            Fórmula: <strong>wr_adj × dd_adj</strong> · range: 0.15× (muito conservador) a 1.2× (confiante).<br>
-            O risk_factor actual é visível no card CRO do tab Clyde.
-          </div>
-        </div>
-
-        <div class="phase-entry locked">
-          <div class="phase-head locked">Fase 2 — Kill-Switch 🔒 Fase futura</div>
-          <div class="phase-body">O CRO ganha autoridade máxima: pode escrever <code>permite_comprar: false</code> em <code>config_risco.json</code> quando detecta drawdown diário excessivo, N perdas consecutivas ou exposição sectorial extrema. Override manual sempre disponível.</div>
-        </div>
-      </div>
-
-      <!-- Hierarquia -->
-      <div class="card">
-        <div class="card-label" style="margin-bottom:var(--space-4)">Hierarquia de Decisão</div>
-        <div style="font-family:monospace;font-size:var(--text-xs);color:var(--color-text-muted);line-height:2;padding:var(--space-4);background:var(--color-surface-offset);border-radius:var(--radius-md)">
-          MERCADO (macro) → regime_detector<br>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓<br>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;🏛️ CRO — aprova o ESTADO do sistema<br>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↙&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↘<br>
-          🧠 Bonnie — filtra entradas &nbsp;&nbsp;&nbsp; 🤖 Clyde — gera e executa ordens<br>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↘&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↙<br>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;execution.py → T212 API
-        </div>
-        <p style="font-size:var(--text-xs);color:var(--color-text-faint);margin-top:var(--space-3)">
-          Clyde encontra oportunidades · Bonnie filtra e aprova individualmente · CRO observa tudo e controla a agressividade global.
-          O humano mantém sempre a última palavra — nenhum agente altera parâmetros sem registo.
-        </p>
-      </div>
-
+      <div id="aboutContent"></div>
     </div>
 
   </main>
@@ -1247,21 +1092,151 @@ function renderBonnieLog(log) {
 
 // ── About ─────────────────────────────────────────────────────────────────────
 function renderAbout() {
-  const n   = _trades.length;
-  const pct = Math.min(100, Math.round(n / 100 * 100));
-  // Clyde progress
-  const cc = document.getElementById('clydeTradeCount');
-  const cf = document.getElementById('clydeTradeFill');
-  if (cc) cc.textContent = `${n} / 100`;
-  if (cf) cf.style.width = pct + '%';
-  // Mirror into Bonnie about section
-  const bc = document.getElementById('bonnieAboutCount');
-  const bf = document.getElementById('bonnieAboutFill');
-  if (bc) bc.textContent = `${n} / 100`;
-  if (bf) bf.style.width = pct + '%';
-  // Update Clyde phase badge if 100 trades reached
-  const badge = document.getElementById('clydePhase1Badge');
-  if (badge && n >= 100) badge.textContent = 'Fase 1 ✓';
+  const el = document.getElementById('aboutContent');
+  if (!el) return;
+
+  const n = _trades.length;
+  const p1done = n >= 100;   // Clyde Phase 1 complete → unlocks Phase 2 + Bonnie Phase 1
+
+  // ── Helpers ────────────────────────────────────────────────────────────────
+  const bdg = (cls, txt) =>
+    `<span class="phase-badge ${cls}">${txt}</span>`;
+
+  const bar = (cur, max, color, label) => {
+    const pct = Math.min(100, Math.round(cur / max * 100));
+    return `<div class="phase-prog">
+      <div class="progress-labels">
+        <span style="font-size:10px;color:var(--color-text-muted)">${label}</span>
+        <span class="progress-count" style="font-size:10px">${cur} / ${max}</span>
+      </div>
+      <div class="progress-bg"><div class="progress-fill" style="width:${pct}%;background:${color};transition:width .6s ease"></div></div>
+    </div>`;
+  };
+
+  const entry = (state, title, body, extra = '') =>
+    `<div class="phase-entry ${state}">
+      <div class="phase-head ${state}">${title}</div>
+      <div class="phase-body">${body}</div>
+      ${extra}
+    </div>`;
+
+  const botHead = (emoji, name, role, badges) =>
+    `<div class="bot-header-row">
+      <div class="bot-emoji-big">${emoji}</div>
+      <div>
+        <div class="bot-name">${name}</div>
+        <div class="bot-role">${role}</div>
+        <div style="margin-top:var(--space-2);display:flex;gap:var(--space-2);flex-wrap:wrap">${badges}</div>
+      </div>
+    </div>`;
+
+  // ── Intro ──────────────────────────────────────────────────────────────────
+  const intro = `<div class="card" style="margin-bottom:var(--space-5)">
+    <div class="card-label" style="margin-bottom:var(--space-3)">FundScope — Sistema Multi-Agente de Trading</div>
+    <p class="about-intro">
+      O FundScope é um sistema autónomo de trading composto por três agentes com papéis hierárquicos.
+      As fases seguintes só se activam quando as condições da fase anterior estão cumpridas.
+      Todo o capital em risco é <strong>fictício (conta demo)</strong> até aprovação manual explícita para conta real.
+    </p>
+  </div>`;
+
+  // ── Clyde ──────────────────────────────────────────────────────────────────
+  const clyde = `<div class="card" style="margin-bottom:var(--space-5)">
+    ${botHead('🤖', 'Clyde', 'Gerador de sinais e executor de ordens — cérebro operacional',
+      bdg('done', 'Fase 0 ✓') +
+      bdg(p1done ? 'done' : 'active', p1done ? 'Fase 1 ✓' : 'Fase 1 — Em curso') +
+      bdg(p1done ? 'active' : 'locked', p1done ? 'Fase 2 — Disponível' : 'Fase 2') +
+      bdg('locked', 'Fase 3 — Live')
+    )}
+    ${entry('done', '✅ Fase 0 — Observação · Concluída',
+      'Leitura dos dados T212 demo, cálculo de RSI/EMA/volume, geração de sugestões em texto. Nenhuma ordem enviada.'
+    )}
+    ${entry(p1done ? 'done' : 'active',
+      p1done ? '✅ Fase 1 — Execução Demo · Concluída (100 trades)' : '🔄 Fase 1 — Execução Demo · Em curso',
+      'Clyde compra e vende automaticamente na conta T212 demo com decisões puramente matemáticas.<br>'
+      + 'Fórmula: <strong>signal_strength × equity × 15% × regime_factor × CRO.risk_factor</strong><br>'
+      + 'Regime bear bloqueia entradas. Mínimo €50 por ordem. Máximo 20% equity por posição.',
+      p1done ? '' : bar(n, 100, 'var(--color-primary)', 'Trades validados para desbloquear Fase 2')
+    )}
+    ${entry(p1done ? 'active' : 'locked',
+      p1done ? '🔄 Fase 2 — Filtro ML · Disponível — aguarda activação manual' : '🔒 Fase 2 — Filtro ML · Bloqueada',
+      'Adicionar XGBoost como camada de filtro extra às regras técnicas. O modelo aprende a prever retornos a 5 dias.'
+      + ' Threshold de confiança: 60%. Walk-forward validation obrigatório.'
+      + (p1done ? '<br><strong style="color:var(--color-primary)">100 trades atingidos — pronto para activação manual.</strong>' : '')
+    )}
+    ${entry('locked', '🔒 Fase 3 — Live Trading · Bloqueada',
+      'Execução com capital real. Parâmetros ultra-conservadores (posição máx. 10%, 3 trades/dia, stop 4%).<br>'
+      + 'Condições obrigatórias: win rate &gt; 50% · rácio ganho/perda &gt; 1.5 · sem dia &gt; −3% · Sharpe &gt; 0.8 · aprovação manual.'
+    )}
+  </div>`;
+
+  // ── Bonnie ─────────────────────────────────────────────────────────────────
+  const bonnie = `<div class="card" style="margin-bottom:var(--space-5)">
+    ${botHead('🧠', 'Bonnie', 'Gestora de risco e filtro de compras — escudo defensivo',
+      bdg('done', 'Fase 0 ✓') +
+      bdg(p1done ? 'active' : 'locked', p1done ? 'Fase 1 — Desbloqueada' : 'Fase 1') +
+      bdg('locked', 'Fase 2 — Real')
+    )}
+    ${entry('done', '✅ Fase 0 — Shadow Mode · Activa',
+      'Lê <code>config_risco.json</code> e bloqueia ordens do Clyde quando <code>permite_comprar = false</code>.'
+      + ' Regista todos os vetos, estado emocional e evolução do win rate por sector.'
+    )}
+    ${entry(p1done ? 'active' : 'locked',
+      p1done ? '🔄 Fase 1 — Veto Autónomo · Desbloqueada — aguarda activação manual'
+             : `🔒 Fase 1 — Veto Autónomo · Aguarda ${100 - n} trade${100 - n === 1 ? '' : 's'} do Clyde`,
+      'Bonnie bloqueia entradas autonomamente com base no CRO e win rate, sem intervenção humana.<br>'
+      + 'Threshold standard: 60% · Threshold apertado (mercado adverso): 64%.'
+      + (p1done ? '<br><strong style="color:var(--color-gold)">Clyde completou 100 trades — Bonnie pronta para Fase 1.</strong>' : ''),
+      p1done ? '' : bar(n, 100, 'var(--color-gold)', 'Trades do Clyde para desbloquear Bonnie')
+    )}
+    ${entry('locked', '🔒 Fase 2 — Conta Real · Bloqueada',
+      'Gestora de risco com autoridade total sobre a conta real. Kill-switch activo: pode suspender todas as compras'
+      + ' escrevendo em <code>config_risco.json</code>. Humano mantém sempre override manual.'
+    )}
+  </div>`;
+
+  // ── CRO ────────────────────────────────────────────────────────────────────
+  const cro = `<div class="card" style="margin-bottom:var(--space-5)">
+    ${botHead('🏛️', 'CRO — Chief Risk Officer', 'Controlador de risco sistémico — árbitro supremo',
+      bdg('done', 'Fase 0 ✓') +
+      bdg('done', 'Fase 1 ✓') +
+      bdg('locked', 'Fase 2')
+    )}
+    ${entry('done', '✅ Fase 0 — Narrative Engine · Concluída',
+      'Observa todos os trades, gera insights cognitivos em JSON, envia "dicas" para o Telegram.'
+      + ' Detecta padrões como entradas com RSI alto em regime bear, sequências de perdas, exposição excessiva por sector.'
+    )}
+    ${entry('done', '✅ Fase 1 — Position Sizing Dinâmico · Activa',
+      'Calcula o <strong>risk_factor</strong> a cada ciclo com base em win rate e drawdown.'
+      + ' Fórmula: <strong>wr_adj × dd_adj</strong> · range 0.15× a 1.2×.<br>'
+      + 'O risk_factor actual é visível no card CRO do tab Clyde.'
+    )}
+    ${entry('locked', '🔒 Fase 2 — Kill-Switch · Fase futura',
+      'O CRO ganha autoridade máxima: pode escrever <code>permite_comprar: false</code> em <code>config_risco.json</code>'
+      + ' quando detecta drawdown diário excessivo, N perdas consecutivas ou exposição sectorial extrema.'
+      + ' Override manual sempre disponível.'
+    )}
+  </div>`;
+
+  // ── Hierarquia ─────────────────────────────────────────────────────────────
+  const hier = `<div class="card">
+    <div class="card-label" style="margin-bottom:var(--space-4)">Hierarquia de Decisão</div>
+    <div style="font-family:monospace;font-size:var(--text-xs);color:var(--color-text-muted);line-height:2;padding:var(--space-4);background:var(--color-surface-offset);border-radius:var(--radius-md)">
+      MERCADO (macro) → regime_detector<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;🏛️ CRO — aprova o ESTADO do sistema<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↙&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↘<br>
+      🧠 Bonnie — filtra entradas &nbsp;&nbsp; 🤖 Clyde — gera e executa ordens<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↘&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↙<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;execution.py → T212 API
+    </div>
+    <p style="font-size:var(--text-xs);color:var(--color-text-faint);margin-top:var(--space-3)">
+      Clyde encontra oportunidades · Bonnie filtra e aprova individualmente · CRO controla a agressividade global.
+      O humano mantém sempre a última palavra.
+    </p>
+  </div>`;
+
+  el.innerHTML = intro + clyde + bonnie + cro + hier;
 }
 
 async function loadBonnie() {
