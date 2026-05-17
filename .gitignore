@@ -1,4 +1,32 @@
-.env
+# Python
 __pycache__/
 *.pyc
 *.pyo
+*.pyd
+.venv/
+venv/
+*.egg-info/
+
+# Secrets — NUNCA commitar
+.env
+.env.*
+
+# Claude Code settings — local only
+.claude/
+
+# Runtime locks — gerados em cada ciclo, não são código
+bonnie.lock
+bot.lock
+
+# Dados pesados — backtests e modelos ML locais
+data/backtest/
+data/models/
+
+# Logs de runtime diários — efémeros, não são código
+logs/trades/
+logs/errors/
+
+# Artifacts de desenvolvimento local
+backtest_run.log
+prompt-*.txt
+future-*.txt
