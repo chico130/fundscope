@@ -121,16 +121,16 @@ Não bloqueia ordens, não altera parâmetros de risco. Limita-se a:
 }
 ```
 
-   - Opcional: envia um resumo destes insights para o Telegram através de `bot/notifier.py`, como parte do relatório diário/por ciclo.
+   - Opcional: envia um resumo destes insights para o Telegram através de [[notifier.py]], como parte do relatório diário/por ciclo.
 
 ### Integração técnica Fase 0
 
-- Novo ficheiro: `bot/cro.py` com funções/classe:
+- Novo ficheiro: [[cro.py]] com funções/classe:
   - `run_cro_cycle()` → chama `observe()`, `interpret()`, `speak()`.
 - Chamado no final da Fase 0:
-  - No `phase0.py`, depois de gerar `beta_analysis.json`, chamar `run_cro_cycle()`.
+  - No [[phase0.py]], depois de gerar `beta_analysis.json`, chamar `run_cro_cycle()`.
 - Nada é alterado em:
-  - `execution.py` (continua igual)
+  - [[execution.py]] (continua igual)
   - `config_risco.json` (apenas leitura pela Bonnie nesta fase)
   - `LIVE_TRADING` (continua `False` até decisão explícita).
 
@@ -168,7 +168,7 @@ Exemplo:
 
 → `Risco_Dinamico ≈ 1.0% × 0.5 × 0.7 × 0.8 = 0.28% da equity por trade`
 
-Este valor é passado para o `execution.py` como “budget de risco” máximo daquele trade.  
+Este valor é passado para o [[execution.py]] como “budget de risco” máximo daquele trade.  
 A partir daqui, o position sizing é calculado assim:
 
 ```text
@@ -181,11 +181,11 @@ Qtd_Acoes            = floor(Risco_Euro_Por_Trade / Risco_Por_Acao)
 
 ### Integração técnica Fase 1
 
-- O `CRO` passa a expor uma função, p.ex. `compute_dynamic_risk_pct()` que devolve o `Risco_Dinamico`.
-- O `execution.py` passa a usar essa função em vez de um fator fixo:
+- O [[cro.py]] passa a expor uma função, p.ex. `compute_dynamic_risk_pct()` que devolve o `Risco_Dinamico`.
+- O [[execution.py]] passa a usar essa função em vez de um fator fixo:
   - Sai o `tamanho_maximo_posicao` como freio principal.
   - Entra o cálculo de `Risco_Euro_Por_Trade` baseado no output do CRO e no stop proposto pelo Clyde/Bonnie.
-- O `learner.py` alimenta o CRO com estatísticas reais de performance (últimos N trades) para cálculo de `Fator_Performance`.
+- O [[learner.py]] alimenta o CRO com estatísticas reais de performance (últimos N trades) para cálculo de `Fator_Performance`.
 
 ---
 
@@ -254,7 +254,7 @@ Mesmo com Kill-Switch, o **humano mantém sempre a última palavra**:
 
 ## 🔌 INTEGRAÇÃO COM O ECOSSISTEMA FUND SCOPE
 
-### Ficheiro: `bot/cro.py`
+### Ficheiro: [[cro.py]]
 
 Responsabilidades:
 
@@ -273,17 +273,17 @@ Responsabilidades:
 
 ### Ficheiros a ajustar (mais tarde, por fase)
 
-- `bot/phase0.py`
+- [[phase0.py]]
   - No final do ciclo, chamar `run_cro_cycle()`.
 
-- `bot/execution.py`
+- [[execution.py]]
   - Fase 1: usar o output do CRO para calcular o tamanho da posição com base no risco por trade.
   - Fase 2: respeitar `permite_comprar` definido pelo CRO através de `config_risco.json` (já está parcialmente implementado).
 
-- `bot/learner.py`
+- [[learner.py]]
   - Fornecer ao CRO estatísticas consolidadas (win rate, P&L médio, etc.) para cálculo de `Fator_Performance`.
 
-- `bot/notifier.py`
+- [[notifier.py]]
   - Incluir os insights mais recentes do CRO nas mensagens enviadas via Telegram.
 
 ---

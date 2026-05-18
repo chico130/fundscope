@@ -430,6 +430,33 @@ def write_bonnie_log(
 # 7. Filtro activo de propostas em tempo real
 # ---------------------------------------------------------------------------
 
+def _earnings_window_map() -> dict[str, tuple[int, str]]:
+    """Devolve {TICKER_BASE: (days_away, date_str)} para todas as empresas
+    com earnings dentro da janela `no_trade_before_earnings_days` (inclusive).
+
+    Lê earnings.json a cada chamada — leve, e mantém a regra alinhada com o ficheiro
+    publicado pela tarefa diária `update_earnings.py`.
+    """
+    threshold_days = RISK_CONFIG.get("no_trade_before_earnings_days", 2)
+    today = datetime.now(timezone.utc).date()
+    out: dict[str, tuple[int, str]] = {}
+    for entry in _load_earnings():
+        ticker = (entry.get("ticker") or "").split("_")[0].upper()
+        if not ticker:
+            continue
+        date_str = entry.get("data", "")
+        try:
+            ed = datetime.strptime(date_str, "%Y-%m-%d").date()
+        except ValueError:
+            continue
+        days_away = (ed - today).days
+        if 0 <= days_away <= threshold_days:
+            # Mantém a entrada mais próxima caso o ticker apareça duplicado
+            if ticker not in out or days_away < out[ticker][0]:
+                out[ticker] = (days_away, date_str)
+    return out
+
+
 def filter_proposals(
     proposals:     list,
     market_data:   dict[str, dict],
@@ -439,6 +466,9 @@ def filter_proposals(
 
     Apenas filtra BUY — SELL/REDUCE passam sempre (saídas nunca são vetadas).
 
+    EARNINGS:  veta se o ticker tiver earnings em ≤ `no_trade_before_earnings_days`
+               (config.RISK_CONFIG). A regra precede VALUE/MOMENTUM por ser de risco
+               sistémico, não de estratégia.
     VALUE:     veta se signal_strength < base_strength_threshold.
     MOMENTUM:  veta apenas por volume seco (vol_ratio < momentum_vol_floor)
                ou gap down acentuado (last_price < prev × (1 - gap_down_pct/100)).
@@ -450,6 +480,9 @@ def filter_proposals(
     vol_floor      = bonnie_params.get("momentum_vol_floor", 1.0)
     gap_pct        = bonnie_params.get("momentum_gap_down_pct", 3.0)
 
+    earnings_map   = _earnings_window_map()
+    threshold_days = RISK_CONFIG.get("no_trade_before_earnings_days", 2)
+
     approved: list        = []
     vetoed:   list        = []
 
@@ -459,6 +492,18 @@ def filter_proposals(
             continue
 
         ticker = getattr(trade, "ticker", "")
+        ticker_base = ticker.split("_")[0].upper() if ticker else ""
+
+        # ── Veto por earnings (regra sistémica, corre antes de VALUE/MOMENTUM) ──
+        if ticker_base in earnings_map:
+            days_away, date_str = earnings_map[ticker_base]
+            vetoed.append((
+                trade,
+                f"EARNINGS: {ticker_base} reporta em {days_away}d ({date_str}) "
+                f"<= janela de {threshold_days}d - compra vetada",
+            ))
+            continue
+
         data   = market_data.get(ticker, {})
         t      = data.get("technicals", {}) or {}
         vol    = t.get("volume_ratio_vs_avg") or 1.0

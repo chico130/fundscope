@@ -27,8 +27,10 @@ jobs:
 
       - name: Rebuild watchlist e análise beta
         env:
-          T212_API_KEY_DEMO: ${{ secrets.T212_API_KEY_DEMO }}
-          T212_KEY_ID:       ${{ secrets.T212_KEY_ID }}
+          T212_API_KEY_DEMO:  ${{ secrets.T212_API_KEY_DEMO }}
+          T212_KEY_ID:        ${{ secrets.T212_KEY_ID }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID:   ${{ secrets.TELEGRAM_CHAT_ID }}
         run: python -m bot.phase0
 
       - name: Commit data/beta/

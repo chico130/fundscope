@@ -21,7 +21,6 @@ if "%DIR:~-1%"=="\" set "DIR=%DIR:~0,-1%"
 set "BONNIE=%DIR%\Ligar_Bonnie.bat"
 set "BOT=%DIR%\Ligar_Bot.bat"
 set "EARNINGS_PY=%DIR%\update_earnings.py"
-set "TASK_USER=DESKTOP-NGIATI2\Francisco Araujo"
 
 echo.
 echo ============================================================
@@ -29,10 +28,9 @@ echo  FundScope - Task Scheduler Setup
 echo ============================================================
 echo.
 echo Pasta do projecto: %DIR%
-echo Utilizador:        %TASK_USER%
+echo Utilizador:        %USERDOMAIN%\%USERNAME%  (sessao interactiva)
 echo.
-echo ATENCAO: Sera pedida a password do Windows para que as
-echo          tarefas corram mesmo sem estar logged in.
+echo As tarefas correrao SOMENTE com a sessao iniciada (sem password).
 echo.
 
 :: ---- Apagar tarefas antigas (ignorar erro se nao existem) ----
@@ -42,14 +40,12 @@ schtasks /delete /tn "FundScope_Earnings_Daily"  /f >nul 2>&1
 
 :: ---- Tarefa 1: Ligar_Bonnie.bat - a cada hora ----
 echo [1/3] A criar tarefa Bonnie (a cada hora)...
-echo       (introduza a password quando pedido)
 schtasks /create ^
   /tn "FundScope_Bonnie_Hourly" ^
   /tr "cmd /c \"%BONNIE%\"" ^
   /sc HOURLY ^
   /mo 1 ^
-  /ru "%TASK_USER%" ^
-  /rp * ^
+  /it ^
   /rl HIGHEST ^
   /f
 
@@ -62,7 +58,6 @@ if %errorLevel%==0 (
 :: ---- Tarefa 2: Ligar_Bot.bat - diario 08:50, termina 17:10 ----
 echo.
 echo [2/3] A criar tarefa Bot (08:50 - 17:10 todos os dias)...
-echo       (introduza a password quando pedido)
 schtasks /create ^
   /tn "FundScope_Bot_Daily" ^
   /tr "cmd /c \"%BOT%\"" ^
@@ -70,8 +65,7 @@ schtasks /create ^
   /st 08:50 ^
   /et 17:10 ^
   /k ^
-  /ru "%TASK_USER%" ^
-  /rp * ^
+  /it ^
   /rl HIGHEST ^
   /f
 
@@ -84,14 +78,12 @@ if %errorLevel%==0 (
 :: ---- Tarefa 3: update_earnings.py - diario 07:00 ----
 echo.
 echo [3/3] A criar tarefa Earnings (07:00 todos os dias)...
-echo       (introduza a password quando pedido)
 schtasks /create ^
   /tn "FundScope_Earnings_Daily" ^
   /tr "cmd /c \"py \"%EARNINGS_PY%\"\"" ^
   /sc DAILY ^
   /st 07:00 ^
-  /ru "%TASK_USER%" ^
-  /rp * ^
+  /it ^
   /rl HIGHEST ^
   /f
 

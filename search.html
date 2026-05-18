@@ -221,7 +221,16 @@ const CORS_P='https://corsproxy.io/?';
 
 function normalizeWatchlist(items){const arr=Array.isArray(items)?items:[];const seen=new Set();const out=[];for(const item of arr){const t=String(item||'').trim().toUpperCase();if(!t||seen.has(t))continue;seen.add(t);out.push(t);}return out;}
 function getWatchlist(){try{const normalized=normalizeWatchlist(JSON.parse(localStorage.getItem('fs_watchlist')||'[]'));localStorage.setItem('fs_watchlist',JSON.stringify(normalized));return normalized;}catch{return[];}}
-function saveWatchlist(arr){localStorage.setItem('fs_watchlist',JSON.stringify(normalizeWatchlist(arr)));}
+function _autoSync(tickers){
+  const tok=localStorage.getItem('fs_token');
+  if(!tok)return;
+  fetch('http://localhost:8080/api/save-watchlist',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','Authorization':'Bearer '+tok},
+    body:JSON.stringify({tickers})
+  }).then(r=>{if(r.status===401)localStorage.removeItem('fs_token');}).catch(()=>{});
+}
+function saveWatchlist(arr){const n=normalizeWatchlist(arr);localStorage.setItem('fs_watchlist',JSON.stringify(n));_autoSync(n);}
 function isInWatchlist(ticker){const t=String(ticker||'').toUpperCase();return getWatchlist().includes(t);}
 function toggleWatchlist(ticker){const t=String(ticker||'').toUpperCase();let arr=getWatchlist();if(arr.includes(t)){arr=arr.filter(x=>x!==t);}else{arr.push(t);}saveWatchlist(arr);return arr.includes(t);}
 

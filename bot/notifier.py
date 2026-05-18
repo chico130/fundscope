@@ -3,15 +3,80 @@ Notifier — alertas Telegram em tempo real.
 
 Envia mensagens para o chat do Francisco via Telegram Bot API.
 Falhas de rede ou API são silenciadas para não crashar o bot principal.
+Erros persistidos em logs/errors/telegram_errors.json para diagnóstico.
+
+Credenciais (NUNCA hardcoded — apenas env vars):
+  • TELEGRAM_BOT_TOKEN  — token do bot @BotFather
+  • TELEGRAM_CHAT_ID    — chat_id do destinatário
+
+São lidas em três fases:
+  1. os.environ (definidas pelo runner — GitHub Actions, Task Scheduler, shell)
+  2. Fallback .env na raiz do projecto (via python-dotenv, se disponível)
+  3. Se ainda assim faltarem → notifier silencia (nenhum envio, sem crash)
 """
 from __future__ import annotations
 
+import json
+import os
+from datetime import datetime, timezone
+from pathlib import Path
+
 import requests
 
-_TOKEN = "8656968418:AAF9JuNAJHOymk8f-wYzKF1aP6TK6DowDWk"
-_CHAT_ID = "5862916306"
-_BASE_URL = f"https://api.telegram.org/bot{_TOKEN}"
-_COVER_URL = "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=500"
+_PROJECT_ROOT = Path(__file__).parent.parent
+_TELEGRAM_ERROR_LOG = _PROJECT_ROOT / "logs" / "errors" / "telegram_errors.json"
+
+
+def _load_credentials() -> tuple[str | None, str | None]:
+    """Resolve TOKEN/CHAT_ID a partir de env vars, com fallback .env opcional.
+
+    Devolve (None, None) silenciosamente quando alguma das duas falta — o
+    notifier passa a no-op nesse caso, sem crashar nem registar erro.
+    """
+    token   = os.environ.get("TELEGRAM_BOT_TOKEN") or ""
+    chat_id = os.environ.get("TELEGRAM_CHAT_ID")   or ""
+
+    if not token or not chat_id:
+        env_file = _PROJECT_ROOT / ".env"
+        if env_file.exists():
+            try:
+                from dotenv import dotenv_values
+                values = dotenv_values(env_file) or {}
+                token   = token   or (values.get("TELEGRAM_BOT_TOKEN") or "")
+                chat_id = chat_id or (values.get("TELEGRAM_CHAT_ID")   or "")
+            except ImportError:
+                pass  # python-dotenv não instalado — segue só com env vars
+
+    return (token or None), (chat_id or None)
+
+
+_TOKEN, _CHAT_ID = _load_credentials()
+_BASE_URL = f"https://api.telegram.org/bot{_TOKEN}" if _TOKEN else None
+
+
+def _log_telegram_error(kind: str, detail: str) -> None:
+    """Persiste erros de Telegram em logs/errors/telegram_errors.json."""
+    entry = {
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "kind":      kind,
+        "detail":    detail,
+    }
+    try:
+        _TELEGRAM_ERROR_LOG.parent.mkdir(parents=True, exist_ok=True)
+        existing: list = []
+        if _TELEGRAM_ERROR_LOG.exists():
+            try:
+                existing = json.loads(_TELEGRAM_ERROR_LOG.read_text(encoding="utf-8"))
+                if not isinstance(existing, list):
+                    existing = []
+            except (json.JSONDecodeError, OSError):
+                existing = []
+        existing.append(entry)
+        _TELEGRAM_ERROR_LOG.write_text(
+            json.dumps(existing, indent=2, ensure_ascii=False), encoding="utf-8"
+        )
+    except Exception:
+        pass  # nunca pode crashar o bot
 
 
 def enviar_alerta(mensagem: str, silencioso: bool = False) -> None:
@@ -23,8 +88,15 @@ def enviar_alerta(mensagem: str, silencioso: bool = False) -> None:
     Retry automático (3 tentativas, 5s entre cada) em falhas de rede.
     Rejeições da API Telegram (token inválido, chat_id errado) não são
     retentadas — são erros de configuração, não transitórios.
+    Todas as falhas são persistidas em logs/errors/telegram_errors.json.
     Nunca lança excepção.
+
+    No-op silencioso se TELEGRAM_BOT_TOKEN ou TELEGRAM_CHAT_ID não estiverem
+    configurados — permite correr o bot localmente sem credenciais.
     """
+    if not _BASE_URL or not _CHAT_ID:
+        return
+
     import time as _time
 
     for attempt in range(3):
@@ -41,14 +113,18 @@ def enviar_alerta(mensagem: str, silencioso: bool = False) -> None:
             data = r.json()
             if not data.get("ok"):
                 # Rejeição da API — não retentar (problema de configuração)
-                print(f"[notifier] API rejeitou alerta: {r.text}")
+                detail = r.text[:500]
+                print(f"[notifier] API rejeitou alerta: {detail}")
+                _log_telegram_error("api_rejection", detail)
             return
         except Exception as exc:  # noqa: BLE001
             if attempt < 2:
                 print(f"[notifier] Rede falhou (tentativa {attempt + 1}/3): {exc} — a aguardar 5s")
                 _time.sleep(5)
             else:
-                print(f"[notifier] Falha ao enviar alerta Telegram após 3 tentativas: {exc}")
+                detail = str(exc)
+                print(f"[notifier] Falha ao enviar alerta Telegram após 3 tentativas: {detail}")
+                _log_telegram_error("network_error", detail)
 
 
 def enviar_oportunidade(oportunidades: list[dict], regime: str) -> None:
@@ -197,17 +273,4 @@ def enviar_resumo_diario(dados_resumo: dict) -> None:
         f"regime: {regime}"
     )
 
-    try:
-        r = requests.post(
-            f"{_BASE_URL}/sendMessage",
-            json={
-                "chat_id": _CHAT_ID,
-                "text": texto,
-                "disable_notification": True,
-            },
-            timeout=10,
-        )
-        if not r.json().get("ok"):
-            print(f"[notifier] API rejeitou resumo diário: {r.text}")
-    except Exception as exc:
-        print(f"[notifier] Falha ao enviar resumo diário: {exc}")
+    enviar_alerta(texto, silencioso=True)

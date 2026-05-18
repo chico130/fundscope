@@ -207,11 +207,11 @@
     <div class="legend">
       <div class="legend-item">
         <div class="legend-dot watchlist"></div>
-        <span>Na watchlist (data.json)</span>
+        <span>Na watchlist (<code>data/beta/watchlist.json</code>)</span>
       </div>
       <div class="legend-item">
         <div class="legend-dot portfolio"></div>
-        <span>Posição aberta no portfólio</span>
+        <span>Posição aberta (<code>beta_positions.json</code> ou <code>alpha/portfolio.json</code>)</span>
       </div>
     </div>
 
@@ -338,8 +338,9 @@
       }
 
       const rows = earnings.map(e => {
-        const inPort = portfolioTickers.has(e.ticker.toUpperCase());
-        const inWatch = watchlistTickers.has(e.ticker.split('.')[0].toUpperCase());
+        const sym = norm(e.ticker);
+        const inPort = portfolioTickers.has(sym);
+        const inWatch = watchlistTickers.has(sym);
         const rowCls = inPort ? 'row-portfolio' : (inWatch ? 'row-watchlist' : '');
         const days = daysUntil(e.data);
         return `<tr class="${rowCls}">
@@ -381,28 +382,45 @@
       btn.addEventListener('click', () => applyFilter(btn.dataset.filter));
     });
 
-    /* ── Load data ── */
-    async function loadPortfolioTickers() {
+    /* ── Load data ──
+       Paths canónicos (FUNDSCOPE_CLAUDE_CODE_SPEC.md):
+         • Watchlist master  → data/beta/watchlist.json
+         • Posições bot      → data/beta/beta_positions.json
+         • Posições reais    → data/alpha/portfolio.json (fallback ./portfolio.json) */
+    const norm = s => String(s || '').split('.')[0].split('_')[0].toUpperCase();
+
+    async function fetchJSON(path) {
       try {
-        const r = await fetch('portfolio.json?t=' + Date.now());
-        if (!r.ok) return;
-        const data = await r.json();
-        (data.positions || []).forEach(p => {
-          if (p.ticker) portfolioTickers.add(p.ticker.toUpperCase());
-          if (p.ticker_display) portfolioTickers.add(p.ticker_display.toUpperCase());
+        const r = await fetch(path + '?t=' + Date.now());
+        if (!r.ok) return null;
+        return await r.json();
+      } catch { return null; }
+    }
+
+    function addPositionTickers(data) {
+      if (!data || !Array.isArray(data.positions)) return;
+      data.positions.forEach(p => {
+        ['ticker', 'ticker_display', 'display_name'].forEach(k => {
+          const v = p?.[k];
+          if (v) portfolioTickers.add(norm(v));
         });
-      } catch {}
+      });
+    }
+
+    async function loadPortfolioTickers() {
+      const beta = await fetchJSON('data/beta/beta_positions.json');
+      addPositionTickers(beta);
+      const alpha = (await fetchJSON('data/alpha/portfolio.json'))
+                 || (await fetchJSON('portfolio.json'));
+      addPositionTickers(alpha);
     }
 
     async function loadWatchlistTickers() {
-      try {
-        const r = await fetch('data.json?t=' + Date.now());
-        if (!r.ok) return;
-        const data = await r.json();
-        Object.keys(data.stocks || {}).forEach(t => {
-          watchlistTickers.add(t.split('.')[0].toUpperCase());
-        });
-      } catch {}
+      const data = await fetchJSON('data/beta/watchlist.json');
+      if (!data) return;
+      (data.candidates || []).forEach(c => {
+        if (c?.ticker) watchlistTickers.add(norm(c.ticker));
+      });
     }
 
     async function init() {

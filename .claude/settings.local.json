@@ -56,7 +56,32 @@
       "Bash(python -u -m bot.mass_backtest)",
       "Bash(echo \"PID: $!\")",
       "Bash(not exist *)",
-      "PowerShell(New-Item *)"
+      "PowerShell(New-Item *)",
+      "Bash(python -c \"import ast; ast.parse\\(open\\('bot/stress_test_10x.py'\\).read\\(\\)\\); print\\('Sintaxe OK'\\)\")",
+      "Bash(python -c \"import ast; ast.parse\\(open\\('bot/stress_test_10x.py', encoding='utf-8'\\).read\\(\\)\\); print\\('Sintaxe OK'\\)\")",
+      "Bash(python -m bot.stress_test_10x)",
+      "Bash(python -c \"import ast; ast.parse\\(open\\('serve.py'\\).read\\(\\)\\); print\\('serve.py OK'\\)\")",
+      "Bash(git restore *)",
+      "Bash(python -c \"import ast; ast.parse\\(open\\('bot/watchlist_manager.py'\\).read\\(\\)\\); print\\('watchlist_manager.py OK'\\)\")",
+      "PowerShell(uv tool list)",
+      "PowerShell(graphify --version)",
+      "PowerShell(pip --version)",
+      "PowerShell(pipx --version 2>$null)",
+      "PowerShell(python --version)",
+      "PowerShell(python -m pip --version)",
+      "PowerShell(python -m pip install graphifyy)",
+      "PowerShell(& \"C:\\\\Users\\\\arauj\\\\AppData\\\\Local\\\\Python\\\\pythoncore-3.14-64\\\\Scripts\\\\graphify.exe\" --version)",
+      "PowerShell(& \"C:\\\\Users\\\\arauj\\\\AppData\\\\Local\\\\Python\\\\pythoncore-3.14-64\\\\Scripts\\\\graphify.exe\" install --platform windows)",
+      "Bash(python test_telegram.py)",
+      "Bash(python3 -c \"import hashlib; print\\(hashlib.sha256\\('admin'.encode\\(\\)\\).hexdigest\\(\\)\\)\")",
+      "Bash(python3 -c ' *)",
+      "Bash(python3 -c \"import hashlib; print\\(hashlib.sha256\\('fundscope'.encode\\(\\)\\).hexdigest\\(\\)\\)\")",
+      "Bash(python -c \"import ast; ast.parse\\(open\\('update_earnings.py', encoding='utf-8'\\).read\\(\\)\\); print\\('update_earnings.py: OK'\\)\")",
+      "Bash(python -c \"import ast; ast.parse\\(open\\('bot/bonnie.py', encoding='utf-8'\\).read\\(\\)\\); print\\('bot/bonnie.py: OK'\\)\")",
+      "Bash(schtasks /query /tn \"FundScope_Earnings_Daily\" /fo LIST)",
+      "Bash(findstr /R \"TaskName Schedule Start\\\\|Next Run\")",
+      "Bash(schtasks /query /tn \"FundScope_Earnings_Daily\")",
+      "Bash(git check-ignore *)"
     ]
   }
 }

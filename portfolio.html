@@ -612,13 +612,23 @@ document.getElementById('loginBtn').addEventListener('click', () => {
   const p = document.getElementById('loginPass').value;
   const err = document.getElementById('loginError');
   if (!u || !p) { err.textContent = 'Preenche os dois campos.'; return; }
-  if (u === VALID_U && p === VALID_P) { setSession(document.getElementById('loginRemember').checked); showApp(); }
-  else { err.textContent = 'Credenciais incorrectas.'; }
+  if (u === VALID_U && p === VALID_P) {
+    setSession(document.getElementById('loginRemember').checked);
+    // Obtém token do servidor local para sincronização da watchlist
+    fetch('http://localhost:8080/api/login', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({username: u, password: p})
+    }).then(r => r.ok ? r.json() : null)
+      .then(d => { if (d?.token) localStorage.setItem('fs_token', d.token); })
+      .catch(() => {});
+    showApp();
+  } else { err.textContent = 'Credenciais incorrectas.'; }
 });
 ['loginUser','loginPass'].forEach(id =>
   document.getElementById(id).addEventListener('keydown', e => { if(e.key==='Enter') document.getElementById('loginBtn').click(); })
 );
-logoutBtn.addEventListener('click', () => { clearSession(); location.reload(); });
+logoutBtn.addEventListener('click', () => { clearSession(); localStorage.removeItem('fs_token'); location.reload(); });
 
 // ── Tabs ──────────────────────────────────────────────────────────────────────
 let bonnieLoaded = false;
