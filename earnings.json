@@ -1,5 +1,7 @@
 {
-  "last_updated": "2026-05-16T02:05:30Z",
+  "last_updated": "2026-05-18T22:56:17Z",
+  "window_days": 14,
+  "universe_size": 58,
   "earnings": [
     {
       "ticker": "NVDA",
@@ -8,9 +10,20 @@
       "hora": "N/D",
       "eps_estimado": null,
       "eps_anterior": 0.81,
-      "revenue_estimado": 79166840620,
-      "revenue_anterior": null,
+      "revenue_estimado": 79166935860,
+      "revenue_anterior": 68127000000.0,
       "surpresa_media_pct": 0.05
+    },
+    {
+      "ticker": "WMT",
+      "nome": "Walmart Inc.",
+      "data": "2026-05-21",
+      "hora": "N/D",
+      "eps_estimado": null,
+      "eps_anterior": 0.61,
+      "revenue_estimado": 174770391420,
+      "revenue_anterior": 190656000000.0,
+      "surpresa_media_pct": 0.01
     },
     {
       "ticker": "CRM",
@@ -19,9 +32,20 @@
       "hora": "N/D",
       "eps_estimado": null,
       "eps_anterior": 2.58,
-      "revenue_estimado": 11055756930,
-      "revenue_anterior": null,
+      "revenue_estimado": 11056031930,
+      "revenue_anterior": 11201000000.0,
       "surpresa_media_pct": 0.11
+    },
+    {
+      "ticker": "MRVL",
+      "nome": "Marvell Technology, Inc.",
+      "data": "2026-05-27",
+      "hora": "N/D",
+      "eps_estimado": null,
+      "eps_anterior": 0.62,
+      "revenue_estimado": 2399148760,
+      "revenue_anterior": 2218700000.0,
+      "surpresa_media_pct": 0.01
     },
     {
       "ticker": "SNOW",
@@ -30,9 +54,42 @@
       "hora": "N/D",
       "eps_estimado": null,
       "eps_anterior": 0.24,
-      "revenue_estimado": 1323603800,
-      "revenue_anterior": null,
+      "revenue_estimado": 1323028190,
+      "revenue_anterior": 1283994000.0,
       "surpresa_media_pct": 0.19
+    },
+    {
+      "ticker": "COST",
+      "nome": "Costco Wholesale Corporation",
+      "data": "2026-05-28",
+      "hora": "N/D",
+      "eps_estimado": null,
+      "eps_anterior": 4.28,
+      "revenue_estimado": 69445827050,
+      "revenue_anterior": 69597000000.0,
+      "surpresa_media_pct": 0.02
+    },
+    {
+      "ticker": "S",
+      "nome": "SentinelOne, Inc.",
+      "data": "2026-05-28",
+      "hora": "N/D",
+      "eps_estimado": null,
+      "eps_anterior": -0.63,
+      "revenue_estimado": 277435820,
+      "revenue_anterior": 271153000.0,
+      "surpresa_media_pct": -0.66
+    },
+    {
+      "ticker": "HPE",
+      "nome": "Hewlett Packard Enterprise Company",
+      "data": "2026-06-01",
+      "hora": "N/D",
+      "eps_estimado": null,
+      "eps_anterior": 0.38,
+      "revenue_estimado": 9756486380,
+      "revenue_anterior": 9301000000.0,
+      "surpresa_media_pct": 0.1
     }
   ]
 }
