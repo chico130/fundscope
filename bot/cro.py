@@ -44,8 +44,10 @@ class CRO:
     """Chief Risk Officer — valida alocação dinâmica e gera narrativa cognitiva."""
 
     def __init__(self) -> None:
-        self._state:    dict       = {}
-        self._insights: list[str]  = []
+        self._state:       dict      = {}
+        self._insights:    list[str] = []
+        self._risk_factor: float     = 1.0
+        self._regime:      str       = "bull_lateral"
 
     # ------------------------------------------------------------------
     # 1. Observe — lê trades fechados e estado do portfólio
@@ -151,7 +153,9 @@ class CRO:
             if not approved:
                 insights.insert(0, f"VETO CRO: {reason} — proposta bloqueada para {proposed.ticker}.")
 
-        self._insights = insights
+        self._insights    = insights
+        self._risk_factor = risk_factor
+        self._regime      = regime
 
         return Verdict(
             approved=approved,
@@ -170,13 +174,22 @@ class CRO:
     # ------------------------------------------------------------------
 
     def speak(self) -> None:
-        """Persiste cro_insights.json e envia narrativa cognitiva via Whisper (Telegram)."""
+        """Persiste cro_insights.json e envia narrativa cognitiva via Whisper (Telegram).
+
+        O _whisper() só é chamado UMA vez por dia — guard baseado na data do ficheiro
+        existente antes de o sobreescrever.
+        """
         if not self._state:
             log_error("cro_speak", {"error": "observe() não foi chamado antes de speak()"})
             return
 
+        today              = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+        already_whispered  = _already_whispered_today(today)
+
         payload = {
             "generated_at":      datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "regime":            self._regime,
+            "risk_factor":       self._risk_factor,
             "win_rate_7d":       self._state.get("win_rate_7d", 0.0),
             "drawdown_atual":    self._state.get("drawdown_pct", 0.0),
             "trades_analisados": self._state.get("closed_count", 0),
@@ -185,7 +198,7 @@ class CRO:
         }
 
         _write_insights(payload)
-        if self._insights:
+        if self._insights and not already_whispered:
             _whisper(payload)
 
 
@@ -454,6 +467,17 @@ def _max_loss_streak(results: list[float]) -> int:
     return max_s
 
 
+def _already_whispered_today(today: str) -> bool:
+    """Devolve True se o cro_insights.json já foi gerado hoje (guard anti-spam)."""
+    path = CRO_CONFIG["cro_insights_path"]
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        return data.get("generated_at", "").startswith(today)
+    except (OSError, json.JSONDecodeError):
+        return False
+
+
 def _write_insights(payload: dict) -> None:
     path = CRO_CONFIG["cro_insights_path"]
     try:
@@ -475,10 +499,20 @@ def _whisper(payload: dict) -> None:
     dd_pct = payload["drawdown_atual"]
     n      = payload["trades_analisados"]
     ts     = payload["generated_at"][:16].replace("T", " ")
+    regime = payload.get("regime", "?")
+    rf_pct = round(payload.get("risk_factor", 1.0) * 100)
+
+    regime_label = {
+        "bull_trending":     "Bull Trending",
+        "bull_lateral":      "Bull Lateral",
+        "bear_correction":   "Bear Correction",
+        "bear_capitulation": "Bear Capitulation",
+    }.get(regime, regime)
 
     linhas = [
         "🧠 Relatório Cognitivo CRO",
         "",
+        f"Regime: {regime_label}  ·  Factor de risco: {rf_pct}%",
         f"Win Rate 7d: {wr_pct}%  ·  Drawdown: {dd_pct:.1f}%",
         f"Trades analisados: {n}",
         "",

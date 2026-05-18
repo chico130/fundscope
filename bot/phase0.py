@@ -25,6 +25,7 @@ from .learner import run_learner_cycle
 from . import exit_manager, position_ledger
 
 POSITION_META_PATH = DATA_BETA_DIR / "position_meta.json"
+_LAST_WAKE_PATH    = DATA_BETA_DIR / "last_wake.txt"
 
 _BEAR_REGIMES = {"bear_correction", "bear_capitulation"}
 _LATERAL_SIZE_FACTOR = 0.6   # redução de posição sugerida em bull_lateral (secção 4, FASE-1.md)
@@ -758,6 +759,21 @@ def _count_open_trades() -> int:
 # Output
 # ---------------------------------------------------------------------------
 
+def _wake_already_sent_today(now: datetime) -> bool:
+    try:
+        return _LAST_WAKE_PATH.read_text(encoding="utf-8").strip() == now.strftime("%Y-%m-%d")
+    except OSError:
+        return False
+
+
+def _mark_wake_sent_today(now: datetime) -> None:
+    try:
+        _LAST_WAKE_PATH.parent.mkdir(parents=True, exist_ok=True)
+        _LAST_WAKE_PATH.write_text(now.strftime("%Y-%m-%d"), encoding="utf-8")
+    except OSError as exc:
+        log_error("last_wake_write_failed", {"error": str(exc)})
+
+
 def _notify_opportunities(report: dict) -> None:
     """Envia alerta sonoro ao Francisco quando o Clyde detecta sinais de entrada."""
     opps = report.get("buy_opportunities", [])
@@ -930,7 +946,7 @@ if __name__ == "__main__":
 
     # Detecção de wake/sleep com base na hora UTC
     now      = datetime.now(timezone.utc)
-    is_wake  = ci and now.hour == 13 and now.minute < 30   # primeiro ciclo do dia
+    is_wake  = ci and now.hour == 13 and now.minute < 45   # primeiro ciclo do dia (janela alargada para absorver atrasos do GH Actions)
     is_sleep = ci and now.hour == 21                        # último ciclo do dia
 
     # ── Gate 2: handler global — qualquer excepção não tratada activa quarentena
@@ -939,8 +955,9 @@ if __name__ == "__main__":
 
         if ci:
             from bot.notifier import enviar_despertar, enviar_boa_noite
-            if is_wake:
+            if is_wake and not _wake_already_sent_today(now):
                 enviar_despertar(report)
+                _mark_wake_sent_today(now)
             if is_sleep:
                 enviar_boa_noite(report)
 
