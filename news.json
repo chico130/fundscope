@@ -1,42 +1,162 @@
 {
-  "updated": "2026-05-18T11:06:57.754829+00:00",
+  "updated": "2026-05-18T17:30:48.523049+00:00",
   "articles": [
     {
-      "id": 91678685,
-      "source": "argaam.com",
-      "title": "SAL goes ex-dividend, Naseej Tech trades ex-bonus today",
-      "summary": "Shares of SAL trade ex-dividend today, May 18, while Naseej Tech goes ex-bonus. Stock Ratio",
-      "content": "Shares of SAL trade ex-dividend today, May 18, while Naseej Tech goes ex-bonus. Stock Ratio",
-      "url": "https://www.argaam.com/en/article/articledetail/id/1906719",
-      "image": "https://argaamplus.s3.amazonaws.com/c10f4e3a-9da4-439b-a5ea-4c9f21d8e62a.png",
-      "publishedAt": "2026-05-18T11:05:00.000000Z",
-      "category": "Com\u00e9rcio",
-      "icon": "\ud83d\udea2",
+      "id": 825639130,
+      "source": "CNBC",
+      "title": "Judge blocks evidence from Luigi Mangione backpack in UnitedHealthcare CEO murder case",
+      "summary": "Luigi Mangione was apprehended by police in a McDonald's in Altoona, Pennsylvania, days after the killing of UnitedHealthcare CEO Brian Thompson.",
+      "content": "Luigi Mangione was apprehended by police in a McDonald's in Altoona, Pennsylvania, days after the killing of UnitedHealthcare CEO Brian Thompson.",
+      "url": "https://www.cnbc.com/2026/05/18/luigi-mangione-backpack-evidence-unitedhealthcare-murder.html",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-18T17:28:06+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
       "impact": {
         "tickers": [],
         "sector": "",
         "sentiment": "neutral"
       },
       "heat": 1,
-      "feed": "marketaux"
+      "feed": "rss"
     },
     {
-      "id": 648305071,
-      "source": "CNBC",
-      "title": "Lululemon takes battle with Chip Wilson public, calls founder 'misguided' and 'outdated'",
-      "summary": "Lululemon responded publicly to founder Chip Wilson's campaign in a letter to shareholders, where it urged them to vote in its favor at its annual meeting.",
-      "content": "Lululemon responded publicly to founder Chip Wilson's campaign in a letter to shareholders, where it urged them to vote in its favor at its annual meeting.",
-      "url": "https://www.cnbc.com/2026/05/18/lululemon-proxy-war-with-chip-wilson-goes-public-sets-annual-meeting.html",
-      "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
-      "publishedAt": "2026-05-18T11:00:22+00:00",
-      "category": "Tecnologia",
-      "icon": "\ud83d\udcbb",
+      "id": 202200726,
+      "source": "Seeking Alpha",
+      "title": "Bilibili Q1 2026 Earnings Preview",
+      "summary": "",
+      "content": "",
+      "url": "https://seekingalpha.com/news/4594575-bilibili-q1-2026-earnings-preview?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
+      "publishedAt": "2026-05-18T13:25:29-04:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 372193483,
+      "source": "Seeking Alpha",
+      "title": "Glencore sees no immediate effect on production after Chilean environmental ruling",
+      "summary": "",
+      "content": "",
+      "url": "https://seekingalpha.com/news/4594568-glencore-sees-no-immediate-effect-on-production-after-chilean-environmental-ruling?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+      "image": "https://images.unsplash.com/photo-1569025743873-ea3a9ade89f9?w=800&q=80",
+      "publishedAt": "2026-05-18T13:24:46-04:00",
+      "category": "Clima",
+      "icon": "\ud83c\udf31",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 579246890,
+      "source": "Seeking Alpha",
+      "title": "Invesco Financial Preferred ETF declares monthly distribution of $0.0632",
+      "summary": "",
+      "content": "",
+      "url": "https://seekingalpha.com/news/4594574-invesco-financial-preferred-etf-declares-monthly-distribution-of-00632?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-18T13:24:46-04:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 584826003,
+      "source": "Seeking Alpha",
+      "title": "Eagle Point Credit Q1 2026 Earnings Preview",
+      "summary": "",
+      "content": "",
+      "url": "https://seekingalpha.com/news/4594573-eagle-point-credit-q1-2026-earnings-preview?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
+      "publishedAt": "2026-05-18T13:24:19-04:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
       "impact": {
         "tickers": [
+          "JPM",
+          "BAC",
+          "WFC",
+          "C"
+        ],
+        "sector": "Finan\u00e7as",
+        "sentiment": "neutral"
+      },
+      "heat": 3,
+      "feed": "rss"
+    },
+    {
+      "id": 584886551,
+      "source": "Seeking Alpha",
+      "title": "Third Point Q1 top holdings & exit check: Quant Ratings on AMZN, TDS, CRH, TSM",
+      "summary": "",
+      "content": "",
+      "url": "https://seekingalpha.com/news/4594547-third-point-q1-top-holdings-exit-check-quant-ratings-on-amzn-tds-crh-tsm?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-18T13:20:21-04:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 660700533,
+      "source": "Seeking Alpha",
+      "title": "EU regulator in talks with US for Pax Silica alliance",
+      "summary": "",
+      "content": "",
+      "url": "https://seekingalpha.com/news/4594562-eu-regulator-in-talks-with-us-for-pax-silica-alliance?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-18T13:20:01-04:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 346366813,
+      "source": "CNBC",
+      "title": "Nvidia earnings call drama: Will Jensen Huang talk 'Trump' and China chips after Xi summit?",
+      "summary": "Both Nvidia's earnings and its commentary on its financial report are expected to be big tests for U.S. equities.",
+      "content": "Both Nvidia's earnings and its commentary on its financial report are expected to be big tests for U.S. equities.",
+      "url": "https://www.cnbc.com/2026/05/18/nvidia-earnings-call-drama-will-jensen-huang-talk-trump-and-china-chips-after-xi-summit.html",
+      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
+      "publishedAt": "2026-05-18T17:18:54+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [
+          "AAPL",
           "NVDA",
+          "TSLA",
           "AMD",
-          "INTC",
-          "AVGO"
+          "INTC"
         ],
         "sector": "Tecnologia",
         "sentiment": "neutral"
@@ -45,16 +165,79 @@
       "feed": "rss"
     },
     {
-      "id": 797980646,
-      "source": "seekingalpha.com",
-      "title": "Data Center REITs: One Of My Highest-Conviction Calls",
-      "summary": "Data center REITs have delivered sector-leading, consistent outperformance. Learn more about AMT stock, which is the top pick for new data center exposure.",
-      "content": "Data center REITs have delivered sector-leading, consistent outperformance. Learn more about AMT stock, which is the top pick for new data center exposure.",
-      "url": "https://seekingalpha.com/article/4905932-data-center-reits-one-of-my-highest-conviction-calls",
-      "image": "https://static.seekingalpha.com/cdn/s3/uploads/getty_images/1479064127/image_1479064127.jpg?io=getty-c-w1536",
-      "publishedAt": "2026-05-18T11:00:00.000000Z",
+      "id": 70211669,
+      "source": "CNBC",
+      "title": "S&P 500, Nasdaq fall for a second day as Micron drops, traders eye oil and yields: Live updates",
+      "summary": "Traders monitored oil prices and bond yields while awaiting further developments with the conflict in the Middle East.",
+      "content": "Traders monitored oil prices and bond yields while awaiting further developments with the conflict in the Middle East.",
+      "url": "https://www.cnbc.com/2026/05/17/stock-market-today-live-updates.html",
+      "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
+      "publishedAt": "2026-05-18T17:17:56+00:00",
+      "category": "Geopol\u00edtica",
+      "icon": "\ud83c\udf0d",
+      "impact": {
+        "tickers": [
+          "XOM",
+          "CVX",
+          "COP",
+          "OXY",
+          "SLB"
+        ],
+        "sector": "Energia",
+        "sentiment": "negative"
+      },
+      "heat": 3,
+      "feed": "rss"
+    },
+    {
+      "id": 60920010,
+      "source": "Seeking Alpha",
+      "title": "Invesco Equal Weight 0-30 Year Treasury ETF declares monthly distribution of $0.0840",
+      "summary": "",
+      "content": "",
+      "url": "https://seekingalpha.com/news/4594571-invesco-equal-weight-0-30-year-treasury-etf-declares-monthly-distribution-of-00840?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-18T13:17:40-04:00",
       "category": "Global",
       "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 732898141,
+      "source": "CNBC",
+      "title": "Trump ballroom money in question after Senate parliamentarian rules. Thune says GOP will persist",
+      "summary": "Senate Majority Leader John Thune, R-S.D., said the GOP will refine its approach to seeking money for President Donald Trump's White House ballroom.",
+      "content": "Senate Majority Leader John Thune, R-S.D., said the GOP will refine its approach to seeking money for President Donald Trump's White House ballroom.",
+      "url": "https://www.cnbc.com/2026/05/18/trump-ballroom-provision-blocked-senate-parliamentarian.html",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-18T17:16:37+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 932864558,
+      "source": "seekingalpha.com",
+      "title": "TKO Group Holdings, Inc. (TKO) Presents at J.P. Morgan 54th Annual Global Technology, Media and Communications Conference Transcript",
+      "summary": "TKO Group Holdings, Inc. (TKO) J.P.",
+      "content": "TKO Group Holdings, Inc. (TKO) J.P.",
+      "url": "https://seekingalpha.com/article/4906107-tko-group-holdings-inc-tko-presents-at-j-p-morgan-54th-annual-global-technology-media-and",
+      "image": "https://static.seekingalpha.com/assets/og_image_1200-29b2bfe1a595477db6826bd2126c63ac2091efb7ec76347a8e7f81ba17e3de6c.png",
+      "publishedAt": "2026-05-18T17:10:46.000000Z",
+      "category": "Tecnologia",
+      "icon": "\ud83d\udcbb",
       "impact": {
         "tickers": [],
         "sector": "",
@@ -64,84 +247,500 @@
       "feed": "marketaux"
     },
     {
-      "id": 993576469,
-      "source": "AD HOC NEWS",
-      "title": "Deere & Co. stock (US24419L1061): Market reacts to latest quarterly results and cautious outlook",
-      "summary": "Deere & Co. released its latest quarterly figures, showing solid profitability but pointing to moderating demand in key equipment markets. This led to a mixed investor reaction as the company's full-year outlook is being reassessed. The article highlights Deere's business model, key revenue drivers, and its strategic shift towards precision agriculture and digital solutions, while acknowledging the stock's sensitivity to agricultural commodity prices, infrastructure spending, interest rates, and economic cycles.",
-      "content": "Deere & Co. released its latest quarterly figures, showing solid profitability but pointing to moderating demand in key equipment markets. This led to a mixed investor reaction as the company's full-year outlook is being reassessed. The article highlights Deere's business model, key revenue drivers, and its strategic shift towards precision agriculture and digital solutions, while acknowledging the stock's sensitivity to agricultural commodity prices, infrastructure spending, interest rates, and economic cycles.",
-      "url": "https://www.ad-hoc-news.de/boerse/news/ueberblick/deere-and-co-stock-us24419l1061-market-reacts-to-latest-quarterly/69364878",
-      "image": "https://mdb.ad-hoc-news.de/bild/bild-2405055_480_300.webp",
-      "publishedAt": "2026-05-18T10:58:58+00:00",
+      "id": 424399467,
+      "source": "seekingalpha.com",
+      "title": "Opendoor Technologies Inc. (OPEN) Presents at J.P. Morgan 54th Annual Global Technology, Media and Communications Conference Transcript",
+      "summary": "Opendoor Technologies Inc. (OPEN) J.P.",
+      "content": "Opendoor Technologies Inc. (OPEN) J.P.",
+      "url": "https://seekingalpha.com/article/4906077-opendoor-technologies-inc-open-presents-at-j-p-morgan-54th-annual-global-technology-media-and",
+      "image": "https://static.seekingalpha.com/assets/og_image_1200-29b2bfe1a595477db6826bd2126c63ac2091efb7ec76347a8e7f81ba17e3de6c.png",
+      "publishedAt": "2026-05-18T17:10:44.000000Z",
+      "category": "Tecnologia",
+      "icon": "\ud83d\udcbb",
+      "impact": {
+        "tickers": [
+          "JPMMV",
+          "JPMML"
+        ],
+        "sector": "",
+        "sentiment": "positive"
+      },
+      "heat": 2,
+      "feed": "marketaux"
+    },
+    {
+      "id": 50835146,
+      "source": "Yahoo Finance",
+      "title": "Did NextEra Energy Just Make a Massive $67 Billion Bet on AI Power Demand? Here's All You Need to Know",
+      "summary": "",
+      "content": "",
+      "url": "https://finance.yahoo.com/sectors/energy/articles/did-nextera-energy-just-massive-171028630.html",
+      "image": "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80",
+      "publishedAt": "2026-05-18T17:10:28+00:00",
+      "category": "Energia",
+      "icon": "\u26a1",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 227786000,
+      "source": "seekingalpha.com",
+      "title": "Intel: Will Higher Bond Yields Burst The AI Bubble? (Rating Downgrade) (NASDAQ:INTC)",
+      "summary": "Intel (INTC) stock faces bubble risk as AI hype drives a 100x forward P/E despite weak revenue growth, flat margins, and negative FCF. Read the full analysis here.",
+      "content": "Intel (INTC) stock faces bubble risk as AI hype drives a 100x forward P/E despite weak revenue growth, flat margins, and negative FCF. Read the full analysis here.",
+      "url": "https://seekingalpha.com/article/4906098-intel-will-higher-bond-yields-burst-ai-bubble-rating-downgrade",
+      "image": "https://static.seekingalpha.com/cdn/s3/uploads/getty_images/2160010090/image_2160010090.jpg?io=getty-c-w1536",
+      "publishedAt": "2026-05-18T17:09:19.000000Z",
       "category": "Geopol\u00edtica",
       "icon": "\ud83c\udf0d",
       "impact": {
         "tickers": [
-          "DE"
+          "LMT",
+          "RTX",
+          "NOC",
+          "XOM"
         ],
-        "sector": "Finan\u00e7as",
+        "sector": "Defesa",
+        "sentiment": "neutral"
+      },
+      "heat": 3,
+      "feed": "marketaux"
+    },
+    {
+      "id": 598623404,
+      "source": "Yahoo Finance",
+      "title": "Trump administration ends civil, criminal cases against Adani after $10 billion investment promise",
+      "summary": "",
+      "content": "",
+      "url": "https://finance.yahoo.com/economy/policy/articles/us-treasury-announces-275-million-142254817.html",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-18T17:08:50+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
         "sentiment": "neutral"
       },
       "heat": 1,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 572757166,
-      "source": "Seeking Alpha",
-      "title": "Ford Motor resets strategy in Europe with new commercial and retail model launches",
-      "summary": "",
-      "content": "",
-      "url": "https://seekingalpha.com/news/4594280-ford-motor-resets-strategy-in-europe-with-new-commercial-and-retail-model-launches?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-18T06:58:42-04:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [
-          "AMZN",
-          "WMT",
-          "TGT",
-          "COST",
-          "GS"
-        ],
-        "sector": "Consumo",
-        "sentiment": "neutral"
-      },
-      "heat": 3,
       "feed": "rss"
     },
     {
-      "id": 686033871,
+      "id": 970208499,
       "source": "Yahoo Finance",
-      "title": "Rokeby announces 20-year licence renewal for Omeo Gold Project",
+      "title": "Here's the Average Net Worth for Americans at 65 -- Where Do You Stand?",
       "summary": "",
       "content": "",
-      "url": "https://finance.yahoo.com/markets/commodities/articles/rokeby-announces-20-licence-renewal-105747492.html",
+      "url": "https://finance.yahoo.com/markets/articles/heres-average-net-worth-americans-170726324.html",
       "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-18T10:57:47+00:00",
+      "publishedAt": "2026-05-18T17:07:26+00:00",
       "category": "Global",
       "icon": "\ud83c\udf10",
       "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 664891025,
+      "source": "Yahoo Finance",
+      "title": "Bolt and Dongfeng team up on South Africa EV rollout \u2013 report",
+      "summary": "",
+      "content": "",
+      "url": "https://finance.yahoo.com/sectors/technology/articles/bolt-dongfeng-team-south-africa-170722304.html",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-18T17:07:22+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 12236557,
+      "source": "Yahoo Finance",
+      "title": "Behind the Ticker: NASA, SpaceX, and Tema ETFs",
+      "summary": "",
+      "content": "",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/behind-ticker-nasa-spacex-tema-170608707.html",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-18T17:06:08+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 879530538,
+      "source": "ChartMill",
+      "title": "Unusual volume S&P500 stocks in Monday's session",
+      "summary": "Let's take a look at the S&P500 stocks that are experiencing unusual volume in today's session.",
+      "content": "Let's take a look at the S&P500 stocks that are experiencing unusual volume in today's session.",
+      "url": "https://finnhub.io/api/news?id=06741cd59e03276e7a4df28c36570dbea2d6766bd07b5c2df3572128e9b71d56",
+      "image": "https://www.chartmill.com/images/uploads/CM_Unusual_Volume_Small_free_b9d2e60841.webp",
+      "publishedAt": "2026-05-18T17:05:01+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
         "tickers": [
-          "NEM",
-          "FCX",
-          "GOLD",
-          "WPM"
+          "NOW"
         ],
-        "sector": "Commodities",
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "finnhub_company"
+    },
+    {
+      "id": 377499198,
+      "source": "MarketWatch",
+      "title": "ServiceNow\u2019s stock heads for best day in a year \u2014 flashing a green light for the software sector",
+      "summary": "Application-software stocks are getting more love from Wall Street.",
+      "content": "Application-software stocks are getting more love from Wall Street.",
+      "url": "https://www.marketwatch.com/story/servicenows-stock-heads-for-best-day-in-a-year-flashing-a-green-light-for-the-software-sector-2d916cfd?mod=mw_rss_topstories",
+      "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
+      "publishedAt": "2026-05-18T17:05:00+00:00",
+      "category": "Geopol\u00edtica",
+      "icon": "\ud83c\udf0d",
+      "impact": {
+        "tickers": [
+          "LMT",
+          "RTX",
+          "NOC",
+          "XOM"
+        ],
+        "sector": "Defesa",
+        "sentiment": "negative"
+      },
+      "heat": 3,
+      "feed": "rss"
+    },
+    {
+      "id": 396217813,
+      "source": "Nasdaq",
+      "title": "Is Beaten-Down Figma Stock a Buy as Revenue Surges?",
+      "summary": "Key PointsFigma turned in another strong quarter with revenue growth accelerating.",
+      "content": "Key PointsFigma turned in another strong quarter with revenue growth accelerating.",
+      "url": "https://www.nasdaq.com/articles/beaten-down-figma-stock-buy-revenue-surges",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-18T17:05:00+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 989491422,
+      "source": "CNBC",
+      "title": "Kevin Warsh to be sworn in as Federal Reserve chair on Friday",
+      "summary": "Trump will swear in Kevin Warsh, his hand-picked choice to lead the Federal Reserve, during a White House ceremony.",
+      "content": "Trump will swear in Kevin Warsh, his hand-picked choice to lead the Federal Reserve, during a White House ceremony.",
+      "url": "https://www.cnbc.com/2026/05/18/kevin-warsh-trump-federal-reserve-chair.html",
+      "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
+      "publishedAt": "2026-05-18T17:03:42+00:00",
+      "category": "Geopol\u00edtica",
+      "icon": "\ud83c\udf0d",
+      "impact": {
+        "tickers": [
+          "JPM",
+          "GS",
+          "BAC",
+          "TLT",
+          "LMT"
+        ],
+        "sector": "Finan\u00e7as",
+        "sentiment": "negative"
+      },
+      "heat": 3,
+      "feed": "rss"
+    },
+    {
+      "id": 593767460,
+      "source": "CNBC",
+      "title": "Ford lands its first customer for energy business. Buy this pivot by the auto giant?",
+      "summary": "Shares have proven volatile after the carmaker unveiled its new Ford Energy unit, but investors should still watch the name, several analysts said.",
+      "content": "Shares have proven volatile after the carmaker unveiled its new Ford Energy unit, but investors should still watch the name, several analysts said.",
+      "url": "https://www.cnbc.com/2026/05/18/ford-lands-first-customer-for-energy-business-is-this-pivot-a-buy.html",
+      "image": "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80",
+      "publishedAt": "2026-05-18T17:03:40+00:00",
+      "category": "Energia",
+      "icon": "\u26a1",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 1627133,
+      "source": "Yahoo Finance",
+      "title": "Price Prediction and Forecast: Can CAT Shares Hit $1000 By 2027?",
+      "summary": "",
+      "content": "",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/price-prediction-forecast-cat-shares-170152201.html",
+      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
+      "publishedAt": "2026-05-18T17:01:52+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 554382388,
+      "source": "CNBC",
+      "title": "The \u2018biggest and best tailwind\u2019 for the market this week would be a Nvidia earnings beat, pro trader says",
+      "summary": "Jay Woods reviews Nvidia's earnings setup, also commenting on other key stocks reporting this week.",
+      "content": "Jay Woods reviews Nvidia's earnings setup, also commenting on other key stocks reporting this week.",
+      "url": "https://www.cnbc.com/2026/05/18/nvidia-beat-would-be-the-biggest-and-best-tailwind-for-the-market-jay-woods-says.html",
+      "image": "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80",
+      "publishedAt": "2026-05-18T17:01:47+00:00",
+      "category": "Energia",
+      "icon": "\u26a1",
+      "impact": {
+        "tickers": [
+          "NVDA",
+          "AMD",
+          "INTC",
+          "AVGO"
+        ],
+        "sector": "Tecnologia",
+        "sentiment": "positive"
+      },
+      "heat": 3,
+      "feed": "rss"
+    },
+    {
+      "id": 771578117,
+      "source": "Nasdaq",
+      "title": "Stocks Pressured by a Rebound in Crude Prices and Bond Yields",
+      "summary": "The S&P 500 Index ($SPX ) (SPY ) today is down -0.20%, the Dow Jones Industrial Average ($DOWI ) (DIA ) is down -0.04%, and the Nasdaq 100 Index ($IUXX ) (QQQ ) is down -0.57%. June E-mini S&P futures (ESM26 ) are down -0.28%, and June E-mini Nasdaq futures...",
+      "content": "The S&P 500 Index ($SPX ) (SPY ) today is down -0.20%, the Dow Jones Industrial Average ($DOWI ) (DIA ) is down -0.04%, and the Nasdaq 100 Index ($IUXX ) (QQQ ) is down -0.57%. June E-mini S&P futures (ESM26 ) are down -0.28%, and June E-mini Nasdaq futures...",
+      "url": "https://www.nasdaq.com/articles/stocks-pressured-rebound-crude-prices-and-bond-yields",
+      "image": "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80",
+      "publishedAt": "2026-05-18T17:01:11+00:00",
+      "category": "Energia",
+      "icon": "\u26a1",
+      "impact": {
+        "tickers": [
+          "XOM",
+          "CVX",
+          "COP",
+          "OXY",
+          "SLB"
+        ],
+        "sector": "Energia",
         "sentiment": "neutral"
       },
       "heat": 3,
       "feed": "rss"
     },
     {
-      "id": 186971155,
+      "id": 777152372,
+      "source": "Nasdaq",
+      "title": "Dollar Falls as Crude Prices Slide and Stocks Rebound",
+      "summary": "The dollar index (DXY00 ) fell from a 1.25-month high today and is down by -0.21%. The dollar gave up overnight gains today and turned lower after crude oil prices retreated following reports that the US proposed a temporary waiver of sanctions on Iran\u2019s oil. Lower crude prices lower inflation...",
+      "content": "The dollar index (DXY00 ) fell from a 1.25-month high today and is down by -0.21%. The dollar gave up overnight gains today and turned lower after crude oil prices retreated following reports that the US proposed a temporary waiver of sanctions on Iran\u2019s oil. Lower crude prices lower inflation...",
+      "url": "https://www.nasdaq.com/articles/dollar-falls-crude-prices-slide-and-stocks-rebound",
+      "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
+      "publishedAt": "2026-05-18T17:01:10+00:00",
+      "category": "Geopol\u00edtica",
+      "icon": "\ud83c\udf0d",
+      "impact": {
+        "tickers": [
+          "XOM",
+          "CVX",
+          "COP",
+          "OXY",
+          "SLB"
+        ],
+        "sector": "Energia",
+        "sentiment": "negative"
+      },
+      "heat": 3,
+      "feed": "rss"
+    },
+    {
+      "id": 494478212,
+      "source": "Nasdaq",
+      "title": "Stocks Mixed as Crude Oil Prices and Bond Yields Fall",
+      "summary": "The S&P 500 Index ($SPX ) (SPY ) today is up +0.07%, the Dow Jones Industrial Average ($DOWI ) (DIA ) is up +0.29%, and the Nasdaq 100 Index ($IUXX ) (QQQ ) is down -0.25%. June E-mini S&P futures (ESM26 ) are up +0.10%, and June E-mini Nasdaq futures...",
+      "content": "The S&P 500 Index ($SPX ) (SPY ) today is up +0.07%, the Dow Jones Industrial Average ($DOWI ) (DIA ) is up +0.29%, and the Nasdaq 100 Index ($IUXX ) (QQQ ) is down -0.25%. June E-mini S&P futures (ESM26 ) are up +0.10%, and June E-mini Nasdaq futures...",
+      "url": "https://www.nasdaq.com/articles/stocks-mixed-crude-oil-prices-and-bond-yields-fall",
+      "image": "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80",
+      "publishedAt": "2026-05-18T17:01:10+00:00",
+      "category": "Energia",
+      "icon": "\u26a1",
+      "impact": {
+        "tickers": [
+          "XOM",
+          "CVX",
+          "COP",
+          "OXY",
+          "SLB"
+        ],
+        "sector": "Energia",
+        "sentiment": "negative"
+      },
+      "heat": 3,
+      "feed": "rss"
+    },
+    {
+      "id": 66596379,
+      "source": "Nasdaq",
+      "title": "Corn Rallying on Monday Morning Following White House Fact Sheet Release",
+      "summary": "Corn prices are showing 13 to 16 gains early on Monday morning. Futures closed the Friday session with contracts falling 7 to 11 \u00be cents as July ended with losses of 15 \u00bd cents on the week. December was 12 \u00bd cents lower last week. Open interest was down 13,481...",
+      "content": "Corn prices are showing 13 to 16 gains early on Monday morning. Futures closed the Friday session with contracts falling 7 to 11 \u00be cents as July ended with losses of 15 \u00bd cents on the week. December was 12 \u00bd cents lower last week. Open interest was down 13,481...",
+      "url": "https://www.nasdaq.com/articles/corn-rallying-monday-morning-following-white-house-fact-sheet-release",
+      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
+      "publishedAt": "2026-05-18T17:01:10+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 910533289,
+      "source": "Yahoo Finance",
+      "title": "2026 Fixed Income Playbook: What Matters Most",
+      "summary": "",
+      "content": "",
+      "url": "https://finance.yahoo.com/markets/options/articles/2026-fixed-income-playbook-matters-170000464.html",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-18T17:00:00+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 106302668,
+      "source": "Yahoo Finance",
+      "title": "I want to pay my late 60s parents $1,000 monthly for babysitting. They refuse the money: should I invest it for them instead?",
+      "summary": "",
+      "content": "",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/want-pay-60s-parents-1-165750931.html",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-18T16:57:50+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 355983324,
+      "source": "Nasdaq",
+      "title": "Wheat Rallying Back on US/China Fact Sheet",
+      "summary": "Wheat is trading with sharply higher action across the board on Monday morning in response to a White House Fact sheet released over the weekend. The wheat market retreated lower into the Friday close, with the three exchanges posting losses. Chicago SRW futures were down 11 to 22 1/4 cents...",
+      "content": "Wheat is trading with sharply higher action across the board on Monday morning in response to a White House Fact sheet released over the weekend. The wheat market retreated lower into the Friday close, with the three exchanges posting losses. Chicago SRW futures were down 11 to 22 1/4 cents...",
+      "url": "https://www.nasdaq.com/articles/wheat-rallying-back-us-china-fact-sheet",
+      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
+      "publishedAt": "2026-05-18T16:56:58+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [
+          "AAPL",
+          "NVDA",
+          "TSLA",
+          "AMD"
+        ],
+        "sector": "Tecnologia",
+        "sentiment": "neutral"
+      },
+      "heat": 3,
+      "feed": "rss"
+    },
+    {
+      "id": 654625411,
+      "source": "Nasdaq",
+      "title": "Soybeans Close Friday with Bears Pushing Lower",
+      "summary": "Soybeans were extending the late week losses with close Friday with contracts down 7 to 15 1/12 cents. July was down 31 cents on the week, as November was down 18 \u00be cents. The cmdtyView national average Cash Bean price was down 19 cents at $11.09 1/4. Soymeal futures were...",
+      "content": "Soybeans were extending the late week losses with close Friday with contracts down 7 to 15 1/12 cents. July was down 31 cents on the week, as November was down 18 \u00be cents. The cmdtyView national average Cash Bean price was down 19 cents at $11.09 1/4. Soymeal futures were...",
+      "url": "https://www.nasdaq.com/articles/soybeans-close-friday-bears-pushing-lower",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-18T16:56:58+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 782411036,
+      "source": "Nasdaq",
+      "title": "Corn Falls Lower into the Weekend",
+      "summary": "Corn futures closed the Friday session with contracts falling 7 to 11 \u00be vents as July ended the week with losses of 15 \u00bd cents. December was12 \u00bd cents lower. The CmdtyView national average Cash Corn price was down 11 cents to $4.16 3/4. The weekly CFTC update from Friday...",
+      "content": "Corn futures closed the Friday session with contracts falling 7 to 11 \u00be vents as July ended the week with losses of 15 \u00bd cents. December was12 \u00bd cents lower. The CmdtyView national average Cash Corn price was down 11 cents to $4.16 3/4. The weekly CFTC update from Friday...",
+      "url": "https://www.nasdaq.com/articles/corn-falls-lower-weekend",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-18T16:56:58+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 388036154,
       "source": "Nasdaq",
       "title": "Stocks Settle Sharply Lower as Bond Yields Jump on Inflation Fears",
       "summary": "The S&P 500 Index ($SPX ) (SPY ) on Friday closed down -1.24%, the Dow Jones Industrial Average ($DOWI ) (DIA ) closed down -1.07%, and the Nasdaq 100 Index ($IUXX ) (QQQ ) closed down -1.54%. June E-mini S&P futures (ESM26 ) fell -1.26%, and June E-mini Nasdaq futures...",
       "content": "The S&P 500 Index ($SPX ) (SPY ) on Friday closed down -1.24%, the Dow Jones Industrial Average ($DOWI ) (DIA ) closed down -1.07%, and the Nasdaq 100 Index ($IUXX ) (QQQ ) closed down -1.54%. June E-mini S&P futures (ESM26 ) fell -1.26%, and June E-mini Nasdaq futures...",
       "url": "https://www.nasdaq.com/articles/stocks-settle-sharply-lower-bond-yields-jump-inflation-fears",
       "image": "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&q=80",
-      "publishedAt": "2026-05-18T10:57:35+00:00",
+      "publishedAt": "2026-05-18T16:56:58+00:00",
       "category": "Macro",
       "icon": "\ud83d\udcca",
       "impact": {
@@ -158,38 +757,120 @@
       "feed": "rss"
     },
     {
-      "id": 799612091,
+      "id": 296363652,
       "source": "CNBC",
-      "title": "Weight-loss wars go global as Novo Nordisk bets big on its Wegovy pill",
-      "summary": "The weight loss pill had a strong U.S. launch this year, and Novo believes that will be replicated in other markets around the world.",
-      "content": "The weight loss pill had a strong U.S. launch this year, and Novo believes that will be replicated in other markets around the world.",
-      "url": "https://www.cnbc.com/2026/05/18/novo-nordisk-wegovy-pill-launch-eli-lilly-foundayo-weight-loss.html",
+      "title": "U.S. creates $1.7B 'lawfare' fund in exchange for Trump dropping $10B IRS suit",
+      "summary": "Trump sued the IRS in late January over the leak of his tax information by an IRS employee Charles \"Chaz\" Littlejohn in 2019 and 2020.",
+      "content": "Trump sued the IRS in late January over the leak of his tax information by an IRS employee Charles \"Chaz\" Littlejohn in 2019 and 2020.",
+      "url": "https://www.cnbc.com/2026/05/18/trump-dismiss-irs-lawsuit.html",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-18T16:56:14+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 112311221,
+      "source": "Nasdaq",
+      "title": "Wall Street Is Nervous. Here's What 100 Years of History Says Happens to the S&P 500 Now.",
+      "summary": "Key PointsThe S&amp;P 500 notched its seventh week of consecutive gains.",
+      "content": "Key PointsThe S&amp;P 500 notched its seventh week of consecutive gains.",
+      "url": "https://www.nasdaq.com/articles/wall-street-nervous-heres-what-100-years-history-says-happens-sp-500-now",
+      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
+      "publishedAt": "2026-05-18T16:55:52+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 571363217,
+      "source": "Nasdaq",
+      "title": "Crude Oil Prices Surge on Concern of a Prolonged Disruption to Global Supplies",
+      "summary": "June WTI crude oil (CLM26 ) on Friday closed up +4.25 (+4.20%), and June RBOB gasoline (RBM26 ) closed up +0.0962 (+2.67%). Crude oil and gasoline prices rallied sharply on Friday, with crude posting a 1.5-week high. Crude prices are surging as the lack of negotiations to end the US-Iran...",
+      "content": "June WTI crude oil (CLM26 ) on Friday closed up +4.25 (+4.20%), and June RBOB gasoline (RBM26 ) closed up +0.0962 (+2.67%). Crude oil and gasoline prices rallied sharply on Friday, with crude posting a 1.5-week high. Crude prices are surging as the lack of negotiations to end the US-Iran...",
+      "url": "https://www.nasdaq.com/articles/crude-oil-prices-surge-concern-prolonged-disruption-global-supplies",
       "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
-      "publishedAt": "2026-05-18T10:54:26+00:00",
+      "publishedAt": "2026-05-18T16:54:33+00:00",
       "category": "Geopol\u00edtica",
       "icon": "\ud83c\udf0d",
       "impact": {
         "tickers": [
-          "LMT",
-          "RTX",
-          "NOC",
-          "XOM"
+          "XOM",
+          "CVX",
+          "COP",
+          "OXY",
+          "SLB"
         ],
-        "sector": "Defesa",
+        "sector": "Energia",
+        "sentiment": "positive"
+      },
+      "heat": 3,
+      "feed": "rss"
+    },
+    {
+      "id": 348342914,
+      "source": "Nasdaq",
+      "title": "Cocoa Prices Plummet on Abundant Global Supplies",
+      "summary": "July ICE NY cocoa (CCN26 ) on Friday closed down -187 (-4.46%), and July ICE London cocoa #7 (CAN26 ) closed down -76 (-2.44%). Cocoa prices fell sharply on Friday, posting 1.5-week lows. Since posting 3.5-month highs on Monday, cocoa prices have retreated amid an outlook for abundant supplies. On...",
+      "content": "July ICE NY cocoa (CCN26 ) on Friday closed down -187 (-4.46%), and July ICE London cocoa #7 (CAN26 ) closed down -76 (-2.44%). Cocoa prices fell sharply on Friday, posting 1.5-week lows. Since posting 3.5-month highs on Monday, cocoa prices have retreated amid an outlook for abundant supplies. On...",
+      "url": "https://www.nasdaq.com/articles/cocoa-prices-plummet-abundant-global-supplies",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-18T16:54:33+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 777272364,
+      "source": "Yahoo Finance",
+      "title": "Commerzbank Tells UniCredit to Take a Hike",
+      "summary": "",
+      "content": "",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/commerzbank-tells-unicredit-hike-165153403.html",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-18T16:51:53+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [
+          "JPM",
+          "BAC",
+          "WFC",
+          "C"
+        ],
+        "sector": "Finan\u00e7as",
         "sentiment": "negative"
       },
       "heat": 3,
       "feed": "rss"
     },
     {
-      "id": 513225693,
-      "source": "Yahoo Finance",
-      "title": "LVMH agrees to sell Marc Jacobs to WHP Global",
-      "summary": "",
-      "content": "",
-      "url": "https://finance.yahoo.com/markets/stocks/articles/lvmh-agrees-sell-marc-jacobs-105319270.html",
+      "id": 735869386,
+      "source": "CNBC Markets",
+      "title": "JPMorgan's summer reading list for the wealthy includes books on AI, leadership and lemons",
+      "summary": "JPMorgan\u2019s annual summer reading list, which has become the go-to selection of beach books for the wealthy, has 14 titles this year.",
+      "content": "JPMorgan\u2019s annual summer reading list, which has become the go-to selection of beach books for the wealthy, has 14 titles this year.",
+      "url": "https://www.cnbc.com/2026/05/18/jpmorgan-summer-reading-list.html",
       "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-18T10:53:19+00:00",
+      "publishedAt": "2026-05-18T16:50:38+00:00",
       "category": "Global",
       "icon": "\ud83c\udf10",
       "impact": {
@@ -201,16 +882,16 @@
       "feed": "rss"
     },
     {
-      "id": 956806085,
-      "source": "Yahoo Finance",
-      "title": "CIM Group unveils Permanent Power Company with $400m support",
-      "summary": "",
-      "content": "",
-      "url": "https://finance.yahoo.com/sectors/energy/articles/cim-group-unveils-permanent-power-105317241.html",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-18T10:53:17+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
+      "id": 746241170,
+      "source": "Nasdaq",
+      "title": "3 High-Yielding Dividend Stocks That Retirees Can Rely on for Recurring Income",
+      "summary": "Key PointsVerizon Communications, Home Depot, and Duke Energy are all excellent income stocks that offer above-average yields.",
+      "content": "Key PointsVerizon Communications, Home Depot, and Duke Energy are all excellent income stocks that offer above-average yields.",
+      "url": "https://www.nasdaq.com/articles/3-high-yielding-dividend-stocks-retirees-can-rely-recurring-income",
+      "image": "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80",
+      "publishedAt": "2026-05-18T16:50:00+00:00",
+      "category": "Energia",
+      "icon": "\u26a1",
       "impact": {
         "tickers": [],
         "sector": "",
@@ -220,16 +901,16 @@
       "feed": "rss"
     },
     {
-      "id": 478067786,
-      "source": "economictimes.indiatimes.com",
-      "title": "Baba Vanga fuel price prophecy: Did Bulgarian mystic predict Iran war & rising petrol, diesel, CNG and LPG prices? Here\u2019s what she said",
-      "summary": "Amidst rising global tensions and concerns over fuel prices, viral claims linking Baba Vanga's alleged 2026 predictions to economic chaos are circulating. However, there is no verified evidence of her specifically foreseeing fuel price hikes. The current anxieties are more a reflection of real-world geopolitical impacts on oil markets than mystical prophecies.",
-      "content": "Amidst rising global tensions and concerns over fuel prices, viral claims linking Baba Vanga's alleged 2026 predictions to economic chaos are circulating. However, there is no verified evidence of her specifically foreseeing fuel price hikes. The current anxieties are more a reflection of real-world geopolitical impacts on oil markets than mystical prophecies.",
-      "url": "https://economictimes.indiatimes.com/news/new-updates/baba-vanga-fuel-price-prophecy-did-bulgarian-mystic-predict-iran-war-rising-petrol-diesel-cng-and-lpg-prices-heres-what-she-said/articleshow/131174061.cms",
-      "image": "https://img.etimg.com/thumb/msid-131174105,width-1200,height-630,imgsize-36984,overlay-economictimes/articleshow.jpg",
-      "publishedAt": "2026-05-18T10:52:39.000000Z",
-      "category": "Geopol\u00edtica",
-      "icon": "\ud83c\udf0d",
+      "id": 228949376,
+      "source": "Nasdaq",
+      "title": "Dollar Rallies as Inflation Risks Push Bond Yields Higher",
+      "summary": "The dollar index (DXY00 ) rallied to a 2.5-week high on Friday and finished up by +0.47%. The dollar rallied on Friday on concerns that strong US economic news and soaring crude oil prices will prompt the Fed to tighten monetary policy, a bullish factor for the dollar. Friday's economic...",
+      "content": "The dollar index (DXY00 ) rallied to a 2.5-week high on Friday and finished up by +0.47%. The dollar rallied on Friday on concerns that strong US economic news and soaring crude oil prices will prompt the Fed to tighten monetary policy, a bullish factor for the dollar. Friday's economic...",
+      "url": "https://www.nasdaq.com/articles/dollar-rallies-inflation-risks-push-bond-yields-higher",
+      "image": "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&q=80",
+      "publishedAt": "2026-05-18T16:49:05+00:00",
+      "category": "Macro",
+      "icon": "\ud83d\udcca",
       "impact": {
         "tickers": [
           "XOM",
@@ -242,217 +923,240 @@
         "sentiment": "neutral"
       },
       "heat": 3,
-      "feed": "marketaux"
-    },
-    {
-      "id": 417111323,
-      "source": "Seeking Alpha",
-      "title": "Cathie Wood\u2019s weekly update: buys Cerebras, Tempus AI, sells AMD and TSM",
-      "summary": "",
-      "content": "",
-      "url": "https://seekingalpha.com/news/4594251-cathie-woods-weekly-update-buys-cerebras-tempus-ai-sells-amd-and-tsm?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-18T06:50:37-04:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
       "feed": "rss"
     },
     {
-      "id": 115529027,
-      "source": "CNBC",
-      "title": "Regeneron drops after skin cancer treatment misses late-stage trial goal",
-      "summary": "The drugmaker's fianlimab-cemiplimab \u2060combination \u200cdid not reach statistical \u2060significance in improving progression-free survival (PFS).",
-      "content": "The drugmaker's fianlimab-cemiplimab \u2060combination \u200cdid not reach statistical \u2060significance in improving progression-free survival (PFS).",
-      "url": "https://www.cnbc.com/2026/05/18/regeneron-drops-after-skin-cancer-treatment-misses-late-stage-trial-goal.html",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-18T10:49:56+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [
-          "PFE",
-          "LLY",
-          "JNJ",
-          "MRK",
-          "AMGN"
-        ],
-        "sector": "Sa\u00fade",
-        "sentiment": "negative"
-      },
-      "heat": 3,
-      "feed": "rss"
-    },
-    {
-      "id": 900781951,
-      "source": "Seeking Alpha",
-      "title": "Boston Scientific invests $1.5B in MiRus for ~34% equity stake",
-      "summary": "",
-      "content": "",
-      "url": "https://seekingalpha.com/news/4594278-boston-scientific-invests-15b-for-34-equity-stake-in-mirus?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-18T06:48:21-04:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 182749429,
-      "source": "Nasdaq",
-      "title": "EGHT Crosses Above Average Analyst Target",
-      "summary": "In recent trading, shares of 8x8 Inc (Symbol: EGHT) have crossed above the average analyst 12-month target price of $2.25, changing hands for $2.36/share. When a stock reaches the target an analyst has set, the analyst logically has two ways to react: downgrade on valuation, or,",
-      "content": "In recent trading, shares of 8x8 Inc (Symbol: EGHT) have crossed above the average analyst 12-month target price of $2.25, changing hands for $2.36/share. When a stock reaches the target an analyst has set, the analyst logically has two ways to react: downgrade on valuation, or,",
-      "url": "https://www.nasdaq.com/articles/eght-crosses-above-average-analyst-target",
-      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
-      "publishedAt": "2026-05-18T10:47:16+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 864296248,
-      "source": "Nasdaq",
-      "title": "Landstar System Reaches Analyst Target Price",
-      "summary": "In recent trading, shares of Landstar System, Inc. (Symbol: LSTR) have crossed above the average analyst 12-month target price of $175.07, changing hands for $176.04/share. When a stock reaches the target an analyst has set, the analyst logically has two ways to react: downgrade",
-      "content": "In recent trading, shares of Landstar System, Inc. (Symbol: LSTR) have crossed above the average analyst 12-month target price of $175.07, changing hands for $176.04/share. When a stock reaches the target an analyst has set, the analyst logically has two ways to react: downgrade",
-      "url": "https://www.nasdaq.com/articles/landstar-system-reaches-analyst-target-price",
-      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
-      "publishedAt": "2026-05-18T10:47:12+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 352042010,
-      "source": "Nasdaq",
-      "title": "We Did The Math VUG Can Go To $99",
-      "summary": "Looking at the underlying holdings of the ETFs in our coverage universe at ETF Channel, we have compared the trading price of each holding against the average analyst 12-month forward target price, and computed the weighted average implied analyst target price for the ETF itself.",
-      "content": "Looking at the underlying holdings of the ETFs in our coverage universe at ETF Channel, we have compared the trading price of each holding against the average analyst 12-month forward target price, and computed the weighted average implied analyst target price for the ETF itself.",
-      "url": "https://www.nasdaq.com/articles/we-did-math-vug-can-go-99",
-      "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
-      "publishedAt": "2026-05-18T10:47:05+00:00",
-      "category": "Geopol\u00edtica",
-      "icon": "\ud83c\udf0d",
-      "impact": {
-        "tickers": [
-          "LMT",
-          "RTX",
-          "NOC",
-          "XOM"
-        ],
-        "sector": "Defesa",
-        "sentiment": "negative"
-      },
-      "heat": 3,
-      "feed": "rss"
-    },
-    {
-      "id": 279380989,
+      "id": 389019846,
       "source": "Yahoo Finance",
-      "title": "Nvidia Is Soaring \u2014 The Big Question Is When Does Palantir\u2019s Turn Come?",
+      "title": "Brady Corporation Q3 2026 Earnings Call Summary",
       "summary": "",
       "content": "",
-      "url": "https://finance.yahoo.com/markets/stocks/articles/nvidia-soaring-big-does-palantir-104507123.html",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/brady-corporation-q3-2026-earnings-164758473.html",
+      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
+      "publishedAt": "2026-05-18T16:47:58+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 864506306,
+      "source": "Yahoo Finance",
+      "title": "Cargo theft dips in Q1, but fraud schemes surge, report says",
+      "summary": "",
+      "content": "",
+      "url": "https://finance.yahoo.com/economy/articles/cargo-theft-dips-q1-fraud-164421388.html",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-18T16:44:21+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 639539383,
+      "source": "Yahoo Finance",
+      "title": "Ryanair Lands a Record Profit But Refuses to Map the Flight Path",
+      "summary": "",
+      "content": "",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/ryanair-lands-record-profit-refuses-164415022.html",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-18T16:44:15+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 114668890,
+      "source": "Yahoo Finance",
+      "title": "Diageo PLC (DEO) Slips as Premiumization Pressures Weigh on Luxury-Like Demand",
+      "summary": "",
+      "content": "",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/diageo-plc-deo-slips-premiumization-164228888.html",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-18T16:42:28+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 615784970,
+      "source": "Nasdaq",
+      "title": "Inflation Still Stings for Retirees. Here's How to Keep Up.",
+      "summary": "Key PointsThe right investments could outpace inflation, even when it's strong.",
+      "content": "Key PointsThe right investments could outpace inflation, even when it's strong.",
+      "url": "https://www.nasdaq.com/articles/inflation-still-stings-retirees-heres-how-keep",
+      "image": "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&q=80",
+      "publishedAt": "2026-05-18T16:42:00+00:00",
+      "category": "Macro",
+      "icon": "\ud83d\udcca",
+      "impact": {
+        "tickers": [
+          "JPM",
+          "GS",
+          "BAC",
+          "TLT"
+        ],
+        "sector": "Finan\u00e7as",
+        "sentiment": "positive"
+      },
+      "heat": 3,
+      "feed": "rss"
+    },
+    {
+      "id": 449513546,
+      "source": "Yahoo Finance",
+      "title": "HIVE Shares Jump After BUZZ HPC Unveils 320 MW AI Facility Near Toronto",
+      "summary": "",
+      "content": "",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/hive-shares-jump-buzz-hpc-164000287.html",
+      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
+      "publishedAt": "2026-05-18T16:40:00+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 37628997,
+      "source": "MSN",
+      "title": "Ethan Allen Interiors (ETD) price target decreased by 11.11% to 24.48",
+      "summary": "This article reports that the price target for Ethan Allen Interiors (ETD) has been decreased by 11.11% to $24.48. The news suggests a potential reevaluation of the company's stock by analysts.",
+      "content": "This article reports that the price target for Ethan Allen Interiors (ETD) has been decreased by 11.11% to $24.48. The news suggests a potential reevaluation of the company's stock by analysts.",
+      "url": "http://www.msn.com/en-us/money/top-stocks/ethan-allen-interiors-etd-price-target-decreased-by-11-11-to-24-48/ar-AA23dB01?apiversion=v2&domshim=1&noservercache=1&noservertelemetry=1&batchservertelemetry=1&renderwebcomponents=1&wcseo=1",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-18T16:39:44+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [
+          "ETD"
+        ],
+        "sector": "",
+        "sentiment": "negative"
+      },
+      "heat": 1,
+      "feed": "alphavantage"
+    },
+    {
+      "id": 384577235,
+      "source": "Nasdaq",
+      "title": "Why Did Micron Stock Drop Today?",
+      "summary": "Key PointsA key technology development at Western Digital may be weighing on Micron shares today.",
+      "content": "Key PointsA key technology development at Western Digital may be weighing on Micron shares today.",
+      "url": "https://www.nasdaq.com/articles/why-did-micron-stock-drop-today",
+      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
+      "publishedAt": "2026-05-18T16:39:43+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 245962460,
+      "source": "Yahoo Finance",
+      "title": "Unilever PLC (UL) Falls Sharply Amid Deal-Making Push, But Valuation Signals Opportunity",
+      "summary": "",
+      "content": "",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/unilever-plc-ul-falls-sharply-163926996.html",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-18T16:39:26+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 624281384,
+      "source": "Yahoo Finance",
+      "title": "Cybersecurity Stocks: Rosenblatt Hikes CrowdStrike, Palo Alto Price Targets",
+      "summary": "",
+      "content": "",
+      "url": "https://www.investors.com/news/technology/rosenblatt-cybersecurity-stocks-crowdstrike-stock-palo-alto-stock/?src=A00220&yptr=yahoo",
       "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
-      "publishedAt": "2026-05-18T10:45:07+00:00",
+      "publishedAt": "2026-05-18T16:38:29+00:00",
+      "category": "Tecnologia",
+      "icon": "\ud83d\udcbb",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 633177994,
+      "source": "Yahoo Finance",
+      "title": "Amazon, IBD's Stock Of The Day, Named 'Franchise Pick' As $3 Trillion Milestone Nears",
+      "summary": "",
+      "content": "",
+      "url": "https://www.investors.com/research/ibd-stock-of-the-day/amazon-stock-3-trillion-market-cap-milestone-nvidia-earnings/?src=A00220&yptr=yahoo",
+      "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
+      "publishedAt": "2026-05-18T16:38:24+00:00",
       "category": "Tecnologia",
       "icon": "\ud83d\udcbb",
       "impact": {
         "tickers": [
-          "NVDA",
-          "AMD",
-          "INTC",
-          "AVGO"
+          "AMZN",
+          "WMT",
+          "TGT",
+          "COST"
         ],
-        "sector": "Tecnologia",
+        "sector": "Consumo",
         "sentiment": "neutral"
       },
       "heat": 3,
       "feed": "rss"
     },
     {
-      "id": 356080860,
-      "source": "CNBC",
-      "title": "Nvidia reports earnings this week. Morgan Stanley is getting more bullish on the chipmaker",
-      "summary": "The investment bank has an overweight rating on the semiconductor name.",
-      "content": "The investment bank has an overweight rating on the semiconductor name.",
-      "url": "https://www.cnbc.com/2026/05/18/nvidia-reports-earnings-this-week-morgan-stanley-is-getting-more-bullish.html",
-      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
-      "publishedAt": "2026-05-18T10:45:06+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [
-          "NVDA",
-          "AMD",
-          "INTC",
-          "AVGO",
-          "JPM"
-        ],
-        "sector": "Tecnologia",
-        "sentiment": "neutral"
-      },
-      "heat": 3,
-      "feed": "rss"
-    },
-    {
-      "id": 267946883,
-      "source": "Seeking Alpha",
-      "title": "Top 10 small\u2011cap value picks: lowest forward P/Es and strong profitability",
+      "id": 994620889,
+      "source": "Yahoo Finance",
+      "title": "BYD unveils upgraded flagship Denza SUV to bolster premium market push",
       "summary": "",
       "content": "",
-      "url": "https://seekingalpha.com/news/4594276-top-10-smallcap-value-picks-lowest-forward-pes-and-strong-profitability?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
-      "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
-      "publishedAt": "2026-05-18T06:43:24-04:00",
-      "category": "Geopol\u00edtica",
-      "icon": "\ud83c\udf0d",
-      "impact": {
-        "tickers": [
-          "LMT",
-          "RTX",
-          "NOC",
-          "XOM"
-        ],
-        "sector": "Defesa",
-        "sentiment": "neutral"
-      },
-      "heat": 3,
-      "feed": "rss"
-    },
-    {
-      "id": 777526275,
-      "source": "CNBC",
-      "title": "Berkshire has revamped its portfolio \u2014 here's how the new stocks are trading",
-      "summary": "Berkshire Hathaway took a $2.6 billion stake in Delta Airlines and increased its shares in Alphabet by 224%.",
-      "content": "Berkshire Hathaway took a $2.6 billion stake in Delta Airlines and increased its shares in Alphabet by 224%.",
-      "url": "https://www.cnbc.com/2026/05/18/berkshire-portfolio-revamp-delta-airlines-macys-unitedhealth.html",
-      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
-      "publishedAt": "2026-05-18T10:42:39+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
+      "url": "https://finance.yahoo.com/sectors/technology/articles/byd-unveils-upgraded-flagship-denza-163522338.html",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-18T16:35:22+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
       "impact": {
         "tickers": [],
         "sector": "",
@@ -462,525 +1166,63 @@
       "feed": "rss"
     },
     {
-      "id": 829749541,
-      "source": "Yahoo Finance",
-      "title": "Morning Bid: Bonds spoil the AI party",
-      "summary": "",
-      "content": "",
-      "url": "https://finance.yahoo.com/markets/articles/morning-bid-bonds-spoil-ai-104210471.html",
-      "image": "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80",
-      "publishedAt": "2026-05-18T10:42:10+00:00",
+      "id": 167892904,
+      "source": "Simply Wall Street",
+      "title": "Assessing Biogen (BIIB) Valuation After Recent Share Price Momentum And Earnings Expectations",
+      "summary": "Biogen (BIIB) stock has seen recent momentum with an 8.8% gain over the past month and a 49.1% one-year total return, yet it trades at $192.95, which is 55.2% below one intrinsic value estimate and a 13.6% discount to an analyst target. The company's most followed narrative suggests a fair value of $205.67, driven by expanding global access to key therapies and a diverse pipeline, though risks from new drug launches and competition exist. While the narrative indicates undervaluation, Biogen's P/E ratio of 20.8x is higher than its industry and peers, suggesting a balanced valuation.",
+      "content": "Biogen (BIIB) stock has seen recent momentum with an 8.8% gain over the past month and a 49.1% one-year total return, yet it trades at $192.95, which is 55.2% below one intrinsic value estimate and a 13.6% discount to an analyst target. The company's most followed narrative suggests a fair value of $205.67, driven by expanding global access to key therapies and a diverse pipeline, though risks from new drug launches and competition exist. While the narrative indicates undervaluation, Biogen's P/E ratio of 20.8x is higher than its industry and peers, suggesting a balanced valuation.",
+      "url": "https://simplywall.st/stocks/us/pharmaceuticals-biotech/nasdaq-biib/biogen/news/assessing-biogen-biib-valuation-after-recent-share-price-mom-1",
+      "image": "https://images.ctfassets.net/n07nr2koi959/1txW1Rnk3fUjh2FW939y6e/a1bb305c92d46eae2c7f925893392fdd/avatar-v2.png?w=64&h=64&q=90&fit=fill&f=top",
+      "publishedAt": "2026-05-18T16:35:09+00:00",
       "category": "Energia",
       "icon": "\u26a1",
       "impact": {
         "tickers": [
-          "XOM",
-          "CVX",
-          "COP",
-          "OXY",
-          "SLB"
+          "BIIB",
+          "ABBV",
+          "AMGN"
         ],
-        "sector": "Energia",
+        "sector": "Sa\u00fade",
         "sentiment": "neutral"
-      },
-      "heat": 3,
-      "feed": "rss"
-    },
-    {
-      "id": 564180705,
-      "source": "CNBC",
-      "title": "Trump says he should've asked for 'more' of Intel when negotiating stake with CEO",
-      "summary": "The chipmaker's stock has soared since the U.S. equity deal in August gave the government 9.9% of the company.",
-      "content": "The chipmaker's stock has soared since the U.S. equity deal in August gave the government 9.9% of the company.",
-      "url": "https://www.cnbc.com/2026/05/18/trump-stake-in-intel.html",
-      "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
-      "publishedAt": "2026-05-18T10:40:52+00:00",
-      "category": "Tecnologia",
-      "icon": "\ud83d\udcbb",
-      "impact": {
-        "tickers": [
-          "NVDA",
-          "AMD",
-          "INTC",
-          "AVGO"
-        ],
-        "sector": "Tecnologia",
-        "sentiment": "positive"
-      },
-      "heat": 3,
-      "feed": "rss"
-    },
-    {
-      "id": 711145568,
-      "source": "Simply Wall Street",
-      "title": "Assessing SFL Corporation (SFL) Valuation After Strong Q1 2026 Results And Dividend Increase",
-      "summary": "SFL Corporation's Q1 2026 results, including US$174.48 million in revenue and US$26.08 million in net income, coupled with a dividend increase and extended share repurchase plan, have drawn attention. Despite a strong stock performance (up 58.17% YTD), Simply Wall St's valuation narrative suggests the stock is 6.4% overvalued, with a fair value of $11.73 compared to the current $12.48. The company's significant charter backlog and liquidity position it for growth, but container exposure and substantial capex commitments present risks.",
-      "content": "SFL Corporation's Q1 2026 results, including US$174.48 million in revenue and US$26.08 million in net income, coupled with a dividend increase and extended share repurchase plan, have drawn attention. Despite a strong stock performance (up 58.17% YTD), Simply Wall St's valuation narrative suggests the stock is 6.4% overvalued, with a fair value of $11.73 compared to the current $12.48. The company's significant charter backlog and liquidity position it for growth, but container exposure and substantial capex commitments present risks.",
-      "url": "https://simplywall.st/stocks/us/energy/nyse-sfl/sfl/news/assessing-sfl-corporation-sfl-valuation-after-strong-q1-2026",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-18T10:40:10+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [
-          "SFL"
-        ],
-        "sector": "",
-        "sentiment": "positive"
-      },
-      "heat": 1,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 707006689,
-      "source": "IndexBox",
-      "title": "SPGM vs. SCHE ETF Comparison: Costs, Returns, and Risks as of May 2026 - News and Statistics",
-      "summary": "This article compares two ETFs, SPGM and SCHE, focusing on their costs, returns, and risks as of May 2026. SPGM (SPDR Portfolio MSCI Global Stock Market ETF) is a global fund, while SCHE (Schwab Emerging Markets Equity ETF) focuses on emerging markets. The analysis details their expense ratios, dividend yields, assets under management, one-year performance, and portfolio compositions, highlighting SCHE's lower cost but SPGM's better recent performance and lower drawdown risk.",
-      "content": "This article compares two ETFs, SPGM and SCHE, focusing on their costs, returns, and risks as of May 2026. SPGM (SPDR Portfolio MSCI Global Stock Market ETF) is a global fund, while SCHE (Schwab Emerging Markets Equity ETF) focuses on emerging markets. The analysis details their expense ratios, dividend yields, assets under management, one-year performance, and portfolio compositions, highlighting SCHE's lower cost but SPGM's better recent performance and lower drawdown risk.",
-      "url": "https://www.indexbox.io/blog/spgm-vs-sche-global-vs-emerging-markets-etf-comparison/",
-      "image": "https://www.indexbox.io/landing/img/blog/telegram-fallback/03315a61f8bbaccac4b83db26febc920.webp",
-      "publishedAt": "2026-05-18T10:39:35+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [
-          "SCHE",
-          "STT",
-          "SCHW",
-          "NVDA",
-          "AAPL"
-        ],
-        "sector": "Tecnologia",
-        "sentiment": "neutral"
-      },
-      "heat": 3,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 505052445,
-      "source": "AD HOC NEWS",
-      "title": "Safety Insurance Group stock (US78411C1027): steady dividend player after Q1 earnings",
-      "summary": "Safety Insurance Group has reported its Q1 2026 earnings and confirmed its dividend, making it an attractive option for income-focused investors. The regional property and casualty insurer focuses on the New England market, primarily Massachusetts, with personal automobile, homeowners, and commercial lines as its key revenue drivers. While offering specialized market knowledge, its regional concentration exposes it to risks like severe weather events and state-level regulatory changes.",
-      "content": "Safety Insurance Group has reported its Q1 2026 earnings and confirmed its dividend, making it an attractive option for income-focused investors. The regional property and casualty insurer focuses on the New England market, primarily Massachusetts, with personal automobile, homeowners, and commercial lines as its key revenue drivers. While offering specialized market knowledge, its regional concentration exposes it to risks like severe weather events and state-level regulatory changes.",
-      "url": "https://www.ad-hoc-news.de/boerse/news/ueberblick/safety-insurance-group-stock-us78411c1027-steady-dividend-player-after/69360164",
-      "image": "https://mdb.ad-hoc-news.de/bild/bild-2405038_480_300.webp",
-      "publishedAt": "2026-05-18T10:39:26+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [
-          "SAFT",
-          "TRV"
-        ],
-        "sector": "",
-        "sentiment": "positive"
       },
       "heat": 2,
       "feed": "alphavantage"
     },
     {
-      "id": 917504492,
-      "source": "Seeking Alpha",
-      "title": "BTIG throws cold water on the latest Papa John's buyout report",
-      "summary": "",
-      "content": "",
-      "url": "https://seekingalpha.com/news/4594277-btig-throws-cold-water-on-the-latest-papa-johns-buyout-report?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-18T06:39:22-04:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 798088639,
-      "source": "Yahoo Finance",
-      "title": "My Top 3 Cryptocurrencies for May 2026",
-      "summary": "",
-      "content": "",
-      "url": "https://finance.yahoo.com/markets/crypto/articles/top-3-cryptocurrencies-may-2026-103900250.html",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-18T10:39:00+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 44592211,
-      "source": "Seeking Alpha",
-      "title": "Bitcoin Depot stock plummets after filing for Chapter 11 bankruptcy protection",
-      "summary": "",
-      "content": "",
-      "url": "https://seekingalpha.com/news/4594252-bitcoin-depot-says-it-filed-for-chapter-11-bankruptcy-in-texas?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-18T06:36:15-04:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [
-          "JPM",
-          "BAC",
-          "WFC",
-          "C"
-        ],
-        "sector": "Finan\u00e7as",
-        "sentiment": "negative"
-      },
-      "heat": 3,
-      "feed": "rss"
-    },
-    {
-      "id": 31627986,
-      "source": "MarketBeat",
-      "title": "GLOBALT Investments LLC GA Grows Position in Netflix, Inc. $NFLX",
-      "summary": "GLOBALT Investments LLC GA significantly increased its stake in Netflix, Inc. (NASDAQ:NFLX) by 832.6% in the fourth quarter, now holding 47,330 shares valued at $4.44 million. This move reflects a broader institutional interest in Netflix, with many firms boosting their positions, and highlights the company's strong business momentum through expanding ad-tiers, live content initiatives like NFL games, and positive analyst sentiments. Despite some insider selling, analysts maintain a \"Moderate Buy\" rating for NFLX, anticipating continued growth.",
-      "content": "GLOBALT Investments LLC GA significantly increased its stake in Netflix, Inc. (NASDAQ:NFLX) by 832.6% in the fourth quarter, now holding 47,330 shares valued at $4.44 million. This move reflects a broader institutional interest in Netflix, with many firms boosting their positions, and highlights the company's strong business momentum through expanding ad-tiers, live content initiatives like NFL games, and positive analyst sentiments. Despite some insider selling, analysts maintain a \"Moderate Buy\" rating for NFLX, anticipating continued growth.",
-      "url": "https://www.marketbeat.com/instant-alerts/filing-globalt-investments-llc-ga-grows-position-in-netflix-inc-nflx-2026-05-18/",
-      "image": "https://www.marketbeat.com/logos/netflix-inc-logo-1200x675.png?v=20231213130542",
-      "publishedAt": "2026-05-18T10:35:12+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [
-          "NFLX"
-        ],
-        "sector": "",
-        "sentiment": "positive"
-      },
-      "heat": 1,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 215770834,
-      "source": "Seeking Alpha",
-      "title": "Macy's rallies after Berkshire returns to department stores after 60 years",
-      "summary": "",
-      "content": "",
-      "url": "https://seekingalpha.com/news/4594208-macys-rallies-after-berkshire-returns-to-department-stores-after-60-years?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-18T06:34:29-04:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 597188965,
-      "source": "Popular Information | Judd Legum",
-      "title": "The smoking guns in Trump\u2019s new financial disclosure",
-      "summary": "Donald Trump's recent financial disclosure reveals instances where he purchased stock in companies on the same day or shortly before publicly praising them, such as Thermo Fisher, Apple, Micron, and Dell. These transactions, many marked \"UNSOLICITED,\" contradict claims that his investments are independently managed and highlight a pattern of potentially self-serving public endorsements. The report also notes his failure to meet the 45-day reporting deadline for many trades, resulting in a $200 fine.",
-      "content": "Donald Trump's recent financial disclosure reveals instances where he purchased stock in companies on the same day or shortly before publicly praising them, such as Thermo Fisher, Apple, Micron, and Dell. These transactions, many marked \"UNSOLICITED,\" contradict claims that his investments are independently managed and highlight a pattern of potentially self-serving public endorsements. The report also notes his failure to meet the 45-day reporting deadline for many trades, resulting in a $200 fine.",
-      "url": "https://popular.info/p/the-smoking-guns-in-trumps-new-financial",
-      "image": "https://substackcdn.com/image/fetch/$s_!Entd!,e_trim:10:white/e_trim:10:transparent/h_72,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fcdc39616-2dd4-4149-8002-dc7841fad28d_2100x400.png",
-      "publishedAt": "2026-05-18T10:31:39+00:00",
-      "category": "Com\u00e9rcio",
-      "icon": "\ud83d\udea2",
-      "impact": {
-        "tickers": [
-          "TMO",
-          "AAPL",
-          "MU",
-          "DELL",
-          "NVDA"
-        ],
-        "sector": "Tecnologia",
-        "sentiment": "positive"
-      },
-      "heat": 3,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 910776494,
-      "source": "Yahoo Finance",
-      "title": "Faraday Future secures $25 million funding as it pivots toward robotics and AI (FFAI)",
-      "summary": "",
-      "content": "",
-      "url": "https://finance.yahoo.com/markets/stocks/articles/faraday-future-secures-25-million-103106434.html",
-      "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
-      "publishedAt": "2026-05-18T10:31:06+00:00",
-      "category": "Geopol\u00edtica",
-      "icon": "\ud83c\udf0d",
-      "impact": {
-        "tickers": [
-          "LMT",
-          "RTX",
-          "NOC",
-          "XOM"
-        ],
-        "sector": "Defesa",
-        "sentiment": "negative"
-      },
-      "heat": 3,
-      "feed": "rss"
-    },
-    {
-      "id": 84681923,
-      "source": "Yahoo Finance",
-      "title": "Reasons to Use a Credit Card Over a Debit Card",
-      "summary": "",
-      "content": "",
-      "url": "https://finance.yahoo.com/markets/articles/reasons-credit-card-over-debit-103057756.html",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-18T10:30:57+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [
-          "JPM",
-          "BAC",
-          "WFC",
-          "C"
-        ],
-        "sector": "Finan\u00e7as",
-        "sentiment": "neutral"
-      },
-      "heat": 3,
-      "feed": "rss"
-    },
-    {
-      "id": 75623190,
+      "id": 274005812,
       "source": "ChartMill",
-      "title": "LLY: Eli Lilly & Co. Passes the Affordable Growth (GARP) Screen with Strong Momentum and Fair Valuation",
-      "summary": "Eli Lilly (LLY) fits the GARP strategy with strong growth, a 9/10 profitability rating, and a reasonable valuation. Learn how this pharma giant balances high earnings growth with an affordable price.",
-      "content": "Eli Lilly (LLY) fits the GARP strategy with strong growth, a 9/10 profitability rating, and a reasonable valuation. Learn how this pharma giant balances high earnings growth with an affordable price.",
-      "url": "https://finnhub.io/api/news?id=bb69e2c0ea5585bd0a2ae30324ebf02179096fc198043942931382c9eb54d9e3",
-      "image": "https://www.chartmill.com/images/uploads/Affordable_Growth_500_264px_webp_add6a3aa59.webp",
-      "publishedAt": "2026-05-18T10:30:41+00:00",
+      "title": "Discover which S&P500 stocks are making waves on Monday.",
+      "summary": "Let's have a look at what is happening on the US markets in the middle of the day on Monday. Below you can find the top S&P500 gainers and losers in today's session.",
+      "content": "Let's have a look at what is happening on the US markets in the middle of the day on Monday. Below you can find the top S&P500 gainers and losers in today's session.",
+      "url": "https://finnhub.io/api/news?id=97bcf2a83f51273709e106ccd451fff5b64715b213374cb50edb214f035bb8d6",
+      "image": "https://www.chartmill.com/images/uploads/CM_Top_Movers_Small_free_2b4ff2fc22.webp",
+      "publishedAt": "2026-05-18T16:35:03+00:00",
       "category": "Mercados",
       "icon": "\ud83d\udcb0",
       "impact": {
         "tickers": [
-          "PFE",
-          "LLY",
-          "JNJ",
-          "MRK",
-          "AMGN"
+          "NOW"
         ],
-        "sector": "Sa\u00fade",
-        "sentiment": "positive"
+        "sector": "",
+        "sentiment": "neutral"
       },
-      "heat": 3,
+      "heat": 1,
       "feed": "finnhub_company"
     },
     {
-      "id": 580253467,
-      "source": "Yahoo Finance",
-      "title": "Baidu beats first-quarter forecasts as AI business drives strong growth (BIDU)",
-      "summary": "",
-      "content": "",
-      "url": "https://finance.yahoo.com/sectors/technology/articles/baidu-beats-first-quarter-forecasts-103013360.html",
-      "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
-      "publishedAt": "2026-05-18T10:30:13+00:00",
-      "category": "Tecnologia",
-      "icon": "\ud83d\udcbb",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 956875274,
-      "source": "MarketWatch",
-      "title": "My husband took out a $100,000 Parent PLUS loan for his daughter. She dropped out, citing mental-health issues. Should we refinance?",
-      "summary": "\u201cThere is little to no chance that she will ever be able to repay these loans.\u201d",
-      "content": "\u201cThere is little to no chance that she will ever be able to repay these loans.\u201d",
-      "url": "https://www.marketwatch.com/story/my-husband-took-out-a-100-000-parent-plus-loan-for-his-daughter-she-dropped-out-should-we-refinance-bea7dc6e?mod=mw_rss_topstories",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-18T10:30:00+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 830603457,
-      "source": "Nasdaq",
-      "title": "What Tim Cook's Trip to China Could Mean for Apple Investors",
-      "summary": "Key PointsEasing tensions and tariffs would be a critical win for Apple, which does much of its manufacturing in China.",
-      "content": "Key PointsEasing tensions and tariffs would be a critical win for Apple, which does much of its manufacturing in China.",
-      "url": "https://www.nasdaq.com/articles/what-tim-cooks-trip-china-could-mean-apple-investors",
-      "image": "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=800&q=80",
-      "publishedAt": "2026-05-18T10:30:00+00:00",
-      "category": "Com\u00e9rcio",
-      "icon": "\ud83d\udea2",
-      "impact": {
-        "tickers": [
-          "AAPL",
-          "NVDA",
-          "TSLA",
-          "AMD"
-        ],
-        "sector": "Tecnologia",
-        "sentiment": "positive"
-      },
-      "heat": 3,
-      "feed": "rss"
-    },
-    {
-      "id": 593292762,
-      "source": "Stock Titan",
-      "title": "EPA biofuel rule and SAF demand frame XCF's June Reno restart",
-      "summary": "XCF Global (SAFX) believes that the EPA's recently finalized Renewable Fuel Standard (RFS) rule and the increasing demand for Sustainable Aviation Fuel (SAF) will support the long-term growth of renewable fuels and domestic energy security. The company is currently upgrading its New Rise Renewables Reno facility and plans to restart production in early June to meet these evolving market demands. Despite recent positive operational updates, XCF Global's stock performance has shown mixed reactions, indicating a cautious market stance ahead of full-scale operations.",
-      "content": "XCF Global (SAFX) believes that the EPA's recently finalized Renewable Fuel Standard (RFS) rule and the increasing demand for Sustainable Aviation Fuel (SAF) will support the long-term growth of renewable fuels and domestic energy security. The company is currently upgrading its New Rise Renewables Reno facility and plans to restart production in early June to meet these evolving market demands. Despite recent positive operational updates, XCF Global's stock performance has shown mixed reactions, indicating a cautious market stance ahead of full-scale operations.",
-      "url": "https://www.stocktitan.net/news/SAFX/xcf-global-highlights-long-term-growth-drivers-for-renewable-fuels-p396wf1qicks.html",
-      "image": "https://app.accessnewswire.com/img.ashx?id=1167671",
-      "publishedAt": "2026-05-18T10:29:32+00:00",
-      "category": "Energia",
-      "icon": "\u26a1",
-      "impact": {
-        "tickers": [
-          "SAFX"
-        ],
-        "sector": "Energia",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 21696522,
-      "source": "marketscreener.com",
-      "title": "JPMorgan Adjusts Price Target on Keysight Technologies to $360 From $300, Maintains Overweight Rating",
-      "summary": "JPMorgan has increased its price target for Keysight Technologies (KEYS) from $300 to $360. The firm is maintaining an \"Overweight\" rating on the stock. This adjustment reflects a positive outlook on Keysight Technologies.",
-      "content": "JPMorgan has increased its price target for Keysight Technologies (KEYS) from $300 to $360. The firm is maintaining an \"Overweight\" rating on the stock. This adjustment reflects a positive outlook on Keysight Technologies.",
-      "url": "https://www.marketscreener.com/news/jpmorgan-adjusts-price-target-on-keysight-technologies-to-360-from-300-maintains-overweight-ratin-ce7f5adada8df326",
-      "image": "https://www.marketscreener.com/images/mtnewswires.png",
-      "publishedAt": "2026-05-18T10:28:00+00:00",
-      "category": "Tecnologia",
-      "icon": "\ud83d\udcbb",
-      "impact": {
-        "tickers": [
-          "KEYS"
-        ],
-        "sector": "",
-        "sentiment": "positive"
-      },
-      "heat": 1,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 519444825,
-      "source": "MarketBeat",
-      "title": "TD Private Client Wealth LLC Sells 72,716 Shares of Verizon Communications Inc. $VZ",
-      "summary": "TD Private Client Wealth LLC significantly reduced its stake in Verizon Communications Inc. by selling 72,716 shares in the fourth quarter, decreasing its holdings by 32.9%. Despite this, Verizon maintains a \"Moderate Buy\" consensus rating from analysts, with several firms recently increasing their target prices for the stock. Positive developments for Verizon include FCC approval of a $1 billion spectrum purchase and a $4 billion notes offering, though concerns remain regarding competitive pressures and cost-cutting measures.",
-      "content": "TD Private Client Wealth LLC significantly reduced its stake in Verizon Communications Inc. by selling 72,716 shares in the fourth quarter, decreasing its holdings by 32.9%. Despite this, Verizon maintains a \"Moderate Buy\" consensus rating from analysts, with several firms recently increasing their target prices for the stock. Positive developments for Verizon include FCC approval of a $1 billion spectrum purchase and a $4 billion notes offering, though concerns remain regarding competitive pressures and cost-cutting measures.",
-      "url": "https://www.marketbeat.com/instant-alerts/filing-td-private-client-wealth-llc-sells-72716-shares-of-verizon-communications-inc-vz-2026-05-18/",
-      "image": "https://www.marketbeat.com/logos/verizonwireless-1200x675.jpg",
-      "publishedAt": "2026-05-18T10:25:48+00:00",
+      "id": 666527532,
+      "source": "StreetInsider",
+      "title": "Guarantor: JPMorgan Chase & Co.",
+      "summary": "JPMorgan Chase Financial Company LLC, guaranteed by JPMorgan Chase & Co., is offering Buffered Digital Notes linked to the Nasdaq-100, Russell 2000, and S&P 500 Indices, due June 24, 2027. These notes are designed for investors seeking a fixed return of at least 7.45% if the least performing index meets certain criteria, but investors risk losing up to 80% of their principal if the indices fall significantly. The offering highlights various risks, including credit risks, limited gain potential, and lack of liquidity.",
+      "content": "JPMorgan Chase Financial Company LLC, guaranteed by JPMorgan Chase & Co., is offering Buffered Digital Notes linked to the Nasdaq-100, Russell 2000, and S&P 500 Indices, due June 24, 2027. These notes are designed for investors seeking a fixed return of at least 7.45% if the least performing index meets certain criteria, but investors risk losing up to 80% of their principal if the indices fall significantly. The offering highlights various risks, including credit risks, limited gain potential, and lack of liquidity.",
+      "url": "https://www.streetinsider.com/SEC+Filings/Form+424B2+JPMORGAN+CHASE+%26amp%3B+CO/26512397.html",
+      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
+      "publishedAt": "2026-05-18T16:33:55+00:00",
       "category": "Mercados",
       "icon": "\ud83d\udcb0",
       "impact": {
         "tickers": [
-          "VZ",
-          "T",
-          "TMUS",
           "JPM"
-        ],
-        "sector": "",
-        "sentiment": "positive"
-      },
-      "heat": 3,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 286078123,
-      "source": "MarketBeat",
-      "title": "TD Private Client Wealth LLC Has $6.79 Million Stock Position in American Electric Power Company, Inc. $AEP",
-      "summary": "TD Private Client Wealth LLC reduced its stake in American Electric Power Company, Inc. by 19.2% in the fourth quarter, holding 58,849 shares valued at $6.79 million. Despite this, American Electric Power reported strong quarterly results, exceeding revenue and EPS expectations, and declared a quarterly dividend of $0.95 per share. Institutional investors collectively own a significant 75.24% of the company's stock.",
-      "content": "TD Private Client Wealth LLC reduced its stake in American Electric Power Company, Inc. by 19.2% in the fourth quarter, holding 58,849 shares valued at $6.79 million. Despite this, American Electric Power reported strong quarterly results, exceeding revenue and EPS expectations, and declared a quarterly dividend of $0.95 per share. Institutional investors collectively own a significant 75.24% of the company's stock.",
-      "url": "https://www.marketbeat.com/instant-alerts/filing-td-private-client-wealth-llc-has-679-million-stock-position-in-american-electric-power-company-inc-aep-2026-05-18/",
-      "image": "https://www.marketbeat.com/logos/american-electric-power-company-inc-logo-1200x675.png?v=20231214130144",
-      "publishedAt": "2026-05-18T10:25:02+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [
-          "AEP"
-        ],
-        "sector": "",
-        "sentiment": "positive"
-      },
-      "heat": 1,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 10202917,
-      "source": "Nasdaq",
-      "title": "Should Investors Buy Peloton Stock After Its 96% Decline? Here's the Good News and the Bad News.",
-      "summary": "Key PointsPeloton stock was a pandemic darling, as demand soared for the company's at-home exercise equipment amid lockdowns and social restrictions.",
-      "content": "Key PointsPeloton stock was a pandemic darling, as demand soared for the company's at-home exercise equipment amid lockdowns and social restrictions.",
-      "url": "https://www.nasdaq.com/articles/should-investors-buy-peloton-stock-after-its-96-decline-heres-good-news-and-bad-news",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-18T10:25:00+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 761090955,
-      "source": "www.marketscreener.com",
-      "title": "Jefferies Adjusts Price Target on Ross Stores to $245 From $242, Maintains Buy Rating",
-      "summary": "Jefferies has increased its price target for Ross Stores to $245 from $242, while reiterating a Buy rating on the stock. This adjustment reflects an updated outlook on the company's valuation. The report was published on May 18, 2026, at 06:24 am EDT.",
-      "content": "Jefferies has increased its price target for Ross Stores to $245 from $242, while reiterating a Buy rating on the stock. This adjustment reflects an updated outlook on the company's valuation. The report was published on May 18, 2026, at 06:24 am EDT.",
-      "url": "https://www.marketscreener.com/news/jefferies-adjusts-price-target-on-ross-stores-to-245-from-242-maintains-buy-rating-ce7f5adada8df627",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-18T10:24:31+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [
-          "ROST"
-        ],
-        "sector": "",
-        "sentiment": "positive"
-      },
-      "heat": 1,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 57625582,
-      "source": "marketscreener.com",
-      "title": "Jefferies Adjusts Price Target on Dollar General to $155 From $170, Maintains Buy Rating",
-      "summary": "Jefferies has adjusted its price target for Dollar General (NYSE: DG) to $155, down from the previous $170, while maintaining a \"Buy\" rating on the stock. This revision comes amidst other analyst adjustments for Dollar General, with Rothschild & Co Redburn and Gordon Haskett also modifying their price targets. Dollar General specializes in discounted distribution of mass consumption products and reported 20,893 stores at the end of January 2026.",
-      "content": "Jefferies has adjusted its price target for Dollar General (NYSE: DG) to $155, down from the previous $170, while maintaining a \"Buy\" rating on the stock. This revision comes amidst other analyst adjustments for Dollar General, with Rothschild & Co Redburn and Gordon Haskett also modifying their price targets. Dollar General specializes in discounted distribution of mass consumption products and reported 20,893 stores at the end of January 2026.",
-      "url": "https://www.marketscreener.com/news/jefferies-adjusts-price-target-on-dollar-general-to-155-from-170-maintains-buy-rating-ce7f5adada8df72c",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-18T10:24:29+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [
-          "DG"
         ],
         "sector": "Finan\u00e7as",
         "sentiment": "neutral"
@@ -989,319 +1231,16 @@
       "feed": "alphavantage"
     },
     {
-      "id": 232865015,
-      "source": "AD HOC NEWS",
-      "title": "Alphabet Inc. (Class C) stock (US02079K1079): Berkshire stake adds fresh focus",
-      "summary": "Alphabet Inc. (GOOG) shares are gaining renewed attention after Berkshire Hathaway significantly increased its stake in the company during the first quarter. This comes as Alphabet's cloud and advertising businesses show strong momentum, supported by year-to-date gains and commentary on AI-driven growth. The article highlights Alphabet's core business model, key revenue drivers, and its importance to US investors, while also providing a disclaimer about the volatility of stocks.",
-      "content": "Alphabet Inc. (GOOG) shares are gaining renewed attention after Berkshire Hathaway significantly increased its stake in the company during the first quarter. This comes as Alphabet's cloud and advertising businesses show strong momentum, supported by year-to-date gains and commentary on AI-driven growth. The article highlights Alphabet's core business model, key revenue drivers, and its importance to US investors, while also providing a disclaimer about the volatility of stocks.",
-      "url": "https://www.ad-hoc-news.de/boerse/news/ueberblick/alphabet-inc-class-c-stock-us02079k1079-berkshire-stake-adds-fresh/69364345",
-      "image": "https://mdb.ad-hoc-news.de/bild/bild-2405042_480_300.webp",
-      "publishedAt": "2026-05-18T10:24:01+00:00",
-      "category": "Com\u00e9rcio",
-      "icon": "\ud83d\udea2",
-      "impact": {
-        "tickers": [
-          "GOOG"
-        ],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 301636721,
-      "source": "MarketBeat",
-      "title": "Freeport-McMoRan Inc. $FCX is Pacific Heights Asset Management LLC's 4th Largest Position",
-      "summary": "Pacific Heights Asset Management LLC has increased its stake in Freeport-McMoRan Inc. (NYSE:FCX) by 3.9% in the fourth quarter, making it their fourth-largest holding. Despite recent insider selling by CAO Stephen T. Higgins and CAO Ellie L. Mikes, analysts rate the stock a \"Moderate Buy\" with a consensus target price of $65.14. The company reported better-than-expected quarterly results, earning $0.57 per share on $6.23 billion in revenue, and recently announced a quarterly dividend of $0.075 per share.",
-      "content": "Pacific Heights Asset Management LLC has increased its stake in Freeport-McMoRan Inc. (NYSE:FCX) by 3.9% in the fourth quarter, making it their fourth-largest holding. Despite recent insider selling by CAO Stephen T. Higgins and CAO Ellie L. Mikes, analysts rate the stock a \"Moderate Buy\" with a consensus target price of $65.14. The company reported better-than-expected quarterly results, earning $0.57 per share on $6.23 billion in revenue, and recently announced a quarterly dividend of $0.075 per share.",
-      "url": "https://www.marketbeat.com/instant-alerts/filing-freeport-mcmoran-inc-fcx-is-pacific-heights-asset-management-llcs-4th-largest-position-2026-05-18/",
-      "image": "https://www.marketbeat.com/logos/freeport-mcmoran-inc-logo-1200x675.jpg?v=20221021152158",
-      "publishedAt": "2026-05-18T10:23:40+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [
-          "FCX"
-        ],
-        "sector": "",
-        "sentiment": "positive"
-      },
-      "heat": 1,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 781347858,
+      "id": 905124143,
       "source": "CNBC",
-      "title": "Oil jumps as Trump warns 'Clock is Ticking' for Iran, fanning fears of escalation in conflict",
-      "summary": "Trump's warning to Iran over the weekend signals that the impasse between Washington and Tehran over ending the war could deteriorate into resumption of armed conflict.",
-      "content": "Trump's warning to Iran over the weekend signals that the impasse between Washington and Tehran over ending the war could deteriorate into resumption of armed conflict.",
-      "url": "https://www.cnbc.com/2026/05/18/oil-today-brent-wti-iran-trump-hormuz-iea-supply-crude-.html",
-      "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
-      "publishedAt": "2026-05-18T10:23:34+00:00",
-      "category": "Geopol\u00edtica",
-      "icon": "\ud83c\udf0d",
-      "impact": {
-        "tickers": [
-          "XOM",
-          "CVX",
-          "COP",
-          "OXY",
-          "SLB"
-        ],
-        "sector": "Energia",
-        "sentiment": "negative"
-      },
-      "heat": 3,
-      "feed": "rss"
-    },
-    {
-      "id": 805914702,
-      "source": "AD HOC NEWS",
-      "title": "Moderna Inc. stock (US60770K1034): Shares slip as post-COVID reset keeps volatility high",
-      "summary": "Moderna shares experienced a slip as the company navigates its transition from pandemic-driven COVID-19 vaccine sales to a broader portfolio of mRNA vaccines and therapeutics. This shift has resulted in continued stock volatility, with shares closing at $49.04, down 1.98%, reflecting investor uncertainty about the pace at which new products can offset declining COVID-19 revenues. The company's future stock performance will largely depend on its ability to convert its scientific pipeline and cash reserves into sustainable, recurring revenue streams beyond its initial pandemic success.",
-      "content": "Moderna shares experienced a slip as the company navigates its transition from pandemic-driven COVID-19 vaccine sales to a broader portfolio of mRNA vaccines and therapeutics. This shift has resulted in continued stock volatility, with shares closing at $49.04, down 1.98%, reflecting investor uncertainty about the pace at which new products can offset declining COVID-19 revenues. The company's future stock performance will largely depend on its ability to convert its scientific pipeline and cash reserves into sustainable, recurring revenue streams beyond its initial pandemic success.",
-      "url": "https://www.ad-hoc-news.de/boerse/news/ueberblick/moderna-inc-stock-us60770k1034-shares-slip-as-post-covid-reset-keeps/69365042",
-      "image": "https://mdb.ad-hoc-news.de/bild/bild-2404999_480_300.webp",
-      "publishedAt": "2026-05-18T10:23:09+00:00",
-      "category": "Energia",
-      "icon": "\u26a1",
-      "impact": {
-        "tickers": [
-          "MRNA"
-        ],
-        "sector": "Sa\u00fade",
-        "sentiment": "negative"
-      },
-      "heat": 1,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 761578800,
-      "source": "MarketBeat",
-      "title": "TD Private Client Wealth LLC Sells 9,822 Shares of AbbVie Inc. $ABBV",
-      "summary": "TD Private Client Wealth LLC reduced its stake in AbbVie Inc. by 12.6% in the fourth quarter, selling 9,822 shares to hold 68,073 shares valued at approximately $15.6 million. This reduction comes as AbbVie reported strong quarterly earnings, beating analyst estimates with $2.65 EPS and $15 billion in revenue, driven by the success of Skyrizi and Rinvoq. Analysts maintain a \"Moderate Buy\" rating on the stock with an average price target of $253.43, and institutional ownership stands at 70.23%.",
-      "content": "TD Private Client Wealth LLC reduced its stake in AbbVie Inc. by 12.6% in the fourth quarter, selling 9,822 shares to hold 68,073 shares valued at approximately $15.6 million. This reduction comes as AbbVie reported strong quarterly earnings, beating analyst estimates with $2.65 EPS and $15 billion in revenue, driven by the success of Skyrizi and Rinvoq. Analysts maintain a \"Moderate Buy\" rating on the stock with an average price target of $253.43, and institutional ownership stands at 70.23%.",
-      "url": "https://www.marketbeat.com/instant-alerts/filing-td-private-client-wealth-llc-sells-9822-shares-of-abbvie-inc-abbv-2026-05-18/",
-      "image": "https://www.marketbeat.com/logos/abbvie-inc-logo-1200x675.jpg",
-      "publishedAt": "2026-05-18T10:23:03+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [
-          "ABBV"
-        ],
-        "sector": "",
-        "sentiment": "positive"
-      },
-      "heat": 1,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 901746152,
-      "source": "MarketWatch",
-      "title": "As these market drivers start to weaken, it\u2019s time for investors to buy protection, says Deutsche Bank",
-      "summary": "After Nvidia posts numbers on Wednesday, the positive impact of the U.S. earnings season is in the rear-view mirror and investors may once again be more focused on the disruption caused by events in the Middle East.",
-      "content": "After Nvidia posts numbers on Wednesday, the positive impact of the U.S. earnings season is in the rear-view mirror and investors may once again be more focused on the disruption caused by events in the Middle East.",
-      "url": "https://www.marketwatch.com/story/as-these-market-drivers-start-to-weaken-its-time-for-investors-to-buy-protection-says-deutsche-bank-f8c6b3d5?mod=mw_rss_topstories",
-      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
-      "publishedAt": "2026-05-18T10:23:00+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [
-          "NVDA",
-          "AMD",
-          "INTC",
-          "AVGO",
-          "JPM"
-        ],
-        "sector": "Tecnologia",
-        "sentiment": "neutral"
-      },
-      "heat": 3,
-      "feed": "rss"
-    },
-    {
-      "id": 96709482,
-      "source": "MarketBeat",
-      "title": "Johnson & Johnson $JNJ Shares Sold by TD Private Client Wealth LLC",
-      "summary": "TD Private Client Wealth LLC reduced its stake in Johnson & Johnson ($JNJ) by 18.9% in Q4, selling 12,637 shares leaving them with 54,168 shares valued at approximately $11.21 million. Johnson & Johnson's Q1 earnings beat expectations, with EPS of $2.70 on revenue of $24.06 billion, leading to an increased full-year FY2026 EPS guidance and a boost in its quarterly dividend to $1.34 per share. Analysts maintain a \"Moderate Buy\" rating with an average target price of $253.04.",
-      "content": "TD Private Client Wealth LLC reduced its stake in Johnson & Johnson ($JNJ) by 18.9% in Q4, selling 12,637 shares leaving them with 54,168 shares valued at approximately $11.21 million. Johnson & Johnson's Q1 earnings beat expectations, with EPS of $2.70 on revenue of $24.06 billion, leading to an increased full-year FY2026 EPS guidance and a boost in its quarterly dividend to $1.34 per share. Analysts maintain a \"Moderate Buy\" rating with an average target price of $253.04.",
-      "url": "https://www.marketbeat.com/instant-alerts/filing-johnson-johnson-jnj-shares-sold-by-td-private-client-wealth-llc-2026-05-18/",
-      "image": "https://www.marketbeat.com/logos/johnson--johnson-logo-1200x675.png?v=20260225125914",
-      "publishedAt": "2026-05-18T10:22:56+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [
-          "JNJ"
-        ],
-        "sector": "",
-        "sentiment": "positive"
-      },
-      "heat": 1,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 353226763,
-      "source": "MarketBeat",
-      "title": "TD Private Client Wealth LLC Acquires 17,944 Shares of Gilead Sciences, Inc. $GILD",
-      "summary": "TD Private Client Wealth LLC increased its stake in Gilead Sciences by 27.5% in the fourth quarter, purchasing an additional 17,944 shares, bringing its total holdings to 83,200 shares valued at approximately $10.2 million. The biopharmaceutical company recently reported strong first-quarter results with EPS of $2.03 and revenue of $6.96 billion, exceeding analyst expectations. Analysts maintain a \"Moderate Buy\" consensus rating for Gilead Sciences, with an average price target of $157.04.",
-      "content": "TD Private Client Wealth LLC increased its stake in Gilead Sciences by 27.5% in the fourth quarter, purchasing an additional 17,944 shares, bringing its total holdings to 83,200 shares valued at approximately $10.2 million. The biopharmaceutical company recently reported strong first-quarter results with EPS of $2.03 and revenue of $6.96 billion, exceeding analyst expectations. Analysts maintain a \"Moderate Buy\" consensus rating for Gilead Sciences, with an average price target of $157.04.",
-      "url": "https://www.marketbeat.com/instant-alerts/filing-td-private-client-wealth-llc-acquires-17944-shares-of-gilead-sciences-inc-gild-2026-05-18/",
-      "image": "https://www.marketbeat.com/logos/Gilead_Sciences_Pty_Ltd-1200x675.jpg",
-      "publishedAt": "2026-05-18T10:21:47+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [
-          "GILD"
-        ],
-        "sector": "Sa\u00fade",
-        "sentiment": "positive"
-      },
-      "heat": 1,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 862270349,
-      "source": "MarketBeat",
-      "title": "Integrated Investment Consultants LLC Takes $1.05 Million Position in Pinnacle West Capital Corporation $PNW",
-      "summary": "Integrated Investment Consultants LLC has initiated a new position in Pinnacle West Capital Corporation, purchasing 11,800 shares valued at approximately $1.05 million. This coincides with Pinnacle West Capital reporting better-than-expected quarterly earnings and announcing a quarterly dividend of $0.91 per share, implying an annualized yield of about 3.7%. Despite an executive stock sale and a mostly \"Hold\" outlook from analysts, institutional investors collectively own 91.51% of the company's stock.",
-      "content": "Integrated Investment Consultants LLC has initiated a new position in Pinnacle West Capital Corporation, purchasing 11,800 shares valued at approximately $1.05 million. This coincides with Pinnacle West Capital reporting better-than-expected quarterly earnings and announcing a quarterly dividend of $0.91 per share, implying an annualized yield of about 3.7%. Despite an executive stock sale and a mostly \"Hold\" outlook from analysts, institutional investors collectively own 91.51% of the company's stock.",
-      "url": "https://www.marketbeat.com/instant-alerts/filing-integrated-investment-consultants-llc-takes-105-million-position-in-pinnacle-west-capital-corporation-pnw-2026-05-18/",
-      "image": "https://www.marketbeat.com/logos/pinnacle-west-capital-co-logo-1200x675.png?v=20221109155301",
-      "publishedAt": "2026-05-18T10:21:25+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [
-          "PNW"
-        ],
-        "sector": "",
-        "sentiment": "positive"
-      },
-      "heat": 1,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 574286752,
-      "source": "24/7 Wall St.",
-      "title": "Prediction: Procter & Gamble Will Trade At This Price in 2027",
-      "summary": "24/7 Wall St. predicts Procter & Gamble (NYSE: PG) will trade at $163.50 in 2026, representing a nearly 15% upside from its current price, with a \"buy\" recommendation and 90% confidence. This projection is based on PG's consistent earnings beats, robust growth across segments despite tariff headwinds, and a strategic plan to deliver significant cost savings and role reductions. The company is viewed as a defensive cash machine with a strong dividend history, making it attractive for investors seeking stability.",
-      "content": "24/7 Wall St. predicts Procter & Gamble (NYSE: PG) will trade at $163.50 in 2026, representing a nearly 15% upside from its current price, with a \"buy\" recommendation and 90% confidence. This projection is based on PG's consistent earnings beats, robust growth across segments despite tariff headwinds, and a strategic plan to deliver significant cost savings and role reductions. The company is viewed as a defensive cash machine with a strong dividend history, making it attractive for investors seeking stability.",
-      "url": "https://247wallst.com/investing/2026/05/18/prediction-procter-gamble-will-trade-at-this-price-in-2027/",
-      "image": "https://247wallst.com/wp-content/uploads/2017/04/procter-gamble-logo.jpg",
-      "publishedAt": "2026-05-18T10:21:23+00:00",
-      "category": "Energia",
-      "icon": "\u26a1",
-      "impact": {
-        "tickers": [
-          "PG",
-          "CL",
-          "NVDA",
-          "PEP",
-          "AAPL"
-        ],
-        "sector": "Tecnologia",
-        "sentiment": "neutral"
-      },
-      "heat": 3,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 741968724,
-      "source": "Nasdaq",
-      "title": "Indian Shares Recoup Early Losses As IT Stocks Surge",
-      "summary": "(RTTNews) - Indian shares ended little changed on Monday, after having suffered heavy losses earlier in the session on rising Middle East tensions and economic concerns.",
-      "content": "(RTTNews) - Indian shares ended little changed on Monday, after having suffered heavy losses earlier in the session on rising Middle East tensions and economic concerns.",
-      "url": "https://www.nasdaq.com/articles/indian-shares-recoup-early-losses-it-stocks-surge",
-      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
-      "publishedAt": "2026-05-18T10:21:10+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [
-          "XOM",
-          "CVX",
-          "LMT",
-          "RTX"
-        ],
-        "sector": "Geopol\u00edtica",
-        "sentiment": "neutral"
-      },
-      "heat": 3,
-      "feed": "rss"
-    },
-    {
-      "id": 382631790,
-      "source": "Yahoo Finance",
-      "title": "Venture Global (VG) Delivers Strong Q1 Results, Raises 2026 Guidance",
-      "summary": "",
-      "content": "",
-      "url": "https://finance.yahoo.com/sectors/energy/articles/venture-global-vg-delivers-strong-102107644.html",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-18T10:21:07+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 799397940,
-      "source": "Yahoo Finance",
-      "title": "Viper Energy (VNOM) Beats Expectations in Q1, Raises 2026 Output Guidance",
-      "summary": "",
-      "content": "",
-      "url": "https://finance.yahoo.com/sectors/energy/articles/viper-energy-vnom-beats-expectations-102048307.html",
-      "image": "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80",
-      "publishedAt": "2026-05-18T10:20:48+00:00",
-      "category": "Energia",
-      "icon": "\u26a1",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 187791455,
-      "source": "Yahoo Finance",
-      "title": "Liberty Energy (LBRT) \u2013 Among the 10 Energy Stocks that Crushed Earnings Estimates in the First Quarter",
-      "summary": "",
-      "content": "",
-      "url": "https://finance.yahoo.com/sectors/energy/articles/liberty-energy-lbrt-among-10-102026327.html",
-      "image": "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80",
-      "publishedAt": "2026-05-18T10:20:26+00:00",
-      "category": "Energia",
-      "icon": "\u26a1",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 451180844,
-      "source": "Yahoo Finance",
-      "title": "Is Phillips 66 (PSX) Among the Energy Stocks that Crushed Earnings Estimates in the First Quarter?",
-      "summary": "",
-      "content": "",
-      "url": "https://finance.yahoo.com/sectors/energy/articles/phillips-66-psx-among-energy-102013450.html",
-      "image": "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80",
-      "publishedAt": "2026-05-18T10:20:13+00:00",
-      "category": "Energia",
-      "icon": "\u26a1",
+      "title": "Meta layoffs starting this week stress harsh AI reality inside Zuckerberg\u2019s company",
+      "summary": "Meta is starting layoffs this week, with 8,000 jobs expected to be cut, as employees brace for a new era of AI.",
+      "content": "Meta is starting layoffs this week, with 8,000 jobs expected to be cut, as employees brace for a new era of AI.",
+      "url": "https://www.cnbc.com/2026/05/18/metas-layoffs-starting-this-week-underscore-zuckerbergs-ai-reality-.html",
+      "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
+      "publishedAt": "2026-05-18T16:33:26+00:00",
+      "category": "Tecnologia",
+      "icon": "\ud83d\udcbb",
       "impact": {
         "tickers": [],
         "sector": "",
