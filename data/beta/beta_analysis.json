@@ -1,11 +1,31 @@
 {
-  "timestamp": "2026-05-16T14:21:46.942035+00:00",
-  "mode": "phase0_readonly",
+  "timestamp": "2026-05-18T00:01:29.988031+00:00",
+  "mode": "phase1_auto",
   "strategy_version": "v0.1.0",
-  "note": "Fase 0 — apenas leitura e sugestão. Nenhuma ordem foi submetida.",
+  "note": "Fase 1 — execução automática activa. LIVE_TRADING=False (conta demo).",
   "regime": "bull_lateral",
   "regime_alert": false,
+  "regime_details": {
+    "spy_price": 739.17,
+    "ema200": 675.36,
+    "ema50": 703.18,
+    "ema50_above_ema200": true,
+    "spy_pct_from_ema200": 9.45,
+    "atr_current": 7.5605,
+    "atr_ratio_vs_60d_mean": 0.8475,
+    "spy_return_20d": 0.043,
+    "rsp_spy_ratio_chg_20d": -0.0517,
+    "breadth_healthy": false
+  },
   "watchlist_top5": [
+    {
+      "ticker": "APP",
+      "sector": "XLK",
+      "score": 0.7841,
+      "mom_1m": 0.0,
+      "mom_3m": 0.0,
+      "liq_usd_avg": 0.0
+    },
     {
       "ticker": "MU",
       "sector": "XLK",
@@ -18,6 +38,14 @@
       "target_median": 550.0,
       "target_high": 1000.0,
       "target_low": 249.0
+    },
+    {
+      "ticker": "PLTR",
+      "sector": "XLK",
+      "score": 0.772,
+      "mom_1m": 0.0,
+      "mom_3m": 0.0,
+      "liq_usd_avg": 0.0
     },
     {
       "ticker": "INTC",
@@ -33,97 +61,39 @@
       "target_low": 20.4
     },
     {
-      "ticker": "AMD",
+      "ticker": "ARM",
       "sector": "XLK",
-      "price": 430.14,
-      "mom_1m": 0.5451,
-      "mom_3m": 1.1494,
-      "liq_usd_avg": 10560506951.0,
-      "score": 0.7335,
-      "target_mean": 457.83334,
-      "target_median": 474.0,
-      "target_high": 625.0,
-      "target_low": 225.0
-    },
-    {
-      "ticker": "DDOG",
-      "sector": "XLK",
-      "price": 208.06,
-      "mom_1m": 0.6433,
-      "mom_3m": 0.7085,
-      "liq_usd_avg": 745939064.0,
-      "score": 0.6377,
-      "target_mean": 221.63643,
-      "target_median": 225.0,
-      "target_high": 320.0,
-      "target_low": 128.85
-    },
-    {
-      "ticker": "MRVL",
-      "sector": "XLK",
-      "price": 179.0,
-      "mom_1m": 0.2814,
-      "mom_3m": 1.2644,
-      "liq_usd_avg": 2916197025.0,
-      "score": 0.5831,
-      "target_mean": 137.05295,
-      "target_median": 130.0,
-      "target_high": 210.0,
-      "target_low": 85.0
+      "score": 0.751,
+      "mom_1m": 0.0,
+      "mom_3m": 0.0,
+      "liq_usd_avg": 0.0
     }
   ],
-  "n_positions": 3,
+  "barrier_exits": [],
+  "buy_opportunities": [],
+  "near_misses": [],
+  "n_positions": 1,
   "open_trades": 0,
   "risk_status": {
     "ok": false,
-    "total_equity_eur": 10904.26,
+    "total_equity_eur": 114.99,
     "warnings": [
-      "VST representa 38.4% da carteira (limite: 20.0%)",
-      "ASML representa 27.5% da carteira (limite: 20.0%)",
-      "VRT representa 34.0% da carteira (limite: 20.0%)"
+      "GOOGL_US_EQ representa 100.0% da carteira (limite: 20.0%)"
     ]
   },
   "signals": [
     {
-      "ticker": "VST",
-      "action": "caution",
-      "size_factor": 0.6,
-      "signals": [
-        "RSI-14 neutro (35.1)",
-        "Tendência descendente: EMA-50 < EMA-200 — cautela"
-      ],
-      "technicals": {
-        "rsi_14": 35.11,
-        "ema50_above_ema200": false,
-        "volume_ratio_vs_avg": 1.34
-      }
-    },
-    {
-      "ticker": "ASML",
+      "ticker": "GOOGL_US_EQ",
       "action": "hold",
       "size_factor": 0.6,
       "signals": [
-        "RSI-14 neutro (52.4)",
+        "RSI-14 elevado (70.2) — monitorizar pressão de venda",
         "Tendência ascendente: EMA-50 > EMA-200"
       ],
       "technicals": {
-        "rsi_14": 52.44,
+        "rsi_14": 70.24,
         "ema50_above_ema200": true,
-        "volume_ratio_vs_avg": 1.07
-      }
-    },
-    {
-      "ticker": "VRT",
-      "action": "hold",
-      "size_factor": 0.6,
-      "signals": [
-        "RSI-14 elevado (68.9) — monitorizar pressão de venda",
-        "Tendência ascendente: EMA-50 > EMA-200"
-      ],
-      "technicals": {
-        "rsi_14": 68.87,
-        "ema50_above_ema200": true,
-        "volume_ratio_vs_avg": 0.84
+        "volume_ratio_vs_avg": 0.73
       }
     }
   ],
@@ -131,5 +101,16 @@
     "prices": "finnhub+yfinance",
     "t212_sync": null,
     "stale_prices": []
-  }
+  },
+  "cro": {
+    "risk_factor": 0.625,
+    "win_rate_7d": 0.5,
+    "drawdown_pct": 0.0,
+    "insights": [
+      "Win rate 7d em 50.0% — acima do alvo elástico (48.0%). Factor de risco positivo: 62%.",
+      "Sem trades fechados — sem lições disponíveis ainda.",
+      "Tamanho máximo CRO: 12.5% da equity (base 20.0% × factor 62%)."
+    ]
+  },
+  "executed_trades": []
 }
