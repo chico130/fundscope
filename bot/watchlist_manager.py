@@ -13,6 +13,7 @@ logger = logging.getLogger(__name__)
 
 WATCHLIST_PATH      = DATA_BETA_DIR / "watchlist.json"
 FUNDAMENTALS_PATH   = DATA_BETA_DIR / "watchlist_fundamentals.json"
+USER_UNIVERSE_PATH  = DATA_BETA_DIR / "user_universe.json"
 
 SECTOR_TICKERS: dict[str, list[str]] = {
     "XLK": [  # Technology — Value blue-chips + Momentum race horses
@@ -68,6 +69,15 @@ _TICKER_TO_SECTOR = {
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
+
+def _load_user_universe() -> list[str]:
+    """Tickers guardados pelo utilizador via interface web (serve.py /api/save-watchlist)."""
+    try:
+        data = json.loads(USER_UNIVERSE_PATH.read_text(encoding="utf-8"))
+        return [str(t).upper().strip() for t in data.get("tickers", []) if str(t).strip()]
+    except Exception:
+        return []
+
 
 def _is_stale() -> bool:
     if not WATCHLIST_PATH.exists():
@@ -340,6 +350,10 @@ def build_watchlist() -> list[dict]:
 
     logger.info("Rebuilding watchlist scores with fresh price data...")
     all_tickers = [t for tickers in SECTOR_TICKERS.values() for t in tickers]
+    user_extra = [t for t in _load_user_universe() if t not in set(all_tickers)]
+    if user_extra:
+        logger.info("Merging %d user-defined tickers into scan universe", len(user_extra))
+        all_tickers = all_tickers + user_extra
 
     closes, volumes = _fetch_price_volume(all_tickers)
     eligible = filter_quality(closes, volumes)

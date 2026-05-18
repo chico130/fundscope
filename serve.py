@@ -12,20 +12,144 @@ import sys
 import os
 import json
 import urllib.parse
+import secrets
+import hashlib
+import time as _time
+from datetime import datetime, timezone
 
 PORT = int(sys.argv[1]) if len(sys.argv) > 1 else 8080
 
 # Mudar para a pasta do projecto (onde este ficheiro está)
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
+# ---------------------------------------------------------------------------
+# Auth — sessões em memória, credenciais em data/user_credentials.json
+# ---------------------------------------------------------------------------
+_SESSIONS: dict = {}          # {token: expiry_unix_timestamp}
+SESSION_TTL = 7 * 24 * 3600  # 7 dias
+CREDENTIALS_PATH   = 'data/user_credentials.json'
+USER_UNIVERSE_PATH = 'data/beta/user_universe.json'
+
+
+def _verify_credentials(username: str, password: str) -> bool:
+    try:
+        with open(CREDENTIALS_PATH, encoding='utf-8') as f:
+            creds = json.load(f)
+        stored = creds.get(username)
+        if not stored:
+            return False
+        pw_hash = hashlib.sha256(password.encode('utf-8')).hexdigest()
+        return secrets.compare_digest(stored, pw_hash)
+    except Exception:
+        return False
+
+
+def _new_token() -> str:
+    token = secrets.token_hex(32)
+    _SESSIONS[token] = _time.time() + SESSION_TTL
+    now = _time.time()
+    for k in [k for k, v in _SESSIONS.items() if v < now]:
+        del _SESSIONS[k]
+    return token
+
+
+def _valid_token(token: str) -> bool:
+    if not token:
+        return False
+    exp = _SESSIONS.get(token)
+    if exp is None:
+        return False
+    if _time.time() > exp:
+        del _SESSIONS[token]
+        return False
+    return True
+
 
 class Handler(http.server.SimpleHTTPRequestHandler):
+    def do_OPTIONS(self):
+        self.send_response(204)
+        self.send_header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+        self.send_header('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+        self.end_headers()
+
     def do_GET(self):
         parsed = urllib.parse.urlparse(self.path)
         if parsed.path == '/api/stock-review':
             self._handle_stock_review(parsed.query)
         else:
             super().do_GET()
+
+    def do_POST(self):
+        parsed = urllib.parse.urlparse(self.path)
+        if parsed.path == '/api/login':
+            self._handle_login()
+        elif parsed.path == '/api/save-watchlist':
+            self._handle_save_watchlist()
+        else:
+            self.send_error(404)
+
+    def _read_body(self) -> dict:
+        length = int(self.headers.get('Content-Length', 0))
+        if length > 65536:
+            raise ValueError('body demasiado grande')
+        raw = self.rfile.read(length) if length > 0 else b'{}'
+        return json.loads(raw.decode('utf-8'))
+
+    def _get_bearer_token(self) -> str:
+        auth = self.headers.get('Authorization', '')
+        if auth.startswith('Bearer '):
+            return auth[7:].strip()
+        return ''
+
+    def _handle_login(self):
+        try:
+            body = self._read_body()
+        except Exception:
+            self._send_json({'error': 'JSON inválido'}, 400)
+            return
+        username = str(body.get('username', '')).strip()[:64]
+        password = str(body.get('password', ''))[:256]
+        if not username or not password:
+            self._send_json({'error': 'username e password obrigatórios'}, 400)
+            return
+        if not _verify_credentials(username, password):
+            self._send_json({'error': 'Credenciais inválidas'}, 401)
+            return
+        token = _new_token()
+        self._send_json({'token': token, 'username': username})
+
+    def _handle_save_watchlist(self):
+        token = self._get_bearer_token()
+        if not _valid_token(token):
+            self._send_json({'error': 'Não autenticado — sessão inválida ou expirada'}, 401)
+            return
+        try:
+            body = self._read_body()
+        except Exception:
+            self._send_json({'error': 'JSON inválido'}, 400)
+            return
+        tickers_raw = body.get('tickers', [])
+        if not isinstance(tickers_raw, list):
+            self._send_json({'error': 'tickers deve ser um array'}, 400)
+            return
+        tickers, seen = [], set()
+        for t in tickers_raw[:200]:
+            clean = ''.join(c for c in str(t).upper().strip()[:12] if c.isalnum() or c == '-')
+            if clean and clean not in seen:
+                seen.add(clean)
+                tickers.append(clean)
+        payload = {
+            'last_updated': datetime.now(timezone.utc).isoformat(),
+            'count': len(tickers),
+            'tickers': tickers,
+        }
+        try:
+            os.makedirs('data/beta', exist_ok=True)
+            with open(USER_UNIVERSE_PATH, 'w', encoding='utf-8') as f:
+                json.dump(payload, f, indent=2)
+            self._send_json({'ok': True, 'count': len(tickers)})
+        except Exception as e:
+            self._send_json({'error': str(e)}, 500)
 
     def _handle_stock_review(self, query_string):
         params = urllib.parse.parse_qs(query_string)
@@ -60,8 +184,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         super().end_headers()
 
     def log_message(self, fmt, *args):
-        path = args[0] if args else ""
-        if any(ext in str(path) for ext in (".html", ".json", "/api/")):
+        path = str(args[0]) if args else ""
+        if any(x in path for x in (".html", ".json", "/api/")):
             super().log_message(fmt, *args)
 
 
