@@ -15,10 +15,66 @@ Parâmetros aprendíveis (Fase 3):
 """
 from __future__ import annotations
 
+import json
 from dataclasses import dataclass, field
+from datetime import date, timedelta
+from pathlib import Path
 from typing import Literal
 
 from .config import RISK_CONFIG, STRATEGY_VERSION
+from .logger import log_decision
+
+_EARNINGS_PATH = Path(__file__).parent.parent / "data" / "beta" / "earnings_ai.json"
+
+# Module-level cache — loaded once per process.
+_earnings_calendar: dict | None = None
+
+
+def _load_earnings_calendar() -> dict:
+    global _earnings_calendar
+    if _earnings_calendar is not None:
+        return _earnings_calendar
+    try:
+        with open(_EARNINGS_PATH, "r", encoding="utf-8") as f:
+            _earnings_calendar = json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        _earnings_calendar = {}
+    return _earnings_calendar
+
+
+def _business_days_until(date_str: str) -> int | None:
+    """Business days (Mon–Fri) from today to date_str. None if unparseable or past."""
+    try:
+        target = date.fromisoformat(date_str[:10])
+        today  = date.today()
+        if target < today:
+            return None
+        count = 0
+        d = today
+        while d < target:
+            d += timedelta(days=1)
+            if d.weekday() < 5:
+                count += 1
+        return count
+    except (ValueError, TypeError):
+        return None
+
+
+def _earnings_days_ahead(ticker: str) -> int | None:
+    """Business days until the next earnings for ticker, or None if unknown.
+
+    Supports earnings_ai.json values of: null, "YYYY-MM-DD", or {"data": "YYYY-MM-DD"}.
+    """
+    entry = _load_earnings_calendar().get(ticker)
+    if entry is None:
+        return None
+    if isinstance(entry, str):
+        date_str = entry
+    elif isinstance(entry, dict):
+        date_str = entry.get("data") or entry.get("date")
+    else:
+        return None
+    return _business_days_until(date_str) if date_str else None
 
 # ---------------------------------------------------------------------------
 # Injecção defensiva de parâmetros optimizados
@@ -126,6 +182,7 @@ def generate_signals(
         vol_ratio         = t.get("volume_ratio_vs_avg") or 1.0
         atr               = t.get("atr_14")
         last_price        = t.get("last_price") or data.get("last_price")
+        rs_bullish        = t.get("rs_bullish")
 
         if rsi is None or ema50_above is None:
             continue
@@ -137,6 +194,7 @@ def generate_signals(
             "price_above_ema20":   price_above_ema20,
             "volume_ratio_vs_avg": vol_ratio,
             "atr_14":              atr,
+            "rs_bullish":          rs_bullish,
         }
 
         # ── Saídas / reduções em posições detidas ───────────────────────
@@ -198,6 +256,7 @@ def generate_signals(
                 ticker, rsi, ema50_above, vol_ratio, atr=atr,
                 ema20_above_ema50=ema20_above_ema50,
                 price_above_ema20=price_above_ema20,
+                rs_bullish=rs_bullish,
             )
             if sig:
                 signals.append(sig)
@@ -213,6 +272,7 @@ def _entry_signal(
     atr:               float | None = None,
     ema20_above_ema50: bool | None = None,
     price_above_ema20: bool | None = None,
+    rs_bullish:        bool | None = None,
 ) -> Signal | None:
     """Avalia regras A, B (VALUE) e M (MOMENTUM) com parâmetros do Learner."""
     reasons: list[str] = []
@@ -247,6 +307,23 @@ def _entry_signal(
         and price_above_ema20           # price  > EMA-20  (breakout imediato)
         and vol_ratio >= _PC.get("momentum_vol_min", 1.5)
     ):
+        # Gate 1 — Força Relativa vs SPY (obrigatório para MOMENTUM)
+        if rs_bullish is not True:
+            log_decision(
+                "clyde_momentum_blocked", "relative_weakness_vs_spy",
+                {"ticker": ticker, "rs_bullish": rs_bullish},
+            )
+            return None
+
+        # Gate 2 — Radar de Earnings: bloqueia se resultados nos próximos 3 dias úteis
+        _days_to_earn = _earnings_days_ahead(ticker)
+        if _days_to_earn is not None and _days_to_earn <= 3:
+            log_decision(
+                "clyde_momentum_blocked", "earnings_imminent",
+                {"ticker": ticker, "days_to_earnings": _days_to_earn},
+            )
+            return None
+
         style   = "MOMENTUM"
         m_floor = _PC.get("momentum_rsi_floor", 58)
         m_vol   = _PC.get("momentum_vol_min", 1.5)
@@ -272,6 +349,7 @@ def _entry_signal(
             "price_above_ema20":   price_above_ema20,
             "volume_ratio_vs_avg": vol_ratio,
             "atr_14":              atr,
+            "rs_bullish":          rs_bullish,
         },
     )
 

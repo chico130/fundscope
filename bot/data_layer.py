@@ -15,6 +15,49 @@ from . import api_client, position_ledger
 from .config import DATA_BETA_DIR, RISK_CONFIG
 from .logger import log_decision
 
+# SPY closes cached for the process lifetime (one fetch per cycle).
+_SPY_CLOSES: list[float] | None = None
+
+
+def _get_spy_closes(days: int = 230) -> list[float] | None:
+    """Fetch SPY historical closes, cached for the process lifetime.
+
+    Returns None silently when SPY data is unavailable (network error, etc.).
+    """
+    global _SPY_CLOSES
+    if _SPY_CLOSES is not None:
+        return _SPY_CLOSES
+    try:
+        history = api_client.get_historical_data("SPY", days=days)
+        if len(history) < 21:
+            return None
+        _SPY_CLOSES = [bar["close"] for bar in history]
+        return _SPY_CLOSES
+    except Exception:
+        return None
+
+
+def _compute_rs_bullish(closes: list[float], spy_closes: list[float]) -> bool | None:
+    """True if the stock's RS ratio (Close/SPY) is above its own EMA-20.
+
+    Aligns both series by their most recent N bars to handle length mismatches.
+    Returns None when there are insufficient bars to compute the EMA-20.
+    """
+    n = min(len(closes), len(spy_closes))
+    if n < 21:
+        return None
+    rs = [
+        closes[-n + i] / spy_closes[-n + i]
+        for i in range(n)
+        if spy_closes[-n + i] != 0
+    ]
+    if len(rs) < 21:
+        return None
+    rs_ema20 = compute_ema(rs, 20)
+    if rs_ema20 is None:
+        return None
+    return rs[-1] > rs_ema20
+
 
 # ---------------------------------------------------------------------------
 # Portfolio state
@@ -98,6 +141,9 @@ def enrich_with_technicals(positions: list[dict], days: int = 60) -> list[dict]:
         avg_vol  = sum(volumes[-20:]) / 20 if len(volumes) >= 20 else None
         last_vol = volumes[-1] if volumes else None
 
+        spy_closes = _get_spy_closes(fetch_days)
+        rs_bullish = _compute_rs_bullish(closes, spy_closes) if spy_closes else None
+
         pos["technicals"] = {
             "rsi_14":              compute_rsi(closes),
             "ema_20":              ema20,
@@ -109,6 +155,7 @@ def enrich_with_technicals(positions: list[dict], days: int = 60) -> list[dict]:
             "volume_ratio_vs_avg": round(last_vol / avg_vol, 2) if (last_vol and avg_vol) else None,
             "atr_14":              compute_atr(highs, lows, closes),
             "last_price":          closes[-1] if closes else None,
+            "rs_bullish":          rs_bullish,
         }
 
     return positions
@@ -198,6 +245,9 @@ def fetch_candidate_market_data(tickers: list[str]) -> dict[str, dict]:
         avg_vol  = sum(volumes[-20:]) / 20 if len(volumes) >= 20 else None
         last_vol = volumes[-1] if volumes else None
 
+        spy_closes = _get_spy_closes(210)
+        rs_bullish = _compute_rs_bullish(closes, spy_closes) if spy_closes else None
+
         result[ticker] = {
             "technicals": {
                 "rsi_14":              compute_rsi(closes),
@@ -210,6 +260,7 @@ def fetch_candidate_market_data(tickers: list[str]) -> dict[str, dict]:
                 "volume_ratio_vs_avg": round(last_vol / avg_vol, 2) if (last_vol and avg_vol) else None,
                 "atr_14":              compute_atr(highs, lows, closes),
                 "last_price":          closes[-1] if closes else None,
+                "rs_bullish":          rs_bullish,
             },
             "last_price": closes[-1] if closes else None,
         }

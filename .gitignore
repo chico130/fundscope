@@ -30,3 +30,7 @@ logs/errors/
 backtest_run.log
 prompt-*.txt
 future-*.txt
+
+# Ferramentas externas — não são código do projecto
+.obsidian/
+graphify-out/

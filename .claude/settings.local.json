@@ -54,7 +54,9 @@
       "Bash([ -s \"$LOG\" ])",
       "Bash(rm -f backtest_run.log backtest_run_err.log)",
       "Bash(python -u -m bot.mass_backtest)",
-      "Bash(echo \"PID: $!\")"
+      "Bash(echo \"PID: $!\")",
+      "Bash(not exist *)",
+      "PowerShell(New-Item *)"
     ]
   }
 }

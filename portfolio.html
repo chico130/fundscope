@@ -740,12 +740,18 @@ function renderNearMisses(ana) {
       tech.volume_ratio_vs_avg != null ? `Vol ${n2(tech.volume_ratio_vs_avg, 1)}×` : null,
     ].filter(Boolean).map(c => `<span class="trade-chip">${c}</span>`).join('');
 
+    const engineBadge = m.rule === 'M'
+      ? `<span style="font-size:var(--text-xs);font-weight:600;padding:1px 6px;border-radius:var(--radius-full);background:var(--color-primary-highlight);color:var(--color-primary);border:1px solid var(--color-primary)">MOMENTUM</span>`
+      : m.rule
+        ? `<span style="font-size:var(--text-xs);font-weight:600;padding:1px 6px;border-radius:var(--radius-full);background:var(--color-success-bg);color:var(--color-success);border:1px solid var(--color-success)">VALUE</span>`
+        : '';
     return `<div class="nm-row">
       <div>
         <div style="display:flex;align-items:center;gap:var(--space-2);margin-bottom:3px">
           <span class="nm-ticker">${m.ticker}</span>
           ${m.sector ? `<span class="nm-sector">[${m.sector}]</span>` : ''}
           <span class="nm-rule">Regra ${m.rule}</span>
+          ${engineBadge}
           ${m.last_price ? `<span style="font-size:var(--text-xs);color:var(--color-text-muted)">$${n2(m.last_price)}</span>` : ''}
         </div>
         <div class="nm-reason">${m.blocking_reason}</div>
@@ -854,13 +860,18 @@ function renderTrades(trades) {
     const chips = [
       ctx.rsi_14 != null ? `RSI ${Number(ctx.rsi_14).toFixed(1)}` : null,
       ctx.ema50_above_ema200 === true ? 'EMA50 > EMA200' : ctx.ema50_above_ema200 === false ? 'EMA50 < EMA200' : null,
+      ctx.ema20_above_ema50  === true ? '▲ EMA Cascade' : ctx.ema20_above_ema50 === false ? '▼ EMA Break' : null,
       ctx.volume_ratio_vs_avg != null ? `Vol ${Number(ctx.volume_ratio_vs_avg).toFixed(1)}×` : null,
     ].filter(Boolean);
+    const styleTag = t.style === 'MOMENTUM'
+      ? `<span style="font-size:var(--text-xs);font-weight:600;padding:1px 6px;border-radius:var(--radius-full);background:var(--color-primary-highlight);color:var(--color-primary);border:1px solid var(--color-primary)">MOMENTUM</span>`
+      : `<span style="font-size:var(--text-xs);font-weight:600;padding:1px 6px;border-radius:var(--radius-full);background:var(--color-success-bg);color:var(--color-success);border:1px solid var(--color-success)">VALUE</span>`;
     const hasR = t.result_eur != null;
     return `<div class="trade-card">
       <div class="trade-head">
         <span class="trade-ticker">${t.ticker}</span>
         <span class="trade-side ${side.toLowerCase()}">${side}</span>
+        ${styleTag}
         <span style="font-size:var(--text-xs);color:var(--color-text-muted)">${n2(t.qty,0)} × ${eur(t.price)}</span>
         <span class="trade-time">${dt}</span>
       </div>

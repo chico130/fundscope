@@ -1,0 +1,27 @@
+🏄 Clyde (De 8.5 para 10/10): O Filtro da Força Relativa
+Para o Clyde ser um 10/10 no ataque, ele não pode apenas olhar para a Nvidia isolada. Ele tem de saber se a Nvidia está a subir mais rápido do que o mercado geral.
+
+O Truque: No data_layer.py, descarregamos o SPY (S&P 500) ou o QQQ (Nasdaq). Dividimos o preço da Nvidia pelo preço do SPY para criar um rácio de Força Relativa.
+
+O Impacto: O Clyde só dá sinal MOMENTUM se a ação estiver a esmagar o S&P 500. Se o mercado estiver a cair e a Nvidia estiver a andar de lado, o rácio sobe e o bot deteta uma força brutal oculta. É assim que os grandes analistas caçam líderes antes de elas explodirem.
+
+🛡️ Bonnie (De 7.0 para 10/10): O Termómetro Macro Gratuito
+Atualmente, a Bonnie é cega ao ambiente global. Para ser 10/10, ela precisa de um "painel de controlo" do pânico de Wall Street.
+
+O Truque: Pedimos à Bonnie para ler o VIX (Índice de Medo do Mercado) e o Percentual de Ações acima da EMA-50 no S&P 500 (calculado rapidamente em background na nossa watchlist alargada).
+
+O Impacto: Se o VIX disparar acima de 25 numa terça-feira, a Bonnie entra em modo "Pânico Geral" e bloqueia instantaneamente qualquer ordem de compra do Clyde, mesmo que o Clyde ache que a ação está linda. Ela passa a proteger o sistema contra pancadas macroeconómicas mundiais.
+
+💰 CRO (De 9.5 para 10/10): Equity Curve Feedback (Aceleração)
+O CRO já é quase perfeito, mas para ser 10/10 ele precisa de ser agressivo quando estamos a ganhar e ultra-defensivo quando estamos a perder.
+
+O Truque: O CRO passa a ler o histórico recente de trades fechados (logs/trades/*.json). Se os últimos 5 trades foram lucros consecutivos (uma Win Streak), o CRO aumenta temporariamente o max_position_pct de 15% para 22%. Se os últimos 3 trades foram prejuízos, ele asfixia o tamanho para 5%.
+
+O Impacto: O robô aproveita a matemática dos juros compostos ao máximo quando apanha a crista da onda do Bull Market, e encolhe-se antes de o mercado lhe conseguir roubar os lucros de volta.
+
+🧠 Learner (De 8.0 para 10/10): O Disjuntor Intraday
+O ponto fraco do Learner é estar preso ao ciclo de Sábado. Se o mercado colapsar na Quarta-feira, ele só reage no fim de semana.
+
+O Truque: Criamos uma função leve chamada check_emergency_breaker() na bot/phase0.py. Se o drawdown da carteira cair mais do que 5% num único dia útil, o script força a reescrita do JSON de parâmetros, mudando o estado do robô imediatamente para "Modo de Defesa Máxima", congelando novas compras até ao próximo sábado.
+
+O Impacto: Acabámos com o atraso adaptativo. O Learner ganha reflexos em tempo real para situações de crash.
