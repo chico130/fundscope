@@ -143,6 +143,23 @@
     .footer a:hover{color:var(--color-primary);}
     @media(max-width:768px){.grid-2{grid-template-columns:1fr;}.grid-3{grid-template-columns:1fr 1fr;}.stock-hero{flex-direction:column;}.stock-price-block{text-align:left;}.page{padding:var(--space-6) var(--space-4) var(--space-16);}.analyst-grid{grid-template-columns:1fr 1fr;}.news-grid{grid-template-columns:1fr;}}
     @media(max-width:480px){.grid-3{grid-template-columns:1fr;}.header{padding:var(--space-3) var(--space-4);}.analyst-grid{grid-template-columns:1fr 1fr;}}
+    .ai-card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-5);box-shadow:var(--shadow-sm);margin-bottom:var(--space-6);position:relative;overflow:hidden;}
+    .ai-card::before{content:'';position:absolute;inset:0 auto 0 0;width:3px;background:linear-gradient(180deg,var(--color-primary),var(--color-primary-hover));border-radius:var(--radius-xl) 0 0 var(--radius-xl);}
+    .ai-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--space-3);margin-bottom:var(--space-4);}
+    .ai-title-group{display:flex;align-items:center;gap:var(--space-2);}
+    .ai-label{font-size:var(--text-xs);font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--color-text-faint);}
+    .ai-beta{font-size:.65rem;font-weight:700;text-transform:uppercase;padding:2px 7px;border-radius:var(--radius-full);background:var(--color-primary-highlight);color:var(--color-primary);letter-spacing:.04em;}
+    .ai-score{display:inline-flex;align-items:center;gap:4px;font-size:var(--text-xs);font-weight:700;padding:var(--space-1) var(--space-3);border-radius:var(--radius-full);border:1px solid;}
+    .ai-score.high{background:var(--color-success-bg);color:var(--color-success);border-color:color-mix(in oklch,var(--color-success) 28%,transparent);}
+    .ai-score.mid{background:var(--color-warn-bg);color:var(--color-warn);border-color:color-mix(in oklch,var(--color-warn) 28%,transparent);}
+    .ai-score.low{background:var(--color-error-bg);color:var(--color-error);border-color:color-mix(in oklch,var(--color-error) 28%,transparent);}
+    .ai-insights{display:flex;flex-direction:column;gap:var(--space-2);margin-bottom:var(--space-4);}
+    .ai-line{font-size:var(--text-sm);color:var(--color-text-muted);line-height:1.65;padding-left:var(--space-3);border-left:2px solid var(--color-divider);}
+    .ai-metrics{display:flex;gap:var(--space-2);flex-wrap:wrap;margin-bottom:var(--space-3);}
+    .ai-chip{display:inline-flex;align-items:center;gap:3px;font-size:var(--text-xs);font-weight:600;padding:3px 10px;border-radius:var(--radius-full);background:var(--color-surface-offset);color:var(--color-text-muted);font-variant-numeric:tabular-nums;}
+    .ai-chip.pos{background:var(--color-success-bg);color:var(--color-success);}
+    .ai-chip.neg{background:var(--color-error-bg);color:var(--color-error);}
+    .ai-disclaimer{font-size:var(--text-xs);color:var(--color-text-faint);}
   </style>
 </head>
 <body>
@@ -585,6 +602,7 @@ function renderStock(s){
       </div>
     </div>
   </div>
+  <div id="aiAnalystSection"></div>
   <div id="analystSection"></div>
   <div id="newsSection"></div>`;
   document.getElementById('stockContent').style.display='block';
@@ -627,6 +645,7 @@ function renderStock(s){
     renderNews(articles, ticker);
   });
   workerProfile(ticker).then(profile => tryLoadClearbitLogo(ticker, profile, 'logoWrap'));
+  fetchAIReview(ticker);
 }
 
 function renderAnalysts(analystData, currentPrice){
@@ -682,6 +701,93 @@ function renderNews(articles, ticker){
       </div></a>`;
   }).join('');
   sec.innerHTML=`<div class="news-section"><div class="news-section-title">Not\u00edcias recentes &mdash; ${esc(ticker)}</div><div class="news-grid">${cards}</div></div>`;
+}
+
+function generateAIInsights(d) {
+  const lines = [];
+  const sc = d.score || 0;
+  const m1 = d.mom_1m || 0;
+  const m3 = d.mom_3m || 0;
+  const liq = d.liq_usd_avg || 0;
+  const rankStr = d.rank ? `#${d.rank} de ${d.total}` : '';
+
+  if (sc >= 0.80) {
+    lines.push(`<strong>Convicção elevada</strong> do modelo quantitativo${rankStr ? ` — posição ${rankStr} na watchlist` : ''} (score ${sc.toFixed(2)}). Candidato de alta prioridade no ciclo atual.`);
+  } else if (sc >= 0.70) {
+    lines.push(`Score <strong>${sc.toFixed(2)}</strong>${rankStr ? ` (posição ${rankStr})` : ''} indica convicção moderada-alta — ${esc(d.ticker)} encontra-se no núcleo da watchlist quantitativa.`);
+  } else {
+    lines.push(`Score <strong>${sc.toFixed(2)}</strong>${rankStr ? ` (posição ${rankStr})` : ''} — o modelo monitoriza o ticker mas sem prioridade máxima neste ciclo.`);
+  }
+
+  if (m1 === 0 && m3 === 0) {
+    lines.push(`Dados de momentum ainda não processados para este ciclo — análise de tendência disponível após o próximo update do robô.`);
+  } else {
+    const m1s = `${m1 >= 0 ? '+' : ''}${(m1 * 100).toFixed(0)}%`;
+    const m3s = `${m3 >= 0 ? '+' : ''}${(m3 * 100).toFixed(0)}%`;
+    if (m1 > 0.3 && m3 > 0.5) {
+      lines.push(`Momentum técnico <strong>forte e consistente</strong>: ${m1s} no último mês, ${m3s} nos últimos três — tendência de alta confirmada em múltiplos horizontes.`);
+    } else if (m1 > 0.1 || m3 > 0.2) {
+      lines.push(`Momentum positivo em construção (${m1s} / ${m3s}) — aceleração relativa detetada, aguardando confirmação de continuidade.`);
+    } else if (m1 < 0 && m3 < 0) {
+      lines.push(`Momentum negativo (${m1s} / ${m3s}) — score elevado pode sinalizar oportunidade de <strong>reversão à média</strong> identificada pelo modelo.`);
+    } else {
+      lines.push(`Momentum misto (${m1s} / ${m3s}) — ciclo de transição; o modelo aguarda maior direcionalidade para aumentar convicção.`);
+    }
+  }
+
+  let line3 = '';
+  if (liq >= 1e9) {
+    line3 = `Liquidez média de $${(liq / 1e9).toFixed(1)}B/dia garante execução eficiente sem impacto de mercado.`;
+  } else if (liq >= 1e6) {
+    line3 = `Liquidez moderada ($${(liq / 1e6).toFixed(0)}M/dia) — adequada para posições de dimensão normal.`;
+  } else {
+    line3 = `Liquidez reduzida neste ciclo — verificar impacto de mercado antes de qualquer posição de maior dimensão.`;
+  }
+  if (d.target_mean && d.price) {
+    const upside = ((d.target_mean - d.price) / d.price * 100);
+    line3 += ` Target médio de analistas: <strong>$${Number(d.target_mean).toFixed(1)}</strong> (${upside >= 0 ? '+' : ''}${upside.toFixed(0)}% vs preço de watchlist).`;
+  }
+  lines.push(line3);
+  return lines;
+}
+
+async function fetchAIReview(ticker) {
+  const sec = document.getElementById('aiAnalystSection');
+  if (!sec) return;
+  try {
+    const r = await fetchTimeout(`/api/stock-review?ticker=${encodeURIComponent(ticker)}`, 4000);
+    if (!r.ok) return;
+    const d = await r.json();
+    if (!d.found) return;
+
+    const sc = d.score || 0;
+    const scoreCls = sc >= 0.75 ? 'high' : sc >= 0.60 ? 'mid' : 'low';
+    const scoreLabel = `Score ${sc.toFixed(2)}`;
+    const lines = generateAIInsights(d);
+
+    const m1 = d.mom_1m || 0, m3 = d.mom_3m || 0, liq = d.liq_usd_avg || 0;
+    const chips = [];
+    if (m1 !== 0) chips.push(`<span class="ai-chip ${m1 >= 0 ? 'pos' : 'neg'}">Mom 1M ${m1 >= 0 ? '+' : ''}${(m1*100).toFixed(0)}%</span>`);
+    if (m3 !== 0) chips.push(`<span class="ai-chip ${m3 >= 0 ? 'pos' : 'neg'}">Mom 3M ${m3 >= 0 ? '+' : ''}${(m3*100).toFixed(0)}%</span>`);
+    if (liq >= 1e6) chips.push(`<span class="ai-chip">Liq ${liq >= 1e9 ? '$'+(liq/1e9).toFixed(1)+'B' : '$'+(liq/1e6).toFixed(0)+'M'}/dia</span>`);
+    if (d.rank) chips.push(`<span class="ai-chip">Rank ${d.rank}/${d.total}</span>`);
+
+    sec.innerHTML = `<div class="ai-card">
+      <div class="ai-header">
+        <div class="ai-title-group">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/><path d="M7 7h.01M11 7h6M7 11h.01M11 11h6"/></svg>
+          <span class="ai-label">FundScope AI Analyst</span>
+          <span class="ai-beta">Beta</span>
+        </div>
+        <span class="ai-score ${scoreCls}">${scoreLabel}</span>
+      </div>
+      <div class="ai-insights">${lines.map(l => `<div class="ai-line">${l}</div>`).join('')}</div>
+      ${chips.length ? `<div class="ai-metrics">${chips.join('')}</div>` : ''}
+      <div class="ai-disclaimer">Análise gerada automaticamente a partir do score do modelo quantitativo FundScope. Não constitui conselho de investimento.</div>
+    </div>`;
+  } catch (e) {
+    // Silently ignore if local server is not running (e.g. GitHub Pages)
+  }
 }
 
 function renderError(ticker,msg){
