@@ -1,0 +1,27 @@
+# graphifyignore — exclui ficheiros de terceiros e ruído do corpus
+# Sintaxe: padrões glob, um por linha
+
+# Obsidian plugin minificado (terceiros) — gera 139 nós falsos
+.obsidian/
+
+# Ficheiros de runtime e cache
+graphify-out/
+__pycache__/
+*.pyc
+*.pyo
+
+# Ficheiros de ambiente
+.env
+.env.*
+.git/
+
+# Dados pesados de backtest/modelos (já gitignored)
+data/backtest/
+data/models/
+
+# Logs efémeros
+logs/trades/
+logs/errors/
+
+# Ficheiros de lock de runtime
+*.lock
