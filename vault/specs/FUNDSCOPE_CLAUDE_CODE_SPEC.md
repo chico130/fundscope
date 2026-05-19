@@ -12,6 +12,9 @@ status: stable
 ultima_revisao: 2026-05-19
 ---
 # FundScope – Especificação Completa para Claude Code
+
+Retorno: [[MOC_FundScope]]
+
 **Versão:** 0.1 | **Data:** 2026-05-13 | **Autor:** chico130
 
 ---

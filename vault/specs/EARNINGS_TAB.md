@@ -13,6 +13,8 @@ ultima_revisao: 2026-05-19
 ---
 # Tab de Earnings — Especificação
 
+Retorno: [[MOC_Frontend]]
+
 ## Objetivo
 Criar uma nova página `earnings.html` no FundScope que mostre os earnings relevantes das próximas 2 semanas, com destaque para empresas na watchlist e no portfólio.
 

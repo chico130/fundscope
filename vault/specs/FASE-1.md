@@ -13,6 +13,8 @@ ultima_revisao: 2026-05-19
 ---
 # FundScope Bot — Relatório de Diagnóstico, Estratégia e Roadmap de Evolução
 
+Retorno: [[MOC_FundScope]]
+
 > **Destinatário:** Claude Code (configuração e desenvolvimento do bot)
 > **Fonte:** Análise do repositório `chico130/fundscope` + sessão de estratégia com o proprietário
 > **Data:** Maio 2026

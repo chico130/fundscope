@@ -13,6 +13,8 @@ ultima_revisao: 2026-05-19
 ---
 # FundScope — Documento de Especificação Técnica e Plano de Acção
 
+Retorno: [[MOC_Infraestrutura]]
+
 **Destinatário:** Claude 3.5 Sonnet (executor)
 **Autor:** Claude Opus 4.7 (planeador)
 **Data:** 2026-05-19
