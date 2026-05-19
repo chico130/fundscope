@@ -726,6 +726,7 @@ const appMain      = document.getElementById('appMain');
 const logoutBtn    = document.getElementById('logoutBtn');
 
 // ── Estado global — declarado antes do showApp() para evitar TDZ ─────────────
+const REFRESH_S  = 30;
 let activeTab    = 'live';
 let liveLoaded   = false;
 let clydeLoaded  = false;
@@ -813,7 +814,6 @@ logoutBtn.addEventListener('click', () => {
 });
 
 // ── Tabs + Polling ───────────────────────────────────────────────────────────
-const REFRESH_S = 30;
 
 function startPolling() {
   if (pollingTimer) return;
