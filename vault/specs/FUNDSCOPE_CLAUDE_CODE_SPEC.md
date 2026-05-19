@@ -21,8 +21,8 @@ ultima_revisao: 2026-05-19
 O FundScope é um site pessoal de monitorização de portfólio e trading, alojado em GitHub Pages.
 Está dividido em duas contas/camadas:
 
-- **ALFA** – Conta real ISA/Invest (Trading212 live), gerida manualmente.
-- **BETA** – Bot de trading automatizado, a correr em dinheiro virtual (Trading212 demo/CFD paper trading).
+- **ALFA** – Conta real ISA/Invest ([[atom-trading212|Trading212]] live), gerida manualmente.
+- **BETA** – Bot de trading automatizado, a correr em dinheiro virtual ([[atom-trading212|Trading212]] demo/CFD paper trading).
 
 O objectivo é ter as duas secções lado a lado na aba "Portfólio" do site, com comparação directa de desempenho.
 
@@ -121,7 +121,7 @@ fundscope/
 ## SECÇÃO BETA – Bot de trading (Demo / Paper Trading)
 
 ### Conceito
-- Ambiente de laboratório: dinheiro virtual, Trading212 demo/CFD paper.
+- Ambiente de laboratório: dinheiro virtual, [[atom-trading212|Trading212]] demo/CFD paper.
 - O bot opera autonomamente, mas com regras de risco rígidas.
 - Aprende com os erros via análise de logs e ajuste de parâmetros.
 - Toda a actividade é auditável e explicável (cada decisão tem motivo registado).
@@ -255,7 +255,7 @@ fundscope/
 | **Fase 2** | Análise de logs + ajuste de parâmetros + relatório de erros | Depois |
 | **Fase 3** | Modo real limitado (supervisão humana, plafond baixo) | Futuro |
 
-### Limites de Risco (config.py)
+### Limites de Risco ([[config|config.py]])
 
 ```python
 RISK_CONFIG = {
@@ -386,6 +386,6 @@ O site deve mostrar um cartão de comparação com:
 - Sem frameworks pesados no front-end (já usa Chart.js + CSS puro).
 - Todos os ficheiros JSON do Beta devem ser escritos pelo bot e lidos pelo front-end (comunicação assíncrona simples via ficheiros).
 - O bot corre no PC do utilizador (não numa cloud por agora).
-- A API da Trading212 tem rate limits — o bot deve respeitar pausas entre chamadas.
+- A API da [[atom-trading212|Trading212]] tem rate limits — o bot deve respeitar pausas entre chamadas.
 - **Demo first, always.** A flag `LIVE_TRADING = False` em `config.py` deve estar sempre desligada até testes extensivos em demo.
 

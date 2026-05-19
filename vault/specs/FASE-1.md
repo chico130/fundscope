@@ -32,9 +32,9 @@ O bot reside na pasta `/bot` e é composto pelos seguintes módulos:
 | `phase0.py` | Modo observação — lê dados, calcula técnicos, sugere ações, **não executa ordens** |
 | `strategy.py` | Geração de sinais (RSI, EMA, volume) e propostas de trade |
 | `learner.py` | Análise de trades fechados, deteção de padrões de erro, sugestões de parâmetros |
-| `execution.py` | Submissão de ordens à API da Trading212 |
+| `execution.py` | Submissão de ordens à API da [[atom-trading212|Trading212]] |
 | `data_layer.py` | Acesso a dados de portfolio e enriquecimento técnico |
-| `api_client.py` | Cliente HTTP para a API da Trading212 (demo e live) |
+| `api_client.py` | Cliente HTTP para a API da [[atom-trading212|Trading212]] (demo e live) |
 | `reporter.py` | Geração de relatórios periódicos |
 | `logger.py` | Logging de decisões e erros |
 | `config.py` | Configuração central: parâmetros de risco, API keys, paths |
@@ -56,7 +56,7 @@ O bot está atualmente em **Fase 0 (modo só-leitura)**. O ciclo de execução �
 
 **Nenhuma ordem é submetida nesta fase.** O bot apenas observa, analisa e sugere.
 
-### 1.3 Lógica de Sinais (strategy.py)
+### 1.3 Lógica de Sinais ([[strategy|strategy.py]])
 
 O bot usa dois tipos de sinais:
 
@@ -64,17 +64,17 @@ O bot usa dois tipos de sinais:
 
 | Regra | Condição | Tipo |
 |---|---|---|
-| A — Oversold em uptrend | RSI ≤ 35 + EMA-50 > EMA-200 + volume ≥ 1.2× | Entrada clássica |
-| B — Momentum surge | RSI 40–55 + EMA-50 > EMA-200 + volume ≥ 1.8× | Entrada por momentum |
+| A — Oversold em uptrend | RSI ≤ 35 + [[atom-ema50|EMA-50]] > [[atom-ema200|EMA-200]] + volume ≥ 1.2× | Entrada clássica |
+| B — Momentum surge | RSI 40–55 + [[atom-ema50|EMA-50]] > [[atom-ema200|EMA-200]] + volume ≥ 1.8× | Entrada por momentum |
 
 **Saídas (EXIT / REDUCE):**
 
 | Regra | Condição | Ação |
 |---|---|---|
 | C — Sobrecomprado | RSI ≥ 72 | EXIT — vender 100% |
-| D — Inversão de tendência | EMA-50 < EMA-200 em posição aberta | REDUCE — vender 50% |
+| D — Inversão de tendência | [[atom-ema50|EMA-50]] < [[atom-ema200|EMA-200]] em posição aberta | REDUCE — vender 50% |
 
-### 1.4 Gestão de Risco (config.py + strategy.py)
+### 1.4 Gestão de Risco ([[config|config.py]] + [[strategy|strategy.py]])
 
 Os parâmetros de risco atuais são:
 
@@ -91,13 +91,13 @@ Os parâmetros de risco atuais são:
 
 O modo `LIVE_TRADING = False` está hardcoded em `config.py`, garantindo que o bot nunca executa ordens reais sem alteração explícita.
 
-### 1.5 Módulo de Aprendizagem (learner.py)
+### 1.5 Módulo de Aprendizagem ([[learner|learner.py]])
 
 O `learner.py` analisa trades fechados dos últimos 7–30 dias e deteta 3 padrões de erro:
 
 1. **low_volume_entry** — entradas com volume < 1× a média que resultaram em perda
 2. **high_rsi_entry** — entradas com RSI > 65 que resultaram em perda
-3. **counter_trend_buy** — compras com EMA-50 < EMA-200 que resultaram em perda
+3. **counter_trend_buy** — compras com [[atom-ema50|EMA-50]] < [[atom-ema200|EMA-200]] que resultaram em perda
 
 Gera sugestões de ajuste de parâmetros (`suggest_parameter_adjustments`) com base em win rate, rácio ganho/perda e padrões detetados. **Nenhum ajuste é aplicado automaticamente** — todos requerem aprovação manual em `config.py`.
 
@@ -124,8 +124,8 @@ Gera sugestões de ajuste de parâmetros (`suggest_parameter_adjustments`) com b
 | Sem dados de setor/indústria por ativo | Médio — sem contexto setorial para filtrar | Média |
 | Sem score de candidatos para entrada | Médio — sem ranking de oportunidades | Média |
 | Sem integração de sentimento de notícias | Médio — sem contexto macro/micro por ativo | Média |
-| learner.py só deteta 3 padrões fixos | Baixo — padrões novos não são detetados | Baixa |
-| Sem métricas de qualidade do backtest (Sharpe, drawdown) | Baixo — performance avaliada só por P&L | Baixa |
+| [[learner|learner.py]] só deteta 3 padrões fixos | Baixo — padrões novos não são detetados | Baixa |
+| Sem métricas de qualidade do backtest (Sharpe, [[MOC_CRO|drawdown]]) | Baixo — performance avaliada só por P&L | Baixa |
 
 ---
 
@@ -143,11 +143,11 @@ O rácio sinal/ruído nos mercados de curto prazo (minutos a horas) é dominado 
 
 | Perfil de retorno | Vantagem | Risco principal |
 |---|---|---|
-| 0,5–1,5% frequente | Consistência, drawdown menor | Fees e slippage destroem edge; erro de execução multiplica-se |
+| 0,5–1,5% frequente | Consistência, [[MOC_CRO|drawdown]] menor | Fees e slippage destroem edge; erro de execução multiplica-se |
 | 1–3% moderado (alvo recomendado) | Frequência aceitável + edge sobrevive a custos | Requer edge estatística bem validada |
 | 5–10% raro | Edge robusta por operação | Drawdowns longos; dependência de catalisadores |
 
-**Conclusão:** O bot deve visar retornos de 1–3% por trade num horizonte de 5–10 dias. Os parâmetros atuais (stop 5%, take profit 10%) estão alinhados com este objetivo, mas o take profit pode ser reduzido para 7–8% para aumentar a taxa de concretização.
+**Conclusão:** O bot deve visar retornos de 1–3% por trade num horizonte de 5–10 dias. Os parâmetros atuais (stop 5%, [[MOC_Clyde|take profit]] 10%) estão alinhados com este objetivo, mas o [[MOC_Clyde|take profit]] pode ser reduzido para 7–8% para aumentar a taxa de concretização.
 
 ### 3.3 Long-Only em Fase 1, Short em Fase 2
 
@@ -162,9 +162,9 @@ O `strategy.py` atual já está corretamente configurado como long-only (`direct
 A mesma estratégia de entrada tem resultados muito diferentes em mercado em tendência vs. lateral vs. queda abrupta. O bot precisa de um módulo de regime que classifique o estado do mercado antes de gerar sinais de entrada.
 
 **Indicadores de regime sugeridos:**
-- % de ações do S&P 500 acima da EMA-200 (breadth)
-- Distância do SPY/QQQ à sua EMA-200
-- VIX ou ATR normalizado (volatilidade)
+- % de ações do S&P 500 acima da [[atom-ema200|EMA-200]] (breadth)
+- Distância do SPY/QQQ à sua [[atom-ema200|EMA-200]]
+- VIX ou [[atom-atr|ATR]] normalizado (volatilidade)
 - Retorno do índice nos últimos 20 dias
 
 **Estados de regime:**
@@ -207,8 +207,8 @@ Selecionar top 15–30 ações com maior score para a watchlist ativa.
 O `learner.py` atual usa apenas 3 padrões fixos baseados em regras. Para evoluir para um modelo estatístico mais robusto, as features recomendadas são:
 
 **Features técnicas (já parcialmente presentes):**
-- RSI-14, RSI-5 (curto prazo)
-- EMA-50, EMA-200, crossover booleano
+- [[atom-rsi14|RSI-14]], RSI-5 (curto prazo)
+- [[atom-ema50|EMA-50]], [[atom-ema200|EMA-200]], crossover booleano
 - Volume ratio vs. média 20 dias
 - ATR-14 (volatilidade realizada)
 - Retornos passados: 1d, 5d, 20d, 60d
@@ -216,7 +216,7 @@ O `learner.py` atual usa apenas 3 padrões fixos baseados em regras. Para evolui
 **Features de contexto de mercado (a adicionar):**
 - Regime atual (bull/bear/lateral — codificado como inteiro 0/1/2/3)
 - Performance do setor da ação vs. SPY (1M, 3M)
-- % de ações do setor acima da EMA-200
+- % de ações do setor acima da [[atom-ema200|EMA-200]]
 
 **Features de sentimento (fase posterior):**
 - Score de sentimento FinBERT agregado dos últimos 3 dias por ação
@@ -259,7 +259,7 @@ Para complementar o bot com contexto humano:
 
 ### Fase 0 — Observação (Estado Atual ✅)
 
-- Bot lê dados da T212 demo
+- Bot lê dados da [[atom-trading212|T212]] demo
 - Calcula RSI, EMA, volume para posições abertas
 - Gera sugestões sem executar ordens
 - Auto-commit para GitHub
@@ -327,7 +327,7 @@ Para complementar o bot com contexto humano:
    - Implementar walk-forward validation com janela de 6 meses treino + 1 mês teste
    - Modelo base: XGBoost com `n_estimators=200`, `max_depth=4`, `learning_rate=0.05`
    - Guardar modelo em `data/models/model_vX.pkl`
-   - Métricas obrigatórias: accuracy, precision, recall, Sharpe ratio simulado, max drawdown
+   - Métricas obrigatórias: accuracy, precision, recall, Sharpe ratio simulado, max [[MOC_CRO|drawdown]]
 
 3. **Integrar modelo em `strategy.py`**
    - Criar `_ml_entry_signal()` que usa o modelo treinado como filtro adicional sobre as regras existentes
@@ -371,13 +371,13 @@ RISK_CONFIG_LIVE_CONSERVATIVE = {
 
 | Risco | Descrição | Mitigação Atual | Mitigação Proposta |
 |---|---|---|---|
-| Overfitting | Bot memoriza o passado e falha em mercado real | learner.py não aplica mudanças sozinho | Walk-forward validation obrigatório |
-| Mudança de regime | Bull market → bear; estratégia deixa de funcionar | REDUCE em EMA cross | Módulo de regime explícito |
+| Overfitting | Bot memoriza o passado e falha em mercado real | [[learner|learner.py]] não aplica mudanças sozinho | Walk-forward validation obrigatório |
+| Mudança de regime | Bull market → [[MOC_CRO|bear]]; estratégia deixa de funcionar | REDUCE em EMA cross | Módulo de regime explícito |
 | Custos de transação | Fees e spread corroem edge de 0.5–1.5% | — | Visar retornos ≥ 1.5% por trade |
 | Look-ahead bias | Features calculadas com dados futuros no backtest | — | `shift(1)` obrigatório em feature_builder |
 | Slippage | Execução real pior que simulada | MARKET orders | Usar LIMIT orders com offset pequeno |
 | Earnings surprises | Resultados inesperados causam gaps bruscos | `no_trade_before_earnings_days: 2` | Verificação ativa de calendário de earnings |
-| API indisponível | T212 API em baixo → bot sem dados | Abort com log | Retry com backoff exponencial |
+| API indisponível | [[atom-trading212|T212]] API em baixo → bot sem dados | Abort com log | Retry com backoff exponencial |
 | Concentração excessiva | Muita exposição num setor | `max_sector_pct: 40%` | Adicionar filtro de correlação entre posições |
 | Short squeeze (Fase 3) | Posições short expostas a subidas explosivas | Long-only em Fase 1 | Stops muito apertados em short; posições pequenas |
 

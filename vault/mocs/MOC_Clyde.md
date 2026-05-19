@@ -12,9 +12,9 @@ status: stable
 ultima_revisao: 2026-05-19
 ---
 
-# MOC — Clyde (Motor de Execução)
+# MOC — [[MOC_Clyde|Clyde]] (Motor de Execução)
 
-> Clyde é o executor do FundScope: gera sinais técnicos e submete ordens à Trading212.
+> [[MOC_Clyde|Clyde]] é o executor do FundScope: gera sinais técnicos e submete ordens à Trading212.
 
 Hub: [[MOC_FundScope]] → este MOC → módulos de sinal e execução.
 
@@ -24,16 +24,16 @@ Hub: [[MOC_FundScope]] → este MOC → módulos de sinal e execução.
 
 | Ficheiro | Responsabilidade |
 |---|---|
-| [[strategy.py]] | Geração de sinais técnicos (RSI-14, EMA-50/200, volume ratio, RS) |
-| [[execution.py]] | Submissão de ordens BUY/SELL à API T212 |
-| [[api_client.py]] | Cliente HTTP para a T212 API (demo e live) |
+| [[strategy.py]] | Geração de sinais técnicos ([[atom-rsi14|RSI-14]], EMA-50/200, [[atom-volume-ratio|volume ratio]], RS) |
+| [[execution.py]] | Submissão de ordens BUY/SELL à API [[atom-trading212|T212]] |
+| [[api_client.py]] | Cliente HTTP para a [[atom-trading212|T212]] API (demo e live) |
 | [[exit_manager.py]] | Gestão de saídas — sistema de 3 barreiras |
 | [[price_feed.py]] | Feed de preços em tempo real |
 | [[feature_builder.py]] | Construção de features para modelos ML |
 
 ---
 
-## Sinais de Entrada (Regras do Clyde)
+## Sinais de Entrada (Regras do [[MOC_Clyde|Clyde]])
 
 ```
 Sinal A: RSI-14 < 40 (oversold) + EMA-50 > EMA-200 (tendência bull)
@@ -56,7 +56,7 @@ BUY só se A + B + C + D simultaneamente → [[MOC_Bonnie]] aprova → [[executi
 
 ---
 
-## Fluxo de Dados de Clyde
+## Fluxo de Dados de [[MOC_Clyde|Clyde]]
 
 ```
 [[price_feed.py]] → preços raw
@@ -92,7 +92,7 @@ BUY só se A + B + C + D simultaneamente → [[MOC_Bonnie]] aprova → [[executi
 
 ## Ligações Cruzadas
 
-- [[MOC_Bonnie]] — cada sinal de Clyde passa por Bonnie antes de ser executado
-- [[MOC_CRO]] — regime macro condiciona todos os sinais de Clyde
-- [[MOC_Infraestrutura]] — config.py define parâmetros RSI/EMA/ATR usados aqui
+- [[MOC_Bonnie]] — cada sinal de [[MOC_Clyde|Clyde]] passa por [[MOC_Bonnie|Bonnie]] antes de ser executado
+- [[MOC_CRO]] — [[MOC_CRO|regime macro]] condiciona todos os sinais de [[MOC_Clyde|Clyde]]
+- [[MOC_Infraestrutura]] — [[config|config.py]] define parâmetros RSI/EMA/ATR usados aqui
 - [[FASE-1]] — roadmap de evolução dos sinais (RS filter, VIX macro)

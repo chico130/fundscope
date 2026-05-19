@@ -13,7 +13,7 @@ ultima_revisao: 2026-05-19
 ---
 # Diário de Mutações do Learner
 
-Registo semanal das alterações de regime detectadas pelo módulo Learner (Bonnie).
+Registo semanal das alterações de regime detectadas pelo módulo Learner ([[MOC_Bonnie|Bonnie]]).
 
 ---
 

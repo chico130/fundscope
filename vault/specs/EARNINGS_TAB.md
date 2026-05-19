@@ -24,7 +24,7 @@ Cria uma nova página `earnings.html` no projeto FundScope com os seguintes requ
 
 ### Dados — `update_earnings.py` + `earnings.json`
 
-- Lista de empresas com earnings nos próximos 14 dias, gerada via yfinance (`ticker.calendar`)
+- Lista de empresas com earnings nos próximos 14 dias, gerada via [[atom-yfinance|yfinance]] (`ticker.calendar`)
 - Campos por empresa:
   - `ticker` — símbolo da empresa
   - `nome` — nome completo
@@ -55,7 +55,7 @@ Cria uma nova página `earnings.html` no projeto FundScope com os seguintes requ
 
 ### Regra Bonnie/Clyde
 
-- Se uma empresa tiver earnings em menos de 2 dias e o Clyde tiver posição aberta, a Bonnie deve registar um alerta no `bonnie_log.json` com tipo `"earnings_risk"`
+- Se uma empresa tiver earnings em menos de 2 dias e o [[MOC_Clyde|Clyde]] tiver posição aberta, a [[MOC_Bonnie|Bonnie]] deve registar um alerta no `bonnie_log.json` com tipo `"earnings_risk"`
 - Esta regra usa o parâmetro `no_trade_before_earnings_days: 2` já existente em `config.py`
 
 ---
@@ -71,7 +71,7 @@ ASML, SAP, UBER, SHOP, COIN, PLTR, SQ, PYPL, SNOW, NET
 
 ## Notas
 
-- yfinance `ticker.calendar` devolve o próximo earnings date e estimativas
+- [[atom-yfinance|yfinance]] `ticker.calendar` devolve o próximo earnings date e estimativas
 - Para surpresas históricas usar `ticker.earnings_history`
-- Fallback: se yfinance não tiver dados para um ticker, omitir silenciosamente
+- Fallback: se [[atom-yfinance|yfinance]] não tiver dados para um ticker, omitir silenciosamente
 - O `earnings.json` deve ter o campo `last_updated` com timestamp ISO 8601

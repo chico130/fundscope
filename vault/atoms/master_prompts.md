@@ -17,8 +17,8 @@ Nesta nota estão guardadas as instruções estruturais de elite para os upgrade
 
 ---
 
-## 🏎️ 1. Módulo do Clyde (Estratégia, RS Gate & Earnings)
-**Objetivo:** Elevar o Clyde a 10/10 com Força Relativa face ao SPY e bloqueio de Earnings.
+## 🏎️ 1. Módulo do [[MOC_Clyde|Clyde]] (Estratégia, RS Gate & Earnings)
+**Objetivo:** Elevar o [[MOC_Clyde|Clyde]] a 10/10 com Força Relativa face ao SPY e bloqueio de Earnings.
 
 ```text
 Claude, o nosso objetivo agora é elevar o motor estratégico (Clyde) a 10/10. Vamos dar-lhe contexto macro e noção de calendário. 
@@ -42,8 +42,8 @@ Revê o teu plano estrutural antes de escreveres o código e avisa-me quando os 
 
 ---
 
-## 🛡️ 2. Módulo da Bonnie (Smart Money Gate & Volume Profile)
-**Objetivo:** Elevar a Bonnie a 10/10 como auditora de confirmação institucional com filtro de volume.
+## 🛡️ 2. Módulo da [[MOC_Bonnie|Bonnie]] (Smart Money Gate & Volume Profile)
+**Objetivo:** Elevar a [[MOC_Bonnie|Bonnie]] a 10/10 como auditora de confirmação institucional com filtro de volume.
 
 ```text
 Claude, o Clyde já está no nível 10/10 com o filtro de Força Relativa e o Radar de Earnings. O nosso objetivo agora é elevar a Bonnie (bonnie.py) a 10/10. Ela é a nossa auditora de confirmação institucional.

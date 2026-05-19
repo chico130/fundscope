@@ -25,7 +25,7 @@ ultima_revisao: 2026-05-19
 ### Implicações práticas
 
 1. **Frontend = leitor.** Nunca chama APIs externas em runtime. Lê JSONs versionados no repo.
-2. **Servidor = produtor.** Agentes Python (orquestrados por GitHub Actions / cron local) fazem todo o trabalho sujo e publicam JSONs limpos via `git push`.
+2. **Servidor = produtor.** Agentes Python (orquestrados por [[MOC_Frontend|GitHub Actions]] / cron local) fazem todo o trabalho sujo e publicam JSONs limpos via `git push`.
 3. **LLM corre no servidor**, nunca no browser. Outputs são serializados como JSON estruturado.
 4. **Falha de um agente não parte o frontend.** Padrão `stale-while-revalidate`: mostrar último JSON válido com flag `stale: true`.
 
@@ -50,7 +50,7 @@ ultima_revisao: 2026-05-19
 
 | Categoria | Lib | Por quê |
 |---|---|---|
-| Dados de mercado | **yfinance** | Já provavelmente em uso; cobre earnings, dividendos, calendar |
+| Dados de mercado | **[[atom-yfinance|yfinance]]** | Já provavelmente em uso; cobre earnings, dividendos, calendar |
 | Macro económico | **FRED API** (gratuita, sem rate limit prático) | Yields, M2, liquidez, ISM — substitui scraping de atas |
 | SEC Filings | **API oficial `data.sec.gov`** + `sec-edgar-downloader` | É REST gratuita, só pede User-Agent. ZERO scraping necessário |
 | News/RSS | **feedparser** + **trafilatura** | Parsing RSS + extração limpa de artigos |
@@ -59,12 +59,12 @@ ultima_revisao: 2026-05-19
 | Embeddings | **sentence-transformers** (all-MiniLM-L6-v2) | Pré-computar no servidor, exportar JSON |
 | Vector search | **FAISS** local ou cosine similarity em numpy | Sem precisar de Pinecone/Weaviate |
 | Sumarização LLM | **Claude Haiku 4.5** para batches grandes; **Sonnet 4.6** para análises críticas | Caching agressivo via prompt cache |
-| Orquestração | **GitHub Actions cron** (job matrix) ou **APScheduler** local | Free tier de Actions chega para todos os agentes |
+| Orquestração | **[[MOC_Frontend|GitHub Actions]] cron** (job matrix) ou **APScheduler** local | Free tier de Actions chega para todos os agentes |
 
 ### O que rejeitamos (e porquê)
 
 - **React/Vue/Svelte** — quebra a regra "vanilla, ultra-rápido". Não adiciona valor proporcional ao custo.
-- **Servidor Node.js permanente** — quebra a regra "GitHub Pages estático". Backends só como **edge functions** (Cloudflare Workers) ou agentes offline.
+- **Servidor Node.js permanente** — quebra a regra "[[MOC_Frontend|GitHub Pages]] estático". Backends só como **edge functions** (Cloudflare Workers) ou agentes offline.
 - **Pinecone/Weaviate/vector DB pago** — FAISS local é suficiente para <100k vetores.
 - **APIs pagas de earnings calendar** (Estimize, Earnings Whispers) — `yfinance` + Nasdaq RSS chegam.
 
@@ -125,23 +125,23 @@ Parsing de JSONs >500KB, cosine similarity, DuckDB queries — sempre em Worker 
 #### Fase 1 — Sincronização & Login ✅ (Concluído — commit fe4838a)
 
 #### Fase 2 — Tabela Quantitativa
-- **Objetivo:** Tabela ordenável com sparklines (Momentum 30d, Volatilidade 30d, Bonnie Score, Fator de Risco CRO).
+- **Objetivo:** Tabela ordenável com sparklines (Momentum 30d, Volatilidade 30d, [[MOC_Bonnie|Bonnie]] Score, Fator de Risco [[MOC_CRO|CRO]]).
 - **Agente Python:** `agents/watchlist_enricher.py` — corre diariamente, lê `data/watchlist/raw.json`, enriquece com:
   - Sparkline arrays (preço normalizado, 30 pontos)
-  - Bonnie score histórico (lido de `logs/bonnie_decisions.jsonl`)
-  - Fator de risco CRO (lido de `data/beta/cro_insights.json`)
-  - Momentum, RSI-14, vol-30d
+  - [[MOC_Bonnie|Bonnie]] score histórico (lido de `logs/bonnie_decisions.jsonl`)
+  - Fator de risco [[MOC_CRO|CRO]] (lido de `data/beta/cro_insights.json`)
+  - Momentum, [[atom-rsi14|RSI-14]], vol-30d
 - **Output:** `data/watchlist/manifest.json` + `data/watchlist/tickers/<X>.json` (padrão Manifest).
 - **Frontend:** `watchlist.html` com tabela vanilla + uPlot para sparklines inline.
 - **Libs novas:** uPlot.
 - **Estimativa:** 1 sprint.
 
 #### Fase 3 — Agente "Headhunter"
-- **Objetivo:** Sugerir 5–10 tickers/semana com base em regime macro + estilo Bonnie.
+- **Objetivo:** Sugerir 5–10 tickers/semana com base em [[MOC_CRO|regime macro]] + estilo Bonnie.
 - **Estratégia recomendada (em vez de scraping do zero):**
   1. **finviz-finance** com presets de screening (gratuito, estável)
   2. Filtros macro-aware: se regime = `risk_off` → defensive/dividend; se `risk_on` → momentum/growth
-  3. Score híbrido: finviz score + alinhamento com regras Bonnie
+  3. Score híbrido: finviz score + alinhamento com regras [[MOC_Bonnie|Bonnie]]
   4. **Só usar Playwright** se finviz não cobrir caso específico (último recurso)
 - **Agente:** `agents/headhunter.py` — corre semanalmente, publica `data/watchlist/suggestions.json`.
 - **Frontend:** card "Sugestões da Semana" no topo do watchlist com botão "Adicionar".
@@ -160,7 +160,7 @@ Parsing de JSONs >500KB, cosine similarity, DuckDB queries — sempre em Worker 
 
 **Camada A (cobre ~80% das queries) — Facets sobre dados estruturados**
 - Frontend mantém índice de campos: `{ticker, sector, bonnie_score, cro_status, momentum, last_pe, ...}`
-- Queries como "tech aprovadas pela Bonnie" → filtros declarativos.
+- Queries como "tech aprovadas pela [[MOC_Bonnie|Bonnie]]" → filtros declarativos.
 - Lib: vanilla JS + DuckDB-WASM para queries SQL complexas (`SELECT * WHERE sector='Tech' AND bonnie_score > 0.7`).
 
 **Camada B (cobre ~15%) — Full-text fuzzy**
@@ -183,7 +183,7 @@ Parsing de JSONs >500KB, cosine similarity, DuckDB queries — sempre em Worker 
 
 **Caminho 1 — Pre-Baked FAQ (alta confiabilidade)**
 - Agente `agents/rag_baker.py` corre noturnamente:
-  - Pega numa lista de ~100 perguntas comuns ("Qual o melhor trade da Bonnie este mês?", "Quantas vezes o CRO acionou kill-switch?", "Que setores tiveram maior win-rate?")
+  - Pega numa lista de ~100 perguntas comuns ("Qual o melhor trade da [[MOC_Bonnie|Bonnie]] este mês?", "Quantas vezes o [[MOC_CRO|CRO]] acionou [[MOC_CRO|kill-switch]]?", "Que setores tiveram maior win-rate?")
   - Para cada uma, faz RAG sobre `data/beta/beta_trades.json`, `cro_insights.json`, `logs/bonnie_decisions.jsonl` usando Claude Sonnet 4.6
   - Publica `data/rag/faq.json` com pares pergunta+resposta+fontes
 - Frontend faz fuzzy match (MiniSearch) sobre as perguntas e mostra resposta + links às fontes.
@@ -207,7 +207,7 @@ Parsing de JSONs >500KB, cosine similarity, DuckDB queries — sempre em Worker 
 - **Objetivo:** Visão one-glance do mercado.
 - **Métricas:** SPY/QQQ/IWM YTD + 1D, VIX, DXY, US10Y, Market Breadth (% acima MA200), Fear & Greed Index.
 - **Agente:** `agents/macro_snapshot.py` — corre a cada hora.
-- **Fontes:** yfinance (índices), **FRED API** (yields, M2), CNN Fear & Greed scraping (1 fonte, baixo risco).
+- **Fontes:** [[atom-yfinance|yfinance]] (índices), **FRED API** (yields, M2), CNN Fear & Greed scraping (1 fonte, baixo risco).
 - **Output:** `data/markets/macro.json`.
 - **Frontend:** `markets.html` com grid de KPIs + uPlot sparklines.
 - **Estimativa:** 1 sprint.
@@ -253,7 +253,7 @@ Parsing de JSONs >500KB, cosine similarity, DuckDB queries — sempre em Worker 
   - **Playwright apenas como fallback** se faltar info
 - **Agente:** `agents/earnings_calendar.py` — corre 2×/dia.
 - **Output:** `data/earnings/calendar.json` com next 30 dias por ticker.
-- **Cross-link:** Bonnie já tem `no_trade_before_earnings_days=2` — frontend mostra badge "⚠️ Earnings em X dias" nas posições afetadas.
+- **Cross-link:** [[MOC_Bonnie|Bonnie]] já tem `no_trade_before_earnings_days=2` — frontend mostra badge "⚠️ Earnings em X dias" nas posições afetadas.
 - **Frontend:** `earnings.html` (já existe; enriquecer) — agenda + alertas.
 - **Estimativa:** 1 sprint.
 
@@ -284,7 +284,7 @@ Esta ordem maximiza valor visível precoce + reaproveita infraestrutura:
 | 1 | S1 | Watchlist Fase 2 (tabela quantitativa + sparklines) | Visual impact imediato, padrão Manifest fica estabelecido |
 | 2 | S2 | Markets Fase 1 (dashboard macro) | Reusa padrão Manifest, fonte FRED simples |
 | 3 | S3 | News Fase 1 (agregador RSS) | Cria base para enriquecimento de news em tickers |
-| 4 | S4 | Earnings Fase 2 (calendar) | Liga-se à watchlist + às regras Bonnie existentes |
+| 4 | S4 | Earnings Fase 2 (calendar) | Liga-se à watchlist + às regras [[MOC_Bonnie|Bonnie]] existentes |
 | 5 | S5 | Markets Fase 2 (heatmap correlação) | Alto impacto visual, baixo esforço |
 | 6 | S6-7 | Search Fase 2 (3 camadas) | Habilita a "feel" de terminal |
 | 7 | S8-10 | Search Fase 3 (RAG pre-baked + edge) | A "matadora" — converte projeto em terminal real |
@@ -301,7 +301,7 @@ Cada fase só é "Done" quando:
 - ✅ Agente Python tem teste (pelo menos smoke test)
 - ✅ JSON output tem schema versionado + `_meta` block
 - ✅ Frontend degrada graciosamente se JSON faltar/estiver `stale`
-- ✅ Agente está agendado em GitHub Actions cron + tem alerta Telegram em caso de falha (via `bot/notifier.py` existente)
+- ✅ Agente está agendado em [[MOC_Frontend|GitHub Actions]] cron + tem alerta [[MOC_Infraestrutura|Telegram]] em caso de falha (via `bot/notifier.py` existente)
 - ✅ Tempo de carregamento da página afetada permanece <500ms (medir com Lighthouse)
 - ✅ Documentação do agente em `agents/<name>/README.md`
 
@@ -311,13 +311,13 @@ Cada fase só é "Done" quando:
 
 | Risco | Probabilidade | Mitigação |
 |---|---|---|
-| Scraping quebra com mudança de HTML | Alta | Padrão stale-while-revalidate; alerta Telegram; preferir APIs oficiais (SEC, FRED, yfinance) |
-| JSONs ficam gigantes | Média | Padrão Manifest + lazy-load + gzip (GitHub Pages serve automático) |
+| Scraping quebra com mudança de HTML | Alta | Padrão stale-while-revalidate; alerta [[MOC_Infraestrutura|Telegram]]; preferir APIs oficiais (SEC, FRED, [[atom-yfinance|yfinance]]) |
+| JSONs ficam gigantes | Média | Padrão Manifest + lazy-load + gzip ([[MOC_Frontend|GitHub Pages]] serve automático) |
 | Custo LLM explode | Média | Caching agressivo (filings = cache permanente); Haiku para 80%; Sonnet só para análise final |
 | RAG dá respostas erradas | Alta | Pre-baked FAQ tem human review; edge function inclui sempre "fontes" no output; nunca usar LLM para decisões de trading |
 | Cloudflare Worker excede free tier | Baixa | Fallback automático para pre-baked FAQ |
 | Frontend lento com muitos dados | Média | Web Workers para parsing + cosine; uPlot em vez de Chart.js para sparklines; virtualization em listas |
-| GitHub Actions cron falha silenciosamente | Média | Watchdog que monitora `_meta.generated_at` — se >2× expected interval, alerta |
+| [[MOC_Frontend|GitHub Actions]] cron falha silenciosamente | Média | Watchdog que monitora `_meta.generated_at` — se >2× expected interval, alerta |
 
 ---
 
@@ -348,7 +348,7 @@ Cada fase só é "Done" quando:
 2. [ ] Criar `data/_meta/manifest_schema.json` com o schema do bloco `_meta` partilhado
 3. [ ] Criar `agents/watchlist_enricher.py` (Sprint 1 — primeira fase a executar)
 4. [ ] Adicionar workflow `.github/workflows/agents.yml` com cron matrix
-5. [ ] Atualizar `bot/notifier.py` para receber alertas dos novos agentes via canal Telegram dedicado
+5. [ ] Atualizar `bot/notifier.py` para receber alertas dos novos agentes via canal [[MOC_Infraestrutura|Telegram]] dedicado
 
 ---
 

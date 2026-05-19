@@ -11,10 +11,10 @@ links_obrigatorios:
 status: draft
 ultima_revisao: 2026-05-19
 ---
-# FundScope — Migração para VPS Oracle Cloud (Especificação Executável)
+# FundScope — Migração para VPS [[VPS_MIGRATION_SPEC|Oracle Cloud]] (Especificação Executável)
 
 > **Audiência**: agente de execução (Claude Sonnet / Claude Code) com SSH no VPS.
-> **Alvo**: Oracle Cloud Free Tier — Ubuntu 22.04 LTS, **1 GB RAM (AMD)**, 1 vCPU, ~50 GB disco.
+> **Alvo**: [[VPS_MIGRATION_SPEC|Oracle Cloud]] Free Tier — Ubuntu 22.04 LTS, **1 GB RAM (AMD)**, 1 vCPU, ~50 GB disco.
 > **Objetivo**: zero dependência do PC local. Tudo corre 24/7 no VPS, com automação, logs, alertas e auto-restart.
 > **Regra de leitura para o agente**: este documento é a única fonte de verdade. Executa **secção a secção**, não saltes. Cada bloco de comandos deve ser corrido tal como está, salvo quando indicado `<EDITAR>`.
 
@@ -24,11 +24,11 @@ ultima_revisao: 2026-05-19
 
 | Área | Atual (Windows) | Alvo (VPS Linux) | Porquê |
 |---|---|---|---|
-| Web server | `python serve.py` + `nohup` | **`serve.py` (mantido)** como `systemd` service, atrás de **Caddy** reverse proxy | Caddy dá HTTPS automático (Let's Encrypt), compressão e serve estáticos directamente. `serve.py` mantém-se intocado — só as APIs `/api/*` passam pelo proxy. |
+| Web server | `python serve.py` + `nohup` | **`serve.py` (mantido)** como `systemd` service, atrás de **[[VPS_MIGRATION_SPEC|Caddy]]** reverse proxy | [[VPS_MIGRATION_SPEC|Caddy]] dá HTTPS automático (Let's Encrypt), compressão e serve estáticos directamente. `serve.py` mantém-se intocado — só as APIs `/api/*` passam pelo proxy. |
 | Agendamento | Task Scheduler + `.bat` | **`systemd` timers** (não `cron` tradicional) | Logs unificados via `journalctl`, retry policies, dependências entre units, e melhor para um free-tier que pode reiniciar. |
 | Auto-restart | manual | `systemd` com `Restart=always` + `WatchdogSec` | Crash ou reboot → tudo volta sozinho. |
 | Logs | `print()` + ficheiros soltos | **`journald` + `logrotate`** (apenas para JSONs aplicacionais) | Não enche o disco. Pesquisável com `journalctl -u <unit>`. |
-| Alertas | nenhum | **Wrapper `run_with_alerts.sh`** + Telegram (já existe `notifier.py`) + heartbeat diário | Avisa-te se algo falha sem entrares no servidor. |
+| Alertas | nenhum | **Wrapper `run_with_alerts.sh`** + [[MOC_Infraestrutura|Telegram]] (já existe `notifier.py`) + heartbeat diário | Avisa-te se algo falha sem entrares no servidor. |
 | Storage | JSONs | **JSONs (mantidos)** + cache RAM no `serve.py` + `tmpfs` para temporários | Mudar para SQLite implicaria refactor massivo do frontend (que lê JSON directo via `fetch`). O ganho não justifica em 1 GB RAM. |
 | Segurança | — | UFW + fail2ban + SSH key-only + `.env` 600 | Standard para qualquer VPS público. |
 | Backups | — | `tar.zst` diário de `data/` + retenção 7 dias | Pequeno custo de disco, salva-te de corrupção JSON. |
@@ -36,7 +36,7 @@ ultima_revisao: 2026-05-19
 **Restrições rígidas honradas neste plano:**
 - RAM total estimada do stack: **~280 MB em idle, picos ≤ 700 MB** durante `update_prices.py`/`update_portfolio.py` → cabe folgadamente em 1 GB com 2 GB de swap.
 - Zero compilação pesada: nada de Postgres, nada de Docker (cada container Alpine come 80 MB), nada de Redis.
-- Tudo o que adicionamos é Python puro ou binários ≤ 30 MB (Caddy, fail2ban, zstd, logrotate).
+- Tudo o que adicionamos é Python puro ou binários ≤ 30 MB ([[VPS_MIGRATION_SPEC|Caddy]], fail2ban, zstd, logrotate).
 
 ---
 
@@ -93,7 +93,7 @@ sudo ufw --force enable
 sudo ufw status verbose
 ```
 
-> **Importante na Oracle Cloud**: além do UFW, abre 80 e 443 na **Security List** da VCN (consola Oracle → Networking → Virtual Cloud Networks → Subnet → Security List → Ingress Rules). O firewall da Oracle vive *acima* do VPS.
+> **Importante na [[VPS_MIGRATION_SPEC|Oracle Cloud]]**: além do UFW, abre 80 e 443 na **Security List** da VCN (consola Oracle → Networking → Virtual Cloud Networks → Subnet → Security List → Ingress Rules). O firewall da Oracle vive *acima* do VPS.
 
 ### 1.4. fail2ban (proteção SSH)
 
@@ -202,7 +202,7 @@ sudo mount -a
 
 ---
 
-## 3. Servidor Web — Caddy + `serve.py` via systemd
+## 3. Servidor Web — [[VPS_MIGRATION_SPEC|Caddy]] + `serve.py` via [[VPS_MIGRATION_SPEC|systemd]]
 
 ### 3.1. Alterar `serve.py` para escutar **apenas em 127.0.0.1**
 
@@ -216,9 +216,9 @@ with http.server.HTTPServer(("", PORT), Handler) as httpd:
 with http.server.HTTPServer(("127.0.0.1", PORT), Handler) as httpd:
 ```
 
-> **Porquê**: o Caddy fala com o `serve.py` via loopback. Nada de externo toca em `serve.py` directamente — Caddy é a única porta de entrada pública.
+> **Porquê**: o [[VPS_MIGRATION_SPEC|Caddy]] fala com o `serve.py` via loopback. Nada de externo toca em `serve.py` directamente — [[VPS_MIGRATION_SPEC|Caddy]] é a única porta de entrada pública.
 
-### 3.2. Instalar Caddy
+### 3.2. Instalar [[VPS_MIGRATION_SPEC|Caddy]]
 
 ```bash
 sudo apt install -y debian-keyring debian-archive-keyring apt-transport-https
@@ -229,7 +229,7 @@ curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' \
 sudo apt update && sudo apt install -y caddy
 ```
 
-### 3.3. Configurar Caddy
+### 3.3. Configurar [[VPS_MIGRATION_SPEC|Caddy]]
 
 ```bash
 sudo tee /etc/caddy/Caddyfile > /dev/null <<EOF
@@ -416,14 +416,14 @@ Tabela de agendamento proposta (timezone do sistema = Europe/Lisbon):
 | Script | Frequência | `OnCalendar` | Notas |
 |---|---|---|---|
 | `update_prices.py` | 15min, só durante horário US | `Mon..Fri 14:30..21:00/15:00` | Mercado US: 14:30–21:00 LX |
-| `update_portfolio.py` | de hora a hora, horário US + 1h depois | `Mon..Fri *:05:00` | T212 + git push |
+| `update_portfolio.py` | de hora a hora, horário US + 1h depois | `Mon..Fri *:05:00` | [[atom-trading212|T212]] + git push |
 | `update_news.py` | 30min | `*:00,30:00` | RSS + APIs externas |
 | `update_markets.py` | de hora a hora | `*:10:00` | Sectores |
 | `update_earnings.py` | diário 07:00 | `*-*-* 07:00:00` | Calendário 14 dias |
 | `bot.bonnie` | de hora a hora | `*:20:00` | Risco / oversight |
-| `bot.main` (Clyde) | minuto-a-minuto, horário US | `Mon..Fri 14:30..21:00:00/1min` | Decisões em ciclo curto |
+| `bot.main` ([[MOC_Clyde|Clyde]]) | minuto-a-minuto, horário US | `Mon..Fri 14:30..21:00:00/1min` | Decisões em ciclo curto |
 
-> ⚠️ **Antes de criar `bot.main` como timer**: o Clyde original era um **loop contínuo** com `Ligar_Bot.bat` + `schtasks /k`. Decide com o utilizador se queres (a) executar 1× por minuto em modo "tick" (recomendado para systemd), ou (b) torná-lo um *daemon* permanente como o `fundscope-web`. Se (b), cria um service `fundscope-bot.service` em vez do timer abaixo. Ver §4.5.
+> ⚠️ **Antes de criar `bot.main` como timer**: o [[MOC_Clyde|Clyde]] original era um **loop contínuo** com `Ligar_Bot.bat` + `schtasks /k`. Decide com o utilizador se queres (a) executar 1× por minuto em modo "tick" (recomendado para [[VPS_MIGRATION_SPEC|systemd]]), ou (b) torná-lo um *daemon* permanente como o `fundscope-web`. Se (b), cria um service `fundscope-bot.service` em vez do timer abaixo. Ver §4.5.
 
 Comandos (executar tudo de seguida):
 
@@ -470,7 +470,7 @@ EOF
 sudo systemctl daemon-reload
 ```
 
-### 4.5. Decisão: Clyde como timer ou daemon?
+### 4.5. Decisão: [[MOC_Clyde|Clyde]] como timer ou daemon?
 
 **Opção A — Timer (recomendado)**: 1 invocação por minuto, exit code controla falhas, sem risco de leak de memória entre ciclos.
 
@@ -570,7 +570,7 @@ journalctl -u fundscope-web -f
 
 ### 6.1. Alertas em falha (já cobertos por `fs-run`)
 
-Qualquer script que falhar dispara mensagem Telegram com o output que o utilizador precisa para investigar.
+Qualquer script que falhar dispara mensagem [[MOC_Infraestrutura|Telegram]] com o output que o utilizador precisa para investigar.
 
 ### 6.2. Heartbeat diário "tudo OK"
 
@@ -710,7 +710,7 @@ systemctl list-timers --all | grep fs-
 curl -fsS https://${FS_DOMAIN}/index.html | head -n 3
 ```
 
-Se algum service falhar 3× seguidas, systemd entra em `failed`. Para evitar isso e forçar retry contínuo, podes adicionar a `[Service]`:
+Se algum service falhar 3× seguidas, [[VPS_MIGRATION_SPEC|systemd]] entra em `failed`. Para evitar isso e forçar retry contínuo, podes adicionar a `[Service]`:
 
 ```ini
 Restart=always
@@ -771,7 +771,7 @@ sudo systemctl enable --now fs-backup.timer
 - [ ] fail2ban a correr (§1.4)
 - [ ] `.env` com `chmod 600`
 - [ ] `serve.py` apenas em `127.0.0.1` (§3.1)
-- [ ] Caddy com HTTPS automático
+- [ ] [[VPS_MIGRATION_SPEC|Caddy]] com HTTPS automático
 - [ ] Apenas portas 22/80/443 expostas (Security List da Oracle)
 - [ ] `git` remote usa SSH (não HTTPS com token em plain text)
 - [ ] `unattended-upgrades` activo:
@@ -926,14 +926,14 @@ sudo systemctl restart fundscope-web
 
 | Considerado | Decisão | Razão |
 |---|---|---|
-| Nginx vs Caddy | **Caddy** | Auto-HTTPS, ficheiro de config 5× mais curto, idêntico em performance para esta carga. |
+| Nginx vs [[VPS_MIGRATION_SPEC|Caddy]] | **[[VPS_MIGRATION_SPEC|Caddy]]** | Auto-HTTPS, ficheiro de config 5× mais curto, idêntico em performance para esta carga. |
 | Gunicorn/Waitress/uWSGI | **Manter `http.server`** | `serve.py` não é Flask/WSGI. Reescrever é 1 dia de trabalho sem benefício real para carga ≤ 5 req/s. |
-| cron vs systemd timer | **systemd timer** | Logs unificados, `Persistent=true` recupera execuções perdidas após reboot, dependências entre units. |
+| cron vs [[VPS_MIGRATION_SPEC|systemd]] timer | **[[VPS_MIGRATION_SPEC|systemd]] timer** | Logs unificados, `Persistent=true` recupera execuções perdidas após reboot, dependências entre units. |
 | Docker | **Não** | 80 MB por container num VPS de 1 GB é desproporcionado para 1 app. |
 | PostgreSQL/Redis | **Não** | JSON é suficiente, frontend depende disso, RAM é precioso. |
 | SQLite (frontend) | **Não** | Quebra o frontend actual. |
 | SQLite (bot interno) | **Opcional** | Útil para `position_ledger` mas não bloqueante. |
-| Uptime Kuma | **Não** | 150 MB RAM. Substituído por heartbeat Telegram + Healthchecks.io. |
+| Uptime Kuma | **Não** | 150 MB RAM. Substituído por heartbeat [[MOC_Infraestrutura|Telegram]] + Healthchecks.io. |
 | Tailscale / WireGuard | **Não decidido** | Útil se quiseres SSH sem expor porta 22. Decidir caso a caso. |
 
 ---
@@ -944,7 +944,7 @@ sudo systemctl restart fundscope-web
 |---|---|---|
 | 1. Preparação VPS | 10 min | sim |
 | 2. Deploy código | 15 min | sim |
-| 3. Web server (Caddy + serve.py) | 15 min | sim |
+| 3. Web server ([[VPS_MIGRATION_SPEC|Caddy]] + [[serve|serve.py]]) | 15 min | sim |
 | 4. Timers | 20 min | sim |
 | 5. Logs | 5 min | não |
 | 6. Monitorização | 10 min | não |

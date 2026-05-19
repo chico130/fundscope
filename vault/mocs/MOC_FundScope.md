@@ -20,11 +20,11 @@ ultima_revisao: 2026-05-19
 
 ## Visão Geral
 
-O FundScope é um sistema de trading automatizado + dashboard web (GitHub Pages).
+O FundScope é um sistema de trading automatizado + dashboard web ([[MOC_Frontend|GitHub Pages]]).
 Opera em duas camadas paralelas:
 
-- **ALFA** — Conta real ISA/Invest (Trading212 live), gerida manualmente.
-- **BETA** — Bot automatizado em paper trading (T212 demo), controlado pela tríade [[MOC_Clyde]] / [[MOC_Bonnie]] / [[MOC_CRO]].
+- **ALFA** — Conta real ISA/Invest ([[atom-trading212|Trading212]] live), gerida manualmente.
+- **BETA** — Bot automatizado em paper trading ([[atom-trading212|T212]] demo), controlado pela tríade [[MOC_Clyde]] / [[MOC_Bonnie]] / [[MOC_CRO]].
 
 ---
 
@@ -32,11 +32,11 @@ Opera em duas camadas paralelas:
 
 | MOC | Domínio | Ficheiros-chave |
 |---|---|---|
-| [[MOC_Clyde]] | Motor de execução de ordens | strategy.py, execution.py, exit_manager.py |
-| [[MOC_Bonnie]] | Filtro de risco por trade | bonnie.py, learner.py, evaluate_bonnie.py |
-| [[MOC_CRO]] | Risco sistémico e kill-switch | cro.py, regime_detector.py, [[CRO_SPEC]] |
-| [[MOC_Frontend]] | Dashboard web SPA | portfolio.html, markets.html, serve.py |
-| [[MOC_Infraestrutura]] | Config, dados, VPS, notificações | config.py, data_layer.py, notifier.py |
+| [[MOC_Clyde]] | Motor de execução de ordens | [[strategy|strategy.py]], [[execution|execution.py]], [[exit_manager|exit_manager.py]] |
+| [[MOC_Bonnie]] | Filtro de risco por trade | [[bonnie|bonnie.py]], [[learner|learner.py]], [[evaluate_bonnie|evaluate_bonnie.py]] |
+| [[MOC_CRO]] | Risco sistémico e [[MOC_CRO|kill-switch]] | [[cro|cro.py]], [[regime_detector|regime_detector.py]], [[CRO_SPEC]] |
+| [[MOC_Frontend]] | Dashboard web SPA | portfolio.html, markets.html, [[serve|serve.py]] |
+| [[MOC_Infraestrutura]] | Config, dados, VPS, notificações | [[config|config.py]], [[data_layer|data_layer.py]], [[notifier|notifier.py]] |
 
 ---
 
@@ -77,7 +77,7 @@ Opera em duas camadas paralelas:
 | data/beta/beta_positions.json | bot | [[MOC_Frontend]] |
 | data/beta/beta_equity.json | bot | [[MOC_Frontend]] |
 | data/beta/beta_trades.json | bot | [[MOC_Frontend]], [[MOC_CRO]] |
-| data/beta/cro_insights.json | cro.py | [[MOC_Frontend]] |
+| data/beta/cro_insights.json | [[cro|cro.py]] | [[MOC_Frontend]] |
 | data.json | update_prices.py | [[MOC_Frontend]] |
 
 ---
@@ -86,11 +86,11 @@ Opera em duas camadas paralelas:
 
 | Ficheiro | Conteúdo |
 |---|---|
-| [[CRO_SPEC]] | Especificação completa do Chief Risk Officer |
+| [[CRO_SPEC]] | Especificação completa do [[MOC_CRO|Chief Risk Officer]] |
 | [[FASE-1]] | Roadmap de evolução e diagnóstico do bot |
 | [[FUNDSCOPE_CLAUDE_CODE_SPEC]] | Especificação técnica global |
 | [[ROADMAP_FRONTEND]] | Regras de ouro e roadmap do dashboard |
-| [[VPS_MIGRATION_SPEC]] | Migração para Oracle Cloud VPS |
+| [[VPS_MIGRATION_SPEC]] | Migração para [[VPS_MIGRATION_SPEC|Oracle Cloud]] VPS |
 
 ---
 
@@ -110,4 +110,4 @@ python scripts/validate_pipeline.py  # Validar pipeline
 1. `fund_data` — 64 ligações (hub de dados do universo de ações)
 2. `log_error()` — 53 ligações ([[MOC_Infraestrutura]])
 3. `log_decision()` — 31 ligações ([[MOC_Infraestrutura]])
-4. `compute_ema()` — ponte cross-community (Clyde ↔ Backtest ↔ Risco ↔ Data Layer)
+4. `compute_ema()` — ponte cross-community ([[MOC_Clyde|Clyde]] ↔ Backtest ↔ Risco ↔ Data Layer)

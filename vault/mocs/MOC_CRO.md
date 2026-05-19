@@ -12,9 +12,9 @@ status: stable
 ultima_revisao: 2026-05-19
 ---
 
-# MOC — CRO (Chief Risk Officer Sistémico)
+# MOC — [[MOC_CRO|CRO]] ([[MOC_CRO|Chief Risk Officer]] Sistémico)
 
-> O CRO é o árbitro final do sistema: observa, interpreta e pode travar toda a atividade de trading via kill-switch.
+> O [[MOC_CRO|CRO]] é o árbitro final do sistema: observa, interpreta e pode travar toda a atividade de trading via kill-switch.
 
 Hub: [[MOC_FundScope]] → este MOC → módulos de risco sistémico.
 
@@ -26,13 +26,13 @@ Spec completa: [[CRO_SPEC]]
 
 | Ficheiro | Responsabilidade |
 |---|---|
-| [[cro.py]] | Chief Risk Officer — risco sistémico, insights cognitivos, kill-switch |
+| [[cro.py]] | [[MOC_CRO|Chief Risk Officer]] — risco sistémico, insights cognitivos, [[MOC_CRO|kill-switch]] |
 | [[regime_detector.py]] | Classificação do regime de mercado macro (bull/bear/neutral) |
-| [[notifier.py]] | Envia alertas e insights do CRO via Telegram |
+| [[notifier.py]] | Envia alertas e insights do [[MOC_CRO|CRO]] via [[MOC_Infraestrutura|Telegram]] |
 
 ---
 
-## 3 Fases de Evolução do CRO
+## 3 Fases de Evolução do [[MOC_CRO|CRO]]
 
 ```
 Fase 0 (Shadow Mode — ACTIVE)
@@ -63,10 +63,10 @@ O CRO.observe() lê directamente:
 
 ## Regime Detector
 
-| Regime | Condição | Impacto em Clyde |
+| Regime | Condição | Impacto em [[MOC_Clyde|Clyde]] |
 |---|---|---|
-| BULL | SPY EMA-50 > EMA-200 + VIX < 20 | Sinais activos |
-| BEAR | SPY EMA-50 < EMA-200 ou VIX > 30 | Sinais bloqueados |
+| BULL | SPY [[atom-ema50|EMA-50]] > [[atom-ema200|EMA-200]] + VIX < 20 | Sinais activos |
+| BEAR | SPY [[atom-ema50|EMA-50]] < [[atom-ema200|EMA-200]] ou VIX > 30 | Sinais bloqueados |
 | NEUTRAL | Zona intermédia | Apenas trades defensivos |
 
 ---
@@ -85,19 +85,19 @@ Ação: config_risco.json → { "permite_comprar": false }
 
 ---
 
-## Estado Emocional (config_risco.json)
+## Estado Emocional ([[MOC_Infraestrutura|config_risco.json]])
 
-O CRO mantém `estado_emocional` no config_risco.json:
+O [[MOC_CRO|CRO]] mantém `estado_emocional` no [[MOC_Infraestrutura|config_risco.json]]:
 - `normal` — operação padrão
 - `cauteloso` — redução de tamanho de posição
-- `parado` — kill-switch activo
+- `parado` — [[MOC_CRO|kill-switch]] activo
 
 ---
 
 ## Ligações Cruzadas
 
-- [[MOC_Bonnie]] — CRO lê bonnie_log; Bonnie respeita o kill-switch
-- [[MOC_Clyde]] — regime do CRO condiciona sinais do Clyde
-- [[MOC_Infraestrutura]] — notifier.py, config.py são dependências directas
+- [[MOC_Bonnie]] — [[MOC_CRO|CRO]] lê bonnie_log; [[MOC_Bonnie|Bonnie]] respeita o [[MOC_CRO|kill-switch]]
+- [[MOC_Clyde]] — regime do [[MOC_CRO|CRO]] condiciona sinais do [[MOC_Clyde|Clyde]]
+- [[MOC_Infraestrutura]] — [[notifier|notifier.py]], [[config|config.py]] são dependências directas
 - [[CRO_SPEC]] — especificação detalhada das 3 fases
-- [[FASE-1]] — roadmap: CRO equity curve feedback
+- [[FASE-1]] — roadmap: [[MOC_CRO|CRO]] equity curve feedback

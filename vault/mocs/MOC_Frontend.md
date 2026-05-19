@@ -34,7 +34,7 @@ Spec completa: [[ROADMAP_FRONTEND]]
 | `news.html` | Feed de notícias com impacto | news.json |
 | `search.html` | Pesquisa de ações (3-layer RAG) | data.json, data/beta/ |
 | `stock.html` | Perfil detalhado de ticker | data.json, data/beta/watchlist_fundamentals.json |
-| `earnings.html` | Calendário de resultados financeiros | earnings.json, beta_positions.json |
+| `earnings.html` | Calendário de resultados financeiros | earnings.json, [[MOC_Frontend|beta_positions.json]] |
 | `live_portfolio.html` | Portfolio live (deprecated redirect) | — |
 
 ---
@@ -50,11 +50,11 @@ Spec completa: [[ROADMAP_FRONTEND]]
 | `earnings.json` | update_earnings.py | 1x/dia |
 | `data/beta/beta_summary.json` | bot/phase0.py | por ciclo |
 | `data/beta/beta_positions.json` | bot/phase0.py | por ciclo |
-| `data/beta/cro_insights.json` | cro.py | por ciclo |
+| `data/beta/cro_insights.json` | [[cro|cro.py]] | por ciclo |
 
 ---
 
-## Autenticação (serve.py)
+## Autenticação ([[serve|serve.py]])
 
 Para desenvolvimento local, `serve.py` expõe uma API com auth:
 - `/api/portfolio` — dados ALFA protegidos
@@ -76,7 +76,7 @@ Ver [[SPEC_HANDOFF_SONNET]] para spec completa do auth + authFetch helper.
 
 ---
 
-## GitHub Actions — Atualização Automática
+## [[MOC_Frontend|GitHub Actions]] — Atualização Automática
 
 | Workflow | Trigger | Script |
 |---|---|---|
@@ -90,8 +90,8 @@ Ver [[SPEC_HANDOFF_SONNET]] para spec completa do auth + authFetch helper.
 
 ## Ligações Cruzadas
 
-- [[MOC_Infraestrutura]] — serve.py, manifest.json, sw.js são infra de suporte
-- [[MOC_CRO]] — cro_insights.json alimenta o painel de insights do portfolio.html
-- [[MOC_Bonnie]] — beta_trades.json e bonnie_log.json são consumidos pelo frontend
+- [[MOC_Infraestrutura]] — [[serve|serve.py]], manifest.json, sw.js são infra de suporte
+- [[MOC_CRO]] — [[MOC_CRO|cro_insights.json]] alimenta o painel de insights do portfolio.html
+- [[MOC_Bonnie]] — [[MOC_Bonnie|beta_trades.json]] e [[MOC_Bonnie|bonnie_log.json]] são consumidos pelo frontend
 - [[ROADMAP_FRONTEND]] — regras de ouro, stale-while-revalidate, tech stack
 - [[EARNINGS_TAB]] — spec do separador de resultados

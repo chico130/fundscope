@@ -11,18 +11,18 @@ links_obrigatorios:
 status: stable
 ultima_revisao: 2026-05-19
 ---
-# 🏛️ SPEC: CHIEF RISK OFFICER (CRO) — SYSTEMIC RISK ENGINE
+# 🏛️ SPEC: CHIEF RISK OFFICER ([[MOC_CRO|CRO]]) — SYSTEMIC RISK ENGINE
 
-O CRO é o cérebro institucional supremo do FundScope.  
+O [[MOC_CRO|CRO]] é o cérebro institucional supremo do FundScope.  
 Não opera mercados, não procura lucros e não tem ego.  
 A sua única missão é:
 
 - Monitorizar o risco sistémico do ecossistema
-- Policiar a eficiência da Bonnie e do Clyde
+- Policiar a eficiência da [[MOC_Bonnie|Bonnie]] e do [[MOC_Clyde|Clyde]]
 - Gerar narrativas analíticas autónomas (“dicas”) em Fase 0
 - Atuar como disjuntor final de segurança da banca em Fase 2
 
-O CRO não compra nem vende. Apenas decide **como e quando** o sistema pode arriscar e como deve aprender com vitórias e derrotas.
+O [[MOC_CRO|CRO]] não compra nem vende. Apenas decide **como e quando** o sistema pode arriscar e como deve aprender com vitórias e derrotas.
 
 ---
 
@@ -40,13 +40,13 @@ O CRO não compra nem vende. Apenas decide **como e quando** o sistema pode arri
              execution.py   →   api_client (Trading 212)
 ```
 
-- O **Clyde** encontra oportunidades.
-- A **Bonnie** filtra e aprova entradas individuais.
-- O **CRO** observa tudo de cima, valida a saúde do sistema, ajusta a agressividade do risco e pode suspender novas entradas em caso de perigo.
+- O **[[MOC_Clyde|Clyde]]** encontra oportunidades.
+- A **[[MOC_Bonnie|Bonnie]]** filtra e aprova entradas individuais.
+- O **[[MOC_CRO|CRO]]** observa tudo de cima, valida a saúde do sistema, ajusta a agressividade do risco e pode suspender novas entradas em caso de perigo.
 
 ---
 
-## 📊 INPUTS E OUTPUTS DO CRO
+## 📊 INPUTS E OUTPUTS DO [[MOC_CRO|CRO]]
 
 ### Inputs (lidos de ficheiros existentes):
 
@@ -54,7 +54,7 @@ O CRO não compra nem vende. Apenas decide **como e quando** o sistema pode arri
   Histórico de trades (entradas/saídas, P&L, contexto técnico).
 
 - `logs/bonnie_log.json`  
-  Decisões da Bonnie (bloqueios, motivos, regras aplicadas).
+  Decisões da [[MOC_Bonnie|Bonnie]] (bloqueios, motivos, regras aplicadas).
 
 - `data/beta/beta_analysis.json`  
   Snapshot da Fase 0 com regime, sinais, estatísticas de risco.
@@ -68,7 +68,7 @@ O CRO não compra nem vende. Apenas decide **como e quando** o sistema pode arri
 ### Outputs:
 
 1. `data/beta/cro_insights.json`  
-   Lista de “insights cognitivos” do CRO (texto + dados estruturados).
+   Lista de “insights cognitivos” do [[MOC_CRO|CRO]] (texto + dados estruturados).
 
 2. (Fase 1+) Sinais internos de risco dinâmico  
    Parâmetros calculados como `risk_per_trade_pct` e indicadores de “forma” da dupla Bonnie/Clyde.
@@ -80,15 +80,15 @@ O CRO não compra nem vende. Apenas decide **como e quando** o sistema pode arri
 
 ## 📈 FASE 0 — NARRATIVE ENGINE & SHADOW LEARNING
 
-Nesta fase, o CRO opera em modo **Shadow**.  
+Nesta fase, o [[MOC_CRO|CRO]] opera em modo **Shadow**.  
 Não bloqueia ordens, não altera parâmetros de risco. Limita-se a:
 
 - Observar tudo o que acontece
 - Tirar conclusões
 - Escrever essas conclusões em JSON + texto
-- Mandar “dicas” para o Telegram via notifier
+- Mandar “dicas” para o [[MOC_Infraestrutura|Telegram]] via notifier
 
-### 🧠 Funções principais do CRO (Fase 0)
+### 🧠 Funções principais do [[MOC_CRO|CRO]] (Fase 0)
 
 1. `observe()`
 
@@ -102,7 +102,7 @@ Não bloqueia ordens, não altera parâmetros de risco. Limita-se a:
      - Sequências de vitórias/derrotas
      - Regime de mercado atual
      - Exposição por setor / número de posições
-     - Bloqueios recentes da Bonnie
+     - Bloqueios recentes da [[MOC_Bonnie|Bonnie]]
 
 2. `interpret()`
 
@@ -111,7 +111,7 @@ Não bloqueia ordens, não altera parâmetros de risco. Limita-se a:
      - “2 vitórias fortes em `bull_trending` com volume > 1.5× a média”
    - Liga estes padrões a conclusões do tipo:
      - “RSI de entrada atual é demasiado alto neste regime”
-     - “A Bonnie está a ser demasiado conservadora / demasiado permissiva”
+     - “A [[MOC_Bonnie|Bonnie]] está a ser demasiado conservadora / demasiado permissiva”
      - “Exposição por setor está a aproximar-se de um nível perigoso”
 
 3. `speak()`
@@ -134,7 +134,7 @@ Não bloqueia ordens, não altera parâmetros de risco. Limita-se a:
 }
 ```
 
-   - Opcional: envia um resumo destes insights para o Telegram através de [[notifier.py]], como parte do relatório diário/por ciclo.
+   - Opcional: envia um resumo destes insights para o [[MOC_Infraestrutura|Telegram]] através de [[notifier.py]], como parte do relatório diário/por ciclo.
 
 ### Integração técnica Fase 0
 
@@ -144,14 +144,14 @@ Não bloqueia ordens, não altera parâmetros de risco. Limita-se a:
   - No [[phase0.py]], depois de gerar `beta_analysis.json`, chamar `run_cro_cycle()`.
 - Nada é alterado em:
   - [[execution.py]] (continua igual)
-  - `config_risco.json` (apenas leitura pela Bonnie nesta fase)
+  - `config_risco.json` (apenas leitura pela [[MOC_Bonnie|Bonnie]] nesta fase)
   - `LIVE_TRADING` (continua `False` até decisão explícita).
 
 ---
 
 ## ⚙️ FASE 1 — CONTEXTUAL POSITION SIZING (MOTOR DE RISCO DINÂMICO)
 
-Na Fase 1, o CRO começa a influenciar **como** o capital é usado por trade, mas ainda não tem Kill-Switch. Aqui nasce o “percentual dinâmico” em vez de um fixo 1% da banca.
+Na Fase 1, o [[MOC_CRO|CRO]] começa a influenciar **como** o capital é usado por trade, mas ainda não tem Kill-Switch. Aqui nasce o “percentual dinâmico” em vez de um fixo 1% da banca.
 
 ### Fórmula base (conceito)
 
@@ -164,11 +164,11 @@ Risco_Dinamico = Base_Risco_Pct × Fator_Regime × Fator_Performance × Fator_Vo
   - `bull_trending` → 1.0
   - `bull_lateral` → 0.8
   - `bear_correction` / `bear_capitulation` → 0.5
-- `Fator_Performance` (Bonnie+Clyde últimos N trades reais):
+- `Fator_Performance` ([[MOC_Bonnie|Bonnie]]+[[MOC_Clyde|Clyde]] últimos N trades reais):
   - Win rate > 60% → 1.2
   - Win rate entre 45–60% → 1.0
   - Win rate < 45% → 0.7
-- `Fator_Volatilidade` (ex. ATR / média ATR):
+- `Fator_Volatilidade` (ex. [[atom-atr|ATR]] / média [[atom-atr|ATR]]):
   - Volatilidade normal → 1.0
   - Volatilidade extrema → 0.8
 
@@ -190,26 +190,26 @@ Risco_Por_Acao       = |Preço_Entrada - Preço_Stop|
 Qtd_Acoes            = floor(Risco_Euro_Por_Trade / Risco_Por_Acao)
 ```
 
-- **Reinvestir** aqui significa: a ação é vendida; o capital volta para `Free Cash` na Trading 212; o CRO volta a calculá-lo como parte da equity total para o próximo trade. Não há transferência externa de dinheiro, apenas rotação interna.
+- **Reinvestir** aqui significa: a ação é vendida; o capital volta para `Free Cash` na Trading 212; o [[MOC_CRO|CRO]] volta a calculá-lo como parte da equity total para o próximo trade. Não há transferência externa de dinheiro, apenas rotação interna.
 
 ### Integração técnica Fase 1
 
 - O [[cro.py]] passa a expor uma função, p.ex. `compute_dynamic_risk_pct()` que devolve o `Risco_Dinamico`.
 - O [[execution.py]] passa a usar essa função em vez de um fator fixo:
   - Sai o `tamanho_maximo_posicao` como freio principal.
-  - Entra o cálculo de `Risco_Euro_Por_Trade` baseado no output do CRO e no stop proposto pelo Clyde/Bonnie.
-- O [[learner.py]] alimenta o CRO com estatísticas reais de performance (últimos N trades) para cálculo de `Fator_Performance`.
+  - Entra o cálculo de `Risco_Euro_Por_Trade` baseado no output do [[MOC_CRO|CRO]] e no stop proposto pelo Clyde/Bonnie.
+- O [[learner.py]] alimenta o [[MOC_CRO|CRO]] com estatísticas reais de performance (últimos N trades) para cálculo de `Fator_Performance`.
 
 ---
 
 ## 📌 OBSERVAÇÃO: Risco Cambial EUR/USD
 
-> **Contexto:** A conta demo (e futura conta real) está denominada em EUR. A watchlist e a execução operam maioritariamente em acções US cotadas em USD. A conversão EUR/USD é feita automaticamente pela T212 e pelo bot (via `yfinance EURUSD=X`).
+> **Contexto:** A conta demo (e futura conta real) está denominada em EUR. A watchlist e a execução operam maioritariamente em acções US cotadas em USD. A conversão EUR/USD é feita automaticamente pela [[atom-trading212|T212]] e pelo bot (via `yfinance EURUSD=X`).
 
-**Recomendação para fase futura:** Implementar monitorização do risco cambial como métrica autónoma do CRO, incluindo:
+**Recomendação para fase futura:** Implementar monitorização do risco cambial como métrica autónoma do [[MOC_CRO|CRO]], incluindo:
 
 1. **Tracking do câmbio na entrada:** registar o `eurusd` no momento de cada trade BUY em `beta_trades.json` para calcular o impacto cambial no P&L final.
-2. **Alerta de desvio cambial:** se o EUR/USD se mover mais de ±3% desde a entrada numa posição aberta, o CRO deve emitir um insight de alerta no `cro_insights.json`.
+2. **Alerta de desvio cambial:** se o EUR/USD se mover mais de ±3% desde a entrada numa posição aberta, o [[MOC_CRO|CRO]] deve emitir um insight de alerta no `cro_insights.json`.
 3. **ETFs hedged como alternativa (Fase 2+):** considerar incluir na watchlist ETFs como CSPX (S&P 500 em EUR, LSE) para posições de maior duração onde o risco cambial se acumula.
 
 *Esta nota não implica mudança imediata — os retornos históricos do S&P 500 em EUR continuam positivos a longo prazo. A prioridade é acumular dados reais de performance antes de adicionar camadas de hedging.*
@@ -218,7 +218,7 @@ Qtd_Acoes            = floor(Risco_Euro_Por_Trade / Risco_Por_Acao)
 
 ## 🛡️ FASE 2 — DISJUNTOR INSTITUCIONAL (KILL-SWITCH)
 
-Na Fase 2, o CRO ganha autoridade máxima de bloqueio.  
+Na Fase 2, o [[MOC_CRO|CRO]] ganha autoridade máxima de bloqueio.  
 Ainda não muda parâmetros de forma silenciosa, mas **pode suspender novas entradas** escrevendo em `config_risco.json`.
 
 ### Gatilhos sugeridos para o Kill-Switch
@@ -226,32 +226,32 @@ Ainda não muda parâmetros de forma silenciosa, mas **pode suspender novas entr
 1. **Drawdown diário excessivo**
 
    - Se a perda combinada (realizada + não realizada) das posições num único dia exceder X% da banca total:
-     - CRO ativa `permite_comprar: false` em `config_risco.json`.
+     - [[MOC_CRO|CRO]] ativa `permite_comprar: false` em `config_risco.json`.
      - Escreve um insight de nível `emergency` em `cro_insights.json`.
-     - Notifica via Telegram:
+     - Notifica via [[MOC_Infraestrutura|Telegram]]:
        - "🏛️ [CRO • EMERGENCY KILL-SWITCH] 🚨 Trading suspenso. Drawdown diário superior a X%. Novas entradas bloqueadas para proteger capital."
 
 2. **Crash de confiança**
 
-   - Se houver N perdas consecutivas atingindo stop loss máximo (por exemplo 3) num intervalo curto:
-     - CRO assume mudança súbita de regime ou problema estrutural.
+   - Se houver N perdas consecutivas atingindo [[MOC_Bonnie|stop loss]] máximo (por exemplo 3) num intervalo curto:
+     - [[MOC_CRO|CRO]] assume mudança súbita de regime ou problema estrutural.
      - Ativa `permite_comprar: false` durante um período (ex. 48 horas).
      - Regista esta suspensão com timestamps de início e fim previstos.
 
 3. **Exposição setorial extrema**
 
    - Se a exposição a um setor específico exceder `RISK_CONFIG["max_sector_pct"]` por trade repetidamente:
-     - CRO força pausa temporária em novas entradas naquele setor.
+     - [[MOC_CRO|CRO]] força pausa temporária em novas entradas naquele setor.
 
 ### Requisito crítico: override manual
 
 Mesmo com Kill-Switch, o **humano mantém sempre a última palavra**:
 
 - O `config_risco.json` continua totalmente editável pelo utilizador.
-- Qualquer bloqueio automático do CRO deve ser marcado com:
+- Qualquer bloqueio automático do [[MOC_CRO|CRO]] deve ser marcado com:
   - `"origem": "CRO"`
   - `"motivo": "drawdown_diario" | "perdas_consecutivas" | ...`
-- O utilizador pode reverter o bloqueio manualmente, e o CRO deve registar isso como:
+- O utilizador pode reverter o bloqueio manualmente, e o [[MOC_CRO|CRO]] deve registar isso como:
 
 ```json
 {
@@ -281,7 +281,7 @@ Responsabilidades:
     - Devolve o percentual de risco sugerido para o próximo trade com base em regime, performance recente e volatilidade.
 - Fase 2:
   - `check_kill_switch()`:
-    - Verifica drawdown diário, perdas consecutivas e exposição setorial.
+    - Verifica [[MOC_CRO|drawdown]] diário, perdas consecutivas e exposição setorial.
     - Se necessário, escreve em `config_risco.json` para bloquear compras novas.
 
 ### Ficheiros a ajustar (mais tarde, por fase)
@@ -290,14 +290,14 @@ Responsabilidades:
   - No final do ciclo, chamar `run_cro_cycle()`.
 
 - [[execution.py]]
-  - Fase 1: usar o output do CRO para calcular o tamanho da posição com base no risco por trade.
-  - Fase 2: respeitar `permite_comprar` definido pelo CRO através de `config_risco.json` (já está parcialmente implementado).
+  - Fase 1: usar o output do [[MOC_CRO|CRO]] para calcular o tamanho da posição com base no risco por trade.
+  - Fase 2: respeitar `permite_comprar` definido pelo [[MOC_CRO|CRO]] através de `config_risco.json` (já está parcialmente implementado).
 
 - [[learner.py]]
-  - Fornecer ao CRO estatísticas consolidadas (win rate, P&L médio, etc.) para cálculo de `Fator_Performance`.
+  - Fornecer ao [[MOC_CRO|CRO]] estatísticas consolidadas (win rate, P&L médio, etc.) para cálculo de `Fator_Performance`.
 
 - [[notifier.py]]
-  - Incluir os insights mais recentes do CRO nas mensagens enviadas via Telegram.
+  - Incluir os insights mais recentes do [[MOC_CRO|CRO]] nas mensagens enviadas via Telegram.
 
 ---
 

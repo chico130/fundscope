@@ -26,10 +26,10 @@ ultima_revisao: 2026-05-19
 - **Servidor:** `serve.py` (Python stdlib `http.server`, ver linha 192–204) já corre na porta 8080 localmente; em produção é proxiado para a porta 80. O servidor já tem **base de autenticação** parcial — sessões em memória, hash SHA-256, helpers `_new_token()`, `_valid_token()`, `_verify_credentials()`. **Estender, não reescrever.**
 - **Frontend é estático** (HTML/JS puro, sem framework, sem bundler). Editar HTML directamente.
 - **Bots:**
-  - **Clyde** (estratégia/execução) escreve em `data/beta/beta_summary.json`, `beta_positions.json`, `beta_trades.json`, `beta_analysis.json`.
-  - **Bonnie** (sentimento/audit) escreve em `data/beta/beta_analysis.json` (campos `bonnie_*`), `cro_insights.json`.
+  - **[[MOC_Clyde|Clyde]]** (estratégia/execução) escreve em `data/beta/beta_summary.json`, `beta_positions.json`, `beta_trades.json`, `beta_analysis.json`.
+  - **[[MOC_Bonnie|Bonnie]]** (sentimento/audit) escreve em `data/beta/beta_analysis.json` (campos `bonnie_*`), `cro_insights.json`.
   - **Trading 212 Live** (estado real da conta) escreve em `portfolio.json` (raiz do projecto, não em `data/beta/`).
-- **Regra de ouro do projecto:** consultar [GRAPH_REPORT.md](graphify-out/GRAPH_REPORT.md) antes de explorar; **não** abrir `bot/strategy.py`, `bot/cro.py`, `bot/bonnie.py` salvo necessidade explícita.
+- **Regra de ouro do projecto:** consultar [[[graphify-out/GRAPH_REPORT|GRAPH_REPORT.md]]](graphify-out/GRAPH_REPORT.md) antes de explorar; **não** abrir `bot/strategy.py`, `bot/cro.py`, `bot/bonnie.py` salvo necessidade explícita.
 
 ---
 
@@ -53,7 +53,7 @@ Foi feita auditoria com `grep` ao padrão `https?://(chico130\.github\.io|134\.9
 **Casos a NÃO tocar** (deliberadamente):
 - [portfolio.html:576](portfolio.html#L576) — footer `https://github.com/chico130/fundscope` aponta ao repositório real no GitHub (correcto, mantém-se).
 - [live_portfolio.html:15](live_portfolio.html#L15), `<link rel="preconnect" href="https://fonts.gstatic.com">` — CDN externo legítimo.
-- `/fundscope/manifest.json` e `/fundscope/sw.js` em headers PWA — **possível bug separado** do GitHub Pages; ver §1.4.
+- `/fundscope/manifest.json` e `/fundscope/sw.js` em headers PWA — **possível bug separado** do [[MOC_Frontend|GitHub Pages]]; ver §1.4.
 
 ## 1.2 Regra Canónica
 
@@ -102,7 +102,7 @@ Saída esperada: **vazia**. Caso contrário, repetir as substituições omitidas
 
 ## 1.4 Nota separada — paths PWA
 
-Há referências `/fundscope/manifest.json` e `/fundscope/sw.js` (legado do GitHub Pages, em que o site corria em `/fundscope/`). No VPS o site corre na raiz `/`. **Acção sugerida** (incluída nesta passagem):
+Há referências `/fundscope/manifest.json` e `/fundscope/sw.js` (legado do [[MOC_Frontend|GitHub Pages]], em que o site corria em `/fundscope/`). No VPS o site corre na raiz `/`. **Acção sugerida** (incluída nesta passagem):
 
 | Ficheiro:Linha | Antigo | Novo |
 |---|---|---|
@@ -519,8 +519,8 @@ Em `portfolio.html` linha ≈241 (mobile nav) — remover o item mobile equivale
 4. Login com credencial errada → mostra "Credenciais incorrectas".
 5. Após login, abrir DevTools Network:
    - Tab Live: pedidos a `/api/portfolio` com `Authorization: Bearer ...` a cada 30s. KPIs e tabela populam.
-   - Tab Clyde: pedidos a `/api/beta/beta_summary.json` etc., a cada 30s **só quando Clyde está activo**.
-   - Tab Bonnie: idem para conteúdo Bonnie.
+   - Tab [[MOC_Clyde|Clyde]]: pedidos a `/api/beta/beta_summary.json` etc., a cada 30s **só quando [[MOC_Clyde|Clyde]] está activo**.
+   - Tab [[MOC_Bonnie|Bonnie]]: idem para conteúdo Bonnie.
 6. Em terminal separado: `curl http://localhost:8080/api/portfolio` (sem header) → deve devolver 401 JSON.
 7. Limpar `localStorage` em DevTools → recarregar → overlay reaparece.
 8. Clicar Logout → token sai do localStorage → overlay reaparece.
@@ -534,7 +534,7 @@ Em `portfolio.html` linha ≈241 (mobile nav) — remover o item mobile equivale
 | Token expira a meio do dia → utilizador vê banner de erro permanente | `authFetch` faz `location.reload()` em 401 — overlay reaparece, re-login transparente. |
 | `portfolio.json` desaparece (bot Trading 212 falhou) | Handler devolve 404; frontend mostra "Sem dados" no badge. **Não derrubar a página inteira.** |
 | Service Worker cache antigo serve `live_portfolio.html` indefinidamente | Após deploy, bump da versão do SW (`sw.js`) força revalidação. **Mencionar ao utilizador no fim do roll-out.** |
-| `.env` não carrega em produção (systemd unit sem `EnvironmentFile=`) | Documentar no commit message: "se a app não exigir login em produção, verificar `FUNDSCOPE_AUTH_PASSWORD` está no ambiente do processo." |
+| `.env` não carrega em produção ([[VPS_MIGRATION_SPEC|systemd]] unit sem `EnvironmentFile=`) | Documentar no commit message: "se a app não exigir login em produção, verificar `FUNDSCOPE_AUTH_PASSWORD` está no ambiente do processo." |
 | CORS no fetch relativo? | Não há — fetches são same-origin. O header `Access-Control-Allow-Origin: *` em `serve.py:183` continua a ser benigno. |
 | Path traversal em `/api/beta/<file>` | Whitelist `ALLOWED_BETA` — não usar `os.path.join` sem validação. |
 | Path traversal em `/api/data/<file>` | Whitelist `ALLOWED_DATA` — mesma regra. |
