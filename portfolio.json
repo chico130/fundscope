@@ -1,11 +1,11 @@
 {
-  "updated": "2026-05-19T12:12:46.680053Z",
+  "updated": "2026-05-19T20:28:58.943362Z",
   "t212_mode": "live",
   "summary": {
-    "total_value": 115.62,
+    "total_value": 112.3,
     "total_invested": 116.99,
-    "total_gain_eur": -0.37,
-    "total_gain_pct": -0.32,
+    "total_gain_eur": -3.09,
+    "total_gain_pct": -2.64,
     "daily_gain_eur": 0.0,
     "cash_available": 4900.0,
     "n_positions": 1
@@ -15,60 +15,60 @@
       "ticker_t212": "GOOGL_US_EQ",
       "quantity": 0.289797,
       "avg_price": 403.696,
-      "current_price": 398.97,
-      "ppl": -0.37,
-      "fx_ppl": 0.81,
+      "current_price": 387.51,
+      "ppl": -3.09,
+      "fx_ppl": 0.95,
       "ticker": "GOOGL",
       "ticker_display": "GOOGL",
       "display_name": "Alphabet",
       "currency": "USD",
       "change_pct": 0.0,
       "invested": 116.99,
-      "value_eur": 115.62,
-      "gain_eur": -0.37,
-      "gain_pct": -1.17,
+      "value_eur": 112.3,
+      "gain_eur": -3.09,
+      "gain_pct": -4.01,
       "fx_rate": 1.0,
       "currency_native": "USD",
       "allocation_pct": 100.0,
       "news": [
         {
           "source": "Yahoo",
-          "headline": "Citi Sees Massive $131 Billion AI Opportunity for Intel Stock by 2030",
-          "summary": "Citi Revamps Intel Stock Price Target For Rest of 2026",
-          "url": "https://finnhub.io/api/news?id=b93fd48efe5ea2f387928e5c422168efa85103eb41ddb223fcf4a5288809f06c",
-          "datetime": 1779191293,
+          "headline": "5-star analyst drops eye-popping Intel stock price target",
+          "summary": "Intel (INTC) stock has lost about 19.17% since hitting its highest-ever closing price of $129.44 on May 11. It is currently trading at $104.62, according to Yahoo Finance at the time of writing, Tuesday morning, May 19. Intel repurchased Apollo’s (APO) equity interest in the joint venture related ..",
+          "url": "https://finnhub.io/api/news?id=006905b9bb29d7b7c0953ad3316e220eefa155d099cbc4342a721c1cfcecb27e",
+          "datetime": 1779220020,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
           "source": "Yahoo",
-          "headline": "NextEra Energy Buys Dominion in $66.8 Billion All-Stock Deal",
-          "summary": "The combination creates the world's largest regulated electric utility",
-          "url": "https://finnhub.io/api/news?id=41f5be06c700ef6dd8476c2661747055593609257df4fe70795f031c12a8505d",
-          "datetime": 1779191277,
+          "headline": "Google DeepMind hires staff from Contextual AI in licensing deal, Bloomberg News reports",
+          "summary": "Alphabet's AI research subsidiary, Google DeepMind, has finalized a deal to recruit more than 20 researchers from AI ‌startup Contextual AI and license its technology, Bloomberg News reported ‌on Tuesday, citing people familiar with the matter.  DeepMind has agreed to pay about $100 million to ​Cont",
+          "url": "https://finnhub.io/api/news?id=abe4c9e0d6ff86aaac6c630081db55770348ef7c8647cacd81b1d6b0aa092db8",
+          "datetime": 1779219651,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
           "source": "Yahoo",
-          "headline": "Blackstone Google TPU cloud joint venture $5 billion",
-          "summary": "The new U.S.-based company will sell access to Google's Tensor Processing Unit chips as a compute-as-a-service offering, with 500 MW of capacity targeted for 2027",
-          "url": "https://finnhub.io/api/news?id=de8458d7e3ab7d6177cca1bb4c34cea7c5c93726ee58df211f28cfbee2cc4330",
-          "datetime": 1779191014,
+          "headline": "Stock Market Today: Nasdaq In The Red Amid Trump-Iran Threat; Energy Stock In Buy Zone",
+          "summary": "Dow falls after Home Depot's earnings. More retail earnings and Google's I/O event are in focus.",
+          "url": "https://finnhub.io/api/news?id=63367b6a26b2c6b91695de0d4ed914d60fae42c55022563316629be1931d9a64",
+          "datetime": 1779219489,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
           "source": "Yahoo",
-          "headline": "Tech Weekly: data center deals, Meta's major job cuts",
-          "summary": "STORY: From data center deals to Meta's major job cuts, this is Tech Weekly.:: Tech WeeklyGoogle and Blackstone announced on Monday they’re forming an AI cloud business venture. They’re aiming to capitalize on robust demand for AI data centers. Major asset manager Blackstone will invest an initial $",
-          "url": "https://finnhub.io/api/news?id=5403af5d518f49773c5ed8267f5d7e8763614aa27a949e0d00e2f9b58b61138a",
-          "datetime": 1779190266,
+          "headline": "Bitcoin Miners Emerge as Unlikely Power Brokers in AI Infrastructure Race, Says Bernstein",
+          "summary": "Bernstein remains bullish on Bitcoin mining firms like IREN, Riot, and CleanSpark, who are all riding the wave of AI compute demand.",
+          "url": "https://finnhub.io/api/news?id=2ecc07acc60a5422a3512600b7d791b9529b0a159f1490ca8e9675caac6dadf7",
+          "datetime": 1779219323,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
           "source": "Yahoo",
-          "headline": "Google Creates New AI Cloud Company. It’s Coming for CoreWeave—and Nvidia.",
-          "summary": "A company doesn’t reach a $5 trillion market cap just by standing still.  Alphabet is nearing that milestone and it’s making an aggressive play to challenge  Nvidia  AI chip dominance—and potentially its status as the world’s most valuable company.  Google and Blackstone announced plans to create a ",
-          "url": "https://finnhub.io/api/news?id=f71c6949abdf53c6ef9423d7dd1eb5ccc4490dc3257ce99e5048af0fce379653",
-          "datetime": 1779188700,
+          "headline": "The SpaceX IPO Could Be Weeks Away. Here Are the 2 Tech Stocks That Will Benefit Most.",
+          "summary": "These megacap tech companies are poised to register meaningful gains from the successes of SpaceX.",
+          "url": "https://finnhub.io/api/news?id=00bc6a3d5402c8a1653ac746f6466efcb63e3dd377e64004cc2adf6305959290",
+          "datetime": 1779218520,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         }
       ],
@@ -81,8 +81,8 @@
         "52WeekHighDate": "2026-05-18",
         "52WeekLowDate": "2025-06-23",
         "beta": 1.2747276,
-        "peAnnual": 36.4136,
-        "peTTM": 30.0409,
+        "peAnnual": 35.5615,
+        "peTTM": 29.3379,
         "pbAnnual": 9.1044,
         "epsGrowthTTMYoy": 48.51,
         "epsGrowth3Y": 33.35,
@@ -95,7 +95,7 @@
         "currentRatioAnnual": 2.0053,
         "debtToEquityAnnual": 0.1229,
         "dividendYieldIndicated": 0.22169597420265028,
-        "marketCapitalization": 4812791.5
+        "marketCapitalization": 4700168.5
       },
       "analysts": {},
       "insider": {},
@@ -150,7 +150,7 @@
     },
     {
       "date": "2026-05-19",
-      "value": 115.62
+      "value": 112.3
     }
   ]
 }
