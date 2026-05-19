@@ -15,7 +15,7 @@ from datetime import datetime, timezone
 
 from .data_layer import get_full_portfolio_state, enrich_with_technicals, read_beta_trades, fetch_candidate_market_data
 from .logger import log_decision, log_error
-from .config import DATA_BETA_DIR, RISK_CONFIG, STRATEGY_VERSION, PHASE1_EXECUTION
+from .config import DATA_BETA_DIR, RISK_CONFIG, STRATEGY_VERSION, PHASE1_EXECUTION, SCAN_TOP_N
 from .regime_detector import get_current_regime, load_cached_regime, load_regime_metrics
 from .watchlist_manager import build_watchlist
 from .strategy import generate_signals, propose_trades, ProposedTrade
@@ -30,7 +30,6 @@ _LAST_WAKE_PATH    = DATA_BETA_DIR / "last_wake.txt"
 
 _BEAR_REGIMES = {"bear_correction", "bear_capitulation"}
 _LATERAL_SIZE_FACTOR = 0.6   # redução de posição sugerida em bull_lateral (secção 4, FASE-1.md)
-_WATCHLIST_CANDIDATES_TO_SCAN = 10  # max candidatos da watchlist a analisar por ciclo
 
 # Fase 1 — reverse ticker map (yfinance → T212) para os tickers opacos da T212
 _YF_TO_T212: dict[str, str] = {
@@ -543,7 +542,7 @@ def _scan_watchlist_candidates(
         return [], []
 
     candidates = [c for c in watchlist if c.get("ticker") not in held_symbols]
-    candidates = candidates[:_WATCHLIST_CANDIDATES_TO_SCAN]
+    candidates = candidates[:SCAN_TOP_N]
 
     if not candidates:
         return [], []
@@ -931,17 +930,17 @@ def _git_sync(timestamp: str) -> None:
         root   = DATA_BETA_DIR.parent.parent
         status = subprocess.run(
             ["git", "status", "--porcelain"],
-            cwd=root, capture_output=True, text=True, shell=True,
+            cwd=root, capture_output=True, text=True,
         )
         if not status.stdout.strip():
             print("Git: nada para commitar.")
             return
 
-        subprocess.run(["git", "add", "-A"], cwd=root, check=True, shell=True)
+        subprocess.run(["git", "add", "-A"], cwd=root, check=True)
         msg = f"Auto-update {timestamp[:16].replace('T', ' ')} UTC"
-        subprocess.run(["git", "commit", "-m", msg], cwd=root, check=True, shell=True)
-        subprocess.run(["git", "pull", "--rebase", "origin", "main"], cwd=root, check=True, shell=True)
-        subprocess.run(["git", "push", "origin", "main"], cwd=root, check=True, shell=True)
+        subprocess.run(["git", "commit", "-m", msg], cwd=root, check=True)
+        subprocess.run(["git", "pull", "--rebase", "origin", "main"], cwd=root, check=True)
+        subprocess.run(["git", "push", "origin", "main"], cwd=root, check=True)
         print(f"Git: push efectuado — '{msg}'")
     except FileNotFoundError:
         print("Aviso: Git não encontrado localmente, o sync foi ignorado.")
