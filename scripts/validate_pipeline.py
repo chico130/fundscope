@@ -20,7 +20,7 @@ import sys
 from pathlib import Path
 from typing import Iterable
 
-PROJECT_ROOT = Path(__file__).resolve().parent
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 BOT_DIR = PROJECT_ROOT / "bot"
 PACKAGE_ROOTS = ("bot",)  # extender aqui se nascer um segundo package
 
