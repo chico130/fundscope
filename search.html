@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pesquisa — FundScope</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <link rel="manifest" href="/manifest.json">
+  <link rel="manifest" href="/fundscope/manifest.json">
   <meta name="theme-color" content="#01696f">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="FundScope">
-  <link rel="apple-touch-icon" href="/icon-192.png">
+  <link rel="apple-touch-icon" href="/fundscope/icon-192.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300..700&display=swap" rel="stylesheet">
@@ -21,7 +21,6 @@
       --color-text-faint:#bab9b4;--color-primary:#01696f;--color-primary-hover:#0c4e54;
       --color-primary-highlight:#cedcd8;--color-success:#437a22;--color-success-bg:#eaf3e2;
       --color-notification:#a13544;--color-notification-bg:#f8e8ea;
-      --color-tooltip-bg:#1c1b19;--color-tooltip-text:#e8e7e5;--color-tooltip-border:#2e2d2b;
       --radius-sm:.375rem;--radius-md:.5rem;--radius-lg:.75rem;--radius-xl:1rem;--radius-2xl:1.5rem;--radius-full:9999px;
       --shadow-sm:0 1px 2px rgba(40,37,29,.06);--shadow-md:0 4px 12px rgba(40,37,29,.08);--shadow-lg:0 12px 32px rgba(40,37,29,.12);
       --transition:180ms cubic-bezier(.16,1,.3,1);
@@ -30,7 +29,7 @@
       --text-base:clamp(1rem,.95rem + .25vw,1.125rem);--text-lg:clamp(1.125rem,1rem + .75vw,1.5rem);
       --text-xl:clamp(1.5rem,1.2rem + 1.25vw,2.25rem);--text-2xl:clamp(2rem,1.2rem + 2.5vw,3.5rem);
       --space-1:.25rem;--space-2:.5rem;--space-3:.75rem;--space-4:1rem;--space-5:1.25rem;
-      --space-6:1.5rem;--space-8:2rem;--space-10:2.5rem;--space-12:3rem;--space-16:4rem;--space-24:6rem;
+      --space-6:1.5rem;--space-8:2rem;--space-10:2.5rem;--space-12:3rem;--space-16:4rem;
     }
     [data-theme="dark"]{
       --color-bg:#141312;--color-surface:#1a1917;--color-surface-2:#201f1d;--color-surface-offset:#252421;
@@ -38,7 +37,6 @@
       --color-text-faint:#5a5957;--color-primary:#4f98a3;--color-primary-hover:#63b2be;
       --color-primary-highlight:#1f3335;--color-success:#6daa45;--color-success-bg:#1a2e10;
       --color-notification:#dd6974;--color-notification-bg:#2e1015;
-      --color-tooltip-bg:#f0ede8;--color-tooltip-text:#28251d;--color-tooltip-border:#d4d1ca;
       --shadow-sm:0 1px 2px rgba(0,0,0,.25);--shadow-md:0 4px 12px rgba(0,0,0,.35);--shadow-lg:0 12px 32px rgba(0,0,0,.45);
     }
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
@@ -47,17 +45,28 @@
     button{cursor:pointer;background:none;border:none;font:inherit;color:inherit;}
     a{color:inherit;text-decoration:none;}
     :focus-visible{outline:2px solid var(--color-primary);outline-offset:3px;border-radius:var(--radius-sm);}
-    .header{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:var(--space-4) var(--space-6);background:color-mix(in oklch,var(--color-bg) 85%,transparent);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(40,37,29,.06);}
-    .logo{display:flex;align-items:center;gap:var(--space-2);font-family:var(--font-display);font-size:var(--text-lg);font-weight:400;letter-spacing:-.01em;color:var(--color-text);transition:color var(--transition);}
+
+    /* ── Header ── */
+    .header{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:var(--space-4) var(--space-6);background:color-mix(in oklch,var(--color-bg) 88%,transparent);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--color-divider);}
+    .logo{display:flex;align-items:center;gap:var(--space-2);font-family:var(--font-display);font-size:var(--text-lg);color:var(--color-text);transition:color var(--transition);}
     .logo:hover{color:var(--color-primary);}
-    .logo-svg{width:28px;height:28px;}
-    .header-actions{display:flex;align-items:center;gap:var(--space-3);}
-    .nav-link{font-size:var(--text-sm);color:var(--color-text-muted);padding:var(--space-2) var(--space-3);border-radius:var(--radius-md);transition:color var(--transition),background var(--transition);display:inline-flex;align-items:center;gap:6px;}
-    .nav-link:hover{color:var(--color-text);background:var(--color-surface-offset);}
-    .nav-link.active{color:var(--color-primary);}
-    .theme-toggle{width:36px;height:36px;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;color:var(--color-text-muted);transition:color var(--transition),background var(--transition);}
-    .theme-toggle:hover{color:var(--color-text);background:var(--color-surface-offset);}
-    .main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:var(--space-24) var(--space-6) var(--space-16);text-align:center;}
+    .logo-svg{width:26px;height:26px;}
+    .header-actions{display:flex;align-items:center;gap:var(--space-1);}
+    .nav-link{font-size:var(--text-sm);color:var(--color-text-muted);padding:var(--space-2) var(--space-3);border-radius:var(--radius-md);transition:color var(--transition),background var(--transition);font-weight:500;}
+    .nav-link:hover{color:var(--color-primary);background:var(--color-primary-highlight);}
+    .nav-link.active{color:var(--color-primary);background:var(--color-primary-highlight);font-weight:600;}
+    .btn-icon{width:36px;height:36px;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;color:var(--color-text-muted);transition:color var(--transition),background var(--transition);}
+    .btn-icon:hover{color:var(--color-text);background:var(--color-surface-offset);}
+
+    /* ── Mobile nav ── */
+    .mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;z-index:200;background:color-mix(in oklch,var(--color-bg) 95%,transparent);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--color-divider);padding:var(--space-2) var(--space-4);padding-bottom:max(var(--space-2),env(safe-area-inset-bottom));}
+    .mobile-nav-inner{display:flex;justify-content:space-around;align-items:center;}
+    .mobile-nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;padding:var(--space-2) var(--space-2);border-radius:var(--radius-lg);color:var(--color-text-faint);font-size:10px;font-weight:600;transition:color var(--transition);min-width:44px;}
+    .mobile-nav-item.active{color:var(--color-primary);}
+    .mobile-nav-item svg{width:20px;height:20px;}
+
+    /* ── Hero / Main ── */
+    .main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:var(--space-12) var(--space-6) var(--space-16);text-align:center;}
     .mascot-wrap{margin-bottom:var(--space-8);display:flex;align-items:center;justify-content:center;}
     .mascot-gif{width:180px;height:180px;object-fit:contain;filter:drop-shadow(0 14px 28px rgba(230,100,100,.22));animation:pigFloat 3.2s ease-in-out infinite;}
     @keyframes pigFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
@@ -65,16 +74,20 @@
     .hero-title{font-family:var(--font-display);font-size:var(--text-2xl);font-weight:400;line-height:1.1;letter-spacing:-.02em;color:var(--color-text);margin-bottom:var(--space-4);max-width:14ch;}
     .hero-title em{font-style:italic;color:var(--color-primary);}
     .hero-sub{font-size:var(--text-base);color:var(--color-text-muted);max-width:44ch;line-height:1.65;margin-bottom:var(--space-10);}
+
+    /* ── Search bar ── */
     .search-container{width:100%;max-width:560px;position:relative;margin-bottom:var(--space-5);}
-    .search-box{width:100%;background:var(--color-surface);border:1.5px solid var(--color-border);border-radius:var(--radius-full);padding:var(--space-4) var(--space-6) var(--space-4) var(--space-5);font-size:var(--text-base);color:var(--color-text);outline:none;box-shadow:var(--shadow-sm);transition:border-color var(--transition),box-shadow var(--transition);padding-right:calc(var(--space-12) + var(--space-2));}
+    .search-box{width:100%;background:var(--color-surface);border:1.5px solid var(--color-border);border-radius:var(--radius-full);padding:var(--space-4) calc(var(--space-12) + var(--space-3)) var(--space-4) var(--space-6);font-size:var(--text-base);color:var(--color-text);outline:none;box-shadow:var(--shadow-sm);transition:border-color var(--transition),box-shadow var(--transition);}
     .search-box::placeholder{color:var(--color-text-faint);}
-    .search-box:focus{border-color:var(--color-primary);box-shadow:0 0 0 3px color-mix(in oklch,var(--color-primary) 15%,transparent),var(--shadow-md);}
-    .search-btn{position:absolute;right:var(--space-2);top:50%;transform:translateY(-50%);width:40px;height:40px;border-radius:var(--radius-full);background:var(--color-primary);color:#fff;display:flex;align-items:center;justify-content:center;transition:background var(--transition),transform var(--transition),box-shadow var(--transition);box-shadow:var(--shadow-sm);}
-    .search-btn:hover{background:var(--color-primary-hover);transform:translateY(-50%) scale(1.05);box-shadow:var(--shadow-md);}
-    .quick-chips{display:flex;flex-wrap:wrap;gap:var(--space-2);justify-content:center;margin-bottom:var(--space-12);}
-    .chip{font-size:var(--text-xs);padding:var(--space-1) var(--space-3);border-radius:var(--radius-full);border:1px solid var(--color-border);background:var(--color-surface);color:var(--color-text-muted);cursor:pointer;transition:all var(--transition);font-weight:500;}
-    .chip:hover{border-color:var(--color-primary);color:var(--color-primary);background:var(--color-primary-highlight);}
-    .results-panel{position:fixed;top:0;left:0;right:0;bottom:0;background:color-mix(in oklch,var(--color-bg) 92%,transparent);backdrop-filter:blur(20px);z-index:200;display:flex;align-items:flex-start;justify-content:center;padding-top:clamp(80px,14vh,120px);padding-inline:var(--space-4);opacity:0;pointer-events:none;transition:opacity 240ms ease;}
+    .search-box:focus{border-color:var(--color-primary);box-shadow:0 0 0 4px color-mix(in oklch,var(--color-primary) 12%,transparent),var(--shadow-md);}
+    .search-btn{position:absolute;right:var(--space-2);top:50%;transform:translateY(-50%);width:42px;height:42px;border-radius:var(--radius-full);background:var(--color-primary);color:#fff;display:flex;align-items:center;justify-content:center;transition:background var(--transition),transform var(--transition),box-shadow var(--transition);box-shadow:var(--shadow-sm);}
+    .search-btn:hover{background:var(--color-primary-hover);transform:translateY(-50%) scale(1.06);box-shadow:var(--shadow-md);}
+    .quick-chips{display:flex;flex-wrap:wrap;gap:var(--space-2);justify-content:center;margin-bottom:var(--space-8);}
+    .chip{font-size:var(--text-xs);padding:var(--space-2) var(--space-4);border-radius:var(--radius-full);border:1px solid var(--color-border);background:var(--color-surface);color:var(--color-text-muted);cursor:pointer;transition:all var(--transition);font-weight:600;letter-spacing:.02em;}
+    .chip:hover{border-color:var(--color-primary);color:var(--color-primary);background:var(--color-primary-highlight);transform:translateY(-1px);box-shadow:var(--shadow-sm);}
+
+    /* ── Results panel overlay ── */
+    .results-panel{position:fixed;top:0;left:0;right:0;bottom:0;background:color-mix(in oklch,var(--color-bg) 92%,transparent);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);z-index:300;display:flex;align-items:flex-start;justify-content:center;padding-top:clamp(80px,14vh,120px);padding-inline:var(--space-4);opacity:0;pointer-events:none;transition:opacity 240ms ease;}
     .results-panel.open{opacity:1;pointer-events:all;}
     .results-box{width:100%;max-width:560px;background:var(--color-surface-2);border:1px solid var(--color-border);border-radius:var(--radius-2xl);box-shadow:var(--shadow-lg);overflow:hidden;transform:translateY(12px);transition:transform 240ms cubic-bezier(.16,1,.3,1);}
     .results-panel.open .results-box{transform:translateY(0);}
@@ -103,20 +116,28 @@
     .loading-dots span:nth-child(2){animation-delay:.15s;}
     .loading-dots span:nth-child(3){animation-delay:.3s;}
     @keyframes dot-bounce{0%,80%,100%{transform:scale(.6);opacity:.4}40%{transform:scale(1);opacity:1}}
-    @media(max-width:640px){
+
+    /* ── Footer ── */
+    .footer{text-align:center;padding:var(--space-6);font-size:var(--text-xs);color:var(--color-text-faint);border-top:1px solid var(--color-divider);}
+    .footer a{color:var(--color-text-muted);transition:color var(--transition);}
+    .footer a:hover{color:var(--color-primary);}
+
+    /* ── Responsive ── */
+    @media(max-width:768px){
+      .header-actions .nav-link{display:none;}
+      .mobile-nav{display:block;}
+      .main{padding-bottom:calc(var(--space-16) + 64px);}
+    }
+    @media(max-width:480px){
       .header{padding:var(--space-3) var(--space-4);}
-      .nav-link .nav-label{display:none;}
-      .nav-link{padding:0;width:36px;height:36px;justify-content:center;}
       .mascot-gif{width:130px;height:130px;}
       .hero-title{font-size:clamp(1.8rem,9vw,3.5rem);}
-      .hero-sub{margin-bottom:var(--space-8);}
-      .quick-chips{margin-bottom:var(--space-8);}
     }
   </style>
 </head>
 <body>
   <header class="header">
-    <a href="/search.html" class="logo">
+    <a href="search.html" class="logo">
       <svg class="logo-svg" viewBox="0 0 28 28" fill="none">
         <ellipse cx="14" cy="15" rx="9" ry="7.5" fill="var(--color-primary)" opacity="0.18"/>
         <ellipse cx="14" cy="14.5" rx="8" ry="6.5" fill="var(--color-primary)"/>
@@ -130,36 +151,51 @@
         <ellipse cx="7" cy="11" rx="2.2" ry="2.8" fill="var(--color-primary)"/>
         <ellipse cx="21" cy="11" rx="2.2" ry="2.8" fill="var(--color-primary)"/>
         <rect x="12" y="8.5" width="4" height="1.2" rx="0.6" fill="var(--color-bg)" opacity="0.6"/>
-        <path d="M22.5 17 Q25 16 24.5 19 Q24 21 22 20" stroke="var(--color-primary-hover)" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+        <path d="M11.5 16.8 Q14 18.5 16.5 16.8" stroke="var(--color-bg)" stroke-width="0.8" fill="none" stroke-linecap="round"/>
       </svg>
       FundScope
     </a>
-    <nav class="header-actions">
-      <a href="watchlist.html" class="nav-link" aria-label="Watchlist">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-        <span class="nav-label">Watchlist</span>
-      </a>
-      <a href="news.html" class="nav-link" aria-label="Not&#237;cias">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 0-2 2zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/></svg>
-        <span class="nav-label">Not&#237;cias</span>
-      </a>
-      <a href="portfolio.html" class="nav-link" aria-label="Portf&#243;lio">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
-        <span class="nav-label">Portf&#243;lio</span>
-      </a>
-      <a href="markets.html" class="nav-link" aria-label="Mercados">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-        <span class="nav-label">Mercados</span>
-      </a>
-      <a href="earnings.html" class="nav-link" aria-label="Earnings">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-        <span class="nav-label">Earnings</span>
-      </a>
-      <button class="theme-toggle" data-theme-toggle aria-label="Alternar tema">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+    <div class="header-actions">
+      <a href="search.html" class="nav-link active">Pesquisa</a>
+      <a href="markets.html" class="nav-link">Mercados</a>
+      <a href="news.html" class="nav-link">Not&#237;cias</a>
+      <a href="earnings.html" class="nav-link">Earnings</a>
+      <a href="watchlist.html" class="nav-link">Watchlist</a>
+      <a href="live_portfolio.html" class="nav-link">Live Portfolio</a>
+      <button class="btn-icon" id="themeToggle" aria-label="Alternar tema">
+        <svg id="themeIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
       </button>
-    </nav>
+    </div>
   </header>
+
+  <nav class="mobile-nav" aria-label="Navega&#231;&#227;o principal">
+    <div class="mobile-nav-inner">
+      <a href="search.html" class="mobile-nav-item active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        Pesquisa
+      </a>
+      <a href="markets.html" class="mobile-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        Mercados
+      </a>
+      <a href="news.html" class="mobile-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/></svg>
+        Not&#237;cias
+      </a>
+      <a href="watchlist.html" class="mobile-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        Watchlist
+      </a>
+      <a href="live_portfolio.html" class="mobile-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/><polyline points="7 10 10 7 13 10 17 6"/></svg>
+        Live
+      </a>
+      <button class="mobile-nav-item" id="themeToggleMobile" aria-label="Alternar tema">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        Tema
+      </button>
+    </div>
+  </nav>
 
   <main class="main">
     <div class="mascot-wrap" aria-hidden="true">
@@ -170,8 +206,8 @@
     <p class="hero-sub">Pesquisa qualquer a&#231;&#227;o ou ETF e acompanha a tua watchlist num s&#243; lugar.</p>
     <div class="search-container">
       <input type="text" class="search-box" id="mainSearch"
-        placeholder="Pesquisa qualquer ticker &#8212; ex: AAPL, MSFT, SPY&#8230;"
-        autocomplete="off" aria-label="Pesquisar stock ou ETF"/>
+        placeholder="Ticker ou nome &#8212; ex: AAPL, MSFT, SPY&#8230;"
+        autocomplete="off" aria-label="Pesquisar stock ou ETF" autofocus />
       <button class="search-btn" id="searchBtn" aria-label="Pesquisar">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
       </button>
@@ -186,7 +222,7 @@
     </div>
   </main>
 
-  <div class="results-panel" id="resultsPanel" role="dialog" aria-modal="true">
+  <div class="results-panel" id="resultsPanel" role="dialog" aria-modal="true" aria-label="Resultados de pesquisa">
     <div class="results-box">
       <div class="results-search-row">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--color-text-muted)" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
@@ -201,20 +237,37 @@
     </div>
   </div>
 
-<script>
-(function(){
-  const t=document.querySelector('[data-theme-toggle]'),r=document.documentElement;
-  let d=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
-  r.setAttribute('data-theme',d);
-  const icons={
-    light:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>',
-    dark:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>'
-  };
-  const setTheme=th=>{d=th;r.setAttribute('data-theme',th);if(t)t.innerHTML=icons[th];};
-  setTheme(d);
-  if(t)t.addEventListener('click',()=>setTheme(d==='dark'?'light':'dark'));
-})();
+  <footer class="footer">
+    FundScope &mdash; dados via <a href="#">Yahoo Finance</a> &middot; <a href="https://github.com/chico130/fundscope" target="_blank" rel="noopener">GitHub</a>
+  </footer>
 
+<script>
+// ── Theme (localStorage, idêntico ao watchlist) ─────────────
+const html = document.documentElement;
+const THEME_KEY = 'fs_theme';
+
+function applyTheme(t) {
+  html.setAttribute('data-theme', t);
+  localStorage.setItem(THEME_KEY, t);
+  const icon = document.getElementById('themeIcon');
+  if (icon) icon.innerHTML = t === 'dark'
+    ? '<circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>'
+    : '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+}
+
+const savedTheme = localStorage.getItem(THEME_KEY)
+  || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+applyTheme(savedTheme);
+
+document.getElementById('themeToggle').addEventListener('click', () => {
+  applyTheme(html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+});
+const mobileToggle = document.getElementById('themeToggleMobile');
+if (mobileToggle) mobileToggle.addEventListener('click', () => {
+  applyTheme(html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+});
+
+// ── Search logic (inalterado) ────────────────────────────────
 const WORKER='https://stocks.araujo-francisco-fernandes.workers.dev';
 const YF_PROXY='https://query2.finance.yahoo.com/v1/finance/search';
 const CORS_P='https://corsproxy.io/?';
@@ -224,7 +277,7 @@ function getWatchlist(){try{const normalized=normalizeWatchlist(JSON.parse(local
 function _autoSync(tickers){
   const tok=localStorage.getItem('fs_token');
   if(!tok)return;
-  fetch('/api/save-watchlist',{
+  fetch('http://localhost:8080/api/save-watchlist',{
     method:'POST',
     headers:{'Content-Type':'application/json','Authorization':'Bearer '+tok},
     body:JSON.stringify({tickers})
@@ -276,7 +329,7 @@ loadLocal();
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js');
+        navigator.serviceWorker.register('/fundscope/sw.js');
       });
     }
   </script>
