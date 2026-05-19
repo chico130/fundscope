@@ -1,9 +1,9 @@
 {
-  "timestamp": "2026-05-19T21:48:50.306941+00:00",
+  "timestamp": "2026-05-19T22:20:55.000826+00:00",
   "mode": "phase1_auto",
   "strategy_version": "v0.1.0",
   "note": "Fase 1 — execução automática activa. LIVE_TRADING=False (conta demo).",
-  "regime": "bull_trending",
+  "regime": "bull_lateral",
   "regime_alert": false,
   "regime_details": {
     "spy_price": 733.73,
@@ -14,8 +14,8 @@
     "atr_current": 7.556,
     "atr_ratio_vs_60d_mean": 0.8493,
     "spy_return_20d": 0.0317,
-    "rsp_spy_ratio_chg_20d": 0.0,
-    "breadth_healthy": true
+    "rsp_spy_ratio_chg_20d": -0.0347,
+    "breadth_healthy": false
   },
   "watchlist_top5": [
     {
@@ -98,7 +98,7 @@
     {
       "ticker": "GOOGL_US_EQ",
       "action": "hold",
-      "size_factor": 1.0,
+      "size_factor": 0.6,
       "signals": [
         "RSI-14 neutro (62.1)",
         "Tendência ascendente: EMA-50 > EMA-200"
@@ -116,13 +116,14 @@
     "stale_prices": []
   },
   "cro": {
-    "risk_factor": 1.0417,
+    "risk_factor": 0.5208,
     "win_rate_7d": 0.5,
     "drawdown_pct": 0.0,
     "insights": [
-      "Win rate 7d em 50.0% — acima do alvo elástico (48.0%). Factor de risco positivo: 104%.",
+      "Win rate 7d em 50.0% — acima do alvo elástico (48.0%). Factor de risco positivo: 52%.",
       "Sem trades fechados — sem lições disponíveis ainda.",
-      "Tamanho máximo CRO: 20.8% da equity (base 20.0% × factor 104%).",
+      "Tamanho máximo CRO: 10.4% da equity (base 20.0% × factor 52%).",
+      "Regime bull_lateral: multiplicador CRO 0.50× — alocação reduzida.",
       "Stop Loss (fixo (fallback)): 5.0% abaixo da entrada."
     ]
   },
