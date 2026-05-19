@@ -725,6 +725,22 @@ const loginOverlay = document.getElementById('loginOverlay');
 const appMain      = document.getElementById('appMain');
 const logoutBtn    = document.getElementById('logoutBtn');
 
+// ── Live tab helpers ──────────────────────────────────────────────────────────
+const fmtEur  = v => v != null
+  ? new Intl.NumberFormat('pt-PT', { style: 'currency', currency: 'EUR', minimumFractionDigits: 2 }).format(v)
+  : '—';
+const liveFmt = (v, d=2) => v != null
+  ? new Intl.NumberFormat('pt-PT', { minimumFractionDigits: d, maximumFractionDigits: d }).format(v)
+  : '—';
+const liveSign  = v => (v > 0 ? '+' : '');
+const liveCls   = v => v > 0 ? 'up' : v < 0 ? 'down' : 'neutral';
+const liveArrow = v => v > 0 ? '<span class="pnl-arrow">&#9650;</span>' : v < 0 ? '<span class="pnl-arrow">&#9660;</span>' : '';
+
+const LIVE_ICON_TOTAL = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>';
+const LIVE_ICON_PNL   = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>';
+const LIVE_ICON_DAILY = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>';
+const LIVE_ICON_CASH  = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v2m0 8v2M9.5 9.5A2.5 2.5 0 0 1 12 8h.5a2 2 0 0 1 0 4h-1a2 2 0 0 0 0 4h.5a2.5 2.5 0 0 0 2.5-2.5"/></svg>';
+
 // authFetch: wraps fetch with Bearer token; auto-reloads on 401
 function authFetch(url) {
   const tok = localStorage.getItem('fs_token') || '';
@@ -1449,18 +1465,6 @@ function renderAbout() {
   el.innerHTML = intro + clyde + bonnie + cro + hier;
 }
 
-
-// ── Live tab helpers ──────────────────────────────────────────────────────────
-const fmtEur  = v => v != null
-  ? new Intl.NumberFormat('pt-PT', { style: 'currency', currency: 'EUR', minimumFractionDigits: 2 }).format(v)
-  : '—';
-const liveFmt = (v, d=2) => v != null
-  ? new Intl.NumberFormat('pt-PT', { minimumFractionDigits: d, maximumFractionDigits: d }).format(v)
-  : '—';
-const liveSign = v => (v > 0 ? '+' : '');
-const liveCls  = v => v > 0 ? 'up' : v < 0 ? 'down' : 'neutral';
-const liveArrow = v => v > 0 ? '<span class="pnl-arrow">&#9650;</span>' : v < 0 ? '<span class="pnl-arrow">&#9660;</span>' : '';
-
 function liveRelTime(isoStr) {
   if (!isoStr) return '';
   const diff = Math.floor((Date.now() - new Date(isoStr).getTime()) / 1000);
@@ -1469,11 +1473,6 @@ function liveRelTime(isoStr) {
   if (diff < 86400) return 'ha ' + Math.floor(diff/3600) + 'h';
   return 'ha ' + Math.floor(diff/86400) + 'd';
 }
-
-const LIVE_ICON_TOTAL = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>';
-const LIVE_ICON_PNL   = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>';
-const LIVE_ICON_DAILY = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>';
-const LIVE_ICON_CASH  = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v2m0 8v2M9.5 9.5A2.5 2.5 0 0 1 12 8h.5a2 2 0 0 1 0 4h-1a2 2 0 0 0 0 4h.5a2.5 2.5 0 0 0 2.5-2.5"/></svg>';
 
 function renderLiveKPIs(summary) {
   const s = summary || {};
