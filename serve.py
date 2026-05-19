@@ -190,7 +190,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 
 
 if __name__ == "__main__":
-    with http.server.HTTPServer(("", PORT), Handler) as httpd:
+    with http.server.HTTPServer(("127.0.0.1", PORT), Handler) as httpd:
         print(f"\n  FundScope a correr em  http://localhost:{PORT}")
         print(f"  Live Portfolio:        http://localhost:{PORT}/live_portfolio.html")
         print(f"  Portfólio (análise):   http://localhost:{PORT}/portfolio.html")
