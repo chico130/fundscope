@@ -1,12 +1,13 @@
 {
-  "updated": "2026-05-18T20:22:56.037938Z",
+  "updated": "2026-05-19T12:12:46.680053Z",
   "t212_mode": "live",
   "summary": {
-    "total_value": 114.99,
+    "total_value": 115.62,
     "total_invested": 116.99,
-    "total_gain_eur": -1.23,
-    "total_gain_pct": -1.05,
+    "total_gain_eur": -0.37,
+    "total_gain_pct": -0.32,
     "daily_gain_eur": 0.0,
+    "cash_available": 4900.0,
     "n_positions": 1
   },
   "positions": [
@@ -14,60 +15,60 @@
       "ticker_t212": "GOOGL_US_EQ",
       "quantity": 0.289797,
       "avg_price": 403.696,
-      "current_price": 396.81,
-      "ppl": -1.23,
-      "fx_ppl": 0.48,
+      "current_price": 398.97,
+      "ppl": -0.37,
+      "fx_ppl": 0.81,
       "ticker": "GOOGL",
       "ticker_display": "GOOGL",
       "display_name": "Alphabet",
       "currency": "USD",
       "change_pct": 0.0,
       "invested": 116.99,
-      "value_eur": 114.99,
-      "gain_eur": -1.23,
-      "gain_pct": -1.71,
+      "value_eur": 115.62,
+      "gain_eur": -0.37,
+      "gain_pct": -1.17,
       "fx_rate": 1.0,
       "currency_native": "USD",
       "allocation_pct": 100.0,
       "news": [
         {
           "source": "Yahoo",
-          "headline": "Anthropic has acquired the dev tools startup used by OpenAI, Google, and Cloudflare",
-          "summary": "Stainless, a New York-based startup, will wind down all hosted products as part of the acquisition.",
-          "url": "https://finnhub.io/api/news?id=0a76698eea1b7e7d4614beab3f92916eaaf921cfe309d72563920fade4014afc",
-          "datetime": 1779132472,
+          "headline": "Citi Sees Massive $131 Billion AI Opportunity for Intel Stock by 2030",
+          "summary": "Citi Revamps Intel Stock Price Target For Rest of 2026",
+          "url": "https://finnhub.io/api/news?id=b93fd48efe5ea2f387928e5c422168efa85103eb41ddb223fcf4a5288809f06c",
+          "datetime": 1779191293,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
           "source": "Yahoo",
-          "headline": "Meta Platforms Is Down 11% in a Month While Alphabet Is Up 16%. What’s Going On?",
-          "summary": "Two of the largest names in digital advertising have moved in opposite directions over the past month, and the gap is striking. Meta Platforms (NASDAQ:META) stock is down 11% over the trailing month, while Alphabet (NASDAQ:GOOGL) stock is up 16% in the same time frame. Both reported their financial ",
-          "url": "https://finnhub.io/api/news?id=e36834df57bc10d2e00b3e0d64cab8e0926cc082fe3648c95836a2eabc743318",
-          "datetime": 1779132370,
+          "headline": "NextEra Energy Buys Dominion in $66.8 Billion All-Stock Deal",
+          "summary": "The combination creates the world's largest regulated electric utility",
+          "url": "https://finnhub.io/api/news?id=41f5be06c700ef6dd8476c2661747055593609257df4fe70795f031c12a8505d",
+          "datetime": 1779191277,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
           "source": "Yahoo",
-          "headline": "SpaceX IPO Adds Second Musk Stock. It’s a Problem for Tesla",
-          "summary": "(Bloomberg) -- For years, there was only one way for mom-and-pop investors to buy into Elon Musk’s vision: shares of Tesla Inc. That’s about to change — and it’s a serious risk for Tesla investors. Most Read from BloombergStocks Fall, Oil Rises as Hormuz Deal Hopes Fade: Markets WrapBillionaire Rine",
-          "url": "https://finnhub.io/api/news?id=8d1b4a6b0149ff6c57685558232d3a713985d69cbeb58a03b084bf1e93a715ec",
-          "datetime": 1779132307,
+          "headline": "Blackstone Google TPU cloud joint venture $5 billion",
+          "summary": "The new U.S.-based company will sell access to Google's Tensor Processing Unit chips as a compute-as-a-service offering, with 500 MW of capacity targeted for 2027",
+          "url": "https://finnhub.io/api/news?id=de8458d7e3ab7d6177cca1bb4c34cea7c5c93726ee58df211f28cfbee2cc4330",
+          "datetime": 1779191014,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
           "source": "Yahoo",
-          "headline": "CEBA Announces New Board Leadership and Board Members",
-          "summary": "The Corporate Energy Buyers Association (CEBA) is pleased to announce Mike Mattera, Director of Corporate Sustainability at Akamai Technologies, as its new board chair, where he will take a leading role in shaping the organization's strategic vision to drive decarbonization across global electricity",
-          "url": "https://finnhub.io/api/news?id=b53cbe17dcedb75fb9d435efc16287dec888267aa7720eb0b343df9a24eabdfd",
-          "datetime": 1779130800,
+          "headline": "Tech Weekly: data center deals, Meta's major job cuts",
+          "summary": "STORY: From data center deals to Meta's major job cuts, this is Tech Weekly.:: Tech WeeklyGoogle and Blackstone announced on Monday they’re forming an AI cloud business venture. They’re aiming to capitalize on robust demand for AI data centers. Major asset manager Blackstone will invest an initial $",
+          "url": "https://finnhub.io/api/news?id=5403af5d518f49773c5ed8267f5d7e8763614aa27a949e0d00e2f9b58b61138a",
+          "datetime": 1779190266,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
           "source": "Yahoo",
-          "headline": "NextEra to buy Dominion for $67 billion, betting on AI power demand",
-          "summary": "STORY: :: Amazon Web ServiceTwo powerhouse utility companies are merging as the AI boom fuels data center demand.:: NextEra EnergyNextEra Energy on Monday said it will buy Dominion Energy in an all-stock transaction valued at nearly $67 billion.:: Dominion EnergyThe deal is one of the biggest in the",
-          "url": "https://finnhub.io/api/news?id=fea96873dcfcbed6af112ffe68fe6dfdf7386172aee84ca873f7f42e8182ce59",
-          "datetime": 1779128701,
+          "headline": "Google Creates New AI Cloud Company. It’s Coming for CoreWeave—and Nvidia.",
+          "summary": "A company doesn’t reach a $5 trillion market cap just by standing still.  Alphabet is nearing that milestone and it’s making an aggressive play to challenge  Nvidia  AI chip dominance—and potentially its status as the world’s most valuable company.  Google and Blackstone announced plans to create a ",
+          "url": "https://finnhub.io/api/news?id=f71c6949abdf53c6ef9423d7dd1eb5ccc4490dc3257ce99e5048af0fce379653",
+          "datetime": 1779188700,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         }
       ],
@@ -75,11 +76,11 @@
       "dividends": [],
       "ticker_info": {},
       "fh_fundamentals": {
-        "52WeekHigh": 403.7,
+        "52WeekHigh": 408.61,
         "52WeekLow": 162,
-        "52WeekHighDate": "2026-05-13",
+        "52WeekHighDate": "2026-05-18",
         "52WeekLowDate": "2025-06-23",
-        "beta": 1.2744441,
+        "beta": 1.2747276,
         "peAnnual": 36.4136,
         "peTTM": 30.0409,
         "pbAnnual": 9.1044,
@@ -93,7 +94,7 @@
         "roaRfy": 22.2,
         "currentRatioAnnual": 2.0053,
         "debtToEquityAnnual": 0.1229,
-        "dividendYieldIndicated": 0.22178537224658504,
+        "dividendYieldIndicated": 0.22169597420265028,
         "marketCapitalization": 4812791.5
       },
       "analysts": {},
@@ -146,6 +147,10 @@
     {
       "date": "2026-05-18",
       "value": 114.99
+    },
+    {
+      "date": "2026-05-19",
+      "value": 115.62
     }
   ]
 }
