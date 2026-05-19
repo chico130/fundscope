@@ -1,0 +1,130 @@
+{
+  "timestamp": "2026-05-19T21:48:50.306941+00:00",
+  "mode": "phase1_auto",
+  "strategy_version": "v0.1.0",
+  "note": "Fase 1 — execução automática activa. LIVE_TRADING=False (conta demo).",
+  "regime": "bull_trending",
+  "regime_alert": false,
+  "regime_details": {
+    "spy_price": 733.73,
+    "ema200": 677.23,
+    "ema50": 705.72,
+    "ema50_above_ema200": true,
+    "spy_pct_from_ema200": 8.34,
+    "atr_current": 7.556,
+    "atr_ratio_vs_60d_mean": 0.8493,
+    "spy_return_20d": 0.0317,
+    "rsp_spy_ratio_chg_20d": 0.0,
+    "breadth_healthy": true
+  },
+  "watchlist_top5": [
+    {
+      "ticker": "INTC",
+      "sector": "XLK",
+      "price": 110.8,
+      "mom_1m": 0.6722,
+      "mom_3m": 1.5395,
+      "liq_usd_avg": 8634191164.0,
+      "score": 0.7839,
+      "target_mean": 85.00476,
+      "target_median": 84.0,
+      "target_high": 124.0,
+      "target_low": 20.4
+    },
+    {
+      "ticker": "MU",
+      "sector": "XLK",
+      "price": 698.74,
+      "mom_1m": 0.5549,
+      "mom_3m": 0.6605,
+      "liq_usd_avg": 22314534905.0,
+      "score": 0.7083,
+      "target_mean": 584.2439,
+      "target_median": 550.0,
+      "target_high": 1000.0,
+      "target_low": 249.0
+    },
+    {
+      "ticker": "DDOG",
+      "sector": "XLK",
+      "price": 215.15,
+      "mom_1m": 0.6641,
+      "mom_3m": 1.0967,
+      "liq_usd_avg": 776274170.0,
+      "score": 0.6737,
+      "target_mean": 221.63643,
+      "target_median": 225.0,
+      "target_high": 320.0,
+      "target_low": 128.85
+    },
+    {
+      "ticker": "AMD",
+      "sector": "XLK",
+      "price": 414.05,
+      "mom_1m": 0.4554,
+      "mom_3m": 1.1061,
+      "liq_usd_avg": 10928808823.0,
+      "score": 0.6528,
+      "target_mean": 457.83334,
+      "target_median": 474.0,
+      "target_high": 625.0,
+      "target_low": 225.0
+    },
+    {
+      "ticker": "FTNT",
+      "sector": "XLK",
+      "price": 127.64,
+      "mom_1m": 0.4971,
+      "mom_3m": 0.6884,
+      "liq_usd_avg": 547758800.0,
+      "score": 0.5463,
+      "target_mean": 106.47222,
+      "target_median": 110.0,
+      "target_high": 130.0,
+      "target_low": 70.0
+    }
+  ],
+  "barrier_exits": [],
+  "buy_opportunities": [],
+  "near_misses": [],
+  "n_positions": 1,
+  "open_trades": 0,
+  "risk_status": {
+    "ok": true,
+    "total_equity_eur": 5012.34,
+    "warnings": []
+  },
+  "signals": [
+    {
+      "ticker": "GOOGL_US_EQ",
+      "action": "hold",
+      "size_factor": 1.0,
+      "signals": [
+        "RSI-14 neutro (62.1)",
+        "Tendência ascendente: EMA-50 > EMA-200"
+      ],
+      "technicals": {
+        "rsi_14": 62.07,
+        "ema50_above_ema200": true,
+        "volume_ratio_vs_avg": 1.34
+      }
+    }
+  ],
+  "data_sources": {
+    "prices": "finnhub+yfinance",
+    "t212_sync": "2026-05-19T16:19:48.273653+00:00",
+    "stale_prices": []
+  },
+  "cro": {
+    "risk_factor": 1.0417,
+    "win_rate_7d": 0.5,
+    "drawdown_pct": 0.0,
+    "insights": [
+      "Win rate 7d em 50.0% — acima do alvo elástico (48.0%). Factor de risco positivo: 104%.",
+      "Sem trades fechados — sem lições disponíveis ainda.",
+      "Tamanho máximo CRO: 20.8% da equity (base 20.0% × factor 104%).",
+      "Stop Loss (fixo (fallback)): 5.0% abaixo da entrada."
+    ]
+  },
+  "executed_trades": []
+}
