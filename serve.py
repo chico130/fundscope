@@ -192,9 +192,11 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 if __name__ == "__main__":
     with http.server.HTTPServer(("", PORT), Handler) as httpd:
         print(f"\n  FundScope a correr em  http://localhost:{PORT}")
-        print(f"  Portfólio:             http://localhost:{PORT}/portfolio.html")
+        print(f"  Live Portfolio:        http://localhost:{PORT}/live_portfolio.html")
+        print(f"  Portfólio (análise):   http://localhost:{PORT}/portfolio.html")
         print(f"  Mercados:              http://localhost:{PORT}/markets.html")
         print(f"  Notícias:              http://localhost:{PORT}/news.html")
+        print(f"  Earnings:              http://localhost:{PORT}/earnings.html")
         print(f"\n  Ctrl+C para parar.\n")
         try:
             httpd.serve_forever()

@@ -337,6 +337,16 @@ def t212_get(path):
     r.raise_for_status()
     return r.json()
 
+def fetch_t212_cash():
+    """Devolve saldo de caixa livre da conta T212."""
+    try:
+        data = t212_get("/equity/account/cash")
+        return round(float(data.get("free", 0)), 2)
+    except Exception as e:
+        print(f"  [AVISO] fetch_t212_cash falhou: {e}")
+        return None
+
+
 def fetch_t212_positions():
     try:
         data = t212_get("/equity/portfolio")
@@ -657,6 +667,10 @@ def main():
         print("    Nenhuma posição — a terminar.")
         return
 
+    print("\n[1b] A buscar saldo de caixa T212...")
+    cash_available = fetch_t212_cash()
+    print(f"    Caixa livre: {cash_available:.2f}€" if cash_available is not None else "    Caixa: indisponível")
+
     print("\n[2] A buscar metadados de instrumentos T212...")
     instruments_meta = fetch_t212_instruments()
 
@@ -747,12 +761,13 @@ def main():
         "updated":   now.isoformat() + "Z",
         "t212_mode": "live",
         "summary": {
-            "total_value":    round(total_value, 2),
-            "total_invested": round(total_invested, 2),
-            "total_gain_eur": round(total_gain, 2),
-            "total_gain_pct": round(total_gain_pct, 2),
-            "daily_gain_eur": round(daily_gain, 2),
-            "n_positions":    len(positions)
+            "total_value":     round(total_value, 2),
+            "total_invested":  round(total_invested, 2),
+            "total_gain_eur":  round(total_gain, 2),
+            "total_gain_pct":  round(total_gain_pct, 2),
+            "daily_gain_eur":  round(daily_gain, 2),
+            "cash_available":  cash_available,
+            "n_positions":     len(positions)
         },
         "positions": positions,
         "history":   history
