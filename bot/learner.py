@@ -59,6 +59,8 @@ _LAMBDA_L2    = 0.15
 _VAL_SPLIT    = 0.15
 # Iterações de coordinate descent por horizonte
 _N_ITER: dict[str, int] = {"weekly": 60, "monthly": 80, "quarterly": 40}
+# Mínimo de trades aceites por ano — sets abaixo deste limiar são penalizados
+_MIN_TRADES_PER_YEAR = 10
 
 # ---------------------------------------------------------------------------
 # Defaults — espelho fiel dos valores hardcoded actuais
@@ -89,6 +91,8 @@ _DEFAULT_PARAMS: dict[str, Any] = {
             # MOMENTUM filter params
             "momentum_vol_floor":    1.0,
             "momentum_gap_down_pct": 3.0,
+            # Smart Money gate
+            "smart_money_vol_ratio": 1.2,
         }
     },
     "quarterly": {
@@ -99,6 +103,9 @@ _DEFAULT_PARAMS: dict[str, Any] = {
             "stop_loss_pct":            5.0,
             "take_profit_pct":          10.0,
             "max_positions_per_sector": 2,
+            # ATR-based dynamic stops
+            "atr_stop_mult_momentum":   2.0,
+            "atr_stop_mult_value":      2.5,
         }
     },
 }
@@ -124,6 +131,7 @@ _PARAM_SPACE: dict[str, dict] = {
     # monthly.bonnie — MOMENTUM ────────────────────────────────────────
     "momentum_vol_floor":       {"min": 0.8,  "max": 1.5,  "step": 0.1,  "kind": "float"},
     "momentum_gap_down_pct":    {"min": 1.5,  "max": 6.0,  "step": 0.5,  "kind": "float"},
+    "smart_money_vol_ratio":    {"min": 1.0,  "max": 1.5,  "step": 0.05, "kind": "float"},
     # quarterly.cro ────────────────────────────────────────────────────
     "max_drawdown_limit_pct":   {"min": 10.0, "max": 20.0, "step": 0.5,  "kind": "float"},
     "elastic_window_n":         {"min": 15,   "max": 40,   "step": 1.0,  "kind": "int"},
@@ -131,6 +139,8 @@ _PARAM_SPACE: dict[str, dict] = {
     "stop_loss_pct":            {"min": 3.5,  "max": 8.0,  "step": 0.5,  "kind": "float"},
     "take_profit_pct":          {"min": 7.0,  "max": 18.0, "step": 0.5,  "kind": "float"},
     "max_positions_per_sector": {"min": 1,    "max": 3,    "step": 1.0,  "kind": "int"},
+    "atr_stop_mult_momentum":   {"min": 1.5,  "max": 3.0,  "step": 0.25, "kind": "float"},
+    "atr_stop_mult_value":      {"min": 2.0,  "max": 4.0,  "step": 0.25, "kind": "float"},
 }
 
 
@@ -250,7 +260,7 @@ def _save_params(params: dict, meta_extra: dict | None = None) -> None:
     payload = copy.deepcopy(params)
     payload.setdefault("_meta", {})
     payload["_meta"].update({
-        "schema_version": "3.0",
+        "schema_version": "3.1",
         "generated_at":   datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         **(meta_extra or {}),
     })
@@ -328,13 +338,18 @@ def _run_weekly(trades: list[dict]) -> None:
 
     params_changed = f_after > f_before * (1 + _MIN_GAIN_PCT)
     if params_changed:
+        params_before_snap = copy.deepcopy(current)
         stored["weekly"]["clyde"] = optimized
         stored["weekly"].update({
-            "last_optimized": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-            "generation":     stored.get("weekly", {}).get("generation", 0) + 1,
-            "sample_size":    len(trades),
-            "fitness_before": round(f_before, 4),
-            "fitness_after":  round(f_after, 4),
+            "last_optimized":            datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "generation":                stored.get("weekly", {}).get("generation", 0) + 1,
+            "sample_size":               len(trades),
+            "fitness_before":            round(f_before, 4),
+            "fitness_after":             round(f_after, 4),
+            "params_before":             params_before_snap,
+            "params_after":              copy.deepcopy(optimized),
+            "calmar_portfolio_snapshot": round(_calmar_from_trades(trades), 4),
+            "calmar_gain_abs":           round(f_after - f_before, 4),
         })
         _notify_mutation("Semanal · Clyde", current, optimized, f_before, f_after, len(trades))
         log_decision("learner_weekly", "params_updated", {
@@ -371,13 +386,18 @@ def _run_monthly(trades: list[dict]) -> None:
     )
 
     if f_after > f_before * (1 + _MIN_GAIN_PCT):
+        params_before_snap = copy.deepcopy(current)
         stored["monthly"]["bonnie"] = optimized
         stored["monthly"].update({
-            "last_optimized": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-            "generation":     stored.get("monthly", {}).get("generation", 0) + 1,
-            "sample_size":    len(trades),
-            "fitness_before": round(f_before, 4),
-            "fitness_after":  round(f_after, 4),
+            "last_optimized":            datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "generation":                stored.get("monthly", {}).get("generation", 0) + 1,
+            "sample_size":               len(trades),
+            "fitness_before":            round(f_before, 4),
+            "fitness_after":             round(f_after, 4),
+            "params_before":             params_before_snap,
+            "params_after":              copy.deepcopy(optimized),
+            "calmar_portfolio_snapshot": round(_calmar_from_trades(trades), 4),
+            "calmar_gain_abs":           round(f_after - f_before, 4),
         })
         _save_params(stored)
         _notify_mutation("Mensal · Bonnie", current, optimized, f_before, f_after, len(trades))
@@ -406,13 +426,18 @@ def _run_quarterly(trades: list[dict]) -> None:
     )
 
     if f_after > f_before * (1 + _MIN_GAIN_PCT):
+        params_before_snap = copy.deepcopy(current)
         stored["quarterly"]["cro"] = optimized
         stored["quarterly"].update({
-            "last_optimized": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-            "generation":     stored.get("quarterly", {}).get("generation", 0) + 1,
-            "sample_size":    len(trades),
-            "fitness_before": round(f_before, 4),
-            "fitness_after":  round(f_after, 4),
+            "last_optimized":            datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "generation":                stored.get("quarterly", {}).get("generation", 0) + 1,
+            "sample_size":               len(trades),
+            "fitness_before":            round(f_before, 4),
+            "fitness_after":             round(f_after, 4),
+            "params_before":             params_before_snap,
+            "params_after":              copy.deepcopy(optimized),
+            "calmar_portfolio_snapshot": round(_calmar_from_trades(trades), 4),
+            "calmar_gain_abs":           round(f_after - f_before, 4),
         })
         _save_params(stored)
         _notify_mutation("Trimestral · CRO", current, optimized, f_before, f_after, len(trades))
@@ -508,6 +533,26 @@ def _l2_penalty(params: dict, defaults: dict) -> float:
 # Funções de fitness por subsistema
 # ---------------------------------------------------------------------------
 
+def _min_acceptable_trades(reference_trades: list[dict]) -> int:
+    """Calcula o mínimo de trades aceites para evitar overfitting.
+
+    Se o set de parâmetros aceitar menos de _MIN_TRADES_PER_YEAR trades/ano,
+    o Learner penaliza severamente (fitness → 0.01).
+    """
+    if len(reference_trades) < 2:
+        return 1
+    dates = [t.get("datetime", "") for t in reference_trades if t.get("datetime")]
+    if len(dates) < 2:
+        return max(1, len(reference_trades) // 10)
+    try:
+        d_min = datetime.fromisoformat(min(dates)[:10])
+        d_max = datetime.fromisoformat(max(dates)[:10])
+        span_years = max(0.1, (d_max - d_min).days / 365.0)
+        return max(1, int(_MIN_TRADES_PER_YEAR * span_years))
+    except (ValueError, TypeError):
+        return max(1, len(reference_trades) // 10)
+
+
 def _fitness_clyde(params: dict, trades: list[dict]) -> float:
     """
     Profit Factor × Calmar Factor para trades que passariam os filtros do Clyde.
@@ -516,6 +561,8 @@ def _fitness_clyde(params: dict, trades: list[dict]) -> float:
     se o Clyde teria entrado com os novos params. Não requer dados OHLCV.
     """
     accepted = [t for t in trades if _would_clyde_enter(t, params)]
+    if len(accepted) < _min_acceptable_trades(trades):
+        return 0.01  # anti-overfitting: parâmetros demasiado restritivos
     return _profit_factor_calmar(accepted)
 
 
@@ -526,6 +573,8 @@ def _fitness_bonnie(params: dict, trades: list[dict]) -> float:
         t for t in trades
         if (t.get("signal_strength") or t.get("context", {}).get("signal_strength", 0)) >= threshold
     ]
+    if len(accepted) < _min_acceptable_trades(trades):
+        return 0.01  # anti-overfitting: threshold demasiado elevado
     return _profit_factor_calmar(accepted)
 
 
@@ -582,6 +631,8 @@ def _would_momentum_enter(trade: dict, params: dict) -> bool:
 def _fitness_momentum(params: dict, trades: list[dict]) -> float:
     """Profit Factor × Calmar Factor para trades MOMENTUM com trailing stop."""
     accepted = [t for t in trades if _would_momentum_enter(t, params)]
+    if len(accepted) < _min_acceptable_trades(trades):
+        return 0.01  # anti-overfitting: parâmetros MOMENTUM demasiado restritivos
     return _profit_factor_calmar(accepted)
 
 

@@ -34,6 +34,10 @@ class Verdict:
     drawdown_pct:      float     = 0.0
     elastic_target_wr: float     = 0.48  # alvo dinâmico calculado neste ciclo
     bonnie_threshold:  float     = 0.60  # threshold Bonnie ditado pelo CRO
+    regime_multiplier: float     = 1.0   # multiplicador de regime aplicado (0.0–1.0)
+    stop_loss_pct:     float     = 5.0   # stop loss em % do preço de entrada (ATR-based)
+    atr_pct:           float     = 0.0   # ATR como % do preço (0 = não disponível)
+    assumed_risk_eur:  float     = 0.0   # risco assumido em EUR se stop for atingido
 
 
 # ---------------------------------------------------------------------------
@@ -112,8 +116,6 @@ class CRO:
         Fase 0: proposed=None → só narrativa, sem bloqueio de ordens.
         Fase 1+: proposed != None → também valida alocação e sector.
         """
-        from .strategy import _REGIME_SIZE_FACTOR
-
         if not self._state:
             self.observe(portfolio_state=portfolio_state)
 
@@ -128,27 +130,48 @@ class CRO:
         elastic_target = _elastic_target_wr(all_closed)
         bonnie_thr     = _dynamic_bonnie_threshold(all_closed)
 
-        # Fórmula de risco contextual com alvo dinâmico
-        wr_adj      = max(0.5, min(1.2, win_rate_7d / elastic_target if elastic_target > 0 else 1.0))
-        dd_adj      = max(0.3, min(1.0, 1.0 - drawdown_pct / max_dd))
-        reg_factor  = _REGIME_SIZE_FACTOR.get(regime, 1.0)
+        # Factores de desempenho (wr_adj × dd_adj)
+        wr_adj = max(0.5, min(1.2, win_rate_7d / elastic_target if elastic_target > 0 else 1.0))
+        dd_adj = max(0.3, min(1.0, 1.0 - drawdown_pct / max_dd))
+
+        # Multiplicador de Regime — autoridade exclusiva CRO
+        proposed_style = (proposed.style if proposed is not None else None) or "MOMENTUM"
+        regime_mults   = CRO_CONFIG.get("regime_multiplier", {})
+        reg_factor     = regime_mults.get(regime, 1.0)
+        if reg_factor == 0.0 and proposed_style == "VALUE":
+            reg_factor = CRO_CONFIG.get("bear_value_multiplier", 0.25)
+
         risk_factor = round(wr_adj * dd_adj * reg_factor, 4)
-        final_pct   = round(RISK_CONFIG["max_position_pct"] * risk_factor, 2)
+
+        # ATR-based Stop Loss dinâmico (por proposta, quando disponível)
+        atr_pct       = 0.0
+        stop_loss_pct = CRO_CONFIG.get("atr_fallback_stop_pct", 5.0)
+        if proposed is not None:
+            ctx    = proposed.context or {}
+            atr_14 = ctx.get("atr_14") or 0.0
+            price  = proposed.price   or 0.0
+            if atr_14 > 0 and price > 0:
+                atr_pct       = atr_14 / price
+                stop_loss_pct = _atr_stop_loss_pct(atr_pct, proposed_style)
 
         insights = _generate_insights(
-            win_rate_7d, drawdown_pct, risk_factor, final_pct,
+            win_rate_7d, drawdown_pct, risk_factor,
+            round(RISK_CONFIG["max_position_pct"] * risk_factor, 2),
             elastic_target, max_dd, regime,
             self._state.get("sector_exposure", {}),
             all_closed, bonnie_thr,
+            regime_mult=reg_factor, stop_loss_pct=stop_loss_pct,
         )
 
-        approved       = True
-        reason         = "advisory_only"
-        final_size_eur = 0.0
+        approved         = True
+        reason           = "advisory_only"
+        final_size_eur   = 0.0
+        assumed_risk_eur = 0.0
 
         if proposed is not None:
-            approved, reason, final_size_eur = _validate_proposal(
-                proposed, portfolio_state, final_pct, trades_today
+            approved, reason, final_size_eur, assumed_risk_eur = _validate_proposal(
+                proposed, portfolio_state, risk_factor, trades_today,
+                atr_pct=atr_pct, regime_mult=reg_factor,
             )
             if not approved:
                 insights.insert(0, f"VETO CRO: {reason} — proposta bloqueada para {proposed.ticker}.")
@@ -156,6 +179,16 @@ class CRO:
         self._insights    = insights
         self._risk_factor = risk_factor
         self._regime      = regime
+
+        log_decision("cro_interpret", "risk_verdict", {
+            "regime":            regime,
+            "regime_multiplier": round(reg_factor, 4),
+            "risk_factor":       risk_factor,
+            "stop_loss_pct":     round(stop_loss_pct, 2),
+            "atr_pct":           round(atr_pct * 100, 3),
+            "assumed_risk_eur":  round(assumed_risk_eur, 2),
+            "ticker":            proposed.ticker if proposed is not None else None,
+        })
 
         return Verdict(
             approved=approved,
@@ -167,6 +200,10 @@ class CRO:
             drawdown_pct=drawdown_pct,
             elastic_target_wr=elastic_target,
             bonnie_threshold=bonnie_thr,
+            regime_multiplier=reg_factor,
+            stop_loss_pct=stop_loss_pct,
+            atr_pct=atr_pct,
+            assumed_risk_eur=assumed_risk_eur,
         )
 
     # ------------------------------------------------------------------
@@ -290,32 +327,49 @@ def _sector_exposure(positions: list[dict]) -> dict[str, int]:
 def _validate_proposal(
     proposed:        "ProposedTrade",
     portfolio_state: dict,
-    final_pct:       float,
+    risk_factor:     float,
     trades_today:    int,
-) -> tuple[bool, str, float]:
-    """Valida proposta concreta. Devolve (approved, reason, final_size_eur)."""
+    atr_pct:         float = 0.0,
+    regime_mult:     float = 1.0,
+) -> tuple[bool, str, float, float]:
+    """Valida proposta concreta. Devolve (approved, reason, final_size_eur, assumed_risk_eur)."""
     positions    = portfolio_state.get("positions", [])
     free_cash    = portfolio_state.get("cash", {}).get("free") or 0
     total_equity = sum(p.get("value", p.get("value_eur", 0)) for p in positions) + free_cash
 
     if total_equity <= 0:
         log_decision("cro_block", "zero_equity", {"ticker": proposed.ticker})
-        return False, "zero_equity", 0.0
+        return False, "zero_equity", 0.0, 0.0
 
-    max_pos_eur = total_equity * final_pct / 100
+    style   = getattr(proposed, "style", "VALUE")
+    max_pos = RISK_CONFIG["max_position_pct"]
+
+    # ATR-based sizing: equaliza risco financeiro entre activos de diferente volatilidade
+    if atr_pct > 0:
+        raw_size    = _atr_size_eur(atr_pct, total_equity,
+                                    CRO_CONFIG.get("atr_risk_target_pct", 1.0), max_pos, style)
+        max_pos_eur = min(raw_size * risk_factor, total_equity * max_pos / 100)
+    else:
+        max_pos_eur = total_equity * max_pos * risk_factor / 100
+
+    # Risco assumido (perda máxima se stop for atingido)
+    stop_key     = "atr_stop_mult_momentum" if style == "MOMENTUM" else "atr_stop_mult_value"
+    stop_mult    = CRO_CONFIG.get(stop_key, 2.0)
+    stop_dist    = atr_pct * stop_mult if atr_pct > 0 else CRO_CONFIG.get("atr_fallback_stop_pct", 5.0) / 100
+    assumed_risk = round(max_pos_eur * stop_dist, 2)
 
     if trades_today >= RISK_CONFIG["max_trades_per_day"]:
         log_decision("cro_block", "max_trades_per_day", {
             "today": trades_today, "limit": RISK_CONFIG["max_trades_per_day"]
         })
-        return False, "max_trades_per_day", 0.0
+        return False, "max_trades_per_day", 0.0, 0.0
 
     if proposed.side == "BUY":
         if max_pos_eur > free_cash * 0.95:
             log_decision("cro_block", "insufficient_cash", {
                 "max_pos_eur": round(max_pos_eur, 2), "free_cash": round(free_cash, 2)
             })
-            return False, "insufficient_cash", 0.0
+            return False, "insufficient_cash", 0.0, 0.0
 
         try:
             from .watchlist_manager import _TICKER_TO_SECTOR as _T2S
@@ -334,9 +388,48 @@ def _validate_proposal(
                     "ticker": proposed.ticker, "sector": sector,
                     "count": in_sector, "limit": RISK_CONFIG["max_positions_per_sector"],
                 })
-                return False, f"sector_blocked_{sector}", 0.0
+                return False, f"sector_blocked_{sector}", 0.0, 0.0
 
-    return True, "approved", max_pos_eur
+    log_decision("cro_approve", "position_sized", {
+        "ticker":           proposed.ticker,
+        "risco_assumido":   assumed_risk,
+        "mult_regime":      round(regime_mult, 4),
+        "stop_loss_atr":    round(stop_dist * 100, 2),
+        "size_eur":         round(max_pos_eur, 2),
+        "atr_based":        atr_pct > 0,
+    })
+
+    return True, "approved", max_pos_eur, assumed_risk
+
+
+def _atr_size_eur(
+    atr_pct:         float,
+    equity:          float,
+    risk_target_pct: float,
+    max_pos_pct:     float,
+    style:           str = "VALUE",
+) -> float:
+    """ATR position sizing — equaliza o risco financeiro entre activos.
+
+    Calcula o tamanho da posição tal que, se o stop ATR for atingido,
+    a perda seja exactamente risk_target_pct% da equity.
+    """
+    if atr_pct <= 0 or equity <= 0:
+        return equity * max_pos_pct / 100
+    stop_key  = "atr_stop_mult_momentum" if style == "MOMENTUM" else "atr_stop_mult_value"
+    stop_mult = CRO_CONFIG.get(stop_key, 2.0)
+    stop_dist = atr_pct * stop_mult
+    risk_eur  = equity * risk_target_pct / 100
+    return min(risk_eur / stop_dist, equity * max_pos_pct / 100)
+
+
+def _atr_stop_loss_pct(atr_pct: float, style: str) -> float:
+    """Stop loss dinâmico em % do preço de entrada, baseado no ATR e estilo do trade."""
+    stop_key  = "atr_stop_mult_momentum" if style == "MOMENTUM" else "atr_stop_mult_value"
+    stop_mult = CRO_CONFIG.get(stop_key, 2.0)
+    if atr_pct <= 0:
+        return CRO_CONFIG.get("atr_fallback_stop_pct", 5.0)
+    return round(stop_mult * atr_pct * 100, 2)
 
 
 def _generate_insights(
@@ -350,6 +443,8 @@ def _generate_insights(
     sector_exposure: dict[str, int],
     all_closed:      list[dict],
     bonnie_thr:      float = 0.60,
+    regime_mult:     float = 1.0,
+    stop_loss_pct:   float = 5.0,
 ) -> list[str]:
     insights: list[str] = []
     wr_pct = round(win_rate_7d * 100, 1)
@@ -406,8 +501,25 @@ def _generate_insights(
         f"(base {RISK_CONFIG['max_position_pct']}% × factor {rf_pct}%)."
     )
 
-    if regime in {"bear_correction", "bear_capitulation"}:
-        insights.append(f"Regime {regime}: novas entradas BLOQUEADAS pelo CRO.")
+    # Multiplicador de Regime
+    if regime_mult == 0.0:
+        insights.append(
+            f"Regime {regime}: multiplicador CRO 0× — entradas MOMENTUM VETADAS. "
+            "VALUE pode entrar a 0.25× (defensivo)."
+        )
+    elif regime_mult <= 0.25:
+        insights.append(
+            f"Regime {regime}: multiplicador CRO {regime_mult:.2f}× — modo defensivo extremo (só value)."
+        )
+    elif regime_mult < 1.0:
+        insights.append(
+            f"Regime {regime}: multiplicador CRO {regime_mult:.2f}× — alocação reduzida."
+        )
+
+    # Stop Loss ATR
+    if stop_loss_pct > 0:
+        source = "ATR dinâmico" if stop_loss_pct != CRO_CONFIG.get("atr_fallback_stop_pct", 5.0) else "fixo (fallback)"
+        insights.append(f"Stop Loss ({source}): {stop_loss_pct:.1f}% abaixo da entrada.")
 
     return insights
 

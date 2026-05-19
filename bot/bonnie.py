@@ -33,7 +33,7 @@ from .config import (
     LOGS_DIR,
     RISK_CONFIG,
 )
-from .logger import log_error
+from .logger import log_decision, log_error
 
 _DEFAULT_CONFIG_RISCO: dict = {
     "permite_comprar": True,
@@ -476,9 +476,10 @@ def filter_proposals(
 
     Retorna (approved: list[ProposedTrade], vetoed: list[tuple[ProposedTrade, str]]).
     """
-    base_threshold = bonnie_params.get("base_threshold", 0.60)
-    vol_floor      = bonnie_params.get("momentum_vol_floor", 1.0)
-    gap_pct        = bonnie_params.get("momentum_gap_down_pct", 3.0)
+    base_threshold        = bonnie_params.get("base_threshold", 0.60)
+    vol_floor             = bonnie_params.get("momentum_vol_floor", 1.0)
+    gap_pct               = bonnie_params.get("momentum_gap_down_pct", 3.0)
+    smart_money_min_ratio = bonnie_params.get("smart_money_vol_ratio", 1.2)
 
     earnings_map   = _earnings_window_map()
     threshold_days = RISK_CONFIG.get("no_trade_before_earnings_days", 2)
@@ -510,6 +511,22 @@ def filter_proposals(
         last   = t.get("last_price") or data.get("last_price")
         prev   = data.get("previous_close")
         style  = getattr(trade, "style", "VALUE")
+
+        # Smart Money gate — universal para todos os BUY (VALUE e MOMENTUM)
+        # Usa volume_ratio (SMA-10) e cai para volume_ratio_vs_avg (SMA-20) se ausente
+        vol_ratio = t.get("volume_ratio") or t.get("volume_ratio_vs_avg") or 1.0
+        if vol_ratio < smart_money_min_ratio:
+            log_decision("bonnie_rejected_low_volume", "fakeout_vetado", {
+                "ticker":       ticker,
+                "volume_ratio": round(vol_ratio, 2),
+                "threshold":    smart_money_min_ratio,
+                "style":        style,
+            })
+            vetoed.append((trade, (
+                f"FAKEOUT: volume_ratio {vol_ratio:.2f}× < {smart_money_min_ratio}× "
+                f"— sem força institucional ({style})"
+            )))
+            continue
 
         if style == "MOMENTUM":
             if vol < vol_floor:

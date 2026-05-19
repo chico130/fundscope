@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Notícias — FundScope</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <link rel="manifest" href="/fundscope/manifest.json">
+  <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#01696f">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="FundScope">
-  <link rel="apple-touch-icon" href="/fundscope/icon-192.png">
+  <link rel="apple-touch-icon" href="/icon-192.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300..700&display=swap" rel="stylesheet">
@@ -228,7 +228,6 @@
       <a href="news.html" class="nav-link active">Notícias</a>
       <a href="earnings.html" class="nav-link">Earnings</a>
       <a href="watchlist.html" class="nav-link">Watchlist</a>
-      <a href="live_portfolio.html" class="nav-link">Live Portfolio</a>
       <button class="btn-icon" id="themeToggle" aria-label="Alternar tema">
         <svg id="themeIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
       </button>
@@ -252,12 +251,7 @@
       <a href="watchlist.html" class="mobile-nav-item">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
         Watchlist
-      </a>
-      <a href="live_portfolio.html" class="mobile-nav-item">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/><polyline points="7 10 10 7 13 10 17 6"/></svg>
-        Live
-      </a>
-      <button class="mobile-nav-item" id="themeToggleMobile" aria-label="Alternar tema">
+      </a>      <button class="mobile-nav-item" id="themeToggleMobile" aria-label="Alternar tema">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         Tema
       </button>
@@ -716,7 +710,7 @@
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/fundscope/sw.js');
+        navigator.serviceWorker.register('/sw.js');
       });
     }
   </script>

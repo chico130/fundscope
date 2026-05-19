@@ -4,12 +4,12 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>FundScope</title>
-  <link rel="manifest" href="/fundscope/manifest.json">
+  <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#01696f">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="FundScope">
-  <link rel="apple-touch-icon" href="/fundscope/icon-192.png">
+  <link rel="apple-touch-icon" href="/icon-192.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300..700&display=swap" rel="stylesheet">
@@ -164,7 +164,7 @@
 </head>
 <body>
   <header class="header">
-    <a href="https://chico130.github.io/fundscope/search.html" class="logo">
+    <a href="/search.html" class="logo">
       <svg class="logo-svg" viewBox="0 0 28 28" fill="none">
         <ellipse cx="14" cy="15" rx="9" ry="7.5" fill="var(--color-primary)" opacity="0.18"/>
         <ellipse cx="14" cy="14.5" rx="8" ry="6.5" fill="var(--color-primary)"/>
@@ -820,7 +820,7 @@ if(!TICKER){
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/fundscope/sw.js');
+        navigator.serviceWorker.register('/sw.js');
       });
     }
   </script>

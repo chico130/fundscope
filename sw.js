@@ -1,31 +1,27 @@
-const CACHE_NAME = 'fundscope-v1';
+const CACHE_NAME = 'fundscope-v2';
 
 const STATIC_ASSETS = [
-  '/fundscope/',
-  '/fundscope/index.html',
-  '/fundscope/portfolio.html',
-  '/fundscope/markets.html',
-  '/fundscope/news.html',
-  '/fundscope/earnings.html',
-  '/fundscope/search.html',
-  '/fundscope/stock.html',
-  '/fundscope/watchlist.html',
-  '/fundscope/manifest.json',
-  '/fundscope/favicon.svg',
-  '/fundscope/icon-192.png',
-  '/fundscope/icon-512.png',
+  '/',
+  '/index.html',
+  '/portfolio.html',
+  '/markets.html',
+  '/news.html',
+  '/earnings.html',
+  '/search.html',
+  '/stock.html',
+  '/watchlist.html',
+  '/manifest.json',
+  '/favicon.svg',
+  '/icon-192.png',
+  '/icon-512.png',
 ];
 
+// Only cache public, non-authenticated data endpoints
 const DATA_URLS = [
-  '/fundscope/portfolio.json',
-  '/fundscope/markets.json',
-  '/fundscope/earnings.json',
-  '/fundscope/news.json',
-  '/fundscope/data.json',
-  '/fundscope/data/beta/beta_analysis.json',
-  '/fundscope/data/beta/beta_summary.json',
-  '/fundscope/data/beta/beta_trades.json',
-  '/fundscope/logs/bonnie_log.json',
+  '/markets.json',
+  '/earnings.json',
+  '/news.json',
+  '/data.json',
 ];
 
 // ── Install: pre-cache static shell ──────────────────────────────────────────
@@ -48,10 +44,13 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
   const url = new URL(event.request.url);
 
-  // Only handle same-origin requests within /fundscope/
-  if (url.origin !== location.origin || !url.pathname.startsWith('/fundscope')) return;
+  // Only handle same-origin requests
+  if (url.origin !== location.origin) return;
 
-  const isDataRequest = DATA_URLS.some(d => url.pathname.startsWith(d.replace('/fundscope', '')));
+  // Never intercept API endpoints — they require auth and vary per request
+  if (url.pathname.startsWith('/api/')) return;
+
+  const isDataRequest = DATA_URLS.some(d => url.pathname === d || url.pathname.startsWith(d + '?'));
 
   if (isDataRequest) {
     // Network First, Cache Fallback (timeout 4 s)

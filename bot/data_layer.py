@@ -138,8 +138,9 @@ def enrich_with_technicals(positions: list[dict], days: int = 60) -> list[dict]:
         ema20  = compute_ema(closes, 20)
         ema50  = compute_ema(closes, 50)
         ema200 = compute_ema(closes, 200)
-        avg_vol  = sum(volumes[-20:]) / 20 if len(volumes) >= 20 else None
-        last_vol = volumes[-1] if volumes else None
+        avg_vol    = sum(volumes[-20:]) / 20 if len(volumes) >= 20 else None
+        vol_sma_10 = sum(volumes[-10:]) / 10 if len(volumes) >= 10 else None
+        last_vol   = volumes[-1] if volumes else None
 
         spy_closes = _get_spy_closes(fetch_days)
         rs_bullish = _compute_rs_bullish(closes, spy_closes) if spy_closes else None
@@ -153,6 +154,8 @@ def enrich_with_technicals(positions: list[dict], days: int = 60) -> list[dict]:
             "ema50_above_ema200":  (ema50 > ema200) if (ema50 is not None and ema200 is not None) else None,
             "price_above_ema20":   (closes[-1] > ema20) if (ema20 is not None and closes) else None,
             "volume_ratio_vs_avg": round(last_vol / avg_vol, 2) if (last_vol and avg_vol) else None,
+            "volume_sma_10":       round(vol_sma_10, 0) if vol_sma_10 is not None else None,
+            "volume_ratio":        round(last_vol / vol_sma_10, 2) if (last_vol and vol_sma_10) else None,
             "atr_14":              compute_atr(highs, lows, closes),
             "last_price":          closes[-1] if closes else None,
             "rs_bullish":          rs_bullish,
@@ -242,8 +245,9 @@ def fetch_candidate_market_data(tickers: list[str]) -> dict[str, dict]:
         ema20  = compute_ema(closes, 20)
         ema50  = compute_ema(closes, 50)
         ema200 = compute_ema(closes, 200)
-        avg_vol  = sum(volumes[-20:]) / 20 if len(volumes) >= 20 else None
-        last_vol = volumes[-1] if volumes else None
+        avg_vol    = sum(volumes[-20:]) / 20 if len(volumes) >= 20 else None
+        vol_sma_10 = sum(volumes[-10:]) / 10 if len(volumes) >= 10 else None
+        last_vol   = volumes[-1] if volumes else None
 
         spy_closes = _get_spy_closes(210)
         rs_bullish = _compute_rs_bullish(closes, spy_closes) if spy_closes else None
@@ -258,6 +262,8 @@ def fetch_candidate_market_data(tickers: list[str]) -> dict[str, dict]:
                 "ema50_above_ema200":  (ema50 > ema200) if (ema50 is not None and ema200 is not None) else None,
                 "price_above_ema20":   (closes[-1] > ema20) if (ema20 is not None and closes) else None,
                 "volume_ratio_vs_avg": round(last_vol / avg_vol, 2) if (last_vol and avg_vol) else None,
+                "volume_sma_10":       round(vol_sma_10, 0) if vol_sma_10 is not None else None,
+                "volume_ratio":        round(last_vol / vol_sma_10, 2) if (last_vol and vol_sma_10) else None,
                 "atr_14":              compute_atr(highs, lows, closes),
                 "last_price":          closes[-1] if closes else None,
                 "rs_bullish":          rs_bullish,

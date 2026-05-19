@@ -90,4 +90,17 @@ CRO_CONFIG = {
     "bonnie_strict_threshold":   0.64,  # threshold apertado em mercado adverso
     "bonnie_strict_trigger_wr":  0.45,  # WR(N) abaixo da qual o CRO aperta a Bonnie
     "cro_insights_path":         DATA_BETA_DIR / "cro_insights.json",
+    # Multiplicadores de Regime (autoridade exclusiva CRO — independente do Clyde)
+    "regime_multiplier": {
+        "bull_trending":     1.0,   # alocação normal
+        "bull_lateral":      0.5,   # corte a metade — mercado indeciso
+        "bear_correction":   0.0,   # veto de entradas
+        "bear_capitulation": 0.0,   # veto de entradas
+    },
+    "bear_value_multiplier":      0.25,  # value em bear: 0.25× (defensivo — só sinais value)
+    # ATR Position Sizing — equaliza risco financeiro entre activos
+    "atr_risk_target_pct":        1.0,   # % da equity a arriscar por trade (via stop ATR)
+    "atr_stop_mult_momentum":     2.0,   # stop = 2× ATR abaixo da entrada (momentum)
+    "atr_stop_mult_value":        3.0,   # stop = 3× ATR abaixo da entrada (value — mais fôlego)
+    "atr_fallback_stop_pct":      5.0,   # % de stop fixo quando ATR não disponível
 }

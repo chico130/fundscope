@@ -19,7 +19,8 @@ from .config import DATA_BETA_DIR, RISK_CONFIG, STRATEGY_VERSION, PHASE1_EXECUTI
 from .regime_detector import get_current_regime, load_cached_regime, load_regime_metrics
 from .watchlist_manager import build_watchlist
 from .strategy import generate_signals, propose_trades, ProposedTrade
-from .cro import CRO
+from .cro import CRO, _atr_size_eur as _cro_atr_size, _atr_stop_loss_pct as _cro_stop_pct
+from .config import CRO_CONFIG
 from .execution import execute_trade, execute_exit
 from .learner import run_learner_cycle
 from . import exit_manager, position_ledger
@@ -243,18 +244,14 @@ def _execute_phase1(
         except Exception as exc:
             log_error("phase1_rsi_exit_failed", {"ticker": ticker, "error": str(exc)})
 
-    # ── Entradas (bloqueadas em regime bear) ──────────────────────────────
-    if regime_factor == 0.0:
-        log_decision("phase1_entries_blocked", "bear_regime", {"regime": regime})
-        return executed
-
+    # ── Entradas — gated por regime e style (CRO authority) ──────────────
     eurusd    = _fetch_eurusd()
     cash_free = state.get("cash", {}).get("free", 0.0)
 
     equity = cash_free
     for p in positions:
-        curr  = p.get("currentPrice", 0.0) or 0.0
-        qty   = p.get("quantity", 0.0) or 0.0
+        curr   = p.get("currentPrice", 0.0) or 0.0
+        qty    = p.get("quantity", 0.0) or 0.0
         native = curr * qty
         if "_US_" in (p.get("ticker") or ""):
             equity += native / eurusd if eurusd else native
@@ -278,9 +275,33 @@ def _execute_phase1(
             log_error("phase1_no_price", {"ticker": opp["ticker"]})
             continue
 
-        strength = float(opp.get("signal_strength", 0.5))
-        size_eur = strength * equity * 0.15 * regime_factor * cro_verdict.risk_factor
+        opp_style = opp.get("style", "VALUE")
+
+        # CRO regime gate: bear bloqueia MOMENTUM; VALUE passa a 0.25× (defensivo)
+        eff_regime = regime_factor
+        if regime_factor == 0.0:
+            if opp_style == "VALUE":
+                eff_regime = CRO_CONFIG.get("bear_value_multiplier", 0.25)
+            else:
+                log_decision("phase1_skip", "bear_momentum_blocked", {
+                    "ticker": opp["ticker"], "regime": regime,
+                })
+                continue
+
+        # ATR-based position sizing (CRO) — equaliza risco financeiro entre activos
+        tech    = opp.get("technicals", {})
+        atr_14  = tech.get("atr_14") or 0.0
+        atr_pct = atr_14 / price_usd if atr_14 > 0 and price_usd > 0 else 0.0
+
+        size_eur = _cro_atr_size(
+            atr_pct, equity,
+            CRO_CONFIG.get("atr_risk_target_pct", 1.0),
+            RISK_CONFIG["max_position_pct"],
+            opp_style,
+        ) * cro_verdict.risk_factor * eff_regime
         size_eur = min(size_eur, equity * max_pos_pct)
+
+        stop_loss_pct = _cro_stop_pct(atr_pct, opp_style)
 
         if size_eur < min_order_eur:
             log_decision("phase1_skip_small", "order_below_minimum", {
@@ -296,10 +317,8 @@ def _execute_phase1(
             continue
 
         t212_ticker = _yf_to_t212(opp["ticker"])
-        tech = opp.get("technicals", {})
-
-        opp_style = opp.get("style", "VALUE")
-        proposed  = ProposedTrade(
+        signal_str  = float(opp.get("signal_strength", 0.5))
+        proposed    = ProposedTrade(
             ticker=t212_ticker,
             side="BUY",
             qty=qty,
@@ -314,10 +333,11 @@ def _execute_phase1(
                 "price_above_ema20":   tech.get("price_above_ema20"),
                 "regime":              regime,
                 "watchlist_score":     opp.get("watchlist_score"),
-                "signal_strength":     strength,
+                "signal_strength":     signal_str,
                 "style":               opp_style,
+                "stop_loss_pct":       stop_loss_pct,
             },
-            signal_strength=strength,
+            signal_strength=signal_str,
             style=opp_style,
         )
 
@@ -331,11 +351,15 @@ def _execute_phase1(
                     "entry_date": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
                 }
                 log_decision("phase1_entry", "order_placed", {
-                    "ticker":   t212_ticker,
-                    "qty":      qty,
-                    "price":    price_usd,
-                    "size_eur": round(size_eur, 2),
-                    "style":    opp_style,
+                    "ticker":         t212_ticker,
+                    "qty":            qty,
+                    "price":          price_usd,
+                    "size_eur":       round(size_eur, 2),
+                    "style":          opp_style,
+                    "risco_assumido": round(size_eur * stop_loss_pct / 100, 2),
+                    "mult_regime":    round(eff_regime, 4),
+                    "stop_loss_pct":  round(stop_loss_pct, 2),
+                    "atr_pct":        round(atr_pct * 100, 3),
                 })
         except Exception as exc:
             log_error("phase1_entry_failed", {"ticker": t212_ticker, "error": str(exc)})

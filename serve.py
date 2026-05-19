@@ -17,6 +17,12 @@ import hashlib
 import time as _time
 from datetime import datetime, timezone
 
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
+
 PORT = int(sys.argv[1]) if len(sys.argv) > 1 else 8080
 
 # Mudar para a pasta do projecto (onde este ficheiro está)
@@ -30,8 +36,40 @@ SESSION_TTL = 7 * 24 * 3600  # 7 dias
 CREDENTIALS_PATH   = 'data/user_credentials.json'
 USER_UNIVERSE_PATH = 'data/beta/user_universe.json'
 
+# Master credential — env-first, file-fallback via _verify_credentials
+AUTH_USER     = os.environ.get('FUNDSCOPE_AUTH_USER', 'admin')
+AUTH_PASSWORD = os.environ.get('FUNDSCOPE_AUTH_PASSWORD', '')
+
+# Whitelists — prevent path traversal
+ALLOWED_BETA = {
+    'beta_summary.json',
+    'beta_positions.json',
+    'beta_trades.json',
+    'beta_analysis.json',
+    'beta_equity.json',
+    'cro_insights.json',
+    'regime.json',
+    'watchlist.json',
+    'position_meta.json',
+    'positions_ledger.json',
+    'earnings_ai.json',
+    'watchlist_fundamentals.json',
+}
+ALLOWED_DATA = {
+    'markets.json',
+    'earnings.json',
+}
+ALLOWED_LOGS = {
+    'bonnie_log.json',
+}
+
 
 def _verify_credentials(username: str, password: str) -> bool:
+    # 1) Master credential from .env
+    if AUTH_PASSWORD and username == AUTH_USER and \
+       secrets.compare_digest(password, AUTH_PASSWORD):
+        return True
+    # 2) Fallback — hashed credentials file
     try:
         with open(CREDENTIALS_PATH, encoding='utf-8') as f:
             creds = json.load(f)
@@ -76,6 +114,14 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         parsed = urllib.parse.urlparse(self.path)
         if parsed.path == '/api/stock-review':
             self._handle_stock_review(parsed.query)
+        elif parsed.path == '/api/portfolio':
+            self._handle_get_portfolio()
+        elif parsed.path.startswith('/api/beta/'):
+            self._handle_get_beta(parsed.path[len('/api/beta/'):])
+        elif parsed.path.startswith('/api/data/'):
+            self._handle_get_data(parsed.path[len('/api/data/'):])
+        elif parsed.path.startswith('/api/logs/'):
+            self._handle_get_logs(parsed.path[len('/api/logs/'):])
         else:
             super().do_GET()
 
@@ -151,6 +197,65 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         except Exception as e:
             self._send_json({'error': str(e)}, 500)
 
+    def _require_auth(self) -> bool:
+        if _valid_token(self._get_bearer_token()):
+            return True
+        self._send_json({'error': 'não autenticado'}, 401)
+        return False
+
+    def _handle_get_portfolio(self):
+        if not self._require_auth():
+            return
+        try:
+            with open('portfolio.json', 'r', encoding='utf-8') as f:
+                self._send_json(json.load(f))
+        except FileNotFoundError:
+            self._send_json({'error': 'portfolio.json em falta'}, 404)
+        except Exception as e:
+            self._send_json({'error': str(e)}, 500)
+
+    def _handle_get_beta(self, filename: str):
+        if not self._require_auth():
+            return
+        if filename not in ALLOWED_BETA:
+            self._send_json({'error': 'recurso não permitido'}, 403)
+            return
+        try:
+            with open(f'data/beta/{filename}', 'r', encoding='utf-8') as f:
+                self._send_json(json.load(f))
+        except FileNotFoundError:
+            self._send_json({'error': 'em falta'}, 404)
+        except Exception as e:
+            self._send_json({'error': str(e)}, 500)
+
+    def _handle_get_data(self, filename: str):
+        if not self._require_auth():
+            return
+        if filename not in ALLOWED_DATA:
+            self._send_json({'error': 'recurso não permitido'}, 403)
+            return
+        try:
+            with open(filename, 'r', encoding='utf-8') as f:
+                self._send_json(json.load(f))
+        except FileNotFoundError:
+            self._send_json({'error': 'em falta'}, 404)
+        except Exception as e:
+            self._send_json({'error': str(e)}, 500)
+
+    def _handle_get_logs(self, filename: str):
+        if not self._require_auth():
+            return
+        if filename not in ALLOWED_LOGS:
+            self._send_json({'error': 'recurso não permitido'}, 403)
+            return
+        try:
+            with open(f'logs/{filename}', 'r', encoding='utf-8') as f:
+                self._send_json(json.load(f))
+        except FileNotFoundError:
+            self._send_json({'error': 'em falta'}, 404)
+        except Exception as e:
+            self._send_json({'error': str(e)}, 500)
+
     def _handle_stock_review(self, query_string):
         params = urllib.parse.parse_qs(query_string)
         ticker = (params.get('ticker', [''])[0]).upper().strip()
@@ -192,8 +297,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 if __name__ == "__main__":
     with http.server.HTTPServer(("127.0.0.1", PORT), Handler) as httpd:
         print(f"\n  FundScope a correr em  http://localhost:{PORT}")
-        print(f"  Live Portfolio:        http://localhost:{PORT}/live_portfolio.html")
-        print(f"  Portfólio (análise):   http://localhost:{PORT}/portfolio.html")
+        print(f"  Portfólio (protegido): http://localhost:{PORT}/portfolio.html")
         print(f"  Mercados:              http://localhost:{PORT}/markets.html")
         print(f"  Notícias:              http://localhost:{PORT}/news.html")
         print(f"  Earnings:              http://localhost:{PORT}/earnings.html")

@@ -1,20 +1,20 @@
 {
-  "timestamp": "2026-05-18T22:31:39.333438+00:00",
+  "timestamp": "2026-05-18T11:25:41.418199+00:00",
   "mode": "phase1_auto",
   "strategy_version": "v0.1.0",
   "note": "Fase 1 — execução automática activa. LIVE_TRADING=False (conta demo).",
   "regime": "bull_lateral",
   "regime_alert": false,
   "regime_details": {
-    "spy_price": 738.65,
-    "ema200": 675.99,
-    "ema50": 704.57,
+    "spy_price": 739.17,
+    "ema200": 675.36,
+    "ema50": 703.18,
     "ema50_above_ema200": true,
-    "spy_pct_from_ema200": 9.27,
-    "atr_current": 7.6204,
-    "atr_ratio_vs_60d_mean": 0.8552,
-    "spy_return_20d": 0.0491,
-    "rsp_spy_ratio_chg_20d": -0.0456,
+    "spy_pct_from_ema200": 9.45,
+    "atr_current": 7.5605,
+    "atr_ratio_vs_60d_mean": 0.8475,
+    "spy_return_20d": 0.043,
+    "rsp_spy_ratio_chg_20d": -0.0517,
     "breadth_healthy": false
   },
   "watchlist_top5": [
@@ -75,9 +75,11 @@
   "n_positions": 1,
   "open_trades": 0,
   "risk_status": {
-    "ok": true,
-    "total_equity_eur": 5015.03,
-    "warnings": []
+    "ok": false,
+    "total_equity_eur": 114.99,
+    "warnings": [
+      "GOOGL_US_EQ representa 100.0% da carteira (limite: 20.0%)"
+    ]
   },
   "signals": [
     {
@@ -85,29 +87,31 @@
       "action": "hold",
       "size_factor": 0.6,
       "signals": [
-        "RSI-14 elevado (70.3) — monitorizar pressão de venda",
+        "RSI-14 elevado (70.2) — monitorizar pressão de venda",
         "Tendência ascendente: EMA-50 > EMA-200"
       ],
       "technicals": {
-        "rsi_14": 70.3,
+        "rsi_14": 70.24,
         "ema50_above_ema200": true,
-        "volume_ratio_vs_avg": 0.94
+        "volume_ratio_vs_avg": 0.73
       }
     }
   ],
   "data_sources": {
     "prices": "finnhub+yfinance",
-    "t212_sync": "2026-05-18T20:12:29.489417+00:00",
+    "t212_sync": null,
     "stale_prices": []
   },
   "cro": {
-    "risk_factor": 0.625,
+    "risk_factor": 0.5208,
     "win_rate_7d": 0.5,
     "drawdown_pct": 0.0,
     "insights": [
-      "Win rate 7d em 50.0% — acima do alvo elástico (48.0%). Factor de risco positivo: 62%.",
+      "Win rate 7d em 50.0% — acima do alvo elástico (48.0%). Factor de risco positivo: 52%.",
       "Sem trades fechados — sem lições disponíveis ainda.",
-      "Tamanho máximo CRO: 12.5% da equity (base 20.0% × factor 62%)."
+      "Tamanho máximo CRO: 10.4% da equity (base 20.0% × factor 52%).",
+      "Regime bull_lateral: multiplicador CRO 0.50× — alocação reduzida.",
+      "Stop Loss (fixo (fallback)): 5.0% abaixo da entrada."
     ]
   },
   "executed_trades": []
