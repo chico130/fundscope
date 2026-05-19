@@ -725,6 +725,13 @@ const loginOverlay = document.getElementById('loginOverlay');
 const appMain      = document.getElementById('appMain');
 const logoutBtn    = document.getElementById('logoutBtn');
 
+// ── Estado global — declarado antes do showApp() para evitar TDZ ─────────────
+let activeTab    = 'live';
+let liveLoaded   = false;
+let clydeLoaded  = false;
+let bonnieLoaded = false;
+let pollingTimer = null;
+
 // ── Live tab helpers ──────────────────────────────────────────────────────────
 const fmtEur  = v => v != null
   ? new Intl.NumberFormat('pt-PT', { style: 'currency', currency: 'EUR', minimumFractionDigits: 2 }).format(v)
@@ -806,12 +813,6 @@ logoutBtn.addEventListener('click', () => {
 });
 
 // ── Tabs + Polling ───────────────────────────────────────────────────────────
-let activeTab    = 'live';
-let liveLoaded   = false;
-let clydeLoaded  = false;
-let bonnieLoaded = false;
-let pollingTimer = null;
-
 const REFRESH_S = 30;
 
 function startPolling() {
@@ -1495,6 +1496,7 @@ function renderLiveKPIs(summary) {
 
 function renderLivePositions(positions) {
   const tbody = document.getElementById('posTableBody');
+  if (!tbody) { console.error('[FundScope] elemento posTableBody não encontrado'); return; }
   if (!positions || positions.length === 0) {
     document.getElementById('posCount').textContent = '0 posicoes';
     tbody.innerHTML = '<tr><td colspan="7"><div class="state-box"><div class="state-icon">&#128237;</div>' +
@@ -1540,18 +1542,25 @@ async function loadLive() {
   if (btn) btn.classList.add('spinning');
   try {
     const data = await authFetch('/api/portfolio');
-    if (!data) throw new Error('sem dados');
+    if (!data) throw new Error('sem dados do servidor (ver serve.py)');
+    const positions = Array.isArray(data.positions) ? data.positions : [];
+    const summary   = data.summary && typeof data.summary === 'object' ? data.summary : {};
+    if (!Array.isArray(data.positions)) {
+      console.warn('[FundScope] portfolio.json: campo "positions" ausente ou não é array. Recebido:', typeof data.positions, data.positions);
+    }
+    console.log('[FundScope] loadLive ok — updated:', data.updated, '| posições:', positions.length, '| summary:', summary);
     document.getElementById('liveErrorBanner').style.display = 'none';
     const badge = document.getElementById('liveBadge');
     badge.innerHTML = '<span class="live-dot"></span> Live';
     badge.style.color = 'var(--color-success)';
     const updEl = document.getElementById('liveUpdatedLabel');
     if (updEl) updEl.textContent = data.updated ? 'Atualizado ' + liveRelTime(data.updated) : '';
-    renderLiveKPIs(data.summary || {});
-    renderLivePositions(data.positions || []);
-    renderLiveSummary(data.summary || {});
+    renderLiveKPIs(summary);
+    renderLivePositions(positions);
+    renderLiveSummary(summary);
   } catch (err) {
     if (err.message === 'unauthorized') return;
+    console.error('[FundScope] loadLive falhou:', err);
     const banner = document.getElementById('liveErrorBanner');
     banner.textContent = 'Erro ao carregar portfolio: ' + err.message;
     banner.style.display = 'block';
