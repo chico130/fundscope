@@ -81,7 +81,12 @@
       "Bash(schtasks /query /tn \"FundScope_Earnings_Daily\" /fo LIST)",
       "Bash(findstr /R \"TaskName Schedule Start\\\\|Next Run\")",
       "Bash(schtasks /query /tn \"FundScope_Earnings_Daily\")",
-      "Bash(git check-ignore *)"
+      "Bash(git check-ignore *)",
+      "Bash(ssh -o BatchMode=yes -o StrictHostKeyChecking=no -o ConnectTimeout=10 ubuntu@134.98.141.58 \"echo 'SSH OK'; uname -a; free -h; df -h /; cat /etc/os-release | grep PRETTY\")",
+      "Read(//c/Users/arauj/.ssh/**)",
+      "Read(//mnt/c/Users/arauj/**)",
+      "Bash(powershell.exe -Command \"ls ~\\\\.ssh\\\\\" 2>/dev/null | head -20)",
+      "PowerShell(Get-ChildItem \"$env:USERPROFILE\\\\.ssh\\\\\" -ErrorAction SilentlyContinue | Select-Object Name, Length)"
     ]
   }
 }
