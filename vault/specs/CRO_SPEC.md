@@ -1,3 +1,16 @@
+---
+id: spec-cro
+title: "CRO — Especificação Completa"
+type: spec
+domain: cro
+regime: n/a
+tags: [spec, cro, kill-switch, risco-sistemico]
+links_obrigatorios:
+  parent_moc: "[[MOC_CRO]]"
+  vizinhos: "[[MOC_Bonnie]] [[MOC_Clyde]] [[MOC_Infraestrutura]]"
+status: stable
+ultima_revisao: 2026-05-19
+---
 # 🏛️ SPEC: CHIEF RISK OFFICER (CRO) — SYSTEMIC RISK ENGINE
 
 O CRO é o cérebro institucional supremo do FundScope.  

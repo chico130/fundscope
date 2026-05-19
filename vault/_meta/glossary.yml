@@ -1,0 +1,102 @@
+# glossary.yml — Fonte de verdade para inject_graph_links.py (Fase 3)
+# Formato: "termo a detectar": "alvo do link Obsidian (nome do ficheiro sem .md)"
+# Termos mais longos primeiro (inject_graph_links.py ordena por comprimento desc)
+
+# --- Agentes do sistema ---
+"Chief Risk Officer": MOC_CRO
+"CRO": MOC_CRO
+"Clyde": MOC_Clyde
+"Bonnie": MOC_Bonnie
+
+# --- Módulos Python (bot/) ---
+"regime_detector.py": regime_detector
+"regime_detector": MOC_CRO
+"strategy.py": strategy
+"execution.py": execution
+"api_client.py": api_client
+"exit_manager.py": exit_manager
+"price_feed.py": price_feed
+"feature_builder.py": feature_builder
+"bonnie.py": bonnie
+"cro.py": cro
+"learner.py": learner
+"model_trainer.py": model_trainer
+"evaluate_bonnie.py": evaluate_bonnie
+"position_ledger.py": position_ledger
+"backtest.py": backtest
+"mass_backtest.py": mass_backtest
+"phase0.py": phase0
+"main.py": main
+"watchdog.py": watchdog
+"watchlist_manager.py": watchlist_manager
+"config.py": config
+"data_layer.py": data_layer
+"notifier.py": notifier
+"reporter.py": reporter
+"logger.py": logger
+"serve.py": serve
+
+# --- Indicadores técnicos ---
+"RSI-14": atom-rsi14
+"EMA-50": atom-ema50
+"EMA-200": atom-ema200
+"ATR": atom-atr
+"Relative Strength": atom-rs
+"volume ratio": atom-volume-ratio
+"Calmar ratio": atom-calmar
+"Profit Factor": atom-profit-factor
+"compute_ema": MOC_Clyde
+
+# --- APIs e serviços externos ---
+"Trading212": atom-trading212
+"T212": atom-trading212
+"Finnhub": atom-finnhub
+"yfinance": atom-yfinance
+"Marketaux": atom-marketaux
+"Telegram": MOC_Infraestrutura
+"ThreadPoolExecutor": atom-threadpool
+
+# --- Ficheiros JSON de dados ---
+"beta_summary.json": MOC_Frontend
+"beta_positions.json": MOC_Frontend
+"beta_trades.json": MOC_Bonnie
+"beta_equity.json": MOC_Frontend
+"cro_insights.json": MOC_CRO
+"bonnie_log.json": MOC_Bonnie
+"config_risco.json": MOC_Infraestrutura
+"user_universe.json": MOC_Clyde
+"watchlist_fundamentals.json": MOC_Clyde
+"earnings_ai.json": MOC_Frontend
+"positions_ledger.json": MOC_Bonnie
+
+# --- Conceitos de risco ---
+"kill-switch": MOC_CRO
+"kill switch": MOC_CRO
+"estado_emocional": MOC_CRO
+"permite_comprar": MOC_CRO
+"drawdown": MOC_CRO
+"max_daily_loss_pct": MOC_Bonnie
+"max_position_pct": MOC_Bonnie
+"stop loss": MOC_Bonnie
+"take profit": MOC_Clyde
+
+# --- Regimes de mercado ---
+"regime macro": MOC_CRO
+"bull": MOC_CRO
+"bear": MOC_CRO
+
+# --- Infraestrutura ---
+"log_error": MOC_Infraestrutura
+"log_decision": MOC_Infraestrutura
+"systemd": VPS_MIGRATION_SPEC
+"Oracle Cloud": VPS_MIGRATION_SPEC
+"Caddy": VPS_MIGRATION_SPEC
+"GitHub Actions": MOC_Frontend
+"GitHub Pages": MOC_Frontend
+
+# --- Documentação ---
+"GRAPH_REPORT.md": graphify-out/GRAPH_REPORT
+"ROADMAP_FRONTEND": ROADMAP_FRONTEND
+"CRO_SPEC": CRO_SPEC
+"FASE-1": FASE-1
+"VPS_MIGRATION_SPEC": VPS_MIGRATION_SPEC

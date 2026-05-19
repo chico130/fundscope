@@ -1,3 +1,16 @@
+---
+id: template-learner
+title: "Template — Learner Pattern"
+type: template
+domain: bonnie
+regime: n/a
+tags: [template, learner, bonnie, ml]
+links_obrigatorios:
+  parent_moc: "[[MOC_Bonnie]]"
+  vizinhos: "[[MOC_Clyde]] [[MOC_Infraestrutura]]"
+status: draft
+ultima_revisao: 2026-05-19
+---
 # Diário de Mutações do Learner
 
 Registo semanal das alterações de regime detectadas pelo módulo Learner (Bonnie).

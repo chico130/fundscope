@@ -1,3 +1,16 @@
+---
+id: spec-roadmap-frontend
+title: "ROADMAP — Frontend Dashboard"
+type: spec
+domain: frontend
+regime: n/a
+tags: [spec, frontend, roadmap, ux]
+links_obrigatorios:
+  parent_moc: "[[MOC_Frontend]]"
+  vizinhos: "[[MOC_Infraestrutura]] [[MOC_CRO]]"
+status: stable
+ultima_revisao: 2026-05-19
+---
 # ROADMAP_FRONTEND.md — A Bíblia da Evolução do FundScope
 
 > **Versão:** 1.0 | **Data:** 2026-05-18 | **Autor:** chico130 + Claude

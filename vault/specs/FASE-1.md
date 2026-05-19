@@ -1,3 +1,16 @@
+---
+id: spec-fase1
+title: "FASE-1 — Roadmap e Diagnóstico do Bot"
+type: spec
+domain: geral
+regime: n/a
+tags: [spec, roadmap, bot, diagnostico]
+links_obrigatorios:
+  parent_moc: "[[MOC_FundScope]]"
+  vizinhos: "[[MOC_Clyde]] [[MOC_Bonnie]] [[MOC_CRO]]"
+status: stable
+ultima_revisao: 2026-05-19
+---
 # FundScope Bot — Relatório de Diagnóstico, Estratégia e Roadmap de Evolução
 
 > **Destinatário:** Claude Code (configuração e desenvolvimento do bot)

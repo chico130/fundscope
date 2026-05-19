@@ -1,3 +1,16 @@
+---
+id: spec-handoff
+title: "Spec Handoff — Auth, Routing e serve.py"
+type: spec
+domain: infra
+regime: n/a
+tags: [spec, auth, serve, routing]
+links_obrigatorios:
+  parent_moc: "[[MOC_Infraestrutura]]"
+  vizinhos: "[[MOC_Frontend]] [[MOC_CRO]]"
+status: stable
+ultima_revisao: 2026-05-19
+---
 # FundScope — Documento de Especificação Técnica e Plano de Acção
 
 **Destinatário:** Claude 3.5 Sonnet (executor)

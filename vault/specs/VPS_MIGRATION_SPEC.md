@@ -1,3 +1,16 @@
+---
+id: spec-vps
+title: "VPS Migration — Oracle Cloud"
+type: spec
+domain: infra
+regime: n/a
+tags: [spec, vps, oracle, systemd, caddy]
+links_obrigatorios:
+  parent_moc: "[[MOC_Infraestrutura]]"
+  vizinhos: "[[MOC_Frontend]] [[MOC_CRO]]"
+status: draft
+ultima_revisao: 2026-05-19
+---
 # FundScope — Migração para VPS Oracle Cloud (Especificação Executável)
 
 > **Audiência**: agente de execução (Claude Sonnet / Claude Code) com SSH no VPS.

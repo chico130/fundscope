@@ -1,3 +1,16 @@
+---
+id: atom-master-prompts
+title: "Master Prompts — Gates do Sistema"
+type: atom
+domain: geral
+regime: n/a
+tags: [atom, prompts, clyde, bonnie, gates]
+links_obrigatorios:
+  parent_moc: "[[MOC_FundScope]]"
+  vizinhos: "[[MOC_Clyde]] [[MOC_Bonnie]] [[MOC_CRO]]"
+status: stable
+ultima_revisao: 2026-05-19
+---
 # 🏛️ Biblioteca de Master Prompts — FundScope
 
 Nesta nota estão guardadas as instruções estruturais de elite para os upgrades do sistema. Sempre que for necessário reconstruir ou recalibrar os motores, usar estes prompts no Claude Code.

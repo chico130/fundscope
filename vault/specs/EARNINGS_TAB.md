@@ -1,3 +1,16 @@
+---
+id: spec-earnings
+title: "Earnings Tab — Especificação"
+type: spec
+domain: frontend
+regime: n/a
+tags: [spec, earnings, frontend, calendario]
+links_obrigatorios:
+  parent_moc: "[[MOC_Frontend]]"
+  vizinhos: "[[MOC_Clyde]] [[MOC_Bonnie]]"
+status: stable
+ultima_revisao: 2026-05-19
+---
 # Tab de Earnings — Especificação
 
 ## Objetivo

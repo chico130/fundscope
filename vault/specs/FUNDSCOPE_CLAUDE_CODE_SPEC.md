@@ -1,3 +1,16 @@
+---
+id: spec-global
+title: "FundScope — Especificação Técnica Global"
+type: spec
+domain: geral
+regime: n/a
+tags: [spec, global, arquitetura]
+links_obrigatorios:
+  parent_moc: "[[MOC_FundScope]]"
+  vizinhos: "[[MOC_Clyde]] [[MOC_Bonnie]] [[MOC_CRO]]"
+status: stable
+ultima_revisao: 2026-05-19
+---
 # FundScope – Especificação Completa para Claude Code
 **Versão:** 0.1 | **Data:** 2026-05-13 | **Autor:** chico130
 
