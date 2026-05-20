@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-05-20T18:40:02.362221+00:00",
+  "timestamp": "2026-05-20T20:54:39.161702+00:00",
   "mode": "phase1_auto",
   "strategy_version": "v0.1.0",
   "note": "Fase 1 — execução automática activa. LIVE_TRADING=False (conta demo).",
@@ -91,7 +91,7 @@
   "open_trades": 0,
   "risk_status": {
     "ok": true,
-    "total_equity_eur": 5012.3,
+    "total_equity_eur": 5012.71,
     "warnings": []
   },
   "signals": [
@@ -100,19 +100,19 @@
       "action": "hold",
       "size_factor": 1.0,
       "signals": [
-        "RSI-14 neutro (62.0)",
+        "RSI-14 neutro (62.7)",
         "Tendência ascendente: EMA-50 > EMA-200"
       ],
       "technicals": {
-        "rsi_14": 62.05,
+        "rsi_14": 62.7,
         "ema50_above_ema200": true,
-        "volume_ratio_vs_avg": 0.62
+        "volume_ratio_vs_avg": 1.03
       }
     }
   ],
   "data_sources": {
     "prices": "finnhub+yfinance",
-    "t212_sync": "2026-05-20T18:40:00.920509+00:00",
+    "t212_sync": "2026-05-20T20:54:37.870200+00:00",
     "stale_prices": []
   },
   "cro": {
