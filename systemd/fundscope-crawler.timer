@@ -1,0 +1,14 @@
+[Unit]
+Description=Dispara o FundScope Social Crawler a cada 4h
+Documentation=https://github.com/fundscope
+
+[Timer]
+# Primeiro disparo 10 min após o boot, depois a cada 4h.
+OnBootSec=10min
+OnUnitActiveSec=4h
+# Recupera disparos perdidos se o VPS estiver desligado na hora prevista.
+Persistent=true
+Unit=fundscope-crawler.service
+
+[Install]
+WantedBy=timers.target

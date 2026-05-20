@@ -25,8 +25,9 @@ from .execution import execute_trade, execute_exit
 from .learner import run_learner_cycle
 from . import exit_manager, position_ledger
 
-POSITION_META_PATH = DATA_BETA_DIR / "position_meta.json"
-_LAST_WAKE_PATH    = DATA_BETA_DIR / "last_wake.txt"
+POSITION_META_PATH    = DATA_BETA_DIR / "position_meta.json"
+_LAST_WAKE_PATH       = DATA_BETA_DIR / "last_wake.txt"
+SOCIAL_SENTIMENT_PATH = DATA_BETA_DIR / "social_sentiment.json"
 
 _BEAR_REGIMES = {"bear_correction", "bear_capitulation"}
 _LATERAL_SIZE_FACTOR = 0.6   # redução de posição sugerida em bull_lateral (secção 4, FASE-1.md)
@@ -160,6 +161,57 @@ def _apply_bonnie_filter(opportunities: list[dict]) -> list[dict]:
 
     except Exception as exc:
         log_error("bonnie_filter_failed", {"error": str(exc)})
+        return opportunities  # fail-open
+
+
+def _load_social_sentiment() -> dict:
+    """Lê social_sentiment.json com failsafe de TTL. Ausente/velho → {} (sem veto).
+
+    O crawler corre num processo separado (cron); se estiver em baixo ou o ficheiro
+    for mais velho que o seu próprio ttl_minutes, o bot comporta-se como se não
+    houvesse dados sociais — nunca bloqueia por dados obsoletos.
+    """
+    if not SOCIAL_SENTIMENT_PATH.exists():
+        return {}
+    try:
+        with open(SOCIAL_SENTIMENT_PATH, encoding="utf-8") as f:
+            data = json.load(f)
+    except (json.JSONDecodeError, OSError):
+        return {}
+    ttl_min = data.get("ttl_minutes", 240)
+    age_min = (time.time() - SOCIAL_SENTIMENT_PATH.stat().st_mtime) / 60
+    if age_min > ttl_min:
+        log_decision("social_sentiment_stale", "ignored",
+                     {"age_min": round(age_min, 1), "ttl_min": ttl_min})
+        return {}
+    return data
+
+
+def _apply_social_veto(opportunities: list[dict]) -> list[dict]:
+    """Remove oportunidades com veto social (pânico Reddit / divergência de analistas).
+
+    Espelha _apply_bonnie_filter: fail-open e loga cada veto. Tickers usam o símbolo
+    yfinance, a mesma chave do social_sentiment.json (ambos vêm da watchlist).
+    """
+    if not opportunities:
+        return opportunities
+    try:
+        social = _load_social_sentiment().get("tickers", {})
+        if not social:
+            return opportunities
+
+        kept: list[dict] = []
+        for opp in opportunities:
+            veto = (social.get(opp["ticker"]) or {}).get("veto")
+            if veto:
+                log_decision("social_veto", "opportunity_filtered",
+                             {"ticker": opp["ticker"], "reason": veto})
+            else:
+                kept.append(opp)
+        return kept
+
+    except Exception as exc:
+        log_error("social_veto_failed", {"error": str(exc)})
         return opportunities  # fail-open
 
 
@@ -425,6 +477,9 @@ def run(*, git_sync: bool = True) -> dict:
 
     # Filtro Bonnie: remove oportunidades que não passam os limiares por estilo
     buy_opportunities = _apply_bonnie_filter(buy_opportunities)
+
+    # Filtro social: veto por pânico (Reddit) ou divergência extrema (analistas)
+    buy_opportunities = _apply_social_veto(buy_opportunities)
 
     risk_status = _risk_snapshot(positions, cash)
     open_trades = _count_open_trades()
