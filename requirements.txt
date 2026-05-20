@@ -12,3 +12,7 @@ finnhub-python>=2.4.18
 # Social Crawler (sentimento — passos 1-6, zero tokens)
 praw>=7.7.0
 vaderSentiment>=3.3.2
+
+# Calibração offline (bot/calibration)
+pyarrow>=14.0.0
+lxml>=4.9.0

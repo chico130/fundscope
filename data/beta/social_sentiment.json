@@ -1,0 +1,668 @@
+{
+  "anomalies": [],
+  "generated_at_utc": "2026-05-20T23:07:10Z",
+  "schema_version": 1,
+  "tickers": {
+    "AAPL": {
+      "analyst": {
+        "bull_ratio": 0.685,
+        "divergence": false,
+        "n_analysts": 54,
+        "period": "2026-05-01"
+      },
+      "reddit": null,
+      "twitter": null,
+      "veto": null
+    },
+    "ADI": {
+      "analyst": {
+        "bull_ratio": 0.829,
+        "divergence": false,
+        "n_analysts": 41,
+        "period": "2026-05-01"
+      },
+      "reddit": null,
+      "twitter": null,
+      "veto": null
+    },
+    "AMD": {
+      "analyst": {
+        "bull_ratio": 0.746,
+        "divergence": false,
+        "n_analysts": 59,
+        "period": "2026-05-01"
+      },
+      "reddit": null,
+      "twitter": null,
+      "veto": null
+    },
+    "AMZN": {
+      "analyst": {
+        "bull_ratio": 0.923,
+        "divergence": false,
+        "n_analysts": 78,
+        "period": "2026-05-01"
+      },
+      "reddit": null,
+      "twitter": null,
+      "veto": null
+    },
+    "APA": {
+      "analyst": {
+        "bull_ratio": 0.182,
+        "divergence": false,
+        "n_analysts": 33,
+        "period": "2026-05-01"
+      },
+      "reddit": null,
+      "twitter": null,
+      "veto": null
+    },
+    "APP": {
+      "analyst": {
+        "bull_ratio": 0.889,
+        "divergence": false,
+        "n_analysts": 36,
+        "period": "2026-05-01"
+      },
+      "reddit": null,
+      "twitter": null,
+      "veto": null
+    },
+    "AR": {
+      "analyst": {
+        "bull_ratio": 0.759,
+        "divergence": false,
+        "n_analysts": 29,
+        "period": "2026-05-01"
+      },
+      "reddit": null,
+      "twitter": null,
+      "veto": null
+    },
+    "ARM": {
+      "analyst": {
+        "bull_ratio": 0.6,
+        "divergence": false,
+        "n_analysts": 45,
+        "period": "2026-05-01"
+      },
+      "reddit": null,
+      "twitter": null,
+      "veto": null
+    },
+    "AVGO": {
+      "analyst": {
+        "bull_ratio": 0.93,
+        "divergence": false,
+        "n_analysts": 57,
+        "period": "2026-05-01"
+      },
+      "reddit": null,
+      "twitter": null,
+      "veto": null
+    },
+    "CAT": {
+      "analyst": {
+        "bull_ratio": 0.441,
+        "divergence": false,
+        "n_analysts": 34,
+        "period": "2026-05-01"
+      },
+      "reddit": null,
+      "twitter": null,
+      "veto": null
+    },
+    "CDNS": {
+      "analyst": {
+        "bull_ratio": 0.906,
+        "divergence": false,
+        "n_analysts": 32,
+        "period": "2026-05-01"
+      },
+      "reddit": null,
+      "twitter": null,
+      "veto": null
+    },
+    "COST": {
+      "analyst": {
+        "bull_ratio": 0.659,
+        "divergence": false,
+        "n_analysts": 44,
+        "period": "2026-05-01"
+      },
+      "reddit": null,
+      "twitter": null,
+      "veto": null
+    },
+    "CRWD": {
+      "analyst": {
+        "bull_ratio": 0.774,
+        "divergence": false,
+        "n_analysts": 62,
+        "period": "2026-05-01"
+      },
+      "reddit": null,
+      "twitter": null,
+      "veto": null
+    },
+    "CSCO": {
+      "analyst": {
+        "bull_ratio": 0.719,
+        "divergence": false,
+        "n_analysts": 32,
+        "period": "2026-05-01"
+      },
+      "reddit": null,
+      "twitter": null,
+      "veto": null
+    },
+    "CVI": {
+      "analyst": {
+        "bull_ratio": -0.6,
+        "divergence": false,
+        "n_analysts": 15,
+        "period": "2026-05-01"
+      },
+      "reddit": null,
+      "twitter": null,
+      "veto": null
+    },
+    "CVS": {
+      "analyst": {
+        "bull_ratio": 0.788,
+        "divergence": false,
+        "n_analysts": 33,
+        "period": "2026-05-01"
+      },
+      "reddit": null,
+      "twitter": null,
+      "veto": null
+    },
+    "D": {
+      "analyst": {
+        "bull_ratio": 0.25,
+        "divergence": false,
+        "n_analysts": 28,
+        "period": "2026-05-01"
+      },
+      "reddit": null,
+      "twitter": null,
+      "veto": null
+    },
+    "DDOG": {
+      "analyst": {
+        "bull_ratio": 0.893,
+        "divergence": false,
+        "n_analysts": 56,
+        "period": "2026-05-01"
+      },
+      "reddit": null,
+      "twitter": null,
+      "veto": null
+    },
+    "DVN": {
+      "analyst": {
+        "bull_ratio": 0.781,
+        "divergence": false,
+        "n_analysts": 32,
+        "period": "2026-05-01"
+      },
+      "reddit": null,
+      "twitter": null,
+      "veto": null
+    },
+    "ELV": {
+      "analyst": {
+        "bull_ratio": 0.552,
+        "divergence": false,
+        "n_analysts": 29,
+        "period": "2026-05-01"
+      },
+      "reddit": null,
+      "twitter": null,
+      "veto": null
+    },
+    "EOG": {
+      "analyst": {
+        "bull_ratio": 0.513,
+        "divergence": false,
+        "n_analysts": 39,
+        "period": "2026-05-01"
+      },
+      "reddit": null,
+      "twitter": null,
+      "veto": null
+    },
+    "FANG": {
+      "analyst": {
+        "bull_ratio": 0.868,
+        "divergence": false,
+        "n_analysts": 38,
+        "period": "2026-05-01"
+      },
+      "reddit": null,
+      "twitter": null,
+      "veto": null
+    },
+    "FTNT": {
+      "analyst": {
+        "bull_ratio": 0.25,
+        "divergence": false,
+        "n_analysts": 52,
+        "period": "2026-05-01"
+      },
+      "reddit": null,
+      "twitter": null,
+      "veto": null
+    },
+    "GOOGL": {
+      "analyst": {
+        "bull_ratio": 0.886,
+        "divergence": false,
+        "n_analysts": 70,
+        "period": "2026-05-01"
+      },
+      "reddit": null,
+      "twitter": null,
+      "veto": null
+    },
+    "GWW": {
+      "analyst": {
+        "bull_ratio": 0.167,
+        "divergence": false,
+        "n_analysts": 24,
+        "period": "2026-05-01"
+      },
+      "reddit": null,
+      "twitter": null,
+      "veto": null
+    },
+    "HAL": {
+      "analyst": {
+        "bull_ratio": 0.667,
+        "divergence": false,
+        "n_analysts": 33,
+        "period": "2026-05-01"
+      },
+      "reddit": null,
+      "twitter": null,
+      "veto": null
+    },
+    "HPE": {
+      "analyst": {
+        "bull_ratio": 0.5,
+        "divergence": false,
+        "n_analysts": 26,
+        "period": "2026-05-01"
+      },
+      "reddit": null,
+      "twitter": null,
+      "veto": null
+    },
+    "HUM": {
+      "analyst": {
+        "bull_ratio": 0.242,
+        "divergence": false,
+        "n_analysts": 33,
+        "period": "2026-05-01"
+      },
+      "reddit": null,
+      "twitter": null,
+      "veto": null
+    },
+    "INTC": {
+      "analyst": {
+        "bull_ratio": 0.278,
+        "divergence": false,
+        "n_analysts": 54,
+        "period": "2026-05-01"
+      },
+      "reddit": null,
+      "twitter": null,
+      "veto": null
+    },
+    "KO": {
+      "analyst": {
+        "bull_ratio": 0.829,
+        "divergence": false,
+        "n_analysts": 35,
+        "period": "2026-05-01"
+      },
+      "reddit": null,
+      "twitter": null,
+      "veto": null
+    },
+    "LLY": {
+      "analyst": {
+        "bull_ratio": 0.744,
+        "divergence": false,
+        "n_analysts": 39,
+        "period": "2026-05-01"
+      },
+      "reddit": null,
+      "twitter": null,
+      "veto": null
+    },
+    "LRCX": {
+      "analyst": {
+        "bull_ratio": 0.78,
+        "divergence": false,
+        "n_analysts": 41,
+        "period": "2026-05-01"
+      },
+      "reddit": null,
+      "twitter": null,
+      "veto": null
+    },
+    "MPC": {
+      "analyst": {
+        "bull_ratio": 0.583,
+        "divergence": false,
+        "n_analysts": 24,
+        "period": "2026-05-01"
+      },
+      "reddit": null,
+      "twitter": null,
+      "veto": null
+    },
+    "MRVL": {
+      "analyst": {
+        "bull_ratio": 0.84,
+        "divergence": false,
+        "n_analysts": 50,
+        "period": "2026-05-01"
+      },
+      "reddit": null,
+      "twitter": null,
+      "veto": null
+    },
+    "MSFT": {
+      "analyst": {
+        "bull_ratio": 0.909,
+        "divergence": false,
+        "n_analysts": 66,
+        "period": "2026-05-01"
+      },
+      "reddit": null,
+      "twitter": null,
+      "veto": null
+    },
+    "MSTR": {
+      "analyst": {
+        "bull_ratio": 0.88,
+        "divergence": false,
+        "n_analysts": 25,
+        "period": "2026-05-01"
+      },
+      "reddit": null,
+      "twitter": null,
+      "veto": null
+    },
+    "MU": {
+      "analyst": {
+        "bull_ratio": 0.906,
+        "divergence": false,
+        "n_analysts": 53,
+        "period": "2026-05-01"
+      },
+      "reddit": null,
+      "twitter": null,
+      "veto": null
+    },
+    "NVDA": {
+      "analyst": {
+        "bull_ratio": 0.915,
+        "divergence": false,
+        "n_analysts": 71,
+        "period": "2026-05-01"
+      },
+      "reddit": null,
+      "twitter": null,
+      "veto": null
+    },
+    "OKE": {
+      "analyst": {
+        "bull_ratio": 0.517,
+        "divergence": false,
+        "n_analysts": 29,
+        "period": "2026-05-01"
+      },
+      "reddit": null,
+      "twitter": null,
+      "veto": null
+    },
+    "ORCL": {
+      "analyst": {
+        "bull_ratio": 0.769,
+        "divergence": false,
+        "n_analysts": 52,
+        "period": "2026-05-01"
+      },
+      "reddit": null,
+      "twitter": null,
+      "veto": null
+    },
+    "PANW": {
+      "analyst": {
+        "bull_ratio": 0.781,
+        "divergence": false,
+        "n_analysts": 64,
+        "period": "2026-05-01"
+      },
+      "reddit": null,
+      "twitter": null,
+      "veto": null
+    },
+    "PR": {
+      "analyst": {
+        "bull_ratio": 0.875,
+        "divergence": false,
+        "n_analysts": 32,
+        "period": "2026-05-01"
+      },
+      "reddit": null,
+      "twitter": null,
+      "veto": null
+    },
+    "PSX": {
+      "analyst": {
+        "bull_ratio": 0.462,
+        "divergence": false,
+        "n_analysts": 26,
+        "period": "2026-05-01"
+      },
+      "reddit": null,
+      "twitter": null,
+      "veto": null
+    },
+    "QCOM": {
+      "analyst": {
+        "bull_ratio": 0.292,
+        "divergence": false,
+        "n_analysts": 48,
+        "period": "2026-05-01"
+      },
+      "reddit": null,
+      "twitter": null,
+      "veto": null
+    },
+    "S": {
+      "analyst": {
+        "bull_ratio": 0.622,
+        "divergence": false,
+        "n_analysts": 45,
+        "period": "2026-05-01"
+      },
+      "reddit": null,
+      "twitter": null,
+      "veto": null
+    },
+    "SBUX": {
+      "analyst": {
+        "bull_ratio": 0.367,
+        "divergence": false,
+        "n_analysts": 49,
+        "period": "2026-05-01"
+      },
+      "reddit": null,
+      "twitter": null,
+      "veto": null
+    },
+    "SM": {
+      "analyst": {
+        "bull_ratio": 0.545,
+        "divergence": false,
+        "n_analysts": 22,
+        "period": "2026-05-01"
+      },
+      "reddit": null,
+      "twitter": null,
+      "veto": null
+    },
+    "SNOW": {
+      "analyst": {
+        "bull_ratio": 0.845,
+        "divergence": false,
+        "n_analysts": 58,
+        "period": "2026-05-01"
+      },
+      "reddit": null,
+      "twitter": null,
+      "veto": null
+    },
+    "SNPS": {
+      "analyst": {
+        "bull_ratio": 0.677,
+        "divergence": false,
+        "n_analysts": 31,
+        "period": "2026-05-01"
+      },
+      "reddit": null,
+      "twitter": null,
+      "veto": null
+    },
+    "TRGP": {
+      "analyst": {
+        "bull_ratio": 0.833,
+        "divergence": false,
+        "n_analysts": 30,
+        "period": "2026-05-01"
+      },
+      "reddit": null,
+      "twitter": null,
+      "veto": null
+    },
+    "TSLA": {
+      "analyst": {
+        "bull_ratio": 0.344,
+        "divergence": false,
+        "n_analysts": 61,
+        "period": "2026-05-01"
+      },
+      "reddit": null,
+      "twitter": null,
+      "veto": null
+    },
+    "TSM": {
+      "analyst": {
+        "bull_ratio": 0.953,
+        "divergence": false,
+        "n_analysts": 43,
+        "period": "2026-05-01"
+      },
+      "reddit": null,
+      "twitter": null,
+      "veto": null
+    },
+    "TTWO": {
+      "analyst": {
+        "bull_ratio": 0.892,
+        "divergence": false,
+        "n_analysts": 37,
+        "period": "2026-05-01"
+      },
+      "reddit": null,
+      "twitter": null,
+      "veto": null
+    },
+    "TXN": {
+      "analyst": {
+        "bull_ratio": 0.333,
+        "divergence": false,
+        "n_analysts": 45,
+        "period": "2026-05-01"
+      },
+      "reddit": null,
+      "twitter": null,
+      "veto": null
+    },
+    "UNH": {
+      "analyst": {
+        "bull_ratio": 0.735,
+        "divergence": false,
+        "n_analysts": 34,
+        "period": "2026-05-01"
+      },
+      "reddit": null,
+      "twitter": null,
+      "veto": null
+    },
+    "V": {
+      "analyst": {
+        "bull_ratio": 0.917,
+        "divergence": false,
+        "n_analysts": 48,
+        "period": "2026-05-01"
+      },
+      "reddit": null,
+      "twitter": null,
+      "veto": null
+    },
+    "VLO": {
+      "analyst": {
+        "bull_ratio": 0.52,
+        "divergence": false,
+        "n_analysts": 25,
+        "period": "2026-05-01"
+      },
+      "reddit": null,
+      "twitter": null,
+      "veto": null
+    },
+    "WMB": {
+      "analyst": {
+        "bull_ratio": 0.767,
+        "divergence": false,
+        "n_analysts": 30,
+        "period": "2026-05-01"
+      },
+      "reddit": null,
+      "twitter": null,
+      "veto": null
+    },
+    "XOM": {
+      "analyst": {
+        "bull_ratio": 0.484,
+        "divergence": false,
+        "n_analysts": 31,
+        "period": "2026-05-01"
+      },
+      "reddit": null,
+      "twitter": null,
+      "veto": null
+    },
+    "ZS": {
+      "analyst": {
+        "bull_ratio": 0.81,
+        "divergence": false,
+        "n_analysts": 58,
+        "period": "2026-05-01"
+      },
+      "reddit": null,
+      "twitter": null,
+      "veto": null
+    }
+  },
+  "ttl_minutes": 240
+}

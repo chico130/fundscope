@@ -26,6 +26,10 @@ bot.lock
 data/backtest/
 data/models/
 
+# Calibração offline — cache de dados e resultados de sweep (gerados localmente)
+data/cache/
+data/calibration/
+
 # Logs de runtime diários — efémeros, não são código
 logs/trades/
 logs/errors/
