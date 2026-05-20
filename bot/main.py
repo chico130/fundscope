@@ -9,10 +9,10 @@ if hasattr(sys.stdout, "reconfigure"):
 if hasattr(sys.stderr, "reconfigure"):
     sys.stderr.reconfigure(encoding="utf-8")
 from .logger import log_info, log_error
-from .phase0 import run_phase0_cycle
+from .phase0 import run_phase0_cycle, _wake_already_sent_today, _mark_wake_sent_today
 from .reporter import run_all as reporter_run_all
 from .config import LOOP_INTERVAL_SECONDS
-from .notifier import enviar_resumo_diario
+from .notifier import enviar_resumo_diario, enviar_despertar, enviar_boa_noite
 
 try:
     import psutil as _psutil
@@ -158,10 +158,11 @@ def run():
 
     cycle = 1
     mercado_estava_aberto = False
+    ultimo_report = None
     try:
         while True:
             if not is_market_open():
-                # Transição aberto → fechado: dispara resumo diário uma única vez
+                # Transição aberto → fechado: dispara resumo diário + boa noite uma única vez
                 if mercado_estava_aberto:
                     mercado_estava_aberto = False
                     print(f"[{time.strftime('%H:%M:%S')} UTC] Mercado fechou — a enviar resumo diário...")
@@ -170,6 +171,12 @@ def run():
                     except Exception as exc:
                         log_error("resumo_diario_failed", {"error": str(exc)})
                         print(f"[Notifier] Erro ao enviar resumo diário: {exc}")
+                    if ultimo_report is not None:
+                        try:
+                            enviar_boa_noite(ultimo_report)
+                        except Exception as exc:
+                            log_error("boa_noite_failed", {"error": str(exc)})
+                            print(f"[Notifier] Erro ao enviar boa noite: {exc}")
 
                 secs = _seconds_until_next_open()
                 h, m = divmod(secs // 60, 60)
@@ -177,11 +184,13 @@ def run():
                 time.sleep(min(secs, 3600))  # acorda de hora em hora para re-verificar
                 continue
 
+            # Transição fechado → aberto: despertar (Bom dia) após o 1.º ciclo do dia
+            despertar_pendente = not mercado_estava_aberto
             mercado_estava_aberto = True
             timestamp = time.strftime("%H:%M:%S")
             print(f"[{timestamp} UTC] Ciclo {cycle} — a iniciar análise...")
             try:
-                run_phase0_cycle()
+                ultimo_report = run_phase0_cycle()
                 try:
                     reporter_run_all()
                 except Exception as exc:
@@ -190,6 +199,17 @@ def run():
             except Exception as exc:
                 log_error("main_cycle_failed", {"cycle": cycle, "error": str(exc)})
                 print(f"Erro no ciclo {cycle}: {exc}")
+
+            # Despertar — uma vez por dia, com relatório fresco do 1.º ciclo (guard partilhado com phase0)
+            if despertar_pendente and ultimo_report is not None:
+                now = datetime.now(timezone.utc)
+                if not _wake_already_sent_today(now):
+                    try:
+                        enviar_despertar(ultimo_report)
+                        _mark_wake_sent_today(now)
+                    except Exception as exc:
+                        log_error("despertar_failed", {"error": str(exc)})
+                        print(f"[Notifier] Erro ao enviar despertar: {exc}")
 
             print(f"[{time.strftime('%H:%M:%S')} UTC] Próximo ciclo em {LOOP_INTERVAL_SECONDS // 60} minutos.\n")
             cycle += 1

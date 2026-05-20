@@ -979,28 +979,61 @@ def _print_report(report: dict) -> None:
     print(f"{sep}\n")
 
 
+def _git(root, *args, check: bool = True):
+    """Wrapper fino de git com captura de output (cwd=root)."""
+    return subprocess.run(
+        ["git", *args], cwd=root, check=check, capture_output=True, text=True,
+    )
+
+
+def _rebase_in_progress(root) -> bool:
+    """True se há um rebase/merge a meio — estado herdado de um ciclo anterior falhado."""
+    git_dir = root / ".git"
+    return any((git_dir / m).exists() for m in ("rebase-merge", "rebase-apply", "MERGE_HEAD"))
+
+
 def _git_sync(timestamp: str) -> None:
-    """Commit all changes and push to origin/main. Skips if nothing to commit."""
+    """Commit das alterações e push para origin/main. Salta se nada houver para commitar.
+
+    Defensivo contra rebase encravado: se um ciclo anterior deixou um rebase/merge a
+    meio, aborta-o antes de tentar de novo — evita o "already a rebase-merge directory"
+    que paralisava todos os ciclos seguintes. Se o rebase deste ciclo entrar em conflito,
+    aborta e adia apenas este push (o ciclo seguinte repete), sem nunca deixar a árvore
+    de trabalho num estado encravado.
+    """
     try:
-        root   = DATA_BETA_DIR.parent.parent
-        status = subprocess.run(
-            ["git", "status", "--porcelain"],
-            cwd=root, capture_output=True, text=True,
-        )
+        root = DATA_BETA_DIR.parent.parent
+
+        # ── Pré-voo: limpa qualquer rebase/merge herdado de um ciclo anterior ──
+        if _rebase_in_progress(root):
+            log_error("git_sync_rebase_stale", {"action": "abort_inherited"})
+            print("Git: rebase/merge a meio detectado — a abortar antes de continuar.")
+            _git(root, "rebase", "--abort", check=False)
+            _git(root, "merge", "--abort", check=False)
+
+        status = _git(root, "status", "--porcelain", check=False)
         if not status.stdout.strip():
             print("Git: nada para commitar.")
             return
 
-        subprocess.run(["git", "add", "-A"], cwd=root, check=True)
+        _git(root, "add", "-A")
         msg = f"Auto-update {timestamp[:16].replace('T', ' ')} UTC"
-        subprocess.run(["git", "commit", "-m", msg], cwd=root, check=True)
-        subprocess.run(["git", "pull", "--rebase", "origin", "main"], cwd=root, check=True)
-        subprocess.run(["git", "push", "origin", "main"], cwd=root, check=True)
+        _git(root, "commit", "-m", msg)
+
+        # ── Rebase sobre o remoto; em conflito, aborta e adia o push (não encrava) ──
+        rebase = _git(root, "pull", "--rebase", "origin", "main", check=False)
+        if rebase.returncode != 0:
+            log_error("git_sync_rebase_conflict", {"stderr": rebase.stderr[-500:]})
+            print(f"Git: conflito no rebase — a abortar e adiar push. {rebase.stderr[-200:]}")
+            _git(root, "rebase", "--abort", check=False)
+            return
+
+        _git(root, "push", "origin", "main")
         print(f"Git: push efectuado — '{msg}'")
     except FileNotFoundError:
         print("Aviso: Git não encontrado localmente, o sync foi ignorado.")
     except subprocess.CalledProcessError as exc:
-        log_error("git_sync_failed", {"error": str(exc)})
+        log_error("git_sync_failed", {"error": str(exc), "stderr": getattr(exc, "stderr", "")})
         print(f"Git: erro no push — {exc}")
 
 
