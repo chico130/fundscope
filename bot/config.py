@@ -1,3 +1,4 @@
+import base64
 import os
 from pathlib import Path
 from dotenv import load_dotenv
@@ -5,14 +6,20 @@ from dotenv import load_dotenv
 BASE_DIR = Path(__file__).parent.parent
 load_dotenv(BASE_DIR / ".env", override=True)
 
-# Trading 212 API: autenticação por API key única, enviada tal-qual no header:
-#   Authorization: <T212_API_KEY>
-# A T212 emite UMA credencial — não há id/secret separados nem HTTP Basic auth.
-T212_DEMO_KEY = (
-    os.getenv("T212_API_KEY", "")
-    or os.getenv("T212_DEMO_KEY", "")
-    or os.getenv("T212_API_KEY_DEMO", "")
-)
+# Trading 212 API: HTTP Basic Auth — Authorization: Basic base64(API_ID:API_SECRET).
+# Confirmado empiricamente contra demo.trading212.com: o esquema id:secret é o único
+# que autentica (200). A key/secret sozinha dá 401.
+#   T212_API_ID  = key ID    (ex.: 39448817...)
+#   T212_API_KEY = secret    (ex.: P8Oq25...)
+_t212_id     = os.getenv("T212_API_ID", "")
+_t212_secret = os.getenv("T212_API_KEY", "")
+
+if _t212_id and _t212_secret:
+    _creds = base64.b64encode(f"{_t212_id}:{_t212_secret}".encode()).decode()
+    T212_DEMO_KEY = f"Basic {_creds}"
+else:
+    # Fallback: chave única (formato legado) — produz 401 se vazia
+    T212_DEMO_KEY = os.getenv("T212_DEMO_KEY") or os.getenv("T212_API_KEY_DEMO", "")
 
 T212_API_KEY_DEMO  = T212_DEMO_KEY   # alias de retrocompatibilidade
 T212_BASE_URL_DEMO = "https://demo.trading212.com/api/v0"

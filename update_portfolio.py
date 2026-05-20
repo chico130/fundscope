@@ -8,7 +8,7 @@ Symbol resolution flow:
   4. Gemini 2.0 Flash   (last resort — only for unknown symbols)
 """
 
-import json, os, re, sys, time, datetime, requests
+import json, os, re, sys, time, datetime, requests, base64
 import yfinance as yf
 
 # Força UTF-8 no terminal Windows
@@ -19,7 +19,8 @@ if hasattr(sys.stderr, "reconfigure"):
 
 try:
     from dotenv import load_dotenv
-    load_dotenv()
+    from pathlib import Path
+    load_dotenv(Path(__file__).parent / ".env", override=True)
 except ImportError:
     pass  # GitHub Actions injeta as variáveis directamente; dotenv só é necessário localmente
 
@@ -31,12 +32,16 @@ except ImportError:
     GEMINI_AVAILABLE = False
     print("[AVISO] google-genai não instalado")
 
-# Trading 212 API: API key única, enviada tal-qual no header Authorization
-# (sem HTTP Basic nem base64). A T212 emite uma só credencial.
-T212_AUTH = os.getenv("T212_API_KEY", "") or os.getenv("T212_DEMO_KEY", "")
-if not T212_AUTH:
-    print("[ERRO] T212_API_KEY não encontrada no .env")
+# Trading 212 API: HTTP Basic Auth — Authorization: Basic base64(API_ID:API_SECRET).
+# Confirmado contra demo.trading212.com: só o esquema id:secret autentica (200).
+#   T212_API_ID (key ID) + T212_API_KEY (secret) — igual ao GitHub Actions.
+_t212_id     = os.getenv("T212_API_ID", "")
+_t212_secret = os.getenv("T212_API_KEY", "")
+if not _t212_id or not _t212_secret:
+    print("[ERRO] T212_API_ID e/ou T212_API_KEY não encontrados no .env")
     raise SystemExit(1)
+_creds    = base64.b64encode(f"{_t212_id}:{_t212_secret}".encode()).decode()
+T212_AUTH = f"Basic {_creds}"
 
 FH_TOKEN   = os.getenv("FINNHUB_TOKEN") or os.getenv("FINNHUB_API_KEY") or ""
 GEMINI_KEY = os.getenv("GEMINI_API_KEY", "")
