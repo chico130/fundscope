@@ -23,7 +23,8 @@ T212_BASE_URL_DEMO = "https://demo.trading212.com/api/v0"
 
 # Finnhub: feed de preços em tempo real (free tier: 60 req/min).
 # Registo gratuito em https://finnhub.io/register
-FINNHUB_API_KEY = os.getenv("FINNHUB_API_KEY", "")
+# Aceita FINNHUB_API_KEY ou FINNHUB_TOKEN (o .env do VPS usa o segundo nome).
+FINNHUB_API_KEY = os.getenv("FINNHUB_API_KEY") or os.getenv("FINNHUB_TOKEN", "")
 
 # Demo first, always. Never flip to True without extensive testing in demo.
 LIVE_TRADING = False

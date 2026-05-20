@@ -1,0 +1,18 @@
+[Unit]
+Description=FundScope Social Crawler (sentimento — analistas + Reddit)
+Documentation=https://github.com/fundscope
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=ubuntu
+WorkingDirectory=/home/ubuntu/fundscope
+# O runner faz load_dotenv(.env) — credenciais (FINNHUB_TOKEN, PRAW_*) vêm daí.
+ExecStart=/home/ubuntu/fundscope/venv/bin/python -m crawler.runner
+# Robustez: nunca derruba o sistema; o gate na Bonnie já é fail-open via TTL.
+TimeoutStartSec=300
+Nice=10
+
+[Install]
+WantedBy=multi-user.target
