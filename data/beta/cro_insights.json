@@ -1,16 +1,15 @@
 {
-  "generated_at": "2026-05-20T16:24:52Z",
-  "regime": "bull_lateral",
-  "risk_factor": 0.5208,
+  "generated_at": "2026-05-20T18:40:02Z",
+  "regime": "bull_trending",
+  "risk_factor": 1.0417,
   "win_rate_7d": 0.5,
   "drawdown_atual": 0.0,
   "trades_analisados": 0,
   "trades_recentes": 0,
   "insights": [
-    "Win rate 7d em 50.0% — acima do alvo elástico (48.0%). Factor de risco positivo: 52%.",
+    "Win rate 7d em 50.0% — acima do alvo elástico (48.0%). Factor de risco positivo: 104%.",
     "Sem trades fechados — sem lições disponíveis ainda.",
-    "Tamanho máximo CRO: 10.4% da equity (base 20.0% × factor 52%).",
-    "Regime bull_lateral: multiplicador CRO 0.50× — alocação reduzida.",
+    "Tamanho máximo CRO: 20.8% da equity (base 20.0% × factor 104%).",
     "Stop Loss (fixo (fallback)): 5.0% abaixo da entrada."
   ]
 }

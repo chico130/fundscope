@@ -1,16 +1,16 @@
 {
-  "last_updated": "2026-05-20T16:24:48.728980+00:00",
-  "regime": "bull_lateral",
+  "last_updated": "2026-05-20T18:39:58.098132+00:00",
+  "regime": "bull_trending",
   "metrics": {
-    "spy_price": 739.31,
-    "ema200": 677.87,
-    "ema50": 707.03,
+    "spy_price": 740.8,
+    "ema200": 677.89,
+    "ema50": 707.09,
     "ema50_above_ema200": true,
-    "spy_pct_from_ema200": 9.06,
+    "spy_pct_from_ema200": 9.28,
     "atr_current": 7.6339,
     "atr_ratio_vs_60d_mean": 0.8592,
-    "spy_return_20d": 0.0436,
-    "rsp_spy_ratio_chg_20d": -0.0371,
-    "breadth_healthy": false
+    "spy_return_20d": 0.0457,
+    "rsp_spy_ratio_chg_20d": 0.0,
+    "breadth_healthy": true
   }
 }
