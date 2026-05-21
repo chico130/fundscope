@@ -1,5 +1,5 @@
 {
-  "updated": "2026-05-21T18:10:15.145472Z",
+  "updated": "2026-05-21T19:10:44.145975Z",
   "slot": "fecho",
   "marketOpen": true,
   "lastCloseDate": "2026-05-21",
@@ -9,68 +9,68 @@
       "icon": "💻",
       "color": "#4f98a3",
       "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
-      "avgChange": 0.14,
+      "avgChange": -0.38,
       "gainers": [
         {
           "ticker": "QCOM",
-          "price": 212.65,
-          "changePct": 5.0,
+          "price": 210.38,
+          "changePct": 3.89,
           "pc": 202.51
         },
         {
           "ticker": "MU",
-          "price": 758.32,
-          "changePct": 3.6,
+          "price": 749.68,
+          "changePct": 2.42,
           "pc": 731.99
         },
         {
           "ticker": "ORCL",
-          "price": 191.81,
-          "changePct": 1.94,
+          "price": 190.23,
+          "changePct": 1.1,
           "pc": 188.16
         },
         {
-          "ticker": "TSLA",
-          "price": 422.1,
-          "changePct": 1.16,
-          "pc": 417.26
+          "ticker": "AAPL",
+          "price": 305.07,
+          "changePct": 0.93,
+          "pc": 302.25
         },
         {
-          "ticker": "AAPL",
-          "price": 304.64,
-          "changePct": 0.79,
-          "pc": 302.25
+          "ticker": "META",
+          "price": 607.02,
+          "changePct": 0.32,
+          "pc": 605.06
         }
       ],
       "losers": [
         {
           "ticker": "NOW",
-          "price": 100.1,
-          "changePct": -3.1,
+          "price": 99.4,
+          "changePct": -3.78,
           "pc": 103.3
         },
         {
           "ticker": "ADBE",
-          "price": 245.51,
-          "changePct": -3.1,
+          "price": 244.43,
+          "changePct": -3.53,
           "pc": 253.37
         },
         {
           "ticker": "CRM",
-          "price": 176.77,
-          "changePct": -1.85,
+          "price": 176.03,
+          "changePct": -2.26,
           "pc": 180.1
         },
         {
           "ticker": "NVDA",
-          "price": 221.06,
-          "changePct": -1.08,
+          "price": 219.53,
+          "changePct": -1.76,
           "pc": 223.47
         },
         {
           "ticker": "AVGO",
-          "price": 413.97,
-          "changePct": -0.91,
+          "price": 412.43,
+          "changePct": -1.28,
           "pc": 417.76
         }
       ],
@@ -111,22 +111,22 @@
       },
       "news": [
         {
-          "source": "Yahoo",
+          "source": "ChartMill",
           "ticker": "NVDA",
-          "headline": "Sector Update: Tech Stocks Advance Thursday Afternoon",
-          "summary": "Tech stocks were higher Thursday afternoon, with the State Street Technology Select Sector SPDR ETF",
-          "url": "https://finnhub.io/api/news?id=40971571da12a1ab90a9fccd1b9b5c413a38de2b4b23a2fb7af43a649cecb938",
-          "datetime": 1779385809,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+          "headline": "Most active S&P500 stocks in Thursday's session",
+          "summary": "Curious about the most active S&P500 stocks in today's session? Get insights into the stocks that are leading the way in terms of trading volume and market attention.",
+          "url": "https://finnhub.io/api/news?id=4000d6c327b33d7c17d2f08117e8ed2974e6f9e54cf76da04f56c74e0cc41fb0",
+          "datetime": 1779386700,
+          "image": "https://www.chartmill.com/images/uploads/CM_Most_Active_Stocks_Small_free_fec0650b7f.webp"
         },
         {
-          "source": "Yahoo",
+          "source": "ChartMill",
           "ticker": "NVDA",
-          "headline": "SanDisk Soars 9%, Western Digital Rallies 5%, Micron Rises 3% as Memory Trade Reawakens",
-          "summary": "Memory stocks are bouncing hard at midday on Thursday after a punishing week for the sector. SanDisk (NASDAQ:SNDK) shares are up 9%, Western Digital (NASDAQ:WDC) stock is higher by 5%, and Micron Technology (NASDAQ:MU) s",
-          "url": "https://finnhub.io/api/news?id=c12e1cf550279e19296e641a39af23c2cfc7fd1bfbb507d237f477b198a54d9c",
-          "datetime": 1779385775,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+          "headline": "Most active stocks in Thursday's session",
+          "summary": "Curious about the most active stocks on Thursday? Find out which stocks are dominating the market action!",
+          "url": "https://finnhub.io/api/news?id=91c4293e048813de98ee222d37381057cd1672192982278a752be2b04238d8fb",
+          "datetime": 1779386400,
+          "image": "https://www.chartmill.com/images/uploads/CM_Most_Active_Stocks_Small_free_fec0650b7f.webp"
         },
         {
           "source": "Yahoo",
@@ -162,69 +162,69 @@
       "icon": "🏦",
       "color": "#437a22",
       "image": "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&q=80",
-      "avgChange": 0.22,
+      "avgChange": 0.18,
       "gainers": [
         {
           "ticker": "MS",
-          "price": 199.76,
-          "changePct": 1.01,
+          "price": 199.73,
+          "changePct": 0.99,
           "pc": 197.77
         },
         {
           "ticker": "BLK",
-          "price": 1058.77,
-          "changePct": 0.68,
+          "price": 1060.77,
+          "changePct": 0.87,
           "pc": 1051.57
         },
         {
+          "ticker": "PNC",
+          "price": 217.93,
+          "changePct": 0.51,
+          "pc": 216.83
+        },
+        {
           "ticker": "MA",
-          "price": 500.84,
-          "changePct": 0.56,
+          "price": 500.14,
+          "changePct": 0.42,
           "pc": 498.04
         },
         {
           "ticker": "GS",
-          "price": 987.49,
-          "changePct": 0.55,
+          "price": 985.41,
+          "changePct": 0.33,
           "pc": 982.12
-        },
-        {
-          "ticker": "JPM",
-          "price": 303.29,
-          "changePct": 0.43,
-          "pc": 301.98
         }
       ],
       "losers": [
         {
           "ticker": "COF",
-          "price": 185.88,
-          "changePct": -0.72,
+          "price": 185.4,
+          "changePct": -0.98,
           "pc": 187.23
         },
         {
-          "ticker": "SCHW",
-          "price": 89.85,
-          "changePct": -0.29,
-          "pc": 90.11
-        },
-        {
-          "ticker": "USB",
-          "price": 54.42,
-          "changePct": -0.14,
-          "pc": 54.5
-        },
-        {
           "ticker": "TFC",
-          "price": 47.94,
-          "changePct": -0.13,
+          "price": 47.9,
+          "changePct": -0.2,
           "pc": 48.0
         },
         {
           "ticker": "WFC",
-          "price": 75.8,
-          "changePct": -0.01,
+          "price": 75.75,
+          "changePct": -0.09,
           "pc": 75.81
+        },
+        {
+          "ticker": "C",
+          "price": 124.78,
+          "changePct": -0.03,
+          "pc": 124.82
+        },
+        {
+          "ticker": "AXP",
+          "price": 309.86,
+          "changePct": 0.01,
+          "pc": 309.82
         }
       ],
       "sentiment": {
@@ -315,69 +315,69 @@
       "icon": "⚡",
       "color": "#c47d1a",
       "image": "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80",
-      "avgChange": -0.96,
+      "avgChange": -0.7,
       "gainers": [
         {
           "ticker": "NEE",
           "price": 89.14,
-          "changePct": 0.98,
+          "changePct": 0.99,
           "pc": 88.27
         },
         {
           "ticker": "D",
-          "price": 68.19,
-          "changePct": 0.69,
+          "price": 68.21,
+          "changePct": 0.71,
           "pc": 67.73
         },
         {
-          "ticker": "SO",
-          "price": 93.91,
-          "changePct": 0.31,
-          "pc": 93.62
-        },
-        {
           "ticker": "DUK",
-          "price": 124.07,
-          "changePct": 0.21,
+          "price": 124.32,
+          "changePct": 0.42,
           "pc": 123.81
         },
         {
+          "ticker": "SO",
+          "price": 93.95,
+          "changePct": 0.35,
+          "pc": 93.62
+        },
+        {
           "ticker": "AEP",
-          "price": 129.11,
-          "changePct": 0.19,
+          "price": 129.28,
+          "changePct": 0.32,
           "pc": 128.87
         }
       ],
       "losers": [
         {
           "ticker": "VLO",
-          "price": 244.46,
-          "changePct": -3.67,
+          "price": 244.41,
+          "changePct": -3.69,
           "pc": 253.77
         },
         {
           "ticker": "MPC",
-          "price": 249.51,
-          "changePct": -3.43,
+          "price": 250.77,
+          "changePct": -2.94,
           "pc": 258.37
         },
         {
           "ticker": "PSX",
-          "price": 174.69,
-          "changePct": -2.59,
+          "price": 174.99,
+          "changePct": -2.42,
           "pc": 179.34
         },
         {
           "ticker": "COP",
-          "price": 120.35,
-          "changePct": -1.64,
+          "price": 120.87,
+          "changePct": -1.22,
           "pc": 122.36
         },
         {
-          "ticker": "XOM",
-          "price": 154.2,
-          "changePct": -1.33,
-          "pc": 156.28
+          "ticker": "HAL",
+          "price": 41.88,
+          "changePct": -0.99,
+          "pc": 42.3
         }
       ],
       "sentiment": {
@@ -468,68 +468,68 @@
       "icon": "🏥",
       "color": "#a13544",
       "image": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80",
-      "avgChange": 0.41,
+      "avgChange": 0.63,
       "gainers": [
         {
           "ticker": "MRK",
-          "price": 115.56,
-          "changePct": 2.27,
+          "price": 115.83,
+          "changePct": 2.5,
           "pc": 113.0
         },
         {
           "ticker": "LLY",
-          "price": 1038.26,
-          "changePct": 1.9,
+          "price": 1043.45,
+          "changePct": 2.41,
           "pc": 1018.87
         },
         {
-          "ticker": "DHR",
-          "price": 173.44,
-          "changePct": 1.36,
-          "pc": 171.12
-        },
-        {
           "ticker": "AMGN",
-          "price": 335.59,
-          "changePct": 1.21,
+          "price": 336.71,
+          "changePct": 1.55,
           "pc": 331.57
         },
         {
-          "ticker": "ABBV",
-          "price": 214.77,
-          "changePct": 1.16,
-          "pc": 212.3
+          "ticker": "BMY",
+          "price": 59.43,
+          "changePct": 1.52,
+          "pc": 58.54
+        },
+        {
+          "ticker": "DHR",
+          "price": 173.62,
+          "changePct": 1.46,
+          "pc": 171.12
         }
       ],
       "losers": [
         {
           "ticker": "ISRG",
-          "price": 441.87,
-          "changePct": -1.59,
+          "price": 442.13,
+          "changePct": -1.54,
           "pc": 449.03
         },
         {
           "ticker": "ABT",
-          "price": 87.5,
-          "changePct": -1.0,
+          "price": 87.91,
+          "changePct": -0.53,
           "pc": 88.38
         },
         {
           "ticker": "MDT",
-          "price": 77.5,
-          "changePct": -0.84,
+          "price": 77.75,
+          "changePct": -0.51,
           "pc": 78.15
         },
         {
           "ticker": "TMO",
-          "price": 450.36,
-          "changePct": -0.32,
+          "price": 451.1,
+          "changePct": -0.15,
           "pc": 451.79
         },
         {
           "ticker": "CVS",
-          "price": 93.25,
-          "changePct": -0.03,
+          "price": 93.15,
+          "changePct": -0.14,
           "pc": 93.28
         }
       ],
@@ -621,69 +621,69 @@
       "icon": "🛒",
       "color": "#7a5c9e",
       "image": "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&q=80",
-      "avgChange": -0.59,
+      "avgChange": -0.56,
       "gainers": [
         {
           "ticker": "TGT",
-          "price": 124.28,
-          "changePct": 1.59,
+          "price": 124.89,
+          "changePct": 2.09,
           "pc": 122.33
         },
         {
           "ticker": "MCD",
-          "price": 284.28,
-          "changePct": 1.43,
+          "price": 284.45,
+          "changePct": 1.49,
           "pc": 280.27
         },
         {
           "ticker": "AMZN",
-          "price": 268.78,
-          "changePct": 1.42,
+          "price": 268.04,
+          "changePct": 1.14,
           "pc": 265.01
         },
         {
-          "ticker": "PG",
-          "price": 143.49,
-          "changePct": 0.74,
-          "pc": 142.44
+          "ticker": "HD",
+          "price": 313.23,
+          "changePct": 0.85,
+          "pc": 310.58
         },
         {
-          "ticker": "HD",
-          "price": 312.86,
+          "ticker": "PG",
+          "price": 143.48,
           "changePct": 0.73,
-          "pc": 310.58
+          "pc": 142.44
         }
       ],
       "losers": [
         {
           "ticker": "WMT",
-          "price": 122.25,
-          "changePct": -6.58,
+          "price": 121.99,
+          "changePct": -6.77,
           "pc": 130.85
         },
         {
           "ticker": "COST",
-          "price": 1049.91,
-          "changePct": -2.24,
+          "price": 1051.21,
+          "changePct": -2.12,
           "pc": 1074.01
         },
         {
           "ticker": "SBUX",
-          "price": 104.21,
-          "changePct": -2.15,
+          "price": 104.39,
+          "changePct": -1.99,
           "pc": 106.5
         },
         {
-          "ticker": "TJX",
-          "price": 157.07,
-          "changePct": -1.34,
-          "pc": 159.21
+          "ticker": "LOW",
+          "price": 218.12,
+          "changePct": -1.33,
+          "pc": 221.05
         },
         {
-          "ticker": "LOW",
-          "price": 218.44,
-          "changePct": -1.18,
-          "pc": 221.05
+          "ticker": "TJX",
+          "price": 157.63,
+          "changePct": -0.99,
+          "pc": 159.21
         }
       ],
       "sentiment": {
@@ -723,21 +723,21 @@
       },
       "news": [
         {
+          "source": "ChartMill",
+          "ticker": "AMZN",
+          "headline": "Most active S&P500 stocks in Thursday's session",
+          "summary": "Curious about the most active S&P500 stocks in today's session? Get insights into the stocks that are leading the way in terms of trading volume and market attention.",
+          "url": "https://finnhub.io/api/news?id=4000d6c327b33d7c17d2f08117e8ed2974e6f9e54cf76da04f56c74e0cc41fb0",
+          "datetime": 1779386700,
+          "image": "https://www.chartmill.com/images/uploads/CM_Most_Active_Stocks_Small_free_fec0650b7f.webp"
+        },
+        {
           "source": "Yahoo",
           "ticker": "AMZN",
           "headline": "Sector Update: Tech Stocks Advance Thursday Afternoon",
           "summary": "Tech stocks were higher Thursday afternoon, with the State Street Technology Select Sector SPDR ETF",
           "url": "https://finnhub.io/api/news?id=40971571da12a1ab90a9fccd1b9b5c413a38de2b4b23a2fb7af43a649cecb938",
           "datetime": 1779385809,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Yahoo",
-          "ticker": "AMZN",
-          "headline": "Torque Asset Management Buys $4 Million of Planet Fitness Amid Stock's 54% Decline in 2026",
-          "summary": "Planet Fitness operates a hybrid franchise and corporate-owned gym model, serving value-focused fitness customers nationwide.",
-          "url": "https://finnhub.io/api/news?id=1822f3737ac77194767108055bc3c23ed04d3c175fbf002fb21b0966eb222f80",
-          "datetime": 1779383343,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
@@ -751,20 +751,20 @@
         },
         {
           "source": "Yahoo",
-          "ticker": "WMT",
-          "headline": "The 3 core themes in Walmart's earnings. One of them is AI.",
-          "summary": "Walmart (WMT) stock has taken a dip on its first quarter results that were in line with Wall Street estimates, reporting $177.8 billion in revenue and adjusted earnings of $0.66 per share. The retailer also reported 4.1%",
-          "url": "https://finnhub.io/api/news?id=92edd4ebe2e542ca991fa6bb9abf6b4d917dfdf30ea4d42536aa7451cf9e13f5",
-          "datetime": 1779382800,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Yahoo",
           "ticker": "MCD",
           "headline": "Why The McDonald's (MCD) Investment Story Is Shifting As Analysts Reset Growth And Valuation",
           "summary": "McDonald's latest analyst update trims its fair value price target from US$345.00 to US$330.00, signaling a slightly more cautious stance on what the stock might be worth. This change lines up with recent Street research",
           "url": "https://finnhub.io/api/news?id=f9486bd76c103e6d77db44c5845b90db090e7c21ed980a768206e4ab489e3de1",
           "datetime": 1779379958,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "ticker": "MCD",
+          "headline": "If Treasury Yields Jump Above 4.75%, Here’s What Happens to SDY",
+          "summary": "The SPDR S&P Dividend ETF (NYSEARCA:SDY) is doing exactly what a yield-tilted dividend fund is supposed to do while the broader market wobbles: grinding higher while the broad market wobbles. SDY trades near $146, up 4% ",
+          "url": "https://finnhub.io/api/news?id=5bf8aa1be0254f72cae2722a61053606b05c72aa1af6b80eff735a50ffd8de69",
+          "datetime": 1779378343,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         }
       ]
@@ -774,69 +774,69 @@
       "icon": "🪙",
       "color": "#8a7340",
       "image": "https://images.unsplash.com/photo-1610375461246-83df859d849d?w=800&q=80",
-      "avgChange": 2.06,
+      "avgChange": 1.95,
       "gainers": [
         {
           "ticker": "MP",
-          "price": 62.23,
-          "changePct": 10.14,
+          "price": 62.07,
+          "changePct": 9.86,
           "pc": 56.5
         },
         {
           "ticker": "ATI",
-          "price": 160.14,
-          "changePct": 4.17,
+          "price": 160.41,
+          "changePct": 4.35,
           "pc": 153.73
         },
         {
-          "ticker": "FCX",
-          "price": 62.94,
-          "changePct": 3.4,
-          "pc": 60.87
+          "ticker": "CLF",
+          "price": 10.65,
+          "changePct": 3.0,
+          "pc": 10.34
         },
         {
           "ticker": "AA",
-          "price": 66.24,
-          "changePct": 3.27,
+          "price": 65.85,
+          "changePct": 2.67,
           "pc": 64.14
         },
         {
-          "ticker": "CLF",
-          "price": 10.52,
-          "changePct": 1.79,
-          "pc": 10.34
+          "ticker": "FCX",
+          "price": 62.37,
+          "changePct": 2.46,
+          "pc": 60.87
         }
       ],
       "losers": [
         {
           "ticker": "CF",
-          "price": 121.78,
-          "changePct": -1.23,
+          "price": 122.5,
+          "changePct": -0.65,
           "pc": 123.3
         },
         {
           "ticker": "RS",
-          "price": 361.17,
-          "changePct": -0.3,
+          "price": 362.43,
+          "changePct": 0.05,
           "pc": 362.26
         },
         {
-          "ticker": "MOS",
-          "price": 21.92,
-          "changePct": 0.27,
-          "pc": 21.86
+          "ticker": "AEM",
+          "price": 178.41,
+          "changePct": 0.15,
+          "pc": 178.15
+        },
+        {
+          "ticker": "WPM",
+          "price": 127.68,
+          "changePct": 0.41,
+          "pc": 127.16
         },
         {
           "ticker": "NUE",
-          "price": 227.27,
-          "changePct": 0.71,
+          "price": 226.84,
+          "changePct": 0.52,
           "pc": 225.67
-        },
-        {
-          "ticker": "AEM",
-          "price": 179.96,
-          "changePct": 1.02,
-          "pc": 178.15
         }
       ],
       "sentiment": {
