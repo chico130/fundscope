@@ -1,20 +1,20 @@
 {
-  "timestamp": "2026-05-21T13:50:56.982350+00:00",
+  "timestamp": "2026-05-21T14:06:10.639650+00:00",
   "mode": "phase1_auto",
   "strategy_version": "v0.1.0",
   "note": "Fase 1 — execução automática activa. LIVE_TRADING=False (conta demo).",
   "regime": "bull_lateral",
   "regime_alert": false,
   "regime_details": {
-    "spy_price": 738.04,
-    "ema200": 678.82,
-    "ema50": 708.32,
+    "spy_price": 740.06,
+    "ema200": 678.84,
+    "ema50": 708.4,
     "ema50_above_ema200": true,
-    "spy_pct_from_ema200": 8.72,
+    "spy_pct_from_ema200": 9.02,
     "atr_current": 7.1274,
     "atr_ratio_vs_60d_mean": 0.8037,
-    "spy_return_20d": 0.0338,
-    "rsp_spy_ratio_chg_20d": -0.0302,
+    "spy_return_20d": 0.0366,
+    "rsp_spy_ratio_chg_20d": -0.0281,
     "breadth_healthy": false
   },
   "watchlist_top5": [
@@ -100,14 +100,14 @@
       "action": "hold",
       "size_factor": 0.6,
       "signals": [
-        "RSI-14 neutro (60.1)",
+        "RSI-14 neutro (58.2)",
         "Tendência ascendente: EMA-50 > EMA-200",
         "Volume reduzido: 0.1x da média — movimento sem convicção"
       ],
       "technicals": {
-        "rsi_14": 60.14,
+        "rsi_14": 58.25,
         "ema50_above_ema200": true,
-        "volume_ratio_vs_avg": 0.07
+        "volume_ratio_vs_avg": 0.11
       }
     }
   ],
