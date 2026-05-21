@@ -221,6 +221,56 @@ def compute_atr(highs: list[float], lows: list[float], closes: list[float], peri
 # Watchlist candidate technicals
 # ---------------------------------------------------------------------------
 
+def fetch_single_ticker(ticker: str) -> dict | None:
+    """Fetch technical indicators for a single ticker via yfinance.
+
+    Returns a dict compatible with strategy.generate_signals() market_data:
+      {"technicals": {...}, "last_price": float}
+    Returns None when data is insufficient or the fetch fails.
+    """
+    min_pts = RISK_CONFIG["min_data_points_required"]
+    try:
+        history = api_client.get_historical_data(ticker, days=210)
+        if len(history) < min_pts:
+            return None
+
+        highs   = [bar["high"]   for bar in history]
+        lows    = [bar["low"]    for bar in history]
+        closes  = [bar["close"]  for bar in history]
+        volumes = [bar["volume"] for bar in history]
+
+        ema20  = compute_ema(closes, 20)
+        ema50  = compute_ema(closes, 50)
+        ema200 = compute_ema(closes, 200)
+        avg_vol    = sum(volumes[-20:]) / 20 if len(volumes) >= 20 else None
+        vol_sma_10 = sum(volumes[-10:]) / 10 if len(volumes) >= 10 else None
+        last_vol   = volumes[-1] if volumes else None
+
+        spy_closes = _get_spy_closes(210)
+        rs_bullish = _compute_rs_bullish(closes, spy_closes) if spy_closes else None
+
+        return {
+            "technicals": {
+                "rsi_14":              compute_rsi(closes),
+                "ema_20":              ema20,
+                "ema50":               ema50,
+                "ema200":              ema200,
+                "ema20_above_ema50":   (ema20 > ema50) if (ema20 is not None and ema50 is not None) else None,
+                "ema50_above_ema200":  (ema50 > ema200) if (ema50 is not None and ema200 is not None) else None,
+                "price_above_ema20":   (closes[-1] > ema20) if (ema20 is not None and closes) else None,
+                "volume_ratio_vs_avg": round(last_vol / avg_vol, 2) if (last_vol and avg_vol) else None,
+                "volume_sma_10":       round(vol_sma_10, 0) if vol_sma_10 is not None else None,
+                "volume_ratio":        round(last_vol / vol_sma_10, 2) if (last_vol and vol_sma_10) else None,
+                "atr_14":              compute_atr(highs, lows, closes),
+                "last_price":          closes[-1] if closes else None,
+                "rs_bullish":          rs_bullish,
+            },
+            "last_price": closes[-1] if closes else None,
+        }
+    except Exception:
+        return None
+
+
 def fetch_candidate_market_data(tickers: list[str]) -> dict[str, dict]:
     """Fetch technical indicators for watchlist candidate tickers (parallel).
 
@@ -229,61 +279,19 @@ def fetch_candidate_market_data(tickers: list[str]) -> dict[str, dict]:
 
     Uses ThreadPoolExecutor for parallel yfinance fetches. Tickers that fail or
     return insufficient data are silently omitted (partial-success semantics).
+
+    Note: for throttled/streaming fetches use WatchlistThrottler.stream()
+    with fetch_single_ticker instead.
     """
     from concurrent.futures import ThreadPoolExecutor, as_completed
-    from .config import SCAN_WORKERS_YF, SCAN_TIMEOUT_PER_TICKER
-
-    min_pts = RISK_CONFIG["min_data_points_required"]
-
-    def _fetch_one(ticker: str) -> tuple[str, dict | None]:
-        try:
-            history = api_client.get_historical_data(
-                ticker, days=210, timeout=SCAN_TIMEOUT_PER_TICKER
-            )
-            if len(history) < min_pts:
-                return ticker, None
-
-            highs   = [bar["high"]   for bar in history]
-            lows    = [bar["low"]    for bar in history]
-            closes  = [bar["close"]  for bar in history]
-            volumes = [bar["volume"] for bar in history]
-
-            ema20  = compute_ema(closes, 20)
-            ema50  = compute_ema(closes, 50)
-            ema200 = compute_ema(closes, 200)
-            avg_vol    = sum(volumes[-20:]) / 20 if len(volumes) >= 20 else None
-            vol_sma_10 = sum(volumes[-10:]) / 10 if len(volumes) >= 10 else None
-            last_vol   = volumes[-1] if volumes else None
-
-            spy_closes = _get_spy_closes(210)
-            rs_bullish = _compute_rs_bullish(closes, spy_closes) if spy_closes else None
-
-            return ticker, {
-                "technicals": {
-                    "rsi_14":              compute_rsi(closes),
-                    "ema_20":              ema20,
-                    "ema50":               ema50,
-                    "ema200":              ema200,
-                    "ema20_above_ema50":   (ema20 > ema50) if (ema20 is not None and ema50 is not None) else None,
-                    "ema50_above_ema200":  (ema50 > ema200) if (ema50 is not None and ema200 is not None) else None,
-                    "price_above_ema20":   (closes[-1] > ema20) if (ema20 is not None and closes) else None,
-                    "volume_ratio_vs_avg": round(last_vol / avg_vol, 2) if (last_vol and avg_vol) else None,
-                    "volume_sma_10":       round(vol_sma_10, 0) if vol_sma_10 is not None else None,
-                    "volume_ratio":        round(last_vol / vol_sma_10, 2) if (last_vol and vol_sma_10) else None,
-                    "atr_14":              compute_atr(highs, lows, closes),
-                    "last_price":          closes[-1] if closes else None,
-                    "rs_bullish":          rs_bullish,
-                },
-                "last_price": closes[-1] if closes else None,
-            }
-        except Exception:
-            return ticker, None
+    from .config import SCAN_WORKERS_YF
 
     result: dict[str, dict] = {}
     with ThreadPoolExecutor(max_workers=SCAN_WORKERS_YF) as pool:
-        futures = {pool.submit(_fetch_one, t): t for t in tickers}
+        futures = {pool.submit(fetch_single_ticker, t): t for t in tickers}
         for future in as_completed(futures):
-            ticker, data = future.result()
+            ticker = futures[future]
+            data = future.result()
             if data is not None:
                 result[ticker] = data
 

@@ -13,9 +13,10 @@ import subprocess
 import time
 from datetime import datetime, timezone
 
-from .data_layer import get_full_portfolio_state, enrich_with_technicals, read_beta_trades, fetch_candidate_market_data
+from .data_layer import get_full_portfolio_state, enrich_with_technicals, read_beta_trades
+from .throttler import WatchlistThrottler
 from .logger import log_decision, log_error
-from .config import DATA_BETA_DIR, RISK_CONFIG, STRATEGY_VERSION, PHASE1_EXECUTION, SCAN_TOP_N
+from .config import DATA_BETA_DIR, RISK_CONFIG, STRATEGY_VERSION, PHASE1_EXECUTION
 from .regime_detector import get_current_regime, load_cached_regime, load_regime_metrics
 from .watchlist_manager import build_watchlist
 from .strategy import generate_signals, propose_trades, ProposedTrade
@@ -591,59 +592,67 @@ def _scan_watchlist_candidates(
 
     Retorna (opportunities, near_misses) — ambas ordenadas por relevância.
     Em regimes Bear, retorna ([], []) pois entradas estão bloqueadas.
+
+    Usa WatchlistThrottler para distribuir os fetches ao longo do ciclo em vez
+    de disparar todos em paralelo (burst). O Clyde avalia cada ticker logo que
+    os dados chegam, sem esperar pelo batch completo. O cursor persiste entre
+    ciclos para garantir cobertura uniforme de todos os tickers.
     """
+    from .config import LOOP_INTERVAL_SECONDS
+
     if regime in _BEAR_REGIMES:
         log_decision("watchlist_scan_skipped", "bear_regime_no_entries", {"regime": regime})
         return [], []
 
+    # Todos os não-possuídos — sem cap SCAN_TOP_N (o throttling substitui o limite)
     candidates = [c for c in watchlist if c.get("ticker") not in held_symbols]
-    candidates = candidates[:SCAN_TOP_N]
-
     if not candidates:
         return [], []
 
-    tickers = [c["ticker"] for c in candidates]
-    log_decision("watchlist_scan_start", "fetching_technicals", {"n": len(tickers), "regime": regime})
-
-    try:
-        market_data = fetch_candidate_market_data(tickers)
-    except Exception as exc:
-        log_error("watchlist_scan_failed", {"error": str(exc)})
-        return [], []
-
-    if not market_data:
-        return [], []
-
-    signals = generate_signals(market_data, {"positions": []}, regime)
-
+    tickers    = [c["ticker"] for c in candidates]
     score_map  = {c["ticker"]: c.get("score", 0)   for c in candidates}
     sector_map = {c["ticker"]: c.get("sector", "?") for c in candidates}
     mom1m_map  = {c["ticker"]: c.get("mom_1m", 0)  for c in candidates}
     mom3m_map  = {c["ticker"]: c.get("mom_3m", 0)  for c in candidates}
 
-    # ── Oportunidades de entrada ───────────────────────────────────────────────
-    signal_tickers: set[str] = set()
-    opportunities: list[dict] = []
-    for sig in signals:
-        if sig.signal_type != "ENTRY":
+    log_decision("watchlist_scan_start", "throttled_stream", {
+        "n": len(tickers), "regime": regime,
+    })
+
+    budget = max(60.0, LOOP_INTERVAL_SECONDS - 60)  # deixa 60 s de folga no ciclo
+    throttler = WatchlistThrottler(tickers)
+
+    market_data:    dict[str, dict] = {}
+    signal_tickers: set[str]        = set()
+    opportunities:  list[dict]      = []
+
+    for ticker, data in throttler.stream(budget_seconds=budget):
+        if data is None:
             continue
-        signal_tickers.add(sig.ticker)
-        md = market_data.get(sig.ticker, {})
-        opportunities.append({
-            "ticker":          sig.ticker,
-            "sector":          sector_map.get(sig.ticker, "?"),
-            "watchlist_score": round(score_map.get(sig.ticker, 0), 4),
-            "mom_1m":          round(mom1m_map.get(sig.ticker, 0), 4),
-            "mom_3m":          round(mom3m_map.get(sig.ticker, 0), 4),
-            "signal_strength": round(sig.strength, 3),
-            "style":           sig.style,
-            "reasons":         sig.reasons,
-            "technicals":      sig.context,
-            "last_price":      md.get("last_price"),
-        })
+        market_data[ticker] = data
+
+        # Avaliação imediata — o Clyde não espera pelo batch completo
+        sigs = generate_signals({ticker: data}, {"positions": []}, regime)
+        for sig in sigs:
+            if sig.signal_type != "ENTRY":
+                continue
+            signal_tickers.add(sig.ticker)
+            opportunities.append({
+                "ticker":          sig.ticker,
+                "sector":          sector_map.get(sig.ticker, "?"),
+                "watchlist_score": round(score_map.get(sig.ticker, 0), 4),
+                "mom_1m":          round(mom1m_map.get(sig.ticker, 0), 4),
+                "mom_3m":          round(mom3m_map.get(sig.ticker, 0), 4),
+                "signal_strength": round(sig.strength, 3),
+                "style":           sig.style,
+                "reasons":         sig.reasons,
+                "technicals":      sig.context,
+                "last_price":      data.get("last_price"),
+            })
+
     opportunities.sort(key=lambda x: x["signal_strength"], reverse=True)
 
-    # ── Near-misses: candidatos que quase ativaram sinal ──────────────────────
+    # ── Near-misses: todos os tickers acumulados no stream ────────────────────
     near_misses: list[dict] = []
     for ticker, md in market_data.items():
         if ticker in signal_tickers:
@@ -657,27 +666,24 @@ def _scan_watchlist_candidates(
             # A tendência tem de ser ascendente para ser "quase lá"
             continue
 
-        rule: str | None    = None
-        blocking: str       = ""
-        proximity: float    = 0.0
+        rule: str | None = None
+        blocking: str    = ""
+        proximity: float = 0.0
 
         if 35 < rsi <= 45 and vol_ratio >= 1.0:
-            # Rule A near-miss: RSI ligeiramente acima do limiar ≤35
-            rule     = "A"
-            delta    = round(rsi - 35, 1)
-            blocking = f"RSI-14={rsi:.1f} — faltam {delta:.1f} pts para ≤35"
+            rule      = "A"
+            delta     = round(rsi - 35, 1)
+            blocking  = f"RSI-14={rsi:.1f} — faltam {delta:.1f} pts para ≤35"
             proximity = max(0.0, 1.0 - (rsi - 35) / 10)
 
         elif rsi <= 35 and 0.8 <= vol_ratio < 1.2:
-            # Rule A': RSI ok, volume insuficiente
-            rule     = "A"
-            blocking = f"Volume {vol_ratio:.1f}× — falta {round(1.2 - vol_ratio, 2):.2f}× para ≥1.2"
+            rule      = "A"
+            blocking  = f"Volume {vol_ratio:.1f}× — falta {round(1.2 - vol_ratio, 2):.2f}× para ≥1.2"
             proximity = vol_ratio / 1.2
 
         elif 40 <= rsi <= 55 and 1.3 <= vol_ratio < 1.8:
-            # Rule B near-miss: momentum mas volume ainda abaixo de 1.8×
-            rule     = "B"
-            blocking = f"Volume {vol_ratio:.1f}× — falta {round(1.8 - vol_ratio, 2):.2f}× para ≥1.8"
+            rule      = "B"
+            blocking  = f"Volume {vol_ratio:.1f}× — falta {round(1.8 - vol_ratio, 2):.2f}× para ≥1.8"
             proximity = vol_ratio / 1.8
 
         if rule:
@@ -699,6 +705,7 @@ def _scan_watchlist_candidates(
         "opportunities": len(opportunities),
         "near_misses":   len(near_misses),
         "regime":        regime,
+        "tickers_fetched": len(market_data),
     })
     return opportunities, near_misses
 
