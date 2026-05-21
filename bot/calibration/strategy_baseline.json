@@ -1,0 +1,43 @@
+{
+  "version": "1.0",
+  "date": "2026-05-21",
+  "description": "Checkpoint in-sample S&P 500 (503 tickers, 2022-2026). Melhor combinacao por PF com n_trades>50. Todas as fases futuras comparam contra este baseline.",
+  "best_params": {
+    "rsi_buy_max": 34.0,
+    "vol_ratio_min": 1.2,
+    "require_ema50_above_200": true,
+    "ema50_dist_min_pct": -3.0,
+    "apply_regime_veto": true
+  },
+  "metrics": {
+    "profit_factor": 2.1597,
+    "expectancy_pct": 1.4265,
+    "win_rate": 0.6203,
+    "median_return_pct": 0.8595,
+    "total_return_pct": 225.38,
+    "avg_max_dd_pct": -2.6083,
+    "avg_max_profit_pct": 4.4248
+  },
+  "data_window": {
+    "start": "2022-01-01",
+    "end": "2026-01-01",
+    "universe": "S&P 500 composicao atual (503 tickers)",
+    "survivorship_bias_note": "composicao atual — empresas removidas do indice nao incluidas; resultados enviesados para cima"
+  },
+  "horizon": 10,
+  "n_trades": 158,
+  "production_params_at_save": {
+    "rsi_buy_max": 35.0,
+    "vol_ratio_min": 0.8,
+    "require_ema50_above_200": true,
+    "ema50_dist_min_pct": null,
+    "apply_regime_veto": true,
+    "profit_factor": 1.5003,
+    "n_trades": 14802
+  },
+  "notes": {
+    "pf_3033_smoke_test": "PF=3.033 encontrado no smoke test (5 tickers, 2 anos) era artefacto de overfitting. Com 503 tickers e 4 anos, o mesmo combo RSI<=40+vol>=1.0+ema50dist>=-3% da PF=1.45 com n=3833.",
+    "n_trades_warning": "n=158 e baixo para 503 tickers/4 anos (RSI<=34+vol>=1.2+ema50dist>=-3% sao filtros mutuamente restritivos — oversold+perto_ema50+volume_alto). Validar com OOS antes de implementar.",
+    "robust_alternative": "RSI<=30 + vol>=1.2 sem ema50dist da PF=1.91 com n=3857 — mais robusto estatisticamente mas PF inferior."
+  }
+}

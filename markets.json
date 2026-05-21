@@ -112,20 +112,38 @@
       "news": [
         {
           "source": "Yahoo",
-          "ticker": "NVDA",
-          "headline": "4 important callouts from Nvidia's earnings",
-          "summary": "In addition to the earnings release, Nvidia's CFO Colette Kress shared commentary that revealed four key developments in its business, beyond the company's first quarter earnings-per-share beat.",
-          "url": "https://finnhub.io/api/news?id=0b36099dd52aa0b61bc339ddfeaa4458a47aecd68af5f962ea1ad8d77c9ec91d",
-          "datetime": 1779314077,
+          "ticker": "MSFT",
+          "headline": "The Real Winner of SpaceX’s IPO: Mark Zuckerberg",
+          "summary": "Wall Street has spent the last six months questioning Mark Zuckerberg’s aggressive AI capital spending, with Meta Platforms (NASDAQ:META) raising its 2026 capex guidance to $125 to $145 billion after a Q1 in which revenu",
+          "url": "https://finnhub.io/api/news?id=1272c06f8dd75fbf4ea77558c8813bb4ee6b6ed7138c335c11514bc31efae645",
+          "datetime": 1779320607,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
           "source": "Yahoo",
           "ticker": "NVDA",
-          "headline": "Nvidia’s revenue blows past Wall Street expectations as AI boom accelerates",
-          "summary": "Many analysts view company’s financial performance as a broader referendum on AI buildout",
-          "url": "https://finnhub.io/api/news?id=aecd9bb55e554eb91330f07752c07e31d2bd9bc949db17410ce580466edbfe91",
-          "datetime": 1779313845,
+          "headline": "Nvidia-backed AI startup wants to solve AI’s ‘hard problem’",
+          "summary": "Jensen Huang is betting on a new AI lab that thinks the current chatbot frenzy is just the beginning. Nvidia (NVDA) has already emerged as one of the greatest winners of the artificial intelligence boom. Its chips now ma",
+          "url": "https://finnhub.io/api/news?id=5d03f8b77a438e8f135a2ac51f778b31f3cf4234d1c7a38f256c0e9945e2bb0a",
+          "datetime": 1779320220,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "ticker": "NVDA",
+          "headline": "Stock market today: Dow, S&P 500, Nasdaq futures slip as Wall Street shrugs off Nvidia earnings",
+          "summary": "US stock futures fell after Nvidia earnings failed to wow investors, and SpaceX took a big step toward its IPO.",
+          "url": "https://finnhub.io/api/news?id=f3a84ad333eb6c117c56c5d9ec0c3531a554180fe41c49cf8c68ad9f3c61fb8d",
+          "datetime": 1779319391,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "ticker": "AAPL",
+          "headline": "Apple’s AI Overhaul and CEO Transition Could Be A Game Changer For Apple (AAPL)",
+          "summary": "In recent weeks, Apple has reported record quarterly results, previewed extensive Apple Intelligence and Siri upgrades, and reshaped its hardware organization as it prepares for a CEO handover to John Ternus later this y",
+          "url": "https://finnhub.io/api/news?id=fd9df8acbe7d6721ec4eec92ce343d95cd3e0b820bb6b5d56b3148446fa5d640",
+          "datetime": 1779318910,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
@@ -135,24 +153,6 @@
           "summary": "SANTA MONICA, Calif., May 20, 2026--Snap Inc. (NYSE: SNAP) announced today that Luke Wood, former President of Beats by Dr. Dre and Vice President at Apple Inc., has been appointed to the company’s board of directors, ef",
           "url": "https://finnhub.io/api/news?id=72c9167c495ca42f3676b5eea46ee6ac7e3c44d4a43670201f904e30e9d22c5a",
           "datetime": 1779310800,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Yahoo",
-          "ticker": "MSFT",
-          "headline": "Nvidia's Data Center Revenue Soars. It's Not Just From the 'Hyperscalers.'",
-          "summary": "Nvidia's first-quarter data center sales soared by 92% from last year to $75 billion, a new record.  Nvidia also changed how it breaks up data center sales in its reporting.  It's now showing how much of it comes from ou",
-          "url": "https://finnhub.io/api/news?id=3c52344dd6b312bb1e67608691d8b2f5b0bfefa5d627aa948a7d9088bc8e79c6",
-          "datetime": 1779309360,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Yahoo",
-          "ticker": "AAPL",
-          "headline": "Fiduciary Family Office Dumps Its Entire $10.2 Million Stake in JIVE",
-          "summary": "JPMorgan International Value ETF provides global equity diversification with a value tilt and competitive yield across developed and emerging markets.",
-          "url": "https://finnhub.io/api/news?id=7468d63500f1ad8f85b11a2965dcf7dcf6917c6649f56fe3cdb3d7c5914dad80",
-          "datetime": 1779308898,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         }
       ]
@@ -265,7 +265,25 @@
       "news": [
         {
           "source": "Yahoo",
+          "ticker": "JPM",
+          "headline": "SpaceX Bitcoin Stack Reaches $1.45B as Public Listing Nears",
+          "summary": "SpaceX’s IPO filing has turned its bitcoin (CRYPTO: $BTC) holdings into a public-market disclosure, revealing...",
+          "url": "https://finnhub.io/api/news?id=75d3ab790c29519244184859ae3910a9f1282c60419eb5836bf9bbb1f4cf9788",
+          "datetime": 1779319560,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
           "ticker": "GS",
+          "headline": "Goldman Sachs Backs Crypto Infrastructure And AI Bond Trading Platforms",
+          "summary": "Goldman Sachs (NYSE:GS) has shifted away from direct altcoin ETF holdings, exiting positions tied to XRP and Solana. The bank is redirecting capital toward crypto infrastructure, focusing on the pipes and platforms that ",
+          "url": "https://finnhub.io/api/news?id=e6405d6976131b8d25c0355ad9b474acf52fd02114cd35feb4bcb778071ea6f7",
+          "datetime": 1779315198,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "ticker": "MS",
           "headline": "Why Goldman Sachs Stock Popped on Wednesday",
           "summary": "Goldman Sachs won a PR coup today -- and a bit of money, too.",
           "url": "https://finnhub.io/api/news?id=6f872a144fb8406b4ffff0171fce217a951fabef5c4474d4d6efd61993adbd85",
@@ -279,24 +297,6 @@
           "summary": "NEW YORK, May 20, 2026--Marianne Lake, CEO of Consumer & Community Banking, will present at the Morgan Stanley U.S. Financials Conference in New York City on Tuesday, June 9, 2026, at 9:00 a.m. (Eastern).",
           "url": "https://finnhub.io/api/news?id=6d98aaf78068f26a09c3ff1c3431eba6536bd7503df45a519ec32ff1ed391d92",
           "datetime": 1779307920,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Yahoo",
-          "ticker": "GS",
-          "headline": "Sector Update: Financial Stocks Rise Late Afternoon",
-          "summary": "Financial stocks were higher in late Wednesday afternoon trading, with the NYSE Financial Index risi",
-          "url": "https://finnhub.io/api/news?id=db70e8a8200b6382929373f6553c3b00f41d807bcbc0b4115b612670851d2636",
-          "datetime": 1779307108,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Yahoo",
-          "ticker": "JPM",
-          "headline": "JPMorgan sees biotech sector at inflection point, resumes coverage on 14 Firms",
-          "summary": "Investing.com -- JPMorgan has reinstated ratings and price targets on 14 large-cap biotechnology companies, describing the sector as being at a critical “inflection point” as pipeline successes increasingly translate int",
-          "url": "https://finnhub.io/api/news?id=624579c1734494f4b298aaef6ace937cdd53ec3df2bbc185533470c21334b5b6",
-          "datetime": 1779305376,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
@@ -571,6 +571,15 @@
       "news": [
         {
           "source": "Yahoo",
+          "ticker": "JNJ",
+          "headline": "Top Stock Reports for Johnson & Johnson, Oracle & Netflix",
+          "summary": "Johnson & Johnson, Oracle and Netflix lead Zacks' top stock reports as analysts spotlight growth drivers, cloud gains and new monetization efforts.",
+          "url": "https://finnhub.io/api/news?id=87dd5c224182281b4ba5f76ac2919b56f4d16fe6fe3db53717c36a8811a896c7",
+          "datetime": 1779310620,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
           "ticker": "LLY",
           "headline": "Denmark GDP Jumps 1.9% as Pharma Sector Drives Growth",
           "summary": "Novo Nordisk-linked pharmaceutical strength helped Denmark post a fourth straight quarter of economic expansion.",
@@ -594,15 +603,6 @@
           "summary": "Paychecks stop. Bonuses get cut. Layoff announcements arrive without warning. Dividend checks, by contrast, keep landing in brokerage accounts on a schedule set years in advance by boards that treat the payout like a con",
           "url": "https://finnhub.io/api/news?id=0d01a6d38e55792e0002d91b7e2517162e3a5139da535cb29c587fdb4c6e15de",
           "datetime": 1779299101,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Yahoo",
-          "ticker": "JNJ",
-          "headline": "Can a New Arthritis Drug Make Immunovant the Next Biotech Star?",
-          "summary": "Immunovant reports clinically meaningful trial results for its lead drug candidate. That’s good news for Roivant Sciences.",
-          "url": "https://finnhub.io/api/news?id=20ae2f66ebc23da17b8f0c36c0515dd32e43dea8b6a502db3fa53a8eac5ad9b5",
-          "datetime": 1779297600,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
@@ -725,10 +725,37 @@
         {
           "source": "Yahoo",
           "ticker": "AMZN",
-          "headline": "4 important callouts from Nvidia's earnings",
-          "summary": "In addition to the earnings release, Nvidia's CFO Colette Kress shared commentary that revealed four key developments in its business, beyond the company's first quarter earnings-per-share beat.",
-          "url": "https://finnhub.io/api/news?id=0b36099dd52aa0b61bc339ddfeaa4458a47aecd68af5f962ea1ad8d77c9ec91d",
-          "datetime": 1779314077,
+          "headline": "The Real Winner of SpaceX’s IPO: Mark Zuckerberg",
+          "summary": "Wall Street has spent the last six months questioning Mark Zuckerberg’s aggressive AI capital spending, with Meta Platforms (NASDAQ:META) raising its 2026 capex guidance to $125 to $145 billion after a Q1 in which revenu",
+          "url": "https://finnhub.io/api/news?id=1272c06f8dd75fbf4ea77558c8813bb4ee6b6ed7138c335c11514bc31efae645",
+          "datetime": 1779320607,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "ticker": "AMZN",
+          "headline": "Nvidia-backed AI startup wants to solve AI’s ‘hard problem’",
+          "summary": "Jensen Huang is betting on a new AI lab that thinks the current chatbot frenzy is just the beginning. Nvidia (NVDA) has already emerged as one of the greatest winners of the artificial intelligence boom. Its chips now ma",
+          "url": "https://finnhub.io/api/news?id=5d03f8b77a438e8f135a2ac51f778b31f3cf4234d1c7a38f256c0e9945e2bb0a",
+          "datetime": 1779320220,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "ticker": "WMT",
+          "headline": "Walmart, Deere, Zoom earnings headline busy May 21 trading day",
+          "summary": "Asking for a Trend host Josh Lipton gets investors ready for the busy trading day ahead on May 21, breaking down the key earnings reports to watch — including Walmart (WMT), Deere & Company (DE), Take-Two (TTWO), Workday",
+          "url": "https://finnhub.io/api/news?id=b5a210bf153330760b1ccf735d94be9cbcf4f5118c994d9771587a4b40bf24d6",
+          "datetime": 1779318000,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "ticker": "MCD",
+          "headline": "1 Large-Cap Stock to Target This Week and 2 We Question",
+          "summary": "Large-cap stocks have the power to shape entire industries thanks to their size and widespread influence. With such vast footprints, however, finding new areas for growth is much harder than for smaller, more agile playe",
+          "url": "https://finnhub.io/api/news?id=d0d3eb8b8e1a3bf6c53b38cc4387a655d30f290f9af906414c36c2f6788b0675",
+          "datetime": 1779317575,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
@@ -738,33 +765,6 @@
           "summary": "Nvidia stock fell late despite strong earnings and guidance. Stocks rallied Wednesday as oil prices dived on Iran hopes.",
           "url": "https://finnhub.io/api/news?id=fa83fffdbe8f0c1e0e1246c304dafaa29e9a3ecc2675241c5fa623a5645e3454",
           "datetime": 1779313602,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Yahoo",
-          "ticker": "MCD",
-          "headline": "McDONALD'S ANNOUNCES QUARTERLY CASH DIVIDEND",
-          "summary": "Today, McDonald's Board of Directors declared a quarterly cash dividend of $1.86 per share of common stock payable on June 16, 2026 to shareholders of record at the close of business on June 2, 2026.",
-          "url": "https://finnhub.io/api/news?id=94f1e6beb60cfd77287c7b8369f0113b972a737f9e2e1f7c5c1d19aa02746b0a",
-          "datetime": 1779310800,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Yahoo",
-          "ticker": "AMZN",
-          "headline": "Nvidia's Data Center Revenue Soars. It's Not Just From the 'Hyperscalers.'",
-          "summary": "Nvidia's first-quarter data center sales soared by 92% from last year to $75 billion, a new record.  Nvidia also changed how it breaks up data center sales in its reporting.  It's now showing how much of it comes from ou",
-          "url": "https://finnhub.io/api/news?id=3c52344dd6b312bb1e67608691d8b2f5b0bfefa5d627aa948a7d9088bc8e79c6",
-          "datetime": 1779309360,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Yahoo",
-          "ticker": "WMT",
-          "headline": "Walmart Earnings Will Offer a Read on the Consumer",
-          "summary": "Walmart’s earnings may matter less than what the retail giant says about inflation, gas prices, and consumer spending trends.",
-          "url": "https://finnhub.io/api/news?id=e13f777648275e141afb5967194fe0c8c7a5eb3f14b5b30719455ea13a7b8b95",
-          "datetime": 1779307200,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         }
       ]

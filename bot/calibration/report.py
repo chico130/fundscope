@@ -14,9 +14,11 @@ import pandas as pd
 
 from bot.config import BASE_DIR
 
-_OUT_DIR     = BASE_DIR / "data" / "calibration"
-_CSV_PATH    = _OUT_DIR / "sweep_results.csv"
-_REPORT_PATH = _OUT_DIR / "REPORT.md"
+_OUT_DIR         = BASE_DIR / "data" / "calibration"
+_CSV_PATH        = _OUT_DIR / "sweep_results.csv"
+_REPORT_PATH     = _OUT_DIR / "REPORT.md"
+_OOS_REPORT_PATH = _OUT_DIR / "OOS_REPORT.md"
+_OOS_CSV_PATH    = _OUT_DIR / "oos_report.csv"
 
 _TOP_N       = 15
 _PF_ROBUST   = 1.5     # limiar "edge robusto" (atom-profit-factor)
@@ -203,6 +205,163 @@ def _top_table(
         lines.append("")
 
     return lines
+
+
+def write_oos_report(
+    oos_report: pd.DataFrame,
+    horizons: list[int],
+    train_end: str,
+    val_start: str,
+    n_folds: int = 1,
+    n_min: int = 30,
+    pf_drop_threshold: float = 0.40,
+) -> None:
+    """Grava data/calibration/OOS_REPORT.md e data/calibration/oos_report.csv."""
+    _OUT_DIR.mkdir(parents=True, exist_ok=True)
+
+    oos_report.to_csv(_OOS_CSV_PATH, index=False)
+    print(f"[report] CSV OOS gravado → {_OOS_CSV_PATH}")
+
+    md = _build_oos_markdown(oos_report, horizons, train_end, val_start, n_folds, n_min, pf_drop_threshold)
+    _OOS_REPORT_PATH.write_text(md, encoding="utf-8")
+    print(f"[report] OOS_REPORT.md gravado → {_OOS_REPORT_PATH}")
+
+
+def _build_oos_markdown(
+    oos: pd.DataFrame,
+    horizons: list[int],
+    train_end: str,
+    val_start: str,
+    n_folds: int,
+    n_min: int,
+    pf_drop_threshold: float,
+) -> str:
+    generated = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+
+    fold_desc = (
+        f"Walk-forward {n_folds}-fold"
+        if n_folds > 1
+        else f"Divisão simples (treino até {train_end} / validação a partir de {val_start})"
+    )
+
+    lines: list[str] = [
+        "# FundScope — Relatório de Validação Out-of-Sample (OOS)",
+        "",
+        f"**Gerado em:** {generated}",
+        f"**Período de treino:** até {train_end}",
+        f"**Período de validação:** a partir de {val_start}",
+        f"**Método:** {fold_desc}",
+        f"**Limiar de queda PF aceitável:** {pf_drop_threshold:.0%}",
+        f"**N mínimo de trades:** {n_min}",
+        "",
+        "> Os parâmetros foram encontrados **exclusivamente** no período de treino.",
+        "> O período de validação nunca influenciou a selecção de parâmetros.",
+        "",
+    ]
+
+    if oos.empty:
+        lines += ["*Sem dados OOS para apresentar.*", ""]
+        return "\n".join(lines)
+
+    # Tabela principal
+    lines += [
+        "---",
+        "",
+        "## Resultados por Horizonte",
+        "",
+        "| Horizonte | RSI≤ | Vol≥ "
+        "| PF Treino | Expect% Treino | MaxDD% Treino "
+        "| PF Validação | Expect% Validação | MaxDD% Validação "
+        "| Queda PF% | Pontuação Robustez | Estado |",
+        "|---|---|---|---|---|---|---|---|---|---|---|---|",
+    ]
+
+    for _, r in oos.iterrows():
+        def _pf(v: object) -> str:
+            return f"{float(v):.3f}" if _is_num(v) else "—"
+
+        def _exp(v: object) -> str:
+            return f"{float(v):+.2f}%" if _is_num(v) else "—"
+
+        def _dd(v: object) -> str:
+            return f"{float(v):+.1f}%" if _is_num(v) else "—"
+
+        def _drop(v: object) -> str:
+            return f"{float(v):.1%}" if _is_num(v) else "—"
+
+        def _rob(v: object) -> str:
+            return f"{float(v):.1f}" if _is_num(v) else "—"
+
+        lines.append(
+            f"| {int(r['horizon'])}d "
+            f"| {r['rsi_buy_max']:.0f} "
+            f"| {r['vol_ratio_min']:.1f} "
+            f"| {_pf(r.get('train_pf'))} "
+            f"| {_exp(r.get('train_expectancy_pct'))} "
+            f"| {_dd(r.get('train_maxdd_pct'))} "
+            f"| {_pf(r.get('val_pf'))} "
+            f"| {_exp(r.get('val_expectancy_pct'))} "
+            f"| {_dd(r.get('val_maxdd_pct'))} "
+            f"| {_drop(r.get('pf_drop_pct'))} "
+            f"| {_rob(r.get('robustness_score'))} "
+            f"| {r.get('status', '—')} |"
+        )
+
+    lines += ["", "---", "", "## Resumo"]
+    lines += _oos_summary(oos, horizons)
+
+    lines += [
+        "",
+        "---",
+        "",
+        "## Notas",
+        "",
+        "- **Pontuação Robustez** = 100 × (1 − queda_PF) × min(1, n_trades_val / n_min).",
+        "- Estratégias com **⚠️ DADOS INSUFICIENTES** têm trades de validação abaixo do limiar mínimo.",
+        "- Uma queda de PF elevada pode indicar overfitting aos dados de treino.",
+        "",
+        f"*FundScope Calibration Engine — {generated}*",
+    ]
+
+    return "\n".join(lines)
+
+
+def _oos_summary(oos: pd.DataFrame, horizons: list[int]) -> list[str]:
+    """Secção de resumo: contagens por status e avisos por horizonte."""
+    import math
+
+    n_valid       = (oos["status"] == "✅ VÁLIDO").sum()
+    n_overfitted  = (oos["status"] == "🚨 OVERFITTED").sum()
+    n_insuff      = (oos["status"] == "⚠️ DADOS INSUFICIENTES").sum()
+
+    lines: list[str] = [
+        "",
+        f"- ✅ **Estratégias válidas:** {n_valid}",
+        f"- 🚨 **Estratégias overfitted:** {n_overfitted}",
+        f"- ⚠️ **Dados insuficientes:** {n_insuff}",
+        "",
+    ]
+
+    for H in horizons:
+        sub = oos[oos["horizon"] == H]
+        if sub.empty:
+            continue
+        if (sub["status"] == "🚨 OVERFITTED").all():
+            lines.append(
+                f"> 🔴 **AVISO:** Todas as estratégias do horizonte **{H}d** estão overfitted. "
+                "Não aplicar estes parâmetros em produção."
+            )
+
+    return lines
+
+
+def _is_num(v: object) -> bool:
+    """Verdadeiro se v é um número finito (não NaN, não None)."""
+    import math
+    try:
+        return v is not None and not math.isnan(float(v))
+    except (TypeError, ValueError):
+        return False
 
 
 def _ema50_comparison(df: pd.DataFrame, horizons: list[int]) -> list[str]:

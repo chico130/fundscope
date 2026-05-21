@@ -69,13 +69,13 @@ PORTFOLIO_PATH = BASE_DIR / "portfolio.json"
 BONNIE_LOG_PATH = LOGS_DIR / "bonnie_log.json"
 
 # Scan de candidatos (phase0 / watchlist builder)
-SCAN_TOP_N               = 15   # top N tickers a avançar para análise técnica
-SCAN_WORKERS_YF          = 5    # threads paralelas no ThreadPoolExecutor
+SCAN_TOP_N               = 25   # top N tickers a avançar para análise técnica
+SCAN_WORKERS_YF          = 8    # threads paralelas no ThreadPoolExecutor
 SCAN_TIMEOUT_PER_TICKER  = 12   # segundos máximos por ticker (yfinance)
 SCAN_MIN_RESULTS         = 5    # mínimo de resultados válidos; falha se abaixo
 
 WATCHLIST_CONFIG = {
-    "max_size": 60,
+    "max_size": 100,
     "sectors": ["XLK", "XLV", "XLY", "XLI", "XLE", "XLF", "XLC", "XLU", "XLP"],
     "min_avg_volume_usd": 10_000_000,
     "min_price_usd": 5.0,

@@ -1,15 +1,339 @@
 {
-  "updated": "2026-05-20T23:30:50.618262+00:00",
+  "updated": "2026-05-21T01:01:01.118761+00:00",
   "articles": [
     {
-      "id": 586810664,
+      "id": 366273146,
+      "source": "CNBC",
+      "title": "SoftBank Group shares soar over 16% as Nvidia earnings signal strong AI momentum",
+      "summary": "SoftBank Group is closely tied to the AI boom through its stake in Arm Holdings, whose chip designs are used in AI servers and data centers powered by Nvidia systems.",
+      "content": "SoftBank Group is closely tied to the AI boom through its stake in Arm Holdings, whose chip designs are used in AI servers and data centers powered by Nvidia systems.",
+      "url": "https://www.cnbc.com/2026/05/21/softbank-asia-tech-stocks-nvidia-earnings.html",
+      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
+      "publishedAt": "2026-05-21T00:53:13+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [
+          "NVDA",
+          "AMD",
+          "INTC",
+          "AVGO",
+          "JPM"
+        ],
+        "sector": "Tecnologia",
+        "sentiment": "neutral"
+      },
+      "heat": 3,
+      "feed": "rss"
+    },
+    {
+      "id": 424221555,
+      "source": "CNBC",
+      "title": "SpaceX's historic IPO plans: Billions in losses and Musk's massive ownership",
+      "summary": "SpaceX filed for an IPO and plans to list on Nasdaq under ticker SPCX, according to its SEC prospectus.",
+      "content": "SpaceX filed for an IPO and plans to list on Nasdaq under ticker SPCX, according to its SEC prospectus.",
+      "url": "https://www.cnbc.com/2026/05/20/spacex-ipo-live-updates.html",
+      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
+      "publishedAt": "2026-05-21T00:51:52+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 82771956,
+      "source": "MarketWatch",
+      "title": "Vox\u2019s sale marks the end of an era for a once-booming form of digital media. Here\u2019s how it all came undone.",
+      "summary": "Companies like BuzzFeed, Vice and Vox were once worth billions, but shifting audiences and declines in advertising have sent their values plummeting.",
+      "content": "Companies like BuzzFeed, Vice and Vox were once worth billions, but shifting audiences and declines in advertising have sent their values plummeting.",
+      "url": "https://www.marketwatch.com/story/voxs-sale-marks-the-end-of-an-era-for-a-once-booming-form-of-digital-media-heres-how-it-all-came-undone-8a15d530?mod=mw_rss_topstories",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-21T00:32:00+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 416241218,
+      "source": "Seeking Alpha",
+      "title": "Intuit outlines $21.341B-$21.374B FY2026 revenue as it cuts workforce 17%",
+      "summary": "",
+      "content": "",
+      "url": "https://seekingalpha.com/news/4595530-intuit-outlines-21_341b-21_374b-fy2026-revenue-as-it-cuts-workforce-17-percent?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-20T20:31:41-04:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 607287832,
+      "source": "Nasdaq",
+      "title": "Down 14%, Should You Buy the Dip in Micron Stock?",
+      "summary": "Micron's (NASDAQ: MU) stock has soared over the previous few years, but has been down in recent days.",
+      "content": "Micron's (NASDAQ: MU) stock has soared over the previous few years, but has been down in recent days.",
+      "url": "https://www.nasdaq.com/articles/down-14-should-you-buy-dip-micron-stock",
+      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
+      "publishedAt": "2026-05-21T00:30:22+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 635674216,
+      "source": "Nasdaq",
+      "title": "SpaceX Is Getting Ready for What Could the Biggest IPO Ever!",
+      "summary": "Retail investors are eagerly anticipating the SpaceX IPO.",
+      "content": "Retail investors are eagerly anticipating the SpaceX IPO.",
+      "url": "https://www.nasdaq.com/articles/spacex-getting-ready-what-could-biggest-ipo-ever",
+      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
+      "publishedAt": "2026-05-21T00:29:50+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [
+          "AMZN",
+          "WMT",
+          "TGT",
+          "COST"
+        ],
+        "sector": "Consumo",
+        "sentiment": "positive"
+      },
+      "heat": 3,
+      "feed": "rss"
+    },
+    {
+      "id": 86918611,
+      "source": "Nasdaq",
+      "title": "Should Investors Buy Plug Power Stock?",
+      "summary": "Energy demand is soaring, and that's great news for Plug Power (NASDAQ: PLUG).",
+      "content": "Energy demand is soaring, and that's great news for Plug Power (NASDAQ: PLUG).",
+      "url": "https://www.nasdaq.com/articles/should-investors-buy-plug-power-stock",
+      "image": "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80",
+      "publishedAt": "2026-05-21T00:28:47+00:00",
+      "category": "Energia",
+      "icon": "\u26a1",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 926782261,
+      "source": "Nasdaq",
+      "title": "Massive News for Nebius Stock Investors! Buy or Sell This AI Stock?",
+      "summary": "I changed my rating on this innovative AI company.",
+      "content": "I changed my rating on this innovative AI company.",
+      "url": "https://www.nasdaq.com/articles/massive-news-nebius-stock-investors-buy-or-sell-ai-stock",
+      "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
+      "publishedAt": "2026-05-21T00:27:52+00:00",
+      "category": "Tecnologia",
+      "icon": "\ud83d\udcbb",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 907238717,
+      "source": "Nasdaq",
+      "title": "IonQ Stock Analysis: Buy or Sell This Quantum Computing Stock?",
+      "summary": "This is one of the most innovative companies worldwide.",
+      "content": "This is one of the most innovative companies worldwide.",
+      "url": "https://www.nasdaq.com/articles/ionq-stock-analysis-buy-or-sell-quantum-computing-stock",
+      "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
+      "publishedAt": "2026-05-21T00:27:16+00:00",
+      "category": "Tecnologia",
+      "icon": "\ud83d\udcbb",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 387168916,
+      "source": "CNBC",
+      "title": "Japan exports jump 14.8% in April, beating expectations as semiconductor shipments soar",
+      "summary": "The figure outperformed the 9.3% estimate from Reuters.",
+      "content": "The figure outperformed the 9.3% estimate from Reuters.",
+      "url": "https://www.cnbc.com/2026/05/21/japan-exports-semiconductor-autos-imports-trade.html",
+      "image": "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=800&q=80",
+      "publishedAt": "2026-05-21T00:26:09+00:00",
+      "category": "Com\u00e9rcio",
+      "icon": "\ud83d\udea2",
+      "impact": {
+        "tickers": [
+          "NVDA",
+          "AMD",
+          "INTC",
+          "AVGO"
+        ],
+        "sector": "Tecnologia",
+        "sentiment": "positive"
+      },
+      "heat": 3,
+      "feed": "rss"
+    },
+    {
+      "id": 622692398,
+      "source": "Nasdaq",
+      "title": "Corn Falls Back on Wednesday",
+      "summary": "Corn futures saw midweek pressure on Wednesday, with contracts down 2 \u00bd to 9 \u00bd cents at the close. The CmdtyView national average Cash Corn price was down 9 1/2 cents to $4.26 1/2. Crude oil losses of $5.07 is adding pressure as US and Iran negotiations are reportedly in...",
+      "content": "Corn futures saw midweek pressure on Wednesday, with contracts down 2 \u00bd to 9 \u00bd cents at the close. The CmdtyView national average Cash Corn price was down 9 1/2 cents to $4.26 1/2. Crude oil losses of $5.07 is adding pressure as US and Iran negotiations are reportedly in...",
+      "url": "https://www.nasdaq.com/articles/corn-falls-back-wednesday",
+      "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
+      "publishedAt": "2026-05-21T00:20:17+00:00",
+      "category": "Geopol\u00edtica",
+      "icon": "\ud83c\udf0d",
+      "impact": {
+        "tickers": [
+          "XOM",
+          "CVX",
+          "COP",
+          "OXY",
+          "SLB"
+        ],
+        "sector": "Energia",
+        "sentiment": "negative"
+      },
+      "heat": 3,
+      "feed": "rss"
+    },
+    {
+      "id": 811359229,
+      "source": "Nasdaq",
+      "title": "Hogs Close Wednesday with Weakness",
+      "summary": "Lean hog futures closed the Wednesday session with contracts 17 cents to $1 lower across most months. USDA\u2019s national base hog price was reported at $93.76 on Wednesday afternoon, down $1.11 from the day prior. The CME Lean Hog Index was up 5 cents on May 18 at $90.55. USDA\u2019s...",
+      "content": "Lean hog futures closed the Wednesday session with contracts 17 cents to $1 lower across most months. USDA\u2019s national base hog price was reported at $93.76 on Wednesday afternoon, down $1.11 from the day prior. The CME Lean Hog Index was up 5 cents on May 18 at $90.55. USDA\u2019s...",
+      "url": "https://www.nasdaq.com/articles/hogs-close-wednesday-weakness",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-21T00:20:17+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 9425145,
+      "source": "Nasdaq",
+      "title": "Soybeans Correct Back Lower on Wednesday",
+      "summary": "Soybeans closed with 4 \u00bc to 12 cent losses across most contracts on Wednesday. The cmdtyView national average Cash Bean price was down 9 1/4 cents at $11.37 3/4. Soymeal futures were down a dime to $1.40 on the day, with Soy Oil futures 32 to 78 points lower. Crude...",
+      "content": "Soybeans closed with 4 \u00bc to 12 cent losses across most contracts on Wednesday. The cmdtyView national average Cash Bean price was down 9 1/4 cents at $11.37 3/4. Soymeal futures were down a dime to $1.40 on the day, with Soy Oil futures 32 to 78 points lower. Crude...",
+      "url": "https://www.nasdaq.com/articles/soybeans-correct-back-lower-wednesday",
+      "image": "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80",
+      "publishedAt": "2026-05-21T00:20:17+00:00",
+      "category": "Energia",
+      "icon": "\u26a1",
+      "impact": {
+        "tickers": [
+          "XOM",
+          "CVX",
+          "COP",
+          "OXY",
+          "SLB"
+        ],
+        "sector": "Energia",
+        "sentiment": "negative"
+      },
+      "heat": 3,
+      "feed": "rss"
+    },
+    {
+      "id": 685424590,
+      "source": "Nasdaq",
+      "title": "Cotton Back to Mixed Trade at Wednesday\u2019s Midday",
+      "summary": "Cotton futures are trading with contracts down 53 points to 3 points higher in the front months. The US dollar index is $0.211 higher at $99.055. Crude oil losses of $6.27 is adding pressure as US and Iran negotiations are reportedly in the final stages. The Cotlook A Index was...",
+      "content": "Cotton futures are trading with contracts down 53 points to 3 points higher in the front months. The US dollar index is $0.211 higher at $99.055. Crude oil losses of $6.27 is adding pressure as US and Iran negotiations are reportedly in the final stages. The Cotlook A Index was...",
+      "url": "https://www.nasdaq.com/articles/cotton-back-mixed-trade-wednesdays-midday",
+      "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
+      "publishedAt": "2026-05-21T00:20:17+00:00",
+      "category": "Geopol\u00edtica",
+      "icon": "\ud83c\udf0d",
+      "impact": {
+        "tickers": [
+          "XOM",
+          "CVX",
+          "COP",
+          "OXY",
+          "SLB"
+        ],
+        "sector": "Energia",
+        "sentiment": "negative"
+      },
+      "heat": 3,
+      "feed": "rss"
+    },
+    {
+      "id": 690641213,
+      "source": "CNBC",
+      "title": "S&P 500 futures fall as traders analyze Nvidia earnings: Live updates",
+      "summary": "The S&P 500 ended a three-day losing streak on Wednesday.",
+      "content": "The S&P 500 ended a three-day losing streak on Wednesday.",
+      "url": "https://www.cnbc.com/2026/05/20/stock-market-today-live-updates.html",
+      "image": "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=800&q=80",
+      "publishedAt": "2026-05-21T00:19:28+00:00",
+      "category": "Com\u00e9rcio",
+      "icon": "\ud83d\udea2",
+      "impact": {
+        "tickers": [
+          "NVDA",
+          "AMD",
+          "INTC",
+          "AVGO"
+        ],
+        "sector": "Tecnologia",
+        "sentiment": "negative"
+      },
+      "heat": 3,
+      "feed": "rss"
+    },
+    {
+      "id": 948032568,
       "source": "CNBC",
       "title": "Nvidia earnings takeaways: Data center revenue nearly doubles, report is strong but stock slides",
       "summary": "On the earnings call with analysts, CEO Jensen Huang explains the reason behind the chipmaker's reporting change.",
       "content": "On the earnings call with analysts, CEO Jensen Huang explains the reason behind the chipmaker's reporting change.",
       "url": "https://www.cnbc.com/2026/05/20/nvidia-nvda-earnings-report-q1-2027.html",
       "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
-      "publishedAt": "2026-05-20T23:29:37+00:00",
+      "publishedAt": "2026-05-21T00:14:19+00:00",
       "category": "Mercados",
       "icon": "\ud83d\udcb0",
       "impact": {
@@ -26,7 +350,462 @@
       "feed": "rss"
     },
     {
-      "id": 770034684,
+      "id": 540475474,
+      "source": "CNBC",
+      "title": "Inside India newsletter: India\u2019s investment appeal dims as firms and funds pivot to the U.S.",
+      "summary": "AI-driven growth and 'America-first' policies are pulling global capital to the U.S., challenging India's appeal as the fastest-growing economy.",
+      "content": "AI-driven growth and 'America-first' policies are pulling global capital to the U.S., challenging India's appeal as the fastest-growing economy.",
+      "url": "https://www.cnbc.com/2026/05/21/inside-india-investors-ai-chase-us-opportunities.html",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-21T00:09:00+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 487745642,
+      "source": "Nasdaq",
+      "title": "Cotton Closes Mostly Lower on Wednesday",
+      "summary": "Cotton futures posted losses of 6 to 73 points across most 2026 and 2027 contracts, with some deferred contracts up 13 to 29 points. The US dollar index was $0.304 higher at $99.570. Crude oil losses of $5.07 is adding pressure as US and Iran negotiations are reportedly in the...",
+      "content": "Cotton futures posted losses of 6 to 73 points across most 2026 and 2027 contracts, with some deferred contracts up 13 to 29 points. The US dollar index was $0.304 higher at $99.570. Crude oil losses of $5.07 is adding pressure as US and Iran negotiations are reportedly in the...",
+      "url": "https://www.nasdaq.com/articles/cotton-closes-mostly-lower-wednesday",
+      "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
+      "publishedAt": "2026-05-21T00:08:59+00:00",
+      "category": "Geopol\u00edtica",
+      "icon": "\ud83c\udf0d",
+      "impact": {
+        "tickers": [
+          "XOM",
+          "CVX",
+          "COP",
+          "OXY",
+          "SLB"
+        ],
+        "sector": "Energia",
+        "sentiment": "negative"
+      },
+      "heat": 3,
+      "feed": "rss"
+    },
+    {
+      "id": 383059112,
+      "source": "Nasdaq",
+      "title": "Coffee Prices Fall on Improved Brazil Coffee Crop Prospects",
+      "summary": "July arabica coffee (KCN26 ) on Wednesday closed down -1.85 (-0.68%), and July ICE robusta coffee (RMN26 ) closed down -17 (-0.51%). Coffee prices settled lower on Wednesday, with robusta falling to a 1-month low. Expectations of a larger Brazilian coffee crop are weighing on prices. Coffee prices have ratcheted...",
+      "content": "July arabica coffee (KCN26 ) on Wednesday closed down -1.85 (-0.68%), and July ICE robusta coffee (RMN26 ) closed down -17 (-0.51%). Coffee prices settled lower on Wednesday, with robusta falling to a 1-month low. Expectations of a larger Brazilian coffee crop are weighing on prices. Coffee prices have ratcheted...",
+      "url": "https://www.nasdaq.com/articles/coffee-prices-fall-improved-brazil-coffee-crop-prospects",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-21T00:08:59+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 587132257,
+      "source": "Nasdaq",
+      "title": "Hogs Holding Weaker at Midday",
+      "summary": "Lean hog futures are down 45 to 90 cents in most front months on the Wednesday session. USDA\u2019s national base hog price was reported at $93.62 on Wednesday morning, down 73 cents from the day prior. The CME Lean Hog Index was up 5 cents on May 18 at $90.55....",
+      "content": "Lean hog futures are down 45 to 90 cents in most front months on the Wednesday session. USDA\u2019s national base hog price was reported at $93.62 on Wednesday morning, down 73 cents from the day prior. The CME Lean Hog Index was up 5 cents on May 18 at $90.55....",
+      "url": "https://www.nasdaq.com/articles/hogs-holding-weaker-midday",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-21T00:08:58+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 135341969,
+      "source": "Seeking Alpha",
+      "title": "Devon Energy biggest buyer in record $4B U.S. government oil and gas auction",
+      "summary": "",
+      "content": "",
+      "url": "https://seekingalpha.com/news/4595527-devon-energy-biggest-buyer-in-record-4b-u-s-government-oil-and-gas-auction?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+      "image": "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80",
+      "publishedAt": "2026-05-20T20:08:57-04:00",
+      "category": "Energia",
+      "icon": "\u26a1",
+      "impact": {
+        "tickers": [
+          "XOM",
+          "CVX",
+          "COP",
+          "OXY",
+          "SLB"
+        ],
+        "sector": "Energia",
+        "sentiment": "positive"
+      },
+      "heat": 3,
+      "feed": "rss"
+    },
+    {
+      "id": 797075028,
+      "source": "Nasdaq",
+      "title": "A 2027 Bond Fund Lost an Institutional Holder \u2014 context is key",
+      "summary": "Key PointsSold 1,005,908 shares; estimated transaction value of $19.83 million based on quarterly average pricing",
+      "content": "Key PointsSold 1,005,908 shares; estimated transaction value of $19.83 million based on quarterly average pricing",
+      "url": "https://www.nasdaq.com/articles/2027-bond-fund-lost-institutional-holder-context-key",
+      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
+      "publishedAt": "2026-05-21T00:03:01+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 113936142,
+      "source": "Nasdaq",
+      "title": "Why Phreesia Stock Got Clocked Today",
+      "summary": "Key PointsIn his view, it's only a hold now.",
+      "content": "Key PointsIn his view, it's only a hold now.",
+      "url": "https://www.nasdaq.com/articles/why-phreesia-stock-got-clocked-today",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-21T00:00:47+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 84577387,
+      "source": "Nasdaq",
+      "title": "Wheat Posts Losses on Wednesday",
+      "summary": "The wheat complex saw mostly weaker trade on the midweek session. Chicago SRW futures fell back 4 to 6 \u00be cents into the close. KC HRW futures closed with fractional to 5 cent losses across the board. MPLS spring wheat was mixed with front moths down 1 to 2 cents...",
+      "content": "The wheat complex saw mostly weaker trade on the midweek session. Chicago SRW futures fell back 4 to 6 \u00be cents into the close. KC HRW futures closed with fractional to 5 cent losses across the board. MPLS spring wheat was mixed with front moths down 1 to 2 cents...",
+      "url": "https://www.nasdaq.com/articles/wheat-posts-losses-wednesday",
+      "image": "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=800&q=80",
+      "publishedAt": "2026-05-20T23:59:28+00:00",
+      "category": "Com\u00e9rcio",
+      "icon": "\ud83d\udea2",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 456850298,
+      "source": "Nasdaq",
+      "title": "Fat Cattle Fall Back on Wednesday, While Feeders Rally Late",
+      "summary": "Live cattle futures closed the Wednesday session with losses of 90 cents to $2.52. Cash trade has been limited so far this week with a few $260 sales in KS and $265 in the North. The Wednesday Fed Cattle Exchange online auction showed no sales on the 652 head offered,...",
+      "content": "Live cattle futures closed the Wednesday session with losses of 90 cents to $2.52. Cash trade has been limited so far this week with a few $260 sales in KS and $265 in the North. The Wednesday Fed Cattle Exchange online auction showed no sales on the 652 head offered,...",
+      "url": "https://www.nasdaq.com/articles/fat-cattle-fall-back-wednesday-while-feeders-rally-late",
+      "image": "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&q=80",
+      "publishedAt": "2026-05-20T23:59:27+00:00",
+      "category": "Macro",
+      "icon": "\ud83d\udcca",
+      "impact": {
+        "tickers": [
+          "JPM",
+          "GS",
+          "BAC",
+          "TLT"
+        ],
+        "sector": "Finan\u00e7as",
+        "sentiment": "negative"
+      },
+      "heat": 3,
+      "feed": "rss"
+    },
+    {
+      "id": 420791729,
+      "source": "Nasdaq",
+      "title": "Stocks Finish Sharply Higher on Iran Hopes",
+      "summary": "The S&P 500 Index ($SPX ) (SPY ) on Wednesday closed up +1.08%, the Dow Jones Industrial Average ($DOWI ) (DIA ) closed up +1.31%, and the Nasdaq 100 Index ($IUXX ) (QQQ ) closed up +1.66%. June E-mini S&P futures (ESM26 ) rose +0.96%, and June E-mini Nasdaq futures...",
+      "content": "The S&P 500 Index ($SPX ) (SPY ) on Wednesday closed up +1.08%, the Dow Jones Industrial Average ($DOWI ) (DIA ) closed up +1.31%, and the Nasdaq 100 Index ($IUXX ) (QQQ ) closed up +1.66%. June E-mini S&P futures (ESM26 ) rose +0.96%, and June E-mini Nasdaq futures...",
+      "url": "https://www.nasdaq.com/articles/stocks-finish-sharply-higher-iran-hopes",
+      "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
+      "publishedAt": "2026-05-20T23:59:27+00:00",
+      "category": "Geopol\u00edtica",
+      "icon": "\ud83c\udf0d",
+      "impact": {
+        "tickers": [
+          "XOM",
+          "CVX",
+          "LMT",
+          "RTX"
+        ],
+        "sector": "Geopol\u00edtica",
+        "sentiment": "neutral"
+      },
+      "heat": 3,
+      "feed": "rss"
+    },
+    {
+      "id": 369212162,
+      "source": "Nasdaq",
+      "title": "Wheat Falling Lower on Wednesday",
+      "summary": "The wheat complex is trading with losses across most contracts on the midweek session. Chicago SRW futures are falling back 8 to 9 cents on the day. KC HRW futures are trading with 5 to 7 cent losses at midday. MPLS spring wheat is down 2 cents in the front...",
+      "content": "The wheat complex is trading with losses across most contracts on the midweek session. Chicago SRW futures are falling back 8 to 9 cents on the day. KC HRW futures are trading with 5 to 7 cent losses at midday. MPLS spring wheat is down 2 cents in the front...",
+      "url": "https://www.nasdaq.com/articles/wheat-falling-lower-wednesday-0",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-20T23:59:27+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 147878322,
+      "source": "Seeking Alpha",
+      "title": "U.S. crude oil plunges below $100 on U.S.-Iran optimism; three supertankers exit Hormuz",
+      "summary": "",
+      "content": "",
+      "url": "https://seekingalpha.com/news/4595528-us-crude-oil-plunges-below-100-on-us-iran-optimism-three-supertankers-exit-hormuz?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+      "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
+      "publishedAt": "2026-05-20T19:43:37-04:00",
+      "category": "Geopol\u00edtica",
+      "icon": "\ud83c\udf0d",
+      "impact": {
+        "tickers": [
+          "XOM",
+          "CVX",
+          "COP",
+          "OXY",
+          "SLB"
+        ],
+        "sector": "Energia",
+        "sentiment": "neutral"
+      },
+      "heat": 3,
+      "feed": "rss"
+    },
+    {
+      "id": 92305073,
+      "source": "Yahoo",
+      "title": "The Real Winner of SpaceX\u2019s IPO: Mark Zuckerberg",
+      "summary": "Wall Street has spent the last six months questioning Mark Zuckerberg\u2019s aggressive AI capital spending, with Meta Platforms (NASDAQ:META) raising its 2026 capex guidance to $125 to $145 billion after a Q1 in which revenue grew 33% year over year. While everyone debates whether Meta is overspending, a quieter filing from SpaceX just laid out ... The Real Winner of SpaceX\u2019s IPO: Mark Zuckerberg",
+      "content": "Wall Street has spent the last six months questioning Mark Zuckerberg\u2019s aggressive AI capital spending, with Meta Platforms (NASDAQ:META) raising its 2026 capex guidance to $125 to $145 billion after a Q1 in which revenue grew 33% year over year. While everyone debates whether Meta is overspending, a quieter filing from SpaceX just laid out ... The Real Winner of SpaceX\u2019s IPO: Mark Zuckerberg",
+      "url": "https://finnhub.io/api/news?id=1272c06f8dd75fbf4ea77558c8813bb4ee6b6ed7138c335c11514bc31efae645",
+      "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png",
+      "publishedAt": "2026-05-20T23:43:27+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [
+          "AMZN"
+        ],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "finnhub_company"
+    },
+    {
+      "id": 696319545,
+      "source": "Yahoo",
+      "title": "Nvidia-backed AI startup wants to solve AI\u2019s \u2018hard problem\u2019",
+      "summary": "Jensen Huang is betting on a new AI lab that thinks the current chatbot frenzy is just the beginning. Nvidia (NVDA) has already emerged as one of the greatest winners of the artificial intelligence boom. Its chips now make up the backbone of most of the infrastructure powering modern AI, helping ...",
+      "content": "Jensen Huang is betting on a new AI lab that thinks the current chatbot frenzy is just the beginning. Nvidia (NVDA) has already emerged as one of the greatest winners of the artificial intelligence boom. Its chips now make up the backbone of most of the infrastructure powering modern AI, helping ...",
+      "url": "https://finnhub.io/api/news?id=5d03f8b77a438e8f135a2ac51f778b31f3cf4234d1c7a38f256c0e9945e2bb0a",
+      "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png",
+      "publishedAt": "2026-05-20T23:37:00+00:00",
+      "category": "Tecnologia",
+      "icon": "\ud83d\udcbb",
+      "impact": {
+        "tickers": [
+          "NVDA",
+          "AMD",
+          "INTC",
+          "AVGO"
+        ],
+        "sector": "Tecnologia",
+        "sentiment": "positive"
+      },
+      "heat": 3,
+      "feed": "finnhub_company"
+    },
+    {
+      "id": 80631263,
+      "source": "Fintel",
+      "title": "Seaport Global Downgrades Dominion Energy (D)",
+      "summary": "",
+      "content": "",
+      "url": "https://finnhub.io/api/news?id=f20563f4c4f7ce1d847b493b8954d33dfeb12a68365a0ab3bceea155ade10cbf",
+      "image": "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80",
+      "publishedAt": "2026-05-20T23:36:39+00:00",
+      "category": "Energia",
+      "icon": "\u26a1",
+      "impact": {
+        "tickers": [
+          "D"
+        ],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "finnhub_company"
+    },
+    {
+      "id": 1270493,
+      "source": "Nasdaq",
+      "title": "Malaysia Bourse Poised To End Losing Streak",
+      "summary": "(RTTNews) - The Malaysia stock market has moved lower in six straight sessions, slipping almost 35 points or 2 percent in that span. The Kuala Lumpur Composite Index now sits just above the 1,715-point plateau although it's overdue for support on Thursday.",
+      "content": "(RTTNews) - The Malaysia stock market has moved lower in six straight sessions, slipping almost 35 points or 2 percent in that span. The Kuala Lumpur Composite Index now sits just above the 1,715-point plateau although it's overdue for support on Thursday.",
+      "url": "https://www.nasdaq.com/articles/malaysia-bourse-poised-end-losing-streak",
+      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
+      "publishedAt": "2026-05-20T23:34:18+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 991511622,
+      "source": "Nasdaq",
+      "title": "Soybeans Slipping on Wednesday, on Outside Pressure",
+      "summary": "Soybeans are trading with contracts 9 to 11 \u00bc cent losses so far on Wednesday. The cmdtyView national average Cash Bean price is down 10 1/2 cents at $11.36 1/2. Soymeal futures are down $1.70 to $2 on the day, with Soy Oil futures 70 to 90 points lower. Crude...",
+      "content": "Soybeans are trading with contracts 9 to 11 \u00bc cent losses so far on Wednesday. The cmdtyView national average Cash Bean price is down 10 1/2 cents at $11.36 1/2. Soymeal futures are down $1.70 to $2 on the day, with Soy Oil futures 70 to 90 points lower. Crude...",
+      "url": "https://www.nasdaq.com/articles/soybeans-slipping-wednesday-outside-pressure",
+      "image": "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80",
+      "publishedAt": "2026-05-20T23:29:21+00:00",
+      "category": "Energia",
+      "icon": "\u26a1",
+      "impact": {
+        "tickers": [
+          "XOM",
+          "CVX",
+          "COP",
+          "OXY",
+          "SLB"
+        ],
+        "sector": "Energia",
+        "sentiment": "negative"
+      },
+      "heat": 3,
+      "feed": "rss"
+    },
+    {
+      "id": 791146307,
+      "source": "Nasdaq",
+      "title": "Stocks Climb on Lower Bond Yields and Chipmaker Strength",
+      "summary": "The S&P 500 Index ($SPX ) (SPY ) today is up +0.27%, the Dow Jones Industrial Average ($DOWI ) (DIA ) is up +0.09%, and the Nasdaq 100 Index ($IUXX ) (QQQ ) is up +0.55%. June E-mini S&P futures (ESM26 ) are up +0.26%, and June E-mini Nasdaq futures...",
+      "content": "The S&P 500 Index ($SPX ) (SPY ) today is up +0.27%, the Dow Jones Industrial Average ($DOWI ) (DIA ) is up +0.09%, and the Nasdaq 100 Index ($IUXX ) (QQQ ) is up +0.55%. June E-mini S&P futures (ESM26 ) are up +0.26%, and June E-mini Nasdaq futures...",
+      "url": "https://www.nasdaq.com/articles/stocks-climb-lower-bond-yields-and-chipmaker-strength",
+      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
+      "publishedAt": "2026-05-20T23:29:21+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [
+          "NVDA",
+          "AMD",
+          "INTC",
+          "AVGO"
+        ],
+        "sector": "Tecnologia",
+        "sentiment": "neutral"
+      },
+      "heat": 3,
+      "feed": "rss"
+    },
+    {
+      "id": 938283499,
+      "source": "Yahoo",
+      "title": "SpaceX Bitcoin Stack Reaches $1.45B as Public Listing Nears",
+      "summary": "SpaceX\u2019s IPO filing has turned its bitcoin (CRYPTO: $BTC) holdings into a public-market disclosure, revealing...",
+      "content": "SpaceX\u2019s IPO filing has turned its bitcoin (CRYPTO: $BTC) holdings into a public-market disclosure, revealing...",
+      "url": "https://finnhub.io/api/news?id=75d3ab790c29519244184859ae3910a9f1282c60419eb5836bf9bbb1f4cf9788",
+      "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png",
+      "publishedAt": "2026-05-20T23:26:00+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [
+          "TSLA"
+        ],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "finnhub_company"
+    },
+    {
+      "id": 261102376,
+      "source": "CNBC Tech",
+      "title": "Anthropic set to hit $10.9 billion in revenue during second quarter, source says",
+      "summary": "If Anthropic hits the revenue target, it will post its first profitable quarter, a source told CNBC",
+      "content": "If Anthropic hits the revenue target, it will post its first profitable quarter, a source told CNBC",
+      "url": "https://www.cnbc.com/2026/05/20/anthropic-revenue-explosive-growth-ipo-profitable-quarter.html",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-20T23:25:28+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 682861958,
+      "source": "Yahoo",
+      "title": "Stock market today: Dow, S&P 500, Nasdaq futures slip as Wall Street shrugs off Nvidia earnings",
+      "summary": "US stock futures fell after Nvidia earnings failed to wow investors, and SpaceX took a big step toward its IPO.",
+      "content": "US stock futures fell after Nvidia earnings failed to wow investors, and SpaceX took a big step toward its IPO.",
+      "url": "https://finnhub.io/api/news?id=f3a84ad333eb6c117c56c5d9ec0c3531a554180fe41c49cf8c68ad9f3c61fb8d",
+      "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png",
+      "publishedAt": "2026-05-20T23:23:11+00:00",
+      "category": "Geopol\u00edtica",
+      "icon": "\ud83c\udf0d",
+      "impact": {
+        "tickers": [
+          "NVDA",
+          "AMD",
+          "INTC",
+          "AVGO",
+          "LMT"
+        ],
+        "sector": "Tecnologia",
+        "sentiment": "neutral"
+      },
+      "heat": 3,
+      "feed": "finnhub_company"
+    },
+    {
+      "id": 683893580,
       "source": "Seeking Alpha",
       "title": "Belite Bio targets completing stargardt NDA rolling submission in Q2 2026 while planning a 30-40 member U.S. launch team",
       "summary": "",
@@ -45,7 +824,181 @@
       "feed": "rss"
     },
     {
-      "id": 151834810,
+      "id": 113847759,
+      "source": "Nasdaq",
+      "title": "Why Relay Therapeutics Stock Popped on Wednesday",
+      "summary": "Key PointsThis was aided by a pair of bullish analyst updates.",
+      "content": "Key PointsThis was aided by a pair of bullish analyst updates.",
+      "url": "https://www.nasdaq.com/articles/why-relay-therapeutics-stock-popped-wednesday",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-20T23:21:49+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 926289363,
+      "source": "Nasdaq",
+      "title": "CrowdStrike: A Closer Look at Its Investment Potential",
+      "summary": "Explore the exciting world of CrowdStrike (NASDAQ: CRWD) with our contributing expert analysts in this Motley Fool Scoreboard episode. Check out the video below to gain valuable insights into market trends and potential investment opportunities!*Stock prices used were the prices",
+      "content": "Explore the exciting world of CrowdStrike (NASDAQ: CRWD) with our contributing expert analysts in this Motley Fool Scoreboard episode. Check out the video below to gain valuable insights into market trends and potential investment opportunities!*Stock prices used were the prices",
+      "url": "https://www.nasdaq.com/articles/crowdstrike-closer-look-its-investment-potential",
+      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
+      "publishedAt": "2026-05-20T23:20:00+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 501958944,
+      "source": "Nasdaq",
+      "title": "Prospects for a Bumper Brazil Coffee Crop Weigh on Prices",
+      "summary": "July arabica coffee (KCN26 ) today is down -0.65 (-0.24%), and July ICE robusta coffee (RMN26 ) is down -8 (-0.24%). Coffee prices are under pressure today, with robusta falling to a 1-month low. Expectations of a larger Brazilian coffee crop are weighing on prices. Coffee prices have ratcheted lower...",
+      "content": "July arabica coffee (KCN26 ) today is down -0.65 (-0.24%), and July ICE robusta coffee (RMN26 ) is down -8 (-0.24%). Coffee prices are under pressure today, with robusta falling to a 1-month low. Expectations of a larger Brazilian coffee crop are weighing on prices. Coffee prices have ratcheted lower...",
+      "url": "https://www.nasdaq.com/articles/prospects-bumper-brazil-coffee-crop-weigh-prices",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-20T23:18:50+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 920554888,
+      "source": "Yahoo",
+      "title": "Tesla Owns Nearly 19 Million Shares of SpaceX: What TSLA Investors Need to Know Before the IPO",
+      "summary": "I\u2019ve been digging through the SpaceX S-1 filing for hours, and one number deserves its own spotlight in every TSLA model: Tesla\u2019s beneficial ownership of SpaceX Class A common stock. I\u2019m not going to waste your time with a huge article about this. I thought you needed to know right way, so here are the ... Tesla Owns Nearly 19 Million Shares of SpaceX: What TSLA Investors Need to Know Before the IPO",
+      "content": "I\u2019ve been digging through the SpaceX S-1 filing for hours, and one number deserves its own spotlight in every TSLA model: Tesla\u2019s beneficial ownership of SpaceX Class A common stock. I\u2019m not going to waste your time with a huge article about this. I thought you needed to know right way, so here are the ... Tesla Owns Nearly 19 Million Shares of SpaceX: What TSLA Investors Need to Know Before the IPO",
+      "url": "https://finnhub.io/api/news?id=9e93666318de40f874d9aa3c344b7bfa3ab9eaed89888849113edbca504ee636",
+      "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png",
+      "publishedAt": "2026-05-20T23:15:40+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [
+          "TSLA",
+          "RIVN",
+          "GM"
+        ],
+        "sector": "Autom\u00f3vel",
+        "sentiment": "positive"
+      },
+      "heat": 2,
+      "feed": "finnhub_company"
+    },
+    {
+      "id": 19453240,
+      "source": "Yahoo",
+      "title": "Apple\u2019s AI Overhaul and CEO Transition Could Be A Game Changer For Apple (AAPL)",
+      "summary": "In recent weeks, Apple has reported record quarterly results, previewed extensive Apple Intelligence and Siri upgrades, and reshaped its hardware organization as it prepares for a CEO handover to John Ternus later this year. These developments highlight how Apple is trying to pair a growing, high-margin services and AI ecosystem with leadership change and tighter silicon\u2013device integration to reinforce its competitive position. We\u2019ll now examine how Apple\u2019s accelerated Apple Intelligence...",
+      "content": "In recent weeks, Apple has reported record quarterly results, previewed extensive Apple Intelligence and Siri upgrades, and reshaped its hardware organization as it prepares for a CEO handover to John Ternus later this year. These developments highlight how Apple is trying to pair a growing, high-margin services and AI ecosystem with leadership change and tighter silicon\u2013device integration to reinforce its competitive position. We\u2019ll now examine how Apple\u2019s accelerated Apple Intelligence...",
+      "url": "https://finnhub.io/api/news?id=fd9df8acbe7d6721ec4eec92ce343d95cd3e0b820bb6b5d56b3148446fa5d640",
+      "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png",
+      "publishedAt": "2026-05-20T23:15:10+00:00",
+      "category": "Geopol\u00edtica",
+      "icon": "\ud83c\udf0d",
+      "impact": {
+        "tickers": [
+          "LMT",
+          "RTX",
+          "NOC",
+          "XOM",
+          "AAPL"
+        ],
+        "sector": "Defesa",
+        "sentiment": "neutral"
+      },
+      "heat": 3,
+      "feed": "finnhub_company"
+    },
+    {
+      "id": 492853196,
+      "source": "Nasdaq",
+      "title": "Japan Stock Market Overdue For Support On Thursday",
+      "summary": "(RTTNews) - The Japanese stock market has finished lower in five straight sessions, plunging almost 3,400 points or 5.8 percent in that span. The Nikkei sits just above the 59,800-point plateau although it may finally catch a break on Thursday.",
+      "content": "(RTTNews) - The Japanese stock market has finished lower in five straight sessions, plunging almost 3,400 points or 5.8 percent in that span. The Nikkei sits just above the 59,800-point plateau although it may finally catch a break on Thursday.",
+      "url": "https://www.nasdaq.com/articles/japan-stock-market-overdue-support-thursday",
+      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
+      "publishedAt": "2026-05-20T23:14:56+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 464387777,
+      "source": "Yahoo",
+      "title": "You will soon be able to vote in Amazon shareholder meetings from a crypto wallet",
+      "summary": "If you hold a tokenized share of Amazon through Ondo Finance, you can now vote in Amazon's shareholder meetings directly from your crypto wallet. That was not possible six months ago. It is the kind of parity with traditional markets that the tokenized equity space has been promising for years, and ...",
+      "content": "If you hold a tokenized share of Amazon through Ondo Finance, you can now vote in Amazon's shareholder meetings directly from your crypto wallet. That was not possible six months ago. It is the kind of parity with traditional markets that the tokenized equity space has been promising for years, and ...",
+      "url": "https://finnhub.io/api/news?id=b551db322716e949e259e2b392e514c94e4c333f9b4bfe4b3cebfbe70984e783",
+      "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png",
+      "publishedAt": "2026-05-20T23:12:57+00:00",
+      "category": "Tecnologia",
+      "icon": "\ud83d\udcbb",
+      "impact": {
+        "tickers": [
+          "AMZN",
+          "WMT",
+          "TGT",
+          "COST"
+        ],
+        "sector": "Consumo",
+        "sentiment": "neutral"
+      },
+      "heat": 3,
+      "feed": "finnhub_company"
+    },
+    {
+      "id": 714766279,
+      "source": "Yahoo",
+      "title": "Should Amazon\u2019s Tariff Lawsuit And Amazon Now AI Push Require Action From Amazon.com (AMZN) Investors?",
+      "summary": "In mid-May 2026, a proposed class-action lawsuit was filed in federal court in Seattle alleging Amazon unlawfully passed on later-invalidated IEEPA tariffs to customers on imported goods bought between February 2025 and February 2026, while separate investor advocates urged votes against four Amazon directors over the exclusion of shareholder proposals on issues including AI governance. At the same time, Amazon is pushing deeper into AI-enabled cloud and logistics with rapid expansion of its...",
+      "content": "In mid-May 2026, a proposed class-action lawsuit was filed in federal court in Seattle alleging Amazon unlawfully passed on later-invalidated IEEPA tariffs to customers on imported goods bought between February 2025 and February 2026, while separate investor advocates urged votes against four Amazon directors over the exclusion of shareholder proposals on issues including AI governance. At the same time, Amazon is pushing deeper into AI-enabled cloud and logistics with rapid expansion of its...",
+      "url": "https://finnhub.io/api/news?id=88c09e00292a866e720c2a150316eaffe0ac5b5ffb6fad05b6a55084cdbefda3",
+      "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png",
+      "publishedAt": "2026-05-20T23:12:37+00:00",
+      "category": "Macro",
+      "icon": "\ud83d\udcca",
+      "impact": {
+        "tickers": [
+          "AMZN",
+          "JPM",
+          "GS",
+          "BAC",
+          "TLT",
+          "AAPL"
+        ],
+        "sector": "Finan\u00e7as",
+        "sentiment": "positive"
+      },
+      "heat": 3,
+      "feed": "finnhub_company"
+    },
+    {
+      "id": 538182819,
       "source": "CNBC",
       "title": "Congress is best chance to stop Trump 'lawfare' fund, attorneys say",
       "summary": "The Department of Justice has set up a $1.8 billion fund that will purportedly compensate victims of prosecutorial overreach under the Biden administration.",
@@ -64,32 +1017,7 @@
       "feed": "rss"
     },
     {
-      "id": 461644222,
-      "source": "Nasdaq",
-      "title": "Soybeans Slipping on Wednesday, on Outside Pressure",
-      "summary": "Soybeans are trading with contracts 9 to 11 \u00bc cent losses so far on Wednesday. The cmdtyView national average Cash Bean price is down 10 1/2 cents at $11.36 1/2. Soymeal futures are down $1.70 to $2 on the day, with Soy Oil futures 70 to 90 points lower. Crude...",
-      "content": "Soybeans are trading with contracts 9 to 11 \u00bc cent losses so far on Wednesday. The cmdtyView national average Cash Bean price is down 10 1/2 cents at $11.36 1/2. Soymeal futures are down $1.70 to $2 on the day, with Soy Oil futures 70 to 90 points lower. Crude...",
-      "url": "https://www.nasdaq.com/articles/soybeans-slipping-wednesday-outside-pressure",
-      "image": "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80",
-      "publishedAt": "2026-05-20T23:07:40+00:00",
-      "category": "Energia",
-      "icon": "\u26a1",
-      "impact": {
-        "tickers": [
-          "XOM",
-          "CVX",
-          "COP",
-          "OXY",
-          "SLB"
-        ],
-        "sector": "Energia",
-        "sentiment": "negative"
-      },
-      "heat": 3,
-      "feed": "rss"
-    },
-    {
-      "id": 347737020,
+      "id": 135192079,
       "source": "Financial Times",
       "title": "Elon Musk\u2019s SpaceX sets out plans for biggest IPO in history",
       "summary": "AI and satellite company fires starting gun on wave of massive Wall Street listings",
@@ -112,7 +1040,31 @@
       "feed": "rss"
     },
     {
-      "id": 633513393,
+      "id": 362687871,
+      "source": "Yahoo",
+      "title": "NVIDIA Q1 Earnings Call Highlights",
+      "summary": "NVIDIA (NASDAQ:NVDA) reported record first-quarter fiscal 2027 results, with revenue, operating income and free cash flow all surpassing prior company highs, as executives said demand for AI infrastructure continued to accelerate across hyperscale cloud providers, AI cloud companies, sovereign custo",
+      "content": "NVIDIA (NASDAQ:NVDA) reported record first-quarter fiscal 2027 results, with revenue, operating income and free cash flow all surpassing prior company highs, as executives said demand for AI infrastructure continued to accelerate across hyperscale cloud providers, AI cloud companies, sovereign custo",
+      "url": "https://finnhub.io/api/news?id=8a72a7b848298e171dd1fec5fa348bbb37956ae91dddd97aa5ffaf4090b8823b",
+      "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png",
+      "publishedAt": "2026-05-20T23:05:09+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [
+          "NVDA",
+          "AMD",
+          "INTC",
+          "AVGO"
+        ],
+        "sector": "Tecnologia",
+        "sentiment": "positive"
+      },
+      "heat": 3,
+      "feed": "finnhub_company"
+    },
+    {
+      "id": 405781459,
       "source": "Nasdaq",
       "title": "South Korea Shares May Find Traction On Thursday",
       "summary": "(RTTNews) - The South Korea stock market has finished lower in two straight sessions, tumbling more than 300 points or 4 percent along the way. The KOSPI now sits just above the 7,200-point plateau although it's likely to halt its slide on Thursday.",
@@ -131,7 +1083,57 @@
       "feed": "rss"
     },
     {
-      "id": 726248316,
+      "id": 956299709,
+      "source": "Yahoo",
+      "title": "The SpaceX IPO filing is filled with AI bets, Starship dreams, and Elon Musk at the center",
+      "summary": "SpaceX has finally made the contents of its IPO filing public, weeks ahead of what is expected to be the largest IPO ever and one that will make Musk the CEO, CTO, and Chairman of the board.",
+      "content": "SpaceX has finally made the contents of its IPO filing public, weeks ahead of what is expected to be the largest IPO ever and one that will make Musk the CEO, CTO, and Chairman of the board.",
+      "url": "https://finnhub.io/api/news?id=0ca92e8eac55a6b6ab6e1c0e0d02f56d576391c96f822245307c6350f675a635",
+      "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png",
+      "publishedAt": "2026-05-20T23:03:02+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [
+          "NVDA",
+          "TSLA",
+          "RIVN",
+          "GM"
+        ],
+        "sector": "Autom\u00f3vel",
+        "sentiment": "neutral"
+      },
+      "heat": 3,
+      "feed": "finnhub_company"
+    },
+    {
+      "id": 789394505,
+      "source": "Yahoo",
+      "title": "QBit Semiconductor Shares Surge to USD$18 on Debut, Driving Market Capitalization to USD$700 Million",
+      "summary": "QBit Semiconductor Ltd. (TWO: 7913), a fabless semiconductor company, was officially listed on the Taiwan Emerging Stock Board on May 15. Strong investor demand drove the stock price to an intraday high of USD$18(NT$530), bringing the company's market capitalization to approximately USD$700 million. This milestone marks a significant step in the company's expansion toward global capital markets and reinforces its position in high-performance silicon solutions.",
+      "content": "QBit Semiconductor Ltd. (TWO: 7913), a fabless semiconductor company, was officially listed on the Taiwan Emerging Stock Board on May 15. Strong investor demand drove the stock price to an intraday high of USD$18(NT$530), bringing the company's market capitalization to approximately USD$700 million. This milestone marks a significant step in the company's expansion toward global capital markets and reinforces its position in high-performance silicon solutions.",
+      "url": "https://finnhub.io/api/news?id=3bb18628f873e8c869e883cb468ec15cefbbf840df4a931c71ae958adef56de7",
+      "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png",
+      "publishedAt": "2026-05-20T23:00:00+00:00",
+      "category": "Geopol\u00edtica",
+      "icon": "\ud83c\udf0d",
+      "impact": {
+        "tickers": [
+          "QCOM",
+          "NVDA",
+          "AMD",
+          "INTC",
+          "AVGO",
+          "LMT"
+        ],
+        "sector": "Tecnologia",
+        "sentiment": "positive"
+      },
+      "heat": 3,
+      "feed": "finnhub_company"
+    },
+    {
+      "id": 691028253,
       "source": "CNBC",
       "title": "SpaceX is poised to be the biggest IPO ever. Here are the top U.S. deals to date",
       "summary": "Before SpaceX's upcoming IPO sets an expected record, Alibaba, Facebook and Visa raised historic sums in the U.S.",
@@ -150,7 +1152,7 @@
       "feed": "rss"
     },
     {
-      "id": 447070186,
+      "id": 750860488,
       "source": "Nasdaq",
       "title": "Why Advanced Micro Devices Stock Was a big Winner on Wednesday",
       "summary": "Key PointsMany rose in sympathy with software stocks, which continued to rally.",
@@ -174,7 +1176,7 @@
       "feed": "rss"
     },
     {
-      "id": 933543017,
+      "id": 530211480,
       "source": "Nasdaq",
       "title": "Why Micron Stock Jumped Today",
       "summary": "Key PointsOn the heels of recent sell-offs, Micron stock moved higher in Wednesday's trading.",
@@ -193,7 +1195,7 @@
       "feed": "rss"
     },
     {
-      "id": 653741226,
+      "id": 285239642,
       "source": "Nasdaq",
       "title": "WSJ Report: OpenAI Could Confidentially File for an IPO as Soon as Friday. Here's What Investors Need to Know",
       "summary": "Key PointsOpenAI just closed a $122 billion private financing round in March.",
@@ -214,64 +1216,28 @@
       "feed": "rss"
     },
     {
-      "id": 507093353,
-      "source": "Nasdaq",
-      "title": "Coffee Prices Fall on Improved Brazil Coffee Crop Prospects",
-      "summary": "July arabica coffee (KCN26 ) on Wednesday closed down -1.85 (-0.68%), and July ICE robusta coffee (RMN26 ) closed down -17 (-0.51%). Coffee prices settled lower on Wednesday, with robusta falling to a 1-month low. Expectations of a larger Brazilian coffee crop are weighing on prices. Coffee prices have ratcheted...",
-      "content": "July arabica coffee (KCN26 ) on Wednesday closed down -1.85 (-0.68%), and July ICE robusta coffee (RMN26 ) closed down -17 (-0.51%). Coffee prices settled lower on Wednesday, with robusta falling to a 1-month low. Expectations of a larger Brazilian coffee crop are weighing on prices. Coffee prices have ratcheted...",
-      "url": "https://www.nasdaq.com/articles/coffee-prices-fall-improved-brazil-coffee-crop-prospects",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-20T22:51:32+00:00",
+      "id": 919128800,
+      "source": "Yahoo",
+      "title": "1 Large-Cap Stock to Target This Week and 2 We Question",
+      "summary": "Large-cap stocks have the power to shape entire industries thanks to their size and widespread influence. With such vast footprints, however, finding new areas for growth is much harder than for smaller, more agile players.",
+      "content": "Large-cap stocks have the power to shape entire industries thanks to their size and widespread influence. With such vast footprints, however, finding new areas for growth is much harder than for smaller, more agile players.",
+      "url": "https://finnhub.io/api/news?id=d0d3eb8b8e1a3bf6c53b38cc4387a655d30f290f9af906414c36c2f6788b0675",
+      "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png",
+      "publishedAt": "2026-05-20T22:52:55+00:00",
       "category": "Global",
       "icon": "\ud83c\udf10",
       "impact": {
-        "tickers": [],
+        "tickers": [
+          "GWW"
+        ],
         "sector": "",
         "sentiment": "neutral"
       },
       "heat": 1,
-      "feed": "rss"
+      "feed": "finnhub_company"
     },
     {
-      "id": 87215096,
-      "source": "Nasdaq",
-      "title": "Wheat Falling Lower on Wednesday",
-      "summary": "The wheat complex is trading with losses across most contracts on the midweek session. Chicago SRW futures are falling back 8 to 9 cents on the day. KC HRW futures are trading with 5 to 7 cent losses at midday. MPLS spring wheat is down 2 cents in the front...",
-      "content": "The wheat complex is trading with losses across most contracts on the midweek session. Chicago SRW futures are falling back 8 to 9 cents on the day. KC HRW futures are trading with 5 to 7 cent losses at midday. MPLS spring wheat is down 2 cents in the front...",
-      "url": "https://www.nasdaq.com/articles/wheat-falling-lower-wednesday-0",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-20T22:51:32+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 805681148,
-      "source": "Nasdaq",
-      "title": "Prospects for a Bumper Brazil Coffee Crop Weigh on Prices",
-      "summary": "July arabica coffee (KCN26 ) today is down -0.65 (-0.24%), and July ICE robusta coffee (RMN26 ) is down -8 (-0.24%). Coffee prices are under pressure today, with robusta falling to a 1-month low. Expectations of a larger Brazilian coffee crop are weighing on prices. Coffee prices have ratcheted lower...",
-      "content": "July arabica coffee (KCN26 ) today is down -0.65 (-0.24%), and July ICE robusta coffee (RMN26 ) is down -8 (-0.24%). Coffee prices are under pressure today, with robusta falling to a 1-month low. Expectations of a larger Brazilian coffee crop are weighing on prices. Coffee prices have ratcheted lower...",
-      "url": "https://www.nasdaq.com/articles/prospects-bumper-brazil-coffee-crop-weigh-prices",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-20T22:51:32+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 534405661,
+      "id": 736871536,
       "source": "Nasdaq",
       "title": "Stocks Rally as Crude Oil and Bond Yields Slump",
       "summary": "The S&P 500 Index ($SPX ) (SPY ) today is up +0.78%, the Dow Jones Industrial Average ($DOWI ) (DIA ) is up +0.75%, and the Nasdaq 100 Index ($IUXX ) (QQQ ) is up +1.24%. June E-mini S&P futures (ESM26 ) are up +0.70%, and June E-mini Nasdaq futures...",
@@ -296,7 +1262,7 @@
       "feed": "rss"
     },
     {
-      "id": 103278280,
+      "id": 46905624,
       "source": "MarketWatch",
       "title": "Gen Z may be shying away from buying cosmetics, as higher gas prices hit spending",
       "summary": "E.l.f. Beauty says it will cut prices on some products, following tariff-related increases last year and concerns about the rising cost of gas.",
@@ -320,959 +1286,24 @@
       "feed": "rss"
     },
     {
-      "id": 551792307,
-      "source": "Nasdaq",
-      "title": "StepStone (STEP) Q4 2026 Earnings Transcript",
-      "summary": "@media (max-width: 768px) { .image-container { width: 100% !important; float: none !important; margin: 0 0 1rem 0 !important; } } Image source: The Mo",
-      "content": "@media (max-width: 768px) { .image-container { width: 100% !important; float: none !important; margin: 0 0 1rem 0 !important; } } Image source: The Mo",
-      "url": "https://www.nasdaq.com/articles/stepstone-step-q4-2026-earnings-transcript",
-      "image": "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=800&q=80",
-      "publishedAt": "2026-05-20T22:49:19+00:00",
-      "category": "Com\u00e9rcio",
-      "icon": "\ud83d\udea2",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 162238788,
-      "source": "CNBC",
-      "title": "SpaceX's historic IPO plans: Billions in losses and Musk's massive ownership",
-      "summary": "SpaceX filed for an IPO and plans to list on Nasdaq under ticker SPCX, according to its SEC prospectus.",
-      "content": "SpaceX filed for an IPO and plans to list on Nasdaq under ticker SPCX, according to its SEC prospectus.",
-      "url": "https://www.cnbc.com/2026/05/20/spacex-ipo-live-updates.html",
-      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
-      "publishedAt": "2026-05-20T22:48:35+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 318674146,
-      "source": "MarketWatch",
-      "title": "Investors are flocking to an offshore crypto platform for an early shot at trading the SpaceX IPO",
-      "summary": "A fast-growing offshore market is giving investors around the world an opportunity to trade what is expected to be the biggest IPO in history before it even happens \u2014 all while completely bypassing Wall Street.",
-      "content": "A fast-growing offshore market is giving investors around the world an opportunity to trade what is expected to be the biggest IPO in history before it even happens \u2014 all while completely bypassing Wall Street.",
-      "url": "https://www.marketwatch.com/story/investors-are-flocking-to-an-offshore-crypto-platform-for-an-early-shot-at-trading-the-spacex-ipo-4ec49f10?mod=mw_rss_topstories",
-      "image": "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=800&q=80",
-      "publishedAt": "2026-05-20T22:43:00+00:00",
-      "category": "Com\u00e9rcio",
-      "icon": "\ud83d\udea2",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 421279915,
-      "source": "CNBC",
-      "title": "Jim Cramer says the world of tech investing has changed and it's not going back",
-      "summary": "CNBC's Jim Cramer said semiconductor and AI infrastructure stocks have replaced software as the market's technology leaders.",
-      "content": "CNBC's Jim Cramer said semiconductor and AI infrastructure stocks have replaced software as the market's technology leaders.",
-      "url": "https://www.cnbc.com/2026/05/20/jim-cramer-says-the-world-of-tech-investing-has-changed-and-its-not-going-back.html",
-      "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
-      "publishedAt": "2026-05-20T22:41:07+00:00",
-      "category": "Geopol\u00edtica",
-      "icon": "\ud83c\udf0d",
-      "impact": {
-        "tickers": [
-          "NVDA",
-          "AMD",
-          "INTC",
-          "AVGO",
-          "LMT"
-        ],
-        "sector": "Tecnologia",
-        "sentiment": "neutral"
-      },
-      "heat": 3,
-      "feed": "rss"
-    },
-    {
-      "id": 375159465,
-      "source": "Nasdaq",
-      "title": "Stocks Finish Sharply Higher on Iran Hopes",
-      "summary": "The S&P 500 Index ($SPX ) (SPY ) on Wednesday closed up +1.08%, the Dow Jones Industrial Average ($DOWI ) (DIA ) closed up +1.31%, and the Nasdaq 100 Index ($IUXX ) (QQQ ) closed up +1.66%. June E-mini S&P futures (ESM26 ) rose +0.96%, and June E-mini Nasdaq futures...",
-      "content": "The S&P 500 Index ($SPX ) (SPY ) on Wednesday closed up +1.08%, the Dow Jones Industrial Average ($DOWI ) (DIA ) closed up +1.31%, and the Nasdaq 100 Index ($IUXX ) (QQQ ) closed up +1.66%. June E-mini S&P futures (ESM26 ) rose +0.96%, and June E-mini Nasdaq futures...",
-      "url": "https://www.nasdaq.com/articles/stocks-finish-sharply-higher-iran-hopes",
-      "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
-      "publishedAt": "2026-05-20T22:40:35+00:00",
-      "category": "Geopol\u00edtica",
-      "icon": "\ud83c\udf0d",
-      "impact": {
-        "tickers": [
-          "XOM",
-          "CVX",
-          "LMT",
-          "RTX"
-        ],
-        "sector": "Geopol\u00edtica",
-        "sentiment": "neutral"
-      },
-      "heat": 3,
-      "feed": "rss"
-    },
-    {
-      "id": 799592596,
-      "source": "Nasdaq",
-      "title": "URBN Q1 2027 Earnings Transcript",
-      "summary": "@media (max-width: 768px) { .image-container { width: 100% !important; float: none !important; margin: 0 0 1rem 0 !important; } } Image source: The Mo",
-      "content": "@media (max-width: 768px) { .image-container { width: 100% !important; float: none !important; margin: 0 0 1rem 0 !important; } } Image source: The Mo",
-      "url": "https://www.nasdaq.com/articles/urbn-q1-2027-earnings-transcript",
-      "image": "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=800&q=80",
-      "publishedAt": "2026-05-20T22:38:48+00:00",
-      "category": "Com\u00e9rcio",
-      "icon": "\ud83d\udea2",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 387578551,
-      "source": "Nasdaq",
-      "title": "Hogs Holding Weaker at Midday",
-      "summary": "Lean hog futures are down 45 to 90 cents in most front months on the Wednesday session. USDA\u2019s national base hog price was reported at $93.62 on Wednesday morning, down 73 cents from the day prior. The CME Lean Hog Index was up 5 cents on May 18 at $90.55....",
-      "content": "Lean hog futures are down 45 to 90 cents in most front months on the Wednesday session. USDA\u2019s national base hog price was reported at $93.62 on Wednesday morning, down 73 cents from the day prior. The CME Lean Hog Index was up 5 cents on May 18 at $90.55....",
-      "url": "https://www.nasdaq.com/articles/hogs-holding-weaker-midday",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-20T22:36:55+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 425859072,
-      "source": "Nasdaq",
-      "title": "Corn Facing Crude Oil Pressure on Wednesday",
-      "summary": "Corn futures are trading with 10 to 11 cent losses in the front months on Wednesday. The CmdtyView national average Cash Corn price is down 10 3/4 cents to $4.24 1/4. Crude oil losses of $6.27 is adding pressure as US and Iran negotiations are reportedly in the final stages....",
-      "content": "Corn futures are trading with 10 to 11 cent losses in the front months on Wednesday. The CmdtyView national average Cash Corn price is down 10 3/4 cents to $4.24 1/4. Crude oil losses of $6.27 is adding pressure as US and Iran negotiations are reportedly in the final stages....",
-      "url": "https://www.nasdaq.com/articles/corn-facing-crude-oil-pressure-wednesday",
-      "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
-      "publishedAt": "2026-05-20T22:36:55+00:00",
-      "category": "Geopol\u00edtica",
-      "icon": "\ud83c\udf0d",
-      "impact": {
-        "tickers": [
-          "XOM",
-          "CVX",
-          "COP",
-          "OXY",
-          "SLB"
-        ],
-        "sector": "Energia",
-        "sentiment": "negative"
-      },
-      "heat": 3,
-      "feed": "rss"
-    },
-    {
-      "id": 316998681,
-      "source": "Nasdaq",
-      "title": "Cattle Falling on Wednesday Following Packing Plant Lockout",
-      "summary": "Live cattle futures are falling on Wednesday, with contracts down $1.52 to $4.10 at midday. Cash trade has been limited so far this week after $260-265 sales last week. The Wednesday Fed Cattle Exchange online auction showed no sales on the 652 head offered, with bids of $259-260. Feeder cattle...",
-      "content": "Live cattle futures are falling on Wednesday, with contracts down $1.52 to $4.10 at midday. Cash trade has been limited so far this week after $260-265 sales last week. The Wednesday Fed Cattle Exchange online auction showed no sales on the 652 head offered, with bids of $259-260. Feeder cattle...",
-      "url": "https://www.nasdaq.com/articles/cattle-falling-wednesday-following-packing-plant-lockout",
-      "image": "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&q=80",
-      "publishedAt": "2026-05-20T22:36:54+00:00",
-      "category": "Macro",
-      "icon": "\ud83d\udcca",
-      "impact": {
-        "tickers": [
-          "JPM",
-          "GS",
-          "BAC",
-          "TLT"
-        ],
-        "sector": "Finan\u00e7as",
-        "sentiment": "negative"
-      },
-      "heat": 3,
-      "feed": "rss"
-    },
-    {
-      "id": 941372283,
-      "source": "Nasdaq",
-      "title": "Nvidia (NVDA) Q1 2027 Earnings Transcript",
-      "summary": "@media (max-width: 768px) { .image-container { width: 100% !important; float: none !important; margin: 0 0 1rem 0 !important; } } Image source: The Mo",
-      "content": "@media (max-width: 768px) { .image-container { width: 100% !important; float: none !important; margin: 0 0 1rem 0 !important; } } Image source: The Mo",
-      "url": "https://www.nasdaq.com/articles/nvidia-nvda-q1-2027-earnings-transcript",
-      "image": "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=800&q=80",
-      "publishedAt": "2026-05-20T22:36:36+00:00",
-      "category": "Com\u00e9rcio",
-      "icon": "\ud83d\udea2",
-      "impact": {
-        "tickers": [
-          "NVDA",
-          "AMD",
-          "INTC",
-          "AVGO"
-        ],
-        "sector": "Tecnologia",
-        "sentiment": "neutral"
-      },
-      "heat": 3,
-      "feed": "rss"
-    },
-    {
-      "id": 409588541,
-      "source": "MarketWatch",
-      "title": "I inherited a house. My CPA says I should sell within a year to avoid capital gains. Is he right?",
-      "summary": "\u201cWe plan to sell it to another family member for the appraised value.\u201d",
-      "content": "\u201cWe plan to sell it to another family member for the appraised value.\u201d",
-      "url": "https://www.marketwatch.com/story/i-inherited-a-house-my-cpa-says-i-should-sell-within-a-year-to-avoid-capital-gains-is-he-right-d0909486?mod=mw_rss_topstories",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-20T22:36:00+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 125751301,
-      "source": "MarketWatch",
-      "title": "I\u2019m selling my $1 million home. Will my agent really charge less than a 6% commission?",
-      "summary": "\u201cI haven\u2019t bought or sold property since the National Association of Realtors ruling that decoupled buyer\u2019s and seller\u2019s agent commissions.\u201d",
-      "content": "\u201cI haven\u2019t bought or sold property since the National Association of Realtors ruling that decoupled buyer\u2019s and seller\u2019s agent commissions.\u201d",
-      "url": "https://www.marketwatch.com/story/im-selling-my-1-million-maui-home-will-my-agent-charge-me-less-than-a-6-commission-ed06c0f1?mod=mw_rss_topstories",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-20T22:36:00+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 126867352,
-      "source": "CNBC",
-      "title": "Intuit plans to cut workforce by about 17% as tax software maker reckons with slowing growth",
-      "summary": "Intuit's stock has been hammered this year as investors worry that generative artificial intelligence models could threaten software companies.",
-      "content": "Intuit's stock has been hammered this year as investors worry that generative artificial intelligence models could threaten software companies.",
-      "url": "https://www.cnbc.com/2026/05/20/intuit-intu-q3-earnings-report-2026-company-cutting-17percent-of-staff.html",
-      "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
-      "publishedAt": "2026-05-20T22:35:41+00:00",
-      "category": "Geopol\u00edtica",
-      "icon": "\ud83c\udf0d",
-      "impact": {
-        "tickers": [
-          "NVDA",
-          "AMD",
-          "INTC",
-          "AVGO",
-          "LMT"
-        ],
-        "sector": "Tecnologia",
-        "sentiment": "neutral"
-      },
-      "heat": 3,
-      "feed": "rss"
-    },
-    {
-      "id": 966837816,
-      "source": "MarketWatch",
-      "title": "The \u2018stunning\u2019 end to Trump\u2019s case against the IRS raises tax-law questions that will be analyzed for years",
-      "summary": "$1.776 billion fund and audit ban raise many new questions for Trump and the IRS",
-      "content": "$1.776 billion fund and audit ban raise many new questions for Trump and the IRS",
-      "url": "https://www.marketwatch.com/story/the-stunning-end-to-trumps-case-against-the-irs-raises-tax-law-questions-that-will-be-analyzed-for-years-abe2bf79?mod=mw_rss_topstories",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-20T22:24:00+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 911378144,
-      "source": "Seeking Alpha",
-      "title": "Roivant anticipates $950M Moderna payment in July as it outlines 2H 2026 mosliciguat and IMVT-1402 readouts",
-      "summary": "",
-      "content": "",
-      "url": "https://seekingalpha.com/news/4595526-roivant-anticipates-950m-moderna-payment-in-july-as-it-outlines-2h-2026-mosliciguat-and?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-20T18:21:45-04:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 896717462,
-      "source": "Nasdaq",
-      "title": "Intuit (INTU) Q3 2026 Earnings Transcript",
-      "summary": "@media (max-width: 768px) { .image-container { width: 100% !important; float: none !important; margin: 0 0 1rem 0 !important; } } Image source: The Mo",
-      "content": "@media (max-width: 768px) { .image-container { width: 100% !important; float: none !important; margin: 0 0 1rem 0 !important; } } Image source: The Mo",
-      "url": "https://www.nasdaq.com/articles/intuit-intu-q3-2026-earnings-transcript",
-      "image": "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=800&q=80",
-      "publishedAt": "2026-05-20T22:17:50+00:00",
-      "category": "Com\u00e9rcio",
-      "icon": "\ud83d\udea2",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 229114154,
-      "source": "Nasdaq",
-      "title": "e.l.f. Beauty (ELF) Q4 2026 Earnings Transcript",
-      "summary": "@media (max-width: 768px) { .image-container { width: 100% !important; float: none !important; margin: 0 0 1rem 0 !important; } } Image source: The Mo",
-      "content": "@media (max-width: 768px) { .image-container { width: 100% !important; float: none !important; margin: 0 0 1rem 0 !important; } } Image source: The Mo",
-      "url": "https://www.nasdaq.com/articles/elf-beauty-elf-q4-2026-earnings-transcript",
-      "image": "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=800&q=80",
-      "publishedAt": "2026-05-20T22:17:22+00:00",
-      "category": "Com\u00e9rcio",
-      "icon": "\ud83d\udea2",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 20535466,
-      "source": "MarketWatch",
-      "title": "I was bought out of the family business for $160,000. My relatives each made $3 million when it sold. Was I cheated?",
-      "summary": "\u201cMy brother believes that I should share in the profit on the sale of the property.\u201d",
-      "content": "\u201cMy brother believes that I should share in the profit on the sale of the property.\u201d",
-      "url": "https://www.marketwatch.com/story/i-was-bought-out-of-the-family-business-for-160-000-my-relatives-each-made-3-million-when-it-sold-was-i-cheated-8cee0523?mod=mw_rss_topstories",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-20T22:15:00+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 347158235,
-      "source": "Nasdaq",
-      "title": "Why Bloom Energy Stock Bounced 8% Higher Today",
-      "summary": "Key PointsThe scope of the deal is impressive.",
-      "content": "Key PointsThe scope of the deal is impressive.",
-      "url": "https://www.nasdaq.com/articles/why-bloom-energy-stock-bounced-8-higher-today",
-      "image": "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80",
-      "publishedAt": "2026-05-20T22:11:21+00:00",
-      "category": "Energia",
-      "icon": "\u26a1",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 95940607,
-      "source": "Seeking Alpha",
-      "title": "BioMarin gains on Voxzogo phase 3 results",
-      "summary": "",
-      "content": "",
-      "url": "https://seekingalpha.com/news/4595525-biomarin-gains-voxzogo-phase-3-results?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-20T18:09:46-04:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 533122547,
-      "source": "Nasdaq",
-      "title": "Crude Oil Prices Plummet on Speculation Strait of Hormuz Could Soon Reopen",
-      "summary": "July WTI crude oil (CLN26 ) on Wednesday closed down -5.89 (-5.66%), and July RBOB gasoline (RBN26 ) closed down -0.1911 (-5.35%). Crude oil and gasoline prices plunged on Wednesday, with gasoline falling to a 1.5-week low. Crude price plummeted on Wednesday after President Trump said the US is in...",
-      "content": "July WTI crude oil (CLN26 ) on Wednesday closed down -5.89 (-5.66%), and July RBOB gasoline (RBN26 ) closed down -0.1911 (-5.35%). Crude oil and gasoline prices plunged on Wednesday, with gasoline falling to a 1.5-week low. Crude price plummeted on Wednesday after President Trump said the US is in...",
-      "url": "https://www.nasdaq.com/articles/crude-oil-prices-plummet-speculation-strait-hormuz-could-soon-reopen",
-      "image": "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80",
-      "publishedAt": "2026-05-20T22:09:44+00:00",
-      "category": "Energia",
-      "icon": "\u26a1",
-      "impact": {
-        "tickers": [
-          "XOM",
-          "CVX",
-          "COP",
-          "OXY",
-          "SLB"
-        ],
-        "sector": "Energia",
-        "sentiment": "negative"
-      },
-      "heat": 3,
-      "feed": "rss"
-    },
-    {
-      "id": 931093018,
-      "source": "Nasdaq",
-      "title": "Cocoa Prices Consolidate Recent Losses",
-      "summary": "July ICE NY cocoa (CCN26 ) on Wednesday closed down -18 (-0.46%), and July ICE London cocoa #7 (CAN26 ) closed down -34 (-1.15%). Cocoa prices settled lower on Wednesday, consolidating above Monday's 2-week lows. Since posting 3.75-month highs last Monday, cocoa prices retreated to 2-week lows on Monday amid...",
-      "content": "July ICE NY cocoa (CCN26 ) on Wednesday closed down -18 (-0.46%), and July ICE London cocoa #7 (CAN26 ) closed down -34 (-1.15%). Cocoa prices settled lower on Wednesday, consolidating above Monday's 2-week lows. Since posting 3.75-month highs last Monday, cocoa prices retreated to 2-week lows on Monday amid...",
-      "url": "https://www.nasdaq.com/articles/cocoa-prices-consolidate-recent-losses-2",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-20T22:09:43+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 200066513,
-      "source": "Seeking Alpha",
-      "title": "NextEra Energy to buy Caliber Resource Partners, set up shale JV - Reuters",
-      "summary": "",
-      "content": "",
-      "url": "https://seekingalpha.com/news/4595522-nextera-energy-to-buy-caliber-resource-partners-set-up-shale-jv---reuters?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
-      "image": "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80",
-      "publishedAt": "2026-05-20T18:06:47-04:00",
-      "category": "Energia",
-      "icon": "\u26a1",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 484153238,
-      "source": "Nasdaq",
-      "title": "Sugar Prices Erase Early Gains as Crude Oil Prices Plunge",
-      "summary": "July NY world sugar #11 (SBN26 ) on Wednesday closed down -0.28 (-1.87%), and Aug London ICE white sugar #5 (SWQ26 ) closed unchanged. Sugar prices gave up an early advance today and settled mostly lower. Sugar prices came under pressure after crude oil prices (CLN26 ) plunged by more...",
-      "content": "July NY world sugar #11 (SBN26 ) on Wednesday closed down -0.28 (-1.87%), and Aug London ICE white sugar #5 (SWQ26 ) closed unchanged. Sugar prices gave up an early advance today and settled mostly lower. Sugar prices came under pressure after crude oil prices (CLN26 ) plunged by more...",
-      "url": "https://www.nasdaq.com/articles/sugar-prices-erase-early-gains-crude-oil-prices-plunge",
-      "image": "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80",
-      "publishedAt": "2026-05-20T22:04:23+00:00",
-      "category": "Energia",
-      "icon": "\u26a1",
-      "impact": {
-        "tickers": [
-          "XOM",
-          "CVX",
-          "COP",
-          "OXY",
-          "SLB"
-        ],
-        "sector": "Energia",
-        "sentiment": "neutral"
-      },
-      "heat": 3,
-      "feed": "rss"
-    },
-    {
-      "id": 802151325,
-      "source": "Nasdaq",
-      "title": "The Outlook for Abundant Cocoa Supplies Pressures Prices",
-      "summary": "July ICE NY cocoa (CCN26 ) today is down -35 (-0.90%), and July ICE London cocoa #7 (CAN26 ) is down -48 (-1.62%). Cocoa prices are moving lower today, but remain above Monday's 2-week lows. Since posting 3.75-month highs last Monday, cocoa prices retreated to 2-week lows on Monday amid...",
-      "content": "July ICE NY cocoa (CCN26 ) today is down -35 (-0.90%), and July ICE London cocoa #7 (CAN26 ) is down -48 (-1.62%). Cocoa prices are moving lower today, but remain above Monday's 2-week lows. Since posting 3.75-month highs last Monday, cocoa prices retreated to 2-week lows on Monday amid...",
-      "url": "https://www.nasdaq.com/articles/outlook-abundant-cocoa-supplies-pressures-prices",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-20T22:04:23+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 939061565,
-      "source": "Nasdaq",
-      "title": "Intuit To Cut About 3,000 Jobs Amid AI-Focused Restructuring",
-      "summary": "(RTTNews) - Financial software company Intuit Inc. (INTU) is reportedly laying off about 3,000 employees, or roughly 17% of its global workforce.",
-      "content": "(RTTNews) - Financial software company Intuit Inc. (INTU) is reportedly laying off about 3,000 employees, or roughly 17% of its global workforce.",
-      "url": "https://www.nasdaq.com/articles/intuit-cut-about-3000-jobs-amid-ai-focused-restructuring",
-      "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
-      "publishedAt": "2026-05-20T22:03:38+00:00",
-      "category": "Geopol\u00edtica",
-      "icon": "\ud83c\udf0d",
-      "impact": {
-        "tickers": [
-          "LMT",
-          "RTX",
-          "NOC",
-          "XOM"
-        ],
-        "sector": "Defesa",
-        "sentiment": "negative"
-      },
-      "heat": 3,
-      "feed": "rss"
-    },
-    {
-      "id": 269253787,
-      "source": "Nasdaq",
-      "title": "Google Introduces AI-Enhanced Search Features At I/O 2026",
-      "summary": "(RTTNews) - At Google I/O 2026, Alphabet Inc. (GOOG) rolled out a bold range of AI enhancements for its Search engine, showcasing more advanced AI models, self-sufficient search agents, and tailored mini apps meant to tackle complex tasks.",
-      "content": "(RTTNews) - At Google I/O 2026, Alphabet Inc. (GOOG) rolled out a bold range of AI enhancements for its Search engine, showcasing more advanced AI models, self-sufficient search agents, and tailored mini apps meant to tackle complex tasks.",
-      "url": "https://www.nasdaq.com/articles/google-introduces-ai-enhanced-search-features-i-o-2026",
-      "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
-      "publishedAt": "2026-05-20T22:03:32+00:00",
+      "id": 643884226,
+      "source": "Yahoo",
+      "title": "Wells Fargo revamps Google stock price target after major AI move",
+      "summary": "Google held its annual developer conference last week and unveiled Gemini 3.5 Pro, new AI search integrations, and a product lineup that BofA called evidence of \"accelerating velocity of AI innovation.\" The stock barely moved. That is the strange position Google finds itself in heading into the ...",
+      "content": "Google held its annual developer conference last week and unveiled Gemini 3.5 Pro, new AI search integrations, and a product lineup that BofA called evidence of \"accelerating velocity of AI innovation.\" The stock barely moved. That is the strange position Google finds itself in heading into the ...",
+      "url": "https://finnhub.io/api/news?id=64fca7f759f8ff3dbb26c96535c18e960df793990459d57601435efcca9f6353",
+      "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png",
+      "publishedAt": "2026-05-20T22:48:44+00:00",
       "category": "Tecnologia",
       "icon": "\ud83d\udcbb",
       "impact": {
         "tickers": [
-          "NVDA",
-          "AMD",
-          "INTC",
-          "AVGO"
-        ],
-        "sector": "Tecnologia",
-        "sentiment": "neutral"
-      },
-      "heat": 3,
-      "feed": "rss"
-    },
-    {
-      "id": 104108756,
-      "source": "Nasdaq",
-      "title": "Why Arm Holdings Stock Surged to an All-Time High Today",
-      "summary": "Key PointsAI agents are driving demand for CPUs.",
-      "content": "Key PointsAI agents are driving demand for CPUs.",
-      "url": "https://www.nasdaq.com/articles/why-arm-holdings-stock-surged-all-time-high-today",
-      "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
-      "publishedAt": "2026-05-20T22:01:49+00:00",
-      "category": "Tecnologia",
-      "icon": "\ud83d\udcbb",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 531211220,
-      "source": "Nasdaq",
-      "title": "Nvidia Stock Investors Just Got Fantastic News From CEO Jensen Huang",
-      "summary": "Key PointsNvidia just reported first-quarter results, and the company's accelerating growth continued.",
-      "content": "Key PointsNvidia just reported first-quarter results, and the company's accelerating growth continued.",
-      "url": "https://www.nasdaq.com/articles/nvidia-stock-investors-just-got-fantastic-news-ceo-jensen-huang",
-      "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
-      "publishedAt": "2026-05-20T22:01:37+00:00",
-      "category": "Tecnologia",
-      "icon": "\ud83d\udcbb",
-      "impact": {
-        "tickers": [
-          "NVDA",
-          "AMD",
-          "INTC",
-          "AVGO"
-        ],
-        "sector": "Tecnologia",
-        "sentiment": "positive"
-      },
-      "heat": 3,
-      "feed": "rss"
-    },
-    {
-      "id": 587464127,
-      "source": "Seeking Alpha",
-      "title": "Here are the major earnings before the open Thursday",
-      "summary": "",
-      "content": "",
-      "url": "https://seekingalpha.com/news/4595146-here-are-the-major-earnings-before-the-open-thursday?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
-      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
-      "publishedAt": "2026-05-20T18:00:50-04:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 61840316,
-      "source": "Nasdaq",
-      "title": "Kroger (KR) Stock Dips While Market Gains: Key Facts",
-      "summary": "Kroger (KR) closed at $68.68 in the latest trading session, marking a -2.72% move from the prior day.",
-      "content": "Kroger (KR) closed at $68.68 in the latest trading session, marking a -2.72% move from the prior day.",
-      "url": "https://www.nasdaq.com/articles/kroger-kr-stock-dips-while-market-gains-key-facts",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-20T22:00:02+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 683943944,
-      "source": "Nasdaq",
-      "title": "SentinelOne (S) Laps the Stock Market: Here's Why",
-      "summary": "SentinelOne (S) closed at $17.97 in the latest trading session, marking a +1.76% move from the prior day.",
-      "content": "SentinelOne (S) closed at $17.97 in the latest trading session, marking a +1.76% move from the prior day.",
-      "url": "https://www.nasdaq.com/articles/sentinelone-s-laps-stock-market-heres-why",
-      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
-      "publishedAt": "2026-05-20T22:00:02+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 61542460,
-      "source": "Nasdaq",
-      "title": "Belite Bio (BLTE) Q1 2026 Earnings Transcript",
-      "summary": "@media (max-width: 768px) { .image-container { width: 100% !important; float: none !important; margin: 0 0 1rem 0 !important; } } Image source: The Mo",
-      "content": "@media (max-width: 768px) { .image-container { width: 100% !important; float: none !important; margin: 0 0 1rem 0 !important; } } Image source: The Mo",
-      "url": "https://www.nasdaq.com/articles/belite-bio-blte-q1-2026-earnings-transcript",
-      "image": "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=800&q=80",
-      "publishedAt": "2026-05-20T21:59:46+00:00",
-      "category": "Com\u00e9rcio",
-      "icon": "\ud83d\udea2",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 281650171,
-      "source": "Seeking Alpha",
-      "title": "RIWI GAAP EPS of -$0.03, revenue of $0.82M",
-      "summary": "",
-      "content": "",
-      "url": "https://seekingalpha.com/news/4595524-riwi-gaap-eps-of-0_03-revenue-of-0_82m?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-20T17:56:56-04:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 380012151,
-      "source": "Yahoo",
-      "title": "2 Mooning  Stocks to Target This Week and 1 We Avoid",
-      "summary": "Each stock in this article is trading near its 52-week high. These elevated prices usually indicate some degree of investor confidence, business improvements, or favorable market conditions.",
-      "content": "Each stock in this article is trading near its 52-week high. These elevated prices usually indicate some degree of investor confidence, business improvements, or favorable market conditions.",
-      "url": "https://finnhub.io/api/news?id=826fdef36250973d8d608bb21b66a99fa93b5dd642cf276a90f76fd49f38688a",
-      "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png",
-      "publishedAt": "2026-05-20T21:56:55+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [
-          "CAT"
+          "GOOGL"
         ],
         "sector": "",
         "sentiment": "neutral"
       },
       "heat": 1,
-      "feed": "finnhub_company"
-    },
-    {
-      "id": 291287608,
-      "source": "MarketWatch",
-      "title": "\u2018It will not bring you happiness\u2019: I have advice for your single, childless 62-year-old multimillionaire reader",
-      "summary": "\u201cGo to Walmart and pay off someone\u2019s layaway account.\u201d",
-      "content": "\u201cGo to Walmart and pay off someone\u2019s layaway account.\u201d",
-      "url": "https://www.marketwatch.com/story/it-will-not-bring-you-happiness-i-have-advice-for-your-single-childless-62-year-old-multimillionaire-reader-1cb6a09f?mod=mw_rss_topstories",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-20T21:56:00+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 721643032,
-      "source": "Yahoo",
-      "title": "4 important callouts from Nvidia's earnings",
-      "summary": "In addition to the earnings release, Nvidia's CFO Colette Kress shared commentary that revealed four key developments in its business, beyond the company's first quarter earnings-per-share beat.",
-      "content": "In addition to the earnings release, Nvidia's CFO Colette Kress shared commentary that revealed four key developments in its business, beyond the company's first quarter earnings-per-share beat.",
-      "url": "https://finnhub.io/api/news?id=0b36099dd52aa0b61bc339ddfeaa4458a47aecd68af5f962ea1ad8d77c9ec91d",
-      "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png",
-      "publishedAt": "2026-05-20T21:54:37+00:00",
-      "category": "Com\u00e9rcio",
-      "icon": "\ud83d\udea2",
-      "impact": {
-        "tickers": [
-          "NVDA",
-          "AMD",
-          "INTC",
-          "AVGO"
-        ],
-        "sector": "Tecnologia",
-        "sentiment": "positive"
-      },
-      "heat": 3,
-      "feed": "finnhub_company"
-    },
-    {
-      "id": 501152622,
-      "source": "CNBC",
-      "title": "Bezos defends billionaires, hypes AI, talks taxes and praises Trump in CNBC interview",
-      "summary": "Jeff Bezos rejected accusations that Amazon's decision to release a documentary on first lady Melania Trump was an effort to curry favor with the president.",
-      "content": "Jeff Bezos rejected accusations that Amazon's decision to release a documentary on first lady Melania Trump was an effort to curry favor with the president.",
-      "url": "https://www.cnbc.com/2026/05/20/jeff-bezos-taxes-ai-corporations-trump.html",
-      "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
-      "publishedAt": "2026-05-20T21:54:15+00:00",
-      "category": "Tecnologia",
-      "icon": "\ud83d\udcbb",
-      "impact": {
-        "tickers": [
-          "AMZN",
-          "WMT",
-          "TGT",
-          "COST"
-        ],
-        "sector": "Consumo",
-        "sentiment": "neutral"
-      },
-      "heat": 3,
-      "feed": "rss"
-    },
-    {
-      "id": 406052770,
-      "source": "Seeking Alpha",
-      "title": "RFK Jr. sacks two members of the US Preventive Services Task Force",
-      "summary": "",
-      "content": "",
-      "url": "https://seekingalpha.com/news/4595520-rfk-jr-sacks-two-members-us-preventive-services-task-force?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-20T17:52:05-04:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 654420825,
-      "source": "Yahoo",
-      "title": "Nvidia\u2019s revenue blows past Wall Street expectations as AI boom accelerates",
-      "summary": "Many analysts view company\u2019s financial performance as a broader referendum on AI buildout",
-      "content": "Many analysts view company\u2019s financial performance as a broader referendum on AI buildout",
-      "url": "https://finnhub.io/api/news?id=aecd9bb55e554eb91330f07752c07e31d2bd9bc949db17410ce580466edbfe91",
-      "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png",
-      "publishedAt": "2026-05-20T21:50:45+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [
-          "NVDA",
-          "AMD",
-          "INTC",
-          "AVGO"
-        ],
-        "sector": "Tecnologia",
-        "sentiment": "positive"
-      },
-      "heat": 3,
-      "feed": "finnhub_company"
-    },
-    {
-      "id": 990964016,
-      "source": "CNBC",
-      "title": "Sinkhole shuts runway at LaGuardia Airport, delaying flights, Port Authority warns",
-      "summary": "The Port Authority said travelers should expect delays and cancellations, with thunderstorms expected also expected to roll in Wednesday.",
-      "content": "The Port Authority said travelers should expect delays and cancellations, with thunderstorms expected also expected to roll in Wednesday.",
-      "url": "https://www.cnbc.com/2026/05/20/laguardia-airport-lga-flights.html",
-      "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
-      "publishedAt": "2026-05-20T21:50:06+00:00",
-      "category": "Geopol\u00edtica",
-      "icon": "\ud83c\udf0d",
-      "impact": {
-        "tickers": [
-          "LMT",
-          "RTX",
-          "NOC",
-          "XOM"
-        ],
-        "sector": "Defesa",
-        "sentiment": "negative"
-      },
-      "heat": 3,
-      "feed": "rss"
-    },
-    {
-      "id": 718685349,
-      "source": "Yahoo",
-      "title": "Nvidia Q1 FY2027 earnings: record revenue, dividend hike",
-      "summary": "The chipmaker reported $81.6 billion in first-quarter sales and raised its quarterly dividend to 25 cents from 1 cent",
-      "content": "The chipmaker reported $81.6 billion in first-quarter sales and raised its quarterly dividend to 25 cents from 1 cent",
-      "url": "https://finnhub.io/api/news?id=81fe95f366b4c71393e5ef1d622c0c6ed317487472b3c092d7ce54cad779c363",
-      "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png",
-      "publishedAt": "2026-05-20T21:46:49+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [
-          "NVDA",
-          "AMD",
-          "INTC",
-          "AVGO"
-        ],
-        "sector": "Tecnologia",
-        "sentiment": "positive"
-      },
-      "heat": 3,
-      "feed": "finnhub_company"
-    },
-    {
-      "id": 277844358,
-      "source": "Yahoo",
-      "title": "Dow Jones Futures Fall After Strong Nvidia Earnings; Stocks Rally, Oil Prices Dive On Iran Hopes",
-      "summary": "Nvidia stock fell late despite strong earnings and guidance. Stocks rallied Wednesday as oil prices dived on Iran hopes.",
-      "content": "Nvidia stock fell late despite strong earnings and guidance. Stocks rallied Wednesday as oil prices dived on Iran hopes.",
-      "url": "https://finnhub.io/api/news?id=fa83fffdbe8f0c1e0e1246c304dafaa29e9a3ecc2675241c5fa623a5645e3454",
-      "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png",
-      "publishedAt": "2026-05-20T21:46:42+00:00",
-      "category": "Geopol\u00edtica",
-      "icon": "\ud83c\udf0d",
-      "impact": {
-        "tickers": [
-          "AMD",
-          "XOM",
-          "CVX",
-          "COP",
-          "OXY",
-          "SLB"
-        ],
-        "sector": "Energia",
-        "sentiment": "neutral"
-      },
-      "heat": 3,
-      "feed": "finnhub_company"
-    },
-    {
-      "id": 14053892,
-      "source": "Fintel",
-      "title": "Raymond James Upgrades SM Energy (SM)",
-      "summary": "",
-      "content": "",
-      "url": "https://finnhub.io/api/news?id=f831df56251658727b4cc5d93f40460418e3dfd33453a44b7f693667fd508a53",
-      "image": "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80",
-      "publishedAt": "2026-05-20T21:40:31+00:00",
-      "category": "Energia",
-      "icon": "\u26a1",
-      "impact": {
-        "tickers": [
-          "SM"
-        ],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "finnhub_company"
-    },
-    {
-      "id": 586563620,
-      "source": "Yahoo",
-      "title": "Nvidia Beats Q1 Estimates. Stock Wavers. (Live Coverage)",
-      "summary": "AI kingpin Nvidia beat expectations for its fiscal first quarter and with its outlook. Nvidia stock wavered in extended trading.",
-      "content": "AI kingpin Nvidia beat expectations for its fiscal first quarter and with its outlook. Nvidia stock wavered in extended trading.",
-      "url": "https://finnhub.io/api/news?id=f778cf66e6f6d0f97b968cc19aef4f9fbcd7cf27dbd8c1c6004eac9cfcddcc85",
-      "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png",
-      "publishedAt": "2026-05-20T21:39:29+00:00",
-      "category": "Tecnologia",
-      "icon": "\ud83d\udcbb",
-      "impact": {
-        "tickers": [
-          "NVDA",
-          "AMD",
-          "INTC",
-          "AVGO"
-        ],
-        "sector": "Tecnologia",
-        "sentiment": "positive"
-      },
-      "heat": 3,
       "feed": "finnhub_company"
     }
   ]
