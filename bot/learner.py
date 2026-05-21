@@ -43,6 +43,7 @@ from .logger import log_decision, log_error
 # ===========================================================================
 
 OPTIMIZED_PARAMS_PATH = DATA_BETA_DIR / "optimized_parameters.json"
+CORPUS_PATH           = DATA_BETA_DIR.parent / "learner_corpus" / "corpus.jsonl"
 
 # Limites de activação por horizonte
 _MIN_TRADES_WEEKLY    = 20
@@ -53,6 +54,8 @@ _MIN_TRADES_QUARTERLY = 100
 _EMA_ALPHA    = 0.30
 # Ganho mínimo de fitness para aceitar mutação (5%)
 _MIN_GAIN_PCT = 0.05
+# Alerta de overfitting: divergência fitness treino/val acima deste limiar → Telegram
+_OVERFIT_DIVERGENCE_PCT = 0.20
 # Força da regularização L2 (penaliza afastamento dos defaults)
 _LAMBDA_L2    = 0.15
 # Fracção de holdout no walk-forward
@@ -321,6 +324,14 @@ def run_learner_cycle() -> None:
 def _run_weekly(trades: list[dict]) -> None:
     stored  = get_active_params()
     current = stored["weekly"]["clyde"]
+
+    # Warm-start do corpus sintético quando há poucos trades reais.
+    # Se o corpus não existir, current mantém-se inalterado (comportamento anterior).
+    if len(trades) < _MIN_TRADES_MONTHLY:
+        warm = pretrain_clyde_from_corpus()
+        if warm:
+            current = warm
+
     params  = list(current.keys())
 
     train, val = _split_trades(trades)
@@ -762,6 +773,97 @@ def _notify_mutation(
         enviar_alerta("\n".join(linhas), silencioso=True)
     except Exception as exc:
         log_error("learner_notify", {"error": str(exc)})
+
+
+# ---------------------------------------------------------------------------
+# Corpus sintético — warm-start e detecção de overfitting
+# ---------------------------------------------------------------------------
+
+def _load_corpus(max_samples: int = 20_000) -> list[dict]:
+    """Lê data/learner_corpus/corpus.jsonl como lista de trades sintéticos.
+
+    Cada linha tem o mesmo shape que beta_trades (context, result_eur, side, style)
+    — directamente consumível pelas funções de fitness existentes.
+    Devolve [] silenciosamente se o corpus não existir.
+    """
+    if not CORPUS_PATH.exists():
+        return []
+    out: list[dict] = []
+    try:
+        with open(CORPUS_PATH, encoding="utf-8") as f:
+            for line in f:
+                if line.strip():
+                    out.append(json.loads(line))
+                    if len(out) >= max_samples:
+                        break
+    except (json.JSONDecodeError, OSError) as exc:
+        log_error("learner_corpus_load", {"error": str(exc)})
+    return out
+
+
+def pretrain_clyde_from_corpus() -> dict | None:
+    """FASE 1 — warm-start: corre o Coordinate Descent sobre o corpus sintético.
+
+    Devolve um ponto de partida de parâmetros para _run_weekly usar como `current`
+    em vez dos defaults. Se o corpus for insuficiente (< 200 samples) ou ausente,
+    devolve None e o ciclo continua sem alteração.
+    """
+    corpus = _load_corpus()
+    if len(corpus) < 200:
+        log_decision("learner_pretrain", "skipped", {"n_corpus": len(corpus)})
+        return None
+
+    train, val = _split_trades(corpus)        # split por tempo — corpus traz datetime
+    defaults   = _DEFAULT_PARAMS["weekly"]["clyde"]
+
+    warm, _ = _coordinate_descent(
+        param_names=list(defaults.keys()),
+        current=copy.deepcopy(defaults),
+        defaults=defaults,
+        trades_train=train,
+        trades_val=val,
+        fitness_fn=_fitness_clyde,
+        n_iter=_N_ITER["weekly"],
+    )
+    _overfit_divergence_alert("Clyde·corpus", _fitness_clyde, warm, train, val)
+    log_decision("learner_pretrain", "warm_start_ready",
+                 {"n_corpus": len(corpus), "warm_params": warm})
+    return warm
+
+
+def _overfit_divergence_alert(label: str, fitness_fn, params: dict,
+                               train: list[dict], val: list[dict]) -> None:
+    """Divergência de fitness treino vs. holdout — análogo honesto de 'loss train/val'.
+
+    O learner não tem rede nem loss; a métrica equivalente é o PF×Calmar em cada
+    janela. Dispara alerta Telegram se a divergência exceder _OVERFIT_DIVERGENCE_PCT.
+    """
+    if not val:
+        return
+    f_tr = fitness_fn(params, train)
+    f_va = fitness_fn(params, val)
+    if f_tr <= 0:
+        return
+    divergence = abs(f_tr - f_va) / f_tr
+    log_decision("learner_overfit_check", "measured", {
+        "label": label,
+        "fitness_train":    round(f_tr, 4),
+        "fitness_val":      round(f_va, 4),
+        "divergence_pct":   round(divergence * 100, 1),
+    })
+    if divergence <= _OVERFIT_DIVERGENCE_PCT:
+        return
+    try:
+        from .notifier import enviar_alerta
+        enviar_alerta(
+            f"⚠️ Learner — possível overfitting ({label})\n\n"
+            f"Fitness treino: {f_tr:.2f}\n"
+            f"Fitness validação: {f_va:.2f}\n"
+            f"Divergência: {divergence * 100:.1f}%  (limite {_OVERFIT_DIVERGENCE_PCT * 100:.0f}%)",
+            silencioso=True,
+        )
+    except Exception as exc:
+        log_error("learner_overfit_notify", {"error": str(exc)})
 
 
 # ---------------------------------------------------------------------------
