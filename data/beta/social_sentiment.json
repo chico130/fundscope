@@ -1,6 +1,6 @@
 {
   "anomalies": [],
-  "generated_at_utc": "2026-05-21T11:07:49Z",
+  "generated_at_utc": "2026-05-21T15:07:56Z",
   "schema_version": 1,
   "tickers": {
     "AAPL": {
@@ -14,11 +14,11 @@
       "twitter": null,
       "veto": null
     },
-    "ADI": {
+    "AMAT": {
       "analyst": {
-        "bull_ratio": 0.829,
+        "bull_ratio": 0.837,
         "divergence": false,
-        "n_analysts": 41,
+        "n_analysts": 43,
         "period": "2026-05-01"
       },
       "reddit": null,
@@ -69,17 +69,6 @@
       "twitter": null,
       "veto": null
     },
-    "AR": {
-      "analyst": {
-        "bull_ratio": 0.759,
-        "divergence": false,
-        "n_analysts": 29,
-        "period": "2026-05-01"
-      },
-      "reddit": null,
-      "twitter": null,
-      "veto": null
-    },
     "ARM": {
       "analyst": {
         "bull_ratio": 0.6,
@@ -118,17 +107,6 @@
         "bull_ratio": 0.906,
         "divergence": false,
         "n_analysts": 32,
-        "period": "2026-05-01"
-      },
-      "reddit": null,
-      "twitter": null,
-      "veto": null
-    },
-    "COST": {
-      "analyst": {
-        "bull_ratio": 0.659,
-        "divergence": false,
-        "n_analysts": 44,
         "period": "2026-05-01"
       },
       "reddit": null,
@@ -201,11 +179,11 @@
       "twitter": null,
       "veto": null
     },
-    "DVN": {
+    "DXCM": {
       "analyst": {
-        "bull_ratio": 0.781,
+        "bull_ratio": 0.838,
         "divergence": false,
-        "n_analysts": 32,
+        "n_analysts": 37,
         "period": "2026-05-01"
       },
       "reddit": null,
@@ -267,6 +245,17 @@
       "twitter": null,
       "veto": null
     },
+    "GS": {
+      "analyst": {
+        "bull_ratio": 0.438,
+        "divergence": false,
+        "n_analysts": 32,
+        "period": "2026-05-01"
+      },
+      "reddit": null,
+      "twitter": null,
+      "veto": null
+    },
     "GWW": {
       "analyst": {
         "bull_ratio": 0.167,
@@ -322,11 +311,11 @@
       "twitter": null,
       "veto": null
     },
-    "KO": {
+    "KLAC": {
       "analyst": {
-        "bull_ratio": 0.829,
+        "bull_ratio": 0.667,
         "divergence": false,
-        "n_analysts": 35,
+        "n_analysts": 36,
         "period": "2026-05-01"
       },
       "reddit": null,
@@ -377,6 +366,17 @@
       "twitter": null,
       "veto": null
     },
+    "MS": {
+      "analyst": {
+        "bull_ratio": 0.545,
+        "divergence": false,
+        "n_analysts": 33,
+        "period": "2026-05-01"
+      },
+      "reddit": null,
+      "twitter": null,
+      "veto": null
+    },
     "MSFT": {
       "analyst": {
         "bull_ratio": 0.909,
@@ -388,22 +388,33 @@
       "twitter": null,
       "veto": null
     },
-    "MSTR": {
+    "MU": {
       "analyst": {
-        "bull_ratio": 0.88,
+        "bull_ratio": 0.906,
         "divergence": false,
-        "n_analysts": 25,
+        "n_analysts": 53,
         "period": "2026-05-01"
       },
       "reddit": null,
       "twitter": null,
       "veto": null
     },
-    "MU": {
+    "NET": {
       "analyst": {
-        "bull_ratio": 0.906,
+        "bull_ratio": 0.65,
         "divergence": false,
-        "n_analysts": 53,
+        "n_analysts": 40,
+        "period": "2026-05-01"
+      },
+      "reddit": null,
+      "twitter": null,
+      "veto": null
+    },
+    "NOW": {
+      "analyst": {
+        "bull_ratio": 0.87,
+        "divergence": false,
+        "n_analysts": 54,
         "period": "2026-05-01"
       },
       "reddit": null,
@@ -454,11 +465,11 @@
       "twitter": null,
       "veto": null
     },
-    "PR": {
+    "PLTR": {
       "analyst": {
-        "bull_ratio": 0.875,
+        "bull_ratio": 0.632,
         "divergence": false,
-        "n_analysts": 32,
+        "n_analysts": 38,
         "period": "2026-05-01"
       },
       "reddit": null,
@@ -498,17 +509,6 @@
       "twitter": null,
       "veto": null
     },
-    "SBUX": {
-      "analyst": {
-        "bull_ratio": 0.367,
-        "divergence": false,
-        "n_analysts": 49,
-        "period": "2026-05-01"
-      },
-      "reddit": null,
-      "twitter": null,
-      "veto": null
-    },
     "SM": {
       "analyst": {
         "bull_ratio": 0.545,
@@ -520,11 +520,11 @@
       "twitter": null,
       "veto": null
     },
-    "SNOW": {
+    "SMCI": {
       "analyst": {
-        "bull_ratio": 0.845,
+        "bull_ratio": 0.231,
         "divergence": false,
-        "n_analysts": 58,
+        "n_analysts": 26,
         "period": "2026-05-01"
       },
       "reddit": null,
