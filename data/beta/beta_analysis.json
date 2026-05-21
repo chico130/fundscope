@@ -1,20 +1,20 @@
 {
-  "timestamp": "2026-05-21T16:38:50.711011+00:00",
+  "timestamp": "2026-05-21T16:54:07.151129+00:00",
   "mode": "phase1_auto",
   "strategy_version": "v0.1.0",
   "note": "Fase 1 — execução automática activa. LIVE_TRADING=False (conta demo).",
   "regime": "bull_lateral",
   "regime_alert": false,
   "regime_details": {
-    "spy_price": 738.49,
+    "spy_price": 738.64,
     "ema200": 678.83,
-    "ema50": 708.34,
+    "ema50": 708.35,
     "ema50_above_ema200": true,
-    "spy_pct_from_ema200": 8.79,
+    "spy_pct_from_ema200": 8.81,
     "atr_current": 7.1787,
     "atr_ratio_vs_60d_mean": 0.8094,
-    "spy_return_20d": 0.0344,
-    "rsp_spy_ratio_chg_20d": -0.0283,
+    "spy_return_20d": 0.0346,
+    "rsp_spy_ratio_chg_20d": -0.0281,
     "breadth_healthy": false
   },
   "watchlist_top5": [
@@ -91,7 +91,7 @@
   "open_trades": 0,
   "risk_status": {
     "ok": true,
-    "total_equity_eur": 5112.54,
+    "total_equity_eur": 5112.38,
     "warnings": []
   },
   "signals": [
@@ -100,20 +100,20 @@
       "action": "hold",
       "size_factor": 0.6,
       "signals": [
-        "RSI-14 neutro (61.9)",
+        "RSI-14 neutro (61.7)",
         "Tendência ascendente: EMA-50 > EMA-200",
         "Volume reduzido: 0.3x da média — movimento sem convicção"
       ],
       "technicals": {
-        "rsi_14": 61.89,
+        "rsi_14": 61.73,
         "ema50_above_ema200": true,
-        "volume_ratio_vs_avg": 0.3
+        "volume_ratio_vs_avg": 0.32
       }
     }
   ],
   "data_sources": {
     "prices": "finnhub+yfinance",
-    "t212_sync": "2026-05-21T16:38:50.217854+00:00",
+    "t212_sync": "2026-05-21T16:54:06.578432+00:00",
     "stale_prices": []
   },
   "cro": {
