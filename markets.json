@@ -1,5 +1,5 @@
 {
-  "updated": "2026-05-21T17:10:22.137410Z",
+  "updated": "2026-05-21T18:10:15.145472Z",
   "slot": "fecho",
   "marketOpen": true,
   "lastCloseDate": "2026-05-21",
@@ -9,68 +9,68 @@
       "icon": "💻",
       "color": "#4f98a3",
       "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
-      "avgChange": -0.48,
+      "avgChange": 0.14,
       "gainers": [
         {
-          "ticker": "MU",
-          "price": 756.33,
-          "changePct": 3.33,
-          "pc": 731.99
-        },
-        {
           "ticker": "QCOM",
-          "price": 208.37,
-          "changePct": 2.89,
+          "price": 212.65,
+          "changePct": 5.0,
           "pc": 202.51
         },
         {
+          "ticker": "MU",
+          "price": 758.32,
+          "changePct": 3.6,
+          "pc": 731.99
+        },
+        {
           "ticker": "ORCL",
-          "price": 190.1,
-          "changePct": 1.03,
+          "price": 191.81,
+          "changePct": 1.94,
           "pc": 188.16
         },
         {
-          "ticker": "AAPL",
-          "price": 303.85,
-          "changePct": 0.53,
-          "pc": 302.25
+          "ticker": "TSLA",
+          "price": 422.1,
+          "changePct": 1.16,
+          "pc": 417.26
         },
         {
-          "ticker": "TSLA",
-          "price": 419.05,
-          "changePct": 0.43,
-          "pc": 417.26
+          "ticker": "AAPL",
+          "price": 304.64,
+          "changePct": 0.79,
+          "pc": 302.25
         }
       ],
       "losers": [
         {
-          "ticker": "ADBE",
-          "price": 244.55,
-          "changePct": -3.48,
-          "pc": 253.37
-        },
-        {
           "ticker": "NOW",
-          "price": 99.89,
-          "changePct": -3.3,
+          "price": 100.1,
+          "changePct": -3.1,
           "pc": 103.3
         },
         {
+          "ticker": "ADBE",
+          "price": 245.51,
+          "changePct": -3.1,
+          "pc": 253.37
+        },
+        {
           "ticker": "CRM",
-          "price": 175.73,
-          "changePct": -2.43,
+          "price": 176.77,
+          "changePct": -1.85,
           "pc": 180.1
         },
         {
           "ticker": "NVDA",
-          "price": 220.5,
-          "changePct": -1.33,
+          "price": 221.06,
+          "changePct": -1.08,
           "pc": 223.47
         },
         {
           "ticker": "AVGO",
-          "price": 412.45,
-          "changePct": -1.27,
+          "price": 413.97,
+          "changePct": -0.91,
           "pc": 417.76
         }
       ],
@@ -112,47 +112,47 @@
       "news": [
         {
           "source": "Yahoo",
-          "ticker": "MSFT",
-          "headline": "Is Arista Networks (ANET) the Best Pick-and-Shovel AI Stock to Buy Now?",
-          "summary": "We just covered the 10 Best Pick and Shovel AI Stocks to Buy for the Long Term. Arista Networks (NYSE:ANET) ranks #10 (see 5 Best Pick and Shovel AI Stocks to Buy for the Long Term). Short Interest: 1.7% Arista makes hig",
-          "url": "https://finnhub.io/api/news?id=7af722ec9e72b595c623de184d6f6f4bcee9ad7243a73883d74e52fcb3f5a9b3",
-          "datetime": 1779378724,
+          "ticker": "NVDA",
+          "headline": "Sector Update: Tech Stocks Advance Thursday Afternoon",
+          "summary": "Tech stocks were higher Thursday afternoon, with the State Street Technology Select Sector SPDR ETF",
+          "url": "https://finnhub.io/api/news?id=40971571da12a1ab90a9fccd1b9b5c413a38de2b4b23a2fb7af43a649cecb938",
+          "datetime": 1779385809,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
           "source": "Yahoo",
           "ticker": "NVDA",
-          "headline": "SpaceX Is Quietly Trading at a Price That Would Make It 23x Bigger Than Facebook’s IPO",
-          "summary": "Somewhere between a thought experiment and a margin call, SpaceX has a price. On Hyperliquid, a decentralized derivatives venue, a synthetic contract called SPCX-USD recently changed hands around $203. Plug that price in",
-          "url": "https://finnhub.io/api/news?id=16826dba17bff65418a018a23f0d1281e51009b75a10df304c80b7f5b7392a25",
-          "datetime": 1779378710,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Yahoo",
-          "ticker": "NVDA",
-          "headline": "Will AMD Stock Reach $600 This Year? The Answer May Not Surprise You",
-          "summary": "AMD (NASDAQ: AMD) has a 24/7 Wall St. price target of $600 over the next 12 months, with the stock currently trading at $447.58. That implies roughly roughly 34% upside, and we are rating the shares buy with high confide",
-          "url": "https://finnhub.io/api/news?id=446a9f1fb9e6e5d23ae14af5d724924d21f1d4964c44a23af73dcb4d3a164311",
-          "datetime": 1779378524,
+          "headline": "SanDisk Soars 9%, Western Digital Rallies 5%, Micron Rises 3% as Memory Trade Reawakens",
+          "summary": "Memory stocks are bouncing hard at midday on Thursday after a punishing week for the sector. SanDisk (NASDAQ:SNDK) shares are up 9%, Western Digital (NASDAQ:WDC) stock is higher by 5%, and Micron Technology (NASDAQ:MU) s",
+          "url": "https://finnhub.io/api/news?id=c12e1cf550279e19296e641a39af23c2cfc7fd1bfbb507d237f477b198a54d9c",
+          "datetime": 1779385775,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
           "source": "Yahoo",
           "ticker": "MSFT",
-          "headline": "Top Midday Stories: Supreme Leader Says Enriched Uranium Must Stay in Iran; Nvidia Q1 Earnings, Q2 Guidance Top Estimates, But Shares Fall",
-          "summary": "All three major US stock indexes were down and oil prices were up after Iran's supreme leader issued",
-          "url": "https://finnhub.io/api/news?id=a99ca6c5a70081774634d11cc5aee2e3c108db4a1c0d8d294f1ba5cffca970a9",
-          "datetime": 1779378439,
+          "headline": "Microsoft (MSFT)’s Largest Data Center In India Is On Track To Open By Mid-2026",
+          "summary": "With a net income margin of 39.34% and upside potential of 32.20%, Microsoft Corporation (NASDAQ:MSFT) ranks among the best extremely profitable stocks to buy according to Wall Street analysts. The company reported net i",
+          "url": "https://finnhub.io/api/news?id=ab3968da82087b6f3c59ac311c87ce4f5ecd4a3cd44dbd8a77fc3170cb9011ba",
+          "datetime": 1779385550,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "ticker": "MSFT",
+          "headline": "Microsoft Falls 12% As AI Spending Concerns Pressure S&P 500",
+          "summary": "Software giant becomes the index's biggest drag as Azure growth and $190 billion capex outlook weigh on sentiment.",
+          "url": "https://finnhub.io/api/news?id=372aac93d546b0131600c688067ad137c914c2ab2befc4646ada4648adbf5960",
+          "datetime": 1779382441,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
           "source": "Yahoo",
           "ticker": "AAPL",
-          "headline": "Burger-loving Trump invests millions in Kura Sushi chain",
-          "summary": "Among the long list of investments President Trump listed in a filing is Kura Sushi. The president invested $1 million-$5 million in the sushi chain.",
-          "url": "https://finnhub.io/api/news?id=f00c6cbf18e8dd89e0c5004f36f8364679bc1f8164cbd9cf6881fe772640bdda",
-          "datetime": 1779376032,
+          "headline": "SpaceX unveils $1.29B bitcoin stash in high-valuation IPO filing",
+          "summary": "Scott Melker discusses SpaceX’s (SPAX.PVT) confirmed June 12 Nasdaq (^IXIC) IPO debut and the company’s disclosure of a substantial bitcoin holding in its filing. “The Daily Wolf with Scott Melker” airs on Yahoo Finance ",
+          "url": "https://finnhub.io/api/news?id=a66c47efb36b6cb2851b203a366fff4f171c8b0973baaf43636fb868bd600af7",
+          "datetime": 1779381950,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         }
       ]
@@ -162,69 +162,69 @@
       "icon": "🏦",
       "color": "#437a22",
       "image": "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&q=80",
-      "avgChange": -0.63,
+      "avgChange": 0.22,
       "gainers": [
         {
-          "ticker": "MA",
-          "price": 499.14,
-          "changePct": 0.22,
-          "pc": 498.04
-        },
-        {
-          "ticker": "V",
-          "price": 330.85,
-          "changePct": 0.03,
-          "pc": 330.75
-        },
-        {
           "ticker": "MS",
-          "price": 197.57,
-          "changePct": -0.1,
+          "price": 199.76,
+          "changePct": 1.01,
           "pc": 197.77
         },
         {
-          "ticker": "JPM",
-          "price": 301.39,
-          "changePct": -0.2,
-          "pc": 301.98
+          "ticker": "BLK",
+          "price": 1058.77,
+          "changePct": 0.68,
+          "pc": 1051.57
         },
         {
-          "ticker": "BLK",
-          "price": 1048.65,
-          "changePct": -0.28,
-          "pc": 1051.57
+          "ticker": "MA",
+          "price": 500.84,
+          "changePct": 0.56,
+          "pc": 498.04
+        },
+        {
+          "ticker": "GS",
+          "price": 987.49,
+          "changePct": 0.55,
+          "pc": 982.12
+        },
+        {
+          "ticker": "JPM",
+          "price": 303.29,
+          "changePct": 0.43,
+          "pc": 301.98
         }
       ],
       "losers": [
         {
           "ticker": "COF",
-          "price": 183.0,
-          "changePct": -2.26,
+          "price": 185.88,
+          "changePct": -0.72,
           "pc": 187.23
         },
         {
-          "ticker": "WFC",
-          "price": 75.04,
-          "changePct": -1.02,
-          "pc": 75.81
-        },
-        {
-          "ticker": "C",
-          "price": 123.63,
-          "changePct": -0.95,
-          "pc": 124.82
-        },
-        {
-          "ticker": "TFC",
-          "price": 47.55,
-          "changePct": -0.94,
-          "pc": 48.0
+          "ticker": "SCHW",
+          "price": 89.85,
+          "changePct": -0.29,
+          "pc": 90.11
         },
         {
           "ticker": "USB",
-          "price": 53.99,
-          "changePct": -0.94,
+          "price": 54.42,
+          "changePct": -0.14,
           "pc": 54.5
+        },
+        {
+          "ticker": "TFC",
+          "price": 47.94,
+          "changePct": -0.13,
+          "pc": 48.0
+        },
+        {
+          "ticker": "WFC",
+          "price": 75.8,
+          "changePct": -0.01,
+          "pc": 75.81
         }
       ],
       "sentiment": {
@@ -265,20 +265,38 @@
       "news": [
         {
           "source": "Yahoo",
-          "ticker": "JPM",
-          "headline": "Top US Landlords Agree to $50 Billion Real Estate Merger",
-          "summary": "(Bloomberg) -- AvalonBay Communities Inc. and Equity Residential agreed to merge in an all-stock transaction that will unite two of the biggest apartment real estate investment trusts with a combined market value of more",
-          "url": "https://finnhub.io/api/news?id=02d20e98ec4ef8a3ac7e078babec8261ce988f0b88955f5b760398783b7ad2fe",
-          "datetime": 1779374848,
+          "ticker": "BAC",
+          "headline": "Nvidia Beats, Stock Dumps—BofA Says Buy the Dip",
+          "summary": "Record $81.6 billion in revenue for Nvidia—and yet the stock fell. Bank of America called the dip noise and raised its price target.",
+          "url": "https://finnhub.io/api/news?id=bd3d9f381a6704272f7f6d11570a0da318011b0f1b2f206d4c47cab7ded283f1",
+          "datetime": 1779385157,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
           "source": "Yahoo",
-          "ticker": "BAC",
-          "headline": "Paramount's $50 Billion Warner Bros. Debt Sale Nears Launch",
-          "summary": "Banks discuss $30 billion investment-grade bonds, $12 billion junk bonds and $7.5 billion loans for the acquisition financing.",
-          "url": "https://finnhub.io/api/news?id=2c0543738b3bc0e21b206743eca0c3b870343b03621193a4f6bb43c198e51049",
-          "datetime": 1779374440,
+          "ticker": "JPM",
+          "headline": "JPMorgan Battles Over 8.2 Million Comics in Diamond Bankruptcy",
+          "summary": "Publishers and JPMorgan are fighting over ownership of comics and collectibles trapped in Diamond's Mississippi warehouse.",
+          "url": "https://finnhub.io/api/news?id=d5257f9d47550d459f376cf057bc6ad2a112e15b00840912cfb4d28c7061f274",
+          "datetime": 1779382385,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "ticker": "JPM",
+          "headline": "JPMorgan rolls out AI tools in investment banking globally, senior banker says",
+          "summary": "JPMorgan is implementing AI tools across its investment banking business globally, ‌its Asia investment banking head said on Thursday, among the ‌first in the sector moving to adopt the technology widely. Global banks ar",
+          "url": "https://finnhub.io/api/news?id=189116d29dc6dcaeda20a9849390d9bc89b1cbd7b4de464dc35ffa6201638540",
+          "datetime": 1779382045,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "ticker": "GS",
+          "headline": "Top US Landlords Agree to $50 Billion Real Estate Merger",
+          "summary": "(Bloomberg) -- AvalonBay Communities Inc. and Equity Residential agreed to merge in an all-stock transaction that will unite two of the biggest apartment real estate investment trusts with a combined market value of more",
+          "url": "https://finnhub.io/api/news?id=02d20e98ec4ef8a3ac7e078babec8261ce988f0b88955f5b760398783b7ad2fe",
+          "datetime": 1779374848,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
@@ -289,24 +307,6 @@
           "url": "https://finnhub.io/api/news?id=abfb5a0d3f429ae35e25b9a6d165e98b9a20452397cccf38cf5e4d67867e3027",
           "datetime": 1779374193,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Yahoo",
-          "ticker": "JPM",
-          "headline": "JP Morgan boss: AI means we’ll need fewer bankers",
-          "summary": "The boss of JP Morgan has said the Wall Street giant will need fewer bankers in the future as a result of AI.",
-          "url": "https://finnhub.io/api/news?id=278cda5811b9a662cc140a44eefaee747e0a6861a95fe4ec4c1907030a63f447",
-          "datetime": 1779372386,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Yahoo",
-          "ticker": "V",
-          "headline": "AI-fueled scams drive fraud: Visa",
-          "summary": "Cybercriminals are using artificial intelligence tools for larger attacks that target individual victims, the card network said in a fraud report.",
-          "url": "https://finnhub.io/api/news?id=37ee06b72b72ef2c25ed5dd7a6f0a84db9bcf379589ea65c1ab6b63736f00ce8",
-          "datetime": 1779357180,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         }
       ]
     },
@@ -315,69 +315,69 @@
       "icon": "⚡",
       "color": "#c47d1a",
       "image": "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80",
-      "avgChange": -0.03,
+      "avgChange": -0.96,
       "gainers": [
         {
-          "ticker": "OXY",
-          "price": 59.51,
-          "changePct": 1.09,
-          "pc": 58.87
-        },
-        {
           "ticker": "NEE",
-          "price": 89.16,
-          "changePct": 1.01,
+          "price": 89.14,
+          "changePct": 0.98,
           "pc": 88.27
         },
         {
           "ticker": "D",
-          "price": 68.25,
-          "changePct": 0.77,
+          "price": 68.19,
+          "changePct": 0.69,
           "pc": 67.73
         },
         {
           "ticker": "SO",
-          "price": 94.31,
-          "changePct": 0.74,
+          "price": 93.91,
+          "changePct": 0.31,
           "pc": 93.62
         },
         {
           "ticker": "DUK",
-          "price": 124.48,
-          "changePct": 0.54,
+          "price": 124.07,
+          "changePct": 0.21,
           "pc": 123.81
+        },
+        {
+          "ticker": "AEP",
+          "price": 129.11,
+          "changePct": 0.19,
+          "pc": 128.87
         }
       ],
       "losers": [
         {
           "ticker": "VLO",
-          "price": 249.12,
-          "changePct": -1.83,
+          "price": 244.46,
+          "changePct": -3.67,
           "pc": 253.77
         },
         {
           "ticker": "MPC",
-          "price": 254.56,
-          "changePct": -1.47,
+          "price": 249.51,
+          "changePct": -3.43,
           "pc": 258.37
         },
         {
           "ticker": "PSX",
-          "price": 177.48,
-          "changePct": -1.04,
+          "price": 174.69,
+          "changePct": -2.59,
           "pc": 179.34
         },
         {
-          "ticker": "SLB",
-          "price": 56.94,
-          "changePct": -0.59,
-          "pc": 57.28
+          "ticker": "COP",
+          "price": 120.35,
+          "changePct": -1.64,
+          "pc": 122.36
         },
         {
-          "ticker": "HAL",
-          "price": 42.15,
-          "changePct": -0.35,
-          "pc": 42.3
+          "ticker": "XOM",
+          "price": 154.2,
+          "changePct": -1.33,
+          "pc": 156.28
         }
       ],
       "sentiment": {
@@ -419,6 +419,33 @@
         {
           "source": "Yahoo",
           "ticker": "XOM",
+          "headline": "Three S&P 500 Value ETFs Beating Some Growth Rivals in 2026 and Most Investors Are Still Looking the Other Way",
+          "summary": "The value-over-growth rotation that strategists had been calling for since the start of the year is finally showing up in fund returns. Through mid-May, large-cap value indexes are running ahead of several large-cap grow",
+          "url": "https://finnhub.io/api/news?id=f0637ccf93010f1655347cbea4e3e514d5246756858fa4e440d1367538ed1100",
+          "datetime": 1779380121,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "ticker": "XOM",
+          "headline": "EC vs. XOM: Which Stock Is the Better Value Option?",
+          "summary": "EC vs. XOM: Which Stock Is the Better Value Option?",
+          "url": "https://finnhub.io/api/news?id=c003ce1c3767008c862b746c4b33d034eb91c9cce80e3d92815fe703e11df3ec",
+          "datetime": 1779378002,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "ticker": "CVX",
+          "headline": "Can ConocoPhillips Sustain Long-Term Growth in the Lower 48?",
+          "summary": "COP boosts Lower 48 output through longer wells and higher 2026 capital spending to support long-term production growth.",
+          "url": "https://finnhub.io/api/news?id=61f39283e72c8306ae0f3f90618ec62a2e83dbcb0cd4b39a28a688d65b8b308d",
+          "datetime": 1779375420,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "ticker": "CVX",
           "headline": "Credo Technology and Birkenstock have been highlighted as Zacks Bull and Bear of the Day",
           "summary": "CRDO and BIRK land Zacks Bull and Bear honors as AI demand lifts Credo while tariffs and inflation pressure Birkenstock.",
           "url": "https://finnhub.io/api/news?id=3a88b0227f9847ec828177083b921c9bf1c3e36360e72ae07fa6852bc5778009",
@@ -427,38 +454,11 @@
         },
         {
           "source": "Yahoo",
-          "ticker": "XOM",
+          "ticker": "COP",
           "headline": "ExxonMobil's Resilience: What Sets it Apart in Uncertain Times",
           "summary": "XOM leans on a low-debt balance sheet to keep funding projects and dividends, and hunt deals, even as oil and gas prices swing.",
           "url": "https://finnhub.io/api/news?id=ac7181608c9702b1e30d90f34637a012318338d1d8e159f5973383e1c4920c6a",
           "datetime": 1779372660,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Yahoo",
-          "ticker": "COP",
-          "headline": "5 Value Stocks Trading at Attractive Price-to-Sales Ratios",
-          "summary": "Low price-to-sales stocks like SCVL, NUS, APLE, COP and FAF screen as undervalued, with the setup hinging on debt levels, strong cash flow and business momentum.",
-          "url": "https://finnhub.io/api/news?id=d40bcf4f80bcc007351473ffe667971960173f34bc1ab0177e477df0a74a9db3",
-          "datetime": 1779371040,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Yahoo",
-          "ticker": "OXY",
-          "headline": "Berkshire Hathaway Sold 16 Stocks in Q1 but Warren Buffett and Greg Abel Still Have 70% in Just 7 Stocks",
-          "summary": "Warren Buffett stepped down as CEO of Berkshire Hathaway on December 31, 2025, after six decades leading the conglomerate he transformed from a struggling textile mill into a $1 trillion empire. The “Oracle of Omaha” lef",
-          "url": "https://finnhub.io/api/news?id=31ce51e8d4f36dae1f0b4b2c3fbc0fa64d3bb0a59b6c2a1ad43b0874c4d274d7",
-          "datetime": 1779363740,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Yahoo",
-          "ticker": "OXY",
-          "headline": "Cigna downgraded, Humana upgraded: Wall Street's top analyst calls",
-          "summary": "Cigna downgraded, Humana upgraded: Wall Street's top analyst calls",
-          "url": "https://finnhub.io/api/news?id=6f4bbc4cbca9cc62280b6903206f04f2bf232f60d1782338320410ff400289f0",
-          "datetime": 1779284620,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         }
       ]
@@ -468,69 +468,69 @@
       "icon": "🏥",
       "color": "#a13544",
       "image": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80",
-      "avgChange": 0.05,
+      "avgChange": 0.41,
       "gainers": [
         {
-          "ticker": "LLY",
-          "price": 1041.86,
-          "changePct": 2.26,
-          "pc": 1018.87
-        },
-        {
           "ticker": "MRK",
-          "price": 114.75,
-          "changePct": 1.55,
+          "price": 115.56,
+          "changePct": 2.27,
           "pc": 113.0
         },
         {
+          "ticker": "LLY",
+          "price": 1038.26,
+          "changePct": 1.9,
+          "pc": 1018.87
+        },
+        {
+          "ticker": "DHR",
+          "price": 173.44,
+          "changePct": 1.36,
+          "pc": 171.12
+        },
+        {
           "ticker": "AMGN",
-          "price": 334.89,
-          "changePct": 1.0,
+          "price": 335.59,
+          "changePct": 1.21,
           "pc": 331.57
         },
         {
           "ticker": "ABBV",
-          "price": 214.09,
-          "changePct": 0.84,
+          "price": 214.77,
+          "changePct": 1.16,
           "pc": 212.3
-        },
-        {
-          "ticker": "BMY",
-          "price": 58.85,
-          "changePct": 0.53,
-          "pc": 58.54
         }
       ],
       "losers": [
         {
           "ticker": "ISRG",
-          "price": 438.42,
-          "changePct": -2.36,
+          "price": 441.87,
+          "changePct": -1.59,
           "pc": 449.03
         },
         {
-          "ticker": "MDT",
-          "price": 77.06,
-          "changePct": -1.39,
-          "pc": 78.15
-        },
-        {
           "ticker": "ABT",
-          "price": 87.21,
-          "changePct": -1.32,
+          "price": 87.5,
+          "changePct": -1.0,
           "pc": 88.38
         },
         {
+          "ticker": "MDT",
+          "price": 77.5,
+          "changePct": -0.84,
+          "pc": 78.15
+        },
+        {
           "ticker": "TMO",
-          "price": 447.0,
-          "changePct": -1.06,
+          "price": 450.36,
+          "changePct": -0.32,
           "pc": 451.79
         },
         {
-          "ticker": "GILD",
-          "price": 130.1,
-          "changePct": -0.45,
-          "pc": 130.69
+          "ticker": "CVS",
+          "price": 93.25,
+          "changePct": -0.03,
+          "pc": 93.28
         }
       ],
       "sentiment": {
@@ -571,11 +571,38 @@
       "news": [
         {
           "source": "Yahoo",
+          "ticker": "LLY",
+          "headline": "Eli Lilly (LLY) Sees Strong Growth Driven by Mounjaro Momentum and GLP-1 Demand, Barclays Remains Bullish",
+          "summary": "Eli Lilly and Company (NYSE:LLY), featuring a net income margin of 34.99% and upside potential of 20.64%, secures a spot on our list of the best extremely profitable stocks to buy according to Wall Street analysts. The c",
+          "url": "https://finnhub.io/api/news?id=fe44b64ae49d4aefe651e2abf6653b03273653d5b22d64725512627d0ee02332",
+          "datetime": 1779385560,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "ticker": "JNJ",
+          "headline": "A Dividend Portfolio That Beats the Median Household Income in 47 of the 50 States on $1.1 Million Invested",
+          "summary": "The U.S. median household income sits near $80,610, and a $1.1 million dividend portfolio generating a blended 7% yield would produce roughly $77,000 a year in cash flow. That level of income exceeds the median household",
+          "url": "https://finnhub.io/api/news?id=4f729773fce91e4e15eb1b7db3f5642bb8e69a5393c7991969388855a8339b73",
+          "datetime": 1779379060,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
           "ticker": "JNJ",
           "headline": "If Treasury Yields Jump Above 4.75%, Here’s What Happens to SDY",
           "summary": "The SPDR S&P Dividend ETF (NYSEARCA:SDY) is doing exactly what a yield-tilted dividend fund is supposed to do while the broader market wobbles: grinding higher while the broad market wobbles. SDY trades near $146, up 4% ",
           "url": "https://finnhub.io/api/news?id=5bf8aa1be0254f72cae2722a61053606b05c72aa1af6b80eff735a50ffd8de69",
           "datetime": 1779378343,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "ticker": "LLY",
+          "headline": "Can Mounjaro, Zepbound & Foundayo Keep Fueling LLY's Growth Story?",
+          "summary": "Eli Lilly's GLP-1 portfolio is driving growth in 2026, with Mounjaro, Zepbound and Foundayo gaining traction across obesity, diabetes and related markets.",
+          "url": "https://finnhub.io/api/news?id=82c62d3da1a66cf490091a06669a715b56f0b767d057681f94410ed35407216b",
+          "datetime": 1779377700,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
@@ -586,33 +613,6 @@
           "url": "https://finnhub.io/api/news?id=2a64e551d3dd85abacb290dd819f44d5aa3cc92de53e24d2d5b93af97988e179",
           "datetime": 1779376294,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Yahoo",
-          "ticker": "LLY",
-          "headline": "Glucagon-Like Peptide (GLP)-1 Agonists Weight Loss Drugs Market Report 2026 Featuring Major Players Novo Nordisk A/S, Eli Lilly and Company, and Pfizer - Global",
-          "summary": "The GLP-1 agonists weight loss drugs market offers growth potential through rising obesity rates, innovative drug approvals, and increased insurance coverage. Opportunities include expanding obesity clinics, leveraging G",
-          "url": "https://finnhub.io/api/news?id=899348591768ac1e442fd53e608cfe6840a8caaed1c292817d426f6998beb671",
-          "datetime": 1779376020,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Yahoo",
-          "ticker": "LLY",
-          "headline": "How Eli Lilly's Next-Gen Obesity Drug Is 'Raising The Bar' In Weight Loss",
-          "summary": "Patients lost up to 85 pounds in a study of Eli Lilly's next-generation weight-loss drug, the company said Thursday.",
-          "url": "https://finnhub.io/api/news?id=7e21e09b37895203271f456266c93ee23245a8a8d648b5882bd657761f8be168",
-          "datetime": 1779375836,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Yahoo",
-          "ticker": "JNJ",
-          "headline": "CDL’s $2.29 annual dividend beats Treasury yields despite rising interest rates",
-          "summary": "Income investors holding the VictoryShares US Large Cap High Div Volatility Wtd ETF (NYSEARCA:CDL) own a fund built around one premise: large American companies with stable share prices tend to pay reliable dividends. CD",
-          "url": "https://finnhub.io/api/news?id=21688cb9463bca60872fef23d5322d5636c94664cb8d4b8963c16b7935ec17a0",
-          "datetime": 1779372923,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         }
       ]
     },
@@ -621,69 +621,69 @@
       "icon": "🛒",
       "color": "#7a5c9e",
       "image": "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&q=80",
-      "avgChange": -1.19,
+      "avgChange": -0.59,
       "gainers": [
         {
+          "ticker": "TGT",
+          "price": 124.28,
+          "changePct": 1.59,
+          "pc": 122.33
+        },
+        {
           "ticker": "MCD",
-          "price": 283.05,
-          "changePct": 0.99,
+          "price": 284.28,
+          "changePct": 1.43,
           "pc": 280.27
         },
         {
           "ticker": "AMZN",
-          "price": 267.1,
-          "changePct": 0.79,
+          "price": 268.78,
+          "changePct": 1.42,
           "pc": 265.01
         },
         {
-          "ticker": "PM",
-          "price": 188.53,
-          "changePct": -0.05,
-          "pc": 188.63
-        },
-        {
           "ticker": "PG",
-          "price": 142.26,
-          "changePct": -0.13,
+          "price": 143.49,
+          "changePct": 0.74,
           "pc": 142.44
         },
         {
           "ticker": "HD",
-          "price": 309.45,
-          "changePct": -0.36,
+          "price": 312.86,
+          "changePct": 0.73,
           "pc": 310.58
         }
       ],
       "losers": [
         {
           "ticker": "WMT",
-          "price": 121.45,
-          "changePct": -7.18,
+          "price": 122.25,
+          "changePct": -6.58,
           "pc": 130.85
         },
         {
-          "ticker": "LOW",
-          "price": 215.08,
-          "changePct": -2.7,
-          "pc": 221.05
-        },
-        {
-          "ticker": "SBUX",
-          "price": 103.79,
-          "changePct": -2.54,
-          "pc": 106.5
-        },
-        {
           "ticker": "COST",
-          "price": 1050.07,
-          "changePct": -2.23,
+          "price": 1049.91,
+          "changePct": -2.24,
           "pc": 1074.01
         },
         {
+          "ticker": "SBUX",
+          "price": 104.21,
+          "changePct": -2.15,
+          "pc": 106.5
+        },
+        {
           "ticker": "TJX",
-          "price": 157.01,
-          "changePct": -1.38,
+          "price": 157.07,
+          "changePct": -1.34,
           "pc": 159.21
+        },
+        {
+          "ticker": "LOW",
+          "price": 218.44,
+          "changePct": -1.18,
+          "pc": 221.05
         }
       ],
       "sentiment": {
@@ -723,48 +723,48 @@
       },
       "news": [
         {
+          "source": "Yahoo",
+          "ticker": "AMZN",
+          "headline": "Sector Update: Tech Stocks Advance Thursday Afternoon",
+          "summary": "Tech stocks were higher Thursday afternoon, with the State Street Technology Select Sector SPDR ETF",
+          "url": "https://finnhub.io/api/news?id=40971571da12a1ab90a9fccd1b9b5c413a38de2b4b23a2fb7af43a649cecb938",
+          "datetime": 1779385809,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "ticker": "AMZN",
+          "headline": "Torque Asset Management Buys $4 Million of Planet Fitness Amid Stock's 54% Decline in 2026",
+          "summary": "Planet Fitness operates a hybrid franchise and corporate-owned gym model, serving value-focused fitness customers nationwide.",
+          "url": "https://finnhub.io/api/news?id=1822f3737ac77194767108055bc3c23ed04d3c175fbf002fb21b0966eb222f80",
+          "datetime": 1779383343,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
           "source": "ChartMill",
           "ticker": "WMT",
-          "headline": "Top S&P500 movers in Thursday's session",
-          "summary": "Let's have a look at what is happening on the US markets in the middle of the day on Thursday. Below you can find the top S&P500 gainers and losers in today's session.",
-          "url": "https://finnhub.io/api/news?id=ecc4744d310c2e54372b054b0b26a82238522e7e6d46cd3e31dee66ad9f0beee",
-          "datetime": 1779381300,
-          "image": "https://www.chartmill.com/images/uploads/CM_Top_Movers_Small_free_2b4ff2fc22.webp"
+          "headline": "In today's session, there are S&P500 stocks with remarkable trading volume.",
+          "summary": "Let's take a look at the S&P500 stocks that are experiencing unusual volume in today's session.",
+          "url": "https://finnhub.io/api/news?id=b2826b14732ba7384e74bea0c0299b590c0ca867ce85d3128f61bea2bf1a499c",
+          "datetime": 1779383100,
+          "image": "https://www.chartmill.com/images/uploads/CM_Unusual_Volume_Small_free_b9d2e60841.webp"
         },
         {
           "source": "Yahoo",
-          "ticker": "AMZN",
-          "headline": "Top Midday Stories: Supreme Leader Says Enriched Uranium Must Stay in Iran; Nvidia Q1 Earnings, Q2 Guidance Top Estimates, But Shares Fall",
-          "summary": "All three major US stock indexes were down and oil prices were up after Iran's supreme leader issued",
-          "url": "https://finnhub.io/api/news?id=a99ca6c5a70081774634d11cc5aee2e3c108db4a1c0d8d294f1ba5cffca970a9",
-          "datetime": 1779378439,
+          "ticker": "WMT",
+          "headline": "The 3 core themes in Walmart's earnings. One of them is AI.",
+          "summary": "Walmart (WMT) stock has taken a dip on its first quarter results that were in line with Wall Street estimates, reporting $177.8 billion in revenue and adjusted earnings of $0.66 per share. The retailer also reported 4.1%",
+          "url": "https://finnhub.io/api/news?id=92edd4ebe2e542ca991fa6bb9abf6b4d917dfdf30ea4d42536aa7451cf9e13f5",
+          "datetime": 1779382800,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
           "source": "Yahoo",
           "ticker": "MCD",
-          "headline": "If Treasury Yields Jump Above 4.75%, Here’s What Happens to SDY",
-          "summary": "The SPDR S&P Dividend ETF (NYSEARCA:SDY) is doing exactly what a yield-tilted dividend fund is supposed to do while the broader market wobbles: grinding higher while the broad market wobbles. SDY trades near $146, up 4% ",
-          "url": "https://finnhub.io/api/news?id=5bf8aa1be0254f72cae2722a61053606b05c72aa1af6b80eff735a50ffd8de69",
-          "datetime": 1779378343,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Yahoo",
-          "ticker": "AMZN",
-          "headline": "Burger-loving Trump invests millions in Kura Sushi chain",
-          "summary": "Among the long list of investments President Trump listed in a filing is Kura Sushi. The president invested $1 million-$5 million in the sushi chain.",
-          "url": "https://finnhub.io/api/news?id=f00c6cbf18e8dd89e0c5004f36f8364679bc1f8164cbd9cf6881fe772640bdda",
-          "datetime": 1779376032,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Yahoo",
-          "ticker": "MCD",
-          "headline": "Walmart Flags Higher Fuel Costs Eroding Retailer’s Earnings",
-          "summary": "(Bloomberg) -- Walmart Inc. warned that fuel costs are squeezing the company’s bottom line and could lead to higher prices for shoppers.Most Read from BloombergSpot the Difference: Putin Gets Trump Treatment From Xi in C",
-          "url": "https://finnhub.io/api/news?id=61ce3e889a1659e24852a25b0e84d2f9cce7444df60343dcee7b27b0cd2f750c",
-          "datetime": 1779370646,
+          "headline": "Why The McDonald's (MCD) Investment Story Is Shifting As Analysts Reset Growth And Valuation",
+          "summary": "McDonald's latest analyst update trims its fair value price target from US$345.00 to US$330.00, signaling a slightly more cautious stance on what the stock might be worth. This change lines up with recent Street research",
+          "url": "https://finnhub.io/api/news?id=f9486bd76c103e6d77db44c5845b90db090e7c21ed980a768206e4ab489e3de1",
+          "datetime": 1779379958,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         }
       ]
@@ -774,68 +774,68 @@
       "icon": "🪙",
       "color": "#8a7340",
       "image": "https://images.unsplash.com/photo-1610375461246-83df859d849d?w=800&q=80",
-      "avgChange": 0.82,
+      "avgChange": 2.06,
       "gainers": [
         {
           "ticker": "MP",
-          "price": 61.67,
-          "changePct": 9.14,
+          "price": 62.23,
+          "changePct": 10.14,
           "pc": 56.5
         },
         {
-          "ticker": "AA",
-          "price": 65.86,
-          "changePct": 2.68,
-          "pc": 64.14
-        },
-        {
-          "ticker": "CF",
-          "price": 124.69,
-          "changePct": 1.13,
-          "pc": 123.3
+          "ticker": "ATI",
+          "price": 160.14,
+          "changePct": 4.17,
+          "pc": 153.73
         },
         {
           "ticker": "FCX",
-          "price": 61.53,
-          "changePct": 1.08,
+          "price": 62.94,
+          "changePct": 3.4,
           "pc": 60.87
         },
         {
-          "ticker": "ATI",
-          "price": 155.21,
-          "changePct": 0.96,
-          "pc": 153.73
+          "ticker": "AA",
+          "price": 66.24,
+          "changePct": 3.27,
+          "pc": 64.14
+        },
+        {
+          "ticker": "CLF",
+          "price": 10.52,
+          "changePct": 1.79,
+          "pc": 10.34
         }
       ],
       "losers": [
         {
-          "ticker": "MOS",
-          "price": 21.65,
-          "changePct": -0.96,
-          "pc": 21.86
-        },
-        {
-          "ticker": "CLF",
-          "price": 10.26,
-          "changePct": -0.82,
-          "pc": 10.34
-        },
-        {
-          "ticker": "GOLD",
-          "price": 40.71,
-          "changePct": -0.73,
-          "pc": 41.01
+          "ticker": "CF",
+          "price": 121.78,
+          "changePct": -1.23,
+          "pc": 123.3
         },
         {
           "ticker": "RS",
-          "price": 360.07,
-          "changePct": -0.61,
+          "price": 361.17,
+          "changePct": -0.3,
           "pc": 362.26
         },
         {
+          "ticker": "MOS",
+          "price": 21.92,
+          "changePct": 0.27,
+          "pc": 21.86
+        },
+        {
+          "ticker": "NUE",
+          "price": 227.27,
+          "changePct": 0.71,
+          "pc": 225.67
+        },
+        {
           "ticker": "AEM",
-          "price": 177.26,
-          "changePct": -0.5,
+          "price": 179.96,
+          "changePct": 1.02,
           "pc": 178.15
         }
       ],

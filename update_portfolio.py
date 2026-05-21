@@ -349,12 +349,39 @@ def fetch_t212_cash():
         return None
 
 
+def _send_telegram_alert(msg: str) -> None:
+    """Envia alerta Telegram via requests directo (sem depender do bot.notifier)."""
+    token   = os.getenv("TELEGRAM_BOT_TOKEN", "")
+    chat_id = os.getenv("TELEGRAM_CHAT_ID", "")
+    if not token or not chat_id:
+        print(f"  [Telegram] credenciais ausentes — alerta não enviado: {msg}")
+        return
+    try:
+        requests.post(
+            f"https://api.telegram.org/bot{token}/sendMessage",
+            json={"chat_id": chat_id, "text": msg, "parse_mode": "HTML"},
+            timeout=10,
+        )
+    except Exception as e:
+        print(f"  [Telegram] falha ao enviar alerta: {e}")
+
+
 def fetch_t212_positions():
+    """Devolve lista de posições T212 ou None em caso de falha de API.
+
+    None (falha de API) é distinto de [] (carteira genuinamente vazia):
+    - None  → caller deve registar o erro e não actualizar portfolio.json
+    - []    → carteira vazia, comportamento normal
+    """
     try:
         data = t212_get("/equity/portfolio")
+    except requests.exceptions.HTTPError as e:
+        status = e.response.status_code if e.response is not None else "?"
+        print(f"  [ERRO] T212 API HTTP {status}: {e}")
+        return None
     except Exception as e:
         print(f"  [ERRO] T212 API inacessível: {e}")
-        return []
+        return None
     positions = []
     for p in data:
         quantity = float(p.get("quantity", 0))
@@ -664,6 +691,20 @@ def main():
 
     print("\n[1] A buscar posições T212 (live)...")
     positions = fetch_t212_positions()
+
+    if positions is None:
+        # Falha de API T212 — portfolio.json NÃO é actualizado para preservar os dados anteriores
+        utc_str = now.strftime("%Y-%m-%d %H:%M UTC")
+        err_msg = (
+            f"⚠️ <b>FundScope — T212 API FALHOU</b>\n"
+            f"portfolio.json <b>não foi actualizado</b> neste ciclo ({utc_str}).\n"
+            f"Causa: /equity/portfolio devolveu erro (401/timeout/503).\n"
+            f"O ficheiro anterior é mantido até à próxima run bem-sucedida."
+        )
+        print(f"\n[ERRO CRÍTICO] {err_msg}")
+        _send_telegram_alert(err_msg)
+        return
+
     print(f"    {len(positions)} posições encontradas")
     if not positions:
         print("    Nenhuma posição — a terminar.")
