@@ -1,5 +1,5 @@
 {
-  "updated": "2026-05-21T16:10:18.723565Z",
+  "updated": "2026-05-21T17:10:22.137410Z",
   "slot": "fecho",
   "marketOpen": true,
   "lastCloseDate": "2026-05-21",
@@ -9,69 +9,69 @@
       "icon": "💻",
       "color": "#4f98a3",
       "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
-      "avgChange": -0.62,
+      "avgChange": -0.48,
       "gainers": [
         {
-          "ticker": "QCOM",
-          "price": 207.73,
-          "changePct": 2.58,
-          "pc": 202.51
-        },
-        {
           "ticker": "MU",
-          "price": 745.48,
-          "changePct": 1.84,
+          "price": 756.33,
+          "changePct": 3.33,
           "pc": 731.99
         },
         {
+          "ticker": "QCOM",
+          "price": 208.37,
+          "changePct": 2.89,
+          "pc": 202.51
+        },
+        {
           "ticker": "ORCL",
-          "price": 190.71,
-          "changePct": 1.36,
+          "price": 190.1,
+          "changePct": 1.03,
           "pc": 188.16
         },
         {
           "ticker": "AAPL",
-          "price": 304.05,
-          "changePct": 0.6,
+          "price": 303.85,
+          "changePct": 0.53,
           "pc": 302.25
         },
         {
-          "ticker": "GOOGL",
-          "price": 389.74,
-          "changePct": 0.21,
-          "pc": 388.91
+          "ticker": "TSLA",
+          "price": 419.05,
+          "changePct": 0.43,
+          "pc": 417.26
         }
       ],
       "losers": [
         {
-          "ticker": "NOW",
-          "price": 99.24,
-          "changePct": -3.93,
-          "pc": 103.3
-        },
-        {
           "ticker": "ADBE",
-          "price": 243.62,
-          "changePct": -3.85,
+          "price": 244.55,
+          "changePct": -3.48,
           "pc": 253.37
         },
         {
+          "ticker": "NOW",
+          "price": 99.89,
+          "changePct": -3.3,
+          "pc": 103.3
+        },
+        {
           "ticker": "CRM",
-          "price": 174.86,
-          "changePct": -2.91,
+          "price": 175.73,
+          "changePct": -2.43,
           "pc": 180.1
         },
         {
           "ticker": "NVDA",
-          "price": 219.9,
-          "changePct": -1.6,
+          "price": 220.5,
+          "changePct": -1.33,
           "pc": 223.47
         },
         {
-          "ticker": "INTC",
-          "price": 117.86,
-          "changePct": -0.92,
-          "pc": 118.96
+          "ticker": "AVGO",
+          "price": 412.45,
+          "changePct": -1.27,
+          "pc": 417.76
         }
       ],
       "sentiment": {
@@ -162,69 +162,69 @@
       "icon": "🏦",
       "color": "#437a22",
       "image": "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&q=80",
-      "avgChange": -0.57,
+      "avgChange": -0.63,
       "gainers": [
         {
-          "ticker": "V",
-          "price": 331.42,
-          "changePct": 0.2,
-          "pc": 330.75
-        },
-        {
           "ticker": "MA",
-          "price": 498.58,
-          "changePct": 0.11,
+          "price": 499.14,
+          "changePct": 0.22,
           "pc": 498.04
         },
         {
+          "ticker": "V",
+          "price": 330.85,
+          "changePct": 0.03,
+          "pc": 330.75
+        },
+        {
           "ticker": "MS",
-          "price": 197.62,
-          "changePct": -0.08,
+          "price": 197.57,
+          "changePct": -0.1,
           "pc": 197.77
         },
         {
-          "ticker": "PNC",
-          "price": 216.45,
-          "changePct": -0.18,
-          "pc": 216.83
+          "ticker": "JPM",
+          "price": 301.39,
+          "changePct": -0.2,
+          "pc": 301.98
         },
         {
-          "ticker": "JPM",
-          "price": 301.33,
-          "changePct": -0.22,
-          "pc": 301.98
+          "ticker": "BLK",
+          "price": 1048.65,
+          "changePct": -0.28,
+          "pc": 1051.57
         }
       ],
       "losers": [
         {
           "ticker": "COF",
-          "price": 183.15,
-          "changePct": -2.18,
+          "price": 183.0,
+          "changePct": -2.26,
           "pc": 187.23
         },
         {
-          "ticker": "C",
-          "price": 123.49,
-          "changePct": -1.07,
-          "pc": 124.82
-        },
-        {
-          "ticker": "GS",
-          "price": 973.03,
-          "changePct": -0.93,
-          "pc": 982.12
-        },
-        {
           "ticker": "WFC",
-          "price": 75.12,
-          "changePct": -0.91,
+          "price": 75.04,
+          "changePct": -1.02,
           "pc": 75.81
         },
         {
+          "ticker": "C",
+          "price": 123.63,
+          "changePct": -0.95,
+          "pc": 124.82
+        },
+        {
           "ticker": "TFC",
-          "price": 47.63,
-          "changePct": -0.77,
+          "price": 47.55,
+          "changePct": -0.94,
           "pc": 48.0
+        },
+        {
+          "ticker": "USB",
+          "price": 53.99,
+          "changePct": -0.94,
+          "pc": 54.5
         }
       ],
       "sentiment": {
@@ -315,68 +315,68 @@
       "icon": "⚡",
       "color": "#c47d1a",
       "image": "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80",
-      "avgChange": -0.13,
+      "avgChange": -0.03,
       "gainers": [
         {
+          "ticker": "OXY",
+          "price": 59.51,
+          "changePct": 1.09,
+          "pc": 58.87
+        },
+        {
           "ticker": "NEE",
-          "price": 89.21,
-          "changePct": 1.06,
+          "price": 89.16,
+          "changePct": 1.01,
           "pc": 88.27
         },
         {
           "ticker": "D",
-          "price": 68.31,
-          "changePct": 0.85,
+          "price": 68.25,
+          "changePct": 0.77,
           "pc": 67.73
         },
         {
-          "ticker": "OXY",
-          "price": 59.24,
-          "changePct": 0.63,
-          "pc": 58.87
-        },
-        {
           "ticker": "SO",
-          "price": 94.11,
-          "changePct": 0.52,
+          "price": 94.31,
+          "changePct": 0.74,
           "pc": 93.62
         },
         {
           "ticker": "DUK",
-          "price": 124.43,
-          "changePct": 0.5,
+          "price": 124.48,
+          "changePct": 0.54,
           "pc": 123.81
         }
       ],
       "losers": [
         {
           "ticker": "VLO",
-          "price": 248.81,
-          "changePct": -1.95,
+          "price": 249.12,
+          "changePct": -1.83,
           "pc": 253.77
         },
         {
           "ticker": "MPC",
-          "price": 253.66,
-          "changePct": -1.82,
+          "price": 254.56,
+          "changePct": -1.47,
           "pc": 258.37
         },
         {
           "ticker": "PSX",
-          "price": 177.23,
-          "changePct": -1.18,
+          "price": 177.48,
+          "changePct": -1.04,
           "pc": 179.34
         },
         {
           "ticker": "SLB",
-          "price": 57.01,
-          "changePct": -0.47,
+          "price": 56.94,
+          "changePct": -0.59,
           "pc": 57.28
         },
         {
           "ticker": "HAL",
-          "price": 42.12,
-          "changePct": -0.44,
+          "price": 42.15,
+          "changePct": -0.35,
           "pc": 42.3
         }
       ],
@@ -468,68 +468,68 @@
       "icon": "🏥",
       "color": "#a13544",
       "image": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80",
-      "avgChange": 0.16,
+      "avgChange": 0.05,
       "gainers": [
         {
           "ticker": "LLY",
-          "price": 1042.59,
-          "changePct": 2.33,
+          "price": 1041.86,
+          "changePct": 2.26,
           "pc": 1018.87
         },
         {
           "ticker": "MRK",
-          "price": 114.56,
-          "changePct": 1.38,
+          "price": 114.75,
+          "changePct": 1.55,
           "pc": 113.0
         },
         {
           "ticker": "AMGN",
-          "price": 335.63,
-          "changePct": 1.22,
+          "price": 334.89,
+          "changePct": 1.0,
           "pc": 331.57
         },
         {
           "ticker": "ABBV",
-          "price": 214.26,
-          "changePct": 0.92,
+          "price": 214.09,
+          "changePct": 0.84,
           "pc": 212.3
         },
         {
-          "ticker": "UNH",
-          "price": 385.89,
-          "changePct": 0.68,
-          "pc": 383.3
+          "ticker": "BMY",
+          "price": 58.85,
+          "changePct": 0.53,
+          "pc": 58.54
         }
       ],
       "losers": [
         {
           "ticker": "ISRG",
-          "price": 435.64,
-          "changePct": -2.98,
+          "price": 438.42,
+          "changePct": -2.36,
           "pc": 449.03
         },
         {
-          "ticker": "ABT",
-          "price": 87.31,
-          "changePct": -1.21,
-          "pc": 88.38
-        },
-        {
           "ticker": "MDT",
-          "price": 77.34,
-          "changePct": -1.04,
+          "price": 77.06,
+          "changePct": -1.39,
           "pc": 78.15
         },
         {
+          "ticker": "ABT",
+          "price": 87.21,
+          "changePct": -1.32,
+          "pc": 88.38
+        },
+        {
           "ticker": "TMO",
-          "price": 449.96,
-          "changePct": -0.41,
+          "price": 447.0,
+          "changePct": -1.06,
           "pc": 451.79
         },
         {
           "ticker": "GILD",
-          "price": 130.25,
-          "changePct": -0.34,
+          "price": 130.1,
+          "changePct": -0.45,
           "pc": 130.69
         }
       ],
@@ -621,68 +621,68 @@
       "icon": "🛒",
       "color": "#7a5c9e",
       "image": "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&q=80",
-      "avgChange": -1.21,
+      "avgChange": -1.19,
       "gainers": [
         {
           "ticker": "MCD",
-          "price": 282.98,
-          "changePct": 0.97,
+          "price": 283.05,
+          "changePct": 0.99,
           "pc": 280.27
         },
         {
           "ticker": "AMZN",
-          "price": 265.68,
-          "changePct": 0.25,
+          "price": 267.1,
+          "changePct": 0.79,
           "pc": 265.01
         },
         {
-          "ticker": "PG",
-          "price": 142.35,
-          "changePct": -0.06,
-          "pc": 142.44
-        },
-        {
           "ticker": "PM",
-          "price": 188.46,
-          "changePct": -0.09,
+          "price": 188.53,
+          "changePct": -0.05,
           "pc": 188.63
         },
         {
+          "ticker": "PG",
+          "price": 142.26,
+          "changePct": -0.13,
+          "pc": 142.44
+        },
+        {
           "ticker": "HD",
-          "price": 309.97,
-          "changePct": -0.2,
+          "price": 309.45,
+          "changePct": -0.36,
           "pc": 310.58
         }
       ],
       "losers": [
         {
           "ticker": "WMT",
-          "price": 121.14,
-          "changePct": -7.42,
+          "price": 121.45,
+          "changePct": -7.18,
           "pc": 130.85
         },
         {
-          "ticker": "COST",
-          "price": 1048.0,
-          "changePct": -2.42,
-          "pc": 1074.01
-        },
-        {
           "ticker": "LOW",
-          "price": 215.79,
-          "changePct": -2.38,
+          "price": 215.08,
+          "changePct": -2.7,
           "pc": 221.05
         },
         {
           "ticker": "SBUX",
-          "price": 104.47,
-          "changePct": -1.91,
+          "price": 103.79,
+          "changePct": -2.54,
           "pc": 106.5
         },
         {
+          "ticker": "COST",
+          "price": 1050.07,
+          "changePct": -2.23,
+          "pc": 1074.01
+        },
+        {
           "ticker": "TJX",
-          "price": 157.18,
-          "changePct": -1.27,
+          "price": 157.01,
+          "changePct": -1.38,
           "pc": 159.21
         }
       ],
@@ -723,6 +723,15 @@
       },
       "news": [
         {
+          "source": "ChartMill",
+          "ticker": "WMT",
+          "headline": "Top S&P500 movers in Thursday's session",
+          "summary": "Let's have a look at what is happening on the US markets in the middle of the day on Thursday. Below you can find the top S&P500 gainers and losers in today's session.",
+          "url": "https://finnhub.io/api/news?id=ecc4744d310c2e54372b054b0b26a82238522e7e6d46cd3e31dee66ad9f0beee",
+          "datetime": 1779381300,
+          "image": "https://www.chartmill.com/images/uploads/CM_Top_Movers_Small_free_2b4ff2fc22.webp"
+        },
+        {
           "source": "Yahoo",
           "ticker": "AMZN",
           "headline": "Top Midday Stories: Supreme Leader Says Enriched Uranium Must Stay in Iran; Nvidia Q1 Earnings, Q2 Guidance Top Estimates, But Shares Fall",
@@ -738,15 +747,6 @@
           "summary": "The SPDR S&P Dividend ETF (NYSEARCA:SDY) is doing exactly what a yield-tilted dividend fund is supposed to do while the broader market wobbles: grinding higher while the broad market wobbles. SDY trades near $146, up 4% ",
           "url": "https://finnhub.io/api/news?id=5bf8aa1be0254f72cae2722a61053606b05c72aa1af6b80eff735a50ffd8de69",
           "datetime": 1779378343,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Yahoo",
-          "ticker": "WMT",
-          "headline": "Walmart warns of petrol rationing as Iran war hits customers’ wallets",
-          "summary": "Walmart said higher petrol prices were leading stressed consumers to ration purchases at the pump and warned of inflation in its store aisles...",
-          "url": "https://finnhub.io/api/news?id=9ac24fcd78bb6fc41b3bad355656d5fa457c4fc36ea1ed8106c574a1fb74faf5",
-          "datetime": 1779376619,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
@@ -774,69 +774,69 @@
       "icon": "🪙",
       "color": "#8a7340",
       "image": "https://images.unsplash.com/photo-1610375461246-83df859d849d?w=800&q=80",
-      "avgChange": 0.8,
+      "avgChange": 0.82,
       "gainers": [
         {
           "ticker": "MP",
-          "price": 62.16,
-          "changePct": 10.02,
+          "price": 61.67,
+          "changePct": 9.14,
           "pc": 56.5
         },
         {
           "ticker": "AA",
-          "price": 65.44,
-          "changePct": 2.03,
+          "price": 65.86,
+          "changePct": 2.68,
           "pc": 64.14
         },
         {
-          "ticker": "ATI",
-          "price": 155.18,
-          "changePct": 0.94,
-          "pc": 153.73
-        },
-        {
           "ticker": "CF",
-          "price": 124.32,
-          "changePct": 0.83,
+          "price": 124.69,
+          "changePct": 1.13,
           "pc": 123.3
         },
         {
           "ticker": "FCX",
-          "price": 61.31,
-          "changePct": 0.73,
+          "price": 61.53,
+          "changePct": 1.08,
           "pc": 60.87
+        },
+        {
+          "ticker": "ATI",
+          "price": 155.21,
+          "changePct": 0.96,
+          "pc": 153.73
         }
       ],
       "losers": [
         {
-          "ticker": "AEM",
-          "price": 176.62,
-          "changePct": -0.86,
-          "pc": 178.15
-        },
-        {
           "ticker": "MOS",
-          "price": 21.68,
-          "changePct": -0.82,
+          "price": 21.65,
+          "changePct": -0.96,
           "pc": 21.86
         },
         {
-          "ticker": "WPM",
-          "price": 126.34,
-          "changePct": -0.64,
-          "pc": 127.16
+          "ticker": "CLF",
+          "price": 10.26,
+          "changePct": -0.82,
+          "pc": 10.34
         },
         {
           "ticker": "GOLD",
-          "price": 40.75,
-          "changePct": -0.63,
+          "price": 40.71,
+          "changePct": -0.73,
           "pc": 41.01
         },
         {
-          "ticker": "NEM",
-          "price": 106.85,
+          "ticker": "RS",
+          "price": 360.07,
+          "changePct": -0.61,
+          "pc": 362.26
+        },
+        {
+          "ticker": "AEM",
+          "price": 177.26,
           "changePct": -0.5,
-          "pc": 107.39
+          "pc": 178.15
         }
       ],
       "sentiment": {
