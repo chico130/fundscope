@@ -1,0 +1,34 @@
+{
+  "generated_at": "2026-05-21T19:16:08Z",
+  "window": {
+    "start": "2024-05-21",
+    "end": "2026-05-21",
+    "years": 2
+  },
+  "n_tickers": 5,
+  "candidate_rows": 2510,
+  "signal_hits": 43,
+  "samples_emitted": 43,
+  "primary_horizon": 10,
+  "notional_eur": 100.0,
+  "signal_params": {
+    "rsi_ceiling": 35.0,
+    "vol_min": 1.2,
+    "require_ema_up": true,
+    "ema50_dist_min": -100.0
+  },
+  "avg_result_eur": 0.7784,
+  "win_rate_pct": 60.5,
+  "by_regime": {
+    "bull_trending": 23,
+    "bear_capitulation": 4,
+    "bear_correction": 4,
+    "bull_lateral": 12
+  },
+  "corpus_path": "data/learner_corpus/corpus.jsonl",
+  "warnings": [
+    "Viés de sobrevivência: universo = constituintes ACTUAIS do S&P 500.",
+    "Janelas deslizantes → samples autocorrelacionados; split treino/val DEVE ser por tempo.",
+    "result_eur é um proxy de %×nocional, não P&L de execução real."
+  ]
+}
