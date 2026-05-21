@@ -35,7 +35,9 @@ jobs:
           T212_API_ID:   ${{ secrets.T212_API_ID }}
           T212_API_KEY:  ${{ secrets.T212_API_KEY }}
           FINNHUB_TOKEN: ${{ secrets.FINNHUB_TOKEN }}
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_API_KEY:      ${{ secrets.GEMINI_API_KEY }}
+          TELEGRAM_BOT_TOKEN:  ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID:    ${{ secrets.TELEGRAM_CHAT_ID }}
         run: python update_portfolio.py
 
       - name: Commit portfolio.json + symbol_cache.json
