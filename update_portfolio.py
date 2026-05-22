@@ -753,18 +753,29 @@ def main():
         # Converter preços USD → EUR; posições já em EUR ficam inalteradas
         fx = (1.0 / eurusd) if native_currency == "USD" and eurusd else 1.0
 
-        invested_native   = p["avg_price"]     * p["quantity"]
         curr_value_native = p["current_price"] * p["quantity"]
 
-        gain_eur = p["ppl"]   # T212 entrega P&L já em EUR (inclui efeito cambial)
+        # BUG CORRIGIDO 1: usar float() explícito para evitar problemas de tipo
+        # T212 ppl já em EUR com efeito cambial histórico — não recalcular com fx atual
+        gain_eur = round(float(p["ppl"]), 2)
 
-        p["invested"]  = round(invested_native * fx, 2)
         p["value_eur"] = round(curr_value_native * fx, 2)
-        p["gain_eur"]  = round(gain_eur, 2)
-        # gain_pct em moeda nativa — reflecte performance da acção sem ruído cambial
+        p["gain_eur"]  = gain_eur
+
+        # BUG CORRIGIDO 2: "invested" derivado do ppl T212, não de avg_price × fx atual.
+        # Antes: invested = avg_price × quantity × fx_atual → usava taxa de câmbio ATUAL para
+        # converter o custo histórico, fazendo invested + gain_eur ≠ value_eur e alterando o
+        # valor "investido" todos os dias conforme o EUR/USD oscilava.
+        # Agora: invested = value_eur − gain_eur → garante contabilidade consistente (custo
+        # base implícito em EUR igual ao que a T212 usa para calcular o ppl).
+        p["invested"]  = round(p["value_eur"] - gain_eur, 2)
+
+        # BUG CORRIGIDO 3: gain_pct calculado em moeda nativa (USD) era inconsistente com
+        # gain_eur em EUR. Ex.: ação +5% USD mas EUR caiu → ppl negativo, gain_pct positivo.
+        # Agora ambos usam a mesma base EUR: gain_pct = gain_eur / invested × 100.
         p["gain_pct"]  = round(
-            (curr_value_native - invested_native) / invested_native * 100
-            if invested_native > 0 else 0, 2
+            gain_eur / p["invested"] * 100
+            if p["invested"] > 0 else 0, 2
         )
         p["fx_rate"]   = round(fx, 6)
         p["currency_native"] = native_currency
@@ -773,7 +784,16 @@ def main():
     total_invested = sum(p["invested"]  for p in positions)
     total_gain     = sum(p["gain_eur"]  for p in positions)
     total_gain_pct = (total_gain / total_invested * 100) if total_invested > 0 else 0
-    daily_gain     = sum(p["value_eur"] * p["change_pct"] / 100 for p in positions)
+
+    # BUG CORRIGIDO 4: a fórmula anterior (value_eur × change_pct / 100) usa o valor ATUAL
+    # como base, mas change_pct é relativo ao fecho ANTERIOR (prev_close). Isso sobrestima o
+    # ganho diário em ~change_pct%. Fórmula correta: prev_value × change_pct / 100, onde
+    # prev_value = value_eur / (1 + change_pct/100) = value_eur × 100 / (100 + change_pct).
+    daily_gain = sum(
+        p["value_eur"] * p["change_pct"] / (100.0 + p["change_pct"])
+        if (100.0 + p["change_pct"]) != 0 else 0.0
+        for p in positions
+    )
     for p in positions:
         p["allocation_pct"] = round(p["value_eur"] / total_value * 100, 2) if total_value > 0 else 0
     positions.sort(key=lambda x: x["value_eur"], reverse=True)

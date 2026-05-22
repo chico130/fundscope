@@ -1598,7 +1598,7 @@ async function loadBonnie() {
       const gPct = p.gain_pct ?? 0, gEur = p.gain_eur ?? 0;
       return `<div class="pos-item">
         <div><div class="pos-ticker">${tick(p)}</div><div class="pos-alloc">${n2(p.allocation_pct??0)}% da carteira</div></div>
-        <div><div class="pos-val">${eur(p.value_eur)}</div><div class="pos-gain ${clr(gPct)}">${pctStr(gPct)} · ${gEur>=0?'+':''}${eur(Math.abs(gEur))}</div></div>
+        <div><div class="pos-val">${eur(p.value_eur)}</div><div class="pos-gain ${clr(gPct)}">${pctStr(gPct)} · ${gEur>=0?'+':''}${eur(gEur)}</div></div>
       </div>`;
     }).join('');
   } catch {

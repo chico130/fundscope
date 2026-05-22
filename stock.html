@@ -250,7 +250,7 @@
       <a href="news.html" class="nav-link">Not&#237;cias</a>
       <a href="earnings.html" class="nav-link">Earnings</a>
       <a href="watchlist.html" class="nav-link">Watchlist</a>
-      <a href="live_portfolio.html" class="nav-link">Live Portfolio</a>
+      <a href="portfolio.html" class="nav-link">Portfólio</a>
       <button class="btn-icon" id="themeToggle" aria-label="Alternar tema">
         <svg id="themeIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
       </button>
@@ -275,9 +275,9 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
         Watchlist
       </a>
-      <a href="live_portfolio.html" class="mobile-nav-item">
+      <a href="portfolio.html" class="mobile-nav-item">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/><polyline points="7 10 10 7 13 10 17 6"/></svg>
-        Live
+        Portfólio
       </a>
       <button class="mobile-nav-item" id="themeToggleMobile" aria-label="Alternar tema">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
@@ -838,24 +838,32 @@ function renderStock(s){
 function renderAnalysts(analystData, currentPrice){
   const sec = document.getElementById('analystSection');
   if(!sec) return;
-  if(!analystData || !analystData.financialData){
+
+  const hasFD = analystData && analystData.financialData;
+  const trend0 = analystData?.recommendationTrend?.trend?.[0];
+  const hasRT  = trend0 && (trend0.strongBuy||0)+(trend0.buy||0)+(trend0.hold||0)+(trend0.sell||0)+(trend0.strongSell||0) > 0;
+
+  if(!hasFD && !hasRT){
     sec.innerHTML=`<div class="analyst-card"><div class="card-title">Analistas</div><p style="font-size:var(--text-sm);color:var(--color-text-muted);">Sem dados de analistas disponíveis para <strong>${esc(TICKER)}</strong>.</p></div>`;
     return;
   }
-  const fd = analystData.financialData;
-  const targetMean = rawVal(fd.targetMeanPrice);
-  const targetHigh = rawVal(fd.targetHighPrice);
-  const targetLow  = rawVal(fd.targetLowPrice);
-  const recKey     = fd.recommendationKey || '';
-  const numAnal    = rawVal(fd.numberOfAnalystOpinions);
-  const recLabels={'strong_buy':'Compra Forte','buy':'Comprar','hold':'Manter','sell':'Vender','strong_sell':'Venda Forte','':'—'};
-  const recColors={'strong_buy':'var(--color-success)','buy':'#8ab74a','hold':'var(--color-text-muted)','sell':'#dd8a6a','strong_sell':'var(--color-error)','':'var(--color-text-faint)'};
-  const recLabel = recLabels[recKey] ?? recKey;
-  const recColor = recColors[recKey] ?? 'var(--color-text-faint)';
-  const upside = (targetMean && currentPrice) ? ((targetMean - currentPrice) / currentPrice * 100) : null;
-  const upsideStr = upside != null ? `${upside>=0?'+':''}${upside.toFixed(1)}%` : '—';
-  const upsideCls = upside == null ? '' : (upside >= 0 ? 'color:var(--color-success)' : 'color:var(--color-error)');
-  sec.innerHTML=`<div class="analyst-card"><div class="card-title">Analistas</div>
+
+  let fdHtml = '';
+  if(hasFD){
+    const fd = analystData.financialData;
+    const targetMean = rawVal(fd.targetMeanPrice);
+    const targetHigh = rawVal(fd.targetHighPrice);
+    const targetLow  = rawVal(fd.targetLowPrice);
+    const recKey     = fd.recommendationKey || '';
+    const numAnal    = rawVal(fd.numberOfAnalystOpinions);
+    const recLabels={'strong_buy':'Compra Forte','buy':'Comprar','hold':'Manter','sell':'Vender','strong_sell':'Venda Forte','':'—'};
+    const recColors={'strong_buy':'var(--color-success)','buy':'#8ab74a','hold':'var(--color-text-muted)','sell':'#dd8a6a','strong_sell':'var(--color-error)','':'var(--color-text-faint)'};
+    const recLabel = recLabels[recKey] ?? recKey;
+    const recColor = recColors[recKey] ?? 'var(--color-text-faint)';
+    const upside = (targetMean && currentPrice) ? ((targetMean - currentPrice) / currentPrice * 100) : null;
+    const upsideStr = upside != null ? `${upside>=0?'+':''}${upside.toFixed(1)}%` : '—';
+    const upsideCls = upside == null ? '' : (upside >= 0 ? 'color:var(--color-success)' : 'color:var(--color-error)');
+    fdHtml = `
     <div class="analyst-grid">
       <div class="analyst-kpi"><div class="kpi-value">${targetMean ? '$'+Number(targetMean).toFixed(2) : '—'}</div><div class="kpi-label">Target médio</div></div>
       <div class="analyst-kpi"><div class="kpi-value" style="${upsideCls}">${upsideStr}</div><div class="kpi-label">Upside potencial</div></div>
@@ -865,7 +873,39 @@ function renderAnalysts(analystData, currentPrice){
     <div class="range-bar-wrap">
       <div class="range-labels"><span>Target baixo: ${targetLow ? '$'+Number(targetLow).toFixed(2) : '—'}</span><span>Target alto: ${targetHigh ? '$'+Number(targetHigh).toFixed(2) : '—'}</span></div>
       ${(targetLow && targetHigh && targetHigh > targetLow) ? `<div class="range-track"><div class="range-fill" style="width:100%;"></div>${targetMean ? `<div class="range-thumb" style="left:${Math.min(100,Math.max(0,Math.round((targetMean-targetLow)/(targetHigh-targetLow)*100)))}%;"></div>` : ''}</div>` : ''}
-    </div></div>`;
+    </div>`;
+  }
+
+  let rtHtml = '';
+  if(hasRT){
+    const sb = trend0.strongBuy  || 0;
+    const b  = trend0.buy        || 0;
+    const h  = trend0.hold       || 0;
+    const s  = trend0.sell       || 0;
+    const ss = trend0.strongSell || 0;
+    const total = sb + b + h + s + ss;
+    const pct = n => (n / total * 100).toFixed(1) + '%';
+    rtHtml = `
+    <div style="margin-top:${hasFD ? 'var(--space-5)' : '0'};">
+      <div class="card-title" style="margin-bottom:var(--space-3);">Distribuição de opiniões (${total} analistas)</div>
+      <div class="rec-bar-wrap">
+        ${sb ? `<div class="rec-seg strong-buy" style="width:${pct(sb)}" title="Compra Forte: ${sb}"></div>` : ''}
+        ${b  ? `<div class="rec-seg buy"         style="width:${pct(b)}"  title="Comprar: ${b}"></div>`       : ''}
+        ${h  ? `<div class="rec-seg hold"        style="width:${pct(h)}"  title="Manter: ${h}"></div>`        : ''}
+        ${s  ? `<div class="rec-seg sell"        style="width:${pct(s)}"  title="Vender: ${s}"></div>`        : ''}
+        ${ss ? `<div class="rec-seg strong-sell" style="width:${pct(ss)}" title="Venda Forte: ${ss}"></div>`  : ''}
+      </div>
+      <div class="rec-legend">
+        ${sb ? `<div class="rec-legend-item"><div class="rec-dot" style="background:#437a22"></div>Compra Forte (${sb})</div>` : ''}
+        ${b  ? `<div class="rec-legend-item"><div class="rec-dot" style="background:#8ab74a"></div>Comprar (${b})</div>`       : ''}
+        ${h  ? `<div class="rec-legend-item"><div class="rec-dot" style="background:#bab9b4"></div>Manter (${h})</div>`        : ''}
+        ${s  ? `<div class="rec-legend-item"><div class="rec-dot" style="background:#dd8a6a"></div>Vender (${s})</div>`        : ''}
+        ${ss ? `<div class="rec-legend-item"><div class="rec-dot" style="background:#a13544"></div>Venda Forte (${ss})</div>`  : ''}
+      </div>
+    </div>`;
+  }
+
+  sec.innerHTML=`<div class="analyst-card"><div class="card-title">Analistas</div>${fdHtml}${rtHtml}</div>`;
 }
 
 // ── Render news ──────────────────────────────────────────────

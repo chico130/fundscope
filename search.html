@@ -234,6 +234,7 @@
       <div class="results-list" id="resultsList">
         <div class="results-empty">Escreve para pesquisar qualquer a&#231;&#227;o ou ETF&#8230;</div>
       </div>
+      <div id="resultsDirectLink" style="display:none;border-top:1px solid var(--color-divider);"></div>
     </div>
   </div>
 
@@ -303,9 +304,21 @@ const list=document.getElementById('resultsList');
 const mainIn=document.getElementById('mainSearch');
 const resIn=document.getElementById('resultsInput');
 const closeBtn=document.getElementById('resultsClose');
+const directLink=document.getElementById('resultsDirectLink');
 let timer=null;
 
-function openPanel(q){panel.classList.add('open');resIn.value=q||'';resIn.focus();if(q)doSearch(q);else list.innerHTML='<div class="results-empty">Escreve para pesquisar qualquer a&#231;&#227;o ou ETF&#8230;</div>';}
+function updateDirectLink(q){
+  const v=(q||'').trim().toUpperCase();
+  if(v&&!v.includes(' ')){
+    directLink.style.display='block';
+    directLink.innerHTML=`<a class="result-item" href="stock.html?ticker=${encodeURIComponent(v)}" style="opacity:.75;"><span class="result-badge">${esc(v.slice(0,7))}</span><div class="result-info"><p class="result-name">Ir diretamente para ${esc(v)}</p><p class="result-type">Abrir página da ação</p></div><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;color:var(--color-text-faint)"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>`;
+  }else{
+    directLink.style.display='none';
+    directLink.innerHTML='';
+  }
+}
+
+function openPanel(q){panel.classList.add('open');resIn.value=q||'';resIn.focus();updateDirectLink(q);if(q)doSearch(q);else list.innerHTML='<div class="results-empty">Escreve para pesquisar qualquer a&#231;&#227;o ou ETF&#8230;</div>';}
 function closePanel(){panel.classList.remove('open');mainIn.focus();}
 
 function watchlistBtnHTML(ticker){const added=isInWatchlist(ticker);return `<button class="btn-watchlist-add${added?' added':''}" data-wl="${esc(ticker)}" title="${added?'Remover da Watchlist':'Adicionar à Watchlist'}" onclick="event.preventDefault();event.stopPropagation();handleWlToggle(this,'${esc(ticker)}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="${added?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></button>`;}
@@ -314,12 +327,13 @@ window.handleWlToggle=function(btn,ticker){const added=toggleWatchlist(ticker);b
 
 function resultHTML(ticker,name,typeLabel,exch,price,chgPct,sym){const up=chgPct>=0,sign=up?'+':'-';return `<a class="result-item" href="stock.html?ticker=${encodeURIComponent(ticker)}"><span class="result-badge">${esc(ticker.slice(0,7))}</span><div class="result-info"><p class="result-name">${esc(name)}</p><p class="result-type">${esc(typeLabel)}${exch?' &middot; '+esc(exch):''}</p></div><div style="text-align:right;flex-shrink:0;"><p class="result-price">${esc(sym)}${price.toFixed(2)}</p><p class="result-chg ${up?'up':'down'}">${up?'&#9650;':'&#9660;'} ${sign}${Math.abs(chgPct).toFixed(2)}%</p></div>${watchlistBtnHTML(ticker)}</a>`;}
 
-async function doSearch(q){const term=q.trim();if(!term){list.innerHTML='<div class="results-empty">Escreve para pesquisar&#8230;</div>';return;}list.innerHTML='<div class="loading-dots"><span></span><span></span><span></span></div>';const termUpper=term.toUpperCase();const localHits=Object.values(LOCAL).filter(s=>(s.ticker||'').toUpperCase().includes(termUpper)||(s.name||'').toUpperCase().includes(termUpper));if(localHits.length){list.innerHTML=localHits.map(s=>resultHTML(s.ticker,s.name||s.ticker,s.type||'Ação',s.exchange||'',s.price||0,s.changePct||0,s.symbol||'$')).join('');}try{const data=await yfSearch(term);const quotes=(data.quotes||[]).filter(q=>['EQUITY','ETF','MUTUALFUND','INDEX'].includes(q.quoteType)).slice(0,7);if(!quotes.length){if(!localHits.length)list.innerHTML='<div class="results-empty">Sem resultados para "<strong>'+esc(q)+'</strong>"</div>';return;}const results=await Promise.all(quotes.map(async h=>{const sym=h.symbol;const lk=sym.replace(/\.(AS|L|PA|DE|MI|BR|HK|T|BO|NS|F|ST|CO|OL|HE|VI|PR|IS)$/i,'');if(LOCAL[lk]){const s=LOCAL[lk];return{ticker:lk,name:h.longname||h.shortname||s.name,typeLabel:quoteTypeLabel(h.quoteType),exch:h.exchDisp||s.exchange||'',price:s.price,chgPct:s.changePct,sym:s.symbol||'$'};}const q2=await workerQuote(sym);if(!q2)return null;return{ticker:sym,name:h.longname||h.shortname||sym,typeLabel:quoteTypeLabel(h.quoteType),exch:h.exchDisp||'',price:q2.price,chgPct:q2.chgPct,sym:currencySymbol(q2.currency)};}));const seen=new Set();const deduped=results.filter(r=>{if(!r||seen.has(r.ticker))return false;seen.add(r.ticker);return true;});if(!deduped.length){if(!localHits.length)list.innerHTML='<div class="results-empty">Sem preços disponíveis. Tenta um ticker exato (ex: AAPL).</div>';return;}list.innerHTML=deduped.map(r=>resultHTML(r.ticker,r.name,r.typeLabel,r.exch,r.price,r.chgPct,r.sym)).join('');}catch(err){const t=term.toUpperCase();if(!t.includes(' ')&&!localHits.length){list.innerHTML=`<a class="result-item" href="stock.html?ticker=${encodeURIComponent(t)}"><span class="result-badge">${esc(t)}</span><div class="result-info"><p class="result-name">Ver página de ${esc(t)}</p><p class="result-type">Clicar para abrir</p></div></a>`;}else if(!localHits.length){list.innerHTML='<div class="results-empty">Erro de ligação. Tenta novamente.</div>';}}}
+async function doSearch(q){const term=q.trim();if(!term){list.innerHTML='<div class="results-empty">Escreve para pesquisar&#8230;</div>';return;}list.innerHTML='<div class="loading-dots"><span></span><span></span><span></span></div>';const termUpper=term.toUpperCase();const localHits=Object.values(LOCAL).filter(s=>(s.ticker||'').toUpperCase().includes(termUpper)||(s.name||'').toUpperCase().includes(termUpper));if(localHits.length){list.innerHTML=localHits.map(s=>resultHTML(s.ticker,s.name||s.ticker,s.type||'Ação',s.exchange||'',s.price||0,s.changePct||0,s.symbol||'$')).join('');}try{const data=await yfSearch(term);const quotes=(data.quotes||[]).filter(q=>['EQUITY','ETF','MUTUALFUND','INDEX'].includes(q.quoteType)).slice(0,7);if(!quotes.length){if(!localHits.length)list.innerHTML='<div class="results-empty">Sem resultados para "<strong>'+esc(q)+'</strong>"</div>';return;}const results=await Promise.all(quotes.map(async h=>{const sym=h.symbol;const lk=sym.replace(/\.(AS|L|PA|DE|MI|BR|HK|T|BO|NS|F|ST|CO|OL|HE|VI|PR|IS)$/i,'');if(LOCAL[lk]){const s=LOCAL[lk];return{ticker:lk,name:h.longname||h.shortname||s.name,typeLabel:quoteTypeLabel(h.quoteType),exch:h.exchDisp||s.exchange||'',price:s.price,chgPct:s.changePct,sym:s.symbol||'$'};}const q2=await workerQuote(sym);if(!q2)return null;return{ticker:sym,name:h.longname||h.shortname||sym,typeLabel:quoteTypeLabel(h.quoteType),exch:h.exchDisp||'',price:q2.price,chgPct:q2.chgPct,sym:currencySymbol(q2.currency)};}));const seen=new Set();const deduped=results.filter(r=>{if(!r||seen.has(r.ticker))return false;seen.add(r.ticker);return true;});if(!deduped.length){if(!localHits.length)list.innerHTML='<div class="results-empty">Sem preços disponíveis. Tenta um ticker exato (ex: AAPL).</div>';return;}list.innerHTML=deduped.map(r=>resultHTML(r.ticker,r.name,r.typeLabel,r.exch,r.price,r.chgPct,r.sym)).join('');}catch(err){if(!localHits.length){list.innerHTML='<div class="results-empty">Erro de ligação. Tenta novamente.</div>';}}}
 
 document.getElementById('searchBtn').addEventListener('click',()=>openPanel(mainIn.value));
 mainIn.addEventListener('keydown',e=>{if(e.key==='Enter'){const v=mainIn.value.trim();if(v)location.href='stock.html?ticker='+encodeURIComponent(v.toUpperCase());}});
 mainIn.addEventListener('input',()=>{if(mainIn.value.trim())openPanel(mainIn.value);});
-resIn.addEventListener('input',()=>{clearTimeout(timer);timer=setTimeout(()=>doSearch(resIn.value),400);});
+resIn.addEventListener('input',()=>{updateDirectLink(resIn.value);clearTimeout(timer);timer=setTimeout(()=>doSearch(resIn.value),400);});
+resIn.addEventListener('keydown',e=>{if(e.key!=='Enter')return;const v=resIn.value.trim();if(!v)return;const first=list.querySelector('a.result-item');if(first){location.href=first.href;}else{location.href='stock.html?ticker='+encodeURIComponent(v.toUpperCase());}});
 closeBtn.addEventListener('click',closePanel);
 panel.addEventListener('click',e=>{if(e.target===panel)closePanel();});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&panel.classList.contains('open'))closePanel();});
