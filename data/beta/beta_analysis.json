@@ -1,20 +1,20 @@
 {
-  "timestamp": "2026-05-22T19:15:07.981966+00:00",
+  "timestamp": "2026-05-22T19:59:11.620631+00:00",
   "mode": "phase1_auto",
   "strategy_version": "v0.1.0",
   "note": "Fase 1 — execução automática activa. LIVE_TRADING=False (conta demo).",
   "regime": "bull_trending",
   "regime_alert": false,
   "regime_details": {
-    "spy_price": 746.57,
-    "ema200": 679.52,
-    "ema50": 710.0,
+    "spy_price": 745.88,
+    "ema200": 679.51,
+    "ema50": 709.97,
     "ema50_above_ema200": true,
-    "spy_pct_from_ema200": 9.87,
+    "spy_pct_from_ema200": 9.77,
     "atr_current": 7.4692,
     "atr_ratio_vs_60d_mean": 0.8426,
-    "spy_return_20d": 0.0439,
-    "rsp_spy_ratio_chg_20d": -0.0186,
+    "spy_return_20d": 0.0429,
+    "rsp_spy_ratio_chg_20d": -0.0182,
     "breadth_healthy": true
   },
   "watchlist_top5": [
@@ -85,13 +85,38 @@
     }
   ],
   "barrier_exits": [],
-  "buy_opportunities": [],
+  "buy_opportunities": [
+    {
+      "ticker": "HPE",
+      "sector": "XLK",
+      "watchlist_score": 0.3713,
+      "mom_1m": 0.2163,
+      "mom_3m": 0.6883,
+      "signal_strength": 0.674,
+      "style": "MOMENTUM",
+      "reasons": [
+        "Breakout: RSI-14 78.8 ≥ 58 — momentum validado",
+        "Alinhamento total: price > EMA-20 > EMA-50 > EMA-200",
+        "Volume 1.7× ≥ 1.5× — confirmação de volume"
+      ],
+      "technicals": {
+        "rsi_14": 78.77,
+        "ema50_above_ema200": true,
+        "ema20_above_ema50": true,
+        "price_above_ema20": true,
+        "volume_ratio_vs_avg": 1.74,
+        "atr_14": 1.4385,
+        "rs_bullish": true
+      },
+      "last_price": 37.555
+    }
+  ],
   "near_misses": [],
   "n_positions": 2,
   "open_trades": 0,
   "risk_status": {
     "ok": true,
-    "total_equity_eur": 5138.35,
+    "total_equity_eur": 5138.13,
     "warnings": []
   },
   "signals": [
@@ -100,14 +125,13 @@
       "action": "hold",
       "size_factor": 1.0,
       "signals": [
-        "RSI-14 neutro (58.1)",
-        "Tendência ascendente: EMA-50 > EMA-200",
-        "Volume reduzido: 0.4x da média — movimento sem convicção"
+        "RSI-14 neutro (57.6)",
+        "Tendência ascendente: EMA-50 > EMA-200"
       ],
       "technicals": {
-        "rsi_14": 58.13,
+        "rsi_14": 57.62,
         "ema50_above_ema200": true,
-        "volume_ratio_vs_avg": 0.42
+        "volume_ratio_vs_avg": 0.5
       }
     },
     {
@@ -115,19 +139,19 @@
       "action": "reduce_watch",
       "size_factor": 1.0,
       "signals": [
-        "RSI-14 sobrecomprado (76.5) — risco de correcção",
+        "RSI-14 sobrecomprado (76.6) — risco de correcção",
         "Tendência ascendente: EMA-50 > EMA-200"
       ],
       "technicals": {
-        "rsi_14": 76.55,
+        "rsi_14": 76.56,
         "ema50_above_ema200": true,
-        "volume_ratio_vs_avg": 1.02
+        "volume_ratio_vs_avg": 1.09
       }
     }
   ],
   "data_sources": {
     "prices": "finnhub+yfinance",
-    "t212_sync": "2026-05-22T19:13:22.194698+00:00",
+    "t212_sync": "2026-05-22T19:57:26.277296+00:00",
     "stale_prices": []
   },
   "cro": {
