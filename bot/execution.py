@@ -232,6 +232,10 @@ def execute_trade(proposed: ProposedTrade, portfolio_state: dict) -> dict | None
             "ticker": proposed.ticker,
             "side": proposed.side,
         })
+        enviar_alerta(
+            f"[CLYDE] ⚠️ Ordem {proposed.side} {proposed.ticker} falhou na T212"
+            f" (API sem resposta). Ciclo seguinte tentará novamente."
+        )
         return None
 
     fill_price = proposed.price or _fill_price(response)
