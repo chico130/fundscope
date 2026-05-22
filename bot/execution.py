@@ -188,25 +188,14 @@ def execute_trade(proposed: ProposedTrade, portfolio_state: dict) -> dict | None
                 signal_strength=proposed.signal_strength,
             )
 
-    # ── Basic size check (CRO gere risco completo upstream em phase0) ────────
+    # ── Basic size check ──────────────────────────────────────────────────────
+    # Nota: o phase0 já garante max_position_pct com conversão EUR/USD correcta.
+    # O check de posição aqui era redundante e misturava EUR (cash) com USD
+    # (currentPrice de acções US), fazendo o rácio inflacionar ~10% e bloquear
+    # ordens válidas silenciosamente.
     if proposed.qty <= 0:
         log_error("execution_zero_qty", {"ticker": proposed.ticker})
         return None
-    if proposed.side.upper() == "BUY" and proposed.price:
-        positions = portfolio_state.get("positions", [])
-        free_cash = portfolio_state.get("cash", {}).get("free", 0)
-        equity = sum(
-            p.get("currentPrice", 0) * p.get("quantity", 0) for p in positions
-        ) + free_cash
-        if equity > 0:
-            order_value = proposed.qty * proposed.price
-            if order_value / equity * 100 > RISK_CONFIG["max_position_pct"]:
-                log_error("execution_position_too_large", {
-                    "ticker": proposed.ticker,
-                    "order_pct": round(order_value / equity * 100, 1),
-                    "limit_pct": RISK_CONFIG["max_position_pct"],
-                })
-                return None
 
     trade_id = f"{ts}_{proposed.ticker}_{proposed.side}"
 
