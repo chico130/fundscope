@@ -1,0 +1,24 @@
+EMERGENCY LOCK — FundScope
+Criado:   2026-05-22T09:54:28Z
+Contexto: phase0.run()
+Erro:     UnicodeEncodeError: 'charmap' codec can't encode character '\u2265' in position 29: character maps to <undefined>
+
+Traceback:
+Traceback (most recent call last):
+  File "C:\Users\arauj\OneDrive\Ambiente de Trabalho\Fundscope\bot\phase0.py", line 1074, in <module>
+    report = run(git_sync=not ci)
+  File "C:\Users\arauj\OneDrive\Ambiente de Trabalho\Fundscope\bot\phase0.py", line 547, in run
+    _print_report(report)
+    ~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\arauj\OneDrive\Ambiente de Trabalho\Fundscope\bot\phase0.py", line 937, in _print_report
+    print(f"     · {r}")
+    ~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\arauj\AppData\Local\Python\pythoncore-3.14-64\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2265' in position 29: character maps to <undefined>
+
+Recovery:
+  git rm EMERGENCY_LOCK.txt
+  git commit -m 'fix: remove quarantine'
+  git push
