@@ -141,12 +141,14 @@ def _post(endpoint: str, payload: dict) -> dict | None:
         resp.raise_for_status()
         return resp.json()
     except Exception as exc:
+        err_str = str(exc)
         log_error("api_post_failed", {
             "endpoint":   endpoint,
             "payload":    payload,
-            "error":      str(exc),
+            "error":      err_str,
             "error_type": _classify_error(exc),
         })
+        print(f"[T212] POST {endpoint} falhou: {err_str}", flush=True)
         return None
 
 

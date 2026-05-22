@@ -233,8 +233,9 @@ def execute_trade(proposed: ProposedTrade, portfolio_state: dict) -> dict | None
             "side": proposed.side,
         })
         enviar_alerta(
-            f"[CLYDE] ⚠️ Ordem {proposed.side} {proposed.ticker} falhou na T212"
-            f" (API sem resposta). Ciclo seguinte tentará novamente."
+            f"[CLYDE] ⚠️ Ordem {proposed.side} {proposed.ticker} rejeitada pela T212."
+            f" Detalhe no log do GitHub Actions (POST /equity/orders/limit)."
+            f" Ciclo seguinte tentará novamente."
         )
         return None
 
