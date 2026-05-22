@@ -1,21 +1,21 @@
 {
-  "timestamp": "2026-05-22T17:30:56.139203+00:00",
+  "timestamp": "2026-05-22T19:15:07.981966+00:00",
   "mode": "phase1_auto",
   "strategy_version": "v0.1.0",
   "note": "Fase 1 — execução automática activa. LIVE_TRADING=False (conta demo).",
-  "regime": "bull_lateral",
+  "regime": "bull_trending",
   "regime_alert": false,
   "regime_details": {
-    "spy_price": 748.03,
-    "ema200": 679.54,
-    "ema50": 710.06,
+    "spy_price": 746.57,
+    "ema200": 679.52,
+    "ema50": 710.0,
     "ema50_above_ema200": true,
-    "spy_pct_from_ema200": 10.08,
-    "atr_current": 7.4185,
-    "atr_ratio_vs_60d_mean": 0.837,
-    "spy_return_20d": 0.0459,
-    "rsp_spy_ratio_chg_20d": -0.0206,
-    "breadth_healthy": false
+    "spy_pct_from_ema200": 9.87,
+    "atr_current": 7.4692,
+    "atr_ratio_vs_60d_mean": 0.8426,
+    "spy_return_20d": 0.0439,
+    "rsp_spy_ratio_chg_20d": -0.0186,
+    "breadth_healthy": true
   },
   "watchlist_top5": [
     {
@@ -91,54 +91,53 @@
   "open_trades": 0,
   "risk_status": {
     "ok": true,
-    "total_equity_eur": 5139.37,
+    "total_equity_eur": 5138.35,
     "warnings": []
   },
   "signals": [
     {
       "ticker": "GOOGL_US_EQ",
       "action": "hold",
-      "size_factor": 0.6,
+      "size_factor": 1.0,
       "signals": [
-        "RSI-14 neutro (59.8)",
+        "RSI-14 neutro (58.1)",
         "Tendência ascendente: EMA-50 > EMA-200",
-        "Volume reduzido: 0.3x da média — movimento sem convicção"
+        "Volume reduzido: 0.4x da média — movimento sem convicção"
       ],
       "technicals": {
-        "rsi_14": 59.79,
+        "rsi_14": 58.13,
         "ema50_above_ema200": true,
-        "volume_ratio_vs_avg": 0.32
+        "volume_ratio_vs_avg": 0.42
       }
     },
     {
       "ticker": "ARM_US_EQ",
       "action": "reduce_watch",
-      "size_factor": 0.6,
+      "size_factor": 1.0,
       "signals": [
-        "RSI-14 sobrecomprado (76.7) — risco de correcção",
+        "RSI-14 sobrecomprado (76.5) — risco de correcção",
         "Tendência ascendente: EMA-50 > EMA-200"
       ],
       "technicals": {
-        "rsi_14": 76.69,
+        "rsi_14": 76.55,
         "ema50_above_ema200": true,
-        "volume_ratio_vs_avg": 0.9
+        "volume_ratio_vs_avg": 1.02
       }
     }
   ],
   "data_sources": {
     "prices": "finnhub+yfinance",
-    "t212_sync": "2026-05-22T17:29:10.480237+00:00",
+    "t212_sync": "2026-05-22T19:13:22.194698+00:00",
     "stale_prices": []
   },
   "cro": {
-    "risk_factor": 0.5208,
+    "risk_factor": 1.0417,
     "win_rate_7d": 0.5,
     "drawdown_pct": 0.0,
     "insights": [
-      "Win rate 7d em 50.0% — acima do alvo elástico (48.0%). Factor de risco positivo: 52%.",
+      "Win rate 7d em 50.0% — acima do alvo elástico (48.0%). Factor de risco positivo: 104%.",
       "Sem trades fechados — sem lições disponíveis ainda.",
-      "Tamanho máximo CRO: 10.4% da equity (base 20.0% × factor 52%).",
-      "Regime bull_lateral: multiplicador CRO 0.50× — alocação reduzida.",
+      "Tamanho máximo CRO: 20.8% da equity (base 20.0% × factor 104%).",
       "Stop Loss (fixo (fallback)): 5.0% abaixo da entrada."
     ]
   },
