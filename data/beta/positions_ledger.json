@@ -1,7 +1,7 @@
 {
-  "last_updated": "2026-05-21T19:19:56.707146+00:00",
-  "last_t212_sync": "2026-05-21T19:19:56.707096+00:00",
-  "cash_eur": 5000.0,
+  "last_updated": "2026-05-22T15:44:57.771618+00:00",
+  "last_t212_sync": "2026-05-22T15:44:57.771583+00:00",
+  "cash_eur": 4877.88,
   "positions": {
     "GOOGL_US_EQ": {
       "ticker": "GOOGL_US_EQ",
@@ -10,6 +10,14 @@
       "quantity": 0.28979725,
       "avg_price": 403.69603231,
       "currency": "USD"
+    },
+    "ARM_US_EQ": {
+      "ticker": "ARM_US_EQ",
+      "price_symbol": "ARM",
+      "display_name": "ARM_US_EQ",
+      "currency": "USD",
+      "quantity": 0.4886,
+      "avg_price": 289.74621367
     }
   }
 }

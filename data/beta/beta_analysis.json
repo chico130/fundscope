@@ -1,20 +1,20 @@
 {
-  "timestamp": "2026-05-22T12:30:07.714066+00:00",
+  "timestamp": "2026-05-22T15:46:43.275203+00:00",
   "mode": "phase1_auto",
   "strategy_version": "v0.1.0",
   "note": "Fase 1 — execução automática activa. LIVE_TRADING=False (conta demo).",
   "regime": "bull_lateral",
   "regime_alert": false,
   "regime_details": {
-    "spy_price": 742.72,
-    "ema200": 678.85,
-    "ema50": 708.51,
+    "spy_price": 747.74,
+    "ema200": 679.53,
+    "ema50": 710.05,
     "ema50_above_ema200": true,
-    "spy_pct_from_ema200": 9.41,
-    "atr_current": 7.6614,
-    "atr_ratio_vs_60d_mean": 0.8631,
-    "spy_return_20d": 0.0403,
-    "rsp_spy_ratio_chg_20d": -0.026,
+    "spy_pct_from_ema200": 10.04,
+    "atr_current": 7.3652,
+    "atr_ratio_vs_60d_mean": 0.831,
+    "spy_return_20d": 0.0455,
+    "rsp_spy_ratio_chg_20d": -0.0219,
     "breadth_healthy": false
   },
   "watchlist_top5": [
@@ -85,87 +85,13 @@
     }
   ],
   "barrier_exits": [],
-  "buy_opportunities": [
-    {
-      "ticker": "ARM",
-      "sector": "XLK",
-      "watchlist_score": 0.5834,
-      "mom_1m": 0.4576,
-      "mom_3m": 1.3274,
-      "signal_strength": 0.676,
-      "style": "MOMENTUM",
-      "reasons": [
-        "Breakout: RSI-14 75.5 ≥ 58 — momentum validado",
-        "Alinhamento total: price > EMA-20 > EMA-50 > EMA-200",
-        "Volume 1.8× ≥ 1.5× — confirmação de volume"
-      ],
-      "technicals": {
-        "rsi_14": 75.5,
-        "ema50_above_ema200": true,
-        "ema20_above_ema50": true,
-        "price_above_ema20": true,
-        "volume_ratio_vs_avg": 1.76,
-        "atr_14": 18.5443,
-        "rs_bullish": true
-      },
-      "last_price": 298.23
-    }
-  ],
-  "near_misses": [
-    {
-      "ticker": "ROST",
-      "sector": "XLY",
-      "watchlist_score": 0.1803,
-      "rule": "B",
-      "blocking_reason": "Volume 1.4× — falta 0.38× para ≥1.8",
-      "proximity_pct": 79,
-      "technicals": {
-        "rsi_14": 47.23,
-        "ema_20": 218.7133,
-        "ema50": 216.5142,
-        "ema200": 182.1883,
-        "ema20_above_ema50": true,
-        "ema50_above_ema200": true,
-        "price_above_ema20": false,
-        "volume_ratio_vs_avg": 1.42,
-        "volume_sma_10": 3425770.0,
-        "volume_ratio": 1.1,
-        "atr_14": 5.3723,
-        "last_price": 217.19,
-        "rs_bullish": false
-      },
-      "last_price": 217.19
-    },
-    {
-      "ticker": "ADI",
-      "sector": "XLK",
-      "watchlist_score": 0.1802,
-      "rule": "B",
-      "blocking_reason": "Volume 1.3× — falta 0.50× para ≥1.8",
-      "proximity_pct": 72,
-      "technicals": {
-        "rsi_14": 44.66,
-        "ema_20": 401.6755,
-        "ema50": 375.375,
-        "ema200": 295.783,
-        "ema20_above_ema50": true,
-        "ema50_above_ema200": true,
-        "price_above_ema20": false,
-        "volume_ratio_vs_avg": 1.3,
-        "volume_sma_10": 4847960.0,
-        "volume_ratio": 1.09,
-        "atr_14": 13.7821,
-        "last_price": 384.21,
-        "rs_bullish": false
-      },
-      "last_price": 384.21
-    }
-  ],
-  "n_positions": 1,
+  "buy_opportunities": [],
+  "near_misses": [],
+  "n_positions": 2,
   "open_trades": 0,
   "risk_status": {
     "ok": true,
-    "total_equity_eur": 5112.34,
+    "total_equity_eur": 5139.81,
     "warnings": []
   },
   "signals": [
@@ -174,19 +100,34 @@
       "action": "hold",
       "size_factor": 0.6,
       "signals": [
-        "RSI-14 neutro (61.6)",
+        "RSI-14 neutro (61.3)",
+        "Tendência ascendente: EMA-50 > EMA-200",
+        "Volume reduzido: 0.2x da média — movimento sem convicção"
+      ],
+      "technicals": {
+        "rsi_14": 61.29,
+        "ema50_above_ema200": true,
+        "volume_ratio_vs_avg": 0.23
+      }
+    },
+    {
+      "ticker": "ARM_US_EQ",
+      "action": "reduce_watch",
+      "size_factor": 0.6,
+      "signals": [
+        "RSI-14 sobrecomprado (76.7) — risco de correcção",
         "Tendência ascendente: EMA-50 > EMA-200"
       ],
       "technicals": {
-        "rsi_14": 61.6,
+        "rsi_14": 76.67,
         "ema50_above_ema200": true,
-        "volume_ratio_vs_avg": 0.83
+        "volume_ratio_vs_avg": 0.77
       }
     }
   ],
   "data_sources": {
     "prices": "finnhub+yfinance",
-    "t212_sync": "2026-05-21T19:19:56.707096+00:00",
+    "t212_sync": "2026-05-22T15:44:57.771583+00:00",
     "stale_prices": []
   },
   "cro": {
