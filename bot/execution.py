@@ -207,13 +207,19 @@ def execute_trade(proposed: ProposedTrade, portfolio_state: dict) -> dict | None
         "type": proposed.order_type,
     })
 
-    response = api_client.place_order_demo(
-        ticker=proposed.ticker,
-        side=proposed.side,
-        qty=proposed.qty,
-        order_type=proposed.order_type,
-        price=proposed.price,
-    )
+    if proposed.side.upper() == "SELL":
+        # T212 rejeita SELL market com quantidade negativa e não suporta frações
+        # em limit orders. Usa DELETE /equity/positions/{ticker} para fechar tudo.
+        ok = api_client.close_position_demo(proposed.ticker)
+        response = {"closed": True} if ok else None
+    else:
+        response = api_client.place_order_demo(
+            ticker=proposed.ticker,
+            side=proposed.side,
+            qty=proposed.qty,
+            order_type=proposed.order_type,
+            price=proposed.price,
+        )
 
     if response is None:
         log_error("execution_failed", {
@@ -223,7 +229,7 @@ def execute_trade(proposed: ProposedTrade, portfolio_state: dict) -> dict | None
         })
         enviar_alerta(
             f"[CLYDE] ⚠️ Ordem {proposed.side} {proposed.ticker} rejeitada pela T212."
-            f" Detalhe no log do GitHub Actions (POST /equity/orders/limit)."
+            f" Detalhe no log do GitHub Actions."
             f" Ciclo seguinte tentará novamente."
         )
         return None

@@ -98,6 +98,11 @@ def _get(endpoint: str) -> dict | list | None:
         time.sleep(REQUEST_DELAY_SECONDS)
         try:
             resp = _session.get(f"{T212_BASE_URL_DEMO}{endpoint}", timeout=30)
+            if resp.status_code == 429:
+                wait = 30
+                print(f"[api] GET {endpoint} — 429 rate-limit, a aguardar {wait}s")
+                time.sleep(wait)
+                continue
             resp.raise_for_status()
             return resp.json()
         except _RETRIABLE as exc:
@@ -295,15 +300,14 @@ def place_order_demo(
     order_type: str,
     price: float | None = None,
 ) -> dict | None:
-    """Places a BUY or SELL order on T212 demo account.
+    """Places a BUY MARKET order on T212 demo account.
 
     ticker:     T212 instrument ticker (e.g. "AAPL_US_EQ")
-    side:       "BUY" or "SELL"
-    qty:        absolute quantity (positive)
-    order_type: "MARKET" or "LIMIT"
-    price:      required for LIMIT orders
+    side:       "BUY" (SELL is handled by close_position_demo)
+    qty:        absolute quantity (positive); fractional allowed for MARKET
+    order_type: "MARKET" (LIMIT orders for fractional shares are rejected by T212)
+    price:      ignored for MARKET orders (kept for API compatibility)
 
-    T212 convention: positive qty = buy, negative qty = sell.
     Returns the T212 order response dict, or None on failure.
     """
     if LIVE_TRADING:
@@ -311,12 +315,11 @@ def place_order_demo(
 
     side = side.upper()
     order_type = order_type.upper()
-    signed_qty = abs(qty) if side == "BUY" else -abs(qty)
 
     if order_type == "MARKET":
         return _post("/equity/orders/market", {
             "ticker": ticker,
-            "quantity": signed_qty,
+            "quantity": abs(qty),
             "timeValidity": "DAY",
         })
 
@@ -327,14 +330,26 @@ def place_order_demo(
             return None
         return _post("/equity/orders/limit", {
             "ticker": ticker,
-            "quantity": signed_qty,
-            "limitPrice": price,
+            "quantity": abs(qty),
+            "limitPrice": round(price, 2),
             "timeValidity": "DAY",
         })
 
     from .logger import log_error
     log_error("place_order_unknown_type", {"order_type": order_type, "ticker": ticker})
     return None
+
+
+def close_position_demo(ticker: str) -> bool:
+    """Fecha a posição inteira de um ticker na conta demo T212.
+
+    Usa DELETE /equity/positions/{ticker} — não requer quantidade nem preço.
+    Mais fiável que SELL market com quantidade negativa (que T212 rejeita com 400).
+    Devolve True em caso de sucesso, False em qualquer erro.
+    """
+    if LIVE_TRADING:
+        raise RuntimeError("LIVE_TRADING is True — aborting to protect live account.")
+    return _delete(f"/equity/positions/{ticker}")
 
 
 def cancel_order_demo(order_id: str | int) -> bool:

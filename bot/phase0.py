@@ -399,8 +399,8 @@ def _execute_phase1(
             ticker=t212_ticker,
             side="BUY",
             qty=qty,
-            order_type="LIMIT",
-            price=round(price_usd, 4),
+            order_type="MARKET",
+            price=round(price_usd, 2),
             reason=" | ".join(opp.get("reasons", ["phase1_auto"])),
             context={
                 "rsi_14":              tech.get("rsi_14"),
