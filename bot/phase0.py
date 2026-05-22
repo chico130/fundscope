@@ -670,15 +670,17 @@ def _scan_watchlist_candidates(
         blocking: str    = ""
         proximity: float = 0.0
 
-        if 35 < rsi <= 45 and vol_ratio >= 1.0:
-            rule      = "A"
-            delta     = round(rsi - 35, 1)
-            blocking  = f"RSI-14={rsi:.1f} — faltam {delta:.1f} pts para ≤35"
-            proximity = max(0.0, 1.0 - (rsi - 35) / 10)
+        if 34 < rsi <= 44 and vol_ratio >= 1.0:
+            # Rule A near-miss: RSI ligeiramente acima do limiar ≤34
+            rule     = "A"
+            delta    = round(rsi - 34, 1)
+            blocking = f"RSI-14={rsi:.1f} — faltam {delta:.1f} pts para ≤34"
+            proximity = max(0.0, 1.0 - (rsi - 34) / 10)
 
-        elif rsi <= 35 and 0.8 <= vol_ratio < 1.2:
-            rule      = "A"
-            blocking  = f"Volume {vol_ratio:.1f}× — falta {round(1.2 - vol_ratio, 2):.2f}× para ≥1.2"
+        elif rsi <= 34 and 0.8 <= vol_ratio < 1.2:
+            # Rule A': RSI ok, volume insuficiente
+            rule     = "A"
+            blocking = f"Volume {vol_ratio:.1f}× — falta {round(1.2 - vol_ratio, 2):.2f}× para ≥1.2"
             proximity = vol_ratio / 1.2
 
         elif 40 <= rsi <= 55 and 1.3 <= vol_ratio < 1.8:

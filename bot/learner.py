@@ -73,7 +73,7 @@ _DEFAULT_PARAMS: dict[str, Any] = {
     "enabled_styles": ["VALUE", "MOMENTUM"],
     "weekly": {
         "clyde": {
-            "rsi_oversold_ceiling":    35,
+            "rsi_oversold_ceiling":    34,
             "rsi_momentum_min":        40,
             "rsi_momentum_max":        55,
             "rsi_exit_floor":          72,
