@@ -1,15 +1,15 @@
 {
-  "updated": "2026-05-22T13:35:27.813697+00:00",
+  "updated": "2026-05-22T17:11:56.820109+00:00",
   "articles": [
     {
-      "id": 437566815,
+      "id": 169102251,
       "source": "CNBC",
-      "title": "Dow jumps 300 points to record as Wall Street heads for winning week, Treasury yields ease: Live updates",
+      "title": "Dow jumps 400 points to record as Wall Street heads for winning week, Treasury yields ease: Live updates",
       "summary": "Volatility picked up this week in the stock and bond markets.",
       "content": "Volatility picked up this week in the stock and bond markets.",
       "url": "https://www.cnbc.com/2026/05/21/stock-market-today-live-updates.html",
       "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
-      "publishedAt": "2026-05-22T13:31:45+00:00",
+      "publishedAt": "2026-05-22T17:07:56+00:00",
       "category": "Mercados",
       "icon": "\ud83d\udcb0",
       "impact": {
@@ -21,58 +21,119 @@
       "feed": "rss"
     },
     {
-      "id": 888873418,
-      "source": "MarketWatch",
-      "title": "As bullish bets surge, here\u2019s the Goldman Sachs options play to protect portfolios from the likely pullback",
-      "summary": "Materials, tech and energy sectors offer an attractive hedging opportunity",
-      "content": "Materials, tech and energy sectors offer an attractive hedging opportunity",
-      "url": "https://www.marketwatch.com/story/as-bullish-bets-surge-heres-the-option-play-to-protect-portfolios-from-a-likely-pullback-says-goldman-sachs-e0f1017a?mod=mw_rss_topstories",
-      "image": "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80",
-      "publishedAt": "2026-05-22T13:30:00+00:00",
-      "category": "Energia",
-      "icon": "\u26a1",
+      "id": 256921959,
+      "source": "Seeking Alpha",
+      "title": "Palantir slips after six sessions of gain",
+      "summary": "",
+      "content": "",
+      "url": "https://seekingalpha.com/news/4596399-palantir-slips-after-six-sessions-of-gain?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-22T13:03:33-04:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 132519173,
+      "source": "Seeking Alpha",
+      "title": "CEO says Stellantis may produce Chinese-branded cars in Mexico, Canada",
+      "summary": "",
+      "content": "",
+      "url": "https://seekingalpha.com/news/4596387-ceo-says-stellantis-may-produce-chinese-branded-cars-in-mexico-canada?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-22T13:02:24-04:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 279847830,
+      "source": "Yahoo Finance",
+      "title": "Introducing Avalanche and Sui Futures",
+      "summary": "",
+      "content": "",
+      "url": "https://finance.yahoo.com/markets/crypto/articles/introducing-avalanche-sui-futures-170000707.html",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-22T17:00:00+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 370422547,
+      "source": "Yahoo Finance",
+      "title": "China drives Ralph Lauren sales to surpass $8bn in FY26",
+      "summary": "",
+      "content": "",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/china-drives-ralph-lauren-sales-165720132.html",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-22T16:57:20+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
       "impact": {
         "tickers": [
-          "NEM",
-          "FCX",
-          "GOLD",
-          "WPM",
-          "AAPL"
+          "AAPL",
+          "NVDA",
+          "TSLA",
+          "AMD"
         ],
-        "sector": "Commodities",
+        "sector": "Tecnologia",
+        "sentiment": "neutral"
+      },
+      "heat": 3,
+      "feed": "rss"
+    },
+    {
+      "id": 581643544,
+      "source": "CNBC",
+      "title": "Trump said he'd 'remember' companies that didn't apply for tariff refunds. Many of them are anyway",
+      "summary": "Walmart confirmed to CNBC it has sought a tariff refund and plans to use any money it receives back to invest in lower prices for shoppers.",
+      "content": "Walmart confirmed to CNBC it has sought a tariff refund and plans to use any money it receives back to invest in lower prices for shoppers.",
+      "url": "https://www.cnbc.com/2026/05/22/trump-tariff-refunds-walmart-home-depot-target-apply.html",
+      "image": "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=800&q=80",
+      "publishedAt": "2026-05-22T16:56:12+00:00",
+      "category": "Com\u00e9rcio",
+      "icon": "\ud83d\udea2",
+      "impact": {
+        "tickers": [
+          "AAPL",
+          "NVDA",
+          "TSLA",
+          "AMD"
+        ],
+        "sector": "Tecnologia",
         "sentiment": "positive"
       },
       "heat": 3,
       "feed": "rss"
     },
     {
-      "id": 685816573,
+      "id": 338494576,
       "source": "Seeking Alpha",
-      "title": "Global Ship Lease GAAP EPS of $2.56, revenue of $198.1M",
+      "title": "Generac surges as Jefferies upgrades to Buy on AI infrastructure boom",
       "summary": "",
       "content": "",
-      "url": "https://seekingalpha.com/news/4596303-global-ship-lease-gaap-eps-of-2_56-revenue-of-198_1m?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-22T09:27:05-04:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 685399066,
-      "source": "Seeking Alpha",
-      "title": "Corsair Gaming launches new portfolio of AI workstations and servers",
-      "summary": "",
-      "content": "",
-      "url": "https://seekingalpha.com/news/4596299-corsair-gaming-launches-new-portfolio-of-ai-workstations-and-servers?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+      "url": "https://seekingalpha.com/news/4596395-generac-surges-as-jefferies-upgrades-to-buy-on-ai-infrastructure-boom?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
       "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
-      "publishedAt": "2026-05-22T09:26:35-04:00",
+      "publishedAt": "2026-05-22T12:54:59-04:00",
       "category": "Tecnologia",
       "icon": "\ud83d\udcbb",
       "impact": {
@@ -84,75 +145,14 @@
       "feed": "rss"
     },
     {
-      "id": 105909291,
-      "source": "economictimes.indiatimes.com",
-      "title": "Belgian financial company Belfius to set up new base in Lisbon with Accenture",
-      "summary": "Belgian financial services company Belfius is launching a new technology and operations hub in Lisbon. This venture is a joint effort with Accenture. Belfius will take full ownership of the hub in three to five years. The Lisbon center is projected to create around 500 jobs. Lisbon has become a popular destination for international finance and tech professionals.",
-      "content": "Belgian financial services company Belfius is launching a new technology and operations hub in Lisbon. This venture is a joint effort with Accenture. Belfius will take full ownership of the hub in three to five years. The Lisbon center is projected to create around 500 jobs. Lisbon has become a popular destination for international finance and tech professionals.",
-      "url": "https://economictimes.indiatimes.com/tech/technology/belgian-financial-company-belfius-to-set-up-new-base-in-lisbon-with-accenture/articleshow/131264195.cms",
-      "image": "https://img.etimg.com/thumb/width-1200,height-900,imgsize-39508,resizemode-75,msid-131264195/tech/technology/belgian-financial-company-belfius-to-set-up-new-base-in-lisbon-with-accenture.jpg",
-      "publishedAt": "2026-05-22T13:25:22.000000Z",
-      "category": "Tecnologia",
-      "icon": "\ud83d\udcbb",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "marketaux"
-    },
-    {
-      "id": 818816546,
-      "source": "businessinsider.com",
-      "title": "I couldn't find a full-time job after college for 4 years. I'm now glad I didn't jump into my career immediately.",
-      "summary": "I worked odd jobs in customer service for four years after graduating from college. I think delaying my career made me professionally stronger.",
-      "content": "I worked odd jobs in customer service for four years after graduating from college. I think delaying my career made me professionally stronger.",
-      "url": "https://www.businessinsider.com/college-grad-couldnt-find-full-time-job-after-college-glad-2026-5",
-      "image": "https://i.insider.com/6a0de28c7684ba33f7380cee?width=1200&format=jpeg",
-      "publishedAt": "2026-05-22T13:24:57.000000Z",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "marketaux"
-    },
-    {
-      "id": 587902299,
-      "source": "businessinsider.com",
-      "title": "'Starships' singer Nicki Minaj makes surprise appearance at SpaceX Starship launch",
-      "summary": "Nicki Minaj visited SpaceX for a Starship rocket launch attempt, and shared her support for Elon Musk.",
-      "content": "Nicki Minaj visited SpaceX for a Starship rocket launch attempt, and shared her support for Elon Musk.",
-      "url": "https://www.businessinsider.com/nicki-minaj-starship-spacex-launch-canceled-elon-musk-texas-2026-5",
-      "image": "https://i.insider.com/6a1052fe7ff506e273e66751?width=1200&format=jpeg",
-      "publishedAt": "2026-05-22T13:24:57.000000Z",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [
-          "TSLA",
-          "RIVN",
-          "GM"
-        ],
-        "sector": "Autom\u00f3vel",
-        "sentiment": "neutral"
-      },
-      "heat": 2,
-      "feed": "marketaux"
-    },
-    {
-      "id": 701704218,
-      "source": "Seeking Alpha",
-      "title": "Inspire Medical drops as BofA cuts to Underperform on lack of coding clarity",
-      "summary": "",
-      "content": "",
-      "url": "https://seekingalpha.com/news/4596302-inspire-medical-stock-cut-underperform-bofa?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+      "id": 781645550,
+      "source": "Business Insider",
+      "title": "Tropic Launches New Intelligence Hub and Brings Its Procurement Data Inside ChatGPT",
+      "summary": "&lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;https://www.globenewswire.com/styles/gnw_nitf.css&quot; /&gt;NEW YORK, May 22, 2026 (GLOBE NEWSWIRE) -- &lt;a href=&quot;https://www.globenewswire.com/Tracker?data=pQcHZSejdcqPzZCoW1AuL1yh9X0JbwAJYI-K-m_TUz6WpPT6ZpyoIy50jBe31nM6gf3nMVspyf_bvpShF78qVg==&quot; rel=&quot;nofollow&quot; target=&quot;_blank&quot;&gt;&lt;u&gt;Tropic&lt;/u&gt;&lt;/a&gt;, your...",
+      "content": "&lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;https://www.globenewswire.com/styles/gnw_nitf.css&quot; /&gt;NEW YORK, May 22, 2026 (GLOBE NEWSWIRE) -- &lt;a href=&quot;https://www.globenewswire.com/Tracker?data=pQcHZSejdcqPzZCoW1AuL1yh9X0JbwAJYI-K-m_TUz6WpPT6ZpyoIy50jBe31nM6gf3nMVspyf_bvpShF78qVg==&quot; rel=&quot;nofollow&quot; target=&quot;_blank&quot;&gt;&lt;u&gt;Tropic&lt;/u&gt;&lt;/a&gt;, your...",
+      "url": "https://markets.businessinsider.com/news/stocks/tropic-launches-new-intelligence-hub-and-brings-its-procurement-data-inside-chatgpt-1036188879",
       "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-22T09:24:23-04:00",
+      "publishedAt": "2026-05-22T16:54:48+00:00",
       "category": "Global",
       "icon": "\ud83c\udf10",
       "impact": {
@@ -164,14 +164,14 @@
       "feed": "rss"
     },
     {
-      "id": 632358984,
-      "source": "MarketWatch",
-      "title": "Canada and India now have generic Wegovy. Here\u2019s why the U.S. doesn\u2019t.",
-      "summary": "Over the next year, countries that are home to 40% of the world\u2019s population are set to get access to Ozempic and Wegovy generics that could cost as little as $15 a month.",
-      "content": "Over the next year, countries that are home to 40% of the world\u2019s population are set to get access to Ozempic and Wegovy generics that could cost as little as $15 a month.",
-      "url": "https://www.marketwatch.com/story/canada-and-india-now-have-generic-wegovy-heres-why-the-u-s-doesnt-db18b6b7?mod=mw_rss_topstories",
+      "id": 228810844,
+      "source": "Seeking Alpha",
+      "title": "Uber evaluating takeover of Delivery Hero - Bloomberg",
+      "summary": "",
+      "content": "",
+      "url": "https://seekingalpha.com/news/4596398-uber-evaluating-takeover-of-delivery-hero-bloomberg?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
       "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-22T13:23:00+00:00",
+      "publishedAt": "2026-05-22T12:54:36-04:00",
       "category": "Global",
       "icon": "\ud83c\udf10",
       "impact": {
@@ -183,196 +183,38 @@
       "feed": "rss"
     },
     {
-      "id": 159303655,
-      "source": "CNBC",
-      "title": "The Club's top 10 things to watch in the stock market Friday",
-      "summary": "Stocks are poised to extend yesterday's gains.",
-      "content": "Stocks are poised to extend yesterday's gains.",
-      "url": "https://www.cnbc.com/2026/05/22/the-clubs-top-10-things-to-watch-in-the-stock-market-friday.html",
-      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
-      "publishedAt": "2026-05-22T13:20:06+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 127207077,
+      "id": 447014955,
       "source": "Seeking Alpha",
-      "title": "Hamilton Global Financials ETF announces May 2026 monthly cash distributions",
+      "title": "Stocks get a lift from tech hardware; yields up as Warsh sworn in",
       "summary": "",
       "content": "",
-      "url": "https://seekingalpha.com/news/4596300-hamilton-global-financials-etf-announces-may-2026-monthly-cash-distributions?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-22T09:19:38-04:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 102475026,
-      "source": "Seeking Alpha",
-      "title": "Bitwise, 21Shares ETFs buy $16.1M Hyperliquid as $100 by year-end odds rise",
-      "summary": "",
-      "content": "",
-      "url": "https://seekingalpha.com/news/4596274-bitwise-21shares-etfs-buy-161m-hyperliquid-as-100-by-year-end-odds-rise?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
-      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
-      "publishedAt": "2026-05-22T09:18:48-04:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 823776785,
-      "source": "Seeking Alpha",
-      "title": "North Carolina-based First Carolina Financial Services files for IPO",
-      "summary": "",
-      "content": "",
-      "url": "https://seekingalpha.com/news/4596288-north-carolina-based-first-carolina-financial-services-files-for-ipo?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
-      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
-      "publishedAt": "2026-05-22T09:17:12-04:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 621081211,
-      "source": "Seeking Alpha",
-      "title": "Enertopia launches proposed C$ 800,000 non\u2011brokered private placement",
-      "summary": "",
-      "content": "",
-      "url": "https://seekingalpha.com/news/4596287-enertopia-launches-proposed-c-800000-nonbrokered-private-placement?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
-      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-22T09:15:11-04:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 837307501,
-      "source": "Nasdaq",
-      "title": "Is a 4.54% Dividend Yield Enough to Make This Stock a Buy for Income Investors?",
-      "summary": "Key PointsLeveraging its assets and expertise, this business is making a push into the battery storage market.",
-      "content": "Key PointsLeveraging its assets and expertise, this business is making a push into the battery storage market.",
-      "url": "https://www.nasdaq.com/articles/454-dividend-yield-enough-make-stock-buy-income-investors",
-      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
-      "publishedAt": "2026-05-22T13:13:00+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [
-          "TSLA",
-          "RIVN",
-          "GM"
-        ],
-        "sector": "Autom\u00f3vel",
-        "sentiment": "positive"
-      },
-      "heat": 2,
-      "feed": "rss"
-    },
-    {
-      "id": 468060447,
-      "source": "Tradewinds News",
-      "title": "Tsakos Energy Navigation boosts dividend after tanker profits surge",
-      "summary": "Tsakos Energy Navigation (TEN) has increased its dividend following a surge in tanker profits, positioning the family-run company for a record-breaking year. The chief executive, Nikolas Tsakos, commented on the strong performance. This news highlights TEN's financial success in the current market.",
-      "content": "Tsakos Energy Navigation (TEN) has increased its dividend following a surge in tanker profits, positioning the family-run company for a record-breaking year. The chief executive, Nikolas Tsakos, commented on the strong performance. This news highlights TEN's financial success in the current market.",
-      "url": "https://www.tradewindsnews.com/tankers/tsakos-energy-navigation-boosts-dividend-after-tanker-profits-surge/2-1-1992737",
-      "image": "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80",
-      "publishedAt": "2026-05-22T13:09:58+00:00",
-      "category": "Energia",
-      "icon": "\u26a1",
-      "impact": {
-        "tickers": [
-          "TEN"
-        ],
-        "sector": "",
-        "sentiment": "positive"
-      },
-      "heat": 1,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 131867990,
-      "source": "Financial Times",
-      "title": "US parks dozens of military aircraft at Israel\u2019s Ben Gurion airport",
-      "summary": "Satellite images show at least 50 military tanker planes parked at the airfield in May",
-      "content": "Satellite images show at least 50 military tanker planes parked at the airfield in May",
-      "url": "https://www.ft.com/content/37629c1d-601e-41d3-9aff-27c5327c1c81",
-      "image": "https://images.ft.com/v3/image/raw/https%3A%2F%2Fd1e00ek4ebabms.cloudfront.net%2Fproduction%2F57d11364-6f3d-4658-9758-93e980f4c32d.jpg?source=next-home-page&dpr=2&width=580&fit=scale-down",
-      "publishedAt": "2026-05-22T13:06:34+00:00",
+      "url": "https://seekingalpha.com/news/4596354-stocks-hold-gains-after-hawkish-fed-comments?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+      "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
+      "publishedAt": "2026-05-22T12:53:23-04:00",
       "category": "Geopol\u00edtica",
       "icon": "\ud83c\udf0d",
       "impact": {
         "tickers": [
-          "XOM",
-          "CVX",
           "LMT",
-          "RTX"
+          "RTX",
+          "NOC",
+          "XOM"
         ],
-        "sector": "Geopol\u00edtica",
-        "sentiment": "neutral"
+        "sector": "Defesa",
+        "sentiment": "negative"
       },
       "heat": 3,
       "feed": "rss"
     },
     {
-      "id": 313663243,
-      "source": "CNBC",
-      "title": "Wall Street is about to enter a historically tough period, and this year it could be even tougher",
-      "summary": "June is historically the worst month for all three of the major averages during midterm election years, according to the Stock Trader's Almanac.",
-      "content": "June is historically the worst month for all three of the major averages during midterm election years, according to the Stock Trader's Almanac.",
-      "url": "https://www.cnbc.com/2026/05/22/wall-street-is-about-to-enter-a-historically-tough-period-and-this-year-it-could-be-even-tougher.html",
-      "image": "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=800&q=80",
-      "publishedAt": "2026-05-22T13:04:16+00:00",
-      "category": "Com\u00e9rcio",
-      "icon": "\ud83d\udea2",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 784423540,
-      "source": "Financial Times",
-      "title": "Trump\u2019s death grip on a shrinking party",
-      "summary": "The fate of the president\u2019s Republican critics shows that today\u2019s GOP is a personality cult \u2014 nothing more",
-      "content": "The fate of the president\u2019s Republican critics shows that today\u2019s GOP is a personality cult \u2014 nothing more",
-      "url": "https://www.ft.com/content/20510912-875a-48e0-89f5-5cf52453b0cd",
-      "image": "https://images.ft.com/v3/image/raw/https%3A%2F%2Fd1e00ek4ebabms.cloudfront.net%2Fproduction%2F7ef2ee84-53ae-4e7c-a748-01641cfb3906.jpg?source=next-home-page&dpr=2&width=580&fit=scale-down",
-      "publishedAt": "2026-05-22T13:00:02+00:00",
+      "id": 892582019,
+      "source": "Nasdaq",
+      "title": "Why Astera Labs Stock Is Roaring Higher This Week",
+      "summary": "Key PointsEvercore ISI hiked its price target on Astera Labs stock.",
+      "content": "Key PointsEvercore ISI hiked its price target on Astera Labs stock.",
+      "url": "https://www.nasdaq.com/articles/why-astera-labs-stock-roaring-higher-week",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-22T16:52:57+00:00",
       "category": "Global",
       "icon": "\ud83c\udf10",
       "impact": {
@@ -384,14 +226,181 @@
       "feed": "rss"
     },
     {
-      "id": 488680061,
-      "source": "MarketWatch",
-      "title": "Nvidia spent $18.6 billion on venture investments in 3 months. Where does the cash trail go?",
-      "summary": "A rapidly growing asset class on Nvidia\u2019s balance sheet reveals how deeply tethered its future is to the financial health of its partners",
-      "content": "A rapidly growing asset class on Nvidia\u2019s balance sheet reveals how deeply tethered its future is to the financial health of its partners",
-      "url": "https://www.marketwatch.com/story/nvidia-spent-18-6-billion-on-venture-investments-in-3-months-where-does-the-cash-trail-go-9b8e53e9?mod=mw_rss_topstories",
+      "id": 468244316,
+      "source": "Yahoo Finance",
+      "title": "Here's Why Navitas Semiconductor Soares Today (Hint: It's Nvidia Related)",
+      "summary": "",
+      "content": "",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/heres-why-navitas-semiconductor-soares-165238944.html",
       "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
-      "publishedAt": "2026-05-22T12:59:00+00:00",
+      "publishedAt": "2026-05-22T16:52:38+00:00",
+      "category": "Tecnologia",
+      "icon": "\ud83d\udcbb",
+      "impact": {
+        "tickers": [
+          "NVDA",
+          "AMD",
+          "INTC",
+          "AVGO"
+        ],
+        "sector": "Tecnologia",
+        "sentiment": "neutral"
+      },
+      "heat": 3,
+      "feed": "rss"
+    },
+    {
+      "id": 105151192,
+      "source": "Seeking Alpha",
+      "title": "UnitedHealth set to snap six straight sessions of losses",
+      "summary": "",
+      "content": "",
+      "url": "https://seekingalpha.com/news/4596401-unitedhealth-set-to-snap-six-straight-sessions-of-losses?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-22T12:51:53-04:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 815467373,
+      "source": "Business Insider",
+      "title": "AI Saved Me Launches to Document How People Are Using AI in Everyday Life",
+      "summary": "&lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;https://www.globenewswire.com/styles/gnw_nitf.css&quot; /&gt;Miami, FL, May 22, 2026 (GLOBE NEWSWIRE) -- &lt;a href=&quot;https://www.aisavedme.org/&quot; rel=&quot;nofollow&quot; target=&quot;_blank&quot;&gt;AI Saved Me&lt;/a&gt;, an independent storytelling site documenting how people are actually using artificial intelligence in everyday life,...",
+      "content": "&lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;https://www.globenewswire.com/styles/gnw_nitf.css&quot; /&gt;Miami, FL, May 22, 2026 (GLOBE NEWSWIRE) -- &lt;a href=&quot;https://www.aisavedme.org/&quot; rel=&quot;nofollow&quot; target=&quot;_blank&quot;&gt;AI Saved Me&lt;/a&gt;, an independent storytelling site documenting how people are actually using artificial intelligence in everyday life,...",
+      "url": "https://markets.businessinsider.com/news/stocks/ai-saved-me-launches-to-document-how-people-are-using-ai-in-everyday-life-1036188878",
+      "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
+      "publishedAt": "2026-05-22T16:51:00+00:00",
+      "category": "Tecnologia",
+      "icon": "\ud83d\udcbb",
+      "impact": {
+        "tickers": [
+          "NVDA",
+          "AMD",
+          "INTC",
+          "AVGO"
+        ],
+        "sector": "Tecnologia",
+        "sentiment": "neutral"
+      },
+      "heat": 3,
+      "feed": "rss"
+    },
+    {
+      "id": 738003786,
+      "source": "insidermonkey.com",
+      "title": "Leopold Aschenbrenner\u2019s Portfolio: 5 Best Stocks to Buy",
+      "summary": "In this article, we will list the 5 Best Stocks in Leopold Aschenbrenner's Portfolio.",
+      "content": "In this article, we will list the 5 Best Stocks in Leopold Aschenbrenner's Portfolio.",
+      "url": "https://www.insidermonkey.com/blog/leopold-aschenbrenners-portfolio-5-best-stocks-to-buy-1766735/",
+      "image": "https://d2gr5kl7dt2z3t.cloudfront.net/blog/wp-content/uploads/2023/11/14184252/ZH-insidermonkey-1700005370095.jpg",
+      "publishedAt": "2026-05-22T16:50:54.000000Z",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "marketaux"
+    },
+    {
+      "id": 259400782,
+      "source": "Business Insider",
+      "title": "Post Oak Group Reports Middle Market Emerging as the Strong Segment of 2026 M&A",
+      "summary": "&lt;i&gt;Post Oak Group, recently named the Top Middle-Market Investment Bank in Texas, is reporting a meaningful acceleration in transaction activity across the middle market.&lt;/i&gt; &lt;strong id=&quot;dateline&quot;&gt;HOUSTON, TX / &lt;a href=&#39;https://www.accessnewswire.com/&#39; rel=&quot;noopener nofollow&quot; target=&quot;_blank&quot;&gt;ACCESS Newswire&lt;/a&gt; / May 22, 2026 / As broader MA...",
+      "content": "&lt;i&gt;Post Oak Group, recently named the Top Middle-Market Investment Bank in Texas, is reporting a meaningful acceleration in transaction activity across the middle market.&lt;/i&gt; &lt;strong id=&quot;dateline&quot;&gt;HOUSTON, TX / &lt;a href=&#39;https://www.accessnewswire.com/&#39; rel=&quot;noopener nofollow&quot; target=&quot;_blank&quot;&gt;ACCESS Newswire&lt;/a&gt; / May 22, 2026 / As broader MA...",
+      "url": "https://markets.businessinsider.com/news/stocks/post-oak-group-reports-middle-market-emerging-as-the-strong-segment-of-2026-m-a-1036188880",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-22T16:50:00+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [
+          "JPM",
+          "BAC",
+          "WFC",
+          "C"
+        ],
+        "sector": "Finan\u00e7as",
+        "sentiment": "neutral"
+      },
+      "heat": 3,
+      "feed": "rss"
+    },
+    {
+      "id": 265456166,
+      "source": "Business Insider",
+      "title": "General Compute Launches the First ASIC-Native Neocloud",
+      "summary": "&lt;i&gt;General Compute has opened its production inference cluster to developers building agent applications, running SambaNova SN40 and SN50 dataflow silicon that posts the fastest independently benchmarked speeds on the MiniMax M2.7 model family.&lt;/i&gt; &lt;strong id=&quot;dateline&quot;&gt;SAN FRANCISCO, CA / &lt;a href=&#39;https://www.accessnewswire.com/&#39; rel=&quot;noopener...",
+      "content": "&lt;i&gt;General Compute has opened its production inference cluster to developers building agent applications, running SambaNova SN40 and SN50 dataflow silicon that posts the fastest independently benchmarked speeds on the MiniMax M2.7 model family.&lt;/i&gt; &lt;strong id=&quot;dateline&quot;&gt;SAN FRANCISCO, CA / &lt;a href=&#39;https://www.accessnewswire.com/&#39; rel=&quot;noopener...",
+      "url": "https://markets.businessinsider.com/news/stocks/general-compute-launches-the-first-asic-native-neocloud-1036188881",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-22T16:50:00+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 142655761,
+      "source": "Business Insider",
+      "title": "IAMPROSAY Expands AI-Powered Legal-Tech Platform With New Automated Tools and Features",
+      "summary": "&lt;strong id=&quot;dateline&quot;&gt;NEW YORK CITY, NY / &lt;a href=&#39;https://www.accessnewswire.com/&#39; rel=&quot;noopener nofollow&quot; target=&quot;_blank&quot;&gt;ACCESS Newswire&lt;/a&gt; / May 22, 2026 / IAMPROSAY, an AI-powered legal-tech platform, today announced the expansion of its platform with the launch of several new automated tools designed to simplify complex administrative and...",
+      "content": "&lt;strong id=&quot;dateline&quot;&gt;NEW YORK CITY, NY / &lt;a href=&#39;https://www.accessnewswire.com/&#39; rel=&quot;noopener nofollow&quot; target=&quot;_blank&quot;&gt;ACCESS Newswire&lt;/a&gt; / May 22, 2026 / IAMPROSAY, an AI-powered legal-tech platform, today announced the expansion of its platform with the launch of several new automated tools designed to simplify complex administrative and...",
+      "url": "https://markets.businessinsider.com/news/stocks/iamprosay-expands-ai-powered-legal-tech-platform-with-new-automated-tools-and-features-1036188882",
+      "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
+      "publishedAt": "2026-05-22T16:50:00+00:00",
+      "category": "Tecnologia",
+      "icon": "\ud83d\udcbb",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 265486936,
+      "source": "Business Insider",
+      "title": "Zacks Small-Cap Research Raises FatPipe (NASDAQ:FATN) Valuation from $6.00 to $6.40 per Share Following Preliminary Fiscal Fourth Quarter Business Update",
+      "summary": "&lt;strong id=&quot;dateline&quot;&gt;SALT LAKE CITY, UT / &lt;a href=&#39;https://www.accessnewswire.com/&#39; rel=&quot;noopener nofollow&quot; target=&quot;_blank&quot;&gt;ACCESS Newswire&lt;/a&gt; / May 22, 2026 / FatPipe, Inc. (NASDAQ:FATN), today announced that Zacks Small-Cap Research has published an updated equity research report on the Company, raising its valuation of FatPipe from $6.",
+      "content": "&lt;strong id=&quot;dateline&quot;&gt;SALT LAKE CITY, UT / &lt;a href=&#39;https://www.accessnewswire.com/&#39; rel=&quot;noopener nofollow&quot; target=&quot;_blank&quot;&gt;ACCESS Newswire&lt;/a&gt; / May 22, 2026 / FatPipe, Inc. (NASDAQ:FATN), today announced that Zacks Small-Cap Research has published an updated equity research report on the Company, raising its valuation of FatPipe from $6.",
+      "url": "https://markets.businessinsider.com/news/stocks/zacks-small-cap-research-raises-fatpipe-nasdaq-fatn-valuation-from-6-00-to-6-40-per-share-following-preliminary-fiscal-fourth-quarter-business-update-1036188883",
+      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
+      "publishedAt": "2026-05-22T16:50:00+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 199583900,
+      "source": "Nasdaq",
+      "title": "This AI Stock Just Secured a Deal That Could Change Its Trajectory Forever",
+      "summary": "Key PointsIren just gained a valuable partner with Nvidia to help accelerate its data center expansion plans.",
+      "content": "Key PointsIren just gained a valuable partner with Nvidia to help accelerate its data center expansion plans.",
+      "url": "https://www.nasdaq.com/articles/ai-stock-just-secured-deal-could-change-its-trajectory-forever",
+      "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
+      "publishedAt": "2026-05-22T16:50:00+00:00",
       "category": "Tecnologia",
       "icon": "\ud83d\udcbb",
       "impact": {
@@ -408,63 +417,101 @@
       "feed": "rss"
     },
     {
-      "id": 375245670,
-      "source": "Utility Dive",
-      "title": "AEP, other Ohio utilities could own nuclear power plants under state bill",
-      "summary": "A new bill in Ohio's House of Representatives could allow utilities like American Electric Power and FirstEnergy to own nuclear power plants, a practice generally barred in the state. While AEP is exploring small modular nuclear projects due to load growth, the Ohio Manufacturers\u2019 Association opposes the bill, arguing it reintroduces financial risks to customers similar to a past bribery scandal. The legislation outlines a regulatory framework for financing and ratemaking, requiring customer agreements and PUC approval based on energy independence and supply needs.",
-      "content": "A new bill in Ohio's House of Representatives could allow utilities like American Electric Power and FirstEnergy to own nuclear power plants, a practice generally barred in the state. While AEP is exploring small modular nuclear projects due to load growth, the Ohio Manufacturers\u2019 Association opposes the bill, arguing it reintroduces financial risks to customers similar to a past bribery scandal. The legislation outlines a regulatory framework for financing and ratemaking, requiring customer agreements and PUC approval based on energy independence and supply needs.",
-      "url": "https://www.utilitydive.com/news/aep-ohio-nuclear-power-smr-bill-oma/820841/",
-      "image": "https://imgproxy.divecdn.com/neQMa4LDXuC3UyeaZsIBiuUm26uKA3DncBqvqY6Cgns/g:ce/rs:fill:1200:675:1/Z3M6Ly9kaXZlc2l0ZS1zdG9yYWdlL2RpdmVpbWFnZS9CV1JYLTMwMF9TTVIuanBn.webp",
-      "publishedAt": "2026-05-22T12:57:58+00:00",
-      "category": "Energia",
-      "icon": "\u26a1",
+      "id": 413495770,
+      "source": "Nasdaq",
+      "title": "Why Quantum Stock Infleqtion Shot Up 41% This Week",
+      "summary": "Key PointsInfleqtion is getting $100 million in funding from the United States government.",
+      "content": "Key PointsInfleqtion is getting $100 million in funding from the United States government.",
+      "url": "https://www.nasdaq.com/articles/why-quantum-stock-infleqtion-shot-41-week",
+      "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
+      "publishedAt": "2026-05-22T16:49:58+00:00",
+      "category": "Tecnologia",
+      "icon": "\ud83d\udcbb",
       "impact": {
-        "tickers": [
-          "AEP",
-          "FE",
-          "CNP",
-          "DUK",
-          "SO"
-        ],
-        "sector": "Energia",
+        "tickers": [],
+        "sector": "",
         "sentiment": "neutral"
       },
-      "heat": 3,
-      "feed": "alphavantage"
+      "heat": 1,
+      "feed": "rss"
     },
     {
-      "id": 599497449,
-      "source": "Nasdaq",
-      "title": "Bay Street May Open With Positive Bias",
-      "summary": "(RTTNews) - Canadian shares may open with a positive bias on Friday amid reports indicating \"slight progress\" in U.S.-Iran talks.",
-      "content": "(RTTNews) - Canadian shares may open with a positive bias on Friday amid reports indicating \"slight progress\" in U.S.-Iran talks.",
-      "url": "https://www.nasdaq.com/articles/bay-street-may-open-positive-bias-0",
-      "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
-      "publishedAt": "2026-05-22T12:55:57+00:00",
-      "category": "Geopol\u00edtica",
-      "icon": "\ud83c\udf0d",
+      "id": 256129323,
+      "source": "Business Insider",
+      "title": "TPA, NCPA Applaud Tennessee Law Banning PBMs from Owning Pharmacies",
+      "summary": "&lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;https://www.globenewswire.com/styles/gnw_nitf.css&quot; /&gt;Alexandria, Va., May 22, 2026 (GLOBE NEWSWIRE) -- Gov. Bill Lee signed the Freedom, Access and Integrity in Registered Pharmacy (FAIR Rx) Act (Senate Bill 2040/House Bill 1959) into law today, making Tennessee the second state to pass legislation...",
+      "content": "&lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;https://www.globenewswire.com/styles/gnw_nitf.css&quot; /&gt;Alexandria, Va., May 22, 2026 (GLOBE NEWSWIRE) -- Gov. Bill Lee signed the Freedom, Access and Integrity in Registered Pharmacy (FAIR Rx) Act (Senate Bill 2040/House Bill 1959) into law today, making Tennessee the second state to pass legislation...",
+      "url": "https://markets.businessinsider.com/news/stocks/tpa-ncpa-applaud-tennessee-law-banning-pbms-from-owning-pharmacies-1036188870",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-22T16:49:43+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
       "impact": {
         "tickers": [
-          "XOM",
-          "CVX",
-          "LMT",
-          "RTX"
+          "PFE",
+          "LLY",
+          "JNJ",
+          "MRK",
+          "AMGN"
         ],
-        "sector": "Geopol\u00edtica",
+        "sector": "Sa\u00fade",
+        "sentiment": "negative"
+      },
+      "heat": 3,
+      "feed": "rss"
+    },
+    {
+      "id": 124467769,
+      "source": "Seeking Alpha",
+      "title": "Qualcomm, AMD lead AI and chip stocks higher",
+      "summary": "",
+      "content": "",
+      "url": "https://seekingalpha.com/news/4596378-qualcomm-amd-lead-ai-and-chip-stocks-higher?utm_source=feed_news_all&utm_medium=referral&feed_item_type=news",
+      "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
+      "publishedAt": "2026-05-22T12:48:48-04:00",
+      "category": "Tecnologia",
+      "icon": "\ud83d\udcbb",
+      "impact": {
+        "tickers": [
+          "NVDA",
+          "AMD",
+          "INTC",
+          "AVGO"
+        ],
+        "sector": "Tecnologia",
         "sentiment": "neutral"
       },
       "heat": 3,
       "feed": "rss"
     },
     {
-      "id": 688981646,
-      "source": "CNBC",
-      "title": "What the AvalonBay, Equity Residential megamerger means for the apartment industry and rents",
-      "summary": "The deal will create one of the largest real estate companies in the U.S., with more than 180,000 rental apartments.",
-      "content": "The deal will create one of the largest real estate companies in the U.S., with more than 180,000 rental apartments.",
-      "url": "https://www.cnbc.com/2026/05/22/avalonbay-equity-residential-apartment-merger.html",
+      "id": 970171292,
+      "source": "livemint.com",
+      "title": "Hindalco profit slumps on heat from Novelis fire",
+      "summary": "The profit decline stemmed mainly from \u20b96,963 crore in one-off expenses linked to the Oswego plant disruption in New York last year. Operations of Novelis, a key supplier of rolled aluminium to can makers and auto companies, were affected by the fire.",
+      "content": "The profit decline stemmed mainly from \u20b96,963 crore in one-off expenses linked to the Oswego plant disruption in New York last year. Operations of Novelis, a key supplier of rolled aluminium to can makers and auto companies, were affected by the fire.",
+      "url": "https://www.livemint.com/companies/hindalco-profit-slumps-on-heat-from-novelis-fire-11779464023292.html",
+      "image": "https://www.livemint.com/lm-img/img/2026/05/22/1600x900/logo/2-0-446661406-DK658-143314-pih-0_1680852045136_1779467746926_5101a3d2-59f2-44aa-aa01-f29068fa1f77.jpg",
+      "publishedAt": "2026-05-22T16:48:43.000000Z",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "marketaux"
+    },
+    {
+      "id": 104208532,
+      "source": "Yahoo Finance",
+      "title": "Northland Raises its Price Target on Synaptics (SYNA)",
+      "summary": "",
+      "content": "",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/northland-raises-price-target-synaptics-164801380.html",
       "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
-      "publishedAt": "2026-05-22T12:55:22+00:00",
+      "publishedAt": "2026-05-22T16:48:01+00:00",
       "category": "Global",
       "icon": "\ud83c\udf10",
       "impact": {
@@ -476,35 +523,704 @@
       "feed": "rss"
     },
     {
-      "id": 909564180,
-      "source": "Benzinga",
-      "title": "NYSE Content Update: Spotify Shares Climb 13% Following Investor Day Event - Intercontinental Exchange  ( N",
-      "summary": "NYSE issues a pre-market daily advisory direct from the trading floor. NEW YORK, May 22, 2026 /CNW/ -- The New York Stock Exchange ( NYSE ) provides a daily pre-market update directly from the NYSE Trading Floor. Access today's NYSE Pre-market update for market insights before trading begins.",
-      "content": "NYSE issues a pre-market daily advisory direct from the trading floor. NEW YORK, May 22, 2026 /CNW/ -- The New York Stock Exchange ( NYSE ) provides a daily pre-market update directly from the NYSE Trading Floor. Access today's NYSE Pre-market update for market insights before trading begins.",
-      "url": "https://www.benzinga.com/pressreleases/26/05/n52742202/nyse-content-update-spotify-shares-climb-13-following-investor-day-event",
-      "image": "https://cdn.benzinga.com/files/imagecache/bz2_opengraph_meta_image_400x300/sites/all/themes/bz2/images/bz-icon.png",
-      "publishedAt": "2026-05-22T12:55:00+00:00",
+      "id": 369637407,
+      "source": "Yahoo Finance",
+      "title": "Tower Semiconductor (TSEM): The Best High Return Semiconductor Stock to Buy Now",
+      "summary": "",
+      "content": "",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/tower-semiconductor-tsem-best-high-164801308.html",
+      "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
+      "publishedAt": "2026-05-22T16:48:01+00:00",
+      "category": "Tecnologia",
+      "icon": "\ud83d\udcbb",
+      "impact": {
+        "tickers": [
+          "NVDA",
+          "AMD",
+          "INTC",
+          "AVGO"
+        ],
+        "sector": "Tecnologia",
+        "sentiment": "neutral"
+      },
+      "heat": 3,
+      "feed": "rss"
+    },
+    {
+      "id": 380511624,
+      "source": "Business Insider",
+      "title": "MEDX HOLDINGS ANNOUNCES Q1 2026 HIGHLIGHTS, MULTI-CITY EXPANSION, AND CORPORATE ACTION TO REBRAND AS DAZED INC. (TICKER: DAZE)",
+      "summary": "&lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;https://www.globenewswire.com/styles/gnw_nitf.css&quot; /&gt;Austin, Texas, May 22, 2026 (GLOBE NEWSWIRE) -- &lt;b&gt;MEDX HOLDINGS ANNOUNCES Q1 2026 HIGHLIGHTS, MULTI-CITY EXPANSION, AND CORPORATE ACTION TO REBRAND AS DAZED INC. (TICKER: DAZE)&lt;/b&gt;&lt;b&gt;AUSTIN, Texas \u00e2\u0080\u0094 May 22, 2026&lt;/b&gt; \u00e2\u0080\u0094 MedX Holdings, Inc. (OTC:",
+      "content": "&lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;https://www.globenewswire.com/styles/gnw_nitf.css&quot; /&gt;Austin, Texas, May 22, 2026 (GLOBE NEWSWIRE) -- &lt;b&gt;MEDX HOLDINGS ANNOUNCES Q1 2026 HIGHLIGHTS, MULTI-CITY EXPANSION, AND CORPORATE ACTION TO REBRAND AS DAZED INC. (TICKER: DAZE)&lt;/b&gt;&lt;b&gt;AUSTIN, Texas \u00e2\u0080\u0094 May 22, 2026&lt;/b&gt; \u00e2\u0080\u0094 MedX Holdings, Inc. (OTC:",
+      "url": "https://markets.businessinsider.com/news/stocks/medx-holdings-announces-q1-2026-highlights-multi-city-expansion-and-corporate-action-to-rebrand-as-dazed-inc-ticker-daze-1036188869",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-22T16:47:12+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 1618399,
+      "source": "Yahoo Finance",
+      "title": "Raymond James Raises the Firm\u2019s Price Target on nLIGHT (LASR)",
+      "summary": "",
+      "content": "",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/raymond-james-raises-firm-price-164710364.html",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-22T16:47:10+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 735229607,
+      "source": "Yahoo Finance",
+      "title": "Diodes (DIOD) Appoints Angie Chen Button as Chairwoman of the Board",
+      "summary": "",
+      "content": "",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/diodes-diod-appoints-angie-chen-164704128.html",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-22T16:47:04+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 354547853,
+      "source": "Business Insider",
+      "title": "VS Media Enters the AI Smart Living Sector to Explore New Growth Opportunities",
+      "summary": "&lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;https://www.globenewswire.com/styles/gnw_nitf.css&quot; /&gt;&lt;p align=&quot;justify&quot;&gt;SINGAPORE, May 22, 2026 (GLOBE NEWSWIRE) -- VS Media Holdings Limited (NASDAQ: VSME) (&quot;VS Media&quot; or the &quot;Company&quot;), a company managing a global network of digital Creators who create and publish content to social media...",
+      "content": "&lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;https://www.globenewswire.com/styles/gnw_nitf.css&quot; /&gt;&lt;p align=&quot;justify&quot;&gt;SINGAPORE, May 22, 2026 (GLOBE NEWSWIRE) -- VS Media Holdings Limited (NASDAQ: VSME) (&quot;VS Media&quot; or the &quot;Company&quot;), a company managing a global network of digital Creators who create and publish content to social media...",
+      "url": "https://markets.businessinsider.com/news/stocks/vs-media-enters-the-ai-smart-living-sector-to-explore-new-growth-opportunities-1036188868",
+      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
+      "publishedAt": "2026-05-22T16:47:00+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 873723008,
+      "source": "Yahoo Finance",
+      "title": "B. Riley Raises its Price Target on Silicon Motion (SIMO)",
+      "summary": "",
+      "content": "",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/b-riley-raises-price-target-164657913.html",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-22T16:46:57+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 180251488,
+      "source": "Yahoo Finance",
+      "title": "Is Astera Labs (ALAB) the Best High Return Semiconductor Stock to Buy Now?",
+      "summary": "",
+      "content": "",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/astera-labs-alab-best-high-164651554.html",
+      "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
+      "publishedAt": "2026-05-22T16:46:51+00:00",
+      "category": "Tecnologia",
+      "icon": "\ud83d\udcbb",
+      "impact": {
+        "tickers": [
+          "NVDA",
+          "AMD",
+          "INTC",
+          "AVGO"
+        ],
+        "sector": "Tecnologia",
+        "sentiment": "neutral"
+      },
+      "heat": 3,
+      "feed": "rss"
+    },
+    {
+      "id": 919433965,
+      "source": "Yahoo Finance",
+      "title": "Evercore ISI Raises its Price Target on GLOBALFOUNDRIES (GFS)",
+      "summary": "",
+      "content": "",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/evercore-isi-raises-price-target-164642699.html",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-22T16:46:42+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 268977474,
+      "source": "Yahoo Finance",
+      "title": "Here\u2019s Why MACOM (MTSI) is Among the 8 High Return Semiconductor Stocks to Buy Now",
+      "summary": "",
+      "content": "",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/why-macom-mtsi-among-8-164628884.html",
+      "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
+      "publishedAt": "2026-05-22T16:46:28+00:00",
+      "category": "Tecnologia",
+      "icon": "\ud83d\udcbb",
+      "impact": {
+        "tickers": [
+          "NVDA",
+          "AMD",
+          "INTC",
+          "AVGO"
+        ],
+        "sector": "Tecnologia",
+        "sentiment": "neutral"
+      },
+      "heat": 3,
+      "feed": "rss"
+    },
+    {
+      "id": 484350595,
+      "source": "Yahoo Finance",
+      "title": "Tech, Media & Telecom Roundup: Market Talk",
+      "summary": "",
+      "content": "",
+      "url": "https://www.wsj.com/business/tech-media-telecom-roundup-market-talk-bf3877c0?siteid=yhoof2&yptr=yahoo",
+      "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
+      "publishedAt": "2026-05-22T16:44:00+00:00",
+      "category": "Tecnologia",
+      "icon": "\ud83d\udcbb",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 251908547,
+      "source": "Business Insider",
+      "title": "Advanced Painting Pty Ltd Shares Insights on Common Homeowner Painting Issues Across Sydney Residential Properties",
+      "summary": "&lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;https://www.globenewswire.com/styles/gnw_nitf.css&quot; /&gt;Castle Hill, NSW, May 22, 2026 (GLOBE NEWSWIRE) -- &lt;a href=&quot;https://advancepainting.com.au/&quot; rel=&quot;nofollow&quot; target=&quot;_blank&quot;&gt;Advanced Painting Pty Ltd &lt;/a&gt; today shared insights into common residential painting issues, repainting trends, and...",
+      "content": "&lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;https://www.globenewswire.com/styles/gnw_nitf.css&quot; /&gt;Castle Hill, NSW, May 22, 2026 (GLOBE NEWSWIRE) -- &lt;a href=&quot;https://advancepainting.com.au/&quot; rel=&quot;nofollow&quot; target=&quot;_blank&quot;&gt;Advanced Painting Pty Ltd &lt;/a&gt; today shared insights into common residential painting issues, repainting trends, and...",
+      "url": "https://markets.businessinsider.com/news/stocks/advanced-painting-pty-ltd-shares-insights-on-common-homeowner-painting-issues-across-sydney-residential-properties-1036188863",
+      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
+      "publishedAt": "2026-05-22T16:44:00+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 918021657,
+      "source": "Yahoo Finance",
+      "title": "Imperial Petroleum Inc. Q1 2026 Earnings Call Summary",
+      "summary": "",
+      "content": "",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/imperial-petroleum-inc-q1-2026-164337176.html",
+      "image": "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80",
+      "publishedAt": "2026-05-22T16:43:37+00:00",
+      "category": "Energia",
+      "icon": "\u26a1",
+      "impact": {
+        "tickers": [
+          "XOM",
+          "CVX",
+          "COP",
+          "OXY",
+          "SLB"
+        ],
+        "sector": "Energia",
+        "sentiment": "neutral"
+      },
+      "heat": 3,
+      "feed": "rss"
+    },
+    {
+      "id": 902378136,
+      "source": "Yahoo Finance",
+      "title": "Global Ship Lease, Inc. Q1 2026 Earnings Call Summary",
+      "summary": "",
+      "content": "",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/global-ship-lease-inc-q1-164328191.html",
+      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
+      "publishedAt": "2026-05-22T16:43:28+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 61524834,
+      "source": "Yahoo Finance",
+      "title": "BJ's Wholesale Club Holdings, Inc. Q1 2026 Earnings Call Summary",
+      "summary": "",
+      "content": "",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/bjs-wholesale-club-holdings-inc-164304150.html",
+      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
+      "publishedAt": "2026-05-22T16:43:04+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 436365506,
+      "source": "Nasdaq",
+      "title": "Dollar Gains and Gold Falls on Hawkish Waller",
+      "summary": "The dollar index (DXY00 ) today is up +0.15%, just below Thursday's 6-week high. The dollar is supported by hawkish comments from Fed Governor Christopher Waller, who said he supports a Fed rate increase if inflation doesn't soon slow. Gains in the dollar are limited by today's downward revision to...",
+      "content": "The dollar index (DXY00 ) today is up +0.15%, just below Thursday's 6-week high. The dollar is supported by hawkish comments from Fed Governor Christopher Waller, who said he supports a Fed rate increase if inflation doesn't soon slow. Gains in the dollar are limited by today's downward revision to...",
+      "url": "https://www.nasdaq.com/articles/dollar-gains-and-gold-falls-hawkish-waller",
+      "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
+      "publishedAt": "2026-05-22T16:42:43+00:00",
+      "category": "Geopol\u00edtica",
+      "icon": "\ud83c\udf0d",
+      "impact": {
+        "tickers": [
+          "JPM",
+          "GS",
+          "BAC",
+          "TLT",
+          "NEM"
+        ],
+        "sector": "Finan\u00e7as",
+        "sentiment": "negative"
+      },
+      "heat": 3,
+      "feed": "rss"
+    },
+    {
+      "id": 131842795,
+      "source": "Nasdaq",
+      "title": "Corn Showing Steady Trade on Friday Morning",
+      "summary": "Corn price action is unchanged across the front months so far on Friday morning. Futures were down 1 \u00be to 4 \u00bc cents across the board on Thursday, as pressure pushed the market lower into the close. Preliminary open interest was down 8,417 contracts, implying modest long liquidation. The CmdtyView...",
+      "content": "Corn price action is unchanged across the front months so far on Friday morning. Futures were down 1 \u00be to 4 \u00bc cents across the board on Thursday, as pressure pushed the market lower into the close. Preliminary open interest was down 8,417 contracts, implying modest long liquidation. The CmdtyView...",
+      "url": "https://www.nasdaq.com/articles/corn-showing-steady-trade-friday-morning",
+      "image": "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=800&q=80",
+      "publishedAt": "2026-05-22T16:42:43+00:00",
+      "category": "Com\u00e9rcio",
+      "icon": "\ud83d\udea2",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 854071038,
+      "source": "seekingalpha.com",
+      "title": "What\u2019s next for Super Micro Computer after mixed FQ3 results? (SMCI:NASDAQ)",
+      "summary": "Super Micro (SMCI) Q3 FY2026: revenue miss, EPS beat on margin rebound.",
+      "content": "Super Micro (SMCI) Q3 FY2026: revenue miss, EPS beat on margin rebound.",
+      "url": "https://seekingalpha.com/news/4596171-whats-next-for-super-micro-computer-after-mixed-fq3-results",
+      "image": "https://static.seekingalpha.com/assets/og_image_1200-29b2bfe1a595477db6826bd2126c63ac2091efb7ec76347a8e7f81ba17e3de6c.png",
+      "publishedAt": "2026-05-22T16:42:28.000000Z",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "marketaux"
+    },
+    {
+      "id": 329480974,
+      "source": "Yahoo Finance",
+      "title": "Stocks climb, yields dip as investors focus on US-Iran talks",
+      "summary": "",
+      "content": "",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/stocks-rise-dollar-six-week-014105963.html",
+      "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
+      "publishedAt": "2026-05-22T16:41:16+00:00",
+      "category": "Geopol\u00edtica",
+      "icon": "\ud83c\udf0d",
+      "impact": {
+        "tickers": [
+          "XOM",
+          "CVX",
+          "LMT",
+          "RTX"
+        ],
+        "sector": "Geopol\u00edtica",
+        "sentiment": "positive"
+      },
+      "heat": 3,
+      "feed": "rss"
+    },
+    {
+      "id": 634974121,
+      "source": "Yahoo Finance",
+      "title": "The Tax Math That Makes These Dividend Stocks Worth $10,080 More Per Year",
+      "summary": "",
+      "content": "",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/tax-math-makes-dividend-stocks-164042670.html",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-22T16:40:42+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 714830402,
+      "source": "MarketWatch",
+      "title": "BJ\u2019s Wholesale\u2019s earnings show that cheap gas matters for people",
+      "summary": "Consumers are increasingly feeling the pressure of stubbornly high inflation, particularly as the continuation of the Iran war has kept oil and gas prices at historically high levels.",
+      "content": "Consumers are increasingly feeling the pressure of stubbornly high inflation, particularly as the continuation of the Iran war has kept oil and gas prices at historically high levels.",
+      "url": "https://www.marketwatch.com/story/bjs-wholesales-earnings-show-that-cheap-gas-matters-for-people-8469d937?mod=mw_rss_topstories",
+      "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
+      "publishedAt": "2026-05-22T16:40:00+00:00",
+      "category": "Geopol\u00edtica",
+      "icon": "\ud83c\udf0d",
+      "impact": {
+        "tickers": [
+          "XOM",
+          "CVX",
+          "COP",
+          "OXY",
+          "SLB"
+        ],
+        "sector": "Energia",
+        "sentiment": "negative"
+      },
+      "heat": 3,
+      "feed": "rss"
+    },
+    {
+      "id": 443910,
+      "source": "Nasdaq",
+      "title": "Prediction: Chainlink (LINK) Will Be Worth $20 Billion in 5 Years",
+      "summary": "Key PointsLINK&rsquo;s price has dropped 80% from its all-time high.",
+      "content": "Key PointsLINK&rsquo;s price has dropped 80% from its all-time high.",
+      "url": "https://www.nasdaq.com/articles/prediction-chainlink-link-will-be-worth-20-billion-5-years",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-22T16:40:00+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 891724110,
+      "source": "Yahoo Finance",
+      "title": "CrowdStrike Stock Earns Its Place Back On Elite List",
+      "summary": "",
+      "content": "",
+      "url": "https://www.investors.com/stock-lists/ibd-50/crowdstrike-stock-crwd-cybersecurity-cyberattack/?src=A00220&yptr=yahoo",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-22T16:38:28+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 854403708,
+      "source": "Nasdaq",
+      "title": "CrowdStrike Holdings Takes Over #72 Spot From Netflix",
+      "summary": "In a study of analyst recommendations at the major brokerages, for the underlying components of the S&amp;P 500, CrowdStrike Holdings Inc (Symbol: CRWD) has taken over the #72 spot from Netflix Inc (Symbol: NFLX), according to ETF Channel. Below is a chart of CrowdStrike Holdin",
+      "content": "In a study of analyst recommendations at the major brokerages, for the underlying components of the S&amp;P 500, CrowdStrike Holdings Inc (Symbol: CRWD) has taken over the #72 spot from Netflix Inc (Symbol: NFLX), according to ETF Channel. Below is a chart of CrowdStrike Holdin",
+      "url": "https://www.nasdaq.com/articles/crowdstrike-holdings-takes-over-72-spot-netflix",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-22T16:37:12+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 874521908,
+      "source": "North Shore News",
+      "title": "Iran war hammers CAE's bottom line, with training centre shutdowns underway",
+      "summary": "The ongoing Iran war is significantly impacting CAE Inc.'s financial performance, leading the flight simulator maker to scale back its global operations to cut costs. CEO Matthew Bromberg reported a 46% drop in fourth-quarter profit, attributing it to reduced airline flight schedules and pilot training in the conflict zone, as well as soaring jet fuel costs. As part of a \"reset year,\" CAE plans to remove 10% of its commercial flight simulators and shut down four to six training centers to reduce its global footprint by 300,000 square feet.",
+      "content": "The ongoing Iran war is significantly impacting CAE Inc.'s financial performance, leading the flight simulator maker to scale back its global operations to cut costs. CEO Matthew Bromberg reported a 46% drop in fourth-quarter profit, attributing it to reduced airline flight schedules and pilot training in the conflict zone, as well as soaring jet fuel costs. As part of a \"reset year,\" CAE plans to remove 10% of its commercial flight simulators and shut down four to six training centers to reduce its global footprint by 300,000 square feet.",
+      "url": "https://www.nsnews.com/national-business/iran-war-hammers-caes-bottom-line-with-training-centre-shutdowns-underway-12315367",
+      "image": "https://www.vmcdn.ca/f/files/shared/feeds/cp/2026/05/10ede329222bb9279345d3ec357bf627adf7db7f2d3c95f38e9ce47e48277bed.jpg;w=960",
+      "publishedAt": "2026-05-22T16:37:06+00:00",
+      "category": "Geopol\u00edtica",
+      "icon": "\ud83c\udf0d",
+      "impact": {
+        "tickers": [
+          "CAE",
+          "DAL"
+        ],
+        "sector": "Defesa",
+        "sentiment": "negative"
+      },
+      "heat": 2,
+      "feed": "alphavantage"
+    },
+    {
+      "id": 973825940,
+      "source": "Nasdaq",
+      "title": "S&P 500 Analyst Moves: CRWD",
+      "summary": "The latest tally of analyst opinions from the major brokerage houses shows that among the components of the S&amp;P 500 index, CrowdStrike Holdings is now the #72 analyst pick, moving up by 2 spots. This rank is formed by averaging the analyst opinions for each componen",
+      "content": "The latest tally of analyst opinions from the major brokerage houses shows that among the components of the S&amp;P 500 index, CrowdStrike Holdings is now the #72 analyst pick, moving up by 2 spots. This rank is formed by averaging the analyst opinions for each componen",
+      "url": "https://www.nasdaq.com/articles/sp-500-analyst-moves-crwd",
+      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
+      "publishedAt": "2026-05-22T16:35:50+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 319703552,
+      "source": "Yahoo Finance",
+      "title": "Lumentum, IBD Stock Of The Day, Focuses On 'Execution' Amid AI Optical Boom",
+      "summary": "",
+      "content": "",
+      "url": "https://www.investors.com/research/ibd-stock-of-the-day/lumentum-stock-artificial-intelligence-optical-data-center-boom/?src=A00220&yptr=yahoo",
+      "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
+      "publishedAt": "2026-05-22T16:35:18+00:00",
+      "category": "Tecnologia",
+      "icon": "\ud83d\udcbb",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 599666910,
+      "source": "Yahoo Finance",
+      "title": "Stock Market Today: Dow Charges Higher As These Stocks Soar Ahead Of SpaceX IPO Plans (Live Coverage)",
+      "summary": "",
+      "content": "",
+      "url": "https://www.investors.com/market-trend/stock-market-today/dow-jones-sp500-nasdaq-inflation-survey-amd-stock/?src=A00220&yptr=yahoo",
+      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
+      "publishedAt": "2026-05-22T16:35:09+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "rss"
+    },
+    {
+      "id": 435059922,
+      "source": "Nasdaq",
+      "title": "Is Zcash Really Like Having a Swiss Bank in Your Pocket?",
+      "summary": "Key PointsSwiss banks were once proposed as the most discreet and private way to do banking.",
+      "content": "Key PointsSwiss banks were once proposed as the most discreet and private way to do banking.",
+      "url": "https://www.nasdaq.com/articles/zcash-really-having-swiss-bank-your-pocket",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
+      "publishedAt": "2026-05-22T16:35:00+00:00",
+      "category": "Global",
+      "icon": "\ud83c\udf10",
+      "impact": {
+        "tickers": [
+          "JPM",
+          "BAC",
+          "WFC",
+          "C"
+        ],
+        "sector": "Finan\u00e7as",
+        "sentiment": "negative"
+      },
+      "heat": 3,
+      "feed": "rss"
+    },
+    {
+      "id": 132062626,
+      "source": "ChartMill",
+      "title": "These S&P500 stocks are moving in today's session",
+      "summary": "Stay updated with the movement of S&P500 stocks in today's session. Discover which S&P500 stocks are making waves on Friday.",
+      "content": "Stay updated with the movement of S&P500 stocks in today's session. Discover which S&P500 stocks are making waves on Friday.",
+      "url": "https://finnhub.io/api/news?id=656276431bf2849cd7dbc2270967c87928613c3509c3e38c7b758c358189f98c",
+      "image": "https://www.chartmill.com/images/uploads/CM_Top_Movers_Small_free_2b4ff2fc22.webp",
+      "publishedAt": "2026-05-22T16:35:00+00:00",
       "category": "Mercados",
       "icon": "\ud83d\udcb0",
       "impact": {
         "tickers": [
-          "GOOG"
+          "QCOM"
+        ],
+        "sector": "",
+        "sentiment": "neutral"
+      },
+      "heat": 1,
+      "feed": "finnhub_company"
+    },
+    {
+      "id": 241292983,
+      "source": "Nasdaq",
+      "title": "Capital Group Growth ETF Experiences Big Inflow",
+      "summary": "Looking today at week-over-week shares outstanding changes among the universe of ETFs covered at ETF Channel, one standout is the Capital Group Growth ETF (Symbol: CGGR) where we have detected an approximate $211.9 million dollar inflow -- that's a 0.9% increase week over week i",
+      "content": "Looking today at week-over-week shares outstanding changes among the universe of ETFs covered at ETF Channel, one standout is the Capital Group Growth ETF (Symbol: CGGR) where we have detected an approximate $211.9 million dollar inflow -- that's a 0.9% increase week over week i",
+      "url": "https://www.nasdaq.com/articles/capital-group-growth-etf-experiences-big-inflow",
+      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
+      "publishedAt": "2026-05-22T16:33:19+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [
+          "GS",
+          "MS",
+          "JPM"
+        ],
+        "sector": "Finan\u00e7as",
+        "sentiment": "positive"
+      },
+      "heat": 2,
+      "feed": "rss"
+    },
+    {
+      "id": 488232317,
+      "source": "Yahoo Finance",
+      "title": "Here's Another Stock Getting A Lift From The Iran War. It's Racing Past Two Buy Points.",
+      "summary": "",
+      "content": "",
+      "url": "https://www.investors.com/news/alcoa-stock-buy-points-ubs-iran-war/?src=A00220&yptr=yahoo",
+      "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
+      "publishedAt": "2026-05-22T16:29:48+00:00",
+      "category": "Geopol\u00edtica",
+      "icon": "\ud83c\udf0d",
+      "impact": {
+        "tickers": [
+          "LMT",
+          "RTX",
+          "NOC",
+          "XOM",
+          "CVX"
+        ],
+        "sector": "Defesa",
+        "sentiment": "negative"
+      },
+      "heat": 3,
+      "feed": "rss"
+    },
+    {
+      "id": 542322376,
+      "source": "MarketBeat",
+      "title": "Cadence Design Systems (NASDAQ:CDNS) Sets New 52-Week High - Should You Buy?",
+      "summary": "Cadence Design Systems (NASDAQ:CDNS) reached a new 52-week high, trading at $376.83, following strong earnings that topped estimates and raised guidance for FY2026 and Q2 2026. Analyst sentiment remains largely positive with a \"Moderate Buy\" consensus, despite recent insider share sales; institutional ownership is high at 84.85%. The company continues to show strong financial metrics with a market cap of $104.72 billion.",
+      "content": "Cadence Design Systems (NASDAQ:CDNS) reached a new 52-week high, trading at $376.83, following strong earnings that topped estimates and raised guidance for FY2026 and Q2 2026. Analyst sentiment remains largely positive with a \"Moderate Buy\" consensus, despite recent insider share sales; institutional ownership is high at 84.85%. The company continues to show strong financial metrics with a market cap of $104.72 billion.",
+      "url": "https://www.marketbeat.com/instant-alerts/cadence-design-systems-nasdaqcdns-sets-new-52-week-high-should-you-buy-2026-05-22/",
+      "image": "https://www.marketbeat.com/logos/cadence-design-syste-logo-1200x675.jpg",
+      "publishedAt": "2026-05-22T16:29:13+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [
+          "CDNS",
+          "KEYS"
         ],
         "sector": "",
         "sentiment": "positive"
+      },
+      "heat": 2,
+      "feed": "alphavantage"
+    },
+    {
+      "id": 765939916,
+      "source": "GuruFocus",
+      "title": "Insider Sell Alert: Wee Cheong Sells Shares of Principal Financi",
+      "summary": "Wee Cheong, President - Asia & Middle East of Principal Financial Group Inc (PFG), sold 10,745 shares of the company on May 21, 2026, reducing his total holdings to 66,443 shares. This transaction is part of a trend of 8 insider sells versus 1 insider buy for PFG over the past year. With the stock trading at $103.13 and a GF Value of $89.61, the company appears modestly overvalued based on GuruFocus metrics, and its P/E ratio of 14.97 is higher than both the industry median and its historical median.",
+      "content": "Wee Cheong, President - Asia & Middle East of Principal Financial Group Inc (PFG), sold 10,745 shares of the company on May 21, 2026, reducing his total holdings to 66,443 shares. This transaction is part of a trend of 8 insider sells versus 1 insider buy for PFG over the past year. With the stock trading at $103.13 and a GF Value of $89.61, the company appears modestly overvalued based on GuruFocus metrics, and its P/E ratio of 14.97 is higher than both the industry median and its historical median.",
+      "url": "https://www.gurufocus.com/news/8877868/insider-sell-alert-wee-cheong-sells-shares-of-principal-financial-group-inc-pfg",
+      "image": "https://static.gurufocus.com/cdn-cgi/image/width=600,quality=100/logos/0C000008LC.png?14",
+      "publishedAt": "2026-05-22T16:27:12+00:00",
+      "category": "Mercados",
+      "icon": "\ud83d\udcb0",
+      "impact": {
+        "tickers": [
+          "PFG"
+        ],
+        "sector": "Geopol\u00edtica",
+        "sentiment": "negative"
       },
       "heat": 1,
       "feed": "alphavantage"
     },
     {
-      "id": 665513970,
+      "id": 418582477,
       "source": "MarketWatch",
-      "title": "Kevin Warsh takes over as Fed chair today \u2014 after first swearing-in at White House in nearly 40 years",
-      "summary": "President Donald Trump will host a swearing-in ceremony for incoming Federal Reserve Chair Kevin Warsh at the White House on Friday, a White House official said.",
-      "content": "President Donald Trump will host a swearing-in ceremony for incoming Federal Reserve Chair Kevin Warsh at the White House on Friday, a White House official said.",
-      "url": "https://www.marketwatch.com/story/kevin-warsh-will-be-the-first-fed-chair-sworn-in-at-the-white-house-in-almost-40-years-55254337?mod=mw_rss_topstories",
+      "title": "Warsh gets a much warmer Wall Street welcome as Fed chair than his recent predecessors",
+      "summary": "For only the 10th time in eight decades, a new Fed chair has been sworn in. Stocks are rising, as is historically typical, even if the last two swear-ins saw sharp selloffs.",
+      "content": "For only the 10th time in eight decades, a new Fed chair has been sworn in. Stocks are rising, as is historically typical, even if the last two swear-ins saw sharp selloffs.",
+      "url": "https://www.marketwatch.com/story/warsh-gets-a-much-warmer-wall-street-welcome-as-fed-chair-than-his-recent-predecessors-a615f23f?mod=mw_rss_topstories",
       "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
-      "publishedAt": "2026-05-22T12:53:00+00:00",
+      "publishedAt": "2026-05-22T16:27:00+00:00",
       "category": "Geopol\u00edtica",
       "icon": "\ud83c\udf0d",
       "impact": {
@@ -522,774 +1238,29 @@
       "feed": "rss"
     },
     {
-      "id": 487229550,
-      "source": "Benzinga",
-      "title": "What's Going On With Vida Global Stock Friday? - Vida Global  ( AMEX:VIDA )",
-      "summary": "The decline comes during a volatile week for the newly public company, which closed its initial public offering ( IPO ) on Monday. The company's Class A common stock originally began trading on the NYSE American LLC and NYSE Texas, Inc. on May 15.",
-      "content": "The decline comes during a volatile week for the newly public company, which closed its initial public offering ( IPO ) on Monday. The company's Class A common stock originally began trading on the NYSE American LLC and NYSE Texas, Inc. on May 15.",
-      "url": "https://www.benzinga.com/trading-ideas/movers/26/05/52742154/whats-going-on-with-vida-global-stock-friday",
-      "image": "https://cdn.benzinga.com/cdn-cgi/image/width=1200,height=800,fit=crop/files/images/story/2026/05/22/Lookonchain-Questions-Trader.jpeg",
-      "publishedAt": "2026-05-22T12:52:36+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [
-          "GOOG"
-        ],
-        "sector": "",
-        "sentiment": "positive"
-      },
-      "heat": 1,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 847915524,
-      "source": "Benzinga",
-      "title": "Ruth Rogers, Baroness Rogers of Riverside, Reflects on Life Through the Lens of Food with Consello's Decl",
-      "summary": "Consello is an Advisory and Investing Platform with offices in New York, Miami, Atlanta, Dublin, Belfast, London, and Abu Dhabi. Consello's investment business, Consello Capital, identifies high-potential mid-market companies and invests capital and expertise to transform their growth.",
-      "content": "Consello is an Advisory and Investing Platform with offices in New York, Miami, Atlanta, Dublin, Belfast, London, and Abu Dhabi. Consello's investment business, Consello Capital, identifies high-potential mid-market companies and invests capital and expertise to transform their growth.",
-      "url": "https://www.benzinga.com/pressreleases/26/05/n52742152/ruth-rogers-baroness-rogers-of-riverside-reflects-on-life-through-the-lens-of-food-with-consellos-",
-      "image": "https://cdn.benzinga.com/files/imagecache/bz2_opengraph_meta_image_400x300/sites/all/themes/bz2/images/bz-icon.png",
-      "publishedAt": "2026-05-22T12:51:00+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [
-          "GOOG"
-        ],
-        "sector": "",
-        "sentiment": "positive"
-      },
-      "heat": 1,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 257457364,
+      "id": 128452014,
       "source": "Nasdaq",
-      "title": "The Trade Desk Just Waved a Red Flag, and It's not the Quarterly Results",
-      "summary": "Key PointsThe Trade Desk's revenue growth has slowed for four quarters in a row.",
-      "content": "Key PointsThe Trade Desk's revenue growth has slowed for four quarters in a row.",
-      "url": "https://www.nasdaq.com/articles/trade-desk-just-waved-red-flag-and-its-not-quarterly-results",
-      "image": "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=800&q=80",
-      "publishedAt": "2026-05-22T12:50:00+00:00",
-      "category": "Com\u00e9rcio",
-      "icon": "\ud83d\udea2",
-      "impact": {
-        "tickers": [],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "rss"
-    },
-    {
-      "id": 674819032,
-      "source": "Nasdaq",
-      "title": "U.S. Stocks May See Initial Strength On Optimism About U.S.-Iran Deal",
-      "summary": "(RTTNews) - After recovering from an early pullback to end the previous session modestly higher, stocks may see further upside in early trading on Friday. The major index futures are currently pointing to a higher open for the markets, with the S&P 500 futures up by 0.4 percent.",
-      "content": "(RTTNews) - After recovering from an early pullback to end the previous session modestly higher, stocks may see further upside in early trading on Friday. The major index futures are currently pointing to a higher open for the markets, with the S&P 500 futures up by 0.4 percent.",
-      "url": "https://www.nasdaq.com/articles/us-stocks-may-see-initial-strength-optimism-about-us-iran-deal",
+      "title": "Stocks Rebound as Crude Oil Falls on Hopes for a US-Iran Deal",
+      "summary": "The S&P 500 Index ($SPX ) (SPY ) on Thursday closed up +0.17%, the Dow Jones Industrial Average ($DOWI ) (DIA ) closed up +0.55%, and the Nasdaq 100 Index ($IUXX ) (QQQ ) closed up +0.20%. June E-mini S&P futures (ESM26 ) rose +0.18%, and June E-mini Nasdaq futures...",
+      "content": "The S&P 500 Index ($SPX ) (SPY ) on Thursday closed up +0.17%, the Dow Jones Industrial Average ($DOWI ) (DIA ) closed up +0.55%, and the Nasdaq 100 Index ($IUXX ) (QQQ ) closed up +0.20%. June E-mini S&P futures (ESM26 ) rose +0.18%, and June E-mini Nasdaq futures...",
+      "url": "https://www.nasdaq.com/articles/stocks-rebound-crude-oil-falls-hopes-us-iran-deal",
       "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
-      "publishedAt": "2026-05-22T12:49:37+00:00",
+      "publishedAt": "2026-05-22T16:26:44+00:00",
       "category": "Geopol\u00edtica",
       "icon": "\ud83c\udf0d",
       "impact": {
         "tickers": [
           "XOM",
           "CVX",
-          "LMT",
-          "RTX"
-        ],
-        "sector": "Geopol\u00edtica",
-        "sentiment": "positive"
-      },
-      "heat": 3,
-      "feed": "rss"
-    },
-    {
-      "id": 43562234,
-      "source": "CoinDesk",
-      "title": "Wall Street and crypto are merging again as OKX rolls out traditional oil benchmarks",
-      "summary": "Intercontinental Exchange (ICE), owner of the New York Stock Exchange, and crypto exchange OKX are collaborating to launch perpetual oil futures based on ICE\u2019s Brent and WTI benchmark prices. This partnership will provide OKX's 120 million retail traders access to regulated energy products, highlighting the increasing convergence of traditional finance and crypto. The move comes as regulators plan to oversee perpetual futures and follows the success of similar non-expiring oil futures offered by Hyperliquid.",
-      "content": "Intercontinental Exchange (ICE), owner of the New York Stock Exchange, and crypto exchange OKX are collaborating to launch perpetual oil futures based on ICE\u2019s Brent and WTI benchmark prices. This partnership will provide OKX's 120 million retail traders access to regulated energy products, highlighting the increasing convergence of traditional finance and crypto. The move comes as regulators plan to oversee perpetual futures and follows the success of similar non-expiring oil futures offered by Hyperliquid.",
-      "url": "https://www.coindesk.com/business/2026/05/22/okx-and-ice-are-bringing-never-expiring-oil-futures-to-120-million-crypto-users",
-      "image": "https://www.coindesk.com/_next/image?url=https%3A%2F%2Fcdn.sanity.io%2Fimages%2Fs3y3vcno%2Fproduction%2Fca9b2a4236d3b64cddb157ea18300e69cd1b587a-1200x800.jpg%3Fauto%3Dformat&w=3840&q=75",
-      "publishedAt": "2026-05-22T12:48:00+00:00",
-      "category": "Energia",
-      "icon": "\u26a1",
-      "impact": {
-        "tickers": [
-          "ICE"
+          "COP",
+          "OXY",
+          "SLB"
         ],
         "sector": "Energia",
-        "sentiment": "positive"
-      },
-      "heat": 1,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 2305775,
-      "source": "Insider Monkey",
-      "title": "Verizon (VZ), AT&T, and T-Mobile Form A Joint Venture to End Mobile Dead Zones Across the US",
-      "summary": "Verizon, AT&T, and T-Mobile have formed a joint venture to eliminate mobile dead zones across the U.S., particularly in rural areas. This initiative will leverage satellite-based \"direct to device\" technology for broader connectivity and improved network reliability during natural disasters. Analysts suggest this move could be partly defensive, anticipating future competition from companies like SpaceX in the wireless market.",
-      "content": "Verizon, AT&T, and T-Mobile have formed a joint venture to eliminate mobile dead zones across the U.S., particularly in rural areas. This initiative will leverage satellite-based \"direct to device\" technology for broader connectivity and improved network reliability during natural disasters. Analysts suggest this move could be partly defensive, anticipating future competition from companies like SpaceX in the wireless market.",
-      "url": "https://www.insidermonkey.com/blog/verizon-vz-att-and-t-mobile-form-a-joint-venture-to-end-mobile-dead-zones-across-the-us-1766963/",
-      "image": "https://d2w7kw43nye0pi.cloudfront.net/hpQdVOwD60XL2Wp2cL5G5cCl8TYWrhJB_5vESzl1WiE/resize:fit:480:269:0/plain/https://imonkeyblog.s3.us-east-1.amazonaws.com/blog/wp-content/uploads/2023/09/23124122/VZ-insidermonkey-1695487280753.jpg",
-      "publishedAt": "2026-05-22T12:47:04+00:00",
-      "category": "Tecnologia",
-      "icon": "\ud83d\udcbb",
-      "impact": {
-        "tickers": [
-          "VZ",
-          "T",
-          "TMUS"
-        ],
-        "sector": "",
-        "sentiment": "positive"
-      },
-      "heat": 2,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 779745487,
-      "source": "Stock Titan",
-      "title": "Inside Johnson Controls' factory-floor 'Gemba Day' for investors and analysts",
-      "summary": "Johnson Controls (NYSE: JCI) will host its \"Going to Gemba Day\" for investors and analysts on June 1, 2026, offering site tours and webcasts with CEO Joakim Weidemanis and CFO Marc Vandiepenbeeck. The event will showcase the company's strategy, differentiated technology, and its proprietary business system across innovation, manufacturing, and commercial execution. Webcast sessions will cover the CEO's welcome and strategy overview, followed by the CFO's discussion on the long-term growth algorithm and a Q&A.",
-      "content": "Johnson Controls (NYSE: JCI) will host its \"Going to Gemba Day\" for investors and analysts on June 1, 2026, offering site tours and webcasts with CEO Joakim Weidemanis and CFO Marc Vandiepenbeeck. The event will showcase the company's strategy, differentiated technology, and its proprietary business system across innovation, manufacturing, and commercial execution. Webcast sessions will cover the CEO's welcome and strategy overview, followed by the CFO's discussion on the long-term growth algorithm and a Q&A.",
-      "url": "https://www.stocktitan.net/news/JCI/johnson-controls-to-host-going-to-gemba-day-on-june-mnubb3r9nho0.html",
-      "image": "https://mma.prnewswire.com/media/73855/johnson_controls_logo.jpg",
-      "publishedAt": "2026-05-22T12:45:03+00:00",
-      "category": "Tecnologia",
-      "icon": "\ud83d\udcbb",
-      "impact": {
-        "tickers": [
-          "JCI"
-        ],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 139471393,
-      "source": "Benzinga",
-      "title": "TermPlus Launched Five-Year Fixed-Term Accounts with Target Rates of up to 8.50% p.a. for SMSF Investors",
-      "summary": "The combination has changed the income calculus for many Australians. Fixed-rate products that were locked in during the 2025 easing cycle now sit below the cash rate, while the cost of essentials continues to climb.",
-      "content": "The combination has changed the income calculus for many Australians. Fixed-rate products that were locked in during the 2025 easing cycle now sit below the cash rate, while the cost of essentials continues to climb.",
-      "url": "https://www.benzinga.com/pressreleases/26/05/g52742058/termplus-launched-five-year-fixed-term-accounts-with-target-rates-of-up-to-8-50-p-a-for-smsf-inves",
-      "image": "https://cdn.benzinga.com/files/imagecache/bz2_opengraph_meta_image_400x300/sites/all/themes/bz2/images/bz-icon.png",
-      "publishedAt": "2026-05-22T12:43:00+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [
-          "GOOG"
-        ],
-        "sector": "",
-        "sentiment": "positive"
-      },
-      "heat": 1,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 398023141,
-      "source": "Benzinga",
-      "title": "Top 2 Tech Stocks That May Fall Off A Cliff This Month - CrowdStrike Holdings  ( NASDAQ:CRWD ) , Fortinet  ( NA",
-      "summary": "As of May 22, 2026, two stocks in the information technology sector could be flashing a real warning to investors who value momentum as a key criteria in their trading decisions. Here's the latest list of major overbought players in this sector.",
-      "content": "As of May 22, 2026, two stocks in the information technology sector could be flashing a real warning to investors who value momentum as a key criteria in their trading decisions. Here's the latest list of major overbought players in this sector.",
-      "url": "https://www.benzinga.com/trading-ideas/short-ideas/26/05/52742009/top-2-tech-stocks-that-may-fall-off-a-cliff-this-month-4",
-      "image": "https://cdn.benzinga.com/cdn-cgi/image/width=1200,height=800,fit=crop/files/images/story/2026/05/22/Crowdstrike-Sign-And-Logo-At-Headquarter.jpeg",
-      "publishedAt": "2026-05-22T12:41:08+00:00",
-      "category": "Geopol\u00edtica",
-      "icon": "\ud83c\udf0d",
-      "impact": {
-        "tickers": [
-          "GOOG"
-        ],
-        "sector": "Defesa",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 365449788,
-      "source": "Financial Times",
-      "title": "France seeks to join UK-German long-range missile plan",
-      "summary": "Paris warms to joint project aimed at closing conventional capability gap with Russia",
-      "content": "Paris warms to joint project aimed at closing conventional capability gap with Russia",
-      "url": "https://www.ft.com/content/c4238437-b064-451a-9900-4c56cf1977d7",
-      "image": "https://images.ft.com/v3/image/raw/https%3A%2F%2Fd1e00ek4ebabms.cloudfront.net%2Fproduction%2F07e221cd-6c08-4561-9e30-3b7d04a46ff4.jpg?source=next-home-page&dpr=2&width=580&fit=scale-down",
-      "publishedAt": "2026-05-22T12:39:08+00:00",
-      "category": "Geopol\u00edtica",
-      "icon": "\ud83c\udf0d",
-      "impact": {
-        "tickers": [
-          "LMT",
-          "RTX",
-          "NOC",
-          "XOM"
-        ],
-        "sector": "Defesa",
-        "sentiment": "negative"
-      },
-      "heat": 3,
-      "feed": "rss"
-    },
-    {
-      "id": 899708540,
-      "source": "Benzinga",
-      "title": "Deckers Outdoor, UP Fintech And Other Big Stocks Moving Lower In Friday's Pre-Market Session",
-      "summary": "U.S. stock futures were up on Friday morning, yet several stocks experienced a decline in pre-market trading. Deckers Outdoor Corp (NYSE: DECK) shares fell after reporting strong fourth-quarter financial results, while Futu Holdings Ltd (NASDAQ: FUTU) and UP Fintech Holding Ltd (NASDAQ: TIGR) dipped significantly due to regulatory actions by the China Securities Regulatory Commission. Other stocks like Haoxi Health Technology Ltd (NASDAQ: HAO), MMTec Inc (NASDAQ: MTC), and Nio Inc \u2013 ADR (NYSE: NIO) also saw pre-market losses.",
-      "content": "U.S. stock futures were up on Friday morning, yet several stocks experienced a decline in pre-market trading. Deckers Outdoor Corp (NYSE: DECK) shares fell after reporting strong fourth-quarter financial results, while Futu Holdings Ltd (NASDAQ: FUTU) and UP Fintech Holding Ltd (NASDAQ: TIGR) dipped significantly due to regulatory actions by the China Securities Regulatory Commission. Other stocks like Haoxi Health Technology Ltd (NASDAQ: HAO), MMTec Inc (NASDAQ: MTC), and Nio Inc \u2013 ADR (NYSE: NIO) also saw pre-market losses.",
-      "url": "https://www.benzinga.com/news/26/05/52741975/deckers-outdoor-up-fintech-and-other-big-stocks-moving-lower-in-fridays-pre-market-session",
-      "image": "https://cdn.benzinga.com/cdn-cgi/image/width=1300,format=auto,quality=85/files/images/story/2025/07/24/article-header-background-image.png",
-      "publishedAt": "2026-05-22T12:38:37+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [
-          "DECK"
-        ],
-        "sector": "Tecnologia",
-        "sentiment": "positive"
-      },
-      "heat": 1,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 348646363,
-      "source": "Seeking Alpha",
-      "title": "Texas Instruments upgraded by Seaport on AI push (TXN:NASDAQ)",
-      "summary": "Texas Instruments (TXN) was upgraded by Seaport Research Partners due to the investment firm's belief that the analog semiconductor company will benefit from the growth in artificial intelligence. This upgrade led to a 1.5% rise in TXN shares during premarket trading. The firm noted that increasing power demand and electrical intensity per rack are key drivers for the semiconductor industry.",
-      "content": "Texas Instruments (TXN) was upgraded by Seaport Research Partners due to the investment firm's belief that the analog semiconductor company will benefit from the growth in artificial intelligence. This upgrade led to a 1.5% rise in TXN shares during premarket trading. The firm noted that increasing power demand and electrical intensity per rack are key drivers for the semiconductor industry.",
-      "url": "https://seekingalpha.com/news/4596254-texas-instruments-upgraded-by-seaport-on-ai-push",
-      "image": "https://static.seekingalpha.com/cdn/s3/uploads/getty_images/1173014771/image_1173014771.jpg?io=getty-c-w630",
-      "publishedAt": "2026-05-22T12:36:31+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [
-          "TXN"
-        ],
-        "sector": "Tecnologia",
-        "sentiment": "positive"
-      },
-      "heat": 1,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 202707923,
-      "source": "ChartMill",
-      "title": "Discover the top S&P500 movers in Friday's pre-market session.",
-      "summary": "As we await the opening of the US market on Friday, let's delve into the pre-market session and discover the S&P500 top gainers and losers shaping the early market sentiment.",
-      "content": "As we await the opening of the US market on Friday, let's delve into the pre-market session and discover the S&P500 top gainers and losers shaping the early market sentiment.",
-      "url": "https://finnhub.io/api/news?id=e1b60caaf25f14e9324421e91b22c02b7df45d31ee4b6c042994d3d09bc8aa4b",
-      "image": "https://www.chartmill.com/images/uploads/CM_Premarket_Movers_Small_free_90289f6b81.webp",
-      "publishedAt": "2026-05-22T12:35:00+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [
-          "NOW"
-        ],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "finnhub_company"
-    },
-    {
-      "id": 321186865,
-      "source": "AlphaStreet",
-      "title": "T-Mobile (TMUS) Is Becoming an Account-Economics Story",
-      "summary": "T-Mobile's growth is shifting from solely subscriber additions to an account-economics model, focusing on deeper customer relationships and higher revenue per account. The company is extracting more revenue per billing relationship, as shown by rising ARPA and service revenue growth, largely supported by expanding broadband services. While the model is durable due to consistent free cash flow generation, investors should monitor churn, leverage, and pricing discipline to assess its long-term resilience.",
-      "content": "T-Mobile's growth is shifting from solely subscriber additions to an account-economics model, focusing on deeper customer relationships and higher revenue per account. The company is extracting more revenue per billing relationship, as shown by rising ARPA and service revenue growth, largely supported by expanding broadband services. While the model is durable due to consistent free cash flow generation, investors should monitor churn, leverage, and pricing discipline to assess its long-term resilience.",
-      "url": "https://news.alphastreet.com/t-mobile-tmus-is-becoming-an-account-economics-story/",
-      "image": "https://cdn.news.alphastreet.com/wp-content/uploads/2026/03/03072345/market-news-1024x576.jpg",
-      "publishedAt": "2026-05-22T12:33:24+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [
-          "TMUS"
-        ],
-        "sector": "",
-        "sentiment": "positive"
-      },
-      "heat": 1,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 868186961,
-      "source": "Benzinga",
-      "title": "What Is Going On With AMD Stock On Friday? - Advanced Micro Devices  ( NASDAQ:AMD )",
-      "summary": "AMD CEO Lisa Su said the global CPU market is experiencing much stronger demand than the industry expected a year ago as companies rapidly expand AI infrastructure.",
-      "content": "AMD CEO Lisa Su said the global CPU market is experiencing much stronger demand than the industry expected a year ago as companies rapidly expand AI infrastructure.",
-      "url": "https://www.benzinga.com/markets/tech/26/05/52741867/what-is-going-on-with-amd-stock-on-friday-3",
-      "image": "https://cdn.benzinga.com/cdn-cgi/image/width=1200,height=800,fit=crop/files/images/story/2026/05/22/AMD-Signboard-At-Headquarters.jpeg",
-      "publishedAt": "2026-05-22T12:32:04+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [
-          "AMD",
-          "GOOG",
-          "WICOF",
-          "AMKR",
-          "ASCCF"
-        ],
-        "sector": "",
-        "sentiment": "positive"
-      },
-      "heat": 3,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 965528156,
-      "source": "MarketWatch",
-      "title": "Nvidia made one of the biggest buyback announcements ever. It may not be enough.",
-      "summary": "There\u2019s confidence in the business, but some analysts want to see it go higher.",
-      "content": "There\u2019s confidence in the business, but some analysts want to see it go higher.",
-      "url": "https://www.marketwatch.com/story/nvidia-made-one-of-the-biggest-buyback-announcements-ever-it-may-not-be-enough-f9a5990c?mod=mw_rss_topstories",
-      "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
-      "publishedAt": "2026-05-22T12:32:00+00:00",
-      "category": "Tecnologia",
-      "icon": "\ud83d\udcbb",
-      "impact": {
-        "tickers": [
-          "NVDA",
-          "AMD",
-          "INTC",
-          "AVGO"
-        ],
-        "sector": "Tecnologia",
         "sentiment": "neutral"
       },
       "heat": 3,
       "feed": "rss"
-    },
-    {
-      "id": 301528842,
-      "source": "Benzinga",
-      "title": "'Pick Your Pain' - Dave Ramsey Tells 28-Year-Old Making $40K And Living In $713 Basement: 'You're Going T",
-      "summary": "Despite earning a 55,000 Canadian dollar ( $40,000 ) salary, a 28-year-old woman still felt priced out of better housing in Vancouver. Alexandria told \"The Ramsey Show\" her small, dark basement suite was affecting her mental health.",
-      "content": "Despite earning a 55,000 Canadian dollar ( $40,000 ) salary, a 28-year-old woman still felt priced out of better housing in Vancouver. Alexandria told \"The Ramsey Show\" her small, dark basement suite was affecting her mental health.",
-      "url": "https://www.benzinga.com/news/topics/26/05/52741848/pick-your-pain-dave-ramsey-tells-28-year-old-making-40k-and-living-in-713-basement-youre-going-to-hav",
-      "image": "https://cdn.benzinga.com/cdn-cgi/image/width=1200,height=800,fit=crop/files/images/story/2026/05/22/Dark-Grey-Living-Room-Interior--Having-A.jpeg",
-      "publishedAt": "2026-05-22T12:31:07+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [
-          "GOOG",
-          "FOREX:CAD"
-        ],
-        "sector": "Finan\u00e7as",
-        "sentiment": "neutral"
-      },
-      "heat": 2,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 23402427,
-      "source": "GlobeNewswire",
-      "title": "20/20 Biolabs Commences Emergency Planning for Ebola & Hantavirus Lab Testing if Outbreak Creates Overflow Demand",
-      "summary": "Company to Draw on Substantial Experience with COVID Testing to Again Support Public Health Agencies if Needed",
-      "content": "Company to Draw on Substantial Experience with COVID Testing to Again Support Public Health Agencies if Needed",
-      "url": "https://www.globenewswire.com/news-release/2026/05/22/3300117/0/en/20-20-Biolabs-Commences-Emergency-Planning-for-Ebola-Hantavirus-Lab-Testing-if-Outbreak-Creates-Overflow-Demand.html",
-      "image": "https://ml.globenewswire.com/Resource/Download/bcaf95ca-9983-408c-bc61-646e4ee2f925",
-      "publishedAt": "2026-05-22T12:31:00+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [
-          "AIDX"
-        ],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 460310878,
-      "source": "Seeking Alpha",
-      "title": "ICE, crypto exchange OKX working on launch of perpetual oil futures - report (ICE:NYSE)",
-      "summary": "Intercontinental Exchange (ICE) is reportedly collaborating with crypto exchange OKX to launch perpetual oil futures. These new futures will be underpinned by ICE's existing Brent crude and West Texas Intermediate futures prices. This initiative suggests a convergence of traditional financial markets with the cryptocurrency space.",
-      "content": "Intercontinental Exchange (ICE) is reportedly collaborating with crypto exchange OKX to launch perpetual oil futures. These new futures will be underpinned by ICE's existing Brent crude and West Texas Intermediate futures prices. This initiative suggests a convergence of traditional financial markets with the cryptocurrency space.",
-      "url": "https://seekingalpha.com/news/4596226-ice-crypto-exchange-okx-working-on-launch-of-perpetual-oil-futures---report",
-      "image": "https://static.seekingalpha.com/cdn/s3/uploads/getty_images/2270500237/image_2270500237.jpg?io=getty-c-w630",
-      "publishedAt": "2026-05-22T12:30:14+00:00",
-      "category": "Energia",
-      "icon": "\u26a1",
-      "impact": {
-        "tickers": [
-          "ICE"
-        ],
-        "sector": "Energia",
-        "sentiment": "positive"
-      },
-      "heat": 1,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 84927157,
-      "source": "Stock Titan",
-      "title": "120M OKX users get regulated futures tied to Brent and WTI oil",
-      "summary": "OKX, a blockchain technology and trading company, is launching perpetual futures contracts based on Intercontinental Exchange's (ICE) Brent Crude and WTI Crude energy benchmarks. This initiative will provide OKX's 120 million global users with regulated access to global commodity markets through digital asset infrastructure. The partnership aims to bridge traditional and digital financial markets, giving retail traders access to essential energy benchmarks in a regulated and transparent environment.",
-      "content": "OKX, a blockchain technology and trading company, is launching perpetual futures contracts based on Intercontinental Exchange's (ICE) Brent Crude and WTI Crude energy benchmarks. This initiative will provide OKX's 120 million global users with regulated access to global commodity markets through digital asset infrastructure. The partnership aims to bridge traditional and digital financial markets, giving retail traders access to essential energy benchmarks in a regulated and transparent environment.",
-      "url": "https://www.stocktitan.net/news/ICE/ice-brent-and-ice-wti-perpetual-futures-to-launch-on-qbfrxb2nizym.html",
-      "image": "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80",
-      "publishedAt": "2026-05-22T12:30:14+00:00",
-      "category": "Energia",
-      "icon": "\u26a1",
-      "impact": {
-        "tickers": [
-          "ICE"
-        ],
-        "sector": "Energia",
-        "sentiment": "positive"
-      },
-      "heat": 1,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 984217206,
-      "source": "GlobeNewswire",
-      "title": "Cycurion Acquires Secuvant, Supercharging AI-Driven Cybersecurity with Automated, Scalable Threat Defense - Perfectly Complements HavenX Platform",
-      "summary": "MCLEAN, Va., May 22, 2026 ( GLOBE NEWSWIRE ) -- Cycurion, Inc. ( NASDAQ: CYCU ) ( \"Cycurion\" or the \"Company\" ) , a leading provider of AI-driven cybersecurity, IT security solutions, and managed services, today announced the acquisition of Secuvant, LLC ( \"Secuvant\" ) , a premier provider of ...",
-      "content": "MCLEAN, Va., May 22, 2026 ( GLOBE NEWSWIRE ) -- Cycurion, Inc. ( NASDAQ: CYCU ) ( \"Cycurion\" or the \"Company\" ) , a leading provider of AI-driven cybersecurity, IT security solutions, and managed services, today announced the acquisition of Secuvant, LLC ( \"Secuvant\" ) , a premier provider of ...",
-      "url": "https://www.globenewswire.com/news-release/2026/05/22/3300115/0/en/Cycurion-Acquires-Secuvant-Supercharging-AI-Driven-Cybersecurity-with-Automated-Scalable-Threat-Defense-Perfectly-Complements-HavenX-Platform.html",
-      "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80",
-      "publishedAt": "2026-05-22T12:30:00+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [
-          "CYCU"
-        ],
-        "sector": "",
-        "sentiment": "positive"
-      },
-      "heat": 1,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 484312540,
-      "source": "GlobeNewswire",
-      "title": "\"Ark Plan\" Renamed to \"Binance Plan\": Baiya International Group Inc. Establishes $1 Million Strategic BNB Position",
-      "summary": "Shenzhen, China, May 22, 2026 ( GLOBE NEWSWIRE ) -- Baiya International Group Inc. ( Nasdaq: BIYA ) ( \"Baiya\" or the \"Company\" ) , a human resource ( \"HR\" ) technology company utilizing its cloud-based internet platform to provide one-stop crowdsourcing recruitment and SaaS-enabled HR solutions, ...",
-      "content": "Shenzhen, China, May 22, 2026 ( GLOBE NEWSWIRE ) -- Baiya International Group Inc. ( Nasdaq: BIYA ) ( \"Baiya\" or the \"Company\" ) , a human resource ( \"HR\" ) technology company utilizing its cloud-based internet platform to provide one-stop crowdsourcing recruitment and SaaS-enabled HR solutions, ...",
-      "url": "https://www.globenewswire.com/news-release/2026/05/22/3300116/0/en/Ark-Plan-Renamed-to-Binance-Plan-Baiya-International-Group-Inc-Establishes-1-Million-Strategic-BNB-Position.html",
-      "image": "https://ml.globenewswire.com/Resource/Download/db69e6e9-efb7-4995-ad08-982098b7687a",
-      "publishedAt": "2026-05-22T12:30:00+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [
-          "BIYA",
-          "FUTU",
-          "AWON",
-          "SZIHF"
-        ],
-        "sector": "Tecnologia",
-        "sentiment": "positive"
-      },
-      "heat": 3,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 480194141,
-      "source": "GlobeNewswire",
-      "title": "Koil Energy Secures New $5 Million Asset-Based Credit Facility",
-      "summary": "HOUSTON, May 22, 2026 ( GLOBE NEWSWIRE ) -- KOIL Energy Solutions, Inc. ( OTCQB: KLNG ) , a specialist in deepwater energy production and distribution equipment and services, today announced the closing of a new asset-based lending facility.",
-      "content": "HOUSTON, May 22, 2026 ( GLOBE NEWSWIRE ) -- KOIL Energy Solutions, Inc. ( OTCQB: KLNG ) , a specialist in deepwater energy production and distribution equipment and services, today announced the closing of a new asset-based lending facility.",
-      "url": "https://www.globenewswire.com/news-release/2026/05/22/3300110/0/en/Koil-Energy-Secures-New-5-Million-Asset-Based-Credit-Facility.html",
-      "image": "https://ml.globenewswire.com/Resource/Download/429f6a4e-1181-45be-9ddc-98a11e09330a",
-      "publishedAt": "2026-05-22T12:30:00+00:00",
-      "category": "Energia",
-      "icon": "\u26a1",
-      "impact": {
-        "tickers": [
-          "ENGS"
-        ],
-        "sector": "Energia",
-        "sentiment": "positive"
-      },
-      "heat": 1,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 466157622,
-      "source": "GlobeNewswire",
-      "title": "FibroBiologics Presents Preclinical Data Demonstrating Durable Immunomodulation in Psoriasis at the Society for Investigative Dermatology 2026 Annual Meeting",
-      "summary": "In animal studies, human dermal fibroblast spheroids reduce disease severity, prevent relapse, and suppress key inflammatory pathways associated with chronic psoriatic disease In animal studies, human dermal fibroblast spheroids reduce disease severity, prevent relapse, and suppress key ...",
-      "content": "In animal studies, human dermal fibroblast spheroids reduce disease severity, prevent relapse, and suppress key inflammatory pathways associated with chronic psoriatic disease In animal studies, human dermal fibroblast spheroids reduce disease severity, prevent relapse, and suppress key ...",
-      "url": "https://www.globenewswire.com/news-release/2026/05/22/3300109/0/en/FibroBiologics-Presents-Preclinical-Data-Demonstrating-Durable-Immunomodulation-in-Psoriasis-at-the-Society-for-Investigative-Dermatology-2026-Annual-Meeting.html",
-      "image": "https://ml.globenewswire.com/Resource/Download/720fe0fe-52b4-4ccc-a5ad-95d4288f1df2",
-      "publishedAt": "2026-05-22T12:30:00+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [
-          "GOOG",
-          "META",
-          "FBLG"
-        ],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 2,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 470870753,
-      "source": "GlobeNewswire",
-      "title": "Snail Games Highlights Progress and Development from Strategic Polish Studio Partnerships",
-      "summary": "Bellwright, Above The Snow, and Honeycomb: The World Beyond showcases the value of Snail Games' work with Polish studio partners Bellwright, Above The Snow, and Honeycomb: The World Beyond showcases the value of Snail Games' work with Polish studio partners ...",
-      "content": "Bellwright, Above The Snow, and Honeycomb: The World Beyond showcases the value of Snail Games' work with Polish studio partners Bellwright, Above The Snow, and Honeycomb: The World Beyond showcases the value of Snail Games' work with Polish studio partners ...",
-      "url": "https://www.globenewswire.com/news-release/2026/05/22/3300111/0/en/Snail-Games-Highlights-Progress-and-Development-from-Strategic-Polish-Studio-Partnerships.html",
-      "image": "https://ml.globenewswire.com/Resource/Download/be395172-b461-4e27-85f8-f4ab11cd12eb",
-      "publishedAt": "2026-05-22T12:30:00+00:00",
-      "category": "Global",
-      "icon": "\ud83c\udf10",
-      "impact": {
-        "tickers": [
-          "SNAL"
-        ],
-        "sector": "",
-        "sentiment": "positive"
-      },
-      "heat": 1,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 374924976,
-      "source": "Benzinga",
-      "title": "IBM, ServiceNow, Netflix And A Basic Materials Stock: CNBC's 'Final Trades' - IBM  ( NYSE:IBM ) , Netflix  ( NA",
-      "summary": "As per the recent news, International Business Machines, on Thursday, disclosed a significant partnership with the U.S. Department of Commerce to establish America's first purpose-built quantum foundry.",
-      "content": "As per the recent news, International Business Machines, on Thursday, disclosed a significant partnership with the U.S. Department of Commerce to establish America's first purpose-built quantum foundry.",
-      "url": "https://www.benzinga.com/trading-ideas/long-ideas/26/05/52741799/ibm-servicenow-netflix-and-a-basic-materials-stock-cnbcs-final-trades",
-      "image": "https://cdn.benzinga.com/cdn-cgi/image/width=1200,height=800,fit=crop/files/images/story/2026/05/22/Experts-Urge-Seniors-to-Stay-Vigilant.jpeg",
-      "publishedAt": "2026-05-22T12:29:34+00:00",
-      "category": "Com\u00e9rcio",
-      "icon": "\ud83d\udea2",
-      "impact": {
-        "tickers": [
-          "AA",
-          "NFLX",
-          "GOOG",
-          "BAC",
-          "IBM"
-        ],
-        "sector": "",
-        "sentiment": "positive"
-      },
-      "heat": 3,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 633012209,
-      "source": "Benzinga",
-      "title": "What's Going On With CN Energy Stock On Friday? - CN Energy Group  ( NASDAQ:CNEY )",
-      "summary": "This news comes as the firm aims to expand its operations in the United States. CN Energy Group's wholly-owned subsidiary, Pathenbot, has signed an order for intelligent cargo sorting services, marking the start of its commercial deployment in the U.S.",
-      "content": "This news comes as the firm aims to expand its operations in the United States. CN Energy Group's wholly-owned subsidiary, Pathenbot, has signed an order for intelligent cargo sorting services, marking the start of its commercial deployment in the U.S.",
-      "url": "https://www.benzinga.com/markets/equities/26/05/52741794/whats-going-on-with-cn-energy-stock-on-friday",
-      "image": "https://cdn.benzinga.com/cdn-cgi/image/width=1200,height=800,fit=crop/files/images/story/2026/05/22/Stock-Market-Data-On-Digital-Led-Display.jpeg",
-      "publishedAt": "2026-05-22T12:29:22+00:00",
-      "category": "Energia",
-      "icon": "\u26a1",
-      "impact": {
-        "tickers": [
-          "CNEY",
-          "GOOG"
-        ],
-        "sector": "",
-        "sentiment": "positive"
-      },
-      "heat": 2,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 132626323,
-      "source": "Benzinga",
-      "title": "Sigenergy Powers One of the UK's Most Intelligent Manufacturing Solar Projects at Numatic International",
-      "summary": "SOMERSET, England, May 22, 2026 ( GLOBE NEWSWIRE ) -- Sigenergy is helping redefine the future of industrial energy management in the UK, powering one of the country's most intelligent and space-efficient commercial solar manufacturing projects at Numatic International's Somerset facility.",
-      "content": "SOMERSET, England, May 22, 2026 ( GLOBE NEWSWIRE ) -- Sigenergy is helping redefine the future of industrial energy management in the UK, powering one of the country's most intelligent and space-efficient commercial solar manufacturing projects at Numatic International's Somerset facility.",
-      "url": "https://www.benzinga.com/pressreleases/26/05/g52741792/sigenergy-powers-one-of-the-uks-most-intelligent-manufacturing-solar-projects-at-numatic-internati",
-      "image": "https://cdn.benzinga.com/files/imagecache/bz2_opengraph_meta_image_400x300/sites/all/themes/bz2/images/bz-icon.png",
-      "publishedAt": "2026-05-22T12:28:03+00:00",
-      "category": "Energia",
-      "icon": "\u26a1",
-      "impact": {
-        "tickers": [
-          "GOOG"
-        ],
-        "sector": "Energia",
-        "sentiment": "positive"
-      },
-      "heat": 1,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 718956943,
-      "source": "www.marketscreener.com",
-      "title": "Verisk Analytics : Memorial Day Cargo Theft Hit Five-Year High in 2025, Verisk CargoNet Warns of Selective Targeting in 2026",
-      "summary": "Verisk CargoNet is cautioning businesses about increased cargo theft risks during the Memorial Day holiday period in 2026, following a five-year high in incidents in 2025. Organized theft groups are employing more selective, high-value targeting, including sophisticated fraud schemes beyond traditional trailer theft. Companies are advised to implement heightened security measures, verify delivery changes, and maintain shipment visibility to mitigate risks.",
-      "content": "Verisk CargoNet is cautioning businesses about increased cargo theft risks during the Memorial Day holiday period in 2026, following a five-year high in incidents in 2025. Organized theft groups are employing more selective, high-value targeting, including sophisticated fraud schemes beyond traditional trailer theft. Companies are advised to implement heightened security measures, verify delivery changes, and maintain shipment visibility to mitigate risks.",
-      "url": "https://www.marketscreener.com/news/verisk-analytics-memorial-day-cargo-theft-hit-five-year-high-in-2025-verisk-cargonet-warns-of-sel-ce7f5adfde8af62c",
-      "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
-      "publishedAt": "2026-05-22T12:26:01+00:00",
-      "category": "Geopol\u00edtica",
-      "icon": "\ud83c\udf0d",
-      "impact": {
-        "tickers": [
-          "VRSK"
-        ],
-        "sector": "Defesa",
-        "sentiment": "positive"
-      },
-      "heat": 1,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 263052990,
-      "source": "Food Business News",
-      "title": "Target\u2019s \u2018food forward\u2019 strategy showing promise",
-      "summary": "Target is continuing to expand its \"Food Forward\" strategy by focusing on high-growth food and beverage areas, including protein, functional drinks, and better-for-you snacking. The company introduced 3,000 new food items in Q1 2026, with sales from these items growing over 50%. Despite a strong first quarter with net sales up 7% to $25.4 billion, Target acknowledges declining consumer sentiment and plans for cautious growth.",
-      "content": "Target is continuing to expand its \"Food Forward\" strategy by focusing on high-growth food and beverage areas, including protein, functional drinks, and better-for-you snacking. The company introduced 3,000 new food items in Q1 2026, with sales from these items growing over 50%. Despite a strong first quarter with net sales up 7% to $25.4 billion, Target acknowledges declining consumer sentiment and plans for cautious growth.",
-      "url": "https://www.foodbusinessnews.net/articles/30364-targets-food-forward-strategy-showing-promise",
-      "image": "https://www.foodbusinessnews.net/ext/resources/2025/03/06/Adobe-Express---file-(16).webp?height=667&t=1741267664&width=1080",
-      "publishedAt": "2026-05-22T12:23:48+00:00",
-      "category": "Geopol\u00edtica",
-      "icon": "\ud83c\udf0d",
-      "impact": {
-        "tickers": [
-          "TGT"
-        ],
-        "sector": "Defesa",
-        "sentiment": "positive"
-      },
-      "heat": 1,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 613784511,
-      "source": "Benzinga",
-      "title": "What's Going On With Palantir Stock Friday? - Palantir Technologies  ( NASDAQ:PLTR )",
-      "summary": "The latest disputes involving Pentagon bidding restrictions and a blocked London police contract added new scrutiny to Palantir's government business at a time when higher interest rates continue to challenge richly valued AI and software stocks.",
-      "content": "The latest disputes involving Pentagon bidding restrictions and a blocked London police contract added new scrutiny to Palantir's government business at a time when higher interest rates continue to challenge richly valued AI and software stocks.",
-      "url": "https://www.benzinga.com/markets/tech/26/05/52741621/whats-going-on-with-palantir-stock-friday-2",
-      "image": "https://cdn.benzinga.com/cdn-cgi/image/width=1200,height=800,fit=crop/files/images/story/2026/05/22/New-York-City--New-York---July-14-2025-P_0.jpeg",
-      "publishedAt": "2026-05-22T12:22:28+00:00",
-      "category": "Geopol\u00edtica",
-      "icon": "\ud83c\udf0d",
-      "impact": {
-        "tickers": [
-          "GOOG",
-          "C",
-          "PLTR"
-        ],
-        "sector": "Finan\u00e7as",
-        "sentiment": "neutral"
-      },
-      "heat": 2,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 375259988,
-      "source": "CNBC",
-      "title": "Microsoft\u2019s GitHub was positioned to win the AI coding race. Outages got in the way",
-      "summary": "GitHub's user base has swelled under Microsoft's ownership, but the software repository has fallen behind newer rivals in the world of vibe coding.",
-      "content": "GitHub's user base has swelled under Microsoft's ownership, but the software repository has fallen behind newer rivals in the world of vibe coding.",
-      "url": "https://www.cnbc.com/2026/05/22/microsoft-was-positioned-to-win-in-ai-coding-outages-got-in-the-way.html",
-      "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
-      "publishedAt": "2026-05-22T12:22:20+00:00",
-      "category": "Geopol\u00edtica",
-      "icon": "\ud83c\udf0d",
-      "impact": {
-        "tickers": [
-          "LMT",
-          "RTX",
-          "NOC",
-          "XOM",
-          "MSFT"
-        ],
-        "sector": "Defesa",
-        "sentiment": "negative"
-      },
-      "heat": 3,
-      "feed": "rss"
-    },
-    {
-      "id": 376650233,
-      "source": "TIKR.com",
-      "title": "Applied Materials 30% Systems Outlook Is the Headline. The Services Business May Be the Better Story.",
-      "summary": "Applied Materials (AMAT) posted record revenue in Q2 2026, raising its semiconductor equipment growth outlook to over 30%. While the equipment segment receives significant attention, the company's Applied Global Services (AGS) business is emerging as a strong performer, with growth targets upgraded to mid-teens annual CAGR. AGS, comprising long-term service contracts, on-demand parts, and sophisticated factory software, is driven by increasing demand for fab optimization, particularly from AI-focused customers, and generates higher operating margins than the equipment segment.",
-      "content": "Applied Materials (AMAT) posted record revenue in Q2 2026, raising its semiconductor equipment growth outlook to over 30%. While the equipment segment receives significant attention, the company's Applied Global Services (AGS) business is emerging as a strong performer, with growth targets upgraded to mid-teens annual CAGR. AGS, comprising long-term service contracts, on-demand parts, and sophisticated factory software, is driven by increasing demand for fab optimization, particularly from AI-focused customers, and generates higher operating margins than the equipment segment.",
-      "url": "https://www.tikr.com/blog/applied-materials-30-systems-outlook-is-the-headline-the-services-business-may-be-the-better-story",
-      "image": "https://res.cloudinary.com/tikr/images/w_2560,h_1707,c_scale/f_webp,q_auto/v1779429306/images/TIKR.com_AMAT-Applied-Materials-Inc-1_107931de3b5/TIKR.com_AMAT-Applied-Materials-Inc-1_107931de3b5.webp?_i=AA",
-      "publishedAt": "2026-05-22T12:21:05+00:00",
-      "category": "Geopol\u00edtica",
-      "icon": "\ud83c\udf0d",
-      "impact": {
-        "tickers": [
-          "AMAT",
-          "AVGO",
-          "LRCX",
-          "KLAC"
-        ],
-        "sector": "Tecnologia",
-        "sentiment": "positive"
-      },
-      "heat": 3,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 41479344,
-      "source": "MarketBeat",
-      "title": "Zoom Communications (NASDAQ:ZM) Stock Rating Upgraded by KeyCorp",
-      "summary": "KeyCorp upgraded Zoom Communications (NASDAQ:ZM) from \"underweight\" to \"sector weight,\" contributing to a \"Moderate Buy\" consensus rating with an average price target of $102.65. The company recently exceeded Q1 earnings expectations, reporting an EPS of $1.55 and revenue of $1.24 billion, and subsequently raised its FY 2027 and Q2 2027 guidance. This upgrade comes amidst insider selling but continued significant institutional investor interest, who own 66.54% of the stock.",
-      "content": "KeyCorp upgraded Zoom Communications (NASDAQ:ZM) from \"underweight\" to \"sector weight,\" contributing to a \"Moderate Buy\" consensus rating with an average price target of $102.65. The company recently exceeded Q1 earnings expectations, reporting an EPS of $1.55 and revenue of $1.24 billion, and subsequently raised its FY 2027 and Q2 2027 guidance. This upgrade comes amidst insider selling but continued significant institutional investor interest, who own 66.54% of the stock.",
-      "url": "https://www.marketbeat.com/instant-alerts/zoom-communications-nasdaqzm-stock-rating-upgraded-by-keycorp-2026-05-22/",
-      "image": "https://www.marketbeat.com/logos/zoom-video-communications-inc-logo-1200x675.jpg?v=20200918133821",
-      "publishedAt": "2026-05-22T12:21:05+00:00",
-      "category": "Mercados",
-      "icon": "\ud83d\udcb0",
-      "impact": {
-        "tickers": [
-          "KEY"
-        ],
-        "sector": "",
-        "sentiment": "neutral"
-      },
-      "heat": 1,
-      "feed": "alphavantage"
-    },
-    {
-      "id": 416428205,
-      "source": "Moomoo",
-      "title": "Today's Bullish Patterns & Technical Sentiment | Published on 05/22: OKE, SLB, JBHT and More",
-      "summary": "This article identifies bullish patterns and technical sentiment for several stocks, including OKE, SLB, and JBHT, as of May 22nd. It provides a daily technical analysis, highlighting potential upward trends and positive market indicators for these companies.",
-      "content": "This article identifies bullish patterns and technical sentiment for several stocks, including OKE, SLB, and JBHT, as of May 22nd. It provides a daily technical analysis, highlighting potential upward trends and positive market indicators for these companies.",
-      "url": "https://www.moomoo.com/news/post/70454914/today-s-bullish-patterns-technical-sentiment-published-on-05-22",
-      "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
-      "publishedAt": "2026-05-22T12:20:24+00:00",
-      "category": "Geopol\u00edtica",
-      "icon": "\ud83c\udf0d",
-      "impact": {
-        "tickers": [
-          "OKE",
-          "SLB",
-          "JBHT"
-        ],
-        "sector": "Defesa",
-        "sentiment": "positive"
-      },
-      "heat": 2,
-      "feed": "alphavantage"
     }
   ]
 }
