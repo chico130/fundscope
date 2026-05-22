@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-05-22T20:53:07.940605+00:00",
+  "timestamp": "2026-05-22T22:05:08.445063+00:00",
   "mode": "phase1_auto",
   "strategy_version": "v0.1.0",
   "note": "Fase 1 — execução automática activa. LIVE_TRADING=False (conta demo).",
@@ -133,6 +133,30 @@
         "rs_bullish": true
       },
       "last_price": 234.81
+    },
+    {
+      "ticker": "F",
+      "sector": "XLY",
+      "watchlist_score": 0.2058,
+      "mom_1m": 0.1092,
+      "mom_3m": -0.0252,
+      "signal_strength": 0.654,
+      "style": "MOMENTUM",
+      "reasons": [
+        "Breakout: RSI-14 69.9 ≥ 58 — momentum validado",
+        "Alinhamento total: price > EMA-20 > EMA-50 > EMA-200",
+        "Volume 1.5× ≥ 1.5× — confirmação de volume"
+      ],
+      "technicals": {
+        "rsi_14": 69.93,
+        "ema50_above_ema200": true,
+        "ema20_above_ema50": true,
+        "price_above_ema20": true,
+        "volume_ratio_vs_avg": 1.54,
+        "atr_14": 0.6295,
+        "rs_bullish": true
+      },
+      "last_price": 14.93
     }
   ],
   "near_misses": [],
