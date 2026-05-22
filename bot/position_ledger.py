@@ -30,6 +30,7 @@ _T212_OPAQUE: dict[str, str] = {
     "0V6d":  "VRT",
     "CJ6d":  "CCJ",
     "ASMLa": "ASML",
+    "ARM":   "ARM",        # ARM Holdings (NASDAQ)
 }
 
 # European market suffix → Finnhub/yfinance suffix (same convention)

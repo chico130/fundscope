@@ -75,6 +75,7 @@ T212_TO_YF = {
     "LLYd":  "LLY",    "UNHd":  "UNH",    "XOMd":  "XOM",
     "NEEd":  "NEE",    "CEGd":  "CEG",     "NRGd":  "NRG",
     "CCJd":  "CCJ",
+    "ARM":   "ARM",        # ARM Holdings (NASDAQ)
     # ETFs europeus frequentes
     "VWCE":  "VWCE.DE", "VWRA": "VWRA.L",  "VUAA": "VUAA.DE",
     "VUSA":  "VUSA.AS", "VEUR": "VEUR.AS",  "VFEM": "VFEM.AS",
@@ -129,7 +130,7 @@ YF_CURRENCY = {
     "AAPL":"USD","MSFT":"USD","TSLA":"USD","AMZN":"USD","GOOGL":"USD",
     "AMD":"USD","AVGO":"USD","NVDA":"USD","META":"USD","JPM":"USD",
     "V":"USD","MA":"USD","LLY":"USD","UNH":"USD","XOM":"USD",
-    "NEE":"USD","CEG":"USD","NRG":"USD",
+    "NEE":"USD","CEG":"USD","NRG":"USD","ARM":"USD",
     "VWCE.DE":"EUR","IWDA.AS":"USD","EUNL.DE":"USD","CSPX.L":"USD",
     "SXR8.DE":"USD","VUSA.AS":"USD","SPPW.DE":"USD","XDWD.DE":"USD",
     "VWRA.L":"USD","VUAA.DE":"USD",
