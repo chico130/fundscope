@@ -241,6 +241,12 @@ def _fetch_eurusd() -> float:
         return 1.12
 
 
+def _is_market_open() -> bool:
+    """True se NYSE está aberto agora. Lazy import evita circular com main.py."""
+    from .main import is_market_open
+    return is_market_open()
+
+
 def _execute_phase1(
     buy_opportunities: list[dict],
     barrier_exits: list,
@@ -302,6 +308,11 @@ def _execute_phase1(
         except Exception as exc:
             log_error("phase1_rsi_exit_failed", {"ticker": ticker, "error": str(exc)})
 
+    # Gate: não colocar ordens de compra com mercado fechado
+    if not _is_market_open():
+        log_decision("phase1_skip_entries", "market_closed", {})
+        return executed
+
     # ── Entradas — gated por regime e style (CRO authority) ──────────────
     eurusd    = _fetch_eurusd()
     cash_free = state.get("cash", {}).get("free", 0.0)
@@ -324,8 +335,16 @@ def _execute_phase1(
     min_order_eur = 50.0
     max_pos_pct   = RISK_CONFIG["max_position_pct"] / 100.0
 
+    # Trades de compra já executados hoje em ciclos anteriores (entre runs do CI)
+    _today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    _bt    = read_beta_trades()
+    _trades_today = sum(
+        1 for t in (_bt.get("trades", []) if _bt else [])
+        if t.get("side", "").upper() == "BUY" and t.get("datetime", "").startswith(_today)
+    ) if _bt else 0
+
     for opp in buy_opportunities:
-        if len(executed) >= max_trades:
+        if len(executed) + _trades_today >= max_trades:
             break
 
         price_usd = opp.get("last_price")
@@ -478,6 +497,16 @@ def run(*, git_sync: bool = True) -> dict:
 
     # Tickers já possuídos (símbolo puro, ex: "VRT" e não "VRT_US_EQ")
     held_symbols = {p.get("price_symbol", p.get("ticker", "").split("_")[0]) for p in positions}
+
+    # Também excluir tickers com ordens abertas/pendentes em beta_trades
+    # (evita recompra entre ciclos enquanto a ordem ainda não foi preenchida)
+    _bt_open = read_beta_trades()
+    _pending_tickers = {
+        t.get("ticker", "").split("_")[0]
+        for t in (_bt_open.get("trades", []) if _bt_open else [])
+        if not t.get("closed_at")
+    }
+    held_symbols = held_symbols | _pending_tickers
 
     signals                        = _analyse_all(positions, regime)
     buy_opportunities, near_misses = _scan_watchlist_candidates(watchlist, held_symbols, regime)
