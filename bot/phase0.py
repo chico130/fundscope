@@ -10,8 +10,14 @@ import argparse
 import json
 import os
 import subprocess
+import sys
 import time
 from datetime import datetime, timezone
+
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
+if hasattr(sys.stderr, "reconfigure"):
+    sys.stderr.reconfigure(encoding="utf-8")
 
 from .data_layer import get_full_portfolio_state, enrich_with_technicals, read_beta_trades
 from .throttler import WatchlistThrottler
