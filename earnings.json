@@ -1,19 +1,8 @@
 {
-  "last_updated": "2026-05-21T06:00:15Z",
+  "last_updated": "2026-05-22T06:00:42Z",
   "window_days": 14,
-  "universe_size": 60,
+  "universe_size": 100,
   "earnings": [
-    {
-      "ticker": "TTWO",
-      "nome": "Take-Two Interactive Software, Inc.",
-      "data": "2026-05-21",
-      "hora": "N/D",
-      "eps_estimado": null,
-      "eps_anterior": -21.08,
-      "revenue_estimado": 1551845430,
-      "revenue_anterior": 1699000000.0,
-      "surpresa_media_pct": -107.21
-    },
     {
       "ticker": "ZS",
       "nome": "Zscaler, Inc.",
@@ -23,6 +12,17 @@
       "eps_anterior": 0.84,
       "revenue_estimado": 835668620,
       "revenue_anterior": 815751000.0,
+      "surpresa_media_pct": 0.11
+    },
+    {
+      "ticker": "CRM",
+      "nome": "Salesforce, Inc.",
+      "data": "2026-05-27",
+      "hora": "N/D",
+      "eps_estimado": null,
+      "eps_anterior": 2.58,
+      "revenue_estimado": 11056604610,
+      "revenue_anterior": 11201000000.0,
       "surpresa_media_pct": 0.11
     },
     {
