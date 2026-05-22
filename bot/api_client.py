@@ -328,9 +328,25 @@ def place_order_demo(
             from .logger import log_error
             log_error("place_order_missing_price", {"ticker": ticker, "side": side})
             return None
+        abs_qty = abs(qty)
+        # T212 rejeita LIMIT com frações de acções. Se qty não é inteiro, faz
+        # fallback para MARKET — preferimos executar com slippage mínimo a
+        # falhar a ordem inteiramente.
+        if abs_qty != int(abs_qty):
+            from .logger import log_decision
+            log_decision("limit_fractional_fallback", "market_order", {
+                "ticker": ticker,
+                "qty": abs_qty,
+                "wanted_limit_price": round(price, 2),
+            })
+            return _post("/equity/orders/market", {
+                "ticker": ticker,
+                "quantity": abs_qty,
+                "timeValidity": "DAY",
+            })
         return _post("/equity/orders/limit", {
             "ticker": ticker,
-            "quantity": abs(qty),
+            "quantity": int(abs_qty),
             "limitPrice": round(price, 2),
             "timeValidity": "DAY",
         })
