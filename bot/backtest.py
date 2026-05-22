@@ -33,8 +33,8 @@ from .data_layer import compute_rsi, compute_ema
 OBSERVATIONS_PATH = BASE_DIR / "data" / "backtest" / "bonnie_observations.json"
 
 # Limites do sinal BUY — ajustar aqui para afinar antes de activar ML
-RSI_BUY_MAX   = 35.0  # RSI <= 35: zona de entrada (ajustável)
-VOL_RATIO_MIN = 0.8   # vol_ratio mínimo (0 = sem filtro de volume)
+RSI_BUY_MAX   = 34.0  # RSI <= 34: zona de entrada — OOS calibration 2022→2026, PF 1.658
+VOL_RATIO_MIN = 1.2   # vol_ratio mínimo — OOS calibration 2022→2026, WR 60.7%
 
 MIN_HISTORY_BARS = 210  # barras necessárias para EMA-200 fiável
 
