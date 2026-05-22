@@ -1,20 +1,20 @@
 {
-  "timestamp": "2026-05-22T19:59:11.620631+00:00",
+  "timestamp": "2026-05-22T20:53:07.940605+00:00",
   "mode": "phase1_auto",
   "strategy_version": "v0.1.0",
   "note": "Fase 1 — execução automática activa. LIVE_TRADING=False (conta demo).",
   "regime": "bull_trending",
   "regime_alert": false,
   "regime_details": {
-    "spy_price": 745.88,
+    "spy_price": 745.64,
     "ema200": 679.51,
-    "ema50": 709.97,
+    "ema50": 709.96,
     "ema50_above_ema200": true,
-    "spy_pct_from_ema200": 9.77,
+    "spy_pct_from_ema200": 9.73,
     "atr_current": 7.4692,
     "atr_ratio_vs_60d_mean": 0.8426,
-    "spy_return_20d": 0.0429,
-    "rsp_spy_ratio_chg_20d": -0.0182,
+    "spy_return_20d": 0.0426,
+    "rsp_spy_ratio_chg_20d": -0.0181,
     "breadth_healthy": true
   },
   "watchlist_top5": [
@@ -92,23 +92,47 @@
       "watchlist_score": 0.3713,
       "mom_1m": 0.2163,
       "mom_3m": 0.6883,
-      "signal_strength": 0.674,
+      "signal_strength": 0.68,
       "style": "MOMENTUM",
       "reasons": [
         "Breakout: RSI-14 78.8 ≥ 58 — momentum validado",
         "Alinhamento total: price > EMA-20 > EMA-50 > EMA-200",
-        "Volume 1.7× ≥ 1.5× — confirmação de volume"
+        "Volume 1.8× ≥ 1.5× — confirmação de volume"
       ],
       "technicals": {
-        "rsi_14": 78.77,
+        "rsi_14": 78.81,
         "ema50_above_ema200": true,
         "ema20_above_ema50": true,
         "price_above_ema20": true,
-        "volume_ratio_vs_avg": 1.74,
+        "volume_ratio_vs_avg": 1.8,
         "atr_14": 1.4385,
         "rs_bullish": true
       },
-      "last_price": 37.555
+      "last_price": 37.58
+    },
+    {
+      "ticker": "ROST",
+      "sector": "XLY",
+      "watchlist_score": 0.1803,
+      "mom_1m": -0.0429,
+      "mom_3m": 0.0853,
+      "signal_strength": 0.656,
+      "style": "MOMENTUM",
+      "reasons": [
+        "Breakout: RSI-14 65.6 ≥ 58 — momentum validado",
+        "Alinhamento total: price > EMA-20 > EMA-50 > EMA-200",
+        "Volume 1.6× ≥ 1.5× — confirmação de volume"
+      ],
+      "technicals": {
+        "rsi_14": 65.61,
+        "ema50_above_ema200": true,
+        "ema20_above_ema50": true,
+        "price_above_ema20": true,
+        "volume_ratio_vs_avg": 1.56,
+        "atr_14": 6.3179,
+        "rs_bullish": true
+      },
+      "last_price": 234.81
     }
   ],
   "near_misses": [],
@@ -116,7 +140,7 @@
   "open_trades": 0,
   "risk_status": {
     "ok": true,
-    "total_equity_eur": 5138.13,
+    "total_equity_eur": 5138.62,
     "warnings": []
   },
   "signals": [
@@ -125,13 +149,13 @@
       "action": "hold",
       "size_factor": 1.0,
       "signals": [
-        "RSI-14 neutro (57.6)",
+        "RSI-14 neutro (57.5)",
         "Tendência ascendente: EMA-50 > EMA-200"
       ],
       "technicals": {
-        "rsi_14": 57.62,
+        "rsi_14": 57.49,
         "ema50_above_ema200": true,
-        "volume_ratio_vs_avg": 0.5
+        "volume_ratio_vs_avg": 0.65
       }
     },
     {
@@ -143,15 +167,15 @@
         "Tendência ascendente: EMA-50 > EMA-200"
       ],
       "technicals": {
-        "rsi_14": 76.56,
+        "rsi_14": 76.63,
         "ema50_above_ema200": true,
-        "volume_ratio_vs_avg": 1.09
+        "volume_ratio_vs_avg": 1.14
       }
     }
   ],
   "data_sources": {
     "prices": "finnhub+yfinance",
-    "t212_sync": "2026-05-22T19:57:26.277296+00:00",
+    "t212_sync": "2026-05-22T20:51:22.498269+00:00",
     "stale_prices": []
   },
   "cro": {
