@@ -330,7 +330,24 @@ def _execute_phase1(
             equity += native
 
     if equity <= 0:
-        log_error("phase1_no_equity", {"equity": equity})
+        # Log detalhado para distinguir cash genuinamente zero de API a devolver payload vazio
+        raw_cash = state.get("cash", {})
+        raw_positions_summary = [
+            {
+                "ticker":       p.get("ticker"),
+                "quantity":     p.get("quantity"),
+                "currentPrice": p.get("currentPrice"),
+            }
+            for p in positions[:10]  # máx 10 para não rebentar o log
+        ]
+        log_error("phase1_no_equity", {
+            "equity":              equity,
+            "cash_free":           cash_free,
+            "cash_raw":            raw_cash,
+            "n_positions":         len(positions),
+            "positions_sample":    raw_positions_summary,
+            "eurusd":              eurusd,
+        })
         return executed
 
     max_trades    = RISK_CONFIG["max_trades_per_day"]

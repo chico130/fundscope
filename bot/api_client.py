@@ -147,13 +147,15 @@ def _post(endpoint: str, payload: dict) -> dict | None:
         return resp.json()
     except Exception as exc:
         err_str = str(exc)
+        status_code: int | None = getattr(getattr(exc, "response", None), "status_code", None)
         log_error("api_post_failed", {
-            "endpoint":   endpoint,
-            "payload":    payload,
-            "error":      err_str,
-            "error_type": _classify_error(exc),
+            "endpoint":    endpoint,
+            "payload":     payload,
+            "error":       err_str,
+            "error_type":  _classify_error(exc),
+            "status_code": status_code,
         })
-        print(f"[T212] POST {endpoint} falhou: {err_str}", flush=True)
+        print(f"[T212] POST {endpoint} falhou (HTTP {status_code}): {err_str}", flush=True)
         return None
 
 
@@ -184,11 +186,14 @@ def _delete(endpoint: str) -> bool:
                 })
                 return False
         except Exception as exc:
+            status_code: int | None = getattr(getattr(exc, "response", None), "status_code", None)
             log_error("api_delete_failed", {
-                "endpoint":   endpoint,
-                "error":      str(exc),
-                "error_type": _classify_error(exc),
+                "endpoint":    endpoint,
+                "error":       str(exc),
+                "error_type":  _classify_error(exc),
+                "status_code": status_code,
             })
+            print(f"[T212] DELETE {endpoint} falhou (HTTP {status_code}): {exc}", flush=True)
             return False
     return False
 
