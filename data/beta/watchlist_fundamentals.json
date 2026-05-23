@@ -1,13 +1,13 @@
 {
-  "last_updated": "2026-05-15T19:12:03.787995+00:00",
-  "count": 145,
+  "last_updated": "2026-05-23T10:51:44.739817+00:00",
+  "count": 191,
   "fund_data": {
     "A": {
       "returnOnEquity": 0.19945998,
       "debtToEquity": 51.39,
       "revenueGrowth": 0.07,
-      "targetMeanPrice": 160.6875,
-      "targetMedianPrice": 159.5,
+      "targetMeanPrice": 161.13333,
+      "targetMedianPrice": 160.0,
       "targetHighPrice": 185.0,
       "targetLowPrice": 140.0
     },
@@ -15,7 +15,7 @@
       "returnOnEquity": 1.4147099,
       "debtToEquity": 79.548,
       "revenueGrowth": 0.166,
-      "targetMeanPrice": 308.06512,
+      "targetMeanPrice": 308.6465,
       "targetMedianPrice": 310.0,
       "targetHighPrice": 400.0,
       "targetLowPrice": 215.0
@@ -24,7 +24,7 @@
       "returnOnEquity": null,
       "debtToEquity": null,
       "revenueGrowth": 0.124,
-      "targetMeanPrice": 252.93103,
+      "targetMeanPrice": 252.89655,
       "targetMedianPrice": 258.0,
       "targetHighPrice": 328.0,
       "targetLowPrice": 184.0
@@ -33,7 +33,7 @@
       "returnOnEquity": 0.32325,
       "debtToEquity": 33.185,
       "revenueGrowth": 0.179,
-      "targetMeanPrice": 156.29167,
+      "targetMeanPrice": 156.7857,
       "targetMedianPrice": 157.0,
       "targetHighPrice": 181.0,
       "targetLowPrice": 115.0
@@ -57,29 +57,38 @@
       "targetLowPrice": 220.0
     },
     "ADI": {
-      "returnOnEquity": 0.07862,
-      "debtToEquity": 25.753,
-      "revenueGrowth": 0.304,
-      "targetMeanPrice": 406.58066,
-      "targetMedianPrice": 400.0,
-      "targetHighPrice": 510.0,
+      "returnOnEquity": 0.09639,
+      "debtToEquity": 25.81,
+      "revenueGrowth": 0.372,
+      "targetMeanPrice": 446.03226,
+      "targetMedianPrice": 450.0,
+      "targetHighPrice": 515.0,
       "targetLowPrice": 295.0
     },
+    "AES": {
+      "returnOnEquity": 0.052600004,
+      "debtToEquity": 259.603,
+      "revenueGrowth": 0.087,
+      "targetMeanPrice": 15.11111,
+      "targetMedianPrice": 15.0,
+      "targetHighPrice": 16.0,
+      "targetLowPrice": 15.0
+    },
     "AMAT": {
-      "returnOnEquity": 0.38863,
-      "debtToEquity": 33.108,
-      "revenueGrowth": -0.021,
-      "targetMeanPrice": 485.64706,
-      "targetMedianPrice": 500.0,
+      "returnOnEquity": 0.39692003,
+      "debtToEquity": 30.399,
+      "revenueGrowth": 0.114,
+      "targetMeanPrice": 509.62857,
+      "targetMedianPrice": 520.0,
       "targetHighPrice": 575.0,
-      "targetLowPrice": 355.0
+      "targetLowPrice": 358.0
     },
     "AMD": {
       "returnOnEquity": 0.08063,
       "debtToEquity": 6.005,
       "revenueGrowth": 0.378,
-      "targetMeanPrice": 457.83334,
-      "targetMedianPrice": 474.0,
+      "targetMeanPrice": 472.16666,
+      "targetMedianPrice": 482.5,
       "targetHighPrice": 625.0,
       "targetLowPrice": 225.0
     },
@@ -96,7 +105,7 @@
       "returnOnEquity": 0.24285,
       "debtToEquity": 53.3,
       "revenueGrowth": 0.166,
-      "targetMeanPrice": 311.55145,
+      "targetMeanPrice": 312.6321,
       "targetMedianPrice": 317.0,
       "targetHighPrice": 370.0,
       "targetLowPrice": 207.0
@@ -105,10 +114,19 @@
       "returnOnEquity": 0.26217,
       "debtToEquity": 61.314,
       "revenueGrowth": -0.119,
-      "targetMeanPrice": 41.92308,
-      "targetMedianPrice": 42.0,
-      "targetHighPrice": 56.0,
-      "targetLowPrice": 31.0
+      "targetMeanPrice": 42.46154,
+      "targetMedianPrice": 43.5,
+      "targetHighPrice": 62.0,
+      "targetLowPrice": 32.0
+    },
+    "APP": {
+      "returnOnEquity": 2.66444,
+      "debtToEquity": 162.888,
+      "revenueGrowth": 0.59,
+      "targetMeanPrice": 644.4667,
+      "targetMedianPrice": 660.0,
+      "targetHighPrice": 860.0,
+      "targetLowPrice": 340.0
     },
     "AR": {
       "returnOnEquity": 0.12837,
@@ -119,14 +137,23 @@
       "targetHighPrice": 57.0,
       "targetLowPrice": 38.0
     },
+    "ARM": {
+      "returnOnEquity": 0.119540006,
+      "debtToEquity": 5.214,
+      "revenueGrowth": 0.201,
+      "targetMeanPrice": 232.13568,
+      "targetMedianPrice": 250.0,
+      "targetHighPrice": 326.0,
+      "targetLowPrice": 125.0
+    },
     "AVGO": {
       "returnOnEquity": 0.33370999,
       "debtToEquity": 82.704,
       "revenueGrowth": 0.295,
-      "targetMeanPrice": 480.25485,
-      "targetMedianPrice": 482.5,
+      "targetMeanPrice": 480.49054,
+      "targetMedianPrice": 495.0,
       "targetHighPrice": 630.0,
-      "targetLowPrice": 360.0
+      "targetLowPrice": 215.88
     },
     "AZO": {
       "returnOnEquity": null,
@@ -141,10 +168,19 @@
       "returnOnEquity": 1.69947,
       "debtToEquity": 828.696,
       "revenueGrowth": 0.14,
-      "targetMeanPrice": 269.52,
-      "targetMedianPrice": 270.0,
+      "targetMeanPrice": 270.0,
+      "targetMedianPrice": 275.0,
       "targetHighPrice": 300.0,
       "targetLowPrice": 230.0
+    },
+    "BAC": {
+      "returnOnEquity": 0.10644,
+      "debtToEquity": null,
+      "revenueGrowth": 0.081,
+      "targetMeanPrice": 63.15909,
+      "targetMedianPrice": 62.5,
+      "targetHighPrice": 71.0,
+      "targetLowPrice": 57.5
     },
     "BAX": {
       "returnOnEquity": -0.15010999,
@@ -168,8 +204,8 @@
       "returnOnEquity": 0.077010006,
       "debtToEquity": 35.181,
       "revenueGrowth": 0.019,
-      "targetMeanPrice": 218.26965,
-      "targetMedianPrice": 214.0,
+      "targetMeanPrice": 219.26965,
+      "targetMedianPrice": 215.0,
       "targetHighPrice": 300.0,
       "targetLowPrice": 150.0
     },
@@ -186,19 +222,37 @@
       "returnOnEquity": 0.17184,
       "debtToEquity": 82.935,
       "revenueGrowth": 0.025,
-      "targetMeanPrice": 70.80952,
-      "targetMedianPrice": 73.0,
+      "targetMeanPrice": 71.52381,
+      "targetMedianPrice": 74.0,
       "targetHighPrice": 85.0,
       "targetLowPrice": 48.0
+    },
+    "BLK": {
+      "returnOnEquity": 0.118990004,
+      "debtToEquity": 23.635,
+      "revenueGrowth": 0.27,
+      "targetMeanPrice": 1251.25,
+      "targetMedianPrice": 1250.0,
+      "targetHighPrice": 1393.0,
+      "targetLowPrice": 1140.0
     },
     "BSX": {
       "returnOnEquity": 0.14661,
       "debtToEquity": 42.25,
       "revenueGrowth": 0.116,
-      "targetMeanPrice": 85.1875,
-      "targetMedianPrice": 84.5,
-      "targetHighPrice": 110.0,
+      "targetMeanPrice": 83.46875,
+      "targetMedianPrice": 82.5,
+      "targetHighPrice": 106.0,
       "targetLowPrice": 60.0
+    },
+    "BX": {
+      "returnOnEquity": 0.29533002,
+      "debtToEquity": 72.022,
+      "revenueGrowth": 0.057,
+      "targetMeanPrice": 143.65,
+      "targetMedianPrice": 138.0,
+      "targetHighPrice": 190.0,
+      "targetLowPrice": 116.0
     },
     "CARR": {
       "returnOnEquity": 0.09907,
@@ -213,8 +267,8 @@
       "returnOnEquity": 0.51331,
       "debtToEquity": 230.793,
       "revenueGrowth": 0.222,
-      "targetMeanPrice": 913.2938,
-      "targetMedianPrice": 912.5,
+      "targetMeanPrice": 920.1404,
+      "targetMedianPrice": 932.5,
       "targetHighPrice": 1165.0,
       "targetLowPrice": 575.0
     },
@@ -227,20 +281,47 @@
       "targetHighPrice": 425.0,
       "targetLowPrice": 275.0
     },
+    "CEG": {
+      "returnOnEquity": 0.16104999,
+      "debtToEquity": 66.428,
+      "revenueGrowth": 0.638,
+      "targetMeanPrice": 365.7315,
+      "targetMedianPrice": 380.5,
+      "targetHighPrice": 441.0,
+      "targetLowPrice": 272.4
+    },
     "CI": {
       "returnOnEquity": 0.16268998,
       "debtToEquity": 72.805,
       "revenueGrowth": 0.046,
-      "targetMeanPrice": 340.5,
+      "targetMeanPrice": 341.75,
       "targetMedianPrice": 339.0,
-      "targetHighPrice": 378.0,
+      "targetHighPrice": 400.0,
       "targetLowPrice": 290.0
+    },
+    "CL": {
+      "returnOnEquity": 3.6357698,
+      "debtToEquity": 1640.535,
+      "revenueGrowth": 0.084,
+      "targetMeanPrice": 95.84211,
+      "targetMedianPrice": 99.0,
+      "targetHighPrice": 105.0,
+      "targetLowPrice": 80.0
+    },
+    "CMCSA": {
+      "returnOnEquity": 0.20918,
+      "debtToEquity": 106.858,
+      "revenueGrowth": 0.053,
+      "targetMeanPrice": 32.7381,
+      "targetMedianPrice": 32.0,
+      "targetHighPrice": 44.0,
+      "targetLowPrice": 21.0
     },
     "CMG": {
       "returnOnEquity": 0.49231997,
       "debtToEquity": 217.885,
       "revenueGrowth": 0.074,
-      "targetMeanPrice": 43.4,
+      "targetMeanPrice": 43.38235,
       "targetMedianPrice": 44.0,
       "targetHighPrice": 52.0,
       "targetLowPrice": 35.0
@@ -254,39 +335,57 @@
       "targetHighPrice": 48.0,
       "targetLowPrice": 34.0
     },
+    "COIN": {
+      "returnOnEquity": 0.06686,
+      "debtToEquity": 59.081,
+      "revenueGrowth": -0.308,
+      "targetMeanPrice": 231.7168,
+      "targetMedianPrice": 225.0,
+      "targetHighPrice": 400.0,
+      "targetLowPrice": 107.0
+    },
     "COP": {
       "returnOnEquity": 0.112840004,
       "debtToEquity": 36.143,
       "revenueGrowth": -0.053,
-      "targetMeanPrice": 141.07692,
-      "targetMedianPrice": 141.0,
+      "targetMeanPrice": 141.61539,
+      "targetMedianPrice": 142.5,
       "targetHighPrice": 183.0,
       "targetLowPrice": 121.0
+    },
+    "COST": {
+      "returnOnEquity": 0.29650998,
+      "debtToEquity": 60.257,
+      "revenueGrowth": 0.215,
+      "targetMeanPrice": 1076.9688,
+      "targetMedianPrice": 1100.0,
+      "targetHighPrice": 1315.0,
+      "targetLowPrice": 650.0
     },
     "CRM": {
       "returnOnEquity": 0.123959996,
       "debtToEquity": 29.947,
       "revenueGrowth": 0.121,
-      "targetMeanPrice": 267.31577,
-      "targetMedianPrice": 252.5,
+      "targetMeanPrice": 262.2721,
+      "targetMedianPrice": 250.0,
       "targetHighPrice": 475.0,
-      "targetLowPrice": 188.0
+      "targetLowPrice": 160.0
     },
     "CRWD": {
       "returnOnEquity": -0.04137,
       "debtToEquity": 18.336,
       "revenueGrowth": 0.233,
-      "targetMeanPrice": 495.58667,
-      "targetMedianPrice": 500.0,
-      "targetHighPrice": 706.0,
+      "targetMeanPrice": 535.3318,
+      "targetMedianPrice": 510.0,
+      "targetHighPrice": 764.0,
       "targetLowPrice": 368.0
     },
     "CSCO": {
       "returnOnEquity": 0.25229,
-      "debtToEquity": 64.065,
+      "debtToEquity": 67.541,
       "revenueGrowth": 0.12,
-      "targetMeanPrice": 117.95364,
-      "targetMedianPrice": 120.5,
+      "targetMeanPrice": 124.45364,
+      "targetMedianPrice": 125.0,
       "targetHighPrice": 150.0,
       "targetLowPrice": 84.98
     },
@@ -294,8 +393,8 @@
       "returnOnEquity": 0.23684,
       "debtToEquity": 143.06,
       "revenueGrowth": 0.017,
-      "targetMeanPrice": 45.70455,
-      "targetMedianPrice": 47.0,
+      "targetMeanPrice": 45.88636,
+      "targetMedianPrice": 47.25,
       "targetHighPrice": 52.0,
       "targetLowPrice": 30.0
     },
@@ -321,7 +420,7 @@
       "returnOnEquity": 0.037520003,
       "debtToEquity": 100.912,
       "revenueGrowth": 0.061,
-      "targetMeanPrice": 101.57692,
+      "targetMeanPrice": 101.88462,
       "targetMedianPrice": 101.5,
       "targetHighPrice": 140.0,
       "targetLowPrice": 79.0
@@ -330,27 +429,36 @@
       "returnOnEquity": 0.06638,
       "debtToEquity": 23.989,
       "revenueGrowth": 0.023,
-      "targetMeanPrice": 214.69565,
+      "targetMeanPrice": 214.95651,
       "targetMedianPrice": 220.0,
       "targetHighPrice": 236.0,
       "targetLowPrice": 170.0
+    },
+    "D": {
+      "returnOnEquity": 0.09787,
+      "debtToEquity": 154.901,
+      "revenueGrowth": 0.231,
+      "targetMeanPrice": 67.83333,
+      "targetMedianPrice": 67.0,
+      "targetHighPrice": 73.0,
+      "targetLowPrice": 64.0
     },
     "DDOG": {
       "returnOnEquity": 0.039300002,
       "debtToEquity": 32.221,
       "revenueGrowth": 0.322,
-      "targetMeanPrice": 221.63643,
+      "targetMeanPrice": 223.01941,
       "targetMedianPrice": 225.0,
       "targetHighPrice": 320.0,
       "targetLowPrice": 128.85
     },
     "DE": {
-      "returnOnEquity": 0.19566,
+      "returnOnEquity": 0.18349001,
       "debtToEquity": 376.022,
       "revenueGrowth": -0.111,
-      "targetMeanPrice": 665.09955,
-      "targetMedianPrice": 660.0,
-      "targetHighPrice": 793.0,
+      "targetMeanPrice": 649.2952,
+      "targetMedianPrice": 640.0,
+      "targetHighPrice": 775.0,
       "targetLowPrice": 500.0
     },
     "DHI": {
@@ -371,11 +479,20 @@
       "targetHighPrice": 310.0,
       "targetLowPrice": 200.0
     },
+    "DIS": {
+      "returnOnEquity": 0.1101,
+      "debtToEquity": 41.069,
+      "revenueGrowth": 0.065,
+      "targetMeanPrice": 129.475,
+      "targetMedianPrice": 131.0,
+      "targetHighPrice": 164.0,
+      "targetLowPrice": 77.0
+    },
     "DRI": {
       "returnOnEquity": 0.51539004,
       "debtToEquity": 387.681,
       "revenueGrowth": 0.059,
-      "targetMeanPrice": 225.48148,
+      "targetMeanPrice": 225.3077,
       "targetMedianPrice": 230.0,
       "targetHighPrice": 272.0,
       "targetLowPrice": 156.0
@@ -384,45 +501,45 @@
       "returnOnEquity": 0.15178001,
       "debtToEquity": 56.404,
       "revenueGrowth": -0.008,
-      "targetMeanPrice": 59.73913,
-      "targetMedianPrice": 60.0,
-      "targetHighPrice": 69.0,
+      "targetMeanPrice": 60.56,
+      "targetMedianPrice": 62.0,
+      "targetHighPrice": 72.0,
       "targetLowPrice": 44.0
     },
     "DXCM": {
       "returnOnEquity": 0.35624,
       "debtToEquity": 46.833,
       "revenueGrowth": 0.15,
-      "targetMeanPrice": 83.28,
+      "targetMeanPrice": 81.64,
       "targetMedianPrice": 80.0,
       "targetHighPrice": 112.0,
-      "targetLowPrice": 65.0
+      "targetLowPrice": 64.0
     },
     "ELV": {
       "returnOnEquity": 0.12086,
       "debtToEquity": 72.299,
       "revenueGrowth": 0.026,
-      "targetMeanPrice": 388.9524,
-      "targetMedianPrice": 391.0,
-      "targetHighPrice": 474.0,
+      "targetMeanPrice": 400.61905,
+      "targetMedianPrice": 399.0,
+      "targetHighPrice": 498.0,
       "targetLowPrice": 331.0
     },
     "EMR": {
       "returnOnEquity": 0.12328,
       "debtToEquity": 69.182,
       "revenueGrowth": 0.029,
-      "targetMeanPrice": 163.79852,
+      "targetMeanPrice": 163.72444,
       "targetMedianPrice": 164.0,
-      "targetHighPrice": 205.0,
+      "targetHighPrice": 203.0,
       "targetLowPrice": 104.0
     },
     "EOG": {
       "returnOnEquity": 0.18195,
       "debtToEquity": 26.873,
       "revenueGrowth": 0.156,
-      "targetMeanPrice": 157.60715,
-      "targetMedianPrice": 155.0,
-      "targetHighPrice": 199.0,
+      "targetMeanPrice": 159.32143,
+      "targetMedianPrice": 160.0,
+      "targetHighPrice": 196.0,
       "targetLowPrice": 136.0
     },
     "EQT": {
@@ -438,19 +555,28 @@
       "returnOnEquity": 0.20844999,
       "debtToEquity": 110.463,
       "revenueGrowth": 0.168,
-      "targetMeanPrice": 450.9568,
+      "targetMeanPrice": 450.59964,
       "targetMedianPrice": 469.5,
       "targetHighPrice": 515.0,
       "targetLowPrice": 321.0
+    },
+    "EXC": {
+      "returnOnEquity": 0.09764,
+      "debtToEquity": 174.794,
+      "revenueGrowth": 0.079,
+      "targetMeanPrice": 49.38889,
+      "targetMedianPrice": 49.0,
+      "targetHighPrice": 58.0,
+      "targetLowPrice": 41.0
     },
     "EXPE": {
       "returnOnEquity": 0.71494,
       "debtToEquity": 256.536,
       "revenueGrowth": 0.147,
-      "targetMeanPrice": 286.33334,
+      "targetMeanPrice": 286.32352,
       "targetMedianPrice": 285.0,
       "targetHighPrice": 409.0,
-      "targetLowPrice": 225.0
+      "targetLowPrice": 230.0
     },
     "F": {
       "returnOnEquity": -0.14813,
@@ -465,8 +591,8 @@
       "returnOnEquity": 0.0047400002,
       "debtToEquity": 32.594,
       "revenueGrowth": 0.042,
-      "targetMeanPrice": 230.03448,
-      "targetMedianPrice": 227.0,
+      "targetMeanPrice": 231.93103,
+      "targetMedianPrice": 235.0,
       "targetHighPrice": 277.0,
       "targetLowPrice": 195.0
     },
@@ -474,8 +600,8 @@
       "returnOnEquity": 0.33842,
       "debtToEquity": 11.167,
       "revenueGrowth": 0.124,
-      "targetMeanPrice": 46.575,
-      "targetMedianPrice": 45.0,
+      "targetMeanPrice": 46.65833,
+      "targetMedianPrice": 45.5,
       "targetHighPrice": 55.0,
       "targetLowPrice": 39.9
     },
@@ -483,8 +609,8 @@
       "returnOnEquity": 0.15869,
       "debtToEquity": 140.994,
       "revenueGrowth": 0.083,
-      "targetMeanPrice": 400.96155,
-      "targetMedianPrice": 425.0,
+      "targetMeanPrice": 403.34616,
+      "targetMedianPrice": 428.0,
       "targetHighPrice": 479.0,
       "targetLowPrice": 230.0
     },
@@ -492,7 +618,7 @@
       "returnOnEquity": 1.32392,
       "debtToEquity": 57.31,
       "revenueGrowth": 0.201,
-      "targetMeanPrice": 106.47222,
+      "targetMeanPrice": 107.16667,
       "targetMedianPrice": 110.0,
       "targetHighPrice": 130.0,
       "targetLowPrice": 70.0
@@ -501,7 +627,7 @@
       "returnOnEquity": 0.17974001,
       "debtToEquity": 37.701,
       "revenueGrowth": 0.103,
-      "targetMeanPrice": 392.3119,
+      "targetMeanPrice": 391.55,
       "targetMedianPrice": 390.0,
       "targetHighPrice": 444.0,
       "targetLowPrice": 313.0
@@ -510,7 +636,7 @@
       "returnOnEquity": 0.45428002,
       "debtToEquity": 116.527,
       "revenueGrowth": 0.247,
-      "targetMeanPrice": 348.95,
+      "targetMeanPrice": 349.1,
       "targetMedianPrice": 352.5,
       "targetHighPrice": 405.0,
       "targetLowPrice": 270.0
@@ -519,8 +645,8 @@
       "returnOnEquity": 0.4336,
       "debtToEquity": 94.635,
       "revenueGrowth": 0.044,
-      "targetMeanPrice": 157.9643,
-      "targetMedianPrice": 160.5,
+      "targetMeanPrice": 157.82759,
+      "targetMedianPrice": 160.0,
       "targetHighPrice": 180.0,
       "targetLowPrice": 122.0
     },
@@ -533,20 +659,38 @@
       "targetHighPrice": 126.0,
       "targetLowPrice": 59.0
     },
+    "GOOGL": {
+      "returnOnEquity": 0.38884997,
+      "debtToEquity": 20.026,
+      "revenueGrowth": 0.218,
+      "targetMeanPrice": 429.11566,
+      "targetMedianPrice": 430.0,
+      "targetHighPrice": 515.0,
+      "targetLowPrice": 334.22
+    },
+    "GS": {
+      "returnOnEquity": 0.14548,
+      "debtToEquity": 678.596,
+      "revenueGrowth": 0.145,
+      "targetMeanPrice": 947.6,
+      "targetMedianPrice": 961.0,
+      "targetHighPrice": 1050.0,
+      "targetLowPrice": 730.0
+    },
     "GWW": {
       "returnOnEquity": 0.46129,
       "debtToEquity": 64.034,
       "revenueGrowth": 0.101,
-      "targetMeanPrice": 1261.5714,
-      "targetMedianPrice": 1322.0,
-      "targetHighPrice": 1365.0,
+      "targetMeanPrice": 1265.5714,
+      "targetMedianPrice": 1321.5,
+      "targetHighPrice": 1399.0,
       "targetLowPrice": 930.0
     },
     "H": {
       "returnOnEquity": -0.00875,
       "debtToEquity": 127.119,
       "revenueGrowth": -0.035,
-      "targetMeanPrice": 186.47826,
+      "targetMeanPrice": 187.3913,
       "targetMedianPrice": 186.0,
       "targetHighPrice": 219.0,
       "targetLowPrice": 160.0
@@ -555,25 +699,25 @@
       "returnOnEquity": 0.14626999,
       "debtToEquity": 74.651,
       "revenueGrowth": -0.003,
-      "targetMeanPrice": 42.48,
-      "targetMedianPrice": 43.0,
+      "targetMeanPrice": 43.52,
+      "targetMedianPrice": 44.0,
       "targetHighPrice": 55.0,
       "targetLowPrice": 31.0
     },
     "HD": {
-      "returnOnEquity": 1.45541,
-      "debtToEquity": 514.392,
-      "revenueGrowth": -0.038,
-      "targetMeanPrice": 401.39395,
-      "targetMedianPrice": 415.0,
-      "targetHighPrice": 454.0,
-      "targetLowPrice": 330.0
+      "returnOnEquity": 1.2838,
+      "debtToEquity": 455.218,
+      "revenueGrowth": 0.048,
+      "targetMeanPrice": 372.0606,
+      "targetMedianPrice": 375.0,
+      "targetHighPrice": 430.0,
+      "targetLowPrice": 310.0
     },
     "HLT": {
       "returnOnEquity": null,
       "debtToEquity": null,
       "revenueGrowth": 0.11,
-      "targetMeanPrice": 347.41666,
+      "targetMeanPrice": 347.33334,
       "targetMedianPrice": 354.0,
       "targetHighPrice": 390.0,
       "targetLowPrice": 260.0
@@ -582,17 +726,26 @@
       "returnOnEquity": 0.24264,
       "debtToEquity": 257.387,
       "revenueGrowth": 0.024,
-      "targetMeanPrice": 247.6988,
+      "targetMeanPrice": 247.2188,
       "targetMedianPrice": 244.47,
-      "targetHighPrice": 294.0,
+      "targetHighPrice": 292.0,
       "targetLowPrice": 198.0
+    },
+    "HOOD": {
+      "returnOnEquity": 0.21461001,
+      "debtToEquity": 140.483,
+      "revenueGrowth": 0.151,
+      "targetMeanPrice": 98.39625,
+      "targetMedianPrice": 97.5,
+      "targetHighPrice": 155.0,
+      "targetLowPrice": 52.0
     },
     "HPE": {
       "returnOnEquity": -0.00471,
       "debtToEquity": 87.223,
       "revenueGrowth": 0.184,
-      "targetMeanPrice": 28.23474,
-      "targetMedianPrice": 27.0,
+      "targetMeanPrice": 29.91895,
+      "targetMedianPrice": 29.0,
       "targetHighPrice": 40.0,
       "targetLowPrice": 21.0
     },
@@ -600,16 +753,16 @@
       "returnOnEquity": 0.062800005,
       "debtToEquity": 77.073,
       "revenueGrowth": 0.235,
-      "targetMeanPrice": 246.70833,
-      "targetMedianPrice": 254.5,
-      "targetHighPrice": 333.0,
-      "targetLowPrice": 146.0
+      "targetMeanPrice": 262.54166,
+      "targetMedianPrice": 257.5,
+      "targetHighPrice": 441.0,
+      "targetLowPrice": 180.0
     },
     "IBM": {
       "returnOnEquity": 0.35772,
       "debtToEquity": 211.169,
       "revenueGrowth": 0.095,
-      "targetMeanPrice": 278.1765,
+      "targetMeanPrice": 277.68,
       "targetMedianPrice": 282.5,
       "targetHighPrice": 335.0,
       "targetLowPrice": 195.0
@@ -618,19 +771,19 @@
       "returnOnEquity": -0.02911,
       "debtToEquity": 36.028,
       "revenueGrowth": 0.072,
-      "targetMeanPrice": 85.00476,
+      "targetMeanPrice": 87.8619,
       "targetMedianPrice": 84.0,
-      "targetHighPrice": 124.0,
+      "targetHighPrice": 150.0,
       "targetLowPrice": 20.4
     },
     "INTU": {
-      "returnOnEquity": 0.23457001,
-      "debtToEquity": 36.148,
-      "revenueGrowth": 0.174,
-      "targetMeanPrice": 594.1097,
-      "targetMedianPrice": 590.0,
-      "targetHighPrice": 916.0,
-      "targetLowPrice": 425.0
+      "returnOnEquity": 0.22496,
+      "debtToEquity": 33.448,
+      "revenueGrowth": 0.104,
+      "targetMeanPrice": 522.0159,
+      "targetMedianPrice": 502.0,
+      "targetHighPrice": 921.0,
+      "targetLowPrice": 315.0
     },
     "IQV": {
       "returnOnEquity": 0.22490999,
@@ -654,8 +807,8 @@
       "returnOnEquity": 0.17232999,
       "debtToEquity": null,
       "revenueGrowth": 0.23,
-      "targetMeanPrice": 577.00934,
-      "targetMedianPrice": 580.0,
+      "targetMeanPrice": 572.676,
+      "targetMedianPrice": 578.5,
       "targetHighPrice": 750.0,
       "targetLowPrice": 378.0
     },
@@ -668,12 +821,21 @@
       "targetHighPrice": 285.0,
       "targetLowPrice": 155.0
     },
+    "JPM": {
+      "returnOnEquity": 0.16465001,
+      "debtToEquity": null,
+      "revenueGrowth": 0.127,
+      "targetMeanPrice": 342.1905,
+      "targetMedianPrice": 340.0,
+      "targetHighPrice": 391.0,
+      "targetLowPrice": 295.0
+    },
     "KLAC": {
       "returnOnEquity": 0.94975996,
       "debtToEquity": 105.4,
       "revenueGrowth": 0.115,
-      "targetMeanPrice": 1851.6897,
-      "targetMedianPrice": 1875.0,
+      "targetMeanPrice": 1855.138,
+      "targetMedianPrice": 1900.0,
       "targetHighPrice": 2100.0,
       "targetLowPrice": 1500.0
     },
@@ -685,6 +847,15 @@
       "targetMedianPrice": 35.0,
       "targetHighPrice": 43.0,
       "targetLowPrice": 31.0
+    },
+    "KO": {
+      "returnOnEquity": 0.43372002,
+      "debtToEquity": 124.943,
+      "revenueGrowth": 0.121,
+      "targetMeanPrice": 86.06,
+      "targetMedianPrice": 88.0,
+      "targetHighPrice": 92.0,
+      "targetLowPrice": 71.38
     },
     "LEN": {
       "returnOnEquity": 0.08076,
@@ -699,7 +870,7 @@
       "returnOnEquity": 1.07459,
       "debtToEquity": 139.015,
       "revenueGrowth": 0.555,
-      "targetMeanPrice": 1210.0,
+      "targetMeanPrice": 1211.0344,
       "targetMedianPrice": 1250.0,
       "targetHighPrice": 1500.0,
       "targetLowPrice": 850.0
@@ -708,8 +879,8 @@
       "returnOnEquity": 0.6764,
       "debtToEquity": 276.365,
       "revenueGrowth": 0.003,
-      "targetMeanPrice": 637.6,
-      "targetMedianPrice": 645.0,
+      "targetMeanPrice": 626.6316,
+      "targetMedianPrice": 614.0,
       "targetHighPrice": 756.0,
       "targetLowPrice": 511.0
     },
@@ -717,7 +888,7 @@
       "returnOnEquity": 0.2892,
       "debtToEquity": 321.125,
       "revenueGrowth": 0.242,
-      "targetMeanPrice": 303.13635,
+      "targetMeanPrice": 303.22726,
       "targetMedianPrice": 307.0,
       "targetHighPrice": 340.0,
       "targetLowPrice": 259.0
@@ -725,17 +896,17 @@
     "LOW": {
       "returnOnEquity": null,
       "debtToEquity": null,
-      "revenueGrowth": 0.109,
-      "targetMeanPrice": 283.39395,
-      "targetMedianPrice": 285.0,
-      "targetHighPrice": 325.0,
-      "targetLowPrice": 228.0
+      "revenueGrowth": 0.103,
+      "targetMeanPrice": 263.30304,
+      "targetMedianPrice": 275.0,
+      "targetHighPrice": 300.0,
+      "targetLowPrice": 202.0
     },
     "LRCX": {
       "returnOnEquity": 0.66762,
       "debtToEquity": 35.282,
       "revenueGrowth": 0.238,
-      "targetMeanPrice": 310.46875,
+      "targetMeanPrice": 312.125,
       "targetMedianPrice": 315.0,
       "targetHighPrice": 385.0,
       "targetLowPrice": 220.0
@@ -744,16 +915,25 @@
       "returnOnEquity": 0.90455,
       "debtToEquity": 981.405,
       "revenueGrowth": 0.253,
-      "targetMeanPrice": 69.56316,
+      "targetMeanPrice": 69.45789,
       "targetMedianPrice": 69.0,
       "targetHighPrice": 78.5,
       "targetLowPrice": 59.0
+    },
+    "MA": {
+      "returnOnEquity": 2.32076,
+      "debtToEquity": 282.059,
+      "revenueGrowth": 0.158,
+      "targetMeanPrice": 646.9722,
+      "targetMedianPrice": 662.5,
+      "targetHighPrice": 735.0,
+      "targetLowPrice": 550.0
     },
     "MAR": {
       "returnOnEquity": null,
       "debtToEquity": null,
       "revenueGrowth": 0.126,
-      "targetMeanPrice": 377.33334,
+      "targetMeanPrice": 377.41666,
       "targetMedianPrice": 385.5,
       "targetHighPrice": 446.0,
       "targetLowPrice": 272.0
@@ -762,25 +942,52 @@
       "returnOnEquity": null,
       "debtToEquity": null,
       "revenueGrowth": 0.094,
-      "targetMeanPrice": 331.21213,
-      "targetMedianPrice": 330.0,
+      "targetMeanPrice": 330.0,
+      "targetMedianPrice": 327.5,
       "targetHighPrice": 407.0,
       "targetLowPrice": 250.0
+    },
+    "MDLZ": {
+      "returnOnEquity": 0.101610005,
+      "debtToEquity": 83.793,
+      "revenueGrowth": 0.082,
+      "targetMeanPrice": 67.2,
+      "targetMedianPrice": 67.0,
+      "targetHighPrice": 75.0,
+      "targetLowPrice": 55.0
     },
     "MDT": {
       "returnOnEquity": 0.0939,
       "debtToEquity": 57.06,
       "revenueGrowth": 0.087,
-      "targetMeanPrice": 108.0,
+      "targetMeanPrice": 107.07692,
       "targetMedianPrice": 110.0,
       "targetHighPrice": 121.0,
-      "targetLowPrice": 90.0
+      "targetLowPrice": 84.0
+    },
+    "MELI": {
+      "returnOnEquity": 0.31258,
+      "debtToEquity": 169.977,
+      "revenueGrowth": 0.49,
+      "targetMeanPrice": 2230.28,
+      "targetMedianPrice": 2250.0,
+      "targetHighPrice": 2800.0,
+      "targetLowPrice": 1750.0
+    },
+    "META": {
+      "returnOnEquity": 0.32930002,
+      "debtToEquity": 35.608,
+      "revenueGrowth": 0.331,
+      "targetMeanPrice": 826.60486,
+      "targetMedianPrice": 825.0,
+      "targetHighPrice": 1015.0,
+      "targetLowPrice": 614.0
     },
     "MGM": {
       "returnOnEquity": 0.13488,
       "debtToEquity": 951.186,
       "revenueGrowth": 0.042,
-      "targetMeanPrice": 44.0,
+      "targetMeanPrice": 43.89474,
       "targetMedianPrice": 44.0,
       "targetHighPrice": 59.0,
       "targetLowPrice": 33.0
@@ -789,8 +996,8 @@
       "returnOnEquity": 0.71458,
       "debtToEquity": 396.497,
       "revenueGrowth": 0.013,
-      "targetMeanPrice": 175.02705,
-      "targetMedianPrice": 178.0,
+      "targetMeanPrice": 173.43471,
+      "targetMedianPrice": 171.0,
       "targetHighPrice": 230.0,
       "targetLowPrice": 120.0
     },
@@ -807,46 +1014,73 @@
       "returnOnEquity": 0.18944,
       "debtToEquity": 106.936,
       "revenueGrowth": 0.049,
-      "targetMeanPrice": null,
-      "targetMedianPrice": null,
-      "targetHighPrice": null,
-      "targetLowPrice": null
+      "targetMeanPrice": 129.74074,
+      "targetMedianPrice": 135.0,
+      "targetHighPrice": 150.0,
+      "targetLowPrice": 100.0
     },
     "MRVL": {
       "returnOnEquity": 0.19253999,
       "debtToEquity": 33.479,
       "revenueGrowth": 0.221,
-      "targetMeanPrice": 137.05295,
-      "targetMedianPrice": 130.0,
-      "targetHighPrice": 210.0,
+      "targetMeanPrice": 149.92664,
+      "targetMedianPrice": 137.0,
+      "targetHighPrice": 225.0,
       "targetLowPrice": 85.0
+    },
+    "MS": {
+      "returnOnEquity": 0.16388,
+      "debtToEquity": 502.246,
+      "revenueGrowth": 0.163,
+      "targetMeanPrice": 203.2857,
+      "targetMedianPrice": 205.0,
+      "targetHighPrice": 230.0,
+      "targetLowPrice": 165.0
     },
     "MSFT": {
       "returnOnEquity": 0.34013999,
       "debtToEquity": 30.271,
       "revenueGrowth": 0.183,
-      "targetMeanPrice": 561.5561,
-      "targetMedianPrice": 562.5,
+      "targetMeanPrice": 560.6302,
+      "targetMedianPrice": 557.5,
       "targetHighPrice": 870.0,
       "targetLowPrice": 400.0
+    },
+    "MSTR": {
+      "returnOnEquity": -0.30756,
+      "debtToEquity": 18.094,
+      "revenueGrowth": 0.119,
+      "targetMeanPrice": 380.7857,
+      "targetMedianPrice": 347.5,
+      "targetHighPrice": 645.0,
+      "targetLowPrice": 212.0
     },
     "MTD": {
       "returnOnEquity": null,
       "debtToEquity": null,
       "revenueGrowth": 0.072,
-      "targetMeanPrice": 1344.5,
+      "targetMeanPrice": 1327.8334,
       "targetMedianPrice": 1320.0,
-      "targetHighPrice": 1600.0,
+      "targetHighPrice": 1550.0,
       "targetLowPrice": 1194.0
     },
     "MU": {
       "returnOnEquity": 0.39823002,
       "debtToEquity": 14.902,
       "revenueGrowth": 1.963,
-      "targetMeanPrice": 584.2439,
+      "targetMeanPrice": 613.225,
       "targetMedianPrice": 550.0,
-      "targetHighPrice": 1000.0,
+      "targetHighPrice": 1100.0,
       "targetLowPrice": 249.0
+    },
+    "NEE": {
+      "returnOnEquity": 0.10325,
+      "debtToEquity": 156.686,
+      "revenueGrowth": 0.073,
+      "targetMeanPrice": 98.49789,
+      "targetMedianPrice": 101.0,
+      "targetHighPrice": 112.0,
+      "targetLowPrice": 55.0
     },
     "NET": {
       "returnOnEquity": -0.05876,
@@ -857,11 +1091,20 @@
       "targetHighPrice": 300.0,
       "targetLowPrice": 135.0
     },
+    "NFLX": {
+      "returnOnEquity": 0.48494998,
+      "debtToEquity": 53.788,
+      "revenueGrowth": 0.162,
+      "targetMeanPrice": 114.555,
+      "targetMedianPrice": 115.0,
+      "targetHighPrice": 151.4,
+      "targetLowPrice": 80.0
+    },
     "NKE": {
       "returnOnEquity": 0.16016,
       "debtToEquity": 79.333,
       "revenueGrowth": 0.001,
-      "targetMeanPrice": 61.07879,
+      "targetMeanPrice": 60.77576,
       "targetMedianPrice": 55.8,
       "targetHighPrice": 120.0,
       "targetLowPrice": 23.0
@@ -870,17 +1113,17 @@
       "returnOnEquity": 0.28511998,
       "debtToEquity": 102.682,
       "revenueGrowth": 0.044,
-      "targetMeanPrice": 710.6009,
-      "targetMedianPrice": 726.0,
+      "targetMeanPrice": 705.38,
+      "targetMedianPrice": 700.0,
       "targetHighPrice": 815.0,
-      "targetLowPrice": 587.22
+      "targetLowPrice": 603.0
     },
     "NOW": {
       "returnOnEquity": 0.1607,
       "debtToEquity": 20.728,
       "revenueGrowth": 0.221,
-      "targetMeanPrice": 143.06465,
-      "targetMedianPrice": 140.0,
+      "targetMeanPrice": 142.76773,
+      "targetMedianPrice": 137.5,
       "targetHighPrice": 236.0,
       "targetLowPrice": 85.0
     },
@@ -894,13 +1137,13 @@
       "targetLowPrice": 297.0
     },
     "NVDA": {
-      "returnOnEquity": 1.01485,
-      "debtToEquity": 7.255,
-      "revenueGrowth": 0.732,
-      "targetMeanPrice": 272.93738,
-      "targetMedianPrice": 275.0,
-      "targetHighPrice": 380.0,
-      "targetLowPrice": 140.0
+      "returnOnEquity": 1.14288,
+      "debtToEquity": 6.555,
+      "revenueGrowth": 0.852,
+      "targetMeanPrice": 294.22415,
+      "targetMedianPrice": 284.0,
+      "targetHighPrice": 500.0,
+      "targetLowPrice": 180.0
     },
     "NVR": {
       "returnOnEquity": 0.33257,
@@ -924,8 +1167,8 @@
       "returnOnEquity": 0.57572,
       "debtToEquity": 415.265,
       "revenueGrowth": 0.217,
-      "targetMeanPrice": 242.74307,
-      "targetMedianPrice": 225.0,
+      "targetMeanPrice": 244.02513,
+      "targetMedianPrice": 228.0,
       "targetHighPrice": 400.0,
       "targetLowPrice": 155.0
     },
@@ -951,8 +1194,8 @@
       "returnOnEquity": 0.04053,
       "debtToEquity": 41.989,
       "revenueGrowth": -0.083,
-      "targetMeanPrice": 64.33333,
-      "targetMedianPrice": 64.0,
+      "targetMeanPrice": 64.66667,
+      "targetMedianPrice": 64.5,
       "targetHighPrice": 75.0,
       "targetLowPrice": 55.0
     },
@@ -960,25 +1203,43 @@
       "returnOnEquity": 0.16259001,
       "debtToEquity": 4.887,
       "revenueGrowth": 0.149,
-      "targetMeanPrice": 210.1608,
-      "targetMedianPrice": 210.0,
-      "targetHighPrice": 265.0,
+      "targetMeanPrice": 224.65388,
+      "targetMedianPrice": 220.0,
+      "targetHighPrice": 285.0,
       "targetLowPrice": 114.0
+    },
+    "PEP": {
+      "returnOnEquity": 0.43879002,
+      "debtToEquity": 244.837,
+      "revenueGrowth": 0.085,
+      "targetMeanPrice": 171.04762,
+      "targetMedianPrice": 173.0,
+      "targetHighPrice": 195.0,
+      "targetLowPrice": 132.0
     },
     "PFE": {
       "returnOnEquity": 0.083100006,
       "debtToEquity": 71.602,
       "revenueGrowth": 0.054,
-      "targetMeanPrice": 29.15074,
+      "targetMeanPrice": 29.18778,
       "targetMedianPrice": 28.0,
       "targetHighPrice": 36.0,
       "targetLowPrice": 24.0
+    },
+    "PG": {
+      "returnOnEquity": 0.31112,
+      "debtToEquity": 67.651,
+      "revenueGrowth": 0.074,
+      "targetMeanPrice": 163.77274,
+      "targetMedianPrice": 164.0,
+      "targetHighPrice": 186.0,
+      "targetLowPrice": 145.0
     },
     "PH": {
       "returnOnEquity": 0.24841999,
       "debtToEquity": 65.554,
       "revenueGrowth": 0.106,
-      "targetMeanPrice": 1035.0416,
+      "targetMeanPrice": 1033.75,
       "targetMedianPrice": 1055.0,
       "targetHighPrice": 1147.0,
       "targetLowPrice": 680.0
@@ -991,6 +1252,15 @@
       "targetMedianPrice": 143.5,
       "targetHighPrice": 162.0,
       "targetLowPrice": 100.0
+    },
+    "PLTR": {
+      "returnOnEquity": 0.32587,
+      "debtToEquity": 2.477,
+      "revenueGrowth": 0.847,
+      "targetMeanPrice": 183.7289,
+      "targetMedianPrice": 200.0,
+      "targetHighPrice": 255.0,
+      "targetLowPrice": 70.0
     },
     "PR": {
       "returnOnEquity": 0.068569995,
@@ -1005,52 +1275,70 @@
       "returnOnEquity": 0.14547,
       "debtToEquity": 91.385,
       "revenueGrowth": 0.069,
-      "targetMeanPrice": 186.63158,
+      "targetMeanPrice": 187.42105,
       "targetMedianPrice": 190.0,
       "targetHighPrice": 215.0,
       "targetLowPrice": 138.0
+    },
+    "PYPL": {
+      "returnOnEquity": 0.25120002,
+      "debtToEquity": 58.28,
+      "revenueGrowth": 0.072,
+      "targetMeanPrice": 52.52618,
+      "targetMedianPrice": 48.0,
+      "targetHighPrice": 147.39,
+      "targetLowPrice": 32.0
     },
     "QCOM": {
       "returnOnEquity": 0.36083,
       "debtToEquity": 55.979,
       "revenueGrowth": -0.035,
-      "targetMeanPrice": 175.96774,
-      "targetMedianPrice": 160.0,
+      "targetMeanPrice": 177.8125,
+      "targetMedianPrice": 162.5,
       "targetHighPrice": 300.0,
       "targetLowPrice": 100.0
+    },
+    "RBLX": {
+      "returnOnEquity": -3.11935,
+      "debtToEquity": 435.036,
+      "revenueGrowth": 0.393,
+      "targetMeanPrice": 64.8125,
+      "targetMedianPrice": 61.0,
+      "targetHighPrice": 105.0,
+      "targetLowPrice": 45.0
     },
     "REGN": {
       "returnOnEquity": 0.14548,
       "debtToEquity": 8.612,
       "revenueGrowth": 0.19,
-      "targetMeanPrice": 875.3061,
-      "targetMedianPrice": 882.5,
-      "targetHighPrice": 1057.0,
-      "targetLowPrice": 730.0
+      "targetMeanPrice": 833.3061,
+      "targetMedianPrice": 852.5,
+      "targetHighPrice": 1000.0,
+      "targetLowPrice": 641.0
     },
     "ROK": {
       "returnOnEquity": 0.27183,
       "debtToEquity": 113.367,
       "revenueGrowth": 0.119,
-      "targetMeanPrice": 459.6884,
-      "targetMedianPrice": 477.0,
+      "targetMeanPrice": 462.1684,
+      "targetMedianPrice": 480.0,
       "targetHighPrice": 525.0,
       "targetLowPrice": 282.0
     },
     "ROST": {
-      "returnOnEquity": 0.36678,
-      "debtToEquity": 84.241,
-      "revenueGrowth": 0.122,
-      "targetMeanPrice": 236.6875,
-      "targetMedianPrice": 241.0,
+      "returnOnEquity": 0.38981998,
+      "debtToEquity": 74.911,
+      "revenueGrowth": 0.206,
+      "targetMeanPrice": 256.17648,
+      "targetMedianPrice": 265.0,
       "targetHighPrice": 290.0,
-      "targetLowPrice": 158.0
+      "targetLowPrice": 176.0
     },
     "RRC": {
       "returnOnEquity": 0.21134001,
       "debtToEquity": 21.275,
       "revenueGrowth": 0.261,
-      "targetMeanPrice": 47.13636,
+      "targetMeanPrice": 47.18182,
       "targetMedianPrice": 46.0,
       "targetHighPrice": 59.0,
       "targetLowPrice": 36.0
@@ -1073,21 +1361,39 @@
       "targetHighPrice": 242.0,
       "targetLowPrice": 180.0
     },
+    "S": {
+      "returnOnEquity": -0.2902,
+      "debtToEquity": 1.044,
+      "revenueGrowth": 0.202,
+      "targetMeanPrice": 18.73529,
+      "targetMedianPrice": 18.0,
+      "targetHighPrice": 26.0,
+      "targetLowPrice": 14.0
+    },
     "SBUX": {
       "returnOnEquity": null,
       "debtToEquity": null,
       "revenueGrowth": 0.088,
-      "targetMeanPrice": 106.67647,
+      "targetMeanPrice": 106.57576,
       "targetMedianPrice": 110.0,
       "targetHighPrice": 137.0,
       "targetLowPrice": 81.0
+    },
+    "SHOP": {
+      "returnOnEquity": 0.11311,
+      "debtToEquity": 1.432,
+      "revenueGrowth": 0.343,
+      "targetMeanPrice": 151.11111,
+      "targetMedianPrice": 150.0,
+      "targetHighPrice": 200.0,
+      "targetLowPrice": 105.0
     },
     "SLB": {
       "returnOnEquity": 0.14066,
       "debtToEquity": 42.515,
       "revenueGrowth": 0.027,
-      "targetMeanPrice": 61.39286,
-      "targetMedianPrice": 61.5,
+      "targetMeanPrice": 62.14286,
+      "targetMedianPrice": 63.0,
       "targetHighPrice": 71.0,
       "targetLowPrice": 43.0
     },
@@ -1095,19 +1401,55 @@
       "returnOnEquity": 0.023239998,
       "debtToEquity": 124.607,
       "revenueGrowth": 0.73,
-      "targetMeanPrice": 39.07692,
+      "targetMeanPrice": 39.30769,
       "targetMedianPrice": 39.0,
       "targetHighPrice": 58.0,
-      "targetLowPrice": 29.0
+      "targetLowPrice": 30.0
+    },
+    "SMCI": {
+      "returnOnEquity": 0.17877,
+      "debtToEquity": 120.798,
+      "revenueGrowth": 1.227,
+      "targetMeanPrice": 37.125,
+      "targetMedianPrice": 35.0,
+      "targetHighPrice": 58.0,
+      "targetLowPrice": 15.0
+    },
+    "SNOW": {
+      "returnOnEquity": -0.53908,
+      "debtToEquity": 142.462,
+      "revenueGrowth": 0.301,
+      "targetMeanPrice": 229.65916,
+      "targetMedianPrice": 228.0,
+      "targetHighPrice": 500.0,
+      "targetLowPrice": 110.0
     },
     "SNPS": {
       "returnOnEquity": 0.055430003,
       "debtToEquity": 35.579,
       "revenueGrowth": 0.655,
-      "targetMeanPrice": 534.6481,
+      "targetMeanPrice": 539.6865,
       "targetMedianPrice": 540.0,
       "targetHighPrice": 650.0,
       "targetLowPrice": 403.85
+    },
+    "SO": {
+      "returnOnEquity": 0.109910004,
+      "debtToEquity": 190.431,
+      "revenueGrowth": 0.08,
+      "targetMeanPrice": 101.5,
+      "targetMedianPrice": 103.0,
+      "targetHighPrice": 114.0,
+      "targetLowPrice": 81.0
+    },
+    "SPOT": {
+      "returnOnEquity": 0.37987998,
+      "debtToEquity": 5.943,
+      "revenueGrowth": 0.082,
+      "targetMeanPrice": 601.7605,
+      "targetMedianPrice": 605.7816,
+      "targetHighPrice": 730.405,
+      "targetLowPrice": 396.4257
     },
     "SWK": {
       "returnOnEquity": 0.04165,
@@ -1127,39 +1469,48 @@
       "targetHighPrice": 465.0,
       "targetLowPrice": 315.0
     },
+    "T": {
+      "returnOnEquity": 0.18370001,
+      "debtToEquity": 125.175,
+      "revenueGrowth": 0.029,
+      "targetMeanPrice": 30.36957,
+      "targetMedianPrice": 31.0,
+      "targetHighPrice": 36.0,
+      "targetLowPrice": 25.0
+    },
     "TJX": {
-      "returnOnEquity": 0.59129,
-      "debtToEquity": 132.375,
-      "revenueGrowth": 0.085,
-      "targetMeanPrice": 172.16667,
-      "targetMedianPrice": 175.0,
-      "targetHighPrice": 193.0,
-      "targetLowPrice": 107.0
+      "returnOnEquity": 0.6125,
+      "debtToEquity": 136.307,
+      "revenueGrowth": 0.092,
+      "targetMeanPrice": 177.77779,
+      "targetMedianPrice": 179.0,
+      "targetHighPrice": 197.0,
+      "targetLowPrice": 125.0
     },
     "TMO": {
       "returnOnEquity": 0.13523,
       "debtToEquity": 82.903,
       "revenueGrowth": 0.062,
-      "targetMeanPrice": 612.52,
+      "targetMeanPrice": 611.56,
       "targetMedianPrice": 615.0,
       "targetHighPrice": 750.0,
       "targetLowPrice": 490.0
     },
     "TOL": {
-      "returnOnEquity": 0.17001,
-      "debtToEquity": 33.896,
-      "revenueGrowth": 0.154,
-      "targetMeanPrice": 168.375,
-      "targetMedianPrice": 172.5,
-      "targetHighPrice": 198.0,
+      "returnOnEquity": 0.15657,
+      "debtToEquity": 32.803,
+      "revenueGrowth": -0.076,
+      "targetMeanPrice": 163.8125,
+      "targetMedianPrice": 162.5,
+      "targetHighPrice": 187.0,
       "targetLowPrice": 115.0
     },
     "TRGP": {
       "returnOnEquity": 0.74097997,
       "debtToEquity": 585.249,
       "revenueGrowth": -0.102,
-      "targetMeanPrice": 272.9,
-      "targetMedianPrice": 269.0,
+      "targetMeanPrice": 274.05,
+      "targetMedianPrice": 274.0,
       "targetHighPrice": 331.0,
       "targetLowPrice": 245.0
     },
@@ -1167,26 +1518,44 @@
       "returnOnEquity": 0.04901,
       "debtToEquity": 18.738,
       "revenueGrowth": 0.158,
-      "targetMeanPrice": 412.25366,
+      "targetMeanPrice": 411.8878,
       "targetMedianPrice": 450.0,
       "targetHighPrice": 600.0,
       "targetLowPrice": 123.0
+    },
+    "TSM": {
+      "returnOnEquity": 0.3621,
+      "debtToEquity": 18.447,
+      "revenueGrowth": 0.351,
+      "targetMeanPrice": 467.84027,
+      "targetMedianPrice": 472.5,
+      "targetHighPrice": 600.0,
+      "targetLowPrice": 354.0
     },
     "TT": {
       "returnOnEquity": 0.36630002,
       "debtToEquity": 53.597,
       "revenueGrowth": 0.06,
-      "targetMeanPrice": 518.3835,
-      "targetMedianPrice": 525.0,
+      "targetMeanPrice": 520.2191,
+      "targetMedianPrice": 527.5,
       "targetHighPrice": 585.0,
       "targetLowPrice": 402.0
+    },
+    "TTWO": {
+      "returnOnEquity": -0.105579995,
+      "debtToEquity": 84.26,
+      "revenueGrowth": 0.061,
+      "targetMeanPrice": 279.50742,
+      "targetMedianPrice": 284.0,
+      "targetHighPrice": 320.0,
+      "targetLowPrice": 170.0
     },
     "TXN": {
       "returnOnEquity": 0.32347,
       "debtToEquity": 83.741,
       "revenueGrowth": 0.186,
-      "targetMeanPrice": 283.9375,
-      "targetMedianPrice": 287.5,
+      "targetMeanPrice": 285.34375,
+      "targetMedianPrice": 297.5,
       "targetHighPrice": 340.0,
       "targetLowPrice": 200.0
     },
@@ -1194,9 +1563,9 @@
       "returnOnEquity": 0.121759996,
       "debtToEquity": 73.982,
       "revenueGrowth": 0.02,
-      "targetMeanPrice": 387.26923,
+      "targetMeanPrice": 395.15384,
       "targetMedianPrice": 400.0,
-      "targetHighPrice": 444.0,
+      "targetHighPrice": 460.0,
       "targetLowPrice": 287.0
     },
     "UNP": {
@@ -1217,6 +1586,15 @@
       "targetHighPrice": 135.0,
       "targetLowPrice": 75.0
     },
+    "V": {
+      "returnOnEquity": 0.60349,
+      "debtToEquity": 67.233,
+      "revenueGrowth": 0.171,
+      "targetMeanPrice": 398.74313,
+      "targetMedianPrice": 400.6,
+      "targetHighPrice": 450.0,
+      "targetLowPrice": 323.0
+    },
     "VLO": {
       "returnOnEquity": 0.1585,
       "debtToEquity": 42.664,
@@ -1230,10 +1608,37 @@
       "returnOnEquity": 0.24197,
       "debtToEquity": 10.26,
       "revenueGrowth": 0.078,
-      "targetMeanPrice": 549.2857,
-      "targetMedianPrice": 556.5,
+      "targetMeanPrice": 548.10345,
+      "targetMedianPrice": 555.0,
       "targetHighPrice": 641.0,
       "targetLowPrice": 330.0
+    },
+    "VST": {
+      "returnOnEquity": 0.42898,
+      "debtToEquity": 355.187,
+      "revenueGrowth": 0.434,
+      "targetMeanPrice": 225.29411,
+      "targetMedianPrice": 227.0,
+      "targetHighPrice": 320.0,
+      "targetLowPrice": 99.0
+    },
+    "VZ": {
+      "returnOnEquity": 0.17198,
+      "debtToEquity": 192.045,
+      "revenueGrowth": 0.029,
+      "targetMeanPrice": 51.85455,
+      "targetMedianPrice": 50.5,
+      "targetHighPrice": 71.0,
+      "targetLowPrice": 46.0
+    },
+    "WFC": {
+      "returnOnEquity": 0.12028,
+      "debtToEquity": null,
+      "revenueGrowth": 0.057,
+      "targetMeanPrice": 96.11364,
+      "targetMedianPrice": 95.5,
+      "targetHighPrice": 113.0,
+      "targetLowPrice": 85.0
     },
     "WM": {
       "returnOnEquity": 0.29936,
@@ -1248,16 +1653,25 @@
       "returnOnEquity": 0.19656,
       "debtToEquity": 199.855,
       "revenueGrowth": 0.09,
-      "targetMeanPrice": 81.94304,
+      "targetMeanPrice": 82.33435,
       "targetMedianPrice": 83.0,
-      "targetHighPrice": 91.0,
+      "targetHighPrice": 98.0,
       "targetLowPrice": 65.0
+    },
+    "WMT": {
+      "returnOnEquity": 0.24132,
+      "debtToEquity": 73.463,
+      "revenueGrowth": 0.073,
+      "targetMeanPrice": 137.80952,
+      "targetMedianPrice": 140.0,
+      "targetHighPrice": 154.0,
+      "targetLowPrice": 70.0
     },
     "WYNN": {
       "returnOnEquity": null,
       "debtToEquity": null,
       "revenueGrowth": 0.092,
-      "targetMeanPrice": 136.16667,
+      "targetMeanPrice": 135.88889,
       "targetMedianPrice": 136.0,
       "targetHighPrice": 150.0,
       "targetLowPrice": 118.0
@@ -1266,8 +1680,8 @@
       "returnOnEquity": 0.09873,
       "debtToEquity": 18.261,
       "revenueGrowth": 0.026,
-      "targetMeanPrice": 166.0,
-      "targetMedianPrice": 165.0,
+      "targetMeanPrice": 168.31818,
+      "targetMedianPrice": 169.5,
       "targetHighPrice": 185.0,
       "targetLowPrice": 130.0
     },
@@ -1275,17 +1689,17 @@
       "returnOnEquity": 0.08724,
       "debtToEquity": 18.354,
       "revenueGrowth": 0.027,
-      "targetMeanPrice": 150.82353,
+      "targetMeanPrice": 150.64706,
       "targetMedianPrice": 155.0,
-      "targetHighPrice": 186.0,
+      "targetHighPrice": 183.0,
       "targetLowPrice": 124.0
     },
     "YUM": {
       "returnOnEquity": null,
       "debtToEquity": null,
       "revenueGrowth": 0.152,
-      "targetMeanPrice": 174.54167,
-      "targetMedianPrice": 176.0,
+      "targetMeanPrice": 173.86957,
+      "targetMedianPrice": 175.0,
       "targetHighPrice": 200.0,
       "targetLowPrice": 147.0
     },
@@ -1302,10 +1716,10 @@
       "returnOnEquity": -0.03556,
       "debtToEquity": 84.995,
       "revenueGrowth": 0.259,
-      "targetMeanPrice": 224.1189,
-      "targetMedianPrice": 215.0,
+      "targetMeanPrice": 223.38556,
+      "targetMedianPrice": 210.0,
       "targetHighPrice": 330.0,
-      "targetLowPrice": 140.0
+      "targetLowPrice": 155.0
     }
   }
 }

@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-05-23T02:24:45.389151+00:00",
+  "timestamp": "2026-05-23T10:54:44.286804+00:00",
   "mode": "phase1_auto",
   "strategy_version": "v0.1.0",
   "note": "Fase 1 — execução automática activa. LIVE_TRADING=False (conta demo).",
@@ -19,69 +19,69 @@
   },
   "watchlist_top5": [
     {
-      "ticker": "INTC",
-      "sector": "XLK",
-      "price": 118.5,
-      "mom_1m": 0.7745,
-      "mom_3m": 1.5694,
-      "liq_usd_avg": 8944737574.0,
-      "score": 0.7853,
-      "target_mean": 85.00476,
-      "target_median": 84.0,
-      "target_high": 124.0,
-      "target_low": 20.4
-    },
-    {
       "ticker": "MU",
       "sector": "XLK",
-      "price": 762.1,
-      "mom_1m": 0.582,
-      "mom_3m": 0.8239,
-      "liq_usd_avg": 22844024958.0,
-      "score": 0.7041,
-      "target_mean": 584.2439,
+      "price": 751.0,
+      "mom_1m": 0.5119,
+      "mom_3m": 0.7974,
+      "liq_usd_avg": 22909482462.0,
+      "score": 0.6846,
+      "target_mean": 613.225,
       "target_median": 550.0,
-      "target_high": 1000.0,
+      "target_high": 1100.0,
       "target_low": 249.0
     },
     {
       "ticker": "DDOG",
       "sector": "XLK",
-      "price": 218.04,
-      "mom_1m": 0.7053,
-      "mom_3m": 1.0879,
-      "liq_usd_avg": 788193281.0,
-      "score": 0.6436,
-      "target_mean": 221.63643,
+      "price": 222.32,
+      "mom_1m": 0.717,
+      "mom_3m": 1.1289,
+      "liq_usd_avg": 792809627.0,
+      "score": 0.6743,
+      "target_mean": 223.01941,
       "target_median": 225.0,
       "target_high": 320.0,
       "target_low": 128.85
     },
     {
+      "ticker": "INTC",
+      "sector": "XLK",
+      "price": 119.84,
+      "mom_1m": 0.4519,
+      "mom_3m": 1.5984,
+      "liq_usd_avg": 8959765737.0,
+      "score": 0.6686,
+      "target_mean": 87.8619,
+      "target_median": 84.0,
+      "target_high": 150.0,
+      "target_low": 20.4
+    },
+    {
       "ticker": "AMD",
       "sector": "XLK",
-      "price": 449.59,
-      "mom_1m": 0.4725,
-      "mom_3m": 1.1025,
-      "liq_usd_avg": 11098968022.0,
-      "score": 0.6171,
-      "target_mean": 457.83334,
-      "target_median": 474.0,
+      "price": 467.51,
+      "mom_1m": 0.3442,
+      "mom_3m": 1.1863,
+      "liq_usd_avg": 11179626460.0,
+      "score": 0.5857,
+      "target_mean": 472.16666,
+      "target_median": 482.5,
       "target_high": 625.0,
       "target_low": 225.0
     },
     {
-      "ticker": "ARM",
+      "ticker": "FTNT",
       "sector": "XLK",
-      "price": 298.23,
-      "mom_1m": 0.4576,
-      "mom_3m": 1.3274,
-      "liq_usd_avg": 1599097661.0,
-      "score": 0.5834,
-      "target_mean": 232.13568,
-      "target_median": 250.0,
-      "target_high": 326.0,
-      "target_low": 125.0
+      "price": 133.93,
+      "mom_1m": 0.588,
+      "mom_3m": 0.7803,
+      "liq_usd_avg": 555237136.0,
+      "score": 0.5713,
+      "target_mean": 107.16667,
+      "target_median": 110.0,
+      "target_high": 130.0,
+      "target_low": 70.0
     }
   ],
   "barrier_exits": [],
@@ -89,22 +89,22 @@
     {
       "ticker": "HPE",
       "sector": "XLK",
-      "watchlist_score": 0.3713,
-      "mom_1m": 0.2163,
-      "mom_3m": 0.6883,
-      "signal_strength": 0.68,
+      "watchlist_score": 0.4554,
+      "mom_1m": 0.3345,
+      "mom_3m": 0.8678,
+      "signal_strength": 0.694,
       "style": "MOMENTUM",
       "reasons": [
         "Breakout: RSI-14 78.8 ≥ 58 — momentum validado",
         "Alinhamento total: price > EMA-20 > EMA-50 > EMA-200",
-        "Volume 1.8× ≥ 1.5× — confirmação de volume"
+        "Volume 1.9× ≥ 1.5× — confirmação de volume"
       ],
       "technicals": {
         "rsi_14": 78.81,
         "ema50_above_ema200": true,
         "ema20_above_ema50": true,
         "price_above_ema20": true,
-        "volume_ratio_vs_avg": 1.8,
+        "volume_ratio_vs_avg": 1.94,
         "atr_14": 1.4385,
         "rs_bullish": true
       },
@@ -113,10 +113,10 @@
     {
       "ticker": "ROST",
       "sector": "XLY",
-      "watchlist_score": 0.1803,
-      "mom_1m": -0.0429,
-      "mom_3m": 0.0853,
-      "signal_strength": 0.656,
+      "watchlist_score": 0.2296,
+      "mom_1m": 0.0373,
+      "mom_3m": 0.1733,
+      "signal_strength": 0.662,
       "style": "MOMENTUM",
       "reasons": [
         "Breakout: RSI-14 65.6 ≥ 58 — momentum validado",
@@ -128,7 +128,7 @@
         "ema50_above_ema200": true,
         "ema20_above_ema50": true,
         "price_above_ema20": true,
-        "volume_ratio_vs_avg": 1.56,
+        "volume_ratio_vs_avg": 1.62,
         "atr_14": 6.3179,
         "rs_bullish": true
       },
@@ -137,9 +137,9 @@
     {
       "ticker": "F",
       "sector": "XLY",
-      "watchlist_score": 0.2058,
-      "mom_1m": 0.1092,
-      "mom_3m": -0.0252,
+      "watchlist_score": 0.2704,
+      "mom_1m": 0.2212,
+      "mom_3m": 0.0647,
       "signal_strength": 0.654,
       "style": "MOMENTUM",
       "reasons": [
@@ -159,7 +159,32 @@
       "last_price": 14.93
     }
   ],
-  "near_misses": [],
+  "near_misses": [
+    {
+      "ticker": "ADI",
+      "sector": "XLK",
+      "watchlist_score": 0.2038,
+      "rule": "B",
+      "blocking_reason": "Volume 1.5× — falta 0.33× para ≥1.8",
+      "proximity_pct": 82,
+      "technicals": {
+        "rsi_14": 50.89,
+        "ema_20": 401.2369,
+        "ema50": 376.2261,
+        "ema200": 296.4546,
+        "ema20_above_ema50": true,
+        "ema50_above_ema200": true,
+        "price_above_ema20": false,
+        "volume_ratio_vs_avg": 1.47,
+        "volume_sma_10": 5083590.0,
+        "volume_ratio": 1.2,
+        "atr_14": 13.9776,
+        "last_price": 397.07,
+        "rs_bullish": false
+      },
+      "last_price": 397.07
+    }
+  ],
   "n_positions": 2,
   "open_trades": 0,
   "risk_status": {
@@ -179,7 +204,7 @@
       "technicals": {
         "rsi_14": 57.49,
         "ema50_above_ema200": true,
-        "volume_ratio_vs_avg": 0.65
+        "volume_ratio_vs_avg": 0.69
       }
     },
     {
@@ -193,7 +218,7 @@
       "technicals": {
         "rsi_14": 76.63,
         "ema50_above_ema200": true,
-        "volume_ratio_vs_avg": 1.14
+        "volume_ratio_vs_avg": 1.16
       }
     }
   ],
