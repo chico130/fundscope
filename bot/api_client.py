@@ -367,17 +367,76 @@ def close_position_demo(ticker: str, quantity: float = 0.0) -> bool:
     Posições fraccionárias (quantity % 1 != 0) requerem POST market order —
     o endpoint DELETE /equity/positions/{ticker} devolve 404 para frações.
     Posições inteiras usam o DELETE que não requer quantidade nem preço.
+
+    NOTA — comparação BUY vs SELL:
+    place_order_demo (BUY) envia {"ticker", "quantity", "timeValidity"} sem campo
+    "side" e funciona. close_position_demo envia o payload idêntico e recebe 400.
+    Isto sugere que POST /equity/orders/market é BUY-only por omissão; a T212 pode
+    exigir "side":"SELL" ou "instrumentCode" em vez de "ticker" para vendas.
+    As quatro variações abaixo testam os campos de identificação do instrumento;
+    o log_decision regista qual funcionou para diagnóstico sem deploy manual.
+
     Devolve True em caso de sucesso, False em qualquer erro.
     """
     if LIVE_TRADING:
         raise RuntimeError("LIVE_TRADING is True — aborting to protect live account.")
+
     if quantity and quantity % 1 != 0:
-        resp = _post("/equity/orders/market", {
-            "ticker": ticker,
-            "quantity": abs(quantity),
-            "timeValidity": "DAY",
+        from .logger import log_decision, log_error
+
+        abs_qty = abs(quantity)
+        _variations: list[tuple[str, dict]] = [
+            ("V1_ticker",               {"ticker": ticker, "quantity": abs_qty, "timeValidity": "DAY"}),
+            ("V2_instrumentCode",       {"instrumentCode": ticker, "quantity": abs_qty, "timeValidity": "DAY"}),
+            ("V3_ticker+instrCode",     {"ticker": ticker, "instrumentCode": ticker, "quantity": abs_qty, "timeValidity": "DAY"}),
+            ("V4_ticker_no_validity",   {"ticker": ticker, "quantity": abs_qty}),
+        ]
+
+        for var_name, payload in _variations:
+            time.sleep(REQUEST_DELAY_SECONDS)
+            try:
+                resp = _session.post(
+                    f"{T212_BASE_URL_DEMO}/equity/orders/market",
+                    json=payload,
+                    timeout=30,
+                )
+                if resp.ok:
+                    log_decision("close_fractional_sell", var_name, {
+                        "ticker": ticker, "quantity": abs_qty,
+                    })
+                    return True
+                if resp.status_code == 400:
+                    log_decision("close_fractional_400", var_name, {
+                        "ticker": ticker,
+                        "payload_keys": list(payload.keys()),
+                        "response": resp.text[:300],
+                    })
+                    continue  # tenta próxima variação
+                # Erro não-400 (401, 403, 5xx, …) — desiste imediatamente
+                log_error("close_fractional_http_error", {
+                    "ticker": ticker, "variation": var_name,
+                    "status_code": resp.status_code,
+                    "response": resp.text[:300],
+                })
+                return False
+            except _RETRIABLE as exc:
+                log_error("close_fractional_network_error", {
+                    "ticker": ticker, "variation": var_name, "error": str(exc),
+                })
+                return False
+            except Exception as exc:
+                log_error("close_fractional_exception", {
+                    "ticker": ticker, "variation": var_name, "error": str(exc),
+                })
+                return False
+
+        # Todas as variações devolveram 400
+        log_error("close_fractional_all_400", {
+            "ticker": ticker, "quantity": abs_qty,
+            "tried": [v for v, _ in _variations],
         })
-        return resp is not None
+        return False
+
     return _delete(f"/equity/positions/{ticker}")
 
 
