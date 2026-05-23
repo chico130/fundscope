@@ -1,6 +1,6 @@
 """T212 API contract test — regression suite.
 
-Valida em <30s as premissas empíricas sobre a API T212 demo. Corre antes de cada
+Valida em <30s as premissas empíricas sobre a API T212. Corre antes de cada
 deploy crítico (ou em CI nightly) para apanhar regressões de schema antes que
 cheguem ao bot em produção.
 
@@ -9,13 +9,19 @@ em docs/T212_API_MANUAL.md. Falhas indicam que a API mudou e que o manual +
 api_client.py precisam de actualização.
 
 Uso:
+  # demo (default — sem risco financeiro)
   PYTHONPATH=. python scripts/t212_contract_test.py
-  exit code 0 = todas as premissas confirmadas; ≠0 = pelo menos uma regressão.
+  PYTHONPATH=. python scripts/t212_contract_test.py --env demo
 
+  # live (pre-flight Fase 3 — exige T212_LIVE_API_ID/KEY no .env)
+  PYTHONPATH=. python scripts/t212_contract_test.py --env live --i-understand-risk
+
+Exit code 0 = todas as premissas confirmadas; ≠0 = pelo menos uma regressão.
 Não toca em posições reais — ordens de teste são canceladas imediatamente.
 """
 from __future__ import annotations
 
+import argparse
 import json
 import sys
 import time
@@ -28,15 +34,22 @@ if hasattr(sys.stderr, "reconfigure"):
 
 import requests
 
-from bot.config import T212_BASE_URL_DEMO, T212_DEMO_KEY
+from bot.config import (
+    T212_BASE_URL_DEMO,
+    T212_BASE_URL_LIVE,
+    T212_DEMO_KEY,
+    T212_LIVE_KEY,
+)
 
 
 # ---------------------------------------------------------------------------
-# Setup
+# Setup — populado dinamicamente em main() consoante --env
 # ---------------------------------------------------------------------------
 
-_session = requests.Session()
-_session.headers.update({"Authorization": T212_DEMO_KEY, "Content-Type": "application/json"})
+BASE_URL: str = T212_BASE_URL_DEMO
+ENV_LABEL: str = "demo"
+_session: requests.Session = requests.Session()
+_session.headers.update({"Content-Type": "application/json"})
 
 # Ticker de teste para SELL: ARM (assume-se em carteira; testes adaptam-se se não estiver)
 SELL_TEST_TICKER = "ARM_US_EQ"
@@ -57,29 +70,29 @@ def _record(name: str, passed: bool, detail: str = "") -> None:
 
 
 def _cancel_orders_for(ticker: str) -> None:
-    r = _session.get(f"{T212_BASE_URL_DEMO}/equity/orders", timeout=30)
+    r = _session.get(f"{BASE_URL}/equity/orders", timeout=30)
     if r.status_code != 200:
         return
     for o in r.json():
         if o.get("ticker") == ticker:
             oid = o.get("id")
             if oid:
-                _session.delete(f"{T212_BASE_URL_DEMO}/equity/orders/{oid}", timeout=30)
+                _session.delete(f"{BASE_URL}/equity/orders/{oid}", timeout=30)
 
 
 def _get(path: str):
     time.sleep(1.2)
-    return _session.get(f"{T212_BASE_URL_DEMO}{path}", timeout=30)
+    return _session.get(f"{BASE_URL}{path}", timeout=30)
 
 
 def _post(path: str, payload: dict):
     time.sleep(1.5)
-    return _session.post(f"{T212_BASE_URL_DEMO}{path}", json=payload, timeout=30)
+    return _session.post(f"{BASE_URL}{path}", json=payload, timeout=30)
 
 
 def _delete(path: str):
     time.sleep(1.2)
-    return _session.delete(f"{T212_BASE_URL_DEMO}{path}", timeout=30)
+    return _session.delete(f"{BASE_URL}{path}", timeout=30)
 
 
 # ---------------------------------------------------------------------------
@@ -132,31 +145,47 @@ def test_orders_list():
     _record("orders body is array", isinstance(body, list), f"n={len(body)}")
 
 
-def test_market_buy_schema():
-    """Confirma que MARKET aceita {ticker, quantity} minimal e REJEITA timeValidity.
+def _is_schema_accepted(r: requests.Response) -> tuple[bool, str]:
+    """True quando a API aceitou o schema do payload (200 OK, ou 400 com qualquer
+    /api-errors/ business-level mas NÃO invalid-request). Devolve (ok, err_type).
 
-    Usa quantity:0.0001 (abaixo do mínimo) — devolve 400 min-quantity, prova
-    que o payload schema é aceite. Se viesse 400 invalid-payload seria regressão.
+    Razão: business errors (min-quantity-exceeded, min-value-exceeded,
+    selling-equity-not-owned, etc.) provam que o payload foi parseado e
+    aplicado às regras de negócio. Só `invalid-request` indica que o schema
+    foi recusado.
     """
-    print("\n[4] POST /equity/orders/market — schema BUY")
-
-    # 4a: minimal payload válido
-    r = _post("/equity/orders/market", {"ticker": SELL_TEST_TICKER, "quantity": 0.0001})
     try:
         body = r.json()
     except Exception:
         body = {}
     err_type = body.get("type", "")
-    is_schema_ok = (r.status_code == 200) or err_type.endswith("min-quantity-exceeded")
+    if r.status_code == 200:
+        return True, err_type
+    if r.status_code == 400 and err_type.startswith("/api-errors/") and not err_type.endswith("invalid-request"):
+        return True, err_type
+    return False, err_type
+
+
+def test_market_buy_schema():
+    """Confirma que MARKET aceita {ticker, quantity} minimal e REJEITA timeValidity.
+
+    Usa quantity:0.0001 — abaixo do mínimo de qty/valor, devolve 400 business-level.
+    Se viesse 400 invalid-request seria regressão de schema.
+    """
+    print("\n[4] POST /equity/orders/market — schema BUY")
+
+    # 4a: minimal payload válido
+    r = _post("/equity/orders/market", {"ticker": SELL_TEST_TICKER, "quantity": 0.0001})
+    ok, err_type = _is_schema_accepted(r)
     _record(
         "market minimal payload accepted",
-        is_schema_ok,
+        ok,
         f"HTTP {r.status_code} type={err_type}",
     )
     if r.status_code == 200:
         _cancel_orders_for(SELL_TEST_TICKER)
 
-    # 4b: payload com timeValidity DEVE ser rejeitado com invalid-payload
+    # 4b: payload com timeValidity DEVE ser rejeitado com invalid-request (schema)
     r = _post("/equity/orders/market", {
         "ticker": SELL_TEST_TICKER, "quantity": 0.0001, "timeValidity": "DAY",
     })
@@ -184,22 +213,16 @@ def test_market_sell_schema(position):
         return
 
     ticker = position["ticker"]
-    # Usa quantity negativa muito pequena — abaixo do mínimo, mas confirma schema
+    # quantity negativa minúscula — abaixo do mínimo, prova schema sem fillar
     r = _post("/equity/orders/market", {"ticker": ticker, "quantity": -0.0001})
+    ok, err_type = _is_schema_accepted(r)
     try:
-        body = r.json()
+        side_in_response = r.json().get("side") if r.status_code == 200 else None
     except Exception:
-        body = {}
-    err_type = body.get("type", "")
-    side_in_response = body.get("side") if r.status_code == 200 else None
-
-    # Aceite (200) ou rejeitado por business rule (min-qty / not-owned) — ambos OK
-    schema_ok = (r.status_code == 200) or err_type.endswith(
-        ("min-quantity-exceeded", "selling-equity-not-owned")
-    )
+        side_in_response = None
     _record(
         "market accepts negative quantity (= SELL)",
-        schema_ok,
+        ok,
         f"HTTP {r.status_code} type={err_type} side={side_in_response}",
     )
     if r.status_code == 200:
@@ -211,15 +234,10 @@ def test_limit_schema():
     print("\n[6] POST /equity/orders/limit — schema (com timeValidity)")
     payload = {"ticker": LIMIT_TEST_TICKER, "quantity": 1, "limitPrice": 1.00, "timeValidity": "DAY"}
     r = _post("/equity/orders/limit", payload)
-    try:
-        body = r.json()
-    except Exception:
-        body = {}
-    err_type = body.get("type", "")
-    schema_ok = (r.status_code == 200) or err_type.endswith("min-quantity-exceeded")
+    ok, err_type = _is_schema_accepted(r)
     _record(
         "limit accepts timeValidity:'DAY'",
-        schema_ok,
+        ok,
         f"HTTP {r.status_code} type={err_type}",
     )
     if r.status_code == 200:
@@ -249,12 +267,62 @@ def test_nonexistent_sell_endpoints():
 # Runner
 # ---------------------------------------------------------------------------
 
-def main() -> int:
-    if not T212_DEMO_KEY or T212_DEMO_KEY == "Basic ":
-        print("ERRO: T212_DEMO_KEY não configurada (verifica T212_API_ID + T212_API_KEY no .env)")
+def _select_env(env: str, allow_live: bool) -> int | None:
+    """Configura BASE_URL e auth do _session segundo --env. Devolve exit code se falhar."""
+    global BASE_URL, ENV_LABEL
+
+    if env == "demo":
+        if not T212_DEMO_KEY or T212_DEMO_KEY == "Basic ":
+            print("ERRO: T212_DEMO_KEY não configurada (verifica T212_API_ID + T212_API_KEY no .env)")
+            return 2
+        BASE_URL = T212_BASE_URL_DEMO
+        ENV_LABEL = "demo"
+        _session.headers["Authorization"] = T212_DEMO_KEY
+        return None
+
+    # env == "live"
+    if not allow_live:
+        print("ERRO: --env live requer --i-understand-risk para confirmar intenção.")
+        print()
+        print("  Live mode envia chamadas autenticadas para live.trading212.com — a tua conta real.")
+        print("  Os testes evitam ordens fillable (qty abaixo do mínimo + LIMIT a $1 + tickers")
+        print("  com schema-fail), mas a responsabilidade de garantir que o .env aponta para a")
+        print("  conta certa é tua. Repete com:")
+        print("    python scripts/t212_contract_test.py --env live --i-understand-risk")
         return 2
 
-    print(f"T212 contract test → {T212_BASE_URL_DEMO}")
+    if not T212_LIVE_KEY:
+        print("ERRO: T212_LIVE_API_ID / T212_LIVE_API_KEY não configurados no .env.")
+        print("  Gera credenciais separadas em T212 → Settings → API (conta live)")
+        print("  e adiciona ao .env:")
+        print("    T212_LIVE_API_ID=...")
+        print("    T212_LIVE_API_KEY=...")
+        return 2
+
+    BASE_URL = T212_BASE_URL_LIVE
+    ENV_LABEL = "live"
+    _session.headers["Authorization"] = T212_LIVE_KEY
+    return None
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description="T212 API contract test")
+    parser.add_argument(
+        "--env", choices=["demo", "live"], default="demo",
+        help="ambiente alvo (default: demo)",
+    )
+    parser.add_argument(
+        "--i-understand-risk", action="store_true",
+        help="confirmação obrigatória para --env live",
+    )
+    args = parser.parse_args()
+
+    err = _select_env(args.env, allow_live=args.i_understand_risk)
+    if err is not None:
+        return err
+
+    banner_warn = " ⚠️  LIVE MODE  ⚠️ " if ENV_LABEL == "live" else ""
+    print(f"T212 contract test [{ENV_LABEL}]{banner_warn} → {BASE_URL}")
 
     position = test_auth_and_portfolio()
     test_cash()
@@ -264,7 +332,7 @@ def main() -> int:
     test_limit_schema()
     test_nonexistent_sell_endpoints()
 
-    # Limpeza defensiva final
+    # Limpeza defensiva final — críticO em live (qualquer ordem residual é dinheiro real)
     if position:
         _cancel_orders_for(position["ticker"])
     _cancel_orders_for(LIMIT_TEST_TICKER)
@@ -274,15 +342,28 @@ def main() -> int:
     n_failed = n_total - n_passed
 
     print(f"\n{'='*60}")
-    print(f"Resultado: {n_passed}/{n_total} passes ({n_failed} regressões)")
+    print(f"Resultado [{ENV_LABEL}]: {n_passed}/{n_total} passes ({n_failed} regressões)")
     if n_failed:
         print("\nRegressões detectadas:")
         for name, ok, detail in results:
             if not ok:
                 print(f"  ✗ {name} — {detail}")
-        print("\n→ T212 mudou comportamento. Actualizar docs/T212_API_MANUAL.md e api_client.py.")
+        if ENV_LABEL == "live":
+            print(
+                "\n→ LIVE difere de DEMO. NÃO fazer flip de LIVE_TRADING — actualizar primeiro:\n"
+                "  - docs/T212_API_MANUAL.md (secção §11 Demo vs Live)\n"
+                "  - bot/api_client.py se algum schema requer adaptação"
+            )
+        else:
+            print("\n→ T212 mudou comportamento. Actualizar docs/T212_API_MANUAL.md e api_client.py.")
         return 1
     print("Todas as premissas continuam válidas — manual + api_client coerentes com a API real.")
+    if ENV_LABEL == "live":
+        print(
+            "\n→ Paridade demo/live confirmada para os 13 asserts cobertos. Flip de LIVE_TRADING\n"
+            "  pode prosseguir se os restantes pré-requisitos da Fase 3 estiverem satisfeitos\n"
+            "  (ver vault/specs/FASE-1.md §9.4)."
+        )
     return 0
 
 

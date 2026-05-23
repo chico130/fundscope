@@ -16,18 +16,24 @@ PYTHONPATH=. python scripts/t212_contract_test.py
 ## 1. Autenticação
 
 ```
-Header:     Authorization: Basic <base64(api_id:api_secret)>
-Base URL:   https://demo.trading212.com/api/v0
-.env vars:  T212_API_ID  (key ID, ~37 chars)
-            T212_API_KEY (secret,  ~43 chars)
+Header:    Authorization: Basic <base64(api_id:api_secret)>
+.env vars (demo, runtime do bot):  T212_API_ID  (~37 chars)
+                                   T212_API_KEY (~43 chars)
+.env vars (live, contract test):   T212_LIVE_API_ID
+                                   T212_LIVE_API_KEY
+Base URL demo:  https://demo.trading212.com/api/v0
+Base URL live:  https://live.trading212.com/api/v0
 ```
 
 - **Schema confirmado**: HTTP Basic. A combinação `id:secret` é codificada em
   base64 — qualquer outra forma (raw key, Bearer) devolve **401**.
-- A chave demo é separada da chave live. Chaves podem ser revogadas em
-  `Trading 212 → Settings → API` — se o owner gerar nova chave, a antiga
-  fica inválida silenciosamente (401).
-- 401 em endpoints públicos do equity = chave revogada ou .env desactualizado.
+- A chave demo é gerada em `T212 demo app → Settings → API`. A chave live é
+  gerada na app live e **é diferente** — não a uses na demo nem vice-versa.
+- Chaves podem ser revogadas pelo owner. Se rodares a chave em produção sem
+  actualizar `.env` local, recebes **401** em todos os endpoints até refrescar.
+- Em runtime do bot, [[bot/config.py]] carrega só `T212_API_ID`/`T212_API_KEY`
+  e aponta para `T212_BASE_URL_DEMO`. As env vars `T212_LIVE_*` existem apenas
+  para o `scripts/t212_contract_test.py --env live`.
 
 ---
 
@@ -295,18 +301,97 @@ pnl_realised_eur = sum(
 
 ---
 
-## 11. Demo vs Live — diferenças a confirmar antes de Fase 3
+## 11. Demo vs Live — runbook de pre-flight para Fase 3
 
-A spec da Fase 3 (LIVE_TRADING=True) muda a base URL para
-`live.trading212.com/api/v0`. **Não está confirmado** que o schema é idêntico
-ao da demo. Antes de fazer flip do flag:
+A spec da Fase 3 (`LIVE_TRADING=True` em [[bot/config.py]]) muda a base URL
+para `live.trading212.com/api/v0`. **A paridade de schema com a demo NÃO está
+confirmada** — esta secção define o procedimento para validar antes do flip.
 
-1. Renovar `T212_API_ID` / `T212_API_KEY` com credenciais da conta live
-2. Apontar `T212_BASE_URL` para `live.trading212.com/api/v0`
-3. **Correr o contract test contra live** (`scripts/t212_contract_test.py`)
-   e verificar que os 13 testes passam exactamente igual
-4. Se algum teste falhar, este manual + `bot/api_client.py` precisam de uma
-   secção "Live differences" antes do flip
+### 11.1 Diferenças expectadas (a confirmar pelo contract test)
+
+Estas são hipóteses informadas, não factos. O contract test refuta ou
+confirma cada uma. Marca cada item ✅/❌ depois da primeira run live e
+actualiza esta secção.
+
+| Aspecto | Demo (validado 2026-05-23) | Live (TBD) | Risco se diferir |
+|---|---|---|---|
+| Auth scheme (Basic id:secret) | ✅ HTTP Basic | provavelmente igual | baixo |
+| Base URL | `demo.trading212.com/api/v0` | `live.trading212.com/api/v0` | sem risco |
+| POST market schema | `{ticker, quantity}` (sinal codifica lado) | provavelmente igual | médio — bot quebra silenciosamente |
+| POST limit schema | exige `timeValidity:"DAY"` | provavelmente igual | médio |
+| Rate limits | ~10 GET/min, 1 POST/s, 429 → 30s wait | possivelmente mais apertados | médio |
+| Mínimos por ticker | ARM 0.00379, F 1.16 | possivelmente diferentes | baixo (erro claro) |
+| Instabilidades transitórias (cash.free=0, portfolio []) | frequentes | **menos frequentes** (live é mais estável) | positivo |
+| `maxSell: null` em algumas posições | frequente | possivelmente sempre populado | baixo |
+| Extended hours | `extendedHours:true` aceite | possivelmente igual | baixo |
+| Instrumentos disponíveis | superset (inclui CFDs simulados) | subset (só o que está na conta ISA/Invest) | baixo |
+
+### 11.2 Runbook
+
+```powershell
+# 1. Gera credenciais live em T212 → Settings → API (conta real, NÃO demo)
+#    Anota api_id e api_key — vais precisar dos dois.
+
+# 2. Adiciona ao .env LOCAL (não commitar; nunca expor)
+#    T212_LIVE_API_ID=...
+#    T212_LIVE_API_KEY=...
+
+# 3. Pre-flight read-only check — verifica auth e schema GET
+PYTHONPATH=. python scripts/t212_contract_test.py --env live --i-understand-risk
+
+# 4a. Se 13/13 passes → paridade confirmada. Avança para os restantes
+#     pré-requisitos da Fase 3 (ver vault/specs/FASE-1.md §9.4).
+
+# 4b. Se < 13/13 → STOP. Não fazer flip de LIVE_TRADING.
+#     Para cada falha:
+#       - identificar qual asserto falhou (output do test descreve)
+#       - actualizar a tabela §11.1 deste manual marcando ✅/❌
+#       - se for diferença de schema, adicionar secção §11.3 abaixo
+#       - se for diferença comportamental (rate limit, etc.), §11.4
+#       - actualizar bot/api_client.py para suportar ambos os schemas
+#         (idealmente via if env == "live" else demo branch)
+```
+
+### 11.3 Live differences — diferenças de SCHEMA confirmadas
+
+Inicialmente vazio — popular após primeira run live. Cada entrada deve ter:
+endpoint, demo behavior, live behavior, mitigation no `api_client.py`.
+
+*(Sem entradas até à primeira validação contra live.)*
+
+### 11.4 Live differences — diferenças COMPORTAMENTAIS confirmadas
+
+Inicialmente vazio — popular após primeira run live. Cada entrada deve ter:
+fenómeno observado em live, frequência, mitigação no bot.
+
+*(Sem entradas até à primeira validação contra live.)*
+
+### 11.5 Custos reais — só aplicáveis em live
+
+A demo é gratuita; live tem custos que demo não modela. Antes da Fase 3,
+medir estes em paper trading e ajustar o edge esperado:
+
+- **Spread bid-ask**: T212 mostra preço mid em `currentPrice` mas execuções
+  acontecem ao bid/ask. Para tickers líquidos US: spread típico < 0.05%.
+  Para small-caps ou ETFs europeus: pode chegar a 0.3%.
+- **Conversão cambial EUR↔USD**: T212 cobra 0.15% por trocas automáticas.
+  O bot opera maioritariamente em USD com cash EUR → cada BUY/SELL paga este
+  fee. Para uma estratégia que visa 1-3% por trade, isto come 5-15% do edge.
+- **Slippage de MARKET orders**: em demo a slippage é instantânea ao mid; em
+  live pode ser ±0.1% em horas normais, mais em open/close. Considerar
+  migrar para LIMIT orders com offset (já está no plano da Fase 3 §7
+  prioridade 2 do [[FASE-1.md]]).
+
+### 11.6 Critério de "pronto para flip de LIVE_TRADING"
+
+Todos estes devem estar verdadeiros simultaneamente:
+
+- [ ] `scripts/t212_contract_test.py --env live` devolve 13/13 passes
+- [ ] §11.3 e §11.4 deste manual estão actualizadas (mesmo que vazias)
+- [ ] [[bot/config.py]] tem `RISK_CONFIG_LIVE_CONSERVATIVE` definido
+- [ ] Restantes pré-requisitos da Fase 3 (paper trading, WR, Sharpe) — ver
+      [[vault/specs/FASE-1.md|FASE-1]] §9.4
+- [ ] Aprovação humana explícita registada em commit dedicado ao flip
 
 ---
 
@@ -335,3 +420,4 @@ curl -H "Authorization: $T212_KEY" https://demo.trading212.com/api/v0/equity/met
 | Data | Alteração |
 |---|---|
 | 2026-05-23 | **Reescrita completa.** Versão anterior continha 3 afirmações falsas que causaram bugs em produção: (i) `timeValidity:"DAY"` documentado como aceite no MARKET (na verdade rejeitado); (ii) `DELETE /equity/positions/{ticker}` documentado como endpoint de fecho (na verdade 404); (iii) POST market descrito como "BUY-only que ignora side" (na verdade aceita quantity negativa para SELL). Toda a informação actual foi validada por `scripts/t212_contract_test.py` (13/13 passes). |
+| 2026-05-23 | **§11 Demo vs Live reescrita.** Runbook concreto para pre-flight de Fase 3, tabela de diferenças expectadas a verificar, secções §11.3/§11.4 reservadas para popular após primeira run live, §11.5 sobre custos reais (spread, FX 0.15%, slippage), §11.6 checklist de "pronto para flip". Contract test agora aceita `--env live --i-understand-risk` com guards de segurança. |

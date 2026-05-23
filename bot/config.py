@@ -24,6 +24,22 @@ else:
 T212_API_KEY_DEMO  = T212_DEMO_KEY   # alias de retrocompatibilidade
 T212_BASE_URL_DEMO = "https://demo.trading212.com/api/v0"
 
+# T212 LIVE — auth e base URL para pre-flight check de Fase 3.
+# NÃO é usado pelo bot em runtime (api_client está hardcoded a DEMO). Só serve
+# para o contract test confirmar paridade de schema antes do flip LIVE_TRADING.
+# Aceita T212_LIVE_API_ID / T212_LIVE_API_KEY (preferidos) ou cai para os mesmos
+# T212_API_ID / T212_API_KEY se não houver credenciais separadas.
+_t212_live_id     = os.getenv("T212_LIVE_API_ID", "")
+_t212_live_secret = os.getenv("T212_LIVE_API_KEY", "")
+
+if _t212_live_id and _t212_live_secret:
+    _creds_live   = base64.b64encode(f"{_t212_live_id}:{_t212_live_secret}".encode()).decode()
+    T212_LIVE_KEY = f"Basic {_creds_live}"
+else:
+    T212_LIVE_KEY = ""
+
+T212_BASE_URL_LIVE = "https://live.trading212.com/api/v0"
+
 # Finnhub: feed de preços em tempo real (free tier: 60 req/min).
 # Registo gratuito em https://finnhub.io/register
 # Aceita FINNHUB_API_KEY ou FINNHUB_TOKEN (o .env do VPS usa o segundo nome).
