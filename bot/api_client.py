@@ -361,85 +361,76 @@ def place_order_demo(
     return None
 
 
+def cancel_pending_orders_demo(ticker: str) -> int:
+    """Cancela todas as ordens pendentes para o ticker. Devolve número de ordens canceladas.
+
+    Usa GET /equity/orders para listar ordens activas e DELETE /equity/orders/{id}
+    para cancelar cada uma filtrada pelo ticker.
+    """
+    if LIVE_TRADING:
+        raise RuntimeError("LIVE_TRADING is True — aborting to protect live account.")
+
+    from .logger import log_decision, log_error
+
+    orders = _get("/equity/orders")
+    if not orders:
+        return 0
+
+    cancelled = 0
+    for order in orders:
+        if order.get("ticker") != ticker:
+            continue
+        order_id = order.get("id") or order.get("orderId")
+        if not order_id:
+            log_error("cancel_pending_order_no_id", {"ticker": ticker, "order": order})
+            continue
+        if _delete(f"/equity/orders/{order_id}"):
+            cancelled += 1
+            log_decision("cancel_pending_order", "cancelled", {
+                "ticker": ticker,
+                "order_id": order_id,
+                "type": order.get("type"),
+                "quantity": order.get("quantity"),
+            })
+        else:
+            log_error("cancel_pending_order_failed", {
+                "ticker": ticker,
+                "order_id": order_id,
+            })
+    return cancelled
+
+
 def close_position_demo(ticker: str, quantity: float = 0.0) -> bool:
     """Fecha a posição de um ticker na conta demo T212.
 
-    Posições fraccionárias (quantity % 1 != 0) requerem POST market order —
-    o endpoint DELETE /equity/positions/{ticker} devolve 404 para frações.
-    Posições inteiras usam o DELETE que não requer quantidade nem preço.
+    USA SEMPRE DELETE /equity/positions/{ticker} — para posições inteiras e fraccionárias.
 
-    NOTA — comparação BUY vs SELL:
-    place_order_demo (BUY) envia {"ticker", "quantity", "timeValidity"} sem campo
-    "side" e funciona. close_position_demo envia o payload idêntico e recebe 400.
-    Isto sugere que POST /equity/orders/market é BUY-only por omissão; a T212 pode
-    exigir "side":"SELL" ou "instrumentCode" em vez de "ticker" para vendas.
-    As quatro variações abaixo testam os campos de identificação do instrumento;
-    o log_decision regista qual funcionou para diagnóstico sem deploy manual.
+    IMPORTANTE: POST /equity/orders/market é BUY-only. A T212 ignora qualquer campo
+    "side" enviado nesse endpoint e cria sempre uma ordem de COMPRA. Nunca usar
+    POST /equity/orders/market para fechar/vender posições.
+
+    Cancela ordens pendentes para o ticker antes de fechar, para eliminar ordens
+    BUY duplicadas criadas por erros anteriores.
 
     Devolve True em caso de sucesso, False em qualquer erro.
     """
     if LIVE_TRADING:
         raise RuntimeError("LIVE_TRADING is True — aborting to protect live account.")
 
-    if quantity and quantity % 1 != 0:
-        from .logger import log_decision, log_error
+    from .logger import log_decision, log_error
 
-        abs_qty = abs(quantity)
-        _variations: list[tuple[str, dict]] = [
-            ("V5_ticker+side",          {"ticker": ticker, "quantity": abs_qty, "timeValidity": "DAY", "side": "SELL"}),
-            ("V6_instrCode+side",       {"instrumentCode": ticker, "quantity": abs_qty, "timeValidity": "DAY", "side": "SELL"}),
-            ("V1_ticker",               {"ticker": ticker, "quantity": abs_qty, "timeValidity": "DAY"}),
-            ("V2_instrumentCode",       {"instrumentCode": ticker, "quantity": abs_qty, "timeValidity": "DAY"}),
-            ("V3_ticker+instrCode",     {"ticker": ticker, "instrumentCode": ticker, "quantity": abs_qty, "timeValidity": "DAY"}),
-            ("V4_ticker_no_validity",   {"ticker": ticker, "quantity": abs_qty}),
-        ]
+    n_cancelled = cancel_pending_orders_demo(ticker)
+    if n_cancelled:
+        log_decision("close_position_cancelled_pending", str(n_cancelled), {"ticker": ticker})
 
-        for var_name, payload in _variations:
-            time.sleep(REQUEST_DELAY_SECONDS)
-            try:
-                resp = _session.post(
-                    f"{T212_BASE_URL_DEMO}/equity/orders/market",
-                    json=payload,
-                    timeout=30,
-                )
-                if resp.ok:
-                    log_decision("close_fractional_sell", var_name, {
-                        "ticker": ticker, "quantity": abs_qty,
-                    })
-                    return True
-                if resp.status_code == 400:
-                    log_decision("close_fractional_400", var_name, {
-                        "ticker": ticker,
-                        "payload_keys": list(payload.keys()),
-                        "response": resp.text[:300],
-                    })
-                    continue  # tenta próxima variação
-                # Erro não-400 (401, 403, 5xx, …) — desiste imediatamente
-                log_error("close_fractional_http_error", {
-                    "ticker": ticker, "variation": var_name,
-                    "status_code": resp.status_code,
-                    "response": resp.text[:300],
-                })
-                return False
-            except _RETRIABLE as exc:
-                log_error("close_fractional_network_error", {
-                    "ticker": ticker, "variation": var_name, "error": str(exc),
-                })
-                return False
-            except Exception as exc:
-                log_error("close_fractional_exception", {
-                    "ticker": ticker, "variation": var_name, "error": str(exc),
-                })
-                return False
-
-        # Todas as variações devolveram 400
-        log_error("close_fractional_all_400", {
-            "ticker": ticker, "quantity": abs_qty,
-            "tried": [v for v, _ in _variations],
+    ok = _delete(f"/equity/positions/{ticker}")
+    if not ok:
+        log_error("close_position_delete_failed", {
+            "ticker": ticker,
+            "quantity": quantity,
+            "note": "DELETE retornou erro; verificar se posição existe e se é fraccionária",
         })
-        return False
-
-    return _delete(f"/equity/positions/{ticker}")
+    return ok
 
 
 def cancel_order_demo(order_id: str | int) -> bool:

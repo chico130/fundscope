@@ -140,51 +140,38 @@ usa sempre MARKET em vez de LIMIT.
 
 ## 5. Fechar Posições (SELL) — COMPORTAMENTO CRÍTICO
 
-Existem dois mecanismos para fechar uma posição. A escolha depende
-da quantidade da posição:
+### ⚠️ POST /equity/orders/market é BUY-ONLY (2026-05-23 confirmado)
 
-### DELETE /equity/positions/{ticker}
+**`POST /equity/orders/market` cria SEMPRE uma ordem de COMPRA**, independentemente
+de já teres a posição. A T212 ignora qualquer campo `"side"` enviado no payload.
+
+> **Bug confirmado**: O bot enviou `{"ticker": "ARM_US_EQ", "quantity": 0.4886, "side": "SELL"}`
+> e a T212 criou uma ordem de **COMPRA** visível na app. A documentação anterior
+> ("T212 interpreta como SELL se já tens a posição") era **incorrecta**.
+
+**NUNCA usar `POST /equity/orders/market` para fechar posições.**
+
+---
+
+### DELETE /equity/positions/{ticker} — endpoint correcto para SELL
+
 ```
 DELETE https://demo.trading212.com/api/v0/equity/positions/ARM_US_EQ
 ```
 
-**Funciona APENAS para posições com quantidade inteira** (ex: 1, 2, 5).
-
-- Quantidade fraccionária (ex: 0.4886): devolve **404 Not Found** mesmo que
-  a posição exista. Este é o bug confirmado no FundScope em 2026-05-23.
-- Quantidade inteira: fecha toda a posição ao preço de mercado actual.
+- Fecha a posição inteira ao preço de mercado.
 - Não requer body.
-
-### POST /equity/orders/market (para SELL fraccionário)
-Para fechar uma posição fraccionária, usa uma ordem SELL MARKET:
-
-```json
-{
-  "ticker": "ARM_US_EQ",
-  "quantity": 0.4886,
-  "timeValidity": "DAY"
-}
-```
-
-**IMPORTANTE**: a T212 interpreta isto como SELL se já tens a posição.
-A `quantity` deve ser **positiva** (não negativa). Enviar quantidade negativa
-devolve **400 Bad Request**.
+- Funciona confirmado para posições com quantidade inteira.
+- Para posições fraccionárias: pode devolver 404 se a T212 não suportar.
+  Nesse caso, o bot reporta falha correctamente (não cria BUY por engano).
 
 ### Lógica correcta para `close_position_demo`
 ```python
-def close_position_demo(ticker: str, quantity: float) -> bool:
-    is_fractional = (quantity != int(quantity))  # 0.4886 != 0, True
-    if is_fractional:
-        # SELL MARKET com quantidade exacta
-        resp = _post("/equity/orders/market", {
-            "ticker": ticker,
-            "quantity": quantity,  # positivo
-            "timeValidity": "DAY",
-        })
-        return resp is not None
-    else:
-        # DELETE — mais rápido e atómico para inteiros
-        return _delete(f"/equity/positions/{ticker}")
+def close_position_demo(ticker: str, quantity: float = 0.0) -> bool:
+    # Cancela ordens pendentes primeiro (ex: BUY criado por erro anterior)
+    cancel_pending_orders_demo(ticker)
+    # Usa DELETE para todos os casos — inteiros e fraccionários
+    return _delete(f"/equity/positions/{ticker}")
 ```
 
 ---
