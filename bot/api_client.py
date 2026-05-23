@@ -386,6 +386,8 @@ def close_position_demo(ticker: str, quantity: float = 0.0) -> bool:
 
         abs_qty = abs(quantity)
         _variations: list[tuple[str, dict]] = [
+            ("V5_ticker+side",          {"ticker": ticker, "quantity": abs_qty, "timeValidity": "DAY", "side": "SELL"}),
+            ("V6_instrCode+side",       {"instrumentCode": ticker, "quantity": abs_qty, "timeValidity": "DAY", "side": "SELL"}),
             ("V1_ticker",               {"ticker": ticker, "quantity": abs_qty, "timeValidity": "DAY"}),
             ("V2_instrumentCode",       {"instrumentCode": ticker, "quantity": abs_qty, "timeValidity": "DAY"}),
             ("V3_ticker+instrCode",     {"ticker": ticker, "instrumentCode": ticker, "quantity": abs_qty, "timeValidity": "DAY"}),
