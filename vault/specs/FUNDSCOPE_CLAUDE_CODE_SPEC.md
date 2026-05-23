@@ -251,12 +251,18 @@ fundscope/
 
 ### Fases de Evolução
 
-| Fase | Descrição | Estado |
+| Fase | Descrição | Estado (2026-05-23) |
 |------|-----------|--------|
-| **Fase 0** | Só leitura + análise + sugestões em texto (sem ordens) | Implementar primeiro |
-| **Fase 1** | Execução em demo com regras simples + logging | A seguir |
-| **Fase 2** | Análise de logs + ajuste de parâmetros + relatório de erros | Depois |
-| **Fase 3** | Modo real limitado (supervisão humana, plafond baixo) | Futuro |
+| **Fase 0** | Só leitura + análise + sugestões em texto (sem ordens) | ✅ feito |
+| **Fase 1** | Execução em demo com regras simples + logging | ✅ feito + expandido (watchlist 100, regime, CRO position sizing, MOMENTUM, Three Barriers ATR) |
+| **Fase 2** | Análise de logs + ajuste de parâmetros + relatório de erros (+ ML Bonnie) | 🟡 parcial — ML Bonnie integrado (GradientBoosting, 4 features) mas falta walk-forward, out-of-sample, Sharpe metrics |
+| **Fase 3** | Modo real limitado (supervisão humana, plafond baixo) | ⏳ não iniciada |
+
+> **Estado detalhado:** ver [[FASE-1]] §9 (Estado Real de Implementação) para
+> a tabela completa de divergências entre spec e código, e a lista de
+> pré-requisitos abertos para Fase 3 (inclui `RISK_CONFIG_LIVE_CONSERVATIVE`
+> ainda não definido em [[config.py]] e contract test contra
+> `live.trading212.com`).
 
 ### Limites de Risco ([[config|config.py]])
 

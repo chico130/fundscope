@@ -9,7 +9,7 @@ links_obrigatorios:
   parent_moc: "[[MOC_FundScope]]"
   vizinhos: "[[MOC_Clyde]] [[MOC_Bonnie]] [[MOC_CRO]]"
 status: stable
-ultima_revisao: 2026-05-19
+ultima_revisao: 2026-05-23
 ---
 # FundScope Bot — Relatório de Diagnóstico, Estratégia e Roadmap de Evolução
 
@@ -17,8 +17,10 @@ Retorno: [[MOC_FundScope]]
 
 > **Destinatário:** Claude Code (configuração e desenvolvimento do bot)
 > **Fonte:** Análise do repositório `chico130/fundscope` + sessão de estratégia com o proprietário
-> **Data:** Maio 2026
+> **Data inicial:** Maio 2026  ·  **Última actualização:** 2026-05-23
 > **Objetivo:** Explicar a dinâmica atual do bot, compilar os insights da sessão de estratégia, e definir um plano de evolução faseado para passar de "modo observação" a "modo autónomo com aprovação humana".
+>
+> ⚠️ **Aviso sobre drift de spec:** A versão original deste documento (Maio 2026) descrevia o bot como estando em "Fase 0 só-leitura". A 2026-05-23 confirmou-se que o bot já corre Fase 1 (execução automática) e implementou parcialmente a Fase 2 (modelo Bonnie). As secções 1, 4 e a nova secção 9 foram revistas para reflectir o estado real. Antes de planear novos upgrades, ler a §9 (Estado Real de Implementação).
 
 ---
 
@@ -41,57 +43,85 @@ O bot reside na pasta `/bot` e é composto pelos seguintes módulos:
 | `logger.py` | Logging de decisões e erros |
 | `config.py` | Configuração central: parâmetros de risco, API keys, paths |
 
-### 1.2 Dinâmica de Funcionamento (Fase 0 — Estado Atual)
+### 1.2 Dinâmica de Funcionamento (Fase 1 — Estado Atual 2026-05-23)
 
-O bot está atualmente em **Fase 0 (modo só-leitura)**. O ciclo de execução é:
+O bot está actualmente em **Fase 1 (execução automática em demo)**.
+Confirmado por `PHASE1_EXECUTION = True` em [[config|config.py]] e por trades
+reais no `beta_trades.json`. O ciclo `phase0.run()` (15 min em CI, ou contínuo
+via [[VPS_MIGRATION_SPEC|VPS]]) executa:
 
 ```
-1. Ligar o bot (Ligar_Bot.bat / python -m bot.phase0)
-2. Chamar T212 API (demo) → obter estado do portfolio e posições abertas
-3. Enriquecer dados com indicadores técnicos (RSI-14, EMA-50, EMA-200, volume ratio)
-4. Gerar sinais de análise por ticker (sem submeter ordens)
-5. Calcular snapshot de risco (equity, posições acima do limite)
-6. Guardar relatório em data/beta/beta_analysis.json
-7. Commit automático para GitHub (git push origin main)
-8. Imprimir relatório em consola
+1. _sync_from_t212_strict() → GET T212 portfolio+cash, reconcilia ledger
+2. reconcile_orphan_buy_orders() → cancela BUYs órfãs de fechamentos antigos
+3. enrich_with_technicals() → RSI-14, EMA-20/50/200, ATR-14, vol ratio,
+   rs_bullish (vs SPY)
+4. regime_detector.get_current_regime() → 4 estados (bull_trending,
+   bull_lateral, bear_correction, bear_capitulation)
+5. _scan_watchlist_candidates() → 100 tickers × generate_signals (throttled)
+6. bonnie.filter_proposals() → ML model + thresholds vetam entradas fracas
+7. _apply_social_veto() → veto por sentimento Reddit / divergência analistas
+8. exit_manager.check_exit_barriers() → ATR Three Barriers (SL, BE trigger, target)
+9. _execute_phase1() → submete BUYs/SELLs via api_client (gate: mercado aberto)
+10. cro.observe()/interpret()/speak() → escreve cro_insights.json
+11. learner.run_learner_cycle() → analisa trades fechados, propõe parâmetros
+12. Telegram via notifier (oportunidades, vetos, kill switches, despertar/boa noite)
+13. git_sync → commit + push de relatórios e logs
 ```
 
-**Nenhuma ordem é submetida nesta fase.** O bot apenas observa, analisa e sugere.
+**Ordens submetidas em conta demo T212.** `LIVE_TRADING = False` impede flip
+para conta real.
 
-### 1.3 Lógica de Sinais ([[strategy|strategy.py]])
+### 1.3 Lógica de Sinais ([[strategy|strategy.py]]) — actual 2026-05-23
 
-O bot usa dois tipos de sinais:
+Os sinais são parametrizados pelo Learner (defaults em [[learner|learner.py]],
+overridable em runtime). Estilos activos: `VALUE` e `MOMENTUM`.
 
-**Entradas (ENTRY) — condições obrigatórias:**
+**Entradas (ENTRY) — três regras:**
 
-| Regra | Condição | Tipo |
+| Regra | Estilo | Condição (parâmetros do Learner em itálico) |
 |---|---|---|
-| A — Oversold em uptrend | RSI ≤ 35 + [[atom-ema50|EMA-50]] > [[atom-ema200|EMA-200]] + volume ≥ 1.2× | Entrada clássica |
-| B — Momentum surge | RSI 40–55 + [[atom-ema50|EMA-50]] > [[atom-ema200|EMA-200]] + volume ≥ 1.8× | Entrada por momentum |
+| A — Sobrevendido em uptrend | VALUE | RSI ≤ *34* + EMA-50 > EMA-200 + vol ≥ *1.2×* |
+| B — Momentum neutro + volume | VALUE | RSI *40–55* + EMA-50 > EMA-200 + vol ≥ *1.8×* |
+| M — Breakout momentum | MOMENTUM | RSI ≥ *58* + price > EMA-20 > EMA-50 > EMA-200 (alinhamento 4 EMAs) + vol ≥ *1.5×* |
 
-**Saídas (EXIT / REDUCE):**
+**Saídas (EXIT / REDUCE) — por estilo da posição:**
 
-| Regra | Condição | Ação |
-|---|---|---|
-| C — Sobrecomprado | RSI ≥ 72 | EXIT — vender 100% |
-| D — Inversão de tendência | [[atom-ema50|EMA-50]] < [[atom-ema200|EMA-200]] em posição aberta | REDUCE — vender 50% |
+| Regra | Estilo da posição | Condição | Acção |
+|---|---|---|---|
+| C — Sobrecomprado | VALUE | RSI ≥ *72* | EXIT 100% |
+| D — Inversão de tendência | VALUE | EMA-50 < EMA-200 | REDUCE 50% |
+| E — ATR Trailing Stop | MOMENTUM | close < peak_high − *2.5*×ATR-14 | EXIT 100% |
 
-### 1.4 Gestão de Risco ([[config|config.py]] + [[strategy|strategy.py]])
+Adicionalmente o `exit_manager` corre Three Barriers ATR (stop loss a entrada−1.5×ATR,
+break-even trigger a +1×ATR, target a +3×ATR) para todos os trades com barreiras
+armazenadas no momento da entrada.
 
-Os parâmetros de risco atuais são:
+### 1.4 Gestão de Risco ([[config|config.py]] + [[strategy|strategy.py]]) — actual
 
-| Parâmetro | Valor Atual |
-|---|---|
-| Posição máxima por ativo | 20% da equity |
-| Exposição máxima por setor | 40% da equity |
-| Perda diária máxima | 3% |
-| Trades máximos por dia | 10 |
-| Stop Loss | 5% |
-| Take Profit | 10% |
-| Dias sem trade antes de earnings | 2 |
-| Mínimo de dados históricos | 20 pontos |
+```python
+RISK_CONFIG = {
+    "max_position_pct": 20.0,        # % máxima por ticker
+    "max_sector_pct": 40.0,
+    "max_daily_loss_pct": 3.0,
+    "max_trades_per_day": 10,
+    "stop_loss_pct": 5.0,
+    "take_profit_pct": 10.0,
+    "no_trade_before_earnings_days": 2,
+    "min_data_points_required": 20,
+    "max_positions_per_sector": 2,   # NOVO vs spec original
+}
+```
 
-O modo `LIVE_TRADING = False` está hardcoded em `config.py`, garantindo que o bot nunca executa ordens reais sem alteração explícita.
+Acrescentos não previstos na spec original:
+- **Position sizing ATR** ([[cro.py]]): tamanho € por trade é função do ATR e
+  do risco-alvo (1% da equity por trade). Substitui o factor fixo
+  `tamanho_maximo_posicao`.
+- **Multiplicadores de regime** ([[cro.py]]): `bull_trending` 1.0×,
+  `bull_lateral` 0.5×, `bear_correction`/`bear_capitulation` 0.0×
+  (`bear_value_multiplier` 0.25× para sinais VALUE em bear).
+- **Bonnie thresholds dinâmicos**: base 0.60, strict 0.64 quando WR(25) < 0.45.
+
+`LIVE_TRADING = False` hardcoded — garante que nenhuma ordem chega à conta real.
 
 ### 1.5 Módulo de Aprendizagem ([[learner|learner.py]])
 
@@ -259,16 +289,18 @@ Para complementar o bot com contexto humano:
 
 ## 4. Roadmap de Evolução Faseado
 
-### Fase 0 — Observação (Estado Atual ✅)
+> **Estado a 2026-05-23**: Fase 0 ✅, Fase 1 ✅, Fase 2 🟡 parcial (ver §9),
+> Fase 3 ⏳ não iniciada. Esta secção descreve o plano original — os deltas
+> entre plano e implementação real estão consolidados na nova §9.
+
+### Fase 0 — Observação ✅ COMPLETA
 
 - Bot lê dados da [[atom-trading212|T212]] demo
 - Calcula RSI, EMA, volume para posições abertas
 - Gera sugestões sem executar ordens
 - Auto-commit para GitHub
 
-**Duração recomendada:** Mínimo 2–4 semanas de observação contínua
-
-### Fase 1 — Watchlist + Regime (A Implementar)
+### Fase 1 — Watchlist + Regime ✅ COMPLETA + EXPANDIDA
 
 **Tarefas para o Claude Code:**
 
@@ -316,7 +348,7 @@ Para complementar o bot com contexto humano:
 
 **Duração recomendada desta fase:** 2–4 semanas em modo paper
 
-### Fase 2 — Modelo de Aprendizagem Estatístico (Futura)
+### Fase 2 — Modelo de Aprendizagem Estatístico 🟡 PARCIAL (ver §9)
 
 **Tarefas para o Claude Code:**
 
@@ -343,7 +375,7 @@ Para complementar o bot com contexto humano:
 
 **Duração recomendada desta fase:** 1–2 meses de paper trading com modelo
 
-### Fase 3 — Live Trading Controlado (Futura)
+### Fase 3 — Live Trading Controlado ⏳ NÃO INICIADA (pré-requisitos abertos — ver §9)
 
 **Condições obrigatórias antes de ativar `LIVE_TRADING = True`:**
 
@@ -450,3 +482,125 @@ Após cada semana de observação, verificar:
 ---
 
 *Este relatório foi gerado com base na análise do código-fonte do repositório `chico130/fundscope` e na sessão de estratégia de Maio de 2026. Todos os ajustes de parâmetros e ativação de live trading requerem aprovação explícita do proprietário.*
+
+---
+
+## 9. Estado Real de Implementação (snapshot 2026-05-23)
+
+Esta secção é a fonte de verdade actual. As secções 1–8 acima foram escritas em
+Maio de 2026 e descrevem o plano; algumas afirmações (especialmente sobre o estado
+do bot) deixaram de bater certo com o código real. Os dados abaixo foram extraídos
+directamente dos módulos em execução.
+
+### 9.1 Fases — estado de implementação
+
+| Fase | Plano (§4) | Estado real | Notas |
+|---|---|---|---|
+| 0 — Observação | só leitura | ✅ feito | Substituído pela Fase 1 |
+| 1 — Watchlist + Regime | 25 tickers, sem exec | ✅ feito + **expandido** | 100 tickers, refresh diário, execução automática |
+| 2 — ML Bonnie | XGBoost, 10-15 features, walk-forward | 🟡 **parcial** | GradientBoosting, 4 features, StratifiedKFold |
+| 3 — Live Trading | LIVE_TRADING=True + conservative config | ⏳ não iniciada | `RISK_CONFIG_LIVE_CONSERVATIVE` não existe no código |
+
+### 9.2 Fase 1 — divergências entre spec e realidade
+
+| Spec original (§4 Fase 1) | Realidade actual ([[config|config.py]]) |
+|---|---|
+| `WATCHLIST_CONFIG.max_size = 25` | **100** |
+| `WATCHLIST_CONFIG.update_frequency_days = 7` | **1** (diário) |
+| `WATCHLIST_CONFIG.sectors = 5` ("XLK, XLV, XLY, XLI, XLE") | **9** (+ XLF, XLC, XLU, XLP) |
+| `REGIME_CONFIG.bear_threshold_spy_ema200_pct = -5.0` | **0.0** |
+| Apenas estilo VALUE (regras A, B) | **VALUE + MOMENTUM** (regras A, B, M) |
+| Sem ATR Trailing Stop | **Three Barriers ATR** + MOMENTUM Trailing |
+| `no_trade_before_earnings_days = 2` | igual ✅ |
+| Position sizing fixo via `tamanho_maximo_posicao` | **ATR sizing** via [[cro.py]] (1% risk-target) |
+
+A maioria das diferenças foram acrescentos, não regressões — a watchlist mais
+larga e o estilo MOMENTUM são extensões legítimas da spec inicial.
+
+### 9.3 Fase 2 — o que está feito (e o que NÃO está)
+
+**Implementado:**
+
+| Componente | Ficheiro | Estado |
+|---|---|---|
+| Captura de observações | [[mass_backtest|bot/mass_backtest.py]] | ✅ gera `data/backtest/bonnie_observations.json` |
+| Feature builder | [[feature_builder|bot/feature_builder.py]] | ✅ 4 features (rsi_14, ema50_above_200, vol_ratio, regime) |
+| Treino de modelo | [[model_trainer|bot/model_trainer.py]] | ✅ `GradientBoostingClassifier` (sklearn) |
+| Modelo persistido | `data/models/bonnie_model.pkl` | ✅ presente |
+| Integração no pipeline | [[bonnie.py]] `filter_proposals()` | ✅ veto/aprovação por força do sinal |
+
+**Não implementado (vs §4 Fase 2):**
+
+| Requisito da spec | Estado | Comentário |
+|---|---|---|
+| Modelo base **XGBoost** | ❌ | usa `GradientBoostingClassifier` (sklearn) — design choice diferente |
+| **10–15 features** | ❌ | usa 4 — datasets pequenos da demo não suportam mais sem overfit |
+| **Walk-forward validation** | ❌ | usa `StratifiedKFold` cross-validation |
+| **Out-of-sample test set** (últimos 6-12 meses retidos) | ❌ | não implementado |
+| **Sharpe ratio / max drawdown** nas métricas de treino | ❌ | só accuracy + feature importance |
+| **Look-ahead bias check automatizado** | ❌ | confiamos no pipeline manual sem teste |
+| Threshold 0.60 | ✅ | `bonnie.base_threshold = 0.60` |
+| Re-treino manual aprovado | ✅ | `model_trainer.train()` corrido a pedido |
+
+**Decisão pendente:** queremos completar a Fase 2 conforme a spec original
+(reescrever para XGBoost + walk-forward), ou consolidar o que está e refinar?
+A escolha depende do tamanho do dataset de `bonnie_observations.json` —
+se < ~500 observações, XGBoost over-fitter-á e o ganho será zero.
+
+### 9.4 Fase 3 — pré-requisitos abertos
+
+A spec da Fase 3 (§4) lista checks que ainda não estão satisfeitos. Para flip
+de `LIVE_TRADING = True` precisas de:
+
+| Pré-requisito da spec | Estado |
+|---|---|
+| Paper trading ≥ 30 dias | em curso (demo desde Mai 2026) |
+| Win rate > 50% em paper | medir com `learner.run_learner_cycle()` |
+| Rácio ganho médio / perda média > 1.5 | medir |
+| Nenhum dia de perda > 3% em paper | verificar `data/beta/beta_equity.json` |
+| Walk-forward Sharpe > 0.8 | **bloqueado** — walk-forward ainda não existe (§9.3) |
+| Aprovação manual explícita | requer alterar `LIVE_TRADING` em [[config.py]] |
+
+**Ausente do código mas exigido pela spec:**
+
+```python
+# NÃO existe em config.py — tem de ser adicionado antes do flip
+RISK_CONFIG_LIVE_CONSERVATIVE = {
+    "max_position_pct": 10.0,     # metade do demo
+    "max_sector_pct": 25.0,
+    "max_daily_loss_pct": 2.0,
+    "max_trades_per_day": 3,
+    "stop_loss_pct": 4.0,
+    "take_profit_pct": 8.0,
+}
+```
+
+**Risco técnico adicional (descoberto 2026-05-23):** o schema da API live
+pode diferir do demo. Antes do flip:
+
+1. Renovar `T212_API_ID/KEY` para credenciais live
+2. Apontar `T212_BASE_URL` para `https://live.trading212.com/api/v0`
+3. Correr `python scripts/t212_contract_test.py` **contra live** — exige
+   13/13 passes
+4. Se algum dos 13 falhar, há diferenças schema que precisam de uma secção
+   "Live differences" em [[docs/T212_API_MANUAL.md]] antes de continuar
+
+### 9.5 Defesa contra futuros bugs como o do `timeValidity`
+
+A 23-mai descobriu-se que [[docs/T212_API_MANUAL.md]] tinha 3 afirmações
+falsas que ficaram codificadas em [[api_client.py]] durante meses. Para
+evitar reincidência em qualquer upgrade futuro:
+
+- **Contract test** ([[scripts/t212_contract_test.py]]) tem 13 asserts
+  empíricos contra a API demo. Correr antes de:
+  - qualquer mudança em [[api_client.py]]
+  - qualquer flip de fase (especialmente Fase 3)
+  - qualquer release relevante
+- **Manual T212 reescrito** com schema validado e secção §6 anti-regressão
+  listando explicitamente os endpoints que NÃO funcionam.
+- **Logging detalhado em `_post`** captura o body do response (não só o status
+  code) — qualquer 400 inesperado fica diagnosticável directamente no log.
+
+Estas três defesas são genéricas e devem ser mantidas em todas as fases
+futuras. Não removas o contract test mesmo que pareça redundante — é o único
+sentinel que avisa quando a T212 muda algo silenciosamente.
