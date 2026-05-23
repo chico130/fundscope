@@ -210,6 +210,44 @@ class CRO:
     # 3. Speak — escreve cro_insights.json e envia para Telegram
     # ------------------------------------------------------------------
 
+    # ------------------------------------------------------------------
+    # 4. Analyze Gains — produz snapshot para a UI (data/gains_analysis.json)
+    # ------------------------------------------------------------------
+
+    def analyze_gains(self, beta_trades_path: Path | None = None) -> dict:
+        """Gera análise consolidada de gains para a aba Gains do portfolio.html.
+
+        Consome beta_trades.json (fonte canónica dos trades fechados) e produz
+        o schema descrito em data/gains_analysis.json. Não escreve ficheiro —
+        o caller decide quando persistir (update_portfolio.py faz isso após
+        detectar uma nova posição fechada).
+        """
+        path   = beta_trades_path or (DATA_BETA_DIR / "beta_trades.json")
+        trades = _load_beta_trades(path)
+        closed = [t for t in trades if t.get("closed_at") and t.get("result_eur") is not None]
+        closed_sorted = sorted(closed, key=lambda x: x.get("closed_at", ""))
+
+        summary           = _gains_summary(closed_sorted)
+        patterns          = _gains_patterns(closed_sorted)
+        recurring_errors  = _gains_recurring_errors(closed_sorted)
+        sector_perf       = _gains_sector_performance(closed_sorted)
+        cro_verdict       = _gains_cro_verdict(summary, sector_perf)
+
+        return {
+            "generated_at":           datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "trades_analysed":        len(closed_sorted),
+            "last_closed_trade_id":   closed_sorted[-1].get("id") if closed_sorted else None,
+            "summary":                summary,
+            "patterns":               patterns,
+            "recurring_errors":       recurring_errors,
+            "sector_performance":     sector_perf,
+            "cro_verdict":            cro_verdict,
+        }
+
+    # ------------------------------------------------------------------
+    # 5. Speak — escreve cro_insights.json e envia para Telegram
+    # ------------------------------------------------------------------
+
     def speak(self) -> None:
         """Persiste cro_insights.json e envia narrativa cognitiva via Whisper (Telegram).
 
@@ -635,3 +673,194 @@ def _whisper(payload: dict) -> None:
 
     enviar_alerta("\n".join(linhas), silencioso=True)
     print(f"[CRO] Narrativa enviada para Telegram ({len(payload.get('insights', []))} insights).")
+
+
+# ---------------------------------------------------------------------------
+# Gains analysis helpers — alimentam analyze_gains() / gains_analysis.json
+# ---------------------------------------------------------------------------
+
+def _gains_summary(closed: list[dict]) -> dict:
+    """Sumário agregado: P&L total, win rate, melhor/pior trade."""
+    if not closed:
+        return {
+            "total_pnl_eur": 0.0,
+            "total_pnl_pct": 0.0,
+            "win_rate":      0.0,
+            "best_trade":    None,
+            "worst_trade":   None,
+        }
+
+    total_pnl = sum((t.get("result_eur") or 0) for t in closed)
+    wins      = sum(1 for t in closed if (t.get("result_eur") or 0) > 0)
+    pct_vals  = [t.get("result_pct") for t in closed if t.get("result_pct") is not None]
+    avg_pct   = (sum(pct_vals) / len(pct_vals)) if pct_vals else 0.0
+
+    best  = max(closed, key=lambda t: (t.get("result_eur") or 0))
+    worst = min(closed, key=lambda t: (t.get("result_eur") or 0))
+
+    def _trade_brief(t: dict) -> dict:
+        return {
+            "ticker":   t.get("ticker"),
+            "gain_pct": round(t.get("result_pct") or 0, 2),
+            "gain_eur": round(t.get("result_eur") or 0, 2),
+        }
+
+    return {
+        "total_pnl_eur": round(total_pnl, 2),
+        "total_pnl_pct": round(avg_pct, 2),
+        "win_rate":      round(wins / len(closed), 4),
+        "best_trade":    _trade_brief(best),
+        "worst_trade":   _trade_brief(worst),
+    }
+
+
+def _gains_patterns(closed: list[dict]) -> list[str]:
+    """Padrões positivos identificados (estilo análise post-mortem)."""
+    if not closed:
+        return ["Sem trades fechados — sem padrões identificados ainda."]
+
+    patterns: list[str] = []
+
+    # Duração média dos vencedores vs todos
+    win_times = [t.get("result_after_minutes", 0) for t in closed
+                 if (t.get("result_eur") or 0) > 0 and t.get("result_after_minutes")]
+    all_times = [t.get("result_after_minutes", 0) for t in closed if t.get("result_after_minutes")]
+    if win_times and all_times:
+        avg_win = sum(win_times) / len(win_times)
+        avg_all = sum(all_times) / len(all_times)
+        if avg_win < avg_all * 0.8:
+            patterns.append(
+                f"Vencedores fecham em média {avg_win:.0f}min — significativamente mais "
+                f"rápido que a média global ({avg_all:.0f}min). Saídas técnicas funcionam."
+            )
+
+    # Win rate por regime
+    by_regime: dict[str, list[int]] = {}
+    for t in closed:
+        regime = (t.get("context") or {}).get("regime") or "desconhecido"
+        by_regime.setdefault(regime, []).append(1 if (t.get("result_eur") or 0) > 0 else 0)
+    for regime, outcomes in by_regime.items():
+        if len(outcomes) >= 3:
+            wr = sum(outcomes) / len(outcomes)
+            if wr >= 0.7:
+                patterns.append(
+                    f"Regime {regime}: win rate de {wr*100:.0f}% ({len(outcomes)} trades) "
+                    "— manter exposição neste regime."
+                )
+
+    # Estilo (MOMENTUM vs VALUE) que funciona melhor
+    by_style: dict[str, list[float]] = {}
+    for t in closed:
+        style = (t.get("context") or {}).get("style") or "MOMENTUM"
+        by_style.setdefault(style, []).append(t.get("result_eur") or 0)
+    if len(by_style) >= 2:
+        best_style = max(by_style, key=lambda k: sum(by_style[k]))
+        total      = sum(by_style[best_style])
+        if total > 0:
+            patterns.append(
+                f"Estilo {best_style} acumula +{total:.2f}€ "
+                f"({len(by_style[best_style])} trades) — preferir nas próximas entradas."
+            )
+
+    if not patterns:
+        patterns.append("Histórico ainda curto — padrões consolidados requerem >10 trades.")
+
+    return patterns
+
+
+def _gains_recurring_errors(closed: list[dict]) -> list[str]:
+    """Erros recorrentes detectados (perdas com causa identificável)."""
+    if not closed:
+        return []
+
+    errors: list[str] = []
+    losers  = [t for t in closed if (t.get("result_eur") or 0) < 0]
+
+    # Sequência de perdas consecutivas
+    results = [(t.get("result_eur") or 0) for t in closed]
+    streak  = _max_loss_streak(results)
+    if streak >= 3:
+        errors.append(
+            f"Sequência máxima de {streak} perdas consecutivas — "
+            "filtro Bonnie pode estar a deixar passar setups fracos."
+        )
+
+    # Tickers reincidentes em perdas
+    loss_count: dict[str, int] = {}
+    loss_total: dict[str, float] = {}
+    for t in losers:
+        k = t.get("ticker", "?")
+        loss_count[k] = loss_count.get(k, 0) + 1
+        loss_total[k] = loss_total.get(k, 0.0) + (t.get("result_eur") or 0)
+    repeat_losers = [(k, c, loss_total[k]) for k, c in loss_count.items() if c >= 2]
+    for ticker, count, total in sorted(repeat_losers, key=lambda x: x[2])[:3]:
+        errors.append(
+            f"{ticker}: {count} perdas ({total:.2f}€ acumulado) — "
+            "rever a tese ou excluir da watchlist."
+        )
+
+    # Saídas por stop loss
+    stop_exits = [t for t in losers if "stop" in (t.get("postmortem") or "").lower()]
+    if stop_exits and len(stop_exits) / max(len(closed), 1) > 0.3:
+        errors.append(
+            f"{len(stop_exits)} saídas por stop loss "
+            f"({len(stop_exits)/len(closed)*100:.0f}% do total) — "
+            "entradas podem estar a ser feitas tarde no movimento."
+        )
+
+    return errors
+
+
+def _gains_sector_performance(closed: list[dict]) -> list[dict]:
+    """Performance agregada por sector (usa _TICKER_TO_SECTOR do watchlist_manager)."""
+    if not closed:
+        return []
+
+    try:
+        from .watchlist_manager import _TICKER_TO_SECTOR as _T2S
+    except ImportError:
+        _T2S = {}
+
+    by_sector: dict[str, list[dict]] = {}
+    for t in closed:
+        symbol = (t.get("ticker") or "").split("_")[0]
+        sector = _T2S.get(symbol, "Outros")
+        by_sector.setdefault(sector, []).append(t)
+
+    out = []
+    for sector, ts in by_sector.items():
+        wins  = sum(1 for t in ts if (t.get("result_eur") or 0) > 0)
+        pcts  = [t.get("result_pct") for t in ts if t.get("result_pct") is not None]
+        out.append({
+            "sector":    sector,
+            "n_trades":  len(ts),
+            "win_rate":  round(wins / len(ts), 4),
+            "pnl_pct":   round(sum(pcts) / len(pcts), 2) if pcts else 0.0,
+        })
+    out.sort(key=lambda x: x["pnl_pct"], reverse=True)
+    return out
+
+
+def _gains_cro_verdict(summary: dict, sector_perf: list[dict]) -> str:
+    """Veredicto sintético do CRO — uma linha accionável."""
+    if not summary or summary.get("total_pnl_eur") is None:
+        return "Sem dados suficientes para veredicto."
+
+    pnl = summary["total_pnl_eur"]
+    wr  = summary["win_rate"]
+
+    if pnl > 0 and wr >= 0.6:
+        base = f"Performance positiva (P&L +{pnl:.2f}€, WR {wr*100:.0f}%). Manter estratégia."
+    elif pnl > 0:
+        base = f"P&L positivo (+{pnl:.2f}€) com WR {wr*100:.0f}% — vencedores compensam perdas."
+    elif wr >= 0.5:
+        base = f"WR {wr*100:.0f}% mas P&L {pnl:.2f}€ — perdas maiores que ganhos, apertar stop loss."
+    else:
+        base = f"P&L {pnl:.2f}€, WR {wr*100:.0f}% — rever filtros de entrada da Bonnie."
+
+    if sector_perf:
+        worst = min(sector_perf, key=lambda s: s["pnl_pct"])
+        if worst["pnl_pct"] < -2 and worst["n_trades"] >= 2:
+            base += f" Reduzir exposição a {worst['sector']} ({worst['pnl_pct']:.1f}% médio)."
+
+    return base

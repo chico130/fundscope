@@ -796,6 +796,9 @@ def main():
     )
     for p in positions:
         p["allocation_pct"] = round(p["value_eur"] / total_value * 100, 2) if total_value > 0 else 0
+        # Stub para previsões Clyde (UI aba Gains, Secção 3). Quando Clyde expuser
+        # um forecast dedicado, substituir por {"estimate": int 0-100, "target_pct": float}.
+        p["clyde_forecast"] = None
     positions.sort(key=lambda x: x["value_eur"], reverse=True)
 
     print("\n[5] Notícias + Earnings + Fundamentais + Gemini análise...")
@@ -841,11 +844,83 @@ def main():
         json.dump(out, f, ensure_ascii=False, indent=2)
     os.replace(tmp, "portfolio.json")
 
+    print("\n[7] Análise de Gains (CRO)...")
+    _maybe_regenerate_gains_analysis()
+
     print(f"\n✅ Concluído!")
     print(f"   Valor: {total_value:.2f}€ | P&L: {total_gain:+.2f}€ | Posições: {len(positions)}")
     print("\n   Mapeamento final:")
     for p in positions:
         print(f"   {p['ticker_t212']} → {p['ticker']} | {p['display_name']} | {p.get('currency','?')}")
+
+
+def _maybe_regenerate_gains_analysis():
+    """Regenera data/gains_analysis.json se houver nova posição fechada.
+
+    Comparação por trade id (campo `id` em beta_trades.json). Se o último
+    trade fechado coincide com `last_closed_trade_id` da análise existente,
+    o ficheiro não é tocado — UI continua a mostrar a análise anterior.
+    """
+    from pathlib import Path
+
+    beta_path = Path("data/beta/beta_trades.json")
+    if not beta_path.exists():
+        print("   [gains] beta_trades.json não existe — skip")
+        return
+
+    try:
+        with open(beta_path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+    except (json.JSONDecodeError, OSError) as exc:
+        print(f"   [gains] erro a ler beta_trades.json: {exc}")
+        return
+
+    trades = data.get("trades", []) if isinstance(data, dict) else []
+    closed = [t for t in trades
+              if t.get("closed_at") and t.get("result_eur") is not None]
+    if not closed:
+        print("   [gains] sem trades fechados — skip")
+        return
+
+    last_id = sorted(closed, key=lambda x: x.get("closed_at", ""))[-1].get("id")
+
+    out_path = Path("data/gains_analysis.json")
+    if out_path.exists():
+        try:
+            with open(out_path, "r", encoding="utf-8") as f:
+                prev = json.load(f)
+            if prev.get("last_closed_trade_id") == last_id:
+                print(f"   [gains] análise actualizada (last: {last_id}) — skip")
+                return
+        except (json.JSONDecodeError, OSError):
+            pass
+
+    try:
+        from bot.cro import CRO
+    except ImportError as exc:
+        print(f"   [gains] não foi possível importar CRO: {exc}")
+        return
+
+    print(f"   [gains] nova posição fechada ({last_id}) — a regenerar análise...")
+    try:
+        analysis = CRO().analyze_gains()
+    except Exception as exc:
+        print(f"   [gains] falha em CRO.analyze_gains(): {exc}")
+        return
+
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    tmp = out_path.with_suffix(".tmp")
+    try:
+        with open(tmp, "w", encoding="utf-8") as f:
+            json.dump(analysis, f, ensure_ascii=False, indent=2)
+        os.replace(tmp, out_path)
+        print(f"   [gains] análise escrita: {out_path} "
+              f"({analysis.get('trades_analysed', 0)} trades)")
+    except OSError as exc:
+        print(f"   [gains] erro a escrever ficheiro: {exc}")
+        if tmp.exists():
+            tmp.unlink(missing_ok=True)
+
 
 if __name__ == "__main__":
     main()

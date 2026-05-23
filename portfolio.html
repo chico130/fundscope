@@ -448,6 +448,7 @@
       <button class="tab-btn active" data-tab="live">📈 Live Portfolio</button>
       <button class="tab-btn" data-tab="clyde">🤖 Clyde — Demo</button>
       <button class="tab-btn" data-tab="bonnie">🧠 Bonnie — Demo</button>
+      <button class="tab-btn" data-tab="gains">💰 Gains</button>
       <button class="tab-btn" data-tab="about">📖 Acerca de</button>
     </div>
 
@@ -696,6 +697,53 @@
 
     </div>
 
+    <!-- ══ GAINS TAB ══ -->
+    <div id="tabGains" style="display:none">
+
+      <!-- Secção 1: Gains Passados -->
+      <div class="card" style="margin-bottom:var(--space-5)">
+        <div class="card-label">Gains Passados — Posições Fechadas</div>
+        <div class="table-wrap">
+          <div class="table-scroll">
+            <table id="gainsClosedTable" style="width:100%;border-collapse:collapse;font-size:var(--text-sm)">
+              <thead>
+                <tr style="text-align:left;color:var(--color-text-muted);border-bottom:1px solid var(--color-border)">
+                  <th style="padding:var(--space-2)">Ticker</th>
+                  <th style="padding:var(--space-2)">Entrada</th>
+                  <th style="padding:var(--space-2)">Saída</th>
+                  <th style="padding:var(--space-2);text-align:right">P. Entrada</th>
+                  <th style="padding:var(--space-2);text-align:right">P. Saída</th>
+                  <th style="padding:var(--space-2);text-align:right">%</th>
+                  <th style="padding:var(--space-2);text-align:right">€</th>
+                </tr>
+              </thead>
+              <tbody id="gainsClosedBody">
+                <tr><td colspan="7" style="padding:var(--space-3);color:var(--color-text-muted)">A carregar…</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Secção 2: Análise AI (CRO) -->
+      <div class="card" style="margin-bottom:var(--space-5)">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--space-3)">
+          <div class="card-label" style="margin:0">Análise AI dos Resultados <span style="font-size:var(--text-xs);color:var(--color-primary);font-weight:500">· CRO</span></div>
+          <button id="btnGenerateAnalysis" class="tab-btn" style="display:none">Gerar Análise AI</button>
+        </div>
+        <div id="gainsAnalysisBlock" style="color:var(--color-text-muted);font-size:var(--text-sm)">A carregar…</div>
+      </div>
+
+      <!-- Secção 3: Previsões -->
+      <div class="card">
+        <div class="card-label">Previsões de Gains Futuros — Posições Abertas</div>
+        <ul id="gainsForecastList" style="list-style:none;padding:0;margin:var(--space-3) 0 0 0;font-size:var(--text-sm)">
+          <li style="color:var(--color-text-muted)">A carregar…</li>
+        </ul>
+      </div>
+
+    </div>
+
     <!-- ══ ABOUT TAB ══ -->
     <div id="tabAbout" style="display:none">
       <div id="aboutContent"></div>
@@ -732,6 +780,7 @@ let activeTab    = 'live';
 let liveLoaded   = false;
 let clydeLoaded  = false;
 let bonnieLoaded = false;
+let gainsLoaded  = false;
 let pollingTimer = null;
 
 // ── Live tab helpers ──────────────────────────────────────────────────────────
@@ -841,12 +890,14 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
     document.getElementById('tabLive').style.display   = tab === 'live'   ? '' : 'none';
     document.getElementById('tabClyde').style.display  = tab === 'clyde'  ? '' : 'none';
     document.getElementById('tabBonnie').style.display = tab === 'bonnie' ? '' : 'none';
+    document.getElementById('tabGains').style.display  = tab === 'gains'  ? '' : 'none';
     document.getElementById('tabAbout').style.display  = tab === 'about'  ? '' : 'none';
     const cdEl = document.getElementById('liveCountdown');
     if (cdEl) cdEl.textContent = tab !== 'live' ? '' : cdEl.textContent;
     if (tab === 'live'   && !liveLoaded)   { loadLive();   liveLoaded   = true; }
     if (tab === 'clyde'  && !clydeLoaded)  { initData();   clydeLoaded  = true; }
     if (tab === 'bonnie' && !bonnieLoaded) { loadBonnie(); bonnieLoaded = true; }
+    if (tab === 'gains'  && !gainsLoaded)  { loadGains();  gainsLoaded  = true; }
     if (tab === 'about')  { renderAbout(); }
   });
 });
@@ -1604,6 +1655,181 @@ async function loadBonnie() {
   } catch {
     el.innerHTML = '<span style="color:var(--color-text-faint)">Portfólio real não disponível.</span>';
   }
+}
+
+// ── Gains tab ─────────────────────────────────────────────────────────────────
+async function loadGains() {
+  try {
+    const [diario, portfolio, analysis] = await Promise.all([
+      authFetch('diario_trades.json').catch(() => []),
+      authFetch('portfolio.json').catch(() => null),
+      authFetch('data/gains_analysis.json').catch(() => null),
+    ]);
+    renderGainsClosed(Array.isArray(diario) ? diario : []);
+    renderGainsAnalysis(analysis, Array.isArray(diario) ? diario : []);
+    renderGainsForecast(portfolio);
+  } catch (e) {
+    console.error('[gains] erro', e);
+  }
+}
+
+// Secção 1 — empareia entradas com saídas (FIFO por ticker) a partir do diario_trades.json
+function renderGainsClosed(diario) {
+  const tbody = document.getElementById('gainsClosedBody');
+  if (!tbody) return;
+
+  const entries = diario.filter(e => e.tipo === 'entrada' && e.preco != null);
+  const exits   = diario.filter(e => e.tipo === 'saida'   && e.preco != null);
+
+  // FIFO matching: para cada saída, consome a entrada mais antiga não emparelhada do mesmo ticker
+  const openByTicker = {};
+  entries.sort((a, b) => (a.timestamp || '').localeCompare(b.timestamp || ''))
+         .forEach(e => {
+           (openByTicker[e.ativo] = openByTicker[e.ativo] || []).push(e);
+         });
+
+  const closed = [];
+  exits.sort((a, b) => (a.timestamp || '').localeCompare(b.timestamp || ''))
+       .forEach(x => {
+         const queue = openByTicker[x.ativo];
+         if (queue && queue.length) {
+           const entry = queue.shift();
+           const vol   = entry.volume || x.volume || 0;
+           const pct   = entry.preco > 0 ? (x.preco / entry.preco - 1) * 100 : 0;
+           const eur   = (x.preco - entry.preco) * vol;
+           closed.push({
+             ticker:     entry.ativo,
+             entry_ts:   entry.timestamp,
+             exit_ts:    x.timestamp,
+             entry_price: entry.preco,
+             exit_price:  x.preco,
+             gain_pct:    pct,
+             gain_eur:    eur,
+           });
+         }
+       });
+
+  if (!closed.length) {
+    tbody.innerHTML = '<tr><td colspan="7" style="padding:var(--space-3);color:var(--color-text-muted)">Sem posições fechadas ainda.</td></tr>';
+    return;
+  }
+
+  const fmtDt = ts => (ts || '').replace('T', ' ').slice(0, 16);
+  const fmtN  = (v, d=2) => v != null ? v.toFixed(d) : '—';
+  const cls   = v => v > 0 ? 'up' : v < 0 ? 'down' : 'neutral';
+
+  closed.reverse(); // mais recente em cima
+  tbody.innerHTML = closed.map(t => `
+    <tr style="border-bottom:1px solid var(--color-border)">
+      <td style="padding:var(--space-2);font-weight:600">${t.ticker}</td>
+      <td style="padding:var(--space-2);color:var(--color-text-muted)">${fmtDt(t.entry_ts)}</td>
+      <td style="padding:var(--space-2);color:var(--color-text-muted)">${fmtDt(t.exit_ts)}</td>
+      <td style="padding:var(--space-2);text-align:right">${fmtN(t.entry_price)}</td>
+      <td style="padding:var(--space-2);text-align:right">${fmtN(t.exit_price)}</td>
+      <td style="padding:var(--space-2);text-align:right" class="${cls(t.gain_pct)}">${t.gain_pct >= 0 ? '+' : ''}${fmtN(t.gain_pct)}%</td>
+      <td style="padding:var(--space-2);text-align:right" class="${cls(t.gain_eur)}">${t.gain_eur >= 0 ? '+' : ''}${fmtN(t.gain_eur)} €</td>
+    </tr>
+  `).join('');
+}
+
+// Secção 2 — Análise AI (CRO) + botão decorativo (regeneração só no próximo update_portfolio.py)
+function renderGainsAnalysis(analysis, diario) {
+  const block = document.getElementById('gainsAnalysisBlock');
+  const btn   = document.getElementById('btnGenerateAnalysis');
+  if (!block || !btn) return;
+
+  // Detectar se há trade fechado mais recente que a análise existente
+  const lastExit = diario.filter(e => e.tipo === 'saida')
+                         .sort((a, b) => (a.timestamp || '').localeCompare(b.timestamp || ''))
+                         .pop();
+  const hasNewClosed = !!lastExit && (!analysis || (analysis.last_closed_trade_id == null) || (lastExit.timestamp || '') > (analysis.generated_at || ''));
+  btn.style.display = hasNewClosed ? '' : 'none';
+  btn.onclick = () => {
+    alert('A análise é gerada automaticamente no próximo ciclo de update_portfolio.py.\n\n' +
+          'Não é possível disparar manualmente a partir do browser — o cálculo corre server-side ' +
+          'para manter consistência entre Clyde, Bonnie e CRO.');
+  };
+
+  if (!analysis) {
+    block.innerHTML = '<em>Ainda sem análise CRO disponível. Será gerada após o primeiro trade fechado.</em>';
+    return;
+  }
+
+  const lst = arr => (arr && arr.length)
+    ? '<ul style="margin:var(--space-2) 0 var(--space-3) var(--space-4);padding:0">' +
+      arr.map(s => `<li style="margin-bottom:var(--space-1)">${escapeHtml(s)}</li>`).join('') + '</ul>'
+    : '<p style="margin:var(--space-1) 0 var(--space-3) 0;color:var(--color-text-faint)"><em>Nada a reportar.</em></p>';
+
+  const sectors = (analysis.sector_performance || []).map(s =>
+    `<tr>
+       <td style="padding:var(--space-1) var(--space-2)">${escapeHtml(s.sector)}</td>
+       <td style="padding:var(--space-1) var(--space-2);text-align:right">${s.n_trades}</td>
+       <td style="padding:var(--space-1) var(--space-2);text-align:right">${(s.win_rate*100).toFixed(0)}%</td>
+       <td style="padding:var(--space-1) var(--space-2);text-align:right" class="${s.pnl_pct >= 0 ? 'up' : 'down'}">${s.pnl_pct >= 0 ? '+' : ''}${s.pnl_pct.toFixed(2)}%</td>
+     </tr>`).join('');
+
+  const s = analysis.summary || {};
+  block.innerHTML = `
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:var(--space-3);margin-bottom:var(--space-4)">
+      <div><div style="color:var(--color-text-faint);font-size:var(--text-xs)">P&L Total</div><div style="font-size:var(--text-lg);font-weight:600" class="${(s.total_pnl_eur||0) >= 0 ? 'up' : 'down'}">${(s.total_pnl_eur||0) >= 0 ? '+' : ''}${(s.total_pnl_eur||0).toFixed(2)} €</div></div>
+      <div><div style="color:var(--color-text-faint);font-size:var(--text-xs)">Win Rate</div><div style="font-size:var(--text-lg);font-weight:600">${((s.win_rate||0)*100).toFixed(0)}%</div></div>
+      <div><div style="color:var(--color-text-faint);font-size:var(--text-xs)">Trades analisados</div><div style="font-size:var(--text-lg);font-weight:600">${analysis.trades_analysed || 0}</div></div>
+    </div>
+
+    <h4 style="margin:var(--space-3) 0 var(--space-1) 0">Padrões identificados</h4>
+    ${lst(analysis.patterns)}
+
+    <h4 style="margin:var(--space-3) 0 var(--space-1) 0">Erros recorrentes</h4>
+    ${lst(analysis.recurring_errors)}
+
+    <h4 style="margin:var(--space-3) 0 var(--space-1) 0">Performance por sector</h4>
+    ${sectors ? `<table style="width:100%;border-collapse:collapse;font-size:var(--text-sm)">
+      <thead><tr style="color:var(--color-text-muted);border-bottom:1px solid var(--color-border)">
+        <th style="padding:var(--space-1) var(--space-2);text-align:left">Sector</th>
+        <th style="padding:var(--space-1) var(--space-2);text-align:right">#</th>
+        <th style="padding:var(--space-1) var(--space-2);text-align:right">WR</th>
+        <th style="padding:var(--space-1) var(--space-2);text-align:right">P&L %</th>
+      </tr></thead>
+      <tbody>${sectors}</tbody>
+    </table>` : '<p style="color:var(--color-text-faint)"><em>Sem dados sectoriais.</em></p>'}
+
+    <h4 style="margin:var(--space-4) 0 var(--space-1) 0">Veredicto CRO</h4>
+    <p style="margin:0;padding:var(--space-2) var(--space-3);background:var(--color-primary-highlight);border-left:3px solid var(--color-primary);border-radius:var(--radius-sm)">${escapeHtml(analysis.cro_verdict || '—')}</p>
+
+    <small style="display:block;margin-top:var(--space-4);color:var(--color-text-faint)">
+      Gerado em ${(analysis.generated_at || '').replace('T', ' ').slice(0, 16)} UTC
+    </small>
+  `;
+}
+
+// Secção 3 — Previsões Clyde (placeholder enquanto clyde_forecast for null)
+function renderGainsForecast(portfolio) {
+  const ul = document.getElementById('gainsForecastList');
+  if (!ul) return;
+  const pos = (portfolio && portfolio.positions) || [];
+  if (!pos.length) {
+    ul.innerHTML = '<li style="color:var(--color-text-muted)">Sem posições abertas.</li>';
+    return;
+  }
+  ul.innerHTML = pos.map(p => {
+    const f = p.clyde_forecast;
+    if (!f || f.estimate == null || f.target_pct == null) {
+      return `<li style="padding:var(--space-2) 0;border-bottom:1px solid var(--color-border)">
+        <strong>${p.display_name || p.ticker}</strong>
+        <span style="color:var(--color-text-faint);margin-left:var(--space-2)">Clyde ainda não calcula forecast para esta posição.</span>
+      </li>`;
+    }
+    const dir = f.target_pct >= 0 ? 'crescimento' : 'queda';
+    const sign = f.target_pct >= 0 ? '+' : '';
+    return `<li style="padding:var(--space-2) 0;border-bottom:1px solid var(--color-border);display:flex;justify-content:space-between;align-items:center">
+      <span><strong>${p.display_name || p.ticker}</strong> — Clyde estima <strong>${f.estimate}%</strong> de um ${dir} de <strong>${sign}${f.target_pct}%</strong></span>
+      <span style="font-size:var(--text-lg)">${f.estimate >= 60 ? '🟢' : f.estimate >= 40 ? '🟡' : '🔴'}</span>
+    </li>`;
+  }).join('');
+}
+
+function escapeHtml(s) {
+  return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
   </script>
   <script>

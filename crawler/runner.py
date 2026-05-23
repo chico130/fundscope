@@ -21,6 +21,7 @@ from dotenv import load_dotenv
 
 from .sources.finnhub_analysts import fetch_analyst_consensus
 from .sources.reddit_praw import fetch_reddit_sentiment
+from .sources.stocktwits import fetch_stocktwits_sentiment
 from .sources.twitter_stub import fetch_twitter_sentiment
 from .writer import REPO_ROOT, write_sentiment
 
@@ -29,11 +30,15 @@ logger = logging.getLogger("crawler.runner")
 WATCHLIST_PATH = REPO_ROOT / "data" / "beta" / "watchlist.json"
 LOG_DIR = REPO_ROOT / "logs"
 
-SCHEMA_VERSION = 1
+SCHEMA_VERSION = 2  # adicionado bloco stocktwits + combined_score
 TTL_MINUTES = 240  # 4h — alinhado com a cadência do timer systemd
 
 # Veto de divergência de analistas: exige consenso significativo.
 ANALYST_DIVERGENCE_MIN = 20
+
+# Pesos da média ponderada do sinal social (somam 1.0).
+WEIGHT_REDDIT = 0.4
+WEIGHT_STOCKTWITS = 0.6
 
 
 def _setup_logging() -> None:
@@ -70,11 +75,34 @@ def _decide_veto(analyst: dict | None, reddit: dict | None) -> str | None:
     return None
 
 
+def _combined_score(reddit: dict | None, stocktwits: dict | None) -> float | None:
+    """Média ponderada Reddit (×10) + Stocktwits no espaço ``[-10, +10]``.
+
+    Reddit ``mean`` vem em ``[-1, +1]`` (VADER compound), por isso é escalado ×10.
+    Stocktwits ``score`` já vem em ``[-10, +10]``. Se uma das fontes não tiver
+    amostras (``n`` ou ``total`` == 0) é descartada e o peso da outra é
+    promovido a 1.0. Devolve ``None`` se nenhuma das duas tem amostras.
+    """
+    r_ok = bool(reddit) and reddit.get("n", 0) > 0
+    s_ok = bool(stocktwits) and stocktwits.get("total", 0) > 0
+
+    if r_ok and s_ok:
+        r_score = reddit["mean"] * 10.0
+        s_score = stocktwits["score"]
+        return round(WEIGHT_REDDIT * r_score + WEIGHT_STOCKTWITS * s_score, 3)
+    if r_ok:
+        return round(reddit["mean"] * 10.0, 3)
+    if s_ok:
+        return round(stocktwits["score"], 3)
+    return None
+
+
 def build_payload(tickers: list[str]) -> dict:
     """Corre todas as fontes e monta o payload final."""
     logger.info("A processar %d tickers", len(tickers))
     analysts = fetch_analyst_consensus(tickers)
     reddit = fetch_reddit_sentiment(tickers)
+    stocktwits = fetch_stocktwits_sentiment(tickers)
     twitter = fetch_twitter_sentiment(tickers)
 
     out_tickers: dict[str, dict] = {}
@@ -82,13 +110,16 @@ def build_payload(tickers: list[str]) -> dict:
     for t in tickers:
         a = analysts.get(t)
         r = reddit.get(t)
+        s = stocktwits.get(t)
         veto = _decide_veto(a, r)
         if veto:
             veto_count += 1
         out_tickers[t] = {
             "analyst": a,
             "reddit": r,
+            "stocktwits": s,
             "twitter": twitter.get(t),
+            "combined_score": _combined_score(r, s),
             "veto": veto,
         }
 

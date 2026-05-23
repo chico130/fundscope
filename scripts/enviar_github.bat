@@ -2,7 +2,11 @@
 echo =========================================
 echo ENVIANDO ATUALIZACOES PARA O GITHUB...
 echo =========================================
-cd "C:\Users\arauj\OneDrive\Ambiente de Trabalho\Fundscope"
+if exist "C:\Users\arauj\OneDrive\Ambiente de Trabalho\Fundscope" (
+    cd "C:\Users\arauj\OneDrive\Ambiente de Trabalho\Fundscope"
+) else (
+    cd "C:\Users\Francisco Araujo\Desktop\fundscope"
+)
 git add .
 set /p msg="Introduz a mensagem do commit: "
 git commit -m "%msg%"
