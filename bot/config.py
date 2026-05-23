@@ -52,7 +52,7 @@ LIVE_TRADING = False
 PHASE1_EXECUTION = True
 
 RISK_CONFIG = {
-    "max_position_pct": 20.0,
+    "max_position_pct": 10.0,
     "max_sector_pct": 40.0,
     "max_daily_loss_pct": 3.0,
     "max_trades_per_day": 10,
@@ -60,7 +60,7 @@ RISK_CONFIG = {
     "take_profit_pct": 10.0,
     "no_trade_before_earnings_days": 2,
     "min_data_points_required": 20,
-    "max_positions_per_sector": 2,
+    "max_positions_per_sector": 3,
 }
 
 STRATEGY_VERSION = "v0.1.0"

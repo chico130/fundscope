@@ -355,7 +355,11 @@ def _entry_signal(
 
 
 def _below_half_max(ticker: str, portfolio_state: dict) -> bool:
-    """True se a posição existente está abaixo de metade do max_position_pct."""
+    """True se a posição existente está abaixo de 60% do max_position_pct.
+
+    Permite adds em posições com convicção repetida sem ultrapassar o cap.
+    Threshold 6% para max=10% (60%) alinha com a logica de adds do backtest.
+    """
     positions = portfolio_state.get("positions", [])
     cash_free = (portfolio_state.get("cash", {}).get("free") or 0)
     total     = sum(p.get("value", p.get("value_eur", 0)) for p in positions) + cash_free
@@ -364,7 +368,7 @@ def _below_half_max(ticker: str, portfolio_state: dict) -> bool:
     for p in positions:
         if p.get("ticker") == ticker:
             pct = p.get("value", p.get("value_eur", 0)) / total * 100
-            return pct < RISK_CONFIG["max_position_pct"] / 2
+            return pct < RISK_CONFIG["max_position_pct"] * 0.6
     return True
 
 

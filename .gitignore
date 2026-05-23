@@ -28,6 +28,7 @@ data/models/
 
 # Calibração offline — cache de dados e resultados de sweep (gerados localmente)
 data/cache/
+data/backtest_cache/
 data/calibration/
 
 # Logs de runtime diários — efémeros, não são código
