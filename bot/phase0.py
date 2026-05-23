@@ -312,7 +312,14 @@ def _execute_phase1(
 
     # Gate: não colocar ordens de compra com mercado fechado
     if not _is_market_open():
-        log_decision("phase1_skip_entries", "market_closed", {})
+        log_decision("phase1_skip_entries", "market_closed", {
+            "n_opportunities_skipped": len(buy_opportunities),
+        })
+        if buy_opportunities:
+            print(
+                f"  [phase1] Mercado NYSE fechado — {len(buy_opportunities)} oportunidade(s) "
+                f"adiada(s) para o próximo ciclo em horas de mercado."
+            )
         return executed
 
     # ── Entradas — gated por regime e style (CRO authority) ──────────────
@@ -484,10 +491,29 @@ def run(*, git_sync: bool = True) -> dict:
     position_styles = {t: m.get("style", "VALUE") for t, m in position_meta.items()}
     position_peaks  = {t: float(m.get("peak_high", 0.0)) for t, m in position_meta.items()}
 
-    # Portfolio: ledger local + Finnhub prices (T212 sync tentado em background)
+    # Portfolio: T212 é fonte de verdade — sync obrigatório a cada ciclo
     state     = get_full_portfolio_state()
     positions = state.get("positions", [])
     cash      = state.get("cash", {})
+
+    if state.get("t212_sync_failed"):
+        log_error("phase0_t212_sync_failed", {
+            "note":         "Posições baseadas em ledger cached — decisões podem usar dados velhos",
+            "n_positions":  len(positions),
+        })
+
+    # Reconcilia ordens BUY órfãs: cancela ordens pendentes para tickers já em
+    # carteira (artefactos de fechamentos antigos que criavam BUY em vez de SELL).
+    try:
+        from . import api_client as _api
+        held_tickers = {p.get("ticker") for p in positions if p.get("ticker")}
+        n_orphans = _api.reconcile_orphan_buy_orders(held_tickers)
+        if n_orphans:
+            log_decision("phase0_orphan_orders_cancelled", "reconciled", {
+                "n_cancelled": n_orphans,
+            })
+    except Exception as exc:
+        log_error("orphan_order_reconcile_failed", {"error": str(exc)})
 
     sync_status = position_ledger.get_sync_status()
     if positions:

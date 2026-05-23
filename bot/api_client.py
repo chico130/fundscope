@@ -400,17 +400,17 @@ def cancel_pending_orders_demo(ticker: str) -> int:
     return cancelled
 
 
-def close_position_demo(ticker: str, quantity: float = 0.0) -> bool:
+def close_position_demo(ticker: str, quantity: float) -> bool:
     """Fecha a posição de um ticker na conta demo T212.
 
-    USA SEMPRE DELETE /equity/positions/{ticker} — para posições inteiras e fraccionárias.
+    Convenção documentada (https://docs.trading212.com/api/orders): para vender,
+    POST /equity/orders/market com quantity NEGATIVA. Não existe endpoint
+    DELETE /equity/positions/{ticker} no T212 (a tentativa anterior devolvia
+    2xx idempotente para DELETEs desconhecidos, dando falso positivo).
 
-    IMPORTANTE: POST /equity/orders/market é BUY-only. A T212 ignora qualquer campo
-    "side" enviado nesse endpoint e cria sempre uma ordem de COMPRA. Nunca usar
-    POST /equity/orders/market para fechar/vender posições.
-
-    Cancela ordens pendentes para o ticker antes de fechar, para eliminar ordens
-    BUY duplicadas criadas por erros anteriores.
+    Cancela ordens pendentes para o ticker antes da venda — evita que ordens
+    BUY pendentes (ex: criadas por falhas de fechamento anteriores) executem
+    em paralelo com este SELL e reabram a posição.
 
     Devolve True em caso de sucesso, False em qualquer erro.
     """
@@ -423,14 +423,76 @@ def close_position_demo(ticker: str, quantity: float = 0.0) -> bool:
     if n_cancelled:
         log_decision("close_position_cancelled_pending", str(n_cancelled), {"ticker": ticker})
 
-    ok = _delete(f"/equity/positions/{ticker}")
-    if not ok:
-        log_error("close_position_delete_failed", {
-            "ticker": ticker,
-            "quantity": quantity,
-            "note": "DELETE retornou erro; verificar se posição existe e se é fraccionária",
+    qty = abs(float(quantity))
+    if qty <= 0:
+        log_error("close_position_invalid_qty", {"ticker": ticker, "quantity": quantity})
+        return False
+
+    response = _post("/equity/orders/market", {
+        "ticker":       ticker,
+        "quantity":     -qty,            # negative quantity = SELL
+        "timeValidity": "DAY",
+    })
+    if response is None:
+        log_error("close_position_sell_failed", {
+            "ticker":   ticker,
+            "quantity": qty,
+            "note":     "POST /equity/orders/market com quantity negativa falhou",
         })
-    return ok
+        return False
+
+    log_decision("close_position_sell_placed", "market_sell", {
+        "ticker":     ticker,
+        "quantity":   qty,
+        "order_id":   response.get("id") or response.get("orderId"),
+    })
+    return True
+
+
+def reconcile_orphan_buy_orders(held_tickers: set[str]) -> int:
+    """Cancela ordens BUY pendentes para tickers que já temos em carteira.
+
+    Estas ordens aparecem quando um fechamento anterior falhou e o broker criou
+    inadvertidamente uma ordem de COMPRA com a quantidade da posição. Sem este
+    reconcile, a ordem fica pendente indefinidamente e dispara na próxima
+    abertura, dobrando a posição.
+
+    held_tickers: conjunto de tickers (no formato T212, ex: "ARM_US_EQ") que
+    estão actualmente em carteira segundo a fonte de verdade T212.
+
+    Devolve o número de ordens canceladas.
+    """
+    if LIVE_TRADING:
+        raise RuntimeError("LIVE_TRADING is True — aborting to protect live account.")
+
+    if not held_tickers:
+        return 0
+
+    from .logger import log_decision
+
+    orders = _get("/equity/orders")
+    if not orders:
+        return 0
+
+    cancelled = 0
+    for order in orders:
+        ticker = order.get("ticker")
+        if not ticker or ticker not in held_tickers:
+            continue
+        qty = order.get("quantity") or 0
+        if qty <= 0:                       # só BUY (qty > 0) — SELLs legítimos têm qty < 0
+            continue
+        order_id = order.get("id") or order.get("orderId")
+        if not order_id:
+            continue
+        if _delete(f"/equity/orders/{order_id}"):
+            cancelled += 1
+            log_decision("orphan_buy_order_cancelled", "reconciled", {
+                "ticker":   ticker,
+                "order_id": order_id,
+                "qty":      qty,
+            })
+    return cancelled
 
 
 def cancel_order_demo(order_id: str | int) -> bool:

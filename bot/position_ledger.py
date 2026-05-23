@@ -105,12 +105,15 @@ def _save(ledger: dict) -> None:
 # ---------------------------------------------------------------------------
 
 def sync_from_t212(t212_positions: list[dict], cash: dict | None = None) -> None:
-    """
-    Reconcile ledger with T212 data when the API is reachable.
-    Only updates quantity and avg_price — never removes positions
-    (they may have been added manually between syncs).
+    """Reconcilia o ledger com o portfolio T212 — T212 é a FONTE DE VERDADE.
+
+    Substitui completamente o dict de positions: qualquer ticker que não venha
+    no payload T212 é removido do ledger. Isto elimina posições-fantasma que
+    persistiam quando uma venda externa não era reflectida no cache local.
     """
     ledger = _load_raw()
+
+    new_positions: dict[str, dict] = {}
     for pos in t212_positions:
         ticker = pos.get("ticker", "")
         qty    = float(pos.get("quantity", 0) or pos.get("currentShares", 0))
@@ -118,15 +121,17 @@ def sync_from_t212(t212_positions: list[dict], cash: dict | None = None) -> None
         if not ticker or not qty:
             continue
         sym = _to_price_symbol(ticker)
-        entry = ledger["positions"].get(ticker, {
+        existing = ledger.get("positions", {}).get(ticker, {})
+        new_positions[ticker] = {
             "ticker":       ticker,
             "price_symbol": sym,
-            "display_name": pos.get("ticker", ticker),
-            "currency":     "USD",
-        })
-        entry["quantity"]  = qty
-        entry["avg_price"] = avg
-        ledger["positions"][ticker] = entry
+            "display_name": existing.get("display_name") or pos.get("ticker", ticker),
+            "quantity":     qty,
+            "avg_price":    avg,
+            "currency":     existing.get("currency", "USD"),
+        }
+
+    ledger["positions"] = new_positions
 
     if cash:
         ledger["cash_eur"] = float(cash.get("free", 0) or 0)

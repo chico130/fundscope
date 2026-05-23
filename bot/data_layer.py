@@ -64,15 +64,16 @@ def _compute_rs_bullish(closes: list[float], spy_closes: list[float]) -> bool | 
 # ---------------------------------------------------------------------------
 
 def get_full_portfolio_state() -> dict:
-    """
-    Returns portfolio state using the local position ledger + Finnhub prices.
+    """Returns portfolio state usando T212 como FONTE DE VERDADE.
 
-    T212 API sync is attempted in the background; if it fails, the last known
-    ledger data is used — the cycle is never blocked or delayed.
+    Cada ciclo faz GET /equity/portfolio + /equity/account/cash à T212 e reconcilia
+    o ledger local (remove posições que já não existem na conta). Se a chamada
+    T212 falhar, devolve o último estado conhecido com a flag `t212_sync_failed=True`
+    para que o caller saiba que os dados podem estar desactualizados.
 
     Always returns a dict (never None); positions list may be empty.
     """
-    _try_t212_sync()
+    sync_ok = _sync_from_t212_strict()
 
     positions, cash = position_ledger.get_positions_with_prices()
 
@@ -80,33 +81,38 @@ def get_full_portfolio_state() -> dict:
     if stale:
         log_decision("price_feed_stale", "some_prices_unavailable", {"tickers": stale})
 
-    return {"positions": positions, "cash": cash}
+    return {
+        "positions":         positions,
+        "cash":              cash,
+        "t212_sync_failed":  not sync_ok,
+    }
 
 
-def _try_t212_sync() -> None:
+def _sync_from_t212_strict() -> bool:
+    """Sincroniza o ledger com o T212. Devolve True se sucesso, False se falha.
+
+    Ao contrário da versão antiga, NÃO salta em fim-de-semana / fora de horas:
+    a fonte de verdade tem de ser consultada sempre, mesmo que devolva o
+    snapshot da última sessão. Falhar silenciosamente leva a decisões com base
+    em dados velhos (posições-fantasma, cash incorrecto).
     """
-    Attempt T212 sync during market hours only.
-
-    T212 demo API is unreliable outside market hours (weekends, overnight).
-    Skipping the sync avoids 60 s of timeout wait when the API is known to be down.
-    During market hours a failed sync is still caught silently — the ledger
-    data is used as-is without blocking the main analysis cycle.
-    """
-    from . import price_feed
-    if not price_feed.is_market_hours():
-        return
-
+    from .logger import log_error
     try:
         state = api_client.get_portfolio_state_demo()
         if state is None:
-            return
+            log_error("t212_sync_no_response", {
+                "note": "get_portfolio_state_demo retornou None — usar ledger cached",
+            })
+            return False
         t212_positions = state.get("positions", [])
         t212_cash      = state.get("cash", {})
         position_ledger.sync_from_t212(t212_positions, t212_cash)
-        log_decision("t212_sync_ok", "ledger_updated",
+        log_decision("t212_sync_ok", "ledger_reconciled",
                      {"n_positions": len(t212_positions)})
-    except Exception:
-        pass  # T212 unavailable — ledger data is used as-is
+        return True
+    except Exception as exc:
+        log_error("t212_sync_exception", {"error": str(exc)})
+        return False
 
 
 def enrich_with_technicals(positions: list[dict], days: int = 60) -> list[dict]:
