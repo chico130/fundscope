@@ -49,5 +49,5 @@ jobs:
           git add data/beta/ logs/ diario_trades.json
           git diff --staged --quiet && exit 0
           git commit -m "bot: cycle $(date -u '+%Y-%m-%d %H:%M') UTC [skip ci]"
-          git pull --rebase --autostash -X ours origin main
-          git push || (git pull --rebase --autostash -X ours origin main && git push)
+          git pull --rebase --autostash -X theirs origin main
+          git push || (git pull --rebase --autostash -X theirs origin main && git push)

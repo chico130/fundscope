@@ -288,6 +288,11 @@ def execute_trade(proposed: ProposedTrade, portfolio_state: dict) -> dict | None
             f"[BONNIE APROVADO] ✅ Compra de {proposed.ticker} AUTORIZADA!"
             f" Ordem enviada para execução."
         )
+    else:
+        enviar_alerta(
+            f"[CLYDE] ✅ Posição {proposed.ticker} FECHADA."
+            f" Motivo: {proposed.reason or 'saída técnica'}."
+        )
 
     return trade_record
 

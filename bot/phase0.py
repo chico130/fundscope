@@ -275,6 +275,7 @@ def _execute_phase1(
             if result:
                 executed.append(result)
                 _meta.pop(be.ticker, None)
+                position_ledger.remove(be.ticker)
                 log_decision("phase1_exit", "barrier_exit", {
                     "ticker": be.ticker, "reason": be.reason,
                 })
@@ -304,6 +305,7 @@ def _execute_phase1(
             if result:
                 executed.append(result)
                 _meta.pop(ticker, None)
+                position_ledger.remove(ticker)
                 log_decision("phase1_exit", "rsi_overbought", {"ticker": ticker, "rsi": rsi})
         except Exception as exc:
             log_error("phase1_rsi_exit_failed", {"ticker": ticker, "error": str(exc)})
