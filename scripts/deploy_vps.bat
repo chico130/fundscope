@@ -10,8 +10,12 @@ if exist "C:\Users\arauj\OneDrive\Ambiente de Trabalho\Fundscope" (
 git add .
 set /p msg="Introduz a mensagem do deploy: "
 git commit -m "%msg%"
-git push vps main
+git push origin main
 echo =========================================
-echo SUCESSO: Codigo atualizado na VPS!
+echo A fazer pull na VPS...
+echo =========================================
+ssh -i "C:\Users\Francisco Araujo\.ssh\fundscope.pem" ubuntu@134.98.141.58 "cd ~/fundscope && git pull origin main"
+echo =========================================
+echo SUCESSO: GitHub e VPS atualizados!
 echo =========================================
 pause
