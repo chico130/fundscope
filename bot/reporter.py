@@ -216,12 +216,89 @@ def update_beta_trades() -> bool:
     return True
 
 
+def write_account_metrics() -> bool:
+    """Computes aggregate account metrics and writes data/beta/account_metrics.json."""
+    state = api_client.get_portfolio_state_demo()
+    if state is None:
+        log_error("reporter_no_data", {"fn": "write_account_metrics"})
+        return False
+
+    positions  = state.get("positions", [])
+    free_cash  = float(state.get("cash", {}).get("free") or 0.0)
+    eurusd     = _get_eurusd()
+    total_equity = round(
+        sum(_position_value_eur(p, eurusd) for p in positions) + free_cash, 2
+    )
+
+    unrealized_pnl = round(sum(float(p.get("ppl") or 0.0) for p in positions), 2)
+
+    trades_data = read_beta_trades()
+    trades   = (trades_data or {}).get("trades", [])
+    closed   = [t for t in trades if t.get("result_eur") is not None]
+    realized_pnl = round(sum(t.get("result_eur", 0.0) for t in closed), 2)
+    wins     = [t for t in closed if (t.get("result_eur") or 0) >= 0]
+    win_rate = round(len(wins) / len(closed) * 100, 1) if closed else 0.0
+    max_dd   = _compute_max_drawdown(read_beta_equity())
+
+    open_count = len(positions)
+    total_val_for_alloc = total_equity or 1.0
+    largest_exposure_pct = round(
+        max((_position_value_eur(p, eurusd) / total_val_for_alloc * 100
+             for p in positions), default=0.0), 1
+    )
+
+    days_since_last_trade: int | None = None
+    all_dated = [t for t in trades if t.get("datetime")]
+    if all_dated:
+        last_dt_str = max(t["datetime"] for t in all_dated)
+        try:
+            from datetime import date
+            last_date = datetime.fromisoformat(last_dt_str.replace("Z", "+00:00")).date()
+            days_since_last_trade = (date.today() - last_date).days
+        except Exception:
+            pass
+
+    sharpe: float | None = None
+    equity_data = read_beta_equity() or {}
+    history_vals = [h["equity"] for h in equity_data.get("history", [])]
+    if len(history_vals) >= 30:
+        import math
+        daily_returns = [
+            (history_vals[i] - history_vals[i - 1]) / history_vals[i - 1]
+            for i in range(1, len(history_vals))
+            if history_vals[i - 1]
+        ]
+        if len(daily_returns) >= 2:
+            mean_r = sum(daily_returns) / len(daily_returns)
+            variance = sum((r - mean_r) ** 2 for r in daily_returns) / len(daily_returns)
+            std_r = math.sqrt(variance)
+            if std_r > 0:
+                sharpe = round(mean_r / std_r * math.sqrt(252), 2)
+
+    _write_json(DATA_BETA_DIR / "account_metrics.json", {
+        "updated":               datetime.now(timezone.utc).isoformat(),
+        "total_equity_eur":      total_equity,
+        "free_cash_eur":         round(free_cash, 2),
+        "unrealized_pnl_eur":    unrealized_pnl,
+        "realized_pnl_eur":      realized_pnl,
+        "win_rate_pct":          win_rate,
+        "max_drawdown_pct":      max_dd,
+        "open_position_count":   open_count,
+        "largest_exposure_pct":  largest_exposure_pct,
+        "days_since_last_trade": days_since_last_trade,
+        "sharpe_ratio":          sharpe,
+    })
+    log_decision("reporter", "account_metrics_written", {"equity": total_equity})
+    return True
+
+
 def run_all() -> None:
     """Updates all four BETA JSON files in the correct order."""
     update_beta_trades()     # close any triggered trades first
     update_beta_positions()  # then refresh positions
     update_beta_equity()     # append equity snapshot
     update_beta_summary()    # recompute aggregate stats last
+    write_account_metrics()  # aggregate dashboard metrics
     log_decision("reporter", "run_all_complete")
 
 

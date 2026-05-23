@@ -210,7 +210,7 @@ def execute_trade(proposed: ProposedTrade, portfolio_state: dict) -> dict | None
     if proposed.side.upper() == "SELL":
         # T212 rejeita SELL market com quantidade negativa e não suporta frações
         # em limit orders. Usa DELETE /equity/positions/{ticker} para fechar tudo.
-        ok = api_client.close_position_demo(proposed.ticker)
+        ok = api_client.close_position_demo(proposed.ticker, proposed.qty)
         response = {"closed": True} if ok else None
     else:
         response = api_client.place_order_demo(

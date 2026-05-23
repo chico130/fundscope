@@ -361,15 +361,23 @@ def place_order_demo(
     return None
 
 
-def close_position_demo(ticker: str) -> bool:
-    """Fecha a posição inteira de um ticker na conta demo T212.
+def close_position_demo(ticker: str, quantity: float = 0.0) -> bool:
+    """Fecha a posição de um ticker na conta demo T212.
 
-    Usa DELETE /equity/positions/{ticker} — não requer quantidade nem preço.
-    Mais fiável que SELL market com quantidade negativa (que T212 rejeita com 400).
+    Posições fraccionárias (quantity % 1 != 0) requerem POST market order —
+    o endpoint DELETE /equity/positions/{ticker} devolve 404 para frações.
+    Posições inteiras usam o DELETE que não requer quantidade nem preço.
     Devolve True em caso de sucesso, False em qualquer erro.
     """
     if LIVE_TRADING:
         raise RuntimeError("LIVE_TRADING is True — aborting to protect live account.")
+    if quantity and quantity % 1 != 0:
+        resp = _post("/equity/orders/market", {
+            "ticker": ticker,
+            "quantity": abs(quantity),
+            "timeValidity": "DAY",
+        })
+        return resp is not None
     return _delete(f"/equity/positions/{ticker}")
 
 
