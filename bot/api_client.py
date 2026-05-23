@@ -143,19 +143,28 @@ def _post(endpoint: str, payload: dict) -> dict | None:
     time.sleep(REQUEST_DELAY_SECONDS)
     try:
         resp = _session.post(f"{T212_BASE_URL_DEMO}{endpoint}", json=payload, timeout=30)
+        # Captura body antes do raise_for_status — T212 devolve detalhe do erro em JSON
+        body_preview = resp.text[:600] if resp.text else ""
         resp.raise_for_status()
         return resp.json()
     except Exception as exc:
         err_str = str(exc)
         status_code: int | None = getattr(getattr(exc, "response", None), "status_code", None)
+        body_preview = locals().get("body_preview", "")
         log_error("api_post_failed", {
-            "endpoint":    endpoint,
-            "payload":     payload,
-            "error":       err_str,
-            "error_type":  _classify_error(exc),
-            "status_code": status_code,
+            "endpoint":     endpoint,
+            "payload":      payload,
+            "error":        err_str,
+            "error_type":   _classify_error(exc),
+            "status_code":  status_code,
+            "response_body": body_preview,
         })
-        print(f"[T212] POST {endpoint} falhou (HTTP {status_code}): {err_str}", flush=True)
+        print(
+            f"[T212] POST {endpoint} falhou (HTTP {status_code}): {err_str}\n"
+            f"       payload={payload}\n"
+            f"       response={body_preview}",
+            flush=True,
+        )
         return None
 
 
@@ -322,10 +331,13 @@ def place_order_demo(
     order_type = order_type.upper()
 
     if order_type == "MARKET":
+        # Schema mínimo documentado (https://docs.trading212.com/api/orders):
+        # apenas `ticker` + `quantity` (positiva). Campos como `timeValidity`
+        # NÃO são aceites pelo endpoint /market — devolvem 400 "Invalid payload"
+        # silenciosamente. Confirmado empiricamente a 2026-05-23.
         return _post("/equity/orders/market", {
-            "ticker": ticker,
+            "ticker":   ticker,
             "quantity": abs(qty),
-            "timeValidity": "DAY",
         })
 
     if order_type == "LIMIT":
@@ -345,10 +357,10 @@ def place_order_demo(
                 "wanted_limit_price": round(price, 2),
             })
             return _post("/equity/orders/market", {
-                "ticker": ticker,
+                "ticker":   ticker,
                 "quantity": abs_qty,
-                "timeValidity": "DAY",
             })
+        # LIMIT mantém timeValidity — schema diferente do MARKET (a confirmar quando usado)
         return _post("/equity/orders/limit", {
             "ticker": ticker,
             "quantity": int(abs_qty),
@@ -428,10 +440,11 @@ def close_position_demo(ticker: str, quantity: float) -> bool:
         log_error("close_position_invalid_qty", {"ticker": ticker, "quantity": quantity})
         return False
 
+    # Schema mínimo confirmado a 2026-05-23: apenas `ticker` + `quantity` (negativa).
+    # Adicionar `timeValidity` faz com que T212 responda 400 "Invalid payload".
     response = _post("/equity/orders/market", {
-        "ticker":       ticker,
-        "quantity":     -qty,            # negative quantity = SELL
-        "timeValidity": "DAY",
+        "ticker":   ticker,
+        "quantity": -qty,             # negative quantity = SELL
     })
     if response is None:
         log_error("close_position_sell_failed", {
