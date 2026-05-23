@@ -360,11 +360,14 @@ def place_order_demo(
                 "ticker":   ticker,
                 "quantity": abs_qty,
             })
-        # LIMIT mantém timeValidity — schema diferente do MARKET (a confirmar quando usado)
+        # LIMIT tem schema DIFERENTE do MARKET:
+        #   - MARKET rejeita `timeValidity` (400 "Invalid payload")
+        #   - LIMIT  exige `timeValidity:"DAY"` (único valor aceite; "GTC" / "timeInForce" são 400)
+        # Confirmado empiricamente a 2026-05-23 contra demo.trading212.com.
         return _post("/equity/orders/limit", {
-            "ticker": ticker,
-            "quantity": int(abs_qty),
-            "limitPrice": round(price, 2),
+            "ticker":       ticker,
+            "quantity":     int(abs_qty),
+            "limitPrice":   round(price, 2),
             "timeValidity": "DAY",
         })
 
