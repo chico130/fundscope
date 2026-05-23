@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-05-23T11:09:38.398774+00:00",
+  "timestamp": "2026-05-23T12:52:55.294721+00:00",
   "mode": "phase1_auto",
   "strategy_version": "v0.1.0",
   "note": "Fase 1 — execução automática activa. LIVE_TRADING=False (conta demo).",
@@ -185,11 +185,11 @@
       "last_price": 397.07
     }
   ],
-  "n_positions": 2,
-  "open_trades": 0,
+  "n_positions": 1,
+  "open_trades": 1,
   "risk_status": {
     "ok": true,
-    "total_equity_eur": 5138.62,
+    "total_equity_eur": 4988.86,
     "warnings": []
   },
   "signals": [
@@ -205,20 +205,6 @@
         "rsi_14": 57.49,
         "ema50_above_ema200": true,
         "volume_ratio_vs_avg": 0.69
-      }
-    },
-    {
-      "ticker": "ARM_US_EQ",
-      "action": "reduce_watch",
-      "size_factor": 1.0,
-      "signals": [
-        "RSI-14 sobrecomprado (76.6) — risco de correcção",
-        "Tendência ascendente: EMA-50 > EMA-200"
-      ],
-      "technicals": {
-        "rsi_14": 76.63,
-        "ema50_above_ema200": true,
-        "volume_ratio_vs_avg": 1.16
       }
     }
   ],
@@ -238,30 +224,5 @@
       "Stop Loss (fixo (fallback)): 5.0% abaixo da entrada."
     ]
   },
-  "executed_trades": [
-    {
-      "id": "2026-05-23T11:09:29Z_ARM_US_EQ_SELL",
-      "datetime": "2026-05-23T11:09:29.423139+00:00",
-      "ticker": "ARM_US_EQ",
-      "side": "SELL",
-      "qty": 0.4886,
-      "price": null,
-      "env": "demo",
-      "strategy_version": "v0.1.0",
-      "reason": "RSI sobrecomprado (76.6)",
-      "context": {
-        "rsi_14": 76.63
-      },
-      "result_eur": null,
-      "result_pct": null,
-      "result_after_minutes": 1440,
-      "closed_at": null,
-      "postmortem": null,
-      "atr_at_entry": null,
-      "stop_loss_price": null,
-      "atr_trigger_price": null,
-      "atr_target_price": null,
-      "break_even_active": false
-    }
-  ]
+  "executed_trades": []
 }
