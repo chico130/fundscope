@@ -52,7 +52,7 @@ LIVE_TRADING = False
 PHASE1_EXECUTION = True
 
 RISK_CONFIG = {
-    "max_position_pct": 10.0,
+    "max_position_pct": 11.0,
     "max_sector_pct": 40.0,
     "max_daily_loss_pct": 3.0,
     "max_trades_per_day": 10,
@@ -127,6 +127,9 @@ CRO_CONFIG = {
     # ATR Position Sizing — equaliza risco financeiro entre activos
     "atr_risk_target_pct":        1.0,   # % da equity a arriscar por trade (via stop ATR)
     "atr_stop_mult_momentum":     2.0,   # stop = 2× ATR abaixo da entrada (momentum)
-    "atr_stop_mult_value":        3.0,   # stop = 3× ATR abaixo da entrada (value — mais fôlego)
+    "atr_stop_mult_value":        1.75,  # stop = 1.75× ATR abaixo da entrada (value — v3 params)
+    "atr_tp_mult":                4.25,  # take-profit = 4.25× ATR acima da entrada (v3 params)
+    "value_trail_activation":     3.0,   # trailing activa quando gain ≥ 3.0× ATR
+    "value_trail_distance":       3.5,   # trailing stop a 3.5× ATR do peak (v3 params)
     "atr_fallback_stop_pct":      5.0,   # % de stop fixo quando ATR não disponível
 }
