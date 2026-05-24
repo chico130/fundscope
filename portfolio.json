@@ -1,12 +1,12 @@
 {
-  "updated": "2026-05-24T17:18:59.131235Z",
+  "updated": "2026-05-24T17:27:00.250596Z",
   "t212_mode": "live",
   "summary": {
-    "total_value": 129.05,
-    "total_invested": 123.02,
+    "total_value": 148.57,
+    "total_invested": 142.54,
     "total_gain_eur": 6.03,
-    "total_gain_pct": 4.9,
-    "daily_gain_eur": 3.49,
+    "total_gain_pct": 4.23,
+    "daily_gain_eur": 0.0,
     "cash_available": 4877.88,
     "n_positions": 1
   },
@@ -15,19 +15,19 @@
       "ticker_t212": "ARM_US_EQ",
       "quantity": 0.4886,
       "avg_price": 289.7462,
-      "current_price": 306.51,
+      "current_price": 304.08,
       "ppl": 6.03,
       "fx_ppl": 0.0,
       "ticker": "ARM",
       "ticker_display": "ARM",
-      "display_name": "Arm Holdings plc",
+      "display_name": "ARM",
       "currency": "USD",
-      "change_pct": 2.78,
-      "value_eur": 129.05,
+      "change_pct": 0.0,
+      "value_eur": 148.57,
       "gain_eur": 6.03,
-      "invested": 123.02,
-      "gain_pct": 4.9,
-      "fx_rate": 0.861698,
+      "invested": 142.54,
+      "gain_pct": 4.23,
+      "fx_rate": 1.0,
       "currency_native": "USD",
       "allocation_pct": 100.0,
       "clyde_forecast": null,
@@ -73,48 +73,9 @@
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         }
       ],
-      "earnings": [
-        {
-          "period": "",
-          "estimate": 0.351,
-          "actual": 0.35,
-          "surprise": -0.0,
-          "beat": false
-        },
-        {
-          "period": "",
-          "estimate": 0.331,
-          "actual": 0.39,
-          "surprise": 0.18,
-          "beat": true
-        },
-        {
-          "period": "",
-          "estimate": 0.409,
-          "actual": 0.43,
-          "surprise": 0.05,
-          "beat": true
-        },
-        {
-          "period": "",
-          "estimate": 0.579,
-          "actual": 0.6,
-          "surprise": 0.04,
-          "beat": true
-        }
-      ],
+      "earnings": [],
       "dividends": [],
-      "ticker_info": {
-        "trailingPE": 356.40698,
-        "forwardPE": 100.325356,
-        "marketCap": 326126206976,
-        "beta": 3.406,
-        "fiftyTwoWeekHigh": 315.0,
-        "fiftyTwoWeekLow": 100.02,
-        "pctFromHigh": -2.7,
-        "shortRatio": 1.87,
-        "dividendYield": null
-      },
+      "ticker_info": {},
       "fh_fundamentals": {
         "52WeekHigh": 315,
         "52WeekLow": 100.02,
@@ -141,8 +102,8 @@
       "insider": {},
       "analysis": {
         "sentiment": "neutro",
-        "news_comment": "Gemini indisponível.",
-        "earnings_comment": "Gemini indisponível.",
+        "news_comment": "Indisponível.",
+        "earnings_comment": "Indisponível.",
         "watch_points": []
       }
     }
@@ -154,7 +115,7 @@
     },
     {
       "date": "2026-05-24",
-      "value": 129.05
+      "value": 148.57
     }
   ],
   "benchmark_metrics": {}
