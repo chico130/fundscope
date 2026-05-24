@@ -55,7 +55,8 @@
 - +53.5% vs SPY +45.2% | Sharpe 1.94 | DD -9.6% | Bonnie filtra 32.6%
 
 **OOS (2024-01-01→2026-05-01, Bonnie v4-clean) — REFERÊNCIA ACTIVA (run-007):**
-- **+57.4% (Full) / +62.2% (+Bonnie)** vs SPY +56.2% | Sharpe **2.02 / 2.09** | DD -10.8% | filtra 34.9%
+- **+62.2% (+Bonnie)** vs SPY +45.2% | Alpha +17.0pp | Sharpe **2.09** | DD -10.8% | Calmar ~2.0 | filtra 34.9%
+- WR 38% | R:R 2.5:1 | Profit Factor 1.73
 - v4-clean substitui v4 como modelo activo (backup: bonnie_model_v4_orig.pkl)
 
 ### Próximos Passos — AGUARDAR 30 dias em produção (v4-clean)
