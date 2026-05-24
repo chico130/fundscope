@@ -804,7 +804,17 @@ def main():
     yf_tickers = list(dict.fromkeys(p["ticker"] for p in positions))
     # EURUSD=X garante conversão correcta para posições denominadas em USD
     quotes = fetch_quotes_yf(yf_tickers + ["EURUSD=X"])
-    eurusd = quotes.get("EURUSD=X", {}).get("price") or 1.0
+    eurusd = quotes.get("EURUSD=X", {}).get("price")
+    if not eurusd:
+        # Batch falhou para EURUSD=X — fallback com fetch dedicado (mais fiável para forex)
+        try:
+            _fx_hist = yf.Ticker("EURUSD=X").history(period="3d")
+            if not _fx_hist.empty:
+                eurusd = float(_fx_hist["Close"].dropna().iloc[-1])
+                print(f"  [EURUSD fallback] taxa obtida via Ticker: {eurusd:.4f}")
+        except Exception as _fx_exc:
+            print(f"  [EURUSD fallback] falhou: {_fx_exc}")
+    eurusd = eurusd or 1.0
     print(f"  Taxa EURUSD: {eurusd:.4f}")
 
     for p in positions:

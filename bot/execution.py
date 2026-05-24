@@ -141,9 +141,12 @@ def execute_trade(proposed: ProposedTrade, portfolio_state: dict) -> dict | None
     # ── Bonnie gate (apenas para BUY) ─────────────────────────────────────
     if proposed.side.upper() == "BUY":
         preco_str = f"${proposed.price:.2f}" if proposed.price else "N/D"
+        _buy_reason_str = proposed.reason or "sinal técnico"
         enviar_alerta(
             f"[CLYDE] 📈 Sinal de COMPRA detetado em {proposed.ticker}!"
-            f" Preço: {preco_str}. A aguardar auditoria da Bonnie..."
+            f" Preço: {preco_str}.\n"
+            f"Motivo: {_buy_reason_str}\n"
+            f"A aguardar auditoria da Bonnie..."
         )
         cfg = _read_config_risco()
         if not cfg.get("permite_comprar", True):
@@ -284,14 +287,17 @@ def execute_trade(proposed: ProposedTrade, portfolio_state: dict) -> dict | None
     _append_to_beta_trades(trade_record)
 
     if proposed.side.upper() == "BUY":
+        _fill_str = f"${fill_price:.2f}" if fill_price else "N/D"
         enviar_alerta(
             f"[BONNIE APROVADO] ✅ Compra de {proposed.ticker} AUTORIZADA!"
-            f" Ordem enviada para execução."
+            f" Fill: {_fill_str} · qty {proposed.qty}\n"
+            f"Porquê comprar: {proposed.reason or 'sinal técnico'}"
         )
     else:
+        _fill_str = f"${fill_price:.2f}" if fill_price else "N/D"
         enviar_alerta(
-            f"[CLYDE] ✅ Posição {proposed.ticker} FECHADA."
-            f" Motivo: {proposed.reason or 'saída técnica'}."
+            f"[CLYDE] ✅ Posição {proposed.ticker} FECHADA. Fill: {_fill_str}\n"
+            f"Porquê vender: {proposed.reason or 'saída técnica'}"
         )
 
     return trade_record
