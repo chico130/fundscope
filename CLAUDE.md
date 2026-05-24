@@ -52,11 +52,16 @@
 - **+224.5%** vs SPY +232.3% (alpha -7.8pp) | Sharpe 1.29 | DD -18.3%
 
 **OOS (2024-01-01→2026-05-01, Bonnie v4) — REFERÊNCIA ACTIVA:**
-- **+53.5%** | Sharpe 1.94 | DD -9.6% | Calmar 2.12 | Bonnie filtra 32.6%
+- **+53.5% vs SPY +45.2%** (alpha +8.3pp) | Sharpe 1.94 | DD -9.6% | Calmar 2.12 | Bonnie filtra 32.6%
 - vs Bonnie v2: +39.6% | Sharpe 1.17 | DD -16.0% → **v4 melhora todas as métricas**
 
-### Bonnie v5 (próximo retrain)
-- Aumentar `LABEL_HORIZON_DAYS` de 20 para ~57 dias (`ceil(4.25/1.5 × 20)`)
+### Próximos Passos — AGUARDAR 30 dias em produção
+- Sistema v3+B4 em monitorização real. **Nenhuma optimização adicional antes de validação real.**
+- Métricas alvo após 30 dias: Sharpe ≥ 1.5, DD ≤ -15%, Bonnie filtra 25-40%
+
+### Bonnie v5 — IDENTIFICADA, AGUARDA VALIDAÇÃO
+- **NÃO CORRER** até validação real de 30 dias estar concluída
+- Quando validar: aumentar `LABEL_HORIZON_DAYS` de 20 → ~57 dias (`ceil(4.25/1.5 × 20)`)
 - Objectivo: aumentar label balance de 15.8% → ~30-40% (melhora F1 no corpus val)
 - Comando: `PYTHONPATH=. python scripts/retrain_bonnie.py --since 2017-01-01 --until 2026-05-01 --model-version v4 --tp-mult 4.25 --sl-mult 1.75`
 - Antes de correr: editar `LABEL_HORIZON_DAYS = 57` em retrain_bonnie.py (linha 64)
