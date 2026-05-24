@@ -9,6 +9,8 @@ Symbol resolution flow:
 """
 
 import json, os, re, sys, time, datetime, requests, base64
+import numpy as np
+import pandas as pd
 import yfinance as yf
 
 # Força UTF-8 no terminal Windows
@@ -674,6 +676,69 @@ def update_history(history, total_value):
     return sorted(history, key=lambda x: x["date"])[-365:]
 
 
+def calculate_benchmark_metrics(history: list) -> dict:
+    """
+    Calcula CAGR, Sharpe, Max Drawdown, Calmar e Alpha vs SPY a partir do histórico.
+    Requer pelo menos 10 pontos. Devolve {} se insuficiente ou em caso de erro.
+    """
+    if len(history) < 10:
+        return {}
+    try:
+        df = pd.DataFrame(history).sort_values("date")
+        df["date"]  = pd.to_datetime(df["date"])
+        df["value"] = pd.to_numeric(df["value"], errors="coerce")
+        df = df.dropna(subset=["value"]).reset_index(drop=True)
+        if len(df) < 10:
+            return {}
+
+        start_dt  = df["date"].iloc[0]
+        end_dt    = df["date"].iloc[-1]
+        years     = max((end_dt - start_dt).days / 365.25, 1e-6)
+        start_val = float(df["value"].iloc[0])
+        end_val   = float(df["value"].iloc[-1])
+        if start_val <= 0:
+            return {}
+
+        portfolio_cagr = (end_val / start_val) ** (1.0 / years) - 1.0
+
+        daily_ret = df["value"].pct_change().dropna()
+        std = float(daily_ret.std())
+        sharpe = float(daily_ret.mean() * 252) / (std * float(np.sqrt(252))) if std > 0 else 0.0
+
+        cummax = df["value"].cummax()
+        max_dd = float((1 - df["value"] / cummax).max())
+        calmar = (portfolio_cagr / max_dd) if max_dd > 0 else None
+
+        spy_end_str = (end_dt + datetime.timedelta(days=2)).strftime("%Y-%m-%d")
+        spy_raw = yf.download("SPY", start=start_dt.strftime("%Y-%m-%d"), end=spy_end_str,
+                              auto_adjust=True, progress=False, threads=False)
+        spy_cagr = alpha = None
+        if spy_raw is not None and len(spy_raw) >= 2:
+            close_arr = spy_raw["Close"].to_numpy().flatten()
+            s0 = float(close_arr[0])
+            s1 = float(close_arr[-1])
+            if s0 > 0:
+                spy_cagr = (s1 / s0) ** (1.0 / years) - 1.0
+                alpha    = portfolio_cagr - spy_cagr
+
+        def pct2(v):
+            return round(float(v) * 100, 2) if v is not None else None
+
+        return {
+            "portfolio_cagr": pct2(portfolio_cagr),
+            "spy_cagr":       pct2(spy_cagr),
+            "alpha":          pct2(alpha),
+            "sharpe_ratio":   round(sharpe, 2),
+            "max_drawdown":   pct2(-max_dd),
+            "calmar_ratio":   round(float(calmar), 2) if calmar is not None else None,
+            "period_days":    int((end_dt - start_dt).days),
+            "last_updated":   datetime.datetime.now(datetime.timezone.utc).isoformat().replace("+00:00", "Z"),
+        }
+    except Exception as exc:
+        print(f"  [benchmark] erro: {exc}")
+        return {}
+
+
 # ===========================================================
 # MAIN
 # ===========================================================
@@ -824,6 +889,14 @@ def main():
     print("\n[6] Histórico...")
     history = update_history(load_history(), total_value)
 
+    print("\n[7] Benchmark metrics (CAGR, Sharpe, DD, Alpha vs SPY)...")
+    bm = calculate_benchmark_metrics(history)
+    if bm:
+        print(f"   CAGR: {bm.get('portfolio_cagr')}%  Sharpe: {bm.get('sharpe_ratio')}  "
+              f"DD: {bm.get('max_drawdown')}%  Alpha: {bm.get('alpha')}pp  ({bm.get('period_days')}d)")
+    else:
+        print("   Histórico insuficiente (<10 pontos) — benchmark_metrics omitido")
+
     out = {
         "updated":   now.isoformat() + "Z",
         "t212_mode": "live",
@@ -837,14 +910,15 @@ def main():
             "n_positions":     len(positions)
         },
         "positions": positions,
-        "history":   history
+        "history":   history,
+        "benchmark_metrics": bm,
     }
     tmp = "portfolio.json.tmp"
     with open(tmp, "w", encoding="utf-8") as f:
         json.dump(out, f, ensure_ascii=False, indent=2)
     os.replace(tmp, "portfolio.json")
 
-    print("\n[7] Análise de Gains (CRO)...")
+    print("\n[8] Análise de Gains (CRO)...")
     _maybe_regenerate_gains_analysis()
 
     print(f"\n✅ Concluído!")

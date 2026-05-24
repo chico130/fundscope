@@ -160,5 +160,15 @@
       "date": "2026-05-22",
       "value": 149.76
     }
-  ]
+  ],
+  "benchmark_metrics": {
+    "portfolio_cagr": -100.0,
+    "spy_cagr": 58.97,
+    "alpha": -158.97,
+    "sharpe_ratio": -1.23,
+    "max_drawdown": -98.81,
+    "calmar_ratio": -1.01,
+    "period_days": 15,
+    "last_updated": "2026-05-24T14:43:05.845264Z"
+  }
 }

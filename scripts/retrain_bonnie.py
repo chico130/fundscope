@@ -52,11 +52,13 @@ MODEL_OUT_V4   = BASE_DIR / "data" / "models" / "bonnie_model_v4.pkl"
 THRESHOLDS_OUT_V2 = BASE_DIR / "data" / "beta" / "bonnie_thresholds.json"
 THRESHOLDS_OUT_V3 = BASE_DIR / "data" / "beta" / "bonnie_thresholds_v3.json"
 THRESHOLDS_OUT_V4 = BASE_DIR / "data" / "beta" / "bonnie_thresholds_v4.json"
+MODEL_OUT_V4CLEAN      = BASE_DIR / "data" / "models" / "bonnie_model_v4clean.pkl"
+THRESHOLDS_OUT_V4CLEAN = BASE_DIR / "data" / "beta" / "bonnie_thresholds_v4clean.json"
 CORPUS_OUT     = BASE_DIR / "data" / "backtest" / "bonnie_observations_v2.json"
 
 # Parametros de geracao do corpus (overridden by CLI args when running as __main__)
 TRAIN_START = datetime(2018, 1, 1)
-TRAIN_END   = datetime(2025, 1, 1)  # exclusive
+TRAIN_END   = datetime(2024, 11, 28)  # gap boundary — 25bd antes de VAL_START; evita label leakage
 VAL_START   = datetime(2025, 1, 1)
 VAL_END     = datetime(2026, 5, 23)
 
@@ -177,7 +179,9 @@ def label_for_observation(df: pd.DataFrame, idx: int, atr_at_entry: float,
 
 def generate_corpus(verbose: bool = True) -> list[dict]:
     print(f"\n[1/3] A gerar corpus com {len(WATCHLIST)} tickers, "
-          f"{TRAIN_START.date()} -> {VAL_END.date()} ({TP_ATR_MULT}xATR TP / {SL_ATR_MULT}xATR SL / {LABEL_HORIZON_DAYS}d)...")
+          f"{TRAIN_START.date()} -> {VAL_END.date()} "
+          f"[treino<{TRAIN_END.date()} | gap | val>={VAL_START.date()}] "
+          f"({TP_ATR_MULT}xATR TP / {SL_ATR_MULT}xATR SL / {LABEL_HORIZON_DAYS}d)...")
 
     fetch_start = TRAIN_START - timedelta(days=400)
     earnings_cal = build_earnings_calendar(TRAIN_START, VAL_END)
@@ -288,19 +292,33 @@ def train_and_evaluate(corpus: list[dict]) -> tuple:
     df["date"] = pd.to_datetime(df["date"])
     df = df.sort_values("date").reset_index(drop=True)
 
-    train_df = df[df["date"] < pd.Timestamp(VAL_START)].copy()
-    val_df   = df[df["date"] >= pd.Timestamp(VAL_START)].copy()
+    # CORR 1+2: TRAIN_END como corte de treino; gap=[TRAIN_END, VAL_START) excluído de ambos
+    train_df    = df[df["date"] < pd.Timestamp(TRAIN_END)].copy()
+    full_val_df = df[df["date"] >= pd.Timestamp(VAL_START)].copy()
+    gap_count   = len(df[(df["date"] >= pd.Timestamp(TRAIN_END)) & (df["date"] < pd.Timestamp(VAL_START))])
 
-    print(f"      Train: {len(train_df)}  Val: {len(val_df)}")
+    print(f"      Train: {len(train_df)}  Gap descartado: {gap_count}  Val total: {len(full_val_df)}")
+    print(f"      Gap: {TRAIN_END.date()} → {VAL_START.date()} (25bd > LABEL_HORIZON={LABEL_HORIZON_DAYS}d — sem label leakage)")
     print(f"      Label balance (train): {train_df['label'].mean():.1%} positivos")
-    print(f"      Label balance (val):   {val_df['label'].mean():.1%} positivos")
-    if len(val_df) < 100:
-        raise RuntimeError("Validation set demasiado pequeno (<100). Aumenta TRAIN_END.")
+    print(f"      Label balance (val):   {full_val_df['label'].mean():.1%} positivos")
+    if len(full_val_df) < 100:
+        raise RuntimeError("Validation set demasiado pequeno (<100). Verifica VAL_START.")
+
+    # CORR 3: val_tune (70%) para optimizar thresholds; test_df (30%) held-out final
+    n_tune      = int(len(full_val_df) * 0.7)
+    val_tune_df = full_val_df.iloc[:n_tune].copy()
+    test_df     = full_val_df.iloc[n_tune:].copy()
+    print(f"      Val tune (threshold opt): {len(val_tune_df)} "
+          f"({val_tune_df['date'].min().date()} → {val_tune_df['date'].max().date()})")
+    print(f"      Test held-out (final):    {len(test_df)} "
+          f"({test_df['date'].min().date()} → {test_df['date'].max().date()})")
 
     X_train = train_df[FEATURE_COLS]
     y_train = train_df["label"]
-    X_val   = val_df[FEATURE_COLS]
-    y_val   = val_df["label"]
+    X_val   = val_tune_df[FEATURE_COLS]
+    y_val   = val_tune_df["label"]
+    X_test  = test_df[FEATURE_COLS]
+    y_test  = test_df["label"]
 
     model = GradientBoostingClassifier(
         n_estimators=200, max_depth=3,
@@ -323,21 +341,30 @@ def train_and_evaluate(corpus: list[dict]) -> tuple:
         bar = "#" * int(imp * 40)
         print(f"        {feat:<22s} {imp:.3f}  {bar}")
 
-    # Validacao OOS
-    y_proba_val = model.predict_proba(X_val)[:, 1]
-    y_pred_val  = (y_proba_val >= 0.5).astype(int)
-    print(f"\n      Validation @ threshold=0.50:")
+    # Predicoes para val_tune e test held-out
+    y_proba_val  = model.predict_proba(X_val)[:, 1]
+    y_pred_val   = (y_proba_val >= 0.5).astype(int)
+    y_proba_test = model.predict_proba(X_test)[:, 1]
+    y_pred_test  = (y_proba_test >= 0.5).astype(int)
+
+    print(f"\n      Val tune @ threshold=0.50:")
     print(f"        Accuracy:  {accuracy_score(y_val, y_pred_val):.1%}")
     print(f"        Precision: {precision_score(y_val, y_pred_val, zero_division=0):.1%}")
     print(f"        Recall:    {recall_score(y_val, y_pred_val, zero_division=0):.1%}")
     print(f"        F1:        {f1_score(y_val, y_pred_val, zero_division=0):.3f}")
 
-    # Quebra por ano
-    val_df["proba"] = y_proba_val
-    val_df["pred"]  = y_pred_val
-    print("\n      Validation por ano (threshold=0.50):")
-    for year in sorted(val_df["date"].dt.year.unique()):
-        sub = val_df[val_df["date"].dt.year == year]
+    print(f"\n      Test held-out @ threshold=0.50 (nunca visto):")
+    print(f"        Accuracy:  {accuracy_score(y_test, y_pred_test):.1%}")
+    print(f"        Precision: {precision_score(y_test, y_pred_test, zero_division=0):.1%}")
+    print(f"        Recall:    {recall_score(y_test, y_pred_test, zero_division=0):.1%}")
+    print(f"        F1:        {f1_score(y_test, y_pred_test, zero_division=0):.3f}")
+
+    # Quebra por ano (val_tune)
+    val_tune_df["proba"] = y_proba_val
+    val_tune_df["pred"]  = y_pred_val
+    print("\n      Val tune por ano (threshold=0.50):")
+    for year in sorted(val_tune_df["date"].dt.year.unique()):
+        sub = val_tune_df[val_tune_df["date"].dt.year == year]
         if len(sub) < 20: continue
         prec = precision_score(sub["label"], sub["pred"], zero_division=0)
         rec  = recall_score(sub["label"], sub["pred"], zero_division=0)
@@ -347,15 +374,15 @@ def train_and_evaluate(corpus: list[dict]) -> tuple:
         print(f"        {year}: n={len(sub):4d}  WR_base={wr_base:.1%}  "
               f"WR_filtered={wr_filt:.1%}  P={prec:.1%}  R={rec:.1%}  F1={f1:.3f}")
 
-    # Per-regime threshold optimizado por F1 no validation set
-    print("\n      Per-regime threshold optimization (maximiza F1 no validation):")
+    # Per-regime threshold optimizado por F1 no val_tune (NÃO no test held-out)
+    print("\n      Per-regime threshold optimization (maximiza F1 no val_tune):")
     regime_thresholds: dict[str, float] = {}
     regime_names = {
         3: "bull_trending", 2: "bull_lateral",
         1: "bear_correction", 0: "bear_capitulation",
     }
     for reg_code, reg_name in regime_names.items():
-        sub = val_df[val_df["regime_name"].map(REGIME_ENCODING) == reg_code]
+        sub = val_tune_df[val_tune_df["regime_name"].map(REGIME_ENCODING) == reg_code]
         if len(sub) < 30:
             regime_thresholds[reg_name] = 0.50
             print(f"        {reg_name:<22s}: n={len(sub):3d} <30 -> default 0.50")
@@ -374,7 +401,28 @@ def train_and_evaluate(corpus: list[dict]) -> tuple:
         n_pass = int(pred.sum())
         print(f"        {reg_name:<22s}: n={len(sub):3d}  best_thr={best_thr:.2f}  F1={best_f1:.3f}  P={prec:.1%}  R={rec:.1%}  passes={n_pass}/{len(sub)}")
 
-    return model, regime_thresholds, val_df
+    # Avaliacao final no test held-out com thresholds ja optimizados (nunca vistos durante treino/opt)
+    print("\n      === Avaliacao FINAL no test held-out (com thresholds optimizados) ===")
+    test_df["proba"] = y_proba_test
+    for reg_code, reg_name in regime_names.items():
+        sub = test_df[test_df["regime_name"].map(REGIME_ENCODING) == reg_code]
+        if len(sub) < 5:
+            continue
+        thr  = regime_thresholds.get(reg_name, 0.50)
+        pred = (sub["proba"] >= thr).astype(int)
+        f1_t = f1_score(sub["label"], pred, zero_division=0)
+        prec = precision_score(sub["label"], pred, zero_division=0)
+        rec  = recall_score(sub["label"], pred, zero_division=0)
+        print(f"        {reg_name:<22s}: n={len(sub):3d}  thr={thr:.2f}  "
+              f"F1={f1_t:.3f}  P={prec:.1%}  R={rec:.1%}  passes={int(pred.sum())}/{len(sub)}")
+    test_df["pred_tuned"] = test_df.apply(
+        lambda row: int(row["proba"] >= regime_thresholds.get(row["regime_name"], 0.50)), axis=1)
+    overall_f1   = f1_score(test_df["label"], test_df["pred_tuned"], zero_division=0)
+    overall_prec = precision_score(test_df["label"], test_df["pred_tuned"], zero_division=0)
+    overall_rec  = recall_score(test_df["label"], test_df["pred_tuned"], zero_division=0)
+    print(f"        TOTAL TEST held-out: F1={overall_f1:.3f}  P={overall_prec:.1%}  R={overall_rec:.1%}")
+
+    return model, regime_thresholds, full_val_df
 
 
 # --------------------------------------------------------------------------
@@ -409,8 +457,9 @@ if __name__ == "__main__":
     _p = _ap.ArgumentParser(description="Retreina Bonnie ML")
     _p.add_argument("--since",          default=None, help="Data inicial do corpus YYYY-MM-DD (default: 2018-01-01)")
     _p.add_argument("--until",          default=None, help="Data final do corpus YYYY-MM-DD (default: 2026-05-23)")
+    _p.add_argument("--train-end",      default=None, help="Fim do corpus de treino YYYY-MM-DD (default: 2024-11-28, 25bd antes de VAL_START)")
     _p.add_argument("--val-start",      default=None, help="Inicio da validacao YYYY-MM-DD (default: 2025-01-01)")
-    _p.add_argument("--model-version",  default="v2", choices=["v2", "v3", "v4"], help="Versao do modelo a guardar")
+    _p.add_argument("--model-version",  default="v2", choices=["v2", "v3", "v4", "v4-clean"], help="Versao do modelo a guardar")
     _p.add_argument("--tp-mult",        default=None, type=float, help="TP label multiplier (override TP_ATR_MULT)")
     _p.add_argument("--sl-mult",        default=None, type=float, help="SL label multiplier (override SL_ATR_MULT)")
     _args = _p.parse_args()
@@ -419,9 +468,11 @@ if __name__ == "__main__":
         TRAIN_START = datetime.strptime(_args.since, "%Y-%m-%d")
     if _args.until:
         VAL_END = datetime.strptime(_args.until, "%Y-%m-%d")
+    if _args.train_end:
+        TRAIN_END = datetime.strptime(_args.train_end, "%Y-%m-%d")
     if _args.val_start:
         VAL_START = datetime.strptime(_args.val_start, "%Y-%m-%d")
-        TRAIN_END = VAL_START
+        # NÃO sincronizar TRAIN_END = VAL_START — eliminaria o gap anti-leakage
     if _args.tp_mult is not None:
         TP_ATR_MULT = _args.tp_mult
     if _args.sl_mult is not None:
@@ -441,12 +492,12 @@ if __name__ == "__main__":
     model, thresholds, _val_df = train_and_evaluate(corpus)
 
     _ver = _args.model_version
-    _model_out = {"v2": MODEL_OUT_V2, "v3": MODEL_OUT_V3, "v4": MODEL_OUT_V4}.get(_ver, MODEL_OUT_V2)
-    _thr_out   = {"v2": THRESHOLDS_OUT_V2, "v3": THRESHOLDS_OUT_V3, "v4": THRESHOLDS_OUT_V4}.get(_ver, THRESHOLDS_OUT_V2)
+    _model_out = {"v2": MODEL_OUT_V2, "v3": MODEL_OUT_V3, "v4": MODEL_OUT_V4, "v4-clean": MODEL_OUT_V4CLEAN}.get(_ver, MODEL_OUT_V2)
+    _thr_out   = {"v2": THRESHOLDS_OUT_V2, "v3": THRESHOLDS_OUT_V3, "v4": THRESHOLDS_OUT_V4, "v4-clean": THRESHOLDS_OUT_V4CLEAN}.get(_ver, THRESHOLDS_OUT_V2)
     save_artifacts(model, thresholds, corpus, model_out=_model_out, thresholds_out=_thr_out)
 
     # CV score comparison vs existing v2 (if available and training v3/v4)
-    if _ver in ("v3", "v4") and MODEL_OUT_V2.exists():
+    if _ver in ("v3", "v4", "v4-clean") and MODEL_OUT_V2.exists():
         print(f"\n=== CV Score comparison v2 vs {_ver} ===")
         try:
             import joblib
@@ -455,7 +506,7 @@ if __name__ == "__main__":
             _df = _pd.DataFrame([{**r["features"], "date": r["date"], "label": r["label"]} for r in corpus])
             _df["date"] = _pd.to_datetime(_df["date"])
             _df = _df.sort_values("date").reset_index(drop=True)
-            _train_df = _df[_df["date"] < _pd.Timestamp(VAL_START)]
+            _train_df = _df[_df["date"] < _pd.Timestamp(TRAIN_END)]
             _X = _train_df[FEATURE_COLS]
             _y = _train_df["label"]
             _tscv = TimeSeriesSplit(n_splits=5)

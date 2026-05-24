@@ -71,9 +71,11 @@ MODEL_PATH             = BASE_DIR / "data" / "models" / "bonnie_model.pkl"
 MODEL_PATH_V2          = BASE_DIR / "data" / "models" / "bonnie_model_v2.pkl"
 MODEL_PATH_V3          = BASE_DIR / "data" / "models" / "bonnie_model_v3.pkl"
 MODEL_PATH_V4          = BASE_DIR / "data" / "models" / "bonnie_model_v4.pkl"
+MODEL_PATH_V4CLEAN     = BASE_DIR / "data" / "models" / "bonnie_model_v4clean.pkl"
 THRESHOLDS_PATH        = BASE_DIR / "data" / "beta" / "bonnie_thresholds.json"
 THRESHOLDS_PATH_V3     = BASE_DIR / "data" / "beta" / "bonnie_thresholds_v3.json"
 THRESHOLDS_PATH_V4     = BASE_DIR / "data" / "beta" / "bonnie_thresholds_v4.json"
+THRESHOLDS_PATH_V4CLEAN = BASE_DIR / "data" / "beta" / "bonnie_thresholds_v4clean.json"
 OPT_BACKTEST_PARAMS    = BASE_DIR / "data" / "beta" / "optimized_backtest_params.json"
 EARNINGS_PATH          = BASE_DIR / "earnings.json"
 SPREAD_PCT             = 0.0005
@@ -373,6 +375,8 @@ class BonnieML:
         # Per-regime thresholds: version-matched file
         if path == MODEL_PATH_V4 and THRESHOLDS_PATH_V4.exists():
             thr_path = THRESHOLDS_PATH_V4
+        elif path == MODEL_PATH_V4CLEAN and THRESHOLDS_PATH_V4CLEAN.exists():
+            thr_path = THRESHOLDS_PATH_V4CLEAN
         elif path == MODEL_PATH_V3 and THRESHOLDS_PATH_V3.exists():
             thr_path = THRESHOLDS_PATH_V3
         else:
@@ -984,7 +988,7 @@ def prime_regimes(calendar: list, verbose: bool = True) -> None:
 def run_all_variants(start: datetime, end: datetime, capital_init: float,
                      use_defaults: bool, use_optimized: bool, export_csv: bool,
                      use_kelly: bool = False, use_bonnie_v3: bool = False,
-                     use_bonnie_v4: bool = False) -> None:
+                     use_bonnie_v4: bool = False, use_bonnie_v4clean: bool = False) -> None:
 
     # Learner params (strategy._P etc)
     if use_defaults:
@@ -1015,7 +1019,9 @@ def run_all_variants(start: datetime, end: datetime, capital_init: float,
     print(f"        atr_tp_mult:          {params.atr_tp_mult}")
     print(f"        value_trail_active:   {params.value_trail_activation}xATR  dist {params.value_trail_distance}xATR")
 
-    if use_bonnie_v4 and MODEL_PATH_V4.exists():
+    if use_bonnie_v4clean and MODEL_PATH_V4CLEAN.exists():
+        _bml_path = MODEL_PATH_V4CLEAN
+    elif use_bonnie_v4 and MODEL_PATH_V4.exists():
         _bml_path = MODEL_PATH_V4
     elif use_bonnie_v3 and MODEL_PATH_V3.exists():
         _bml_path = MODEL_PATH_V3
@@ -1325,10 +1331,12 @@ if __name__ == "__main__":
     p.add_argument("--kelly",         action="store_true", help="Corre comparacao Kelly-ON vs Kelly-OFF (Full variant)")
     p.add_argument("--bonnie-v3",     action="store_true", help="Usa bonnie_model_v3.pkl em vez de v2")
     p.add_argument("--bonnie-v4",     action="store_true", help="Usa bonnie_model_v4.pkl (labels calibradas 4.25xATR)")
+    p.add_argument("--bonnie-v4clean",action="store_true", help="Usa bonnie_model_v4clean.pkl (v4 sem label leakage)")
     args = p.parse_args()
 
     end_dt   = datetime.strptime(args.until, "%Y-%m-%d") if args.until else datetime.now()
     start_dt = datetime.strptime(args.since, "%Y-%m-%d") if args.since else end_dt - timedelta(days=730)
 
     run_all_variants(start_dt, end_dt, args.capital, args.use_defaults, args.use_optimized, args.csv,
-                     use_kelly=args.kelly, use_bonnie_v3=args.bonnie_v3, use_bonnie_v4=args.bonnie_v4)
+                     use_kelly=args.kelly, use_bonnie_v3=args.bonnie_v3, use_bonnie_v4=args.bonnie_v4,
+                     use_bonnie_v4clean=args.bonnie_v4clean)

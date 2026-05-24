@@ -353,6 +353,17 @@
     /* ── Responsive ── */
     @media(max-width:900px){.kpi-grid{grid-template-columns:repeat(2,1fr);}.two-col{grid-template-columns:1fr;}.wl-head,.wl-row{grid-template-columns:24px 1fr 100px 60px;}.wl-head .col-3m,.wl-row .col-3m{display:none;}.oos-stat-grid{grid-template-columns:repeat(2,1fr);}.shield-grid{grid-template-columns:repeat(2,1fr);}.col-alloc,.col-qty{display:none;}}
     @media(max-width:640px){.header{padding:var(--space-3) var(--space-4);}.header-actions .nav-link{display:none;}.kpi-grid{grid-template-columns:repeat(2,1fr);}.page{padding:var(--space-8) var(--space-4) var(--space-16);}.oos-stat-grid{grid-template-columns:repeat(2,1fr);}.shield-grid{grid-template-columns:1fr;}.perf-table tbody td,.perf-table thead th{padding:var(--space-2) var(--space-2);}.col-avg,.col-curr{display:none;}.ticker-name{display:none;}}
+
+    /* ── Benchmark metrics section ── */
+    .bench-section{margin-top:var(--space-6);}
+    .bench-section-head{font-size:var(--text-xs);font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--color-text-faint);margin-bottom:var(--space-4);}
+    .bench-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-4);}
+    .bench-card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-5);box-shadow:var(--shadow-sm);transition:box-shadow var(--transition),border-color var(--transition);}
+    .bench-card:hover{box-shadow:var(--shadow-md);border-color:var(--color-primary);}
+    .bench-label{font-size:var(--text-xs);font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--color-text-faint);margin-bottom:var(--space-3);}
+    .bench-val{font-family:var(--font-display);font-size:var(--text-lg);font-weight:400;letter-spacing:-.01em;margin-bottom:4px;}
+    .bench-sub{font-size:var(--text-xs);color:var(--color-text-muted);font-variant-numeric:tabular-nums;}
+    @media(max-width:900px){.bench-grid{grid-template-columns:repeat(2,1fr);}}
   </style>
 </head>
 <body>
@@ -515,6 +526,33 @@
         <div class="summary-item"><span class="summary-label">P&amp;L Total</span><span class="summary-val" id="sumPnl">—</span></div>
         <div class="summary-divider"></div>
         <div class="summary-item"><span class="summary-label">Posições</span><span class="summary-val" id="sumPositions">—</span></div>
+      </div>
+
+      <!-- ── Performance vs S&P 500 ── -->
+      <div class="bench-section" id="benchmarkSection" style="display:none">
+        <div class="bench-section-head">Performance vs S&amp;P 500</div>
+        <div class="bench-grid">
+          <div class="bench-card">
+            <div class="bench-label">CAGR Carteira</div>
+            <div class="bench-val" id="bCagr">—</div>
+            <div class="bench-sub" id="bCagrSpy"></div>
+          </div>
+          <div class="bench-card">
+            <div class="bench-label">Sharpe Ratio</div>
+            <div class="bench-val" id="bSharpe">—</div>
+            <div class="bench-sub" id="bSharpeNote"></div>
+          </div>
+          <div class="bench-card">
+            <div class="bench-label">Max Drawdown</div>
+            <div class="bench-val down" id="bMaxDD">—</div>
+            <div class="bench-sub" id="bCalmar"></div>
+          </div>
+          <div class="bench-card">
+            <div class="bench-label">Alpha vs SPY</div>
+            <div class="bench-val" id="bAlpha">—</div>
+            <div class="bench-sub" id="bAlphaSub"></div>
+          </div>
+        </div>
       </div>
 
     </div>
@@ -1589,6 +1627,44 @@ function renderLiveSummary(summary) {
   document.getElementById('sumPositions').textContent = summary.n_positions != null ? summary.n_positions : '—';
 }
 
+function renderBenchmarkMetrics(bm) {
+  const sec = document.getElementById('benchmarkSection');
+  if (!sec) return;
+  if (!bm || !Object.keys(bm).length) { sec.style.display = 'none'; return; }
+  sec.style.display = '';
+  const fmt1 = v => v != null ? liveFmt(Math.abs(v), 1) + '%' : '—';
+  const fmt2 = v => v != null ? liveFmt(v, 2) : '—';
+
+  const cEl = document.getElementById('bCagr');
+  if (cEl) {
+    cEl.textContent  = bm.portfolio_cagr != null ? liveSign(bm.portfolio_cagr) + fmt1(bm.portfolio_cagr) : '—';
+    cEl.className    = 'bench-val ' + liveCls(bm.portfolio_cagr ?? 0);
+  }
+  const cvEl = document.getElementById('bCagrSpy');
+  if (cvEl) cvEl.textContent = bm.spy_cagr != null ? 'SPY: ' + liveSign(bm.spy_cagr) + fmt1(bm.spy_cagr) : '';
+
+  const sEl = document.getElementById('bSharpe');
+  if (sEl) {
+    sEl.textContent = fmt2(bm.sharpe_ratio);
+    sEl.className   = 'bench-val ' + liveCls(bm.sharpe_ratio ?? 0);
+  }
+  const snEl = document.getElementById('bSharpeNote');
+  if (snEl) snEl.textContent = bm.period_days != null ? bm.period_days + ' dias de histórico' : '';
+
+  const dEl = document.getElementById('bMaxDD');
+  if (dEl) dEl.textContent = bm.max_drawdown != null ? liveFmt(bm.max_drawdown, 1) + '%' : '—';
+  const clEl = document.getElementById('bCalmar');
+  if (clEl) clEl.textContent = bm.calmar_ratio != null ? 'Calmar: ' + fmt2(bm.calmar_ratio) : '';
+
+  const aEl = document.getElementById('bAlpha');
+  if (aEl) {
+    aEl.textContent = bm.alpha != null ? liveSign(bm.alpha) + fmt1(bm.alpha) : '—';
+    aEl.className   = 'bench-val ' + liveCls(bm.alpha ?? 0);
+  }
+  const asEl = document.getElementById('bAlphaSub');
+  if (asEl) asEl.textContent = bm.last_updated ? 'Calc. ' + liveRelTime(bm.last_updated) : '';
+}
+
 async function loadLive() {
   const btn = document.getElementById('btnLiveRefresh');
   if (btn) btn.classList.add('spinning');
@@ -1610,6 +1686,7 @@ async function loadLive() {
     renderLiveKPIs(summary);
     renderLivePositions(positions);
     renderLiveSummary(summary);
+    renderBenchmarkMetrics(data.benchmark_metrics);
   } catch (err) {
     if (err.message === 'unauthorized') return;
     console.error('[FundScope] loadLive falhou:', err);

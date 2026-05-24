@@ -51,24 +51,27 @@
 **7yr Full (2019-2026, Bonnie v2):**
 - **+224.5%** vs SPY +232.3% (alpha -7.8pp) | Sharpe 1.29 | DD -18.3%
 
-**OOS (2024-01-01→2026-05-01, Bonnie v4) — REFERÊNCIA ACTIVA:**
-- **+53.5% vs SPY +45.2%** (alpha +8.3pp) | Sharpe 1.94 | DD -9.6% | Calmar 2.12 | Bonnie filtra 32.6%
-- vs Bonnie v2: +39.6% | Sharpe 1.17 | DD -16.0% → **v4 melhora todas as métricas**
+**OOS (2024-01-01→2026-05-01, Bonnie v4) — run-006 (com label leakage):**
+- +53.5% vs SPY +45.2% | Sharpe 1.94 | DD -9.6% | Bonnie filtra 32.6%
 
-### Próximos Passos — AGUARDAR 30 dias em produção
-- Sistema v3+B4 em monitorização real. **Nenhuma optimização adicional antes de validação real.**
+**OOS (2024-01-01→2026-05-01, Bonnie v4-clean) — REFERÊNCIA ACTIVA (run-007):**
+- **+57.4% (Full) / +62.2% (+Bonnie)** vs SPY +56.2% | Sharpe **2.02 / 2.09** | DD -10.8% | filtra 34.9%
+- v4-clean substitui v4 como modelo activo (backup: bonnie_model_v4_orig.pkl)
+
+### Próximos Passos — AGUARDAR 30 dias em produção (v4-clean)
+- Sistema v3+B4-clean em monitorização real. **Nenhuma optimização adicional antes de validação real.**
 - Métricas alvo após 30 dias: Sharpe ≥ 1.5, DD ≤ -15%, Bonnie filtra 25-40%
 
 ### Bonnie v5 — IDENTIFICADA, AGUARDA VALIDAÇÃO
-- **NÃO CORRER** até validação real de 30 dias estar concluída
+- **NÃO CORRER** até validação real de 30 dias com v4-clean estar concluída
 - Quando validar: aumentar `LABEL_HORIZON_DAYS` de 20 → ~57 dias (`ceil(4.25/1.5 × 20)`)
-- Objectivo: aumentar label balance de 15.8% → ~30-40% (melhora F1 no corpus val)
-- Comando: `PYTHONPATH=. python scripts/retrain_bonnie.py --since 2017-01-01 --until 2026-05-01 --model-version v4 --tp-mult 4.25 --sl-mult 1.75`
-- Antes de correr: editar `LABEL_HORIZON_DAYS = 57` em retrain_bonnie.py (linha 64)
+- Objectivo: aumentar label balance de 15.8% → ~30-40% (melhora F1 real — v4-clean tem F1=0.030)
+- Comando: `PYTHONPATH=. python scripts/retrain_bonnie.py --since 2017-01-01 --until 2026-05-01 --model-version v4-clean --tp-mult 4.25 --sl-mult 1.75`
+- Antes de correr: editar `LABEL_HORIZON_DAYS = 57` em retrain_bonnie.py (linha 68)
 
 ---
 ## Auto-Sync: 2026-05-24
 - PC: DESKTOP-NGIATI2
-- Runs recentes: run-004 (v3 Learner 7yr), run-005 (Kelly + Bonnie v3 rejeitada), run-006 (Bonnie v4 aceite)
+- Runs recentes: run-004 (v3 Learner 7yr), run-005 (Kelly + Bonnie v3 rejeitada), run-006 (Bonnie v4 aceite), run-007 (v4-clean substitui v4, corrige data leakage)
 - Learner: verificar data/beta/ para runs recentes
 ---
