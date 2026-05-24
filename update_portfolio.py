@@ -343,10 +343,14 @@ def t212_get(path):
     return r.json()
 
 def fetch_t212_cash():
-    """Devolve saldo de caixa livre da conta T212."""
+    """Devolve dict com dados de caixa da conta T212: free, invested, ppl."""
     try:
         data = t212_get("/equity/account/cash")
-        return round(float(data.get("free", 0)), 2)
+        return {
+            "free":     round(float(data.get("free",     0)), 2),
+            "invested": round(float(data.get("invested", 0)), 2),
+            "ppl":      round(float(data.get("ppl",      0)), 2),
+        }
     except Exception as e:
         print(f"  [AVISO] fetch_t212_cash falhou: {e}")
         return None
@@ -777,8 +781,10 @@ def main():
         return
 
     print("\n[1b] A buscar saldo de caixa T212...")
-    cash_available = fetch_t212_cash()
-    print(f"    Caixa livre: {cash_available:.2f}€" if cash_available is not None else "    Caixa: indisponível")
+    cash_data = fetch_t212_cash()
+    cash_available = cash_data["free"] if cash_data else None
+    t212_invested_eur = cash_data["invested"] if cash_data else None
+    print(f"    Caixa livre: {cash_available:.2f}€ | investido: {t212_invested_eur:.2f}€" if cash_data else "    Caixa: indisponível")
 
     print("\n[2] A buscar metadados de instrumentos T212...")
     instruments_meta = fetch_t212_instruments()
@@ -800,21 +806,36 @@ def main():
         if not p.get("display_name") or p["display_name"] == p.get("ticker"):
             p["display_name"] = get_display_name_yf(p["ticker"])
 
-    print("\n[4] A buscar cotações yfinance + taxa EURUSD...")
+    print("\n[4] A buscar cotações yfinance + taxa EURUSD (display only)...")
     yf_tickers = list(dict.fromkeys(p["ticker"] for p in positions))
-    # EURUSD=X garante conversão correcta para posições denominadas em USD
     quotes = fetch_quotes_yf(yf_tickers + ["EURUSD=X"])
+
+    # EURUSD para display de preços unitários — não afecta P&L (que vem da T212 em EUR)
     eurusd = quotes.get("EURUSD=X", {}).get("price")
     if not eurusd:
-        # Batch falhou para EURUSD=X — fallback com fetch dedicado (mais fiável para forex)
         try:
-            _fx_hist = yf.Ticker("EURUSD=X").history(period="3d")
+            _fx_hist = yf.Ticker("EURUSD=X").history(period="5d")
             if not _fx_hist.empty:
                 eurusd = float(_fx_hist["Close"].dropna().iloc[-1])
-                print(f"  [EURUSD fallback] taxa obtida via Ticker: {eurusd:.4f}")
-        except Exception as _fx_exc:
-            print(f"  [EURUSD fallback] falhou: {_fx_exc}")
-    eurusd = eurusd or 1.0
+                print(f"  [EURUSD yfinance] {eurusd:.4f}")
+        except Exception:
+            pass
+    if not eurusd:
+        # Fallback: frankfurter.app (API pública, sem chave)
+        try:
+            _r = requests.get("https://api.frankfurter.app/latest?from=USD&to=EUR", timeout=5)
+            if _r.ok:
+                eurusd = 1.0 / float(_r.json()["rates"]["EUR"])
+                print(f"  [EURUSD frankfurter] {eurusd:.4f}")
+        except Exception:
+            pass
+    if not eurusd and t212_invested_eur:
+        # Derivar implicitamente da contabilidade T212 (invested EUR / cost basis USD)
+        _cost_usd = sum(p["avg_price"] * p["quantity"] for p in positions)
+        if _cost_usd > 0:
+            eurusd = _cost_usd / t212_invested_eur
+            print(f"  [EURUSD T212-implied] {eurusd:.4f}")
+    eurusd = eurusd or 1.12  # último recurso: estimativa conservadora
     print(f"  Taxa EURUSD: {eurusd:.4f}")
 
     for p in positions:
@@ -823,36 +844,28 @@ def main():
             p["current_price"] = q["price"]
         p["change_pct"] = q.get("changePct", 0.0)
 
+    # ── Cálculo EUR — fonte primária: T212 (ppl em EUR, invested alocado proporcionalmente) ──
+    # Alocar t212_invested_eur por posição proporcional ao custo USD de cada uma.
+    # Isto elimina a dependência de EURUSD para os valores financeiros fundamentais.
+    total_cost_usd = sum(p["avg_price"] * p["quantity"] for p in positions)
     for p in positions:
         native_currency = p.get("currency", "USD")
-        # Converter preços USD → EUR; posições já em EUR ficam inalteradas
-        fx = (1.0 / eurusd) if native_currency == "USD" and eurusd else 1.0
 
-        curr_value_native = p["current_price"] * p["quantity"]
-
-        # BUG CORRIGIDO 1: usar float() explícito para evitar problemas de tipo
-        # T212 ppl já em EUR com efeito cambial histórico — não recalcular com fx atual
         gain_eur = round(float(p["ppl"]), 2)
+        p["gain_eur"] = gain_eur
 
-        p["value_eur"] = round(curr_value_native * fx, 2)
-        p["gain_eur"]  = gain_eur
+        if t212_invested_eur is not None and total_cost_usd > 0:
+            # Custo base EUR proporcional (T212 authoritative)
+            weight = (p["avg_price"] * p["quantity"]) / total_cost_usd
+            p["invested"] = round(t212_invested_eur * weight, 2)
+        else:
+            # Fallback: conversão via EURUSD
+            fx = (1.0 / eurusd) if native_currency == "USD" else 1.0
+            p["invested"] = round(p["avg_price"] * p["quantity"] * fx, 2)
 
-        # BUG CORRIGIDO 2: "invested" derivado do ppl T212, não de avg_price × fx atual.
-        # Antes: invested = avg_price × quantity × fx_atual → usava taxa de câmbio ATUAL para
-        # converter o custo histórico, fazendo invested + gain_eur ≠ value_eur e alterando o
-        # valor "investido" todos os dias conforme o EUR/USD oscilava.
-        # Agora: invested = value_eur − gain_eur → garante contabilidade consistente (custo
-        # base implícito em EUR igual ao que a T212 usa para calcular o ppl).
-        p["invested"]  = round(p["value_eur"] - gain_eur, 2)
-
-        # BUG CORRIGIDO 3: gain_pct calculado em moeda nativa (USD) era inconsistente com
-        # gain_eur em EUR. Ex.: ação +5% USD mas EUR caiu → ppl negativo, gain_pct positivo.
-        # Agora ambos usam a mesma base EUR: gain_pct = gain_eur / invested × 100.
-        p["gain_pct"]  = round(
-            gain_eur / p["invested"] * 100
-            if p["invested"] > 0 else 0, 2
-        )
-        p["fx_rate"]   = round(fx, 6)
+        p["value_eur"] = round(p["invested"] + gain_eur, 2)
+        p["gain_pct"]  = round(gain_eur / p["invested"] * 100 if p["invested"] > 0 else 0, 2)
+        p["fx_rate"]   = round(1.0 / eurusd if native_currency == "USD" and eurusd else 1.0, 6)
         p["currency_native"] = native_currency
 
     total_value    = sum(p["value_eur"] for p in positions)
