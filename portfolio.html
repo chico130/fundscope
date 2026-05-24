@@ -819,7 +819,19 @@
 
   <footer class="footer">
     <p>© 2026 FundScope · <a href="https://github.com/chico130/fundscope">GitHub</a> · Dados: Trading 212 Demo</p>
+    <p id="devBacklogNote" style="display:none;margin-top:var(--space-2);font-size:11px;color:var(--color-notification);font-weight:600;letter-spacing:.02em">
+      ⏳ Backlog activo — próxima sessão: 24 Jun 2026 &nbsp;·&nbsp; <code style="font-size:10px;opacity:.8">docs/backlog.md</code>
+    </p>
   </footer>
+  <script>
+    (function(){
+      var h = location.hostname;
+      if(h === 'localhost' || h === '127.0.0.1'){
+        var n = document.getElementById('devBacklogNote');
+        if(n) n.style.display = '';
+      }
+    })();
+  </script>
 
   <script>
 // ── Theme toggle ──────────────────────────────────────────────────────────────
