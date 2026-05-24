@@ -1,12 +1,12 @@
 {
-  "updated": "2026-05-22T20:44:09.556550Z",
+  "updated": "2026-05-24T17:18:59.131235Z",
   "t212_mode": "live",
   "summary": {
-    "total_value": 149.76,
-    "total_invested": 142.63,
-    "total_gain_eur": 7.13,
-    "total_gain_pct": 5.0,
-    "daily_gain_eur": 0.0,
+    "total_value": 129.05,
+    "total_invested": 123.02,
+    "total_gain_eur": 6.03,
+    "total_gain_pct": 4.9,
+    "daily_gain_eur": 3.49,
     "cash_available": 4877.88,
     "n_positions": 1
   },
@@ -15,74 +15,114 @@
       "ticker_t212": "ARM_US_EQ",
       "quantity": 0.4886,
       "avg_price": 289.7462,
-      "current_price": 306.5,
-      "ppl": 7.13,
-      "fx_ppl": 0.08,
+      "current_price": 306.51,
+      "ppl": 6.03,
+      "fx_ppl": 0.0,
       "ticker": "ARM",
       "ticker_display": "ARM",
-      "display_name": "ARM",
+      "display_name": "Arm Holdings plc",
       "currency": "USD",
-      "change_pct": 0.0,
-      "value_eur": 149.76,
-      "gain_eur": 7.13,
-      "invested": 142.63,
-      "gain_pct": 5.0,
-      "fx_rate": 1.0,
+      "change_pct": 2.78,
+      "value_eur": 129.05,
+      "gain_eur": 6.03,
+      "invested": 123.02,
+      "gain_pct": 4.9,
+      "fx_rate": 0.861698,
       "currency_native": "USD",
       "allocation_pct": 100.0,
+      "clyde_forecast": null,
       "news": [
         {
           "source": "Yahoo",
-          "headline": "Arm’s Cerebras Interest Highlights AI Ambitions And Lofty Valuation Concerns",
-          "summary": "Arm Holdings, backed by SoftBank, has reportedly explored a preliminary bid for AI chip start up Cerebras Systems. The approach points to interest in expanding beyond its AGI CPU efforts into dedicated AI computing hardware. The move did not result in an acquisition, but highlights Arm's willingness",
-          "url": "https://finnhub.io/api/news?id=667f005b51ee486e7857a1eeac58cf55b72123b58cf1e26029058ff42aa90369",
-          "datetime": 1779477589,
+          "headline": "Why Billionaire Stanley Druckenmiller Dumped Nvidia but Loaded Up on These 3 AI Infrastructure Stocks for the Next Boom",
+          "summary": "Stanley Druckenmiller's fund, the Duquesne Family Office, just initiated stakes in custom silicon and CPU designers.",
+          "url": "https://finnhub.io/api/news?id=f14220067ba2f0ad58a336df99dac5950256c60940c78ffc7ba0a63e2d175c5b",
+          "datetime": 1779623400,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
           "source": "Yahoo",
-          "headline": "Why Arm Stock Was Gaining Again Today",
-          "summary": "Momentum in the CPU market continues.",
-          "url": "https://finnhub.io/api/news?id=2cab19e666c5fc9e46144c44d71e23180022967a11b6106fde6276347acc779e",
-          "datetime": 1779470497,
+          "headline": "AGI CPU Demand Has Pushed ARM Stock to All-Time Highs. Wait for the Next Pullback Before You Buy.",
+          "summary": "Arm’s newly launched AGI CPU platform provides a significant growth opportunity for the company, supporting its earnings expansion.",
+          "url": "https://finnhub.io/api/news?id=db04aafe0e8c29a59347807abf74bf62722e609eb605cd50b56285d1ccde72d8",
+          "datetime": 1779541202,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Benzinga",
+          "headline": "AMC Entertainment, Nvidia, Arm Holdings And More: 5 Stocks Investors Couldn't Stop Buzzing About This Week",
+          "summary": "Retail investors talked up five hot stocks this week (May 18 to May 22) on X and Reddit&#39;s r/WallStreetBets: NVDA, ARM, AMC, RKLB, NBIS.",
+          "url": "https://finnhub.io/api/news?id=39eaceeb305c3bc7074cda47a410bd0b2c94137726acdff4affa62b00e5147fc",
+          "datetime": 1779525132,
+          "image": "https://cdn.benzinga.com/files/images/story/2026/05/23/Arm-Company-Logo-Seen-On-Stm32-Microchip.jpeg?width=2048&height=1536"
+        },
+        {
+          "source": "Yahoo",
+          "headline": "Stocks Settle Higher on Iran Peace Hopes and Tech Strength",
+          "summary": "The S&P 500 Index ($SPX ) (SPY ) on Friday closed up +0.37%, the Dow Jones Industrial Average ($DOWI ) (DIA ) closed up +0.58%, and the Nasdaq 100 Index ($IUXX ) (QQQ ) closed up +0.42%. June E-mini S&P futures (ESM26 ) rose +0.35%, and June E-mini Nasdaq futures...",
+          "url": "https://finnhub.io/api/news?id=86c64e14d4c265f1516b605d4bc5eed4d6bf546dc7f9eda57b531c1f1b0c4d7c",
+          "datetime": 1779482074,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
           "source": "Yahoo",
-          "headline": "Jim Cramer Likes ARM 'Very Much' As Stock Jumps 3% Premarket, But Calls Post-Nvidia Surge 'A Little Silly'",
-          "summary": "Arm Holdings PLC shares rose over 3% in premarket trading on Thursday following Nvidia Corp.‘s blowout quarterly report, even as CNBC’s Jim Cramer warned that crowning the chip designer as the earnings call’s top beneficiary is overblown. Market Reaction Deemed...",
-          "url": "https://finnhub.io/api/news?id=2ac4ec2260bdacf431f29147da8b956c3f26cfc028bf518aac22d12d66c958b1",
-          "datetime": 1779462064,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Yahoo",
-          "headline": "Stock Market Today: Dow Rises Ahead Of Inflation Survey; AMD Stock Rallies (Live Coverage)",
-          "summary": "Stock Market Today: The Dow Jones index rose Friday ahead of a key inflation survey. AMD stock rallied near record highs.",
-          "url": "https://finnhub.io/api/news?id=548b0f88455b71f59ba1114d93d0699f818fa8407ac3b9a036f6ecd323074f68",
-          "datetime": 1779457403,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Yahoo",
-          "headline": "Is Arm Holdings (ARM) the Best European Growth Stock to Buy?",
-          "summary": "Arm Holdings plc (NASDAQ:ARM) is one of the 10 Best European Growth Stocks to Buy. On May 13, 2026, Arm Holdings plc (NASDAQ:ARM) and majority owner SoftBank Group reportedly expressed preliminary interest in acquiring AI computing company Cerebras Systems ahead of its anticipated IPO, according to ",
-          "url": "https://finnhub.io/api/news?id=1013d537170cf31a7e87bd63be381dc17d912e5118c6ce2f12676ab334b76b76",
-          "datetime": 1779447556,
+          "headline": "Arm Holdings (ARM), Red Hat Expand Collaboration for Agentic AI Stack",
+          "summary": "Arm Holdings (NASDAQ:ARM) is one of the best multibagger stocks to buy in 2026. On May 11, Arm and Red Hat expanded their collaboration to deliver a production-ready AI software and hardware stack tailored for the demands of continuous, always-on agentic AI systems. The solution optimizes Red Hat En",
+          "url": "https://finnhub.io/api/news?id=8add7461133e9ecee5dcd59866e85c1823e2d1dd024b1b13c0ae4b91f4a155b3",
+          "datetime": 1779480533,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         }
       ],
-      "earnings": [],
+      "earnings": [
+        {
+          "period": "",
+          "estimate": 0.351,
+          "actual": 0.35,
+          "surprise": -0.0,
+          "beat": false
+        },
+        {
+          "period": "",
+          "estimate": 0.331,
+          "actual": 0.39,
+          "surprise": 0.18,
+          "beat": true
+        },
+        {
+          "period": "",
+          "estimate": 0.409,
+          "actual": 0.43,
+          "surprise": 0.05,
+          "beat": true
+        },
+        {
+          "period": "",
+          "estimate": 0.579,
+          "actual": 0.6,
+          "surprise": 0.04,
+          "beat": true
+        }
+      ],
       "dividends": [],
-      "ticker_info": {},
+      "ticker_info": {
+        "trailingPE": 356.40698,
+        "forwardPE": 100.325356,
+        "marketCap": 326126206976,
+        "beta": 3.406,
+        "fiftyTwoWeekHigh": 315.0,
+        "fiftyTwoWeekLow": 100.02,
+        "pctFromHigh": -2.7,
+        "shortRatio": 1.87,
+        "dividendYield": null
+      },
       "fh_fundamentals": {
-        "52WeekHigh": 259.44,
+        "52WeekHigh": 315,
         "52WeekLow": 100.02,
-        "52WeekHighDate": "2026-05-20",
+        "52WeekHighDate": "2026-05-22",
         "52WeekLowDate": "2026-02-05",
-        "beta": 3.4684565,
-        "peAnnual": 302.1689,
-        "peTTM": 302.1689,
+        "beta": 3.581114,
+        "peAnnual": 351.0141,
+        "peTTM": 351.0141,
         "pbAnnual": 19.3893,
         "epsGrowthTTMYoy": 13.63,
         "epsGrowth3Y": 18.34,
@@ -95,80 +135,27 @@
         "currentRatioAnnual": 5.9962,
         "debtToEquityAnnual": 0.0015,
         "dividendYieldIndicated": null,
-        "marketCapitalization": 273160.72
+        "marketCapitalization": 317316.72
       },
       "analysts": {},
       "insider": {},
       "analysis": {
         "sentiment": "neutro",
-        "news_comment": "Indisponível.",
-        "earnings_comment": "Indisponível.",
+        "news_comment": "Gemini indisponível.",
+        "earnings_comment": "Gemini indisponível.",
         "watch_points": []
       }
     }
   ],
   "history": [
     {
-      "date": "2026-05-07",
-      "value": 6258.68
-    },
-    {
-      "date": "2026-05-08",
-      "value": 6446.14
-    },
-    {
-      "date": "2026-05-11",
-      "value": 9434.42
-    },
-    {
-      "date": "2026-05-12",
-      "value": 6983.44
-    },
-    {
-      "date": "2026-05-13",
-      "value": 9439.88
-    },
-    {
-      "date": "2026-05-14",
-      "value": 9342.97
-    },
-    {
-      "date": "2026-05-15",
-      "value": 6978.37
-    },
-    {
-      "date": "2026-05-16",
-      "value": 6971.86
-    },
-    {
-      "date": "2026-05-17",
-      "value": 114.55
-    },
-    {
-      "date": "2026-05-18",
-      "value": 114.99
-    },
-    {
-      "date": "2026-05-19",
-      "value": 112.3
-    },
-    {
-      "date": "2026-05-20",
-      "value": 112.52
-    },
-    {
       "date": "2026-05-22",
-      "value": 149.76
+      "value": 130.47
+    },
+    {
+      "date": "2026-05-24",
+      "value": 129.05
     }
   ],
-  "benchmark_metrics": {
-    "portfolio_cagr": -100.0,
-    "spy_cagr": 58.97,
-    "alpha": -158.97,
-    "sharpe_ratio": -1.23,
-    "max_drawdown": -98.81,
-    "calmar_ratio": -1.01,
-    "period_days": 15,
-    "last_updated": "2026-05-24T14:43:05.845264Z"
-  }
+  "benchmark_metrics": {}
 }
