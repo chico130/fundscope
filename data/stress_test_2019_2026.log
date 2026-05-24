@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "C:\Users\Francisco Araujo\Desktop\fundscope\scripts\backtest.py", line 54, in <module>
+    import bot.logger as _bot_logger
+ModuleNotFoundError: No module named 'bot'

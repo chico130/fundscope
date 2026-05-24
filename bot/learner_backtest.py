@@ -49,7 +49,7 @@ OPT_PARAMS_PATH = BASE_DIR / "data" / "beta" / "optimized_backtest_params.json"
 # Espaco de parametros (start, stop, step)
 PARAM_SPACE = {
     "atr_stop_mult_value":    (1.5,  3.0,  0.25),
-    "atr_tp_mult":            (2.0,  5.0,  0.5),
+    "atr_tp_mult":            (2.0,  4.5,  0.25),
     "value_trail_activation": (1.5,  3.0,  0.25),
     "value_trail_distance":   (1.5,  3.5,  0.25),
     "max_position_pct":       (8.0,  14.0, 1.0),
@@ -67,19 +67,28 @@ def values_for(name: str) -> list[float]:
 # Fitness adaptativa ao regime
 # --------------------------------------------------------------------------
 
-def dominant_regime(result: BacktestResult) -> str:
-    """Devolve o regime dominante baseado em % de dias."""
+def _regime_pcts(result: BacktestResult) -> tuple[float, float]:
+    """Devolve (bull_pct, bear_pct) baseado em dias com regime conhecido."""
     bull = result.regime_days_bull
     bear = result.regime_days_bear
     total = bull + bear
     if total == 0:
-        return "lateral"
-    bull_pct = bull / total
-    if bull_pct >= 0.85:
+        return 0.0, 0.0
+    return bull / total, bear / total
+
+
+def dominant_regime(result: BacktestResult) -> str:
+    """Devolve o regime dominante baseado em % de dias.
+    bull > 60%  → bull_trending
+    bear > 20%  → weighted (média ponderada bull+bear)
+    else        → lateral
+    """
+    bull_pct, bear_pct = _regime_pcts(result)
+    if bull_pct > 0.60:
         return "bull_trending"
-    if bull_pct >= 0.50:
-        return "bull_lateral"
-    return "bear"
+    if bear_pct > 0.20:
+        return "weighted"
+    return "lateral"
 
 
 def compute_spy_return(spy_closes: np.ndarray, spy_index, start, end) -> float:
@@ -92,19 +101,31 @@ def compute_spy_return(spy_closes: np.ndarray, spy_index, start, end) -> float:
     return float((series[-1] - series[0]) / series[0] * 100)
 
 
+def _bull_fitness(result: BacktestResult, spy_return: float) -> float:
+    alpha = result.total_return_pct - spy_return
+    sharpe_floor = max(0.5, result.sharpe_annual)
+    return alpha * sharpe_floor
+
+
+def _bear_fitness(result: BacktestResult) -> float:
+    dd_factor = max(0.4, 1 - abs(result.max_drawdown_pct) / 15.0)
+    return result.calmar * dd_factor
+
+
+def _lateral_fitness(result: BacktestResult) -> float:
+    return result.sharpe_annual * result.profit_factor
+
+
 def fitness(result: BacktestResult, spy_return: float) -> tuple[float, str]:
     """Devolve (fitness, regime_used) — fitness adaptativa ao regime dominante."""
     regime = dominant_regime(result)
     if regime == "bull_trending":
-        # Premia alpha vs SPY com Sharpe como estabilizador (floor 0.5)
-        alpha = result.total_return_pct - spy_return
-        sharpe_floor = max(0.5, result.sharpe_annual)
-        f = alpha * sharpe_floor
-    elif regime == "bull_lateral":
-        f = result.sharpe_annual * result.profit_factor
-    else:  # bear
-        dd_factor = max(0.4, 1 - abs(result.max_drawdown_pct) / 15.0)
-        f = result.profit_factor * dd_factor
+        f = _bull_fitness(result, spy_return)
+    elif regime == "weighted":
+        bull_pct, bear_pct = _regime_pcts(result)
+        f = bull_pct * _bull_fitness(result, spy_return) + bear_pct * _bear_fitness(result)
+    else:  # lateral / bull_weak
+        f = _lateral_fitness(result)
     return f, regime
 
 
@@ -204,12 +225,9 @@ def coordinate_descent(evaluator: Evaluator, cycles: int) -> tuple[BacktestParam
         print(f"\n[Cycle {cycle}/{cycles}]  {ct:.0f}s  evals_total={evaluator.n_evals}  avg={avg_eval:.1f}s/eval  ETA~{eta:.0f}min")
         for line in cycle_log:
             print(line)
-        print(f"  >>> best_fitness={best_f:+.3f}  "
-              f"return={best_result.total_return_pct:+.1f}%  "
-              f"sharpe={best_result.sharpe_annual:.2f}  "
-              f"trades={len(best_result.trades)}  "
-              f"DD=-{best_result.max_drawdown_pct:.1f}%  "
-              f"deployed={best_result.avg_deployed_pct:.1f}%")
+        print(f"Ciclo {cycle}/{cycles} | fitness: {best_f:.2f} | retorno: {best_result.total_return_pct:+.1f}% "
+              f"| sharpe: {best_result.sharpe_annual:.2f} | trades: {len(best_result.trades)} "
+              f"| atr_tp: {best_params.atr_tp_mult:.1f}")
 
         history["cycles"].append({
             "cycle":     cycle,

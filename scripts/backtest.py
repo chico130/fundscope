@@ -157,6 +157,7 @@ class BacktestResult:
     sharpe_annual:      float = 0.0
     avg_deployed_pct:   float = 0.0   # NEW: % equity deployed (cash drag metric)
     n_adds:             int   = 0     # NEW: total add operations executed
+    equity_curve:       list  = field(default_factory=list)  # list of (date_str, float)
 
 
 # --------------------------------------------------------------------------
@@ -809,6 +810,7 @@ def _build_result(config, capital_init, cash, trades, equity,
         sharpe_annual=sharpe,
         avg_deployed_pct=avg_deployed,
         n_adds=n_adds,
+        equity_curve=equity,
     )
 
 
@@ -973,7 +975,7 @@ def run_all_variants(start: datetime, end: datetime, capital_init: float,
     print(f"        Earnings calendar:    {n_eps} tickers, {sum(len(v) for v in earnings_cal.values())} datas")
 
     # Data
-    calendar, histories, _, _ = load_data_for_backtest(start, end)
+    calendar, histories, spy_closes, spy_index = load_data_for_backtest(start, end)
     prime_regimes(calendar)
 
     # Variants
@@ -1004,9 +1006,119 @@ def run_all_variants(start: datetime, end: datetime, capital_init: float,
     print_comparison_table(results)
     full = results[-1]
     print_full_summary(full, start, end)
+    print_period_breakdown(full, spy_closes, spy_index, start, end)
 
     if export_csv:
         export_trades_csv(full.trades)
+
+
+# --------------------------------------------------------------------------
+# Breakdown por sub-período
+# --------------------------------------------------------------------------
+
+SUBPERIODS = [
+    ("2019-01-01", "2019-12-31", "bull normal"),
+    ("2020-01-01", "2020-12-31", "COVID crash + recovery"),
+    ("2021-01-01", "2021-12-31", "bull forte"),
+    ("2022-01-01", "2022-12-31", "bear prolongado"),
+    ("2023-01-01", "2023-12-31", "recovery"),
+    ("2024-01-01", "2024-12-31", "bull AI"),
+    ("2025-01-01", "2026-05-23", "bull recente"),
+]
+
+
+def print_period_breakdown(result: BacktestResult, spy_closes: np.ndarray,
+                           spy_index: pd.DatetimeIndex,
+                           total_start: datetime, total_end: datetime) -> None:
+    eq = result.equity_curve
+    if not eq:
+        print("\n[WARN] Sem equity curve para breakdown por periodo.")
+        return
+
+    W = 102
+    print("\n" + "=" * W)
+    print("=== POR PERIODO ===")
+    print("=" * W)
+    print(f"  {'Periodo':46s}  {'Retorno':>8s}  {'Max DD':>7s}  {'Trades':>6s}  {'WR':>6s}  {'SPY Ret':>8s}")
+    print("-" * W)
+
+    dd_2020 = ret_2020 = dd_2022 = ret_2022 = 0.0
+
+    for p_start_s, p_end_s, label in SUBPERIODS:
+        ps = datetime.strptime(p_start_s, "%Y-%m-%d")
+        pe = datetime.strptime(p_end_s, "%Y-%m-%d")
+
+        if pe < total_start or ps > total_end:
+            continue
+
+        eff_ps = max(ps, total_start)
+        eff_pe = min(pe, total_end)
+        eff_ps_s = eff_ps.strftime("%Y-%m-%d")
+        eff_pe_s = eff_pe.strftime("%Y-%m-%d")
+
+        eq_before = [v for d, v in eq if d < eff_ps_s]
+        eq_in = [(d, v) for d, v in eq if eff_ps_s <= d <= eff_pe_s]
+        if not eq_in:
+            continue
+
+        eq_base = eq_before[-1] if eq_before else eq_in[0][1]
+        eq_end_v = eq_in[-1][1]
+        period_ret = (eq_end_v - eq_base) / eq_base * 100 if eq_base > 0 else 0.0
+
+        peak = eq_base
+        p_dd = 0.0
+        for _, v in eq_in:
+            peak = max(peak, v)
+            if peak > 0:
+                p_dd = max(p_dd, (peak - v) / peak * 100)
+
+        pt = [t for t in result.trades if eff_ps_s <= t.entry_date <= eff_pe_s]
+        wr = sum(1 for t in pt if t.result_eur > 0) / len(pt) * 100 if pt else 0.0
+
+        spy_mask_before = spy_index < pd.Timestamp(eff_ps)
+        spy_mask_in     = (spy_index >= pd.Timestamp(eff_ps)) & (spy_index <= pd.Timestamp(eff_pe))
+        spy_bef = spy_closes[spy_mask_before]
+        spy_in  = spy_closes[spy_mask_in]
+        if len(spy_bef) > 0 and len(spy_in) > 0:
+            spy_base = spy_bef[-1]
+            spy_ret  = (spy_in[-1] - spy_base) / spy_base * 100
+        elif len(spy_in) >= 2:
+            spy_ret = (spy_in[-1] - spy_in[0]) / spy_in[0] * 100
+        else:
+            spy_ret = 0.0
+
+        if p_start_s.startswith("2020"):
+            dd_2020, ret_2020 = p_dd, period_ret
+        if p_start_s.startswith("2022"):
+            dd_2022, ret_2022 = p_dd, period_ret
+
+        row_label = f"{eff_ps.strftime('%Y-%m-%d')} → {eff_pe.strftime('%Y-%m-%d')}  ({label})"
+        print(f"  {row_label:46s}  {period_ret:+7.1f}%  -{p_dd:5.1f}%  {len(pt):6d}  {wr:5.1f}%  {spy_ret:+7.1f}%")
+
+    # Totais
+    print("-" * W)
+    spy_tot_mask = (spy_index >= pd.Timestamp(total_start)) & (spy_index <= pd.Timestamp(total_end))
+    spy_tot = spy_closes[spy_tot_mask]
+    spy_tot_ret = (spy_tot[-1] - spy_tot[0]) / spy_tot[0] * 100 if len(spy_tot) >= 2 else 0.0
+    tot_label = f"TOTAL {total_start.strftime('%Y-%m-%d')} → {total_end.strftime('%Y-%m-%d')}"
+    print(f"  {tot_label:46s}  {result.total_return_pct:+7.1f}%  -{result.max_drawdown_pct:5.1f}%  "
+          f"{len(result.trades):6d}  {result.win_rate_pct:5.1f}%  {spy_tot_ret:+7.1f}%")
+    print("=" * W)
+
+    # Kelly verdict
+    print(f"\n=== CRITERIO KELLY (stress-test) ===")
+    print(f"  2020 (COVID crash + recovery): Retorno {ret_2020:+.1f}%  |  Max DD -{dd_2020:.1f}%")
+    print(f"  2022 (bear prolongado):        Retorno {ret_2022:+.1f}%  |  Max DD -{dd_2022:.1f}%")
+    print()
+    if dd_2020 > 35 or dd_2022 > 30:
+        print("  ❌ KELLY PROIBIDO: DD 2020 > -35% ou DD 2022 > -30%")
+        print("     Foco deve ir para diversificar universo de tickers.")
+    elif dd_2020 > 25:
+        print("  ⚠️  KELLY CONDICIONAL: DD 2020 entre -25% e -35%")
+        print("     Kelly com cap maximo de 5% risk/trade.")
+    else:
+        print("  ✅ KELLY AUTORIZADO: DD 2020 <= -25% E DD 2022 <= -20%")
+    print("=" * W)
 
 
 # --------------------------------------------------------------------------

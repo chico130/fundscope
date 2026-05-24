@@ -1,0 +1,62 @@
+$SQ: possibly delisted; no timezone found
+C:\Users\Francisco Araujo\Desktop\fundscope\bot\learner_backtest.py:248: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "saved_at":    datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
+C:\Users\Francisco Araujo\Desktop\fundscope\bot\learner_backtest.py:248: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "saved_at":    datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
+
+=== LEARNER IN-THE-LOOP ===
+Periodo:   2024-05-23 -> 2026-05-23
+Capital:   EUR 5,000
+Cycles:    10
+Params:    6 x 7 vals avg
+[Data] A carregar OHLCV para 194 tickers...
+       (40/194)
+       (80/194)
+       (120/194)
+       (160/194)
+       OK: 193    Sem dados: 1
+       Calendario: 501 dias entre 2024-05-23 e 2026-05-23
+[Regime] A pre-carregar regimes (SPY/RSP)...
+         501 regimes em cache
+Bonnie ML: v2 loaded (bonnie_model_v2.pkl)
+SPY return no periodo: +45.2%
+Regime dominante esperado (vai ser computado por run):
+
+[Eval] Baseline (defaults)...
+       fitness=-17.506  regime=bull_trending  spy_return=+45.2%  return=+23.2%  sharpe=0.80  PF=1.35  trades=835  DD=-14.4%
+
+[Cycle 1/10]  1268s  evals_total=40  avg=32.5s/eval  ETA~185min
+  [.] atr_stop_mult_value       cur=   3.0  best_alt=  2.75  f=-18.217
+  [.] atr_tp_mult               cur=   3.0  best_alt=   2.0  f=-17.955
+  [X] value_trail_activation    cur=   2.0  best_alt=  2.25  f=-16.714
+  [X] value_trail_distance      cur=   2.5  best_alt=   2.0  f=-2.461
+  [.] max_position_pct          cur=  10.0  best_alt=   9.0  f=-15.419
+  [.] bonnie_threshold          cur=   0.6  best_alt=  0.44  f=-2.461
+  >>> best_fitness=-2.461  return=+43.4%  sharpe=1.35  trades=817  DD=-11.9%  deployed=76.7%
+
+[Cycle 2/10]  1312s  evals_total=79  avg=33.1s/eval  ETA~167min
+  [.] atr_stop_mult_value       cur=   3.0  best_alt=  2.75  f=-17.297
+  [.] atr_tp_mult               cur=   3.0  best_alt=   5.0  f=-12.322
+  [.] value_trail_activation    cur=  2.25  best_alt=   3.0  f=-14.451
+  [.] value_trail_distance      cur=   2.0  best_alt=  2.75  f=-14.406
+  [.] max_position_pct          cur=  10.0  best_alt=   9.0  f=-15.419
+  [.] bonnie_threshold          cur=   0.6  best_alt=  0.44  f=-2.461
+  >>> best_fitness=-2.461  return=+43.4%  sharpe=1.35  trades=817  DD=-11.9%  deployed=76.7%
+  [stop] No improvement this cycle — convergence detected.
+
+=== DONE ===  (43.5 min total, 79 evaluations)
+Optimized params:
+  atr_stop_mult_value          = 3.0
+  atr_stop_mult_momentum       = 2.0
+  atr_tp_mult                  = 3.0
+  value_trail_activation       = 2.25  (was 2.0)
+  value_trail_distance         = 2.0  (was 2.5)
+  max_position_pct             = 10.0
+  bonnie_threshold             = 0.6
+  add_max_existing_pct         = 0.06
+  add_target_total_pct         = 0.1
+  add_max_increment_pct        = 0.05
+  add_min_increment_pct        = 0.02
+
+Written to: data\beta\optimized_backtest_params.json
+Run: PYTHONPATH=. python scripts/backtest.py --use-optimized
