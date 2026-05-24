@@ -1,0 +1,14 @@
+Antes de terminar esta sessão, actualiza o CLAUDE.md
+com o seguinte formato EXACTO (substitui os --- auto-sync
+existentes mas mantém tudo o resto):
+
+## Auto-Sync: [data de hoje]
+- PC: [nome do computador]
+- O que foi feito nesta sessão: [resume em 3 linhas]
+- Estado do Learner: [run activa, ciclo, métricas se disponíveis]
+- Parâmetros activos: [copia do optimized_backtest_params.json]
+- Próximo passo acordado: [o que ficou decidido fazer a seguir]
+- Ficheiros alterados: [lista os ficheiros que tocaste hoje]
+- Problemas conhecidos: [bugs ou limitações identificadas hoje]
+
+Depois faz: git add CLAUDE.md && git commit -m "docs: sync context [data]" && git push origin main
