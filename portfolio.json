@@ -1,12 +1,12 @@
 {
-  "updated": "2026-05-24T17:52:31.457624Z",
+  "updated": "2026-05-24T18:14:28.583108Z",
   "t212_mode": "live",
   "summary": {
     "total_value": 127.97,
     "total_invested": 121.94,
     "total_gain_eur": 6.03,
     "total_gain_pct": 4.95,
-    "daily_gain_eur": 3.46,
+    "daily_gain_eur": 0.0,
     "cash_available": 4877.88,
     "n_positions": 1
   },
@@ -15,23 +15,31 @@
       "ticker_t212": "ARM_US_EQ",
       "quantity": 0.4886,
       "avg_price": 289.7462,
-      "current_price": 306.51,
+      "current_price": 304.08,
       "ppl": 6.03,
       "fx_ppl": 0.0,
       "ticker": "ARM",
       "ticker_display": "ARM",
-      "display_name": "Arm Holdings plc",
+      "display_name": "ARM",
       "currency": "USD",
-      "change_pct": 2.78,
+      "change_pct": 0.0,
       "gain_eur": 6.03,
       "invested": 121.94,
       "value_eur": 127.97,
       "gain_pct": 4.95,
-      "fx_rate": 0.861698,
+      "fx_rate": 0.86244,
       "currency_native": "USD",
       "allocation_pct": 100.0,
       "clyde_forecast": null,
       "news": [
+        {
+          "source": "Yahoo",
+          "headline": "Why Arm Stock Skyrocketed This Week",
+          "summary": "On the heels of a huge rally this week, Arm stock is now up roughly 180% in 2026.",
+          "url": "https://finnhub.io/api/news?id=322fc397af17085b39ae4837c386d941a3b42768ca232af87e1a86cdde814d4a",
+          "datetime": 1779644005,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
         {
           "source": "Yahoo",
           "headline": "Why Billionaire Stanley Druckenmiller Dumped Nvidia but Loaded Up on These 3 AI Infrastructure Stocks for the Next Boom",
@@ -63,58 +71,11 @@
           "url": "https://finnhub.io/api/news?id=86c64e14d4c265f1516b605d4bc5eed4d6bf546dc7f9eda57b531c1f1b0c4d7c",
           "datetime": 1779482074,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Yahoo",
-          "headline": "Arm Holdings (ARM), Red Hat Expand Collaboration for Agentic AI Stack",
-          "summary": "Arm Holdings (NASDAQ:ARM) is one of the best multibagger stocks to buy in 2026. On May 11, Arm and Red Hat expanded their collaboration to deliver a production-ready AI software and hardware stack tailored for the demands of continuous, always-on agentic AI systems. The solution optimizes Red Hat En",
-          "url": "https://finnhub.io/api/news?id=8add7461133e9ecee5dcd59866e85c1823e2d1dd024b1b13c0ae4b91f4a155b3",
-          "datetime": 1779480533,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         }
       ],
-      "earnings": [
-        {
-          "period": "",
-          "estimate": 0.351,
-          "actual": 0.35,
-          "surprise": -0.0,
-          "beat": false
-        },
-        {
-          "period": "",
-          "estimate": 0.331,
-          "actual": 0.39,
-          "surprise": 0.18,
-          "beat": true
-        },
-        {
-          "period": "",
-          "estimate": 0.409,
-          "actual": 0.43,
-          "surprise": 0.05,
-          "beat": true
-        },
-        {
-          "period": "",
-          "estimate": 0.579,
-          "actual": 0.6,
-          "surprise": 0.04,
-          "beat": true
-        }
-      ],
+      "earnings": [],
       "dividends": [],
-      "ticker_info": {
-        "trailingPE": 356.40698,
-        "forwardPE": 100.325356,
-        "marketCap": 326126206976,
-        "beta": 3.406,
-        "fiftyTwoWeekHigh": 315.0,
-        "fiftyTwoWeekLow": 100.02,
-        "pctFromHigh": -2.7,
-        "shortRatio": 1.87,
-        "dividendYield": null
-      },
+      "ticker_info": {},
       "fh_fundamentals": {
         "52WeekHigh": 315,
         "52WeekLow": 100.02,
@@ -141,8 +102,8 @@
       "insider": {},
       "analysis": {
         "sentiment": "neutro",
-        "news_comment": "Gemini indisponível.",
-        "earnings_comment": "Gemini indisponível.",
+        "news_comment": "Indisponível.",
+        "earnings_comment": "Indisponível.",
         "watch_points": []
       }
     }
