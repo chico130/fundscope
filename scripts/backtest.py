@@ -70,8 +70,10 @@ RESULTS_CSV            = BASE_DIR / "data" / "backtest_results.csv"
 MODEL_PATH             = BASE_DIR / "data" / "models" / "bonnie_model.pkl"
 MODEL_PATH_V2          = BASE_DIR / "data" / "models" / "bonnie_model_v2.pkl"
 MODEL_PATH_V3          = BASE_DIR / "data" / "models" / "bonnie_model_v3.pkl"
+MODEL_PATH_V4          = BASE_DIR / "data" / "models" / "bonnie_model_v4.pkl"
 THRESHOLDS_PATH        = BASE_DIR / "data" / "beta" / "bonnie_thresholds.json"
 THRESHOLDS_PATH_V3     = BASE_DIR / "data" / "beta" / "bonnie_thresholds_v3.json"
+THRESHOLDS_PATH_V4     = BASE_DIR / "data" / "beta" / "bonnie_thresholds_v4.json"
 OPT_BACKTEST_PARAMS    = BASE_DIR / "data" / "beta" / "optimized_backtest_params.json"
 EARNINGS_PATH          = BASE_DIR / "earnings.json"
 SPREAD_PCT             = 0.0005
@@ -348,9 +350,11 @@ class BonnieML:
         self.feature_names: list[str] = []
         self.params = params
         self.regime_thresholds: dict[str, float] = {}
-        # Priority: forced path > v3 > v2 > v1
+        # Priority: forced path > v4 > v3 > v2 > v1
         if force_model_path is not None:
             path = force_model_path
+        elif MODEL_PATH_V4.exists():
+            path = MODEL_PATH_V4
         elif MODEL_PATH_V3.exists():
             path = MODEL_PATH_V3
         elif MODEL_PATH_V2.exists():
@@ -366,8 +370,13 @@ class BonnieML:
                 self.available = True
             except Exception as exc:
                 print(f"  [WARN] Bonnie ML load: {exc}", file=sys.stderr)
-        # Per-regime thresholds: prefer version-matched file
-        thr_path = THRESHOLDS_PATH_V3 if (path == MODEL_PATH_V3 and THRESHOLDS_PATH_V3.exists()) else THRESHOLDS_PATH
+        # Per-regime thresholds: version-matched file
+        if path == MODEL_PATH_V4 and THRESHOLDS_PATH_V4.exists():
+            thr_path = THRESHOLDS_PATH_V4
+        elif path == MODEL_PATH_V3 and THRESHOLDS_PATH_V3.exists():
+            thr_path = THRESHOLDS_PATH_V3
+        else:
+            thr_path = THRESHOLDS_PATH
         if thr_path.exists():
             try:
                 self.regime_thresholds = json.loads(thr_path.read_text(encoding="utf-8"))
@@ -974,7 +983,8 @@ def prime_regimes(calendar: list, verbose: bool = True) -> None:
 
 def run_all_variants(start: datetime, end: datetime, capital_init: float,
                      use_defaults: bool, use_optimized: bool, export_csv: bool,
-                     use_kelly: bool = False, use_bonnie_v3: bool = False) -> None:
+                     use_kelly: bool = False, use_bonnie_v3: bool = False,
+                     use_bonnie_v4: bool = False) -> None:
 
     # Learner params (strategy._P etc)
     if use_defaults:
@@ -1005,10 +1015,17 @@ def run_all_variants(start: datetime, end: datetime, capital_init: float,
     print(f"        atr_tp_mult:          {params.atr_tp_mult}")
     print(f"        value_trail_active:   {params.value_trail_activation}xATR  dist {params.value_trail_distance}xATR")
 
-    _bml_path = MODEL_PATH_V3 if (use_bonnie_v3 and MODEL_PATH_V3.exists()) else None
+    if use_bonnie_v4 and MODEL_PATH_V4.exists():
+        _bml_path = MODEL_PATH_V4
+    elif use_bonnie_v3 and MODEL_PATH_V3.exists():
+        _bml_path = MODEL_PATH_V3
+    else:
+        _bml_path = None
     bonnie_ml = BonnieML(params, force_model_path=_bml_path)
     if bonnie_ml.available:
-        if bonnie_ml.model_path == MODEL_PATH_V3:
+        if bonnie_ml.model_path == MODEL_PATH_V4:
+            ftype = "v4"
+        elif bonnie_ml.model_path == MODEL_PATH_V3:
             ftype = "v3"
         elif bonnie_ml.model_path == MODEL_PATH_V2:
             ftype = "v2"
@@ -1307,10 +1324,11 @@ if __name__ == "__main__":
     p.add_argument("--csv",           action="store_true", help="Exporta trades da variante Full para CSV")
     p.add_argument("--kelly",         action="store_true", help="Corre comparacao Kelly-ON vs Kelly-OFF (Full variant)")
     p.add_argument("--bonnie-v3",     action="store_true", help="Usa bonnie_model_v3.pkl em vez de v2")
+    p.add_argument("--bonnie-v4",     action="store_true", help="Usa bonnie_model_v4.pkl (labels calibradas 4.25xATR)")
     args = p.parse_args()
 
     end_dt   = datetime.strptime(args.until, "%Y-%m-%d") if args.until else datetime.now()
     start_dt = datetime.strptime(args.since, "%Y-%m-%d") if args.since else end_dt - timedelta(days=730)
 
     run_all_variants(start_dt, end_dt, args.capital, args.use_defaults, args.use_optimized, args.csv,
-                     use_kelly=args.kelly, use_bonnie_v3=args.bonnie_v3)
+                     use_kelly=args.kelly, use_bonnie_v3=args.bonnie_v3, use_bonnie_v4=args.bonnie_v4)

@@ -48,8 +48,10 @@ from bot.backtest import prime_regime_cache, _regime_cache
 
 MODEL_OUT_V2   = BASE_DIR / "data" / "models" / "bonnie_model_v2.pkl"
 MODEL_OUT_V3   = BASE_DIR / "data" / "models" / "bonnie_model_v3.pkl"
+MODEL_OUT_V4   = BASE_DIR / "data" / "models" / "bonnie_model_v4.pkl"
 THRESHOLDS_OUT_V2 = BASE_DIR / "data" / "beta" / "bonnie_thresholds.json"
 THRESHOLDS_OUT_V3 = BASE_DIR / "data" / "beta" / "bonnie_thresholds_v3.json"
+THRESHOLDS_OUT_V4 = BASE_DIR / "data" / "beta" / "bonnie_thresholds_v4.json"
 CORPUS_OUT     = BASE_DIR / "data" / "backtest" / "bonnie_observations_v2.json"
 
 # Parametros de geracao do corpus (overridden by CLI args when running as __main__)
@@ -408,7 +410,9 @@ if __name__ == "__main__":
     _p.add_argument("--since",          default=None, help="Data inicial do corpus YYYY-MM-DD (default: 2018-01-01)")
     _p.add_argument("--until",          default=None, help="Data final do corpus YYYY-MM-DD (default: 2026-05-23)")
     _p.add_argument("--val-start",      default=None, help="Inicio da validacao YYYY-MM-DD (default: 2025-01-01)")
-    _p.add_argument("--model-version",  default="v2", choices=["v2", "v3"], help="Versao do modelo a guardar (v2 ou v3)")
+    _p.add_argument("--model-version",  default="v2", choices=["v2", "v3", "v4"], help="Versao do modelo a guardar")
+    _p.add_argument("--tp-mult",        default=None, type=float, help="TP label multiplier (override TP_ATR_MULT)")
+    _p.add_argument("--sl-mult",        default=None, type=float, help="SL label multiplier (override SL_ATR_MULT)")
     _args = _p.parse_args()
 
     if _args.since:
@@ -418,6 +422,10 @@ if __name__ == "__main__":
     if _args.val_start:
         VAL_START = datetime.strptime(_args.val_start, "%Y-%m-%d")
         TRAIN_END = VAL_START
+    if _args.tp_mult is not None:
+        TP_ATR_MULT = _args.tp_mult
+    if _args.sl_mult is not None:
+        SL_ATR_MULT = _args.sl_mult
 
     print(f"Treino: {TRAIN_START.date()} -> {TRAIN_END.date()}  |  Val: {VAL_START.date()} -> {VAL_END.date()}")
     print(f"Modelo: bonnie_model_{_args.model_version}.pkl")
@@ -432,13 +440,14 @@ if __name__ == "__main__":
 
     model, thresholds, _val_df = train_and_evaluate(corpus)
 
-    _model_out = MODEL_OUT_V3 if _args.model_version == "v3" else MODEL_OUT_V2
-    _thr_out   = THRESHOLDS_OUT_V3 if _args.model_version == "v3" else THRESHOLDS_OUT_V2
+    _ver = _args.model_version
+    _model_out = {"v2": MODEL_OUT_V2, "v3": MODEL_OUT_V3, "v4": MODEL_OUT_V4}.get(_ver, MODEL_OUT_V2)
+    _thr_out   = {"v2": THRESHOLDS_OUT_V2, "v3": THRESHOLDS_OUT_V3, "v4": THRESHOLDS_OUT_V4}.get(_ver, THRESHOLDS_OUT_V2)
     save_artifacts(model, thresholds, corpus, model_out=_model_out, thresholds_out=_thr_out)
 
-    # CV score comparison vs existing v2 (if available and training v3)
-    if _args.model_version == "v3" and MODEL_OUT_V2.exists():
-        print("\n=== CV Score comparison v2 vs v3 ===")
+    # CV score comparison vs existing v2 (if available and training v3/v4)
+    if _ver in ("v3", "v4") and MODEL_OUT_V2.exists():
+        print(f"\n=== CV Score comparison v2 vs {_ver} ===")
         try:
             import joblib
             import pandas as _pd
@@ -452,10 +461,10 @@ if __name__ == "__main__":
             _tscv = TimeSeriesSplit(n_splits=5)
             _v2 = joblib.load(MODEL_OUT_V2)
             _cv_v2 = cross_val_score(_v2, _X, _y, cv=_tscv, scoring="accuracy", n_jobs=-1)
-            _cv_v3 = cross_val_score(model, _X, _y, cv=_tscv, scoring="accuracy", n_jobs=-1)
-            print(f"  v2 CV accuracy: {_cv_v2.mean():.1%} +/- {_cv_v2.std():.1%}")
-            print(f"  v3 CV accuracy: {_cv_v3.mean():.1%} +/- {_cv_v3.std():.1%}")
-            print(f"  Delta:          {(_cv_v3.mean()-_cv_v2.mean())*100:+.1f}pp")
+            _cv_new = cross_val_score(model, _X, _y, cv=_tscv, scoring="accuracy", n_jobs=-1)
+            print(f"  v2 CV accuracy:  {_cv_v2.mean():.1%} +/- {_cv_v2.std():.1%}")
+            print(f"  {_ver} CV accuracy: {_cv_new.mean():.1%} +/- {_cv_new.std():.1%}")
+            print(f"  Delta:           {(_cv_new.mean()-_cv_v2.mean())*100:+.1f}pp")
         except Exception as _e:
             print(f"  [WARN] Nao foi possivel comparar CV scores: {_e}")
 

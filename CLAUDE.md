@@ -26,7 +26,7 @@
 - **Validação de Sintaxe:** `python -c "import ast; ast.parse(open('bot/bonnie.py', encoding='utf-8').read())"`
 - **Análise Estatística/Backtest:** `python -m bot.mass_backtest`
 
-## Estado Atual — v3.1 (run-005, pós-análise 2026-05-24)
+## Estado Atual — v3.1 (run-006, 2026-05-24)
 
 ### Parâmetros ativos (optimized_backtest_params.json)
 - `atr_stop_mult_value`: 1.75 (era 3.0)
@@ -36,28 +36,34 @@
 - `max_position_pct`: 11.0% (era 10.0%)
 
 ### Modelo ativo
-- **Bonnie v2** (`bonnie_model_v2.pkl`) — único modelo disponível
-- Bonnie v3 REJEITADA e `bonnie_model_v3.pkl` APAGADO (label mismatch: treino 1.5×ATR vs estratégia 4.25×ATR)
-- BonnieML carrega v2 automaticamente (v3.pkl não existe)
+- **Bonnie v4** (`bonnie_model_v4.pkl`) — labels calibradas TP=4.25×ATR / SL=1.75×ATR
+- BonnieML auto-carrega v4 por prioridade de ficheiro (v4 > v3 > v2)
+- Thresholds: todos 0.30 per-regime (`bonnie_thresholds_v4.json`)
+- v3 REJEITADA+APAGADA; v2 mantido como fallback
 
 ### Kelly
 - Implementado (`_kelly_size_factor` em backtest.py + cro.py)
-- **DESACTIVADO** — WR=37.6% incompatível com Quarter-Kelly (f=2.9% → posições a 27% do máximo → retorno colapsa +224.5%→+65.6%)
-- `CRO_CONFIG["enable_kelly_sizing"] = False` (default permanente até WR > 50%)
+- **DESACTIVADO** — WR=37.6% incompatível com Quarter-Kelly
+- `CRO_CONFIG["enable_kelly_sizing"] = False` (default permanente)
 
-### Resultados de referência (7yr, Full, v3 params, Bonnie v2)
+### Resultados de referência
+
+**7yr Full (2019-2026, Bonnie v2):**
 - **+224.5%** vs SPY +232.3% (alpha -7.8pp) | Sharpe 1.29 | DD -18.3%
-- Confirmação OOS (2024-01-01→2026-05-01): **+39.6%** | Bonnie filtra 27.3% | v2 auto-carregado ✅
 
-### Próximo passo — Bonnie v4
-- Retreinar com labels calibradas para os params actuais: `TP_ATR_MULT=4.25`, `SL_ATR_MULT=1.75`
-- Comando: `PYTHONPATH=. python scripts/retrain_bonnie.py --since 2017-01-01 --until 2026-05-01 --model-version v3`
-- Antes de correr: actualizar `TP_ATR_MULT` e `SL_ATR_MULT` em retrain_bonnie.py (linhas 65-67)
+**OOS (2024-01-01→2026-05-01, Bonnie v4) — REFERÊNCIA ACTIVA:**
+- **+53.5%** | Sharpe 1.94 | DD -9.6% | Calmar 2.12 | Bonnie filtra 32.6%
+- vs Bonnie v2: +39.6% | Sharpe 1.17 | DD -16.0% → **v4 melhora todas as métricas**
+
+### Bonnie v5 (próximo retrain)
+- Aumentar `LABEL_HORIZON_DAYS` de 20 para ~57 dias (`ceil(4.25/1.5 × 20)`)
+- Objectivo: aumentar label balance de 15.8% → ~30-40% (melhora F1 no corpus val)
+- Comando: `PYTHONPATH=. python scripts/retrain_bonnie.py --since 2017-01-01 --until 2026-05-01 --model-version v4 --tp-mult 4.25 --sl-mult 1.75`
+- Antes de correr: editar `LABEL_HORIZON_DAYS = 57` em retrain_bonnie.py (linha 64)
 
 ---
 ## Auto-Sync: 2026-05-24
 - PC: DESKTOP-NGIATI2
-- Ultimo commit: d205750 - feat(backtest+learner): v2 evoluído — trailing, cap 10%, Bonnie v2, Learner + docs runs
-- Runs recentes: run-004 (v3 Learner 7yr), run-005 (Kelly + Bonnie v3 rejeitada)
+- Runs recentes: run-004 (v3 Learner 7yr), run-005 (Kelly + Bonnie v3 rejeitada), run-006 (Bonnie v4 aceite)
 - Learner: verificar data/beta/ para runs recentes
 ---
