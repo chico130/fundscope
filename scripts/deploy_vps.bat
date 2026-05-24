@@ -14,7 +14,7 @@ git push origin main
 echo =========================================
 echo A fazer pull na VPS...
 echo =========================================
-ssh -i "C:\Users\Francisco Araujo\.ssh\fundscope.pem" ubuntu@134.98.141.58 "cd ~/fundscope && git pull origin main"
+ssh -i "C:\Users\Francisco Araujo\.ssh\fundscope.pem" ubuntu@134.98.141.58 "cd ~/fundscope && git stash && git pull origin main && git stash pop"
 echo =========================================
 echo SUCESSO: GitHub e VPS atualizados!
 echo =========================================
