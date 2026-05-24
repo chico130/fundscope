@@ -47,3 +47,21 @@ jobs:
           git add portfolio.json symbol_cache.json
           git diff --staged --quiet || git commit -m "chore: update portfolio [skip ci]"
           git push
+
+      - name: Deploy to VPS (git pull)
+        continue-on-error: true
+        env:
+          VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+        run: |
+          if [ -z "$VPS_SSH_KEY" ]; then
+            echo "VPS_SSH_KEY não configurado — a saltar deploy"
+            exit 0
+          fi
+          echo "$VPS_SSH_KEY" > /tmp/vps_key.pem
+          chmod 600 /tmp/vps_key.pem
+          ssh -i /tmp/vps_key.pem \
+              -o StrictHostKeyChecking=no \
+              -o ConnectTimeout=15 \
+              ubuntu@134.98.141.58 \
+              "cd ~/fundscope && git fetch origin && git reset --hard origin/main && echo 'VPS actualizada'"
+          rm -f /tmp/vps_key.pem
