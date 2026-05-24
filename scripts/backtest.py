@@ -69,7 +69,9 @@ CACHE_DIR              = BASE_DIR / "data" / "backtest_cache"
 RESULTS_CSV            = BASE_DIR / "data" / "backtest_results.csv"
 MODEL_PATH             = BASE_DIR / "data" / "models" / "bonnie_model.pkl"
 MODEL_PATH_V2          = BASE_DIR / "data" / "models" / "bonnie_model_v2.pkl"
+MODEL_PATH_V3          = BASE_DIR / "data" / "models" / "bonnie_model_v3.pkl"
 THRESHOLDS_PATH        = BASE_DIR / "data" / "beta" / "bonnie_thresholds.json"
+THRESHOLDS_PATH_V3     = BASE_DIR / "data" / "beta" / "bonnie_thresholds_v3.json"
 OPT_BACKTEST_PARAMS    = BASE_DIR / "data" / "beta" / "optimized_backtest_params.json"
 EARNINGS_PATH          = BASE_DIR / "earnings.json"
 SPREAD_PCT             = 0.0005
@@ -134,6 +136,7 @@ class BacktestConfig:
     enable_rs_bullish:    bool
     enable_value_trail:   bool = True   # NEW: V2 feature toggle
     enable_adds:          bool = True   # NEW: V2 feature toggle
+    enable_kelly:         bool = False  # Quarter-Kelly fractional position sizing
 
 
 @dataclass
@@ -339,14 +342,21 @@ def build_technicals_at(row, rs_override: Optional[bool] = None) -> Optional[dic
 # --------------------------------------------------------------------------
 
 class BonnieML:
-    def __init__(self, params: BacktestParams) -> None:
+    def __init__(self, params: BacktestParams, force_model_path: "Path | None" = None) -> None:
         self.model = None
         self.available = False
         self.feature_names: list[str] = []
         self.params = params
         self.regime_thresholds: dict[str, float] = {}
-        # Prefere v2 se existir
-        path = MODEL_PATH_V2 if MODEL_PATH_V2.exists() else MODEL_PATH
+        # Priority: forced path > v3 > v2 > v1
+        if force_model_path is not None:
+            path = force_model_path
+        elif MODEL_PATH_V3.exists():
+            path = MODEL_PATH_V3
+        elif MODEL_PATH_V2.exists():
+            path = MODEL_PATH_V2
+        else:
+            path = MODEL_PATH
         self.model_path = path
         if path.exists():
             try:
@@ -356,10 +366,11 @@ class BonnieML:
                 self.available = True
             except Exception as exc:
                 print(f"  [WARN] Bonnie ML load: {exc}", file=sys.stderr)
-        # Per-regime thresholds (optional)
-        if THRESHOLDS_PATH.exists():
+        # Per-regime thresholds: prefer version-matched file
+        thr_path = THRESHOLDS_PATH_V3 if (path == MODEL_PATH_V3 and THRESHOLDS_PATH_V3.exists()) else THRESHOLDS_PATH
+        if thr_path.exists():
             try:
-                self.regime_thresholds = json.loads(THRESHOLDS_PATH.read_text(encoding="utf-8"))
+                self.regime_thresholds = json.loads(thr_path.read_text(encoding="utf-8"))
             except Exception:
                 self.regime_thresholds = {}
 
@@ -474,6 +485,31 @@ def days_since_last_earnings(ticker: str, today: datetime,
 # --------------------------------------------------------------------------
 # Event loop
 # --------------------------------------------------------------------------
+
+def _kelly_size_factor(trades: list, n: int = 50, fraction: float = 0.25,
+                       max_pos_pct: float = 10.0) -> float:
+    """Quarter-Kelly position size multiplier from last N closed trades.
+
+    Returns a scale in [0.5, 1.0]:
+      1.0   — Kelly recommends >= max_pos_pct (cap already binding)
+      <1.0  — Kelly recommends less; scale down proportionally
+      0.5   — negative-edge regime (f* <= 0); minimum floor, don't zero out
+    """
+    recent = trades[-n:]
+    if len(recent) < 10:
+        return 1.0
+    wins   = [t.result_eur for t in recent if t.result_eur > 0]
+    losses = [abs(t.result_eur) for t in recent if t.result_eur < 0]
+    if not wins or not losses:
+        return 1.0
+    W      = len(wins) / len(recent)
+    R      = (sum(wins) / len(wins)) / (sum(losses) / len(losses))
+    f_star = W - (1.0 - W) / R
+    if f_star <= 0.0:
+        return 0.5
+    f_kelly = fraction * f_star          # quarter-Kelly fraction of equity
+    return min(1.0, f_kelly / (max_pos_pct / 100.0))
+
 
 def run_event_loop(
     config:           BacktestConfig,
@@ -682,6 +718,12 @@ def run_event_loop(
                         continue
 
                     size_eur = min(verdict.final_size_eur, cash * 0.95)
+                    if config.enable_kelly and len(closed_trades) >= 10:
+                        kf = _kelly_size_factor(
+                            closed_trades, n=50, fraction=0.25,
+                            max_pos_pct=params.max_position_pct,
+                        )
+                        size_eur *= kf
                     if size_eur < 50:
                         continue
 
@@ -931,7 +973,8 @@ def prime_regimes(calendar: list, verbose: bool = True) -> None:
 # --------------------------------------------------------------------------
 
 def run_all_variants(start: datetime, end: datetime, capital_init: float,
-                     use_defaults: bool, use_optimized: bool, export_csv: bool) -> None:
+                     use_defaults: bool, use_optimized: bool, export_csv: bool,
+                     use_kelly: bool = False, use_bonnie_v3: bool = False) -> None:
 
     # Learner params (strategy._P etc)
     if use_defaults:
@@ -962,9 +1005,15 @@ def run_all_variants(start: datetime, end: datetime, capital_init: float,
     print(f"        atr_tp_mult:          {params.atr_tp_mult}")
     print(f"        value_trail_active:   {params.value_trail_activation}xATR  dist {params.value_trail_distance}xATR")
 
-    bonnie_ml = BonnieML(params)
+    _bml_path = MODEL_PATH_V3 if (use_bonnie_v3 and MODEL_PATH_V3.exists()) else None
+    bonnie_ml = BonnieML(params, force_model_path=_bml_path)
     if bonnie_ml.available:
-        ftype = "v2" if bonnie_ml.model_path == MODEL_PATH_V2 else "v1"
+        if bonnie_ml.model_path == MODEL_PATH_V3:
+            ftype = "v3"
+        elif bonnie_ml.model_path == MODEL_PATH_V2:
+            ftype = "v2"
+        else:
+            ftype = "v1"
         thr = f"per-regime ({bonnie_ml.regime_thresholds})" if bonnie_ml.regime_thresholds else f"flat {params.bonnie_threshold}"
         print(f"        Bonnie ML:            {ftype} loaded ({bonnie_ml.model_path.name}, threshold={thr})")
     else:
@@ -1010,6 +1059,42 @@ def run_all_variants(start: datetime, end: datetime, capital_init: float,
 
     if export_csv:
         export_trades_csv(full.trades)
+
+    if use_kelly:
+        print("\n" + "=" * 80)
+        print("=== KELLY FRACTIONAL SIZING — Full (3 bots) ===")
+        print("=" * 80)
+        cfg_off = BacktestConfig("Full Kelly-OFF", enable_bonnie_ml=True, enable_earnings_gate=True,
+                                 enable_rs_bullish=True, enable_kelly=False)
+        cfg_on  = BacktestConfig("Full Kelly-ON",  enable_bonnie_ml=True, enable_earnings_gate=True,
+                                 enable_rs_bullish=True, enable_kelly=True)
+        print(f"\n[Kelly-OFF] Running...")
+        t0 = time.time()
+        r_off = run_event_loop(cfg_off, params, calendar, histories, capital_init, bonnie_ml, earnings_cal)
+        print(f"  {time.time()-t0:.0f}s  |  return {r_off.total_return_pct:+.1f}%  "
+              f"|  DD -{r_off.max_drawdown_pct:.1f}%  |  Sharpe {r_off.sharpe_annual:.2f}  "
+              f"|  trades {len(r_off.trades)}  |  WR {r_off.win_rate_pct:.1f}%")
+        print(f"[Kelly-ON]  Running...")
+        t0 = time.time()
+        r_on = run_event_loop(cfg_on, params, calendar, histories, capital_init, bonnie_ml, earnings_cal)
+        print(f"  {time.time()-t0:.0f}s  |  return {r_on.total_return_pct:+.1f}%  "
+              f"|  DD -{r_on.max_drawdown_pct:.1f}%  |  Sharpe {r_on.sharpe_annual:.2f}  "
+              f"|  trades {len(r_on.trades)}  |  WR {r_on.win_rate_pct:.1f}%")
+        print(f"\n{'Metrica':<22} {'Kelly-OFF':>12} {'Kelly-ON':>12} {'Delta':>12}")
+        print("-" * 60)
+        for label, v_off, v_on, fmt in [
+            ("Return total",      r_off.total_return_pct,  r_on.total_return_pct,  "{:+.1f}%"),
+            ("Return anual",      r_off.annual_return_pct, r_on.annual_return_pct, "{:+.1f}%"),
+            ("Max Drawdown",     -r_off.max_drawdown_pct, -r_on.max_drawdown_pct,  "{:+.1f}%"),
+            ("Sharpe",            r_off.sharpe_annual,     r_on.sharpe_annual,     "{:+.2f}"),
+            ("Calmar",            r_off.calmar,            r_on.calmar,            "{:+.2f}"),
+            ("Profit Factor",     r_off.profit_factor,     r_on.profit_factor,     "{:+.2f}"),
+            ("Win Rate",          r_off.win_rate_pct,      r_on.win_rate_pct,      "{:+.1f}%"),
+            ("Trades",            float(len(r_off.trades)),float(len(r_on.trades)),"{:+.0f}"),
+        ]:
+            delta = v_on - v_off
+            print(f"  {label:<20} {fmt.format(v_off):>12} {fmt.format(v_on):>12} {fmt.format(delta):>12}")
+        print("=" * 60)
 
 
 # --------------------------------------------------------------------------
@@ -1218,11 +1303,14 @@ if __name__ == "__main__":
     p.add_argument("--until",         default=None, help="Data final YYYY-MM-DD (default: hoje)")
     p.add_argument("--capital",       type=float, default=5000.0)
     p.add_argument("--use-defaults",  action="store_true", help="Forca defaults do Learner")
-    p.add_argument("--use-optimized", action="store_true", help="Carrega optimized_backtest_params.json (v2)")
+    p.add_argument("--use-optimized", action="store_true", help="Carrega optimized_backtest_params.json (v3)")
     p.add_argument("--csv",           action="store_true", help="Exporta trades da variante Full para CSV")
+    p.add_argument("--kelly",         action="store_true", help="Corre comparacao Kelly-ON vs Kelly-OFF (Full variant)")
+    p.add_argument("--bonnie-v3",     action="store_true", help="Usa bonnie_model_v3.pkl em vez de v2")
     args = p.parse_args()
 
     end_dt   = datetime.strptime(args.until, "%Y-%m-%d") if args.until else datetime.now()
     start_dt = datetime.strptime(args.since, "%Y-%m-%d") if args.since else end_dt - timedelta(days=730)
 
-    run_all_variants(start_dt, end_dt, args.capital, args.use_defaults, args.use_optimized, args.csv)
+    run_all_variants(start_dt, end_dt, args.capital, args.use_defaults, args.use_optimized, args.csv,
+                     use_kelly=args.kelly, use_bonnie_v3=args.bonnie_v3)

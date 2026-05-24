@@ -172,6 +172,7 @@ class CRO:
             approved, reason, final_size_eur, assumed_risk_eur = _validate_proposal(
                 proposed, portfolio_state, risk_factor, trades_today,
                 atr_pct=atr_pct, regime_mult=reg_factor,
+                all_closed=all_closed,
             )
             if not approved:
                 insights.insert(0, f"VETO CRO: {reason} — proposta bloqueada para {proposed.ticker}.")
@@ -362,6 +363,27 @@ def _sector_exposure(positions: list[dict]) -> dict[str, int]:
     return exposure
 
 
+def _kelly_size_factor(closed: list[dict], n: int = 50, fraction: float = 0.25,
+                       max_pos_pct: float = 10.0) -> float:
+    """Quarter-Kelly position size multiplier from last N closed trades.
+
+    Returns a scale in [0.5, 1.0].  Reads result_eur from beta_trades dicts.
+    """
+    recent = closed[-n:]
+    if len(recent) < 10:
+        return 1.0
+    wins   = [(t.get("result_eur") or 0.0) for t in recent if (t.get("result_eur") or 0.0) > 0]
+    losses = [abs(t.get("result_eur") or 0.0) for t in recent if (t.get("result_eur") or 0.0) < 0]
+    if not wins or not losses:
+        return 1.0
+    W      = len(wins) / len(recent)
+    R      = (sum(wins) / len(wins)) / (sum(losses) / len(losses))
+    f_star = W - (1.0 - W) / R
+    if f_star <= 0.0:
+        return 0.5
+    return min(1.0, fraction * f_star / (max_pos_pct / 100.0))
+
+
 def _validate_proposal(
     proposed:        "ProposedTrade",
     portfolio_state: dict,
@@ -369,6 +391,7 @@ def _validate_proposal(
     trades_today:    int,
     atr_pct:         float = 0.0,
     regime_mult:     float = 1.0,
+    all_closed:      "list[dict] | None" = None,
 ) -> tuple[bool, str, float, float]:
     """Valida proposta concreta. Devolve (approved, reason, final_size_eur, assumed_risk_eur)."""
     positions    = portfolio_state.get("positions", [])
@@ -389,6 +412,11 @@ def _validate_proposal(
         max_pos_eur = min(raw_size * risk_factor, total_equity * max_pos / 100)
     else:
         max_pos_eur = total_equity * max_pos * risk_factor / 100
+
+    # Kelly fractional sizing (quarter-Kelly, enabled via CRO_CONFIG)
+    if CRO_CONFIG.get("enable_kelly_sizing", False) and all_closed:
+        kf = _kelly_size_factor(all_closed, n=50, fraction=0.25, max_pos_pct=max_pos)
+        max_pos_eur *= kf
 
     # Risco assumido (perda máxima se stop for atingido)
     stop_key     = "atr_stop_mult_momentum" if style == "MOMENTUM" else "atr_stop_mult_value"

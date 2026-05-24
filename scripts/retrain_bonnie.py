@@ -46,18 +46,26 @@ from scripts.backtest import (
 from bot.backtest import prime_regime_cache, _regime_cache
 
 
-MODEL_OUT      = BASE_DIR / "data" / "models" / "bonnie_model_v2.pkl"
-THRESHOLDS_OUT = BASE_DIR / "data" / "beta" / "bonnie_thresholds.json"
+MODEL_OUT_V2   = BASE_DIR / "data" / "models" / "bonnie_model_v2.pkl"
+MODEL_OUT_V3   = BASE_DIR / "data" / "models" / "bonnie_model_v3.pkl"
+THRESHOLDS_OUT_V2 = BASE_DIR / "data" / "beta" / "bonnie_thresholds.json"
+THRESHOLDS_OUT_V3 = BASE_DIR / "data" / "beta" / "bonnie_thresholds_v3.json"
 CORPUS_OUT     = BASE_DIR / "data" / "backtest" / "bonnie_observations_v2.json"
 
-# Parametros de geracao do corpus
+# Parametros de geracao do corpus (overridden by CLI args when running as __main__)
 TRAIN_START = datetime(2018, 1, 1)
 TRAIN_END   = datetime(2025, 1, 1)  # exclusive
 VAL_START   = datetime(2025, 1, 1)
 VAL_END     = datetime(2026, 5, 23)
+
+# Back-compat alias used in save_artifacts
+MODEL_OUT      = MODEL_OUT_V2
+THRESHOLDS_OUT = THRESHOLDS_OUT_V2
 LABEL_HORIZON_DAYS = 20
-TP_ATR_MULT  = 1.5
-SL_ATR_MULT  = 1.0
+# CRITICAL: label_atr_mult deve coincidir com atr_tp_mult dos params activos (actualmente 4.25)
+# Retreinar com label errado (ex: 1.5 vs 4.25) = modelo pass-through (filtra <0.3% dos sinais)
+TP_ATR_MULT  = 1.5   # TODO: actualizar para 4.25 no próximo retrain (Bonnie v4)
+SL_ATR_MULT  = 1.0   # TODO: actualizar para 1.75 no próximo retrain (Bonnie v4)
 
 # Clyde-equivalent entry rule (matches strategy.py defaults para gerar candidatos)
 RSI_CEILING       = 35.0
@@ -371,17 +379,20 @@ def train_and_evaluate(corpus: list[dict]) -> tuple:
 # Save artifacts
 # --------------------------------------------------------------------------
 
-def save_artifacts(model, regime_thresholds, corpus) -> None:
+def save_artifacts(model, regime_thresholds, corpus,
+                   model_out: Path = None, thresholds_out: Path = None) -> None:
     import joblib
-    MODEL_OUT.parent.mkdir(parents=True, exist_ok=True)
-    THRESHOLDS_OUT.parent.mkdir(parents=True, exist_ok=True)
+    _mout = model_out or MODEL_OUT
+    _tout = thresholds_out or THRESHOLDS_OUT
+    _mout.parent.mkdir(parents=True, exist_ok=True)
+    _tout.parent.mkdir(parents=True, exist_ok=True)
     CORPUS_OUT.parent.mkdir(parents=True, exist_ok=True)
 
-    joblib.dump(model, MODEL_OUT)
-    print(f"\n[3/3] Modelo escrito: {MODEL_OUT.relative_to(BASE_DIR)}")
+    joblib.dump(model, _mout)
+    print(f"\n[3/3] Modelo escrito: {_mout.relative_to(BASE_DIR)}")
 
-    THRESHOLDS_OUT.write_text(json.dumps(regime_thresholds, indent=2), encoding="utf-8")
-    print(f"      Thresholds escritos: {THRESHOLDS_OUT.relative_to(BASE_DIR)}")
+    _tout.write_text(json.dumps(regime_thresholds, indent=2), encoding="utf-8")
+    print(f"      Thresholds escritos: {_tout.relative_to(BASE_DIR)}")
 
     CORPUS_OUT.write_text(json.dumps(corpus, indent=2), encoding="utf-8")
     print(f"      Corpus escrito: {CORPUS_OUT.relative_to(BASE_DIR)} ({len(corpus)} obs)")
@@ -392,6 +403,25 @@ def save_artifacts(model, regime_thresholds, corpus) -> None:
 # --------------------------------------------------------------------------
 
 if __name__ == "__main__":
+    import argparse as _ap
+    _p = _ap.ArgumentParser(description="Retreina Bonnie ML")
+    _p.add_argument("--since",          default=None, help="Data inicial do corpus YYYY-MM-DD (default: 2018-01-01)")
+    _p.add_argument("--until",          default=None, help="Data final do corpus YYYY-MM-DD (default: 2026-05-23)")
+    _p.add_argument("--val-start",      default=None, help="Inicio da validacao YYYY-MM-DD (default: 2025-01-01)")
+    _p.add_argument("--model-version",  default="v2", choices=["v2", "v3"], help="Versao do modelo a guardar (v2 ou v3)")
+    _args = _p.parse_args()
+
+    if _args.since:
+        TRAIN_START = datetime.strptime(_args.since, "%Y-%m-%d")
+    if _args.until:
+        VAL_END = datetime.strptime(_args.until, "%Y-%m-%d")
+    if _args.val_start:
+        VAL_START = datetime.strptime(_args.val_start, "%Y-%m-%d")
+        TRAIN_END = VAL_START
+
+    print(f"Treino: {TRAIN_START.date()} -> {TRAIN_END.date()}  |  Val: {VAL_START.date()} -> {VAL_END.date()}")
+    print(f"Modelo: bonnie_model_{_args.model_version}.pkl")
+
     corpus = generate_corpus()
     if len(corpus) < 500:
         print(f"\nCorpus demasiado pequeno ({len(corpus)}) — verifica criterios de geracao.")
@@ -401,5 +431,32 @@ if __name__ == "__main__":
     print(f"\nLabel balance no corpus inteiro: {pos_pct:.1%} positivos ({sum(1 for r in corpus if r['label']==1)}/{len(corpus)})")
 
     model, thresholds, _val_df = train_and_evaluate(corpus)
-    save_artifacts(model, thresholds, corpus)
+
+    _model_out = MODEL_OUT_V3 if _args.model_version == "v3" else MODEL_OUT_V2
+    _thr_out   = THRESHOLDS_OUT_V3 if _args.model_version == "v3" else THRESHOLDS_OUT_V2
+    save_artifacts(model, thresholds, corpus, model_out=_model_out, thresholds_out=_thr_out)
+
+    # CV score comparison vs existing v2 (if available and training v3)
+    if _args.model_version == "v3" and MODEL_OUT_V2.exists():
+        print("\n=== CV Score comparison v2 vs v3 ===")
+        try:
+            import joblib
+            import pandas as _pd
+            from sklearn.model_selection import TimeSeriesSplit, cross_val_score
+            _df = _pd.DataFrame([{**r["features"], "date": r["date"], "label": r["label"]} for r in corpus])
+            _df["date"] = _pd.to_datetime(_df["date"])
+            _df = _df.sort_values("date").reset_index(drop=True)
+            _train_df = _df[_df["date"] < _pd.Timestamp(VAL_START)]
+            _X = _train_df[FEATURE_COLS]
+            _y = _train_df["label"]
+            _tscv = TimeSeriesSplit(n_splits=5)
+            _v2 = joblib.load(MODEL_OUT_V2)
+            _cv_v2 = cross_val_score(_v2, _X, _y, cv=_tscv, scoring="accuracy", n_jobs=-1)
+            _cv_v3 = cross_val_score(model, _X, _y, cv=_tscv, scoring="accuracy", n_jobs=-1)
+            print(f"  v2 CV accuracy: {_cv_v2.mean():.1%} +/- {_cv_v2.std():.1%}")
+            print(f"  v3 CV accuracy: {_cv_v3.mean():.1%} +/- {_cv_v3.std():.1%}")
+            print(f"  Delta:          {(_cv_v3.mean()-_cv_v2.mean())*100:+.1f}pp")
+        except Exception as _e:
+            print(f"  [WARN] Nao foi possivel comparar CV scores: {_e}")
+
     print("\nDone.")

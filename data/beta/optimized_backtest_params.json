@@ -1,17 +1,17 @@
 {
   "_meta": {
-    "saved_at": "2026-05-23T22:57:26Z",
+    "saved_at": "2026-05-24T04:41:19Z",
     "cycle": 2,
-    "fitness": -2.4607,
-    "spy_return": 45.22
+    "fitness": -1.5005,
+    "spy_return": 232.31
   },
   "params": {
-    "atr_stop_mult_value": 3.0,
+    "atr_stop_mult_value": 1.75,
     "atr_stop_mult_momentum": 2.0,
-    "atr_tp_mult": 3.0,
-    "value_trail_activation": 2.25,
-    "value_trail_distance": 2.0,
-    "max_position_pct": 10.0,
+    "atr_tp_mult": 4.25,
+    "value_trail_activation": 3.0,
+    "value_trail_distance": 3.5,
+    "max_position_pct": 11.0,
     "bonnie_threshold": 0.6,
     "add_max_existing_pct": 0.06,
     "add_target_total_pct": 0.1,
@@ -19,15 +19,15 @@
     "add_min_increment_pct": 0.02
   },
   "result": {
-    "return_pct": 43.3942421669951,
-    "annual_pct": 19.876626938024387,
-    "max_dd_pct": 11.926149679091742,
-    "sharpe": 1.3495610774415652,
-    "calmar": 1.6666424179524577,
-    "profit_factor": 1.650651638848166,
-    "win_rate_pct": 51.774785801713584,
-    "trades": 817,
-    "deployed_pct": 76.73457002869374,
-    "n_adds": 316
+    "return_pct": 231.18371932644135,
+    "annual_pct": 17.635067085171684,
+    "max_dd_pct": 18.268220936645623,
+    "sharpe": 1.3352862833949162,
+    "calmar": 0.9653412418390536,
+    "profit_factor": 1.4528693245280913,
+    "win_rate_pct": 38.04950129294422,
+    "trades": 2707,
+    "deployed_pct": 75.02007880347423,
+    "n_adds": 902
   }
 }
