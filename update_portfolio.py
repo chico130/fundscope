@@ -776,9 +776,6 @@ def main():
         return
 
     print(f"    {len(positions)} posições encontradas")
-    if not positions:
-        print("    Nenhuma posição — a terminar.")
-        return
 
     print("\n[1b] A buscar saldo de caixa T212...")
     cash_data = fetch_t212_cash()
@@ -868,7 +865,7 @@ def main():
         p["fx_rate"]   = round(1.0 / eurusd if native_currency == "USD" and eurusd else 1.0, 6)
         p["currency_native"] = native_currency
 
-    total_value    = sum(p["value_eur"] for p in positions)
+    total_value    = round(sum(p["value_eur"] for p in positions) + (cash_available or 0), 2)
     total_invested = sum(p["invested"]  for p in positions)
     total_gain     = sum(p["gain_eur"]  for p in positions)
     total_gain_pct = (total_gain / total_invested * 100) if total_invested > 0 else 0
