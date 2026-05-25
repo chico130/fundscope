@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-05-25T13:56:31.081543+00:00",
+  "timestamp": "2026-05-25T14:15:45.410536+00:00",
   "mode": "phase1_auto",
   "strategy_version": "v0.1.0",
   "note": "Fase 1 — execução automática activa. LIVE_TRADING=False (conta demo).",
@@ -162,7 +162,7 @@
     }
   ],
   "n_positions": 1,
-  "open_trades": 6,
+  "open_trades": 7,
   "risk_status": {
     "ok": true,
     "total_equity_eur": 4464.03,
@@ -186,7 +186,7 @@
   ],
   "data_sources": {
     "prices": "finnhub+yfinance",
-    "t212_sync": "2026-05-25T13:54:40.422766+00:00",
+    "t212_sync": "2026-05-25T14:13:54.624154+00:00",
     "stale_prices": []
   },
   "cro": {
@@ -202,8 +202,8 @@
   },
   "executed_trades": [
     {
-      "id": "2026-05-25T13:56:23Z_ARM_US_EQ_SELL",
-      "datetime": "2026-05-25T13:56:23.818776+00:00",
+      "id": "2026-05-25T14:15:38Z_ARM_US_EQ_SELL",
+      "datetime": "2026-05-25T14:15:38.023479+00:00",
       "ticker": "ARM_US_EQ",
       "side": "SELL",
       "qty": 0.4886,

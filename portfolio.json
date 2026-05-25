@@ -1,13 +1,13 @@
 {
-  "updated": "2026-05-25T13:05:51.251239Z",
+  "updated": "2026-05-25T14:05:30.630652Z",
   "t212_mode": "live",
   "summary": {
-    "total_value": 127.54,
+    "total_value": 127.62,
     "total_invested": 121.94,
-    "total_gain_eur": 5.6,
-    "total_gain_pct": 4.59,
+    "total_gain_eur": 5.68,
+    "total_gain_pct": 4.66,
     "daily_gain_eur": 3.45,
-    "cash_available": 4877.88,
+    "cash_available": 4314.26,
     "n_positions": 1
   },
   "positions": [
@@ -16,18 +16,18 @@
       "quantity": 0.4886,
       "avg_price": 289.7462,
       "current_price": 306.51,
-      "ppl": 5.6,
-      "fx_ppl": -0.41,
+      "ppl": 5.68,
+      "fx_ppl": -0.34,
       "ticker": "ARM",
       "ticker_display": "ARM",
       "display_name": "Arm Holdings plc",
       "currency": "USD",
       "change_pct": 2.78,
-      "gain_eur": 5.6,
+      "gain_eur": 5.68,
       "invested": 121.94,
-      "value_eur": 127.54,
-      "gain_pct": 4.59,
-      "fx_rate": 0.858222,
+      "value_eur": 127.62,
+      "gain_pct": 4.66,
+      "fx_rate": 0.858811,
       "currency_native": "USD",
       "allocation_pct": 100.0,
       "clyde_forecast": null,
@@ -154,7 +154,7 @@
     },
     {
       "date": "2026-05-25",
-      "value": 127.54
+      "value": 127.62
     }
   ],
   "benchmark_metrics": {}
