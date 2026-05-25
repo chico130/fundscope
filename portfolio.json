@@ -1,12 +1,12 @@
 {
-  "updated": "2026-05-24T18:14:28.583108Z",
+  "updated": "2026-05-25T12:20:01.966092Z",
   "t212_mode": "live",
   "summary": {
-    "total_value": 127.97,
+    "total_value": 127.57,
     "total_invested": 121.94,
-    "total_gain_eur": 6.03,
-    "total_gain_pct": 4.95,
-    "daily_gain_eur": 0.0,
+    "total_gain_eur": 5.63,
+    "total_gain_pct": 4.62,
+    "daily_gain_eur": 3.45,
     "cash_available": 4877.88,
     "n_positions": 1
   },
@@ -15,23 +15,31 @@
       "ticker_t212": "ARM_US_EQ",
       "quantity": 0.4886,
       "avg_price": 289.7462,
-      "current_price": 304.08,
-      "ppl": 6.03,
-      "fx_ppl": 0.0,
+      "current_price": 306.51,
+      "ppl": 5.63,
+      "fx_ppl": -0.38,
       "ticker": "ARM",
       "ticker_display": "ARM",
-      "display_name": "ARM",
+      "display_name": "Arm Holdings plc",
       "currency": "USD",
-      "change_pct": 0.0,
-      "gain_eur": 6.03,
+      "change_pct": 2.78,
+      "gain_eur": 5.63,
       "invested": 121.94,
-      "value_eur": 127.97,
-      "gain_pct": 4.95,
-      "fx_rate": 0.86244,
+      "value_eur": 127.57,
+      "gain_pct": 4.62,
+      "fx_rate": 0.858369,
       "currency_native": "USD",
       "allocation_pct": 100.0,
       "clyde_forecast": null,
       "news": [
+        {
+          "source": "Yahoo",
+          "headline": "Arm Holdings (ARM) Valuation Check After Strong Recent Share Price Momentum",
+          "summary": "Arm Holdings stock performance snapshot Arm Holdings (ARM) has drawn fresh attention after recent trading, with the stock last closing at US$306.51 and posting gains over the past day, week, month and past 3 months that some investors are watching closely. See our latest analysis for Arm Holdings. T",
+          "url": "https://finnhub.io/api/news?id=ceb6dd527acd5d29178c8d578c69f65f8faeb6930cb04f40d5af31a8d251ee2d",
+          "datetime": 1779664129,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
         {
           "source": "Yahoo",
           "headline": "Why Arm Stock Skyrocketed This Week",
@@ -49,33 +57,64 @@
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
+          "source": "Benzinga",
+          "headline": "D-Wave, Dell, And IonQ Are Among Top 10 Large-Cap Gainers Last Week (May 18-May 22): Are the Others in Your Portfolio?",
+          "summary": "Quantum computing, AI and semiconductor-linked stocks dominated last week&#39;s large-cap gainers as investors cheered fresh government funding, analyst optimism, regulatory approvals and expanding data center momentum.",
+          "url": "https://finnhub.io/api/news?id=569b1534135a7fb18c8b38e1b5b54db688f668d484dccdb84178f54a364af385",
+          "datetime": 1779614519,
+          "image": "https://cdn.benzinga.com/files/images/story/2026/05/24/Dell-Technologies-Inc-.jpeg?width=2048&height=1536"
+        },
+        {
           "source": "Yahoo",
           "headline": "AGI CPU Demand Has Pushed ARM Stock to All-Time Highs. Wait for the Next Pullback Before You Buy.",
           "summary": "Arm’s newly launched AGI CPU platform provides a significant growth opportunity for the company, supporting its earnings expansion.",
           "url": "https://finnhub.io/api/news?id=db04aafe0e8c29a59347807abf74bf62722e609eb605cd50b56285d1ccde72d8",
           "datetime": 1779541202,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Benzinga",
-          "headline": "AMC Entertainment, Nvidia, Arm Holdings And More: 5 Stocks Investors Couldn't Stop Buzzing About This Week",
-          "summary": "Retail investors talked up five hot stocks this week (May 18 to May 22) on X and Reddit&#39;s r/WallStreetBets: NVDA, ARM, AMC, RKLB, NBIS.",
-          "url": "https://finnhub.io/api/news?id=39eaceeb305c3bc7074cda47a410bd0b2c94137726acdff4affa62b00e5147fc",
-          "datetime": 1779525132,
-          "image": "https://cdn.benzinga.com/files/images/story/2026/05/23/Arm-Company-Logo-Seen-On-Stm32-Microchip.jpeg?width=2048&height=1536"
-        },
-        {
-          "source": "Yahoo",
-          "headline": "Stocks Settle Higher on Iran Peace Hopes and Tech Strength",
-          "summary": "The S&P 500 Index ($SPX ) (SPY ) on Friday closed up +0.37%, the Dow Jones Industrial Average ($DOWI ) (DIA ) closed up +0.58%, and the Nasdaq 100 Index ($IUXX ) (QQQ ) closed up +0.42%. June E-mini S&P futures (ESM26 ) rose +0.35%, and June E-mini Nasdaq futures...",
-          "url": "https://finnhub.io/api/news?id=86c64e14d4c265f1516b605d4bc5eed4d6bf546dc7f9eda57b531c1f1b0c4d7c",
-          "datetime": 1779482074,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         }
       ],
-      "earnings": [],
+      "earnings": [
+        {
+          "period": "",
+          "estimate": 0.351,
+          "actual": 0.35,
+          "surprise": -0.0,
+          "beat": false
+        },
+        {
+          "period": "",
+          "estimate": 0.331,
+          "actual": 0.39,
+          "surprise": 0.18,
+          "beat": true
+        },
+        {
+          "period": "",
+          "estimate": 0.409,
+          "actual": 0.43,
+          "surprise": 0.05,
+          "beat": true
+        },
+        {
+          "period": "",
+          "estimate": 0.579,
+          "actual": 0.6,
+          "surprise": 0.04,
+          "beat": true
+        }
+      ],
       "dividends": [],
-      "ticker_info": {},
+      "ticker_info": {
+        "trailingPE": 356.40698,
+        "forwardPE": 100.325356,
+        "marketCap": 326126206976,
+        "beta": 3.406,
+        "fiftyTwoWeekHigh": 315.0,
+        "fiftyTwoWeekLow": 100.02,
+        "pctFromHigh": -2.7,
+        "shortRatio": 1.87,
+        "dividendYield": null
+      },
       "fh_fundamentals": {
         "52WeekHigh": 315,
         "52WeekLow": 100.02,
@@ -112,6 +151,10 @@
     {
       "date": "2026-05-24",
       "value": 127.97
+    },
+    {
+      "date": "2026-05-25",
+      "value": 127.57
     }
   ],
   "benchmark_metrics": {}
