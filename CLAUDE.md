@@ -71,8 +71,8 @@
 - Antes de correr: editar `LABEL_HORIZON_DAYS = 57` em retrain_bonnie.py (linha 68)
 
 ---
-## Auto-Sync: 2026-05-25 19:30
+## Auto-Sync: 2026-05-25 20:26
 - PC: DESKTOP-0514V9J
-- Ultimo commit: ccc2747 - bot: cycle 2026-05-25 17:30 UTC [skip ci]
+- Ultimo commit: a573ddf - fix: limpar beta_trades e diario — remover registos ARM SELL duplicados (Bug 1)
 - Learner: verificar data/beta/ para runs recentes
 ---
