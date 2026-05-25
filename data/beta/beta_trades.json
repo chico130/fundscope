@@ -224,6 +224,30 @@
       "atr_trigger_price": null,
       "atr_target_price": null,
       "break_even_active": false
+    },
+    {
+      "id": "2026-05-25T15:48:01Z_ARM_US_EQ_SELL",
+      "datetime": "2026-05-25T15:48:01.643639+00:00",
+      "ticker": "ARM_US_EQ",
+      "side": "SELL",
+      "qty": 0.4886,
+      "price": null,
+      "env": "demo",
+      "strategy_version": "v0.1.0",
+      "reason": "RSI sobrecomprado (76.6)",
+      "context": {
+        "rsi_14": 76.63
+      },
+      "result_eur": null,
+      "result_pct": null,
+      "result_after_minutes": 1440,
+      "closed_at": null,
+      "postmortem": null,
+      "atr_at_entry": null,
+      "stop_loss_price": null,
+      "atr_trigger_price": null,
+      "atr_target_price": null,
+      "break_even_active": false
     }
   ]
 }
