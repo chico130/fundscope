@@ -95,6 +95,63 @@
       "atr_trigger_price": null,
       "atr_target_price": null,
       "break_even_active": false
+    },
+    {
+      "id": "2026-05-25T13:37:07Z_ARM_US_EQ_SELL",
+      "datetime": "2026-05-25T13:37:07.545288+00:00",
+      "ticker": "ARM_US_EQ",
+      "side": "SELL",
+      "qty": 0.4886,
+      "price": null,
+      "env": "demo",
+      "strategy_version": "v0.1.0",
+      "reason": "RSI sobrecomprado (76.6)",
+      "context": {
+        "rsi_14": 76.63
+      },
+      "result_eur": null,
+      "result_pct": null,
+      "result_after_minutes": 1440,
+      "closed_at": null,
+      "postmortem": null,
+      "atr_at_entry": null,
+      "stop_loss_price": null,
+      "atr_trigger_price": null,
+      "atr_target_price": null,
+      "break_even_active": false
+    },
+    {
+      "id": "2026-05-25T13:37:13Z_ROST_US_EQ_BUY",
+      "datetime": "2026-05-25T13:37:13.209983+00:00",
+      "ticker": "ROST_US_EQ",
+      "side": "BUY",
+      "qty": 2.6614,
+      "price": 234.81,
+      "env": "demo",
+      "strategy_version": "v0.1.0",
+      "reason": "Breakout: RSI-14 65.6 ≥ 58 — momentum validado | Alinhamento total: price > EMA-20 > EMA-50 > EMA-200 | Volume 1.6× ≥ 1.5× — confirmação de volume",
+      "context": {
+        "rsi_14": 65.61,
+        "atr_14": 6.3179,
+        "volume_ratio_vs_avg": 1.62,
+        "ema20_above_ema50": true,
+        "price_above_ema20": true,
+        "regime": "bull_trending",
+        "watchlist_score": 0.2296,
+        "signal_strength": 0.662,
+        "style": "MOMENTUM",
+        "stop_loss_pct": 5.38
+      },
+      "result_eur": null,
+      "result_pct": null,
+      "result_after_minutes": 1440,
+      "closed_at": null,
+      "postmortem": null,
+      "atr_at_entry": 6.3179,
+      "stop_loss_price": 225.3331,
+      "atr_trigger_price": 241.1279,
+      "atr_target_price": 253.7637,
+      "break_even_active": false
     }
   ]
 }

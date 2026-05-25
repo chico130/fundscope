@@ -1,11 +1,11 @@
 {
-  "updated": "2026-05-25T12:20:01.966092Z",
+  "updated": "2026-05-25T13:05:51.251239Z",
   "t212_mode": "live",
   "summary": {
-    "total_value": 127.57,
+    "total_value": 127.54,
     "total_invested": 121.94,
-    "total_gain_eur": 5.63,
-    "total_gain_pct": 4.62,
+    "total_gain_eur": 5.6,
+    "total_gain_pct": 4.59,
     "daily_gain_eur": 3.45,
     "cash_available": 4877.88,
     "n_positions": 1
@@ -16,18 +16,18 @@
       "quantity": 0.4886,
       "avg_price": 289.7462,
       "current_price": 306.51,
-      "ppl": 5.63,
-      "fx_ppl": -0.38,
+      "ppl": 5.6,
+      "fx_ppl": -0.41,
       "ticker": "ARM",
       "ticker_display": "ARM",
       "display_name": "Arm Holdings plc",
       "currency": "USD",
       "change_pct": 2.78,
-      "gain_eur": 5.63,
+      "gain_eur": 5.6,
       "invested": 121.94,
-      "value_eur": 127.57,
-      "gain_pct": 4.62,
-      "fx_rate": 0.858369,
+      "value_eur": 127.54,
+      "gain_pct": 4.59,
+      "fx_rate": 0.858222,
       "currency_native": "USD",
       "allocation_pct": 100.0,
       "clyde_forecast": null,
@@ -141,8 +141,8 @@
       "insider": {},
       "analysis": {
         "sentiment": "neutro",
-        "news_comment": "Indisponível.",
-        "earnings_comment": "Indisponível.",
+        "news_comment": "Gemini indisponível.",
+        "earnings_comment": "Gemini indisponível.",
         "watch_points": []
       }
     }
@@ -154,7 +154,7 @@
     },
     {
       "date": "2026-05-25",
-      "value": 127.57
+      "value": 127.54
     }
   ],
   "benchmark_metrics": {}
