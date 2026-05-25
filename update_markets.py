@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """
-update_markets.py — FundScope v2.1
+update_markets.py — FundScope v2.2
 
 Fixes:
+  - Holiday guard: detecta feriados NYSE e sai sem corromper markets.json
   - period="5d" em vez de "2d" para garantir dados mesmo ao inicio da semana
   - Slot detection corrigida: detecta pre-mercado de segunda-feira
   - updated timestamp mostra data do ultimo fecho, nao UTC now()
@@ -15,6 +16,156 @@ import yfinance as yf
 FH_TOKEN = os.environ.get("FINNHUB_TOKEN", "")
 FH_BASE  = "https://finnhub.io/api/v1"
 
+# ------------------------------------------------------------------ NYSE holidays
+# Feriados NYSE fixos e flutuantes (calculados)
+# Fonte: https://www.nyse.com/markets/hours-calendars
+
+NYSE_FIXED_HOLIDAYS = {
+    # (month, day): name
+    (1, 1):   "New Year's Day",
+    (6, 19):  "Juneteenth",
+    (7, 4):   "Independence Day",
+    (11, 11): "Veterans Day (observado NYSE apenas em anos especificos)",
+    (12, 25): "Christmas Day",
+}
+
+def _nth_weekday(year, month, weekday, n):
+    """Devolve a data do N-esimo dia-da-semana (0=Mon) do mes."""
+    d = datetime.date(year, month, 1)
+    delta = (weekday - d.weekday()) % 7
+    d += datetime.timedelta(days=delta)
+    return d + datetime.timedelta(weeks=n - 1)
+
+def _last_weekday(year, month, weekday):
+    """Devolve a data do ultimo dia-da-semana do mes."""
+    # Vai ao primeiro dia do mes seguinte e recua
+    if month == 12:
+        next_month = datetime.date(year + 1, 1, 1)
+    else:
+        next_month = datetime.date(year, month + 1, 1)
+    d = next_month - datetime.timedelta(days=1)
+    delta = (d.weekday() - weekday) % 7
+    return d - datetime.timedelta(days=delta)
+
+def get_nyse_holidays(year):
+    """Devolve set de datas de feriado NYSE para o ano dado."""
+    holidays = set()
+
+    # New Year's Day (observed)
+    ny = datetime.date(year, 1, 1)
+    if ny.weekday() == 6:  # domingo -> segunda
+        holidays.add(datetime.date(year, 1, 2))
+    elif ny.weekday() == 5:  # sabado -> sexta anterior (ano anterior)
+        pass  # nao afeta ano corrente
+    else:
+        holidays.add(ny)
+
+    # Martin Luther King Jr. Day: 3.a segunda de janeiro
+    holidays.add(_nth_weekday(year, 1, 0, 3))
+
+    # Presidents' Day: 3.a segunda de fevereiro
+    holidays.add(_nth_weekday(year, 2, 0, 3))
+
+    # Good Friday: sexta antes da Pascoa
+    # Algoritmo de Meeus/Jones/Butcher para Pascoa
+    a = year % 19
+    b = year // 100
+    c = year % 100
+    d = b // 4
+    e = b % 4
+    f = (b + 8) // 25
+    g = (b - f + 1) // 3
+    h = (19 * a + b - d - g + 15) % 30
+    i = c // 4
+    k = c % 4
+    l = (32 + 2 * e + 2 * i - h - k) % 7
+    m = (a + 11 * h + 22 * l) // 451
+    month = (h + l - 7 * m + 114) // 31
+    day   = ((h + l - 7 * m + 114) % 31) + 1
+    easter = datetime.date(year, month, day)
+    good_friday = easter - datetime.timedelta(days=2)
+    holidays.add(good_friday)
+
+    # Memorial Day: ultima segunda de maio
+    holidays.add(_last_weekday(year, 5, 0))
+
+    # Juneteenth (desde 2022): 19 junho, observed
+    if year >= 2022:
+        jt = datetime.date(year, 6, 19)
+        if jt.weekday() == 6:  # domingo -> segunda
+            holidays.add(datetime.date(year, 6, 20))
+        elif jt.weekday() == 5:  # sabado -> sexta
+            holidays.add(datetime.date(year, 6, 18))
+        else:
+            holidays.add(jt)
+
+    # Independence Day: 4 julho, observed
+    ind = datetime.date(year, 7, 4)
+    if ind.weekday() == 6:
+        holidays.add(datetime.date(year, 7, 5))
+    elif ind.weekday() == 5:
+        holidays.add(datetime.date(year, 7, 3))
+    else:
+        holidays.add(ind)
+
+    # Labor Day: 1.a segunda de setembro
+    holidays.add(_nth_weekday(year, 9, 0, 1))
+
+    # Thanksgiving: 4.a quinta de novembro
+    holidays.add(_nth_weekday(year, 11, 3, 4))
+
+    # Christmas: 25 dezembro, observed
+    xmas = datetime.date(year, 12, 25)
+    if xmas.weekday() == 6:
+        holidays.add(datetime.date(year, 12, 26))
+    elif xmas.weekday() == 5:
+        holidays.add(datetime.date(year, 12, 24))
+    else:
+        holidays.add(xmas)
+
+    return holidays
+
+def get_holiday_name(date):
+    """Devolve o nome do feriado NYSE ou None se nao for feriado."""
+    year = date.year
+    names = {
+        _nth_weekday(year, 1, 0, 3):   "Martin Luther King Jr. Day",
+        _nth_weekday(year, 2, 0, 3):   "Presidents' Day",
+        _last_weekday(year, 5, 0):     "Memorial Day",
+        _nth_weekday(year, 9, 0, 1):   "Labor Day",
+        _nth_weekday(year, 11, 3, 4):  "Thanksgiving Day",
+    }
+    # Good Friday
+    a = year % 19
+    b = year // 100; c = year % 100; d = b // 4; e = b % 4
+    f = (b + 8) // 25; g = (b - f + 1) // 3
+    h = (19 * a + b - d - g + 15) % 30
+    i = c // 4; k = c % 4
+    l = (32 + 2 * e + 2 * i - h - k) % 7
+    m = (a + 11 * h + 22 * l) // 451
+    month = (h + l - 7 * m + 114) // 31
+    day   = ((h + l - 7 * m + 114) % 31) + 1
+    easter = datetime.date(year, month, day)
+    names[easter - datetime.timedelta(days=2)] = "Good Friday"
+
+    # Fixed / observed
+    for d_check, name in [
+        (datetime.date(year, 1, 1),  "New Year's Day"),
+        (datetime.date(year, 6, 19), "Juneteenth"),
+        (datetime.date(year, 7, 4),  "Independence Day"),
+        (datetime.date(year, 12, 25),"Christmas Day"),
+    ]:
+        obs = d_check
+        if obs.weekday() == 6: obs = obs + datetime.timedelta(days=1)
+        elif obs.weekday() == 5: obs = obs - datetime.timedelta(days=1)
+        names[obs] = name
+
+    return names.get(date)
+
+def is_nyse_holiday(date):
+    return date in get_nyse_holidays(date.year)
+
+# ------------------------------------------------------------------ sectors
 SECTORS = {
     "Tecnologia": {
         "icon": "\U0001f4bb",
@@ -68,38 +219,28 @@ SECTORS = {
 
 # ------------------------------------------------------------------ slot
 def get_slot(now_utc):
-    """
-    Determina o slot com base na hora UTC e dia da semana.
-    Mercado NYSE: 14:30-21:00 UTC
-    Pre-mercado segunda (08:00 UTC = 09:00 WEST): dados ainda sao de sexta
-    """
-    weekday = now_utc.weekday()  # 0=Monday
-    hour    = now_utc.hour
-    minute  = now_utc.minute
-
-    # Antes da abertura do mercado (14:30 UTC) -> abertura (dados pre-mercado/fecho anterior)
+    hour   = now_utc.hour
+    minute = now_utc.minute
     if hour < 8:
-        return "fecho"          # corrida noturna improvavel mas segura
+        return "fecho"
     if hour < 12:
-        return "abertura"       # snapshot matinal (09:00 / 10:00 WEST)
+        return "abertura"
     if hour < 15 or (hour == 15 and minute < 30):
-        return "meio-dia"       # snapshot meio-dia (13:00 WEST)
-    return "fecho"              # snapshot fecho (16:30 WEST)
+        return "meio-dia"
+    return "fecho"
 
 def is_market_open(now_utc):
-    """NYSE esta aberto: dias uteis, 14:30-21:00 UTC"""
+    """NYSE esta aberto: dias uteis NAO feriado, 14:30-21:00 UTC"""
     if now_utc.weekday() >= 5:
+        return False
+    today = now_utc.date()
+    if is_nyse_holiday(today):
         return False
     minutes = now_utc.hour * 60 + now_utc.minute
     return 870 <= minutes < 1260  # 14:30=870, 21:00=1260
 
 # ------------------------------------------------------------------ yfinance
 def fetch_all_quotes():
-    """
-    Batch download de todos os tickers.
-    Usa period=5d para garantir pelo menos 2 dias de mercado aberto
-    mesmo em inicio de semana ou apos feriados.
-    """
     all_tickers = []
     for cfg in SECTORS.values():
         all_tickers.extend(cfg["tickers"])
@@ -119,7 +260,6 @@ def fetch_all_quotes():
         print(f"  [ERRO yfinance download]: {e}")
         return {}, None
 
-    # Extrair Close
     try:
         if hasattr(data.columns, 'levels'):
             close = data.xs("Close", axis=1, level=0)
@@ -149,7 +289,6 @@ def fetch_all_quotes():
             pc    = float(vals.iloc[-2]) if len(vals) >= 2 else price
             chg   = round((price - pc) / pc * 100, 2) if pc else 0.0
             quotes[t] = {"ticker": t, "price": round(price, 2), "changePct": chg, "pc": round(pc, 2)}
-            # guardar data do ultimo fecho disponivel
             if last_close_date is None:
                 try:
                     last_close_date = vals.index[-1].date().isoformat()
@@ -259,28 +398,45 @@ def build_sector(name, cfg, all_quotes, frm, to):
 # ------------------------------------------------------------------ main
 def main():
     now_utc = datetime.datetime.utcnow()
-    slot    = get_slot(now_utc)
+    today   = now_utc.date()
+
+    # --- HOLIDAY GUARD ---
+    # Se for fim de semana ou feriado NYSE, nao correr nem sobrescrever markets.json
+    if today.weekday() >= 5 or is_nyse_holiday(today):
+        holiday_name = get_holiday_name(today)
+        reason = "fim de semana" if today.weekday() >= 5 else f"feriado NYSE: {holiday_name}"
+        print(f"[HOLIDAY GUARD] Mercado fechado ({reason}) — a sair sem alterar markets.json")
+        # Actualizar apenas marketOpen e marketHoliday no ficheiro existente
+        try:
+            with open("markets.json", "r", encoding="utf-8") as f:
+                existing = json.load(f)
+            existing["marketOpen"]    = False
+            existing["marketHoliday"] = True
+            if holiday_name:
+                existing["holidayName"] = holiday_name
+            with open("markets.json", "w", encoding="utf-8") as f:
+                json.dump(existing, f, ensure_ascii=False, indent=2)
+            print("  markets.json: marcado como feriado (sem alterar cotacoes)")
+        except Exception as e:
+            print(f"  [WARN] Nao foi possivel actualizar markets.json: {e}")
+        return
+    # --- END HOLIDAY GUARD ---
+
+    slot        = get_slot(now_utc)
     market_open = is_market_open(now_utc)
 
-    today = now_utc.date()
-    # janela de noticias: ultimos 5 dias para apanhar fim-de-semana + hoje
     frm = (today - datetime.timedelta(days=5)).isoformat()
     to  = today.isoformat()
 
     print(f"UTC: {now_utc.strftime('%Y-%m-%d %H:%M')} | slot: {slot} | mercado aberto: {market_open}")
 
-    # 1. Batch download cotacoes
     all_quotes, last_close_date = fetch_all_quotes()
 
-    # updated: se mercado ainda nao abriu usa data do ultimo fecho, caso contrario now
     if market_open or last_close_date is None:
         updated_ts = now_utc.isoformat() + "Z"
     else:
-        # dados sao do fecho anterior (ex: sexta-feira)
-        # usa a data do ultimo fecho + hora de fecho NYSE (21:00 UTC)
         updated_ts = f"{last_close_date}T21:00:00Z"
 
-    # 2. Construir setores
     sectors = {}
     for name, cfg in SECTORS.items():
         print(f"\n=== {name} ===")
@@ -298,11 +454,12 @@ def main():
             }
 
     out = {
-        "updated": updated_ts,
-        "slot": slot,
-        "marketOpen": market_open,
+        "updated":       updated_ts,
+        "slot":          slot,
+        "marketOpen":    market_open,
+        "marketHoliday": False,
         "lastCloseDate": last_close_date,
-        "sectors": sectors
+        "sectors":       sectors
     }
     with open("markets.json", "w", encoding="utf-8") as f:
         json.dump(out, f, ensure_ascii=False, indent=2)
