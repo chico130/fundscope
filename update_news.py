@@ -27,32 +27,22 @@ print(f"Tokens: MarketAux={'sim' if MARKETAUX_TOKEN else 'NAO'} | "
       f"Finnhub={'sim' if FH_TOKEN else 'NAO'} | "
       f"NewsAPI={'sim' if NEWSAPI_TOKEN else 'NAO'}")
 
-# ─── RSS Feeds ─────────────────────────────────────────────────────────────────
+# ─── RSS Feeds ────────────────────────────────────────────────────────────────
 RSS_FEEDS = [
-    # Yahoo Finance
     {"url": "https://finance.yahoo.com/news/rssindex",              "source": "Yahoo Finance"},
     {"url": "https://finance.yahoo.com/rss/topstories",             "source": "Yahoo Finance"},
-    # CNBC
     {"url": "https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=100003114", "source": "CNBC"},
     {"url": "https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=10001147",  "source": "CNBC Markets"},
     {"url": "https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=19854910",  "source": "CNBC Tech"},
-    # MarketWatch
     {"url": "https://feeds.content.dowjones.io/public/rss/mw_topstories",   "source": "MarketWatch"},
     {"url": "https://feeds.content.dowjones.io/public/rss/mw_marketpulse",  "source": "MarketWatch"},
-    # Reuters — novo dominio (feeds.reuters.com está morto)
     {"url": "https://www.reutersagency.com/feed/?taxonomy=best-topics&post_type=best", "source": "Reuters"},
-    # Investing.com
     {"url": "https://www.investing.com/rss/news.rss",               "source": "Investing.com"},
     {"url": "https://www.investing.com/rss/news_25.rss",             "source": "Investing.com Tech"},
-    # Seeking Alpha
     {"url": "https://seekingalpha.com/market_currents.xml",          "source": "Seeking Alpha"},
-    # Financial Times
     {"url": "https://www.ft.com/rss/home/uk",                       "source": "Financial Times"},
-    # The Economist
     {"url": "https://www.economist.com/finance-and-economics/rss.xml", "source": "The Economist"},
-    # Business Insider
     {"url": "https://markets.businessinsider.com/rss/news",          "source": "Business Insider"},
-    # Nasdaq News
     {"url": "https://www.nasdaq.com/feed/rssoutbound?category=Markets", "source": "Nasdaq"},
     {"url": "https://www.nasdaq.com/feed/rssoutbound?category=Stocks",  "source": "Nasdaq"},
 ]
@@ -69,7 +59,7 @@ FALLBACK_IMAGES = {
     "Global":      "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80",
 }
 
-# ─── Mapeamentos ───────────────────────────────────────────────────────────────
+# ─── Mapeamentos ──────────────────────────────────────────────────────────────
 IMPACT_MAP = [
     {"keywords":["oil","crude","opec","petroleum"],             "tickers":["XOM","CVX","COP","OXY","SLB"],     "sector":"Energia"},
     {"keywords":["fed","federal reserve","interest rate","inflation","ecb","rate cut","rate hike","fomc"],
@@ -179,7 +169,6 @@ def make_id(title):
     return abs(hash(title)) % (10**9)
 
 def parse_rss_date(s):
-    """Converte datas RSS para ISO 8601 com fuso horário."""
     if not s: return ""
     s = s.strip()
     if re.match(r"\d{4}-\d{2}-\d{2}T", s):
@@ -191,7 +180,6 @@ def parse_rss_date(s):
     try:
         import email.utils
         tt = email.utils.parsedate_to_datetime(s)
-        # Garante fuso horário
         if tt.tzinfo is None:
             tt = tt.replace(tzinfo=UTC)
         return tt.isoformat()
@@ -199,20 +187,16 @@ def parse_rss_date(s):
         return ""
 
 def parse_dt(a):
-    """Sempre devolve datetime aware (com timezone UTC) para ordenar sem TypeError."""
     fallback = datetime.datetime.min.replace(tzinfo=UTC)
     try:
         s = a.get("publishedAt", "")
         if not s:
             return fallback
         s = s.strip()
-        # Normalizar formatos comuns
         s = s.replace("Z", "+00:00")
-        # Alpha Vantage: YYYYMMDDTHHMMSS
         if re.match(r"\d{8}T\d{6}$", s):
             s = f"{s[:4]}-{s[4:6]}-{s[6:8]}T{s[9:11]}:{s[11:13]}:{s[13:15]}+00:00"
         dt = datetime.datetime.fromisoformat(s)
-        # Se naive, assume UTC
         if dt.tzinfo is None:
             dt = dt.replace(tzinfo=UTC)
         return dt
@@ -389,13 +373,27 @@ def fetch_marketaux():
 
 
 # ─── Alpha Vantage ───────────────────────────────────────────────────────────
+# Estratégia: 2 tópicos por run, alternando por hora (0 ou 1)
+# Evita os 52s+ de sleep da versão anterior (4 tópicos × 13s)
+
+ALL_AV_TOPICS = [
+    "financial_markets",
+    "technology",
+    "economy_macro",
+    "energy_transportation",
+]
 
 def fetch_alphavantage():
     if not ALPHAVANTAGE_TOKEN:
         print("  [SKIP] ALPHAVANTAGE_TOKEN nao definido")
         return []
+
+    hour = datetime.datetime.now(UTC).hour
+    offset = (hour // 2) % 2  # 0 ou 1 → 2 grupos de 2 tópicos
+    topics = ALL_AV_TOPICS[offset * 2 : offset * 2 + 2]
+    print(f"  [AlphaVantage] hora={hour} offset={offset} tópicos={topics}")
+
     articles, seen = [], set()
-    topics = ["financial_markets", "technology", "economy_macro", "energy_transportation"]
     for topic in topics:
         try:
             r = requests.get(
@@ -427,7 +425,6 @@ def fetch_alphavantage():
                 img    = sanitize(a.get("banner_image") or "")
                 source = sanitize(a.get("source") or "Alpha Vantage")
 
-                # AV usa YYYYMMDDTHHMMSS — converter para ISO com fuso
                 raw_pub = a.get("time_published") or ""
                 if raw_pub and re.match(r"\d{8}T\d{6}", raw_pub):
                     pub = f"{raw_pub[:4]}-{raw_pub[4:6]}-{raw_pub[6:8]}T{raw_pub[9:11]}:{raw_pub[11:13]}:{raw_pub[13:15]}+00:00"
@@ -463,7 +460,7 @@ def fetch_alphavantage():
 
             count_av = len([x for x in articles if x["feed"] == "alphavantage"])
             print(f"  [AlphaVantage {topic}]: {count_av} acumulados")
-            time.sleep(13)  # AV free: 5 req/min
+            time.sleep(12)  # 5 req/min → 12s entre chamadas
         except Exception:
             print(f"  [WARN AlphaVantage {topic}]:\n{traceback.format_exc()}")
 
@@ -498,7 +495,7 @@ def fetch_finnhub():
         summary = clean_text(a.get("summary") or "")
         link    = sanitize(a.get("url", ""))
         img     = sanitize(a.get("image") or "")
-        pub     = ts_to_iso(a.get("datetime", 0))  # já devolve ISO com +00:00
+        pub     = ts_to_iso(a.get("datetime", 0))
         source  = sanitize(a.get("source", "Finnhub"))
 
         full_text = title + " " + summary
@@ -536,6 +533,9 @@ def fetch_finnhub_company(tickers: list) -> list:
     today     = datetime.date.today()
     from_date = (today - datetime.timedelta(days=7)).isoformat()
     to_date   = today.isoformat()
+
+    # Cap a 10 tickers para não exceder rate limits
+    tickers = tickers[:10]
 
     articles, seen = [], set()
     for ticker in tickers:
@@ -591,18 +591,13 @@ def fetch_finnhub_company(tickers: list) -> list:
 
         time.sleep(0.15)
 
-    print(f"  Finnhub company: {len(articles)} artigos ({min(len(tickers),10)} tickers)")
+    print(f"  Finnhub company: {len(articles)} artigos ({len(tickers)} tickers)")
     return articles
 
 
 # ─── NewsAPI.org ─────────────────────────────────────────────────────────────
 
 def fetch_newsapi(tickers: list) -> list:
-    """
-    Fetch company-specific news from NewsAPI.org.
-    Batches tickers in groups of 5 → max 5 requests/run × 4 runs/day = 20 req/day
-    (developer plan limit: 100 req/day).
-    """
     if not NEWSAPI_TOKEN:
         print("  [SKIP] NEWSAPI_TOKEN não definido")
         return []
@@ -646,7 +641,6 @@ def fetch_newsapi(tickers: list) -> list:
                 pub    = sanitize(a.get("publishedAt") or "")
                 source = sanitize((a.get("source") or {}).get("name") or "NewsAPI")
 
-                # Which tickers from this batch are mentioned?
                 full_upper = (title + " " + desc).upper()
                 matched = [t for t in batch if t.upper() in full_upper]
 
@@ -710,7 +704,6 @@ def merge_and_sort(*sources):
         key = a["title"][:70].lower()
         if key not in seen:
             seen.add(key); deduped.append(a)
-    # parse_dt garante sempre datetime aware — sem TypeError
     deduped.sort(key=parse_dt, reverse=True)
     return deduped[:60]
 

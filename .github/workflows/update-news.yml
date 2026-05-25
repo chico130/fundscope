@@ -18,7 +18,7 @@ env:
 jobs:
   update-news:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
         with:
@@ -32,7 +32,7 @@ jobs:
       - name: Instalar dependencias
         run: pip install requests
 
-      - name: Correr update_news.py (com retry)
+      - name: Correr update_news.py
         env:
           FINNHUB_TOKEN:      ${{ secrets.FINNHUB_TOKEN }}
           MARKETAUX_TOKEN:    ${{ secrets.MARKETAUX_TOKEN }}
@@ -40,25 +40,11 @@ jobs:
           NEWSAPI_TOKEN:      ${{ secrets.NEWSAPI_TOKEN }}
         run: |
           set +e
-          MAX_RETRIES=3
-          RETRY_DELAY=30
-          for i in $(seq 1 $MAX_RETRIES); do
-            echo "=== Tentativa $i/$MAX_RETRIES ==="
-            timeout 480 python update_news.py
-            EXIT_CODE=$?
-            if [ $EXIT_CODE -eq 0 ]; then
-              echo "update_news.py concluido com sucesso na tentativa $i"
-              break
-            fi
-            echo "[WARN] Tentativa $i falhou (exit $EXIT_CODE)"
-            if [ $i -lt $MAX_RETRIES ]; then
-              echo "A aguardar ${RETRY_DELAY}s antes de nova tentativa..."
-              sleep $RETRY_DELAY
-            else
-              echo "[ERROR] Todas as $MAX_RETRIES tentativas falharam"
-              exit 1
-            fi
-          done
+          timeout 900 python update_news.py
+          EXIT_CODE=$?
+          if [ $EXIT_CODE -ne 0 ]; then
+            echo "[WARN] update_news.py terminou com exit $EXIT_CODE (pode ser timeout de API) -- continua"
+          fi
           set -e
 
       - name: Mostrar news.json
@@ -69,4 +55,4 @@ jobs:
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add news.json
-          git diff --cached --quiet && echo "Sem alteracoes" || git commit -m "chore: update news.json [skip ci]" && git push
+          git diff --cached --quiet && echo "Sem alteracoes" || (git commit -m "chore: update news.json [skip ci]" && git push)
