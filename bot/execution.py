@@ -90,6 +90,33 @@ def _fill_price(response: dict) -> float | None:
     return response.get("fillPrice") or response.get("limitPrice") or response.get("price")
 
 
+def _mark_open_buys_closed(ticker: str, closed_at: str) -> int:
+    """Sets closed_at on all open BUY trades for ticker. Returns number of records updated."""
+    path = DATA_BETA_DIR / "beta_trades.json"
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (FileNotFoundError, json.JSONDecodeError):
+        return 0
+    updated = 0
+    for trade in data.get("trades", []):
+        if (
+            trade.get("ticker") == ticker
+            and trade.get("side", "").upper() == "BUY"
+            and not trade.get("closed_at")
+        ):
+            trade["closed_at"] = closed_at
+            updated += 1
+    if updated:
+        tmp = path.with_name(path.name + ".tmp")
+        try:
+            tmp.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
+            tmp.replace(path)
+        except OSError as exc:
+            log_error("mark_buys_closed_write_error", {"ticker": ticker, "error": str(exc)})
+            return 0
+    return updated
+
+
 def _append_to_beta_trades(trade_record: dict) -> None:
     """Appends a new trade to data/beta/beta_trades.json (atomic write)."""
     path = DATA_BETA_DIR / "beta_trades.json"
@@ -294,11 +321,21 @@ def execute_trade(proposed: ProposedTrade, portfolio_state: dict) -> dict | None
             f"Porquê comprar: {proposed.reason or 'sinal técnico'}"
         )
     else:
+        # Mark the original open BUY record(s) as closed so exit_manager doesn't
+        # re-propose the same exit on subsequent cycles.
+        n_closed = _mark_open_buys_closed(proposed.ticker, ts)
         _fill_str = f"${fill_price:.2f}" if fill_price else "N/D"
-        enviar_alerta(
-            f"[CLYDE] ✅ Posição {proposed.ticker} FECHADA. Fill: {_fill_str}\n"
-            f"Porquê vender: {proposed.reason or 'saída técnica'}"
-        )
+        if n_closed:
+            enviar_alerta(
+                f"[CLYDE] ✅ Posição {proposed.ticker} FECHADA. Fill: {_fill_str}\n"
+                f"Porquê vender: {proposed.reason or 'saída técnica'}"
+            )
+        else:
+            # No open BUY found — position was already closed in a prior cycle.
+            log_decision("sell_no_open_buy", "duplicate_close_suppressed", {
+                "ticker": proposed.ticker,
+                "fill":   _fill_str,
+            })
 
     return trade_record
 

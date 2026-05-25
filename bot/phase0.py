@@ -35,6 +35,7 @@ from . import exit_manager, position_ledger
 POSITION_META_PATH    = DATA_BETA_DIR / "position_meta.json"
 _LAST_WAKE_PATH       = DATA_BETA_DIR / "last_wake.txt"
 SOCIAL_SENTIMENT_PATH = DATA_BETA_DIR / "social_sentiment.json"
+_ATTEMPTED_TODAY_PATH = DATA_BETA_DIR / "attempted_today.json"
 
 _BEAR_REGIMES = {"bear_correction", "bear_capitulation"}
 _LATERAL_SIZE_FACTOR = 0.6   # redução de posição sugerida em bull_lateral (secção 4, FASE-1.md)
@@ -60,6 +61,62 @@ _REGIME_ENTRY_FACTOR: dict[str, float] = {
 # Position meta — persiste style e peak_high por ticker entre ciclos
 # ---------------------------------------------------------------------------
 
+def _get_nyse_holidays(year: int) -> set[str]:
+    """Returns NYSE observed holiday dates for year as YYYY-MM-DD strings."""
+    from datetime import date, timedelta as _td
+
+    def _nth_weekday(y, month, weekday, n):
+        d = date(y, month, 1)
+        d += _td(days=(weekday - d.weekday()) % 7)
+        return d + _td(weeks=n - 1)
+
+    def _last_weekday(y, month, weekday):
+        d = date(y, month + 1, 1) - _td(days=1)
+        d -= _td(days=(d.weekday() - weekday) % 7)
+        return d
+
+    def _observe(d):
+        if d.weekday() == 5:
+            return d - _td(days=1)
+        if d.weekday() == 6:
+            return d + _td(days=1)
+        return d
+
+    # Easter (Butcher's algorithm) → Good Friday = Easter - 2 days
+    a = year % 19
+    b, c = divmod(year, 100)
+    dv, e = divmod(b, 4)
+    f = (b + 8) // 25
+    g = (b - f + 1) // 3
+    h = (19 * a + b - dv - g + 15) % 30
+    i, k = divmod(c, 4)
+    lv = (32 + 2 * e + 2 * i - h - k) % 7
+    m = (a + 11 * h + 22 * lv) // 451
+    emo = (h + lv - 7 * m + 114) // 31
+    eda = ((h + lv - 7 * m + 114) % 31) + 1
+    good_friday = date(year, emo, eda) - _td(days=2)
+
+    holidays = {
+        _observe(date(year, 1, 1)),       # New Year's Day
+        _nth_weekday(year, 1, 0, 3),      # MLK Jr. Day (3rd Mon Jan)
+        _nth_weekday(year, 2, 0, 3),      # Presidents' Day (3rd Mon Feb)
+        good_friday,                       # Good Friday
+        _last_weekday(year, 5, 0),         # Memorial Day (last Mon May)
+        _observe(date(year, 6, 19)),       # Juneteenth
+        _observe(date(year, 7, 4)),        # Independence Day
+        _nth_weekday(year, 9, 0, 1),       # Labor Day (1st Mon Sep)
+        _nth_weekday(year, 11, 3, 4),      # Thanksgiving (4th Thu Nov)
+        _observe(date(year, 12, 25)),      # Christmas
+    }
+    return {d.strftime("%Y-%m-%d") for d in holidays}
+
+
+def _is_nyse_holiday() -> bool:
+    from datetime import date as _date
+    today = datetime.now(timezone.utc).date()
+    return today.strftime("%Y-%m-%d") in _get_nyse_holidays(today.year)
+
+
 def _load_position_meta() -> dict:
     """Carrega {t212_ticker: {style, peak_high, entry_date}} de position_meta.json."""
     if not POSITION_META_PATH.exists():
@@ -82,6 +139,34 @@ def _save_position_meta(meta: dict) -> None:
         tmp.replace(POSITION_META_PATH)
     except OSError as exc:
         log_error("position_meta_save_error", {"error": str(exc)})
+
+
+def _load_attempted_today(today: str) -> set[str]:
+    """Returns tickers already attempted (signal fired or buy tried) for today."""
+    try:
+        data = json.loads(_ATTEMPTED_TODAY_PATH.read_text(encoding="utf-8"))
+        return set(data.get(today, []))
+    except (FileNotFoundError, json.JSONDecodeError, OSError):
+        return set()
+
+
+def _save_attempted_tickers(tickers: list[str], today: str) -> None:
+    """Atomically persists tickers to attempted_today.json (only keeps today's entry)."""
+    data: dict = {}
+    try:
+        data = json.loads(_ATTEMPTED_TODAY_PATH.read_text(encoding="utf-8"))
+    except (FileNotFoundError, json.JSONDecodeError, OSError):
+        pass
+    existing = set(data.get(today, []))
+    existing.update(tickers)
+    data = {today: sorted(existing)}
+    tmp = _ATTEMPTED_TODAY_PATH.with_suffix(".tmp")
+    try:
+        _ATTEMPTED_TODAY_PATH.parent.mkdir(parents=True, exist_ok=True)
+        tmp.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
+        tmp.replace(_ATTEMPTED_TODAY_PATH)
+    except OSError as exc:
+        log_error("attempted_today_write_error", {"error": str(exc)})
 
 
 def _update_position_peaks(
@@ -479,6 +564,17 @@ def run(*, git_sync: bool = True) -> dict:
 
     git_sync=False em CI (GitHub Actions) — o workflow YAML trata do commit/push.
     """
+    # Holiday guard — segunda linha de defesa (o YAML só bloqueia fim de semana).
+    if _is_nyse_holiday():
+        _today_label = datetime.now(timezone.utc).date().isoformat()
+        log_decision("phase0_skip", "nyse_holiday", {"date": _today_label})
+        print(f"FundScope: feriado NYSE ({_today_label}) — ciclo ignorado.")
+        return {
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "mode":      "holiday_skip",
+            "note":      f"Feriado NYSE ({_today_label}) — nenhuma acção executada.",
+        }
+
     log_decision("phase0_start", "read_portfolio")
 
     # Regime e watchlist correm sempre
@@ -553,6 +649,11 @@ def run(*, git_sync: bool = True) -> dict:
     }
     held_symbols = held_symbols | _pending_tickers
 
+    # Excluir tickers já tentados hoje (sinal gerado ou compra rejeitada/executada)
+    # para evitar que o mesmo ticker seja reavaliado em cada ciclo do mesmo dia.
+    _today_str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    held_symbols = held_symbols | _load_attempted_today(_today_str)
+
     signals                        = _analyse_all(positions, regime)
     buy_opportunities, near_misses = _scan_watchlist_candidates(watchlist, held_symbols, regime)
 
@@ -561,6 +662,11 @@ def run(*, git_sync: bool = True) -> dict:
 
     # Filtro social: veto por pânico (Reddit) ou divergência extrema (analistas)
     buy_opportunities = _apply_social_veto(buy_opportunities)
+
+    # Persiste tickers que chegaram a buy_opportunities como "tentados hoje".
+    # No próximo ciclo são excluídos de held_symbols → não geram sinal novamente.
+    if buy_opportunities:
+        _save_attempted_tickers([o["ticker"] for o in buy_opportunities], _today_str)
 
     risk_status = _risk_snapshot(positions, cash)
     open_trades = _count_open_trades()
