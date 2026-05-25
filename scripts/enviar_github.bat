@@ -44,9 +44,19 @@ REM === COMMIT ===
 git diff --cached --quiet
 if %ERRORLEVEL%==0 (
     echo [INFO] Nenhuma alteracao para commitar.
-    goto PUSH
+    goto PULL
 )
 git commit -m "%msg%"
+
+:PULL
+echo A sincronizar com GitHub (pull --rebase)...
+git pull --rebase --autostash origin main
+if %ERRORLEVEL% neq 0 (
+    echo [ERRO] Pull/rebase falhou. Resolve os conflitos manualmente e volta a correr.
+    pause
+    exit /b 1
+)
+echo [OK] Rebase concluido.
 
 :PUSH
 echo A enviar para GitHub...
@@ -59,6 +69,6 @@ if %ERRORLEVEL%==0 (
     echo  CLAUDE.md sincronizado
     echo =========================================
 ) else (
-    echo [AVISO] Push falhou. Tenta git pull e repete.
+    echo [AVISO] Push falhou mesmo apos pull. Verifica conflitos.
 )
 pause
