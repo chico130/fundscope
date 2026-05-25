@@ -18,6 +18,7 @@ env:
 jobs:
   update-news:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
         with:
@@ -31,13 +32,34 @@ jobs:
       - name: Instalar dependencias
         run: pip install requests
 
-      - name: Correr update_news.py
+      - name: Correr update_news.py (com retry)
         env:
           FINNHUB_TOKEN:      ${{ secrets.FINNHUB_TOKEN }}
           MARKETAUX_TOKEN:    ${{ secrets.MARKETAUX_TOKEN }}
           ALPHAVANTAGE_TOKEN: ${{ secrets.ALPHAVANTAGE_TOKEN }}
           NEWSAPI_TOKEN:      ${{ secrets.NEWSAPI_TOKEN }}
-        run: python update_news.py
+        run: |
+          set +e
+          MAX_RETRIES=3
+          RETRY_DELAY=30
+          for i in $(seq 1 $MAX_RETRIES); do
+            echo "=== Tentativa $i/$MAX_RETRIES ==="
+            timeout 480 python update_news.py
+            EXIT_CODE=$?
+            if [ $EXIT_CODE -eq 0 ]; then
+              echo "update_news.py concluido com sucesso na tentativa $i"
+              break
+            fi
+            echo "[WARN] Tentativa $i falhou (exit $EXIT_CODE)"
+            if [ $i -lt $MAX_RETRIES ]; then
+              echo "A aguardar ${RETRY_DELAY}s antes de nova tentativa..."
+              sleep $RETRY_DELAY
+            else
+              echo "[ERROR] Todas as $MAX_RETRIES tentativas falharam"
+              exit 1
+            fi
+          done
+          set -e
 
       - name: Mostrar news.json
         run: head -c 400 news.json 2>/dev/null || echo "news.json nao encontrado"
