@@ -1,161 +1,28 @@
 {
-  "updated": "2026-05-25T14:05:30.630652Z",
-  "t212_mode": "live",
+  "updated": "2026-05-25T20:00:33.726871+00:00Z",
+  "t212_mode": "demo",
   "summary": {
-    "total_value": 127.62,
-    "total_invested": 121.94,
-    "total_gain_eur": 5.68,
-    "total_gain_pct": 4.66,
-    "daily_gain_eur": 3.45,
-    "cash_available": 4314.26,
+    "total_value": 5010.53,
+    "total_invested": 126.4,
+    "total_gain_eur": 6.25,
+    "total_gain_pct": 4.95,
+    "daily_gain_eur": null,
+    "cash_available": 4877.88,
     "n_positions": 1
   },
   "positions": [
     {
       "ticker_t212": "ARM_US_EQ",
+      "ticker_display": "ARM",
+      "name": "ARM Holdings",
       "quantity": 0.4886,
       "avg_price": 289.7462,
-      "current_price": 306.51,
-      "ppl": 5.68,
-      "fx_ppl": -0.34,
-      "ticker": "ARM",
-      "ticker_display": "ARM",
-      "display_name": "Arm Holdings plc",
-      "currency": "USD",
-      "change_pct": 2.78,
-      "gain_eur": 5.68,
-      "invested": 121.94,
-      "value_eur": 127.62,
-      "gain_pct": 4.66,
-      "fx_rate": 0.858811,
-      "currency_native": "USD",
-      "allocation_pct": 100.0,
-      "clyde_forecast": null,
-      "news": [
-        {
-          "source": "Yahoo",
-          "headline": "Arm Holdings (ARM) Valuation Check After Strong Recent Share Price Momentum",
-          "summary": "Arm Holdings stock performance snapshot Arm Holdings (ARM) has drawn fresh attention after recent trading, with the stock last closing at US$306.51 and posting gains over the past day, week, month and past 3 months that some investors are watching closely. See our latest analysis for Arm Holdings. T",
-          "url": "https://finnhub.io/api/news?id=ceb6dd527acd5d29178c8d578c69f65f8faeb6930cb04f40d5af31a8d251ee2d",
-          "datetime": 1779664129,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Yahoo",
-          "headline": "Why Arm Stock Skyrocketed This Week",
-          "summary": "On the heels of a huge rally this week, Arm stock is now up roughly 180% in 2026.",
-          "url": "https://finnhub.io/api/news?id=322fc397af17085b39ae4837c386d941a3b42768ca232af87e1a86cdde814d4a",
-          "datetime": 1779644005,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Yahoo",
-          "headline": "Why Billionaire Stanley Druckenmiller Dumped Nvidia but Loaded Up on These 3 AI Infrastructure Stocks for the Next Boom",
-          "summary": "Stanley Druckenmiller's fund, the Duquesne Family Office, just initiated stakes in custom silicon and CPU designers.",
-          "url": "https://finnhub.io/api/news?id=f14220067ba2f0ad58a336df99dac5950256c60940c78ffc7ba0a63e2d175c5b",
-          "datetime": 1779623400,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Benzinga",
-          "headline": "D-Wave, Dell, And IonQ Are Among Top 10 Large-Cap Gainers Last Week (May 18-May 22): Are the Others in Your Portfolio?",
-          "summary": "Quantum computing, AI and semiconductor-linked stocks dominated last week&#39;s large-cap gainers as investors cheered fresh government funding, analyst optimism, regulatory approvals and expanding data center momentum.",
-          "url": "https://finnhub.io/api/news?id=569b1534135a7fb18c8b38e1b5b54db688f668d484dccdb84178f54a364af385",
-          "datetime": 1779614519,
-          "image": "https://cdn.benzinga.com/files/images/story/2026/05/24/Dell-Technologies-Inc-.jpeg?width=2048&height=1536"
-        },
-        {
-          "source": "Yahoo",
-          "headline": "AGI CPU Demand Has Pushed ARM Stock to All-Time Highs. Wait for the Next Pullback Before You Buy.",
-          "summary": "Arm’s newly launched AGI CPU platform provides a significant growth opportunity for the company, supporting its earnings expansion.",
-          "url": "https://finnhub.io/api/news?id=db04aafe0e8c29a59347807abf74bf62722e609eb605cd50b56285d1ccde72d8",
-          "datetime": 1779541202,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        }
-      ],
-      "earnings": [
-        {
-          "period": "",
-          "estimate": 0.351,
-          "actual": 0.35,
-          "surprise": -0.0,
-          "beat": false
-        },
-        {
-          "period": "",
-          "estimate": 0.331,
-          "actual": 0.39,
-          "surprise": 0.18,
-          "beat": true
-        },
-        {
-          "period": "",
-          "estimate": 0.409,
-          "actual": 0.43,
-          "surprise": 0.05,
-          "beat": true
-        },
-        {
-          "period": "",
-          "estimate": 0.579,
-          "actual": 0.6,
-          "surprise": 0.04,
-          "beat": true
-        }
-      ],
-      "dividends": [],
-      "ticker_info": {
-        "trailingPE": 356.40698,
-        "forwardPE": 100.325356,
-        "marketCap": 326126206976,
-        "beta": 3.406,
-        "fiftyTwoWeekHigh": 315.0,
-        "fiftyTwoWeekLow": 100.02,
-        "pctFromHigh": -2.7,
-        "shortRatio": 1.87,
-        "dividendYield": null
-      },
-      "fh_fundamentals": {
-        "52WeekHigh": 315,
-        "52WeekLow": 100.02,
-        "52WeekHighDate": "2026-05-22",
-        "52WeekLowDate": "2026-02-05",
-        "beta": 3.581114,
-        "peAnnual": 351.0141,
-        "peTTM": 351.0141,
-        "pbAnnual": 19.3893,
-        "epsGrowthTTMYoy": 13.63,
-        "epsGrowth3Y": 18.34,
-        "revenueGrowthTTMYoy": 22.79,
-        "revenueGrowth3Y": 22.46,
-        "grossMarginTTM": 97.54,
-        "netMarginTTM": null,
-        "roeTTM": 11.86,
-        "roaRfy": 8.450000000000001,
-        "currentRatioAnnual": 5.9962,
-        "debtToEquityAnnual": 0.0015,
-        "dividendYieldIndicated": null,
-        "marketCapitalization": 317316.72
-      },
-      "analysts": {},
-      "insider": {},
-      "analysis": {
-        "sentiment": "neutro",
-        "news_comment": "Gemini indisponível.",
-        "earnings_comment": "Gemini indisponível.",
-        "watch_points": []
-      }
+      "current_price": 304.08,
+      "value_eur": 132.65,
+      "gain_eur": 6.25,
+      "gain_pct": 4.95,
+      "pending_sell": true,
+      "sell_reason": "RSI sobrecomprado — saida solicitada pelo Clyde"
     }
-  ],
-  "history": [
-    {
-      "date": "2026-05-24",
-      "value": 127.97
-    },
-    {
-      "date": "2026-05-25",
-      "value": 127.62
-    }
-  ],
-  "benchmark_metrics": {}
+  ]
 }

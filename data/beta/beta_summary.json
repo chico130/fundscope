@@ -1,23 +1,12 @@
 {
-  "updated": "2026-05-25T14:17:32.263227+00:00",
+  "updated": "2026-05-25T20:00:06.263316+00:00",
   "env": "demo",
   "strategy_version": "v0.1.0",
   "summary": {
-    "initial_capital": 4998.49,
-    "current_value": 4441.85,
-    "total_gain_eur": -556.64,
-    "total_gain_pct": -11.14,
-    "max_drawdown_pct": -11.16,
-    "n_trades": 8,
-    "win_rate_pct": 0.0,
-    "avg_win_eur": 0.0,
-    "avg_loss_eur": 0.0,
-    "best_trade_eur": 0.0,
-    "worst_trade_eur": 0.0
-  },
-  "risk_limits": {
-    "max_position_pct": 20.0,
-    "max_daily_loss_pct": 3.0,
-    "max_trades_per_day": 10
+    "n_trades": 0,
+    "n_open": 0,
+    "win_rate": null,
+    "total_pnl_eur": 0.0,
+    "note": "Historico limpo — a aguardar primeiras trades validas."
   }
 }
