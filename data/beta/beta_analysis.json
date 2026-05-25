@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-05-25T17:30:17.562820+00:00",
+  "timestamp": "2026-05-25T18:45:00.688727+00:00",
   "mode": "phase1_auto",
   "strategy_version": "v0.1.0",
   "note": "Fase 1 — execução automática activa. LIVE_TRADING=False (conta demo).",
@@ -162,7 +162,7 @@
     }
   ],
   "n_positions": 1,
-  "open_trades": 10,
+  "open_trades": 11,
   "risk_status": {
     "ok": true,
     "total_equity_eur": 3524.21,
@@ -186,7 +186,7 @@
   ],
   "data_sources": {
     "prices": "finnhub+yfinance",
-    "t212_sync": "2026-05-25T17:28:23.435611+00:00",
+    "t212_sync": "2026-05-25T18:43:09.709756+00:00",
     "stale_prices": []
   },
   "cro": {
@@ -202,8 +202,8 @@
   },
   "executed_trades": [
     {
-      "id": "2026-05-25T17:30:07Z_ARM_US_EQ_SELL",
-      "datetime": "2026-05-25T17:30:07.253483+00:00",
+      "id": "2026-05-25T18:44:53Z_ARM_US_EQ_SELL",
+      "datetime": "2026-05-25T18:44:53.368748+00:00",
       "ticker": "ARM_US_EQ",
       "side": "SELL",
       "qty": 0.4886,
@@ -223,6 +223,39 @@
       "stop_loss_price": null,
       "atr_trigger_price": null,
       "atr_target_price": null,
+      "break_even_active": false
+    },
+    {
+      "id": "2026-05-25T18:44:59Z_F_US_EQ_BUY",
+      "datetime": "2026-05-25T18:44:59.169083+00:00",
+      "ticker": "F_US_EQ",
+      "side": "BUY",
+      "qty": 28.953,
+      "price": 14.93,
+      "env": "demo",
+      "strategy_version": "v0.1.0",
+      "reason": "Breakout: RSI-14 69.9 ≥ 58 — momentum validado | Alinhamento total: price > EMA-20 > EMA-50 > EMA-200 | Volume 1.5× ≥ 1.5× — confirmação de volume",
+      "context": {
+        "rsi_14": 69.93,
+        "atr_14": 0.6295,
+        "volume_ratio_vs_avg": 1.54,
+        "ema20_above_ema50": true,
+        "price_above_ema20": true,
+        "regime": "bull_trending",
+        "watchlist_score": 0.2704,
+        "signal_strength": 0.654,
+        "style": "MOMENTUM",
+        "stop_loss_pct": 8.43
+      },
+      "result_eur": null,
+      "result_pct": null,
+      "result_after_minutes": 1440,
+      "closed_at": null,
+      "postmortem": null,
+      "atr_at_entry": 0.6295,
+      "stop_loss_price": 13.9857,
+      "atr_trigger_price": 15.5595,
+      "atr_target_price": 16.8185,
       "break_even_active": false
     }
   ]
