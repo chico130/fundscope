@@ -21,12 +21,75 @@ jobs:
       - name: Install deps
         run: pip install requests yfinance
 
+      - name: Check NYSE holiday
+        id: holiday_check
+        run: |
+          python3 - <<'EOF'
+          import datetime, sys
+          def _nth_weekday(year, month, weekday, n):
+              d = datetime.date(year, month, 1)
+              delta = (weekday - d.weekday()) % 7
+              d += datetime.timedelta(days=delta)
+              return d + datetime.timedelta(weeks=n - 1)
+          def _last_weekday(year, month, weekday):
+              if month == 12:
+                  next_month = datetime.date(year + 1, 1, 1)
+              else:
+                  next_month = datetime.date(year, month + 1, 1)
+              d = next_month - datetime.timedelta(days=1)
+              delta = (d.weekday() - weekday) % 7
+              return d - datetime.timedelta(days=delta)
+          def get_nyse_holidays(year):
+              h = set()
+              ny = datetime.date(year, 1, 1)
+              if ny.weekday() == 6: h.add(datetime.date(year, 1, 2))
+              elif ny.weekday() != 5: h.add(ny)
+              h.add(_nth_weekday(year, 1, 0, 3))
+              h.add(_nth_weekday(year, 2, 0, 3))
+              a = year % 19; b = year // 100; c = year % 100; d = b // 4; e = b % 4
+              f = (b+8)//25; g = (b-f+1)//3; hh = (19*a+b-d-g+15)%30
+              i = c//4; k = c%4; l = (32+2*e+2*i-hh-k)%7; m = (a+11*hh+22*l)//451
+              mo = (hh+l-7*m+114)//31; dy = ((hh+l-7*m+114)%31)+1
+              easter = datetime.date(year, mo, dy)
+              h.add(easter - datetime.timedelta(days=2))
+              h.add(_last_weekday(year, 5, 0))
+              if year >= 2022:
+                  jt = datetime.date(year, 6, 19)
+                  if jt.weekday() == 6: h.add(datetime.date(year, 6, 20))
+                  elif jt.weekday() == 5: h.add(datetime.date(year, 6, 18))
+                  else: h.add(jt)
+              ind = datetime.date(year, 7, 4)
+              if ind.weekday() == 6: h.add(datetime.date(year, 7, 5))
+              elif ind.weekday() == 5: h.add(datetime.date(year, 7, 3))
+              else: h.add(ind)
+              h.add(_nth_weekday(year, 9, 0, 1))
+              h.add(_nth_weekday(year, 11, 3, 4))
+              xmas = datetime.date(year, 12, 25)
+              if xmas.weekday() == 6: h.add(datetime.date(year, 12, 26))
+              elif xmas.weekday() == 5: h.add(datetime.date(year, 12, 24))
+              else: h.add(xmas)
+              return h
+          today = datetime.date.today()
+          if today in get_nyse_holidays(today.year):
+              print("is_holiday=true")
+              with open("$GITHUB_OUTPUT", "a") as f: f.write("is_holiday=true\n")
+          else:
+              print("is_holiday=false")
+              with open("$GITHUB_OUTPUT", "a") as f: f.write("is_holiday=false\n")
+          EOF
+
+      - name: Skip se feriado NYSE
+        if: steps.holiday_check.outputs.is_holiday == 'true'
+        run: echo "[HOLIDAY] Mercado NYSE fechado hoje -- a saltar update_markets.py"
+
       - name: Run update_markets.py
+        if: steps.holiday_check.outputs.is_holiday != 'true'
         env:
           FINNHUB_TOKEN: ${{ secrets.FINNHUB_TOKEN }}
         run: python update_markets.py
 
       - name: Commit markets.json
+        if: steps.holiday_check.outputs.is_holiday != 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
