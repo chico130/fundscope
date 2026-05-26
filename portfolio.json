@@ -1,28 +1,21 @@
 {
-  "updated": "2026-05-25T21:21:04.853145+00:00",
-  "t212_mode": "demo",
+  "updated": "2026-05-26T16:39:11.741866Z",
+  "t212_mode": "live",
   "summary": {
-    "total_value": 5005.43,
-    "total_invested": 121.94,
-    "total_gain_eur": 5.61,
-    "total_gain_pct": 4.6,
-    "daily_gain_eur": null,
-    "cash_available": 4877.88,
-    "n_positions": 1
+    "total_value": 5009.86,
+    "total_invested": 0,
+    "total_gain_eur": 0,
+    "total_gain_pct": 0,
+    "daily_gain_eur": 0,
+    "cash_available": 5009.86,
+    "n_positions": 0
   },
-  "positions": [
+  "positions": [],
+  "history": [
     {
-      "ticker_t212": "ARM_US_EQ",
-      "ticker_display": "ARM",
-      "name": "ARM Holdings",
-      "quantity": 0.4886,
-      "avg_price": 289.7462,
-      "current_price": 304.08,
-      "value_eur": 127.55,
-      "gain_eur": 5.61,
-      "gain_pct": 4.6,
-      "pending_sell": true,
-      "sell_reason": "RSI sobrecomprado — saida solicitada pelo Clyde"
+      "date": "2026-05-26",
+      "value": 5009.86
     }
-  ]
+  ],
+  "benchmark_metrics": {}
 }
