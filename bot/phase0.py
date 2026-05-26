@@ -346,6 +346,7 @@ def _execute_phase1(
 
     Ordem de prioridade: (1) saídas urgentes ATR, (2) saídas RSI sobrecomprado,
     (3) entradas da watchlist. Respeita os limites de risco configurados.
+    Envia alerta Telegram imediato por cada ordem executada (BUY ou SELL).
     """
     executed: list[dict] = []
 
@@ -364,6 +365,12 @@ def _execute_phase1(
                 log_decision("phase1_exit", "barrier_exit", {
                     "ticker": be.ticker, "reason": be.reason,
                 })
+                # Notificação Telegram imediata para saída ATR
+                try:
+                    from bot.notifier import enviar_trade_executada
+                    enviar_trade_executada(result, modo="phase1_auto")
+                except Exception as _ne:
+                    log_error("notify_trade_failed", {"error": str(_ne)})
         except Exception as exc:
             log_error("phase1_barrier_exit_failed", {"ticker": be.ticker, "error": str(exc)})
 
@@ -392,6 +399,12 @@ def _execute_phase1(
                 _meta.pop(ticker, None)
                 position_ledger.remove(ticker)
                 log_decision("phase1_exit", "rsi_overbought", {"ticker": ticker, "rsi": rsi})
+                # Notificação Telegram imediata para saída RSI
+                try:
+                    from bot.notifier import enviar_trade_executada
+                    enviar_trade_executada(result, modo="phase1_auto")
+                except Exception as _ne:
+                    log_error("notify_trade_failed", {"error": str(_ne)})
         except Exception as exc:
             log_error("phase1_rsi_exit_failed", {"ticker": ticker, "error": str(exc)})
 
@@ -549,6 +562,12 @@ def _execute_phase1(
                     "stop_loss_pct":  round(stop_loss_pct, 2),
                     "atr_pct":        round(atr_pct * 100, 3),
                 })
+                # Notificação Telegram imediata para compra
+                try:
+                    from bot.notifier import enviar_trade_executada
+                    enviar_trade_executada(result, modo="phase1_auto")
+                except Exception as _ne:
+                    log_error("notify_trade_failed", {"error": str(_ne)})
         except Exception as exc:
             log_error("phase1_entry_failed", {"ticker": t212_ticker, "error": str(exc)})
 
@@ -651,11 +670,27 @@ def run(*, git_sync: bool = True) -> dict:
 
     # Excluir tickers já tentados hoje (sinal gerado ou compra rejeitada/executada)
     # para evitar que o mesmo ticker seja reavaliado em cada ciclo do mesmo dia.
+    # NOTA: attempted_today só é relevante para entradas (BUY). Exits ignoram este filtro.
     _today_str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-    held_symbols = held_symbols | _load_attempted_today(_today_str)
+    attempted_today = _load_attempted_today(_today_str)
+    held_symbols = held_symbols | attempted_today
+
+    # Log de diagnóstico do scan — visível no GitHub Actions log
+    print(
+        f"[SCAN] regime={regime} | watchlist={len(watchlist)} | "
+        f"posições={len(positions)} | pending_tickers={len(_pending_tickers)} | "
+        f"attempted_today={len(attempted_today)} | "
+        f"candidatos_disponíveis={max(0, len(watchlist) - len(held_symbols))}"
+    )
 
     signals                        = _analyse_all(positions, regime)
     buy_opportunities, near_misses = _scan_watchlist_candidates(watchlist, held_symbols, regime)
+
+    # Log pós-scan
+    print(
+        f"[SCAN RESULT] oportunidades={len(buy_opportunities)} | "
+        f"near_misses={len(near_misses)} | barrier_exits={len(barrier_exits)}"
+    )
 
     # Filtro Bonnie: remove oportunidades que não passam os limiares por estilo
     buy_opportunities = _apply_bonnie_filter(buy_opportunities)
@@ -793,6 +828,7 @@ def _scan_watchlist_candidates(
     # Todos os não-possuídos — sem cap SCAN_TOP_N (o throttling substitui o limite)
     candidates = [c for c in watchlist if c.get("ticker") not in held_symbols]
     if not candidates:
+        print(f"[SCAN] 0 candidatos disponíveis — todos os {len(watchlist)} tickers em held_symbols.")
         return [], []
 
     tickers    = [c["ticker"] for c in candidates]
@@ -1188,18 +1224,10 @@ def _rebase_in_progress(root) -> bool:
 
 
 def _git_sync(timestamp: str) -> None:
-    """Commit das alterações e push para origin/main. Salta se nada houver para commitar.
-
-    Defensivo contra rebase encravado: se um ciclo anterior deixou um rebase/merge a
-    meio, aborta-o antes de tentar de novo — evita o "already a rebase-merge directory"
-    que paralisava todos os ciclos seguintes. Se o rebase deste ciclo entrar em conflito,
-    aborta e adia apenas este push (o ciclo seguinte repete), sem nunca deixar a árvore
-    de trabalho num estado encravado.
-    """
+    """Commit das alterações e push para origin/main. Salta se nada houver para commitar."""
     try:
         root = DATA_BETA_DIR.parent.parent
 
-        # ── Pré-voo: limpa qualquer rebase/merge herdado de um ciclo anterior ──
         if _rebase_in_progress(root):
             log_error("git_sync_rebase_stale", {"action": "abort_inherited"})
             print("Git: rebase/merge a meio detectado — a abortar antes de continuar.")
@@ -1215,7 +1243,6 @@ def _git_sync(timestamp: str) -> None:
         msg = f"Auto-update {timestamp[:16].replace('T', ' ')} UTC"
         _git(root, "commit", "-m", msg)
 
-        # ── Rebase sobre o remoto; em conflito, aborta e adia o push (não encrava) ──
         rebase = _git(root, "pull", "--rebase", "origin", "main", check=False)
         if rebase.returncode != 0:
             log_error("git_sync_rebase_conflict", {"stderr": rebase.stderr[-500:]})
@@ -1238,7 +1265,6 @@ if __name__ == "__main__":
     import sys
     from bot.watchdog import check_quarantine_and_abort, quarantine
 
-    # ── Gate 1: recusa arranque se quarentena activa ──────────────────────────
     check_quarantine_and_abort()
 
     parser = argparse.ArgumentParser(description="FundScope Bot — Fase 0")
@@ -1248,14 +1274,12 @@ if __name__ == "__main__":
         help="Execução única sem git sync (GitHub Actions CI mode)",
     )
     args = parser.parse_args()
-    ci   = args.once or bool(os.getenv("CI"))  # GitHub Actions define CI=true automaticamente
+    ci   = args.once or bool(os.getenv("CI"))
 
-    # Detecção de wake/sleep com base na hora UTC
     now      = datetime.now(timezone.utc)
-    is_wake  = ci and now.hour == 13 and now.minute < 45   # primeiro ciclo do dia (janela alargada para absorver atrasos do GH Actions)
-    is_sleep = ci and now.hour == 21                        # último ciclo do dia
+    is_wake  = ci and now.hour == 13 and now.minute < 45
+    is_sleep = ci and now.hour == 21
 
-    # ── Gate 2: handler global — qualquer excepção não tratada activa quarentena
     try:
         report = run(git_sync=not ci)
 
