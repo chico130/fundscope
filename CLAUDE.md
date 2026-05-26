@@ -225,8 +225,8 @@ Antes de fazer merge de qualquer alteração ao bot, confirmar:
 - Antes de correr: editar `LABEL_HORIZON_DAYS = 57` em retrain_bonnie.py (linha 68)
 
 ---
-## Auto-Sync: 2026-05-25 21:31
+## Auto-Sync: 2026-05-26 23:02
 - PC: DESKTOP-0514V9J
-- Ultimo commit: 828c75a - Auto-update preços 2026-05-25 20:20 UTC
+- Ultimo commit: 660c517 - feat(notifier): reescrever enviar_trade_executada com novo formato
 - Learner: verificar data/beta/ para runs recentes
 ---

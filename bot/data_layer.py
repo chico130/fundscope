@@ -15,6 +15,8 @@ from . import api_client, position_ledger
 from .config import DATA_BETA_DIR, RISK_CONFIG
 from .logger import log_decision
 
+PORTFOLIO_PATH = DATA_BETA_DIR / "portfolio.json"
+
 # SPY closes cached for the process lifetime (one fetch per cycle).
 _SPY_CLOSES: list[float] | None = None
 
@@ -63,17 +65,127 @@ def _compute_rs_bullish(closes: list[float], spy_closes: list[float]) -> bool | 
 # Portfolio state
 # ---------------------------------------------------------------------------
 
+def write_portfolio_snapshot(t212_state: dict | None) -> dict:
+    """Escreve data/beta/portfolio.json com dados T212 autoritativos.
+
+    Se t212_state é None (API falhou): lê snapshot anterior e marca stale:true.
+    Nunca deixa o ficheiro ausente — o frontend lê sempre algo válido.
+    Devolve o payload escrito.
+    """
+    from datetime import datetime, timezone
+    from .logger import log_error
+
+    now_ts = datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
+
+    if t212_state is not None:
+        positions_raw = t212_state.get("positions") or []
+        cash_raw      = t212_state.get("cash") or {}
+
+        # T212 devolve cash.total = free + invested + ppl — fonte autoritativa.
+        # Fallback para free + invested quando o campo total está ausente.
+        _total = cash_raw.get("total")
+        total_equity = float(_total) if _total is not None else (
+            float(cash_raw.get("free") or 0) + float(cash_raw.get("invested") or 0)
+        )
+
+        positions_clean = [
+            {
+                "ticker":       p.get("ticker", ""),
+                "quantity":     float(p.get("quantity")     or 0),
+                "averagePrice": float(p.get("averagePrice") or 0),
+                "currentPrice": float(p.get("currentPrice") or 0),
+                "ppl":          float(p.get("ppl")          or 0),
+                "fxPpl":        float(p.get("fxPpl")        or 0),
+            }
+            for p in positions_raw
+        ]
+
+        payload: dict = {
+            "timestamp":            now_ts,
+            "last_successful_sync": now_ts,
+            "stale":                False,
+            "stale_reason":         None,
+            "positions":            positions_clean,
+            "cash": {
+                "free":     round(float(cash_raw.get("free")     or 0), 2),
+                "invested": round(float(cash_raw.get("invested") or 0), 2),
+                "ppl":      round(float(cash_raw.get("ppl")      or 0), 2),
+                "total":    round(total_equity, 2),
+            },
+            "total_equity_eur": round(total_equity, 2),
+        }
+    else:
+        # API falhou — preservar snapshot anterior e marcar stale
+        prev = _read_json(PORTFOLIO_PATH) or {
+            "last_successful_sync": None,
+            "positions":            [],
+            "cash":                 None,
+            "total_equity_eur":     None,
+        }
+        payload = {
+            **prev,
+            "timestamp":    now_ts,
+            "stale":        True,
+            "stale_reason": "t212_api_unavailable",
+        }
+
+    _write_portfolio_atomic(payload)
+    return payload
+
+
+def _write_portfolio_atomic(data: dict) -> None:
+    """Escrita atómica de data/beta/portfolio.json via .tmp → replace."""
+    from .logger import log_error
+
+    PORTFOLIO_PATH.parent.mkdir(parents=True, exist_ok=True)
+    tmp = PORTFOLIO_PATH.with_suffix(".tmp")
+    try:
+        with open(tmp, "w", encoding="utf-8") as f:
+            json.dump(data, f, indent=2, ensure_ascii=False)
+        tmp.replace(PORTFOLIO_PATH)
+    except OSError as exc:
+        log_error("portfolio_write_error", {"path": str(PORTFOLIO_PATH), "error": str(exc)})
+        try:
+            tmp.unlink(missing_ok=True)
+        except OSError:
+            pass
+
+
 def get_full_portfolio_state() -> dict:
     """Returns portfolio state usando T212 como FONTE DE VERDADE.
 
-    Cada ciclo faz GET /equity/portfolio + /equity/account/cash à T212 e reconcilia
-    o ledger local (remove posições que já não existem na conta). Se a chamada
-    T212 falhar, devolve o último estado conhecido com a flag `t212_sync_failed=True`
-    para que o caller saiba que os dados podem estar desactualizados.
+    Faz GET /equity/portfolio + /equity/account/cash a cada ciclo e escreve
+    data/beta/portfolio.json (stale:true se a T212 for inacessível).
+    O ledger local é reconciliado após cada sync bem-sucedido.
 
     Always returns a dict (never None); positions list may be empty.
     """
-    sync_ok = _sync_from_t212_strict()
+    from .logger import log_error
+
+    t212_state: dict | None = None
+    sync_ok = False
+
+    try:
+        t212_state = api_client.get_portfolio_state_demo()
+        if t212_state is None:
+            log_error("t212_sync_no_response", {
+                "note": "get_portfolio_state_demo retornou None — usar ledger cached",
+            })
+        else:
+            position_ledger.sync_from_t212(
+                t212_state.get("positions", []),
+                t212_state.get("cash", {}),
+            )
+            log_decision("t212_sync_ok", "ledger_reconciled",
+                         {"n_positions": len(t212_state.get("positions", []))})
+            sync_ok = True
+    except Exception as exc:
+        log_error("t212_sync_exception", {"error": str(exc)})
+
+    try:
+        write_portfolio_snapshot(t212_state)
+    except Exception as exc:
+        log_error("portfolio_snapshot_failed", {"error": str(exc)})
 
     positions, cash = position_ledger.get_positions_with_prices()
 
@@ -82,37 +194,10 @@ def get_full_portfolio_state() -> dict:
         log_decision("price_feed_stale", "some_prices_unavailable", {"tickers": stale})
 
     return {
-        "positions":         positions,
-        "cash":              cash,
-        "t212_sync_failed":  not sync_ok,
+        "positions":        positions,
+        "cash":             cash,
+        "t212_sync_failed": not sync_ok,
     }
-
-
-def _sync_from_t212_strict() -> bool:
-    """Sincroniza o ledger com o T212. Devolve True se sucesso, False se falha.
-
-    Ao contrário da versão antiga, NÃO salta em fim-de-semana / fora de horas:
-    a fonte de verdade tem de ser consultada sempre, mesmo que devolva o
-    snapshot da última sessão. Falhar silenciosamente leva a decisões com base
-    em dados velhos (posições-fantasma, cash incorrecto).
-    """
-    from .logger import log_error
-    try:
-        state = api_client.get_portfolio_state_demo()
-        if state is None:
-            log_error("t212_sync_no_response", {
-                "note": "get_portfolio_state_demo retornou None — usar ledger cached",
-            })
-            return False
-        t212_positions = state.get("positions", [])
-        t212_cash      = state.get("cash", {})
-        position_ledger.sync_from_t212(t212_positions, t212_cash)
-        log_decision("t212_sync_ok", "ledger_reconciled",
-                     {"n_positions": len(t212_positions)})
-        return True
-    except Exception as exc:
-        log_error("t212_sync_exception", {"error": str(exc)})
-        return False
 
 
 def enrich_with_technicals(positions: list[dict], days: int = 60) -> list[dict]:

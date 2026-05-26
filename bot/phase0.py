@@ -36,6 +36,7 @@ POSITION_META_PATH    = DATA_BETA_DIR / "position_meta.json"
 _LAST_WAKE_PATH       = DATA_BETA_DIR / "last_wake.txt"
 SOCIAL_SENTIMENT_PATH = DATA_BETA_DIR / "social_sentiment.json"
 _ATTEMPTED_TODAY_PATH = DATA_BETA_DIR / "attempted_today.json"
+STATUS_PATH           = DATA_BETA_DIR / "status.json"
 
 _BEAR_REGIMES = {"bear_correction", "bear_capitulation"}
 _LATERAL_SIZE_FACTOR = 0.6   # redução de posição sugerida em bull_lateral (secção 4, FASE-1.md)
@@ -139,6 +140,26 @@ def _save_position_meta(meta: dict) -> None:
         tmp.replace(POSITION_META_PATH)
     except OSError as exc:
         log_error("position_meta_save_error", {"error": str(exc)})
+
+
+def _ts() -> str:
+    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+def _write_status_atomic(bot_status: str, regime: str = "unknown", mode: str = "unknown") -> None:
+    payload = {
+        "last_check": datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z"),
+        "bot_status": bot_status,
+        "regime":     regime,
+        "mode":       mode,
+    }
+    tmp = STATUS_PATH.with_suffix(".tmp")
+    try:
+        STATUS_PATH.parent.mkdir(parents=True, exist_ok=True)
+        tmp.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
+        tmp.replace(STATUS_PATH)
+    except OSError as exc:
+        log_error("status_write_failed", {"error": str(exc)})
 
 
 def _load_attempted_today(today: str) -> set[str]:
@@ -583,11 +604,17 @@ def run(*, git_sync: bool = True) -> dict:
 
     git_sync=False em CI (GitHub Actions) — o workflow YAML trata do commit/push.
     """
+    t_start = time.perf_counter()
+    print(f"[{_ts()}] === FundScope phase0 START === regime detection + watchlist build", flush=True)
+
     # Holiday guard — segunda linha de defesa (o YAML só bloqueia fim de semana).
     if _is_nyse_holiday():
         _today_label = datetime.now(timezone.utc).date().isoformat()
         log_decision("phase0_skip", "nyse_holiday", {"date": _today_label})
         print(f"FundScope: feriado NYSE ({_today_label}) — ciclo ignorado.")
+        _write_status_atomic("holiday", regime="unknown", mode="holiday_skip")
+        elapsed = time.perf_counter() - t_start
+        print(f"[{_ts()}] === FundScope phase0 END === holiday skip ({_today_label}) | {elapsed:.1f}s", flush=True)
         return {
             "timestamp": datetime.now(timezone.utc).isoformat(),
             "mode":      "holiday_skip",
@@ -600,6 +627,13 @@ def run(*, git_sync: bool = True) -> dict:
     regime         = _get_regime_safe()
     regime_payload = load_regime_metrics()  # full metrics written by regime_detector
     watchlist      = _get_watchlist_safe()
+
+    # Heartbeat: escreve status.json logo após regime conhecido
+    _write_status_atomic(
+        "active",
+        regime=regime,
+        mode="phase1_auto" if PHASE1_EXECUTION else "phase0_readonly",
+    )
 
     # Position meta — persiste style e peak_high por ticker entre ciclos
     position_meta   = _load_position_meta()
@@ -771,6 +805,21 @@ def run(*, git_sync: bool = True) -> dict:
     _notify_opportunities(report)
     if git_sync:
         _git_sync(report["timestamp"])
+
+    elapsed = time.perf_counter() - t_start
+    dur = f"{int(elapsed // 60)}m{int(elapsed % 60):02d}s"
+    n_signals  = len(signals)
+    n_executed = len(executed_trades)
+    _write_status_atomic(
+        "active",
+        regime=regime,
+        mode=report["mode"],
+    )
+    print(
+        f"[{_ts()}] === FundScope phase0 END === {dur} | "
+        f"signals={n_signals} | executed={n_executed} | regime={regime}",
+        flush=True,
+    )
     return report
 
 

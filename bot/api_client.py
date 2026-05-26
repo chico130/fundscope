@@ -224,6 +224,25 @@ def get_portfolio_state_demo() -> dict | None:
     return {"positions": positions, "cash": cash}
 
 
+def get_account_cash_demo() -> dict | None:
+    """Returns cash balance from T212 demo account.
+
+    Shape: {"free": float, "invested": float, "ppl": float, "total": float}
+    Convenience wrapper for callers that need a cash-only refresh without
+    re-fetching all positions (e.g. pós-trade portfolio snapshot updates).
+    Returns None if the call fails.
+    """
+    raw = _get("/equity/account/cash")
+    if raw is None:
+        return None
+    return {
+        "free":     round(float(raw.get("free")     or 0), 2),
+        "invested": round(float(raw.get("invested") or 0), 2),
+        "ppl":      round(float(raw.get("ppl")      or 0), 2),
+        "total":    round(float(raw.get("total")    or 0), 2),
+    }
+
+
 def get_market_snapshot(tickers: list[str]) -> dict[str, dict]:
     """Returns {ticker: {last_price, previous_close, change_pct}} via yfinance.
 

@@ -1,0 +1,36 @@
+name: Simulation CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  dry-run:
+    name: Dry-run simulation (no real API keys)
+    runs-on: ubuntu-latest
+
+    env:
+      T212_API_ID:         mock_id
+      T212_API_KEY:        mock_secret
+      TELEGRAM_BOT_TOKEN:  mock_token
+      TELEGRAM_CHAT_ID:    "123456"
+      FINNHUB_API_KEY:     ""
+      PYTHONIOENCODING:    utf-8
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install pytest requests-mock
+
+      - name: Run dry-run simulation
+        run: pytest tests/test_simulation.py -v --tb=short
