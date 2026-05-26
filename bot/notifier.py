@@ -300,3 +300,58 @@ def enviar_resumo_diario(dados_resumo: dict) -> None:
     )
 
     enviar_alerta(texto, silencioso=True)
+
+
+def enviar_trade_executada(result: dict, modo: str = "phase1_auto") -> None:
+    """Alerta Telegram imediato após execução confirmada de um trade (BUY/SELL)."""
+    try:
+        side   = (result.get("side") or "?").upper()
+        ticker = result.get("ticker") or "?"
+        qty    = result.get("qty")
+        price  = result.get("price")
+        reason = (result.get("reason") or "").strip()
+        ts_raw = result.get("datetime") or result.get("timestamp")
+
+        if side == "BUY":
+            side_emoji, arrow_emoji = "🟢", "📈"
+        elif side == "SELL":
+            side_emoji, arrow_emoji = "🔴", "📉"
+        else:
+            side_emoji, arrow_emoji = "⚪", "↔️"
+
+        try:
+            qty_s = f"{float(qty):g}" if qty is not None else "?"
+        except (TypeError, ValueError):
+            qty_s = str(qty)
+
+        try:
+            price_s = f" @ ${float(price):.2f}" if price is not None else ""
+        except (TypeError, ValueError):
+            price_s = ""
+
+        ts_str = None
+        if ts_raw:
+            try:
+                ts_dt = ts_raw if isinstance(ts_raw, datetime) else \
+                        datetime.fromisoformat(str(ts_raw).replace("Z", "+00:00"))
+                if ts_dt.tzinfo is None:
+                    ts_dt = ts_dt.replace(tzinfo=timezone.utc)
+                ts_str = ts_dt.astimezone(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+            except (ValueError, TypeError):
+                ts_str = None
+        if ts_str is None:
+            ts_str = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+
+        linhas = [
+            f"{side_emoji} {side} executado [{modo}]",
+            f"{arrow_emoji} {ticker} — {qty_s} acções{price_s}",
+        ]
+        if reason:
+            linhas.append(f"💡 {reason}")
+        linhas.append(f"🕐 {ts_str}")
+
+        enviar_alerta("\n".join(linhas), silencioso=False)
+
+    except Exception as exc:
+        print(f"[notifier] Falha em enviar_trade_executada: {exc}")
+        _log_telegram_error("trade_format_error", f"{type(exc).__name__}: {exc}")
