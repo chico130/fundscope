@@ -127,32 +127,6 @@ def enviar_alerta(mensagem: str, silencioso: bool = False) -> None:
                 _log_telegram_error("network_error", detail)
 
 
-def enviar_trade_executada(trade: dict, modo: str = "phase1_auto") -> None:
-    """Alerta imediato quando uma ordem de compra ou venda é executada pelo Clyde.
-
-    trade deve ter: ticker, side, qty, price (opcional), reason (opcional).
-    modo: 'phase1_auto' ou 'phase0_readonly'.
-    """
-    side    = (trade.get("side") or "?").upper()
-    ticker  = trade.get("ticker") or "?"
-    qty     = trade.get("qty") or "?"
-    price   = trade.get("price")
-    reason  = (trade.get("reason") or "")[:80]
-
-    emoji   = "🟢" if side == "BUY" else "🔴"
-    price_s = f" @ ${price:.2f}" if price else ""
-    reason_s = f"\n  {reason}" if reason else ""
-
-    texto = (
-        f"{emoji} {side} executado — Clyde\n"
-        f"\n"
-        f"• Ticker: {ticker}\n"
-        f"• Qty: {qty}{price_s}{reason_s}\n"
-        f"• Modo: {modo}"
-    )
-    enviar_alerta(texto, silencioso=False)
-
-
 def enviar_oportunidade(oportunidades: list[dict], regime: str) -> None:
     """Alerta sonoro quando o Clyde detecta sinais de entrada na watchlist."""
     if not oportunidades:
