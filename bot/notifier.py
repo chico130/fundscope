@@ -30,8 +30,8 @@ _TELEGRAM_ERROR_LOG = _PROJECT_ROOT / "logs" / "errors" / "telegram_errors.json"
 def _load_credentials() -> tuple[str | None, str | None]:
     """Resolve TOKEN/CHAT_ID a partir de env vars, com fallback .env opcional.
 
-    Devolve (None, None) silenciosamente quando alguma das duas falta — o
-    notifier passa a no-op nesse caso, sem crashar nem registar erro.
+    NOTA: chamada em cada envio (lazy) — garante que credenciais injectadas
+    pelo GitHub Actions depois do import são sempre apanhadas.
     """
     token   = os.environ.get("TELEGRAM_BOT_TOKEN") or ""
     chat_id = os.environ.get("TELEGRAM_CHAT_ID")   or ""
@@ -45,13 +45,14 @@ def _load_credentials() -> tuple[str | None, str | None]:
                 token   = token   or (values.get("TELEGRAM_BOT_TOKEN") or "")
                 chat_id = chat_id or (values.get("TELEGRAM_CHAT_ID")   or "")
             except ImportError:
-                pass  # python-dotenv não instalado — segue só com env vars
+                pass
+
+    if not token:
+        print("[notifier] AVISO: TELEGRAM_BOT_TOKEN não configurado — envios desactivados.")
+    if not chat_id:
+        print("[notifier] AVISO: TELEGRAM_CHAT_ID não configurado — envios desactivados.")
 
     return (token or None), (chat_id or None)
-
-
-_TOKEN, _CHAT_ID = _load_credentials()
-_BASE_URL = f"https://api.telegram.org/bot{_TOKEN}" if _TOKEN else None
 
 
 def _log_telegram_error(kind: str, detail: str) -> None:
@@ -76,35 +77,33 @@ def _log_telegram_error(kind: str, detail: str) -> None:
             json.dumps(existing, indent=2, ensure_ascii=False), encoding="utf-8"
         )
     except Exception:
-        pass  # nunca pode crashar o bot
+        pass
 
 
 def enviar_alerta(mensagem: str, silencioso: bool = False) -> None:
     """Envia mensagem de texto para o Telegram.
 
-    silencioso=True entrega a mensagem sem som/vibração — ideal para
-    notificações de rotina que não requerem atenção imediata.
+    Credenciais lidas de forma lazy a cada chamada — funciona mesmo quando
+    as env vars são injectadas após o import (GitHub Actions).
 
     Retry automático (3 tentativas, 5s entre cada) em falhas de rede.
-    Rejeições da API Telegram (token inválido, chat_id errado) não são
-    retentadas — são erros de configuração, não transitórios.
-    Todas as falhas são persistidas em logs/errors/telegram_errors.json.
+    Rejeições da API (token/chat_id inválidos) não são retentadas.
     Nunca lança excepção.
-
-    No-op silencioso se TELEGRAM_BOT_TOKEN ou TELEGRAM_CHAT_ID não estiverem
-    configurados — permite correr o bot localmente sem credenciais.
     """
-    if not _BASE_URL or not _CHAT_ID:
+    token, chat_id = _load_credentials()
+    if not token or not chat_id:
         return
+
+    base_url = f"https://api.telegram.org/bot{token}"
 
     import time as _time
 
     for attempt in range(3):
         try:
             r = requests.post(
-                f"{_BASE_URL}/sendMessage",
+                f"{base_url}/sendMessage",
                 json={
-                    "chat_id":              _CHAT_ID,
+                    "chat_id":              chat_id,
                     "text":                 mensagem,
                     "disable_notification": silencioso,
                 },
@@ -112,12 +111,13 @@ def enviar_alerta(mensagem: str, silencioso: bool = False) -> None:
             )
             data = r.json()
             if not data.get("ok"):
-                # Rejeição da API — não retentar (problema de configuração)
                 detail = r.text[:500]
-                print(f"[notifier] API rejeitou alerta: {detail}")
+                print(f"[notifier] API rejeitou alerta (HTTP {r.status_code}): {detail}")
                 _log_telegram_error("api_rejection", detail)
+            else:
+                print(f"[notifier] Alerta enviado com sucesso (tentativa {attempt + 1}).")
             return
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
             if attempt < 2:
                 print(f"[notifier] Rede falhou (tentativa {attempt + 1}/3): {exc} — a aguardar 5s")
                 _time.sleep(5)
@@ -125,6 +125,32 @@ def enviar_alerta(mensagem: str, silencioso: bool = False) -> None:
                 detail = str(exc)
                 print(f"[notifier] Falha ao enviar alerta Telegram após 3 tentativas: {detail}")
                 _log_telegram_error("network_error", detail)
+
+
+def enviar_trade_executada(trade: dict, modo: str = "phase1_auto") -> None:
+    """Alerta imediato quando uma ordem de compra ou venda é executada pelo Clyde.
+
+    trade deve ter: ticker, side, qty, price (opcional), reason (opcional).
+    modo: 'phase1_auto' ou 'phase0_readonly'.
+    """
+    side    = (trade.get("side") or "?").upper()
+    ticker  = trade.get("ticker") or "?"
+    qty     = trade.get("qty") or "?"
+    price   = trade.get("price")
+    reason  = (trade.get("reason") or "")[:80]
+
+    emoji   = "🟢" if side == "BUY" else "🔴"
+    price_s = f" @ ${price:.2f}" if price else ""
+    reason_s = f"\n  {reason}" if reason else ""
+
+    texto = (
+        f"{emoji} {side} executado — Clyde\n"
+        f"\n"
+        f"• Ticker: {ticker}\n"
+        f"• Qty: {qty}{price_s}{reason_s}\n"
+        f"• Modo: {modo}"
+    )
+    enviar_alerta(texto, silencioso=False)
 
 
 def enviar_oportunidade(oportunidades: list[dict], regime: str) -> None:

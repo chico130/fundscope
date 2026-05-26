@@ -117,52 +117,16 @@ jobs:
           git pull --rebase --autostash -X theirs origin main
           git push || (git pull --rebase --autostash -X theirs origin main && git push)
 
-      - name: Verificar se houve trades novos
-        if: steps.holiday_check.outputs.is_holiday != 'true'
-        id: check_trades
-        run: |
-          python3 - <<'EOF'
-          import json, os, datetime
-          try:
-              with open('diario_trades.json', encoding='utf-8') as f:
-                  data = json.load(f)
-              trades = data if isinstance(data, list) else data.get('trades', [])
-              n = len(trades)
-              print(f"Trades encontrados: {n}")
-              if n > 0:
-                  last = trades[-1]
-                  ts = last.get('timestamp') or last.get('datetime', '')
-                  if ts:
-                      try:
-                          dt = datetime.datetime.fromisoformat(ts.replace('Z','+00:00'))
-                          if dt.tzinfo is None:
-                              dt = dt.replace(tzinfo=datetime.timezone.utc)
-                          age_min = (datetime.datetime.now(datetime.timezone.utc) - dt).total_seconds() / 60
-                          if age_min <= 120:
-                              print(f'trade_recente=true (age {age_min:.0f}min)')
-                              with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
-                                  f.write('trade_recente=true\n')
-                              exit(0)
-                      except Exception as e:
-                          print(f'Erro ao parsear timestamp: {e}')
-          except Exception as e:
-              print(f'Erro: {e}')
-          print('trade_recente=false')
-          with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
-              f.write('trade_recente=false\n')
-          EOF
-
+      # ── Portfolio sync — corre SEMPRE no fim de cada ciclo ──────────────────
+      # Garante que trades fechadas, P/L e posições ficam visíveis no site
+      # mesmo quando não há trade nova neste ciclo.
       - name: Install portfolio dependencies
-        if: |
-          steps.holiday_check.outputs.is_holiday != 'true' &&
-          steps.check_trades.outputs.trade_recente == 'true'
+        if: steps.holiday_check.outputs.is_holiday != 'true'
         run: |
           pip install yfinance==0.2.54 google-genai>=1.10.0 python-dotenv 2>/dev/null || true
 
-      - name: Update portfolio após trade
-        if: |
-          steps.holiday_check.outputs.is_holiday != 'true' &&
-          steps.check_trades.outputs.trade_recente == 'true'
+      - name: Update portfolio
+        if: steps.holiday_check.outputs.is_holiday != 'true'
         env:
           T212_API_ID:         ${{ secrets.T212_API_ID }}
           T212_API_KEY:        ${{ secrets.T212_API_KEY }}
@@ -171,16 +135,13 @@ jobs:
           TELEGRAM_BOT_TOKEN:  ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID:    ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
-          echo "[TRADE DETECTADO] A actualizar portfolio.json e stats..."
           python update_portfolio.py || echo "[WARN] update_portfolio.py falhou mas continua"
 
-      - name: Commit portfolio após trade
-        if: |
-          steps.holiday_check.outputs.is_holiday != 'true' &&
-          steps.check_trades.outputs.trade_recente == 'true'
+      - name: Commit portfolio
+        if: steps.holiday_check.outputs.is_holiday != 'true'
         run: |
           git add portfolio.json symbol_cache.json data/beta/ || true
           git diff --staged --quiet && echo "Sem alteracoes no portfolio" && exit 0
-          git commit -m "chore: portfolio sync após trade $(date -u '+%Y-%m-%d %H:%M') UTC [skip ci]"
+          git commit -m "chore: portfolio sync $(date -u '+%Y-%m-%d %H:%M') UTC [skip ci]"
           git pull --rebase --autostash -X theirs origin main
           git push || (git pull --rebase --autostash -X theirs origin main && git push)
