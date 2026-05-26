@@ -1,192 +1,103 @@
 {
-  "timestamp": "2026-05-25T18:45:00.688727+00:00",
+  "timestamp": "2026-05-26T15:20:11.228321+00:00",
   "mode": "phase1_auto",
   "strategy_version": "v0.1.0",
   "note": "Fase 1 — execução automática activa. LIVE_TRADING=False (conta demo).",
   "regime": "bull_trending",
   "regime_alert": false,
   "regime_details": {
-    "spy_price": 745.64,
-    "ema200": 679.3,
-    "ema50": 709.96,
+    "spy_price": 750.14,
+    "ema200": 679.91,
+    "ema50": 711.54,
     "ema50_above_ema200": true,
-    "spy_pct_from_ema200": 9.77,
-    "atr_current": 7.4692,
-    "atr_ratio_vs_60d_mean": 0.8426,
-    "spy_return_20d": 0.0426,
-    "rsp_spy_ratio_chg_20d": -0.0181,
+    "spy_pct_from_ema200": 10.33,
+    "atr_current": 7.3386,
+    "atr_ratio_vs_60d_mean": 0.8291,
+    "spy_return_20d": 0.054,
+    "rsp_spy_ratio_chg_20d": -0.0182,
     "breadth_healthy": true
   },
   "watchlist_top5": [
     {
       "ticker": "MU",
       "sector": "XLK",
-      "price": 751.0,
-      "mom_1m": 0.5119,
-      "mom_3m": 0.7974,
-      "liq_usd_avg": 22909482462.0,
-      "score": 0.6846,
+      "price": 873.9,
+      "mom_1m": 0.666,
+      "mom_3m": 1.1201,
+      "liq_usd_avg": 23543285690.0,
+      "score": 0.813,
       "target_mean": 613.225,
       "target_median": 550.0,
       "target_high": 1100.0,
       "target_low": 249.0
     },
     {
-      "ticker": "DDOG",
-      "sector": "XLK",
-      "price": 222.32,
-      "mom_1m": 0.717,
-      "mom_3m": 1.1289,
-      "liq_usd_avg": 792809627.0,
-      "score": 0.6743,
-      "target_mean": 223.01941,
-      "target_median": 225.0,
-      "target_high": 320.0,
-      "target_low": 128.85
-    },
-    {
-      "ticker": "INTC",
-      "sector": "XLK",
-      "price": 119.84,
-      "mom_1m": 0.4519,
-      "mom_3m": 1.5984,
-      "liq_usd_avg": 8959765737.0,
-      "score": 0.6686,
-      "target_mean": 87.8619,
-      "target_median": 84.0,
-      "target_high": 150.0,
-      "target_low": 20.4
-    },
-    {
       "ticker": "AMD",
       "sector": "XLK",
-      "price": 467.51,
-      "mom_1m": 0.3442,
-      "mom_3m": 1.1863,
-      "liq_usd_avg": 11179626460.0,
-      "score": 0.5857,
+      "price": 491.12,
+      "mom_1m": 0.4677,
+      "mom_3m": 1.453,
+      "liq_usd_avg": 11138439126.0,
+      "score": 0.6825,
       "target_mean": 472.16666,
       "target_median": 482.5,
       "target_high": 625.0,
       "target_low": 225.0
     },
     {
-      "ticker": "FTNT",
+      "ticker": "INTC",
       "sector": "XLK",
-      "price": 133.93,
-      "mom_1m": 0.588,
-      "mom_3m": 0.7803,
-      "liq_usd_avg": 555237136.0,
-      "score": 0.5713,
-      "target_mean": 107.16667,
-      "target_median": 110.0,
-      "target_high": 130.0,
-      "target_low": 70.0
+      "price": 122.55,
+      "mom_1m": 0.4419,
+      "mom_3m": 1.6869,
+      "liq_usd_avg": 9185542831.0,
+      "score": 0.6776,
+      "target_mean": 87.8619,
+      "target_median": 84.0,
+      "target_high": 150.0,
+      "target_low": 20.4
+    },
+    {
+      "ticker": "DDOG",
+      "sector": "XLK",
+      "price": 224.09,
+      "mom_1m": 0.6892,
+      "mom_3m": 1.0015,
+      "liq_usd_avg": 780306088.0,
+      "score": 0.6464,
+      "target_mean": 223.01941,
+      "target_median": 225.0,
+      "target_high": 320.0,
+      "target_low": 128.85
+    },
+    {
+      "ticker": "ARM",
+      "sector": "XLK",
+      "price": 314.4,
+      "mom_1m": 0.4564,
+      "mom_3m": 1.4668,
+      "liq_usd_avg": 1697615561.0,
+      "score": 0.6154,
+      "target_mean": 232.13568,
+      "target_median": 250.0,
+      "target_high": 326.0,
+      "target_low": 125.0
     }
   ],
   "barrier_exits": [],
-  "buy_opportunities": [
-    {
-      "ticker": "HPE",
-      "sector": "XLK",
-      "watchlist_score": 0.4554,
-      "mom_1m": 0.3345,
-      "mom_3m": 0.8678,
-      "signal_strength": 0.694,
-      "style": "MOMENTUM",
-      "reasons": [
-        "Breakout: RSI-14 78.8 ≥ 58 — momentum validado",
-        "Alinhamento total: price > EMA-20 > EMA-50 > EMA-200",
-        "Volume 1.9× ≥ 1.5× — confirmação de volume"
-      ],
-      "technicals": {
-        "rsi_14": 78.81,
-        "ema50_above_ema200": true,
-        "ema20_above_ema50": true,
-        "price_above_ema20": true,
-        "volume_ratio_vs_avg": 1.94,
-        "atr_14": 1.4385,
-        "rs_bullish": true
-      },
-      "last_price": 37.58
-    },
-    {
-      "ticker": "F",
-      "sector": "XLY",
-      "watchlist_score": 0.2704,
-      "mom_1m": 0.2212,
-      "mom_3m": 0.0647,
-      "signal_strength": 0.654,
-      "style": "MOMENTUM",
-      "reasons": [
-        "Breakout: RSI-14 69.9 ≥ 58 — momentum validado",
-        "Alinhamento total: price > EMA-20 > EMA-50 > EMA-200",
-        "Volume 1.5× ≥ 1.5× — confirmação de volume"
-      ],
-      "technicals": {
-        "rsi_14": 69.93,
-        "ema50_above_ema200": true,
-        "ema20_above_ema50": true,
-        "price_above_ema20": true,
-        "volume_ratio_vs_avg": 1.54,
-        "atr_14": 0.6295,
-        "rs_bullish": true
-      },
-      "last_price": 14.93
-    }
-  ],
-  "near_misses": [
-    {
-      "ticker": "ADI",
-      "sector": "XLK",
-      "watchlist_score": 0.2038,
-      "rule": "B",
-      "blocking_reason": "Volume 1.5× — falta 0.33× para ≥1.8",
-      "proximity_pct": 82,
-      "technicals": {
-        "rsi_14": 50.89,
-        "ema_20": 401.2369,
-        "ema50": 376.2261,
-        "ema200": 296.4546,
-        "ema20_above_ema50": true,
-        "ema50_above_ema200": true,
-        "price_above_ema20": false,
-        "volume_ratio_vs_avg": 1.47,
-        "volume_sma_10": 5083590.0,
-        "volume_ratio": 1.2,
-        "atr_14": 13.9776,
-        "last_price": 397.07,
-        "rs_bullish": false
-      },
-      "last_price": 397.07
-    }
-  ],
-  "n_positions": 1,
-  "open_trades": 11,
+  "buy_opportunities": [],
+  "near_misses": [],
+  "n_positions": 0,
+  "open_trades": 0,
   "risk_status": {
     "ok": true,
-    "total_equity_eur": 3524.21,
+    "total_equity_eur": 5009.86,
     "warnings": []
   },
-  "signals": [
-    {
-      "ticker": "ARM_US_EQ",
-      "action": "reduce_watch",
-      "size_factor": 1.0,
-      "signals": [
-        "RSI-14 sobrecomprado (76.6) — risco de correcção",
-        "Tendência ascendente: EMA-50 > EMA-200"
-      ],
-      "technicals": {
-        "rsi_14": 76.63,
-        "ema50_above_ema200": true,
-        "volume_ratio_vs_avg": 1.16
-      }
-    }
-  ],
+  "signals": [],
   "data_sources": {
     "prices": "finnhub+yfinance",
-    "t212_sync": "2026-05-25T18:43:09.709756+00:00",
+    "t212_sync": "2026-05-26T15:18:26.747576+00:00",
     "stale_prices": []
   },
   "cro": {
@@ -200,63 +111,5 @@
       "Stop Loss (fixo (fallback)): 5.0% abaixo da entrada."
     ]
   },
-  "executed_trades": [
-    {
-      "id": "2026-05-25T18:44:53Z_ARM_US_EQ_SELL",
-      "datetime": "2026-05-25T18:44:53.368748+00:00",
-      "ticker": "ARM_US_EQ",
-      "side": "SELL",
-      "qty": 0.4886,
-      "price": null,
-      "env": "demo",
-      "strategy_version": "v0.1.0",
-      "reason": "RSI sobrecomprado (76.6)",
-      "context": {
-        "rsi_14": 76.63
-      },
-      "result_eur": null,
-      "result_pct": null,
-      "result_after_minutes": 1440,
-      "closed_at": null,
-      "postmortem": null,
-      "atr_at_entry": null,
-      "stop_loss_price": null,
-      "atr_trigger_price": null,
-      "atr_target_price": null,
-      "break_even_active": false
-    },
-    {
-      "id": "2026-05-25T18:44:59Z_F_US_EQ_BUY",
-      "datetime": "2026-05-25T18:44:59.169083+00:00",
-      "ticker": "F_US_EQ",
-      "side": "BUY",
-      "qty": 28.953,
-      "price": 14.93,
-      "env": "demo",
-      "strategy_version": "v0.1.0",
-      "reason": "Breakout: RSI-14 69.9 ≥ 58 — momentum validado | Alinhamento total: price > EMA-20 > EMA-50 > EMA-200 | Volume 1.5× ≥ 1.5× — confirmação de volume",
-      "context": {
-        "rsi_14": 69.93,
-        "atr_14": 0.6295,
-        "volume_ratio_vs_avg": 1.54,
-        "ema20_above_ema50": true,
-        "price_above_ema20": true,
-        "regime": "bull_trending",
-        "watchlist_score": 0.2704,
-        "signal_strength": 0.654,
-        "style": "MOMENTUM",
-        "stop_loss_pct": 8.43
-      },
-      "result_eur": null,
-      "result_pct": null,
-      "result_after_minutes": 1440,
-      "closed_at": null,
-      "postmortem": null,
-      "atr_at_entry": 0.6295,
-      "stop_loss_price": 13.9857,
-      "atr_trigger_price": 15.5595,
-      "atr_target_price": 16.8185,
-      "break_even_active": false
-    }
-  ]
+  "executed_trades": []
 }
