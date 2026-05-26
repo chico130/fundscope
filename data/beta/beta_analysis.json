@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-05-26T22:18:22.469204+00:00",
+  "timestamp": "2026-05-26T22:26:46.208133+00:00",
   "mode": "phase1_auto",
   "strategy_version": "v0.1.0",
   "note": "Fase 1 — execução automática activa. LIVE_TRADING=False (conta demo).",
@@ -122,7 +122,7 @@
   "signals": [],
   "data_sources": {
     "prices": "finnhub+yfinance",
-    "t212_sync": "2026-05-26T22:16:38.172132+00:00",
+    "t212_sync": "2026-05-26T22:25:01.870036+00:00",
     "stale_prices": []
   },
   "cro": {
