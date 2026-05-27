@@ -16,6 +16,7 @@ import urllib.parse
 import secrets
 import hashlib
 import time as _time
+import threading
 from datetime import datetime, timezone, timedelta
 
 try:
@@ -67,10 +68,22 @@ ALLOWED_LOGS = {
 # ---------------------------------------------------------------------------
 # AI Insights — on-demand Gemini endpoint (/api/ai-insight?ticker=XYZ)
 # ---------------------------------------------------------------------------
-AI_INSIGHTS_PATH  = 'data/beta/ai_insights.json'
-AI_INSIGHTS_TTL_H = 8
-AI_GEMINI_MODEL   = 'gemini-2.5-flash'
-SYMBOL_CACHE_PATH = 'symbol_cache.json'
+AI_INSIGHTS_PATH      = 'data/beta/ai_insights.json'
+AI_INSIGHTS_TTL_H     = 8
+AI_INSIGHTS_STALE_MAX_H = 72
+AI_GEMINI_MODEL       = 'gemini-2.5-flash'
+SYMBOL_CACHE_PATH     = 'symbol_cache.json'
+
+# Single-flight: one Gemini call per ticker regardless of concurrent requests
+_INFLIGHT: dict[str, threading.Event] = {}
+_INFLIGHT_LOCK = threading.Lock()
+
+# Serialises the read-modify-write on the JSON file across concurrent ticker owners
+_CACHE_WRITE_LOCK = threading.Lock()
+
+# In-memory layer: skip JSON parse on every cache-hit request
+_AI_CACHE: dict | None = None
+_AI_CACHE_MTIME: float = 0.0
 
 
 def _strip_fences(text: str) -> str:
@@ -97,20 +110,41 @@ def _is_insight_fresh(entry: dict) -> bool:
     return (datetime.now(timezone.utc) - dt) < timedelta(hours=AI_INSIGHTS_TTL_H)
 
 
+def _is_insight_within_stale_max(entry: dict) -> bool:
+    if not entry:
+        return False
+    dt = _parse_iso(entry.get('generated_at', ''))
+    if not dt:
+        return False
+    return (datetime.now(timezone.utc) - dt) < timedelta(hours=AI_INSIGHTS_STALE_MAX_H)
+
+
 def _load_ai_cache() -> dict:
+    global _AI_CACHE, _AI_CACHE_MTIME
     try:
+        mtime = os.stat(AI_INSIGHTS_PATH).st_mtime
+        if _AI_CACHE is not None and mtime == _AI_CACHE_MTIME:
+            return _AI_CACHE
         with open(AI_INSIGHTS_PATH, 'r', encoding='utf-8') as f:
-            return json.load(f)
-    except Exception:
+            data = json.load(f)
+        _AI_CACHE = data
+        _AI_CACHE_MTIME = mtime
+        return data
+    except FileNotFoundError:
         return {'tickers': {}}
+    except Exception:
+        return _AI_CACHE if _AI_CACHE is not None else {'tickers': {}}
 
 
 def _save_ai_cache(cache: dict) -> None:
+    global _AI_CACHE, _AI_CACHE_MTIME
     os.makedirs('data/beta', exist_ok=True)
     tmp = AI_INSIGHTS_PATH + '.tmp'
     with open(tmp, 'w', encoding='utf-8') as f:
         json.dump(cache, f, ensure_ascii=False, indent=2)
     os.replace(tmp, AI_INSIGHTS_PATH)
+    _AI_CACHE = cache
+    _AI_CACHE_MTIME = os.stat(AI_INSIGHTS_PATH).st_mtime
 
 
 def _static_meta_from_symbol_cache(ticker: str) -> dict:
@@ -144,21 +178,22 @@ def _build_ai_prompt(ticker: str, meta: dict) -> str:
     )
 
 
-def _call_gemini_insight(ticker: str, meta: dict) -> dict | None:
+def _call_gemini_insight(ticker: str, meta: dict) -> tuple[dict | None, str | None]:
+    """Returns (result, error_reason). On success: (dict, None). On failure: (None, reason_str)."""
     api_key = os.environ.get('GEMINI_API_KEY', '')
     if not api_key:
         print('[ai-insight] GEMINI_API_KEY não definido — sem chamada API', flush=True)
-        return None
+        return None, 'no_api_key'
     raw_text = ''
     try:
         from google import genai
         from google.genai import types
         client = genai.Client(api_key=api_key)
-        raw_text = ''
         resp = client.models.generate_content(
             model=AI_GEMINI_MODEL,
             contents=_build_ai_prompt(ticker, meta),
             config=types.GenerateContentConfig(
+                http_options=types.HttpOptions(timeout=20),  # 20 s hard ceiling
                 response_mime_type='application/json',
                 temperature=0.4,
                 max_output_tokens=1500,
@@ -167,7 +202,7 @@ def _call_gemini_insight(ticker: str, meta: dict) -> dict | None:
         raw_text = (resp.text or '').strip()
         if not raw_text:
             print(f'[ai-insight] resposta vazia para {ticker}', flush=True)
-            return None
+            return None, 'invalid_response'
         data = json.loads(_strip_fences(raw_text))
         if not isinstance(data, dict):
             raise ValueError(f'resposta não é um dict: {type(data)}')
@@ -175,15 +210,15 @@ def _call_gemini_insight(ticker: str, meta: dict) -> dict | None:
             'sentiment': str(data.get('sentiment', '')).strip()[:500],
             'history':   str(data.get('history',   '')).strip()[:500],
             'social':    str(data.get('social',    '')).strip()[:500],
-        }
+        }, None
     except json.JSONDecodeError as e:
         preview = raw_text[:300].replace('\n', '\\n') if raw_text else '<vazio>'
         print(f'[ai-insight] JSON inválido de Gemini para {ticker}: {e}', flush=True)
         print(f'[ai-insight] raw ({len(raw_text)} chars): {preview}', flush=True)
-        return None
+        return None, 'invalid_response'
     except Exception as e:
         print(f'[ai-insight] Gemini falhou para {ticker}: {e}', flush=True)
-        return None
+        return None, 'gemini_unavailable'
 
 
 def _verify_credentials(username: str, password: str) -> bool:
@@ -407,44 +442,77 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self._send_json({'error': 'ticker obrigatório'}, 400)
             return
 
-        cache     = _load_ai_cache()
-        by_ticker = cache.setdefault('tickers', {})
-        entry     = by_ticker.get(ticker)
-
+        # ── Fast path: memory/disk cache, no Gemini call needed ──────────────
+        entry = _load_ai_cache().get('tickers', {}).get(ticker)
         if _is_insight_fresh(entry):
             self._send_json({**entry, 'cached': True})
             return
 
-        print(f'[ai-insight] cache miss / stale para {ticker} — a chamar Gemini…', flush=True)
-        meta   = _static_meta_from_symbol_cache(ticker)
-        result = _call_gemini_insight(ticker, meta)
-
-        if result is None:
-            if entry:
-                # Return stale rather than nothing
-                self._send_json({**entry, 'cached': True, 'stale': True})
+        # ── Single-flight: prevent concurrent stampedes for the same ticker ──
+        with _INFLIGHT_LOCK:
+            existing_event = _INFLIGHT.get(ticker)
+            if existing_event is not None:
+                wait_event = existing_event   # waiter
             else:
-                self._send_json({'error': 'AI insight indisponível — tenta mais tarde'}, 503)
+                wait_event = None             # owner
+                _INFLIGHT[ticker] = threading.Event()
+
+        if wait_event is not None:
+            # Waiter path: another thread is already calling Gemini — block until done
+            print(f'[ai-insight] {ticker} já em voo — a aguardar…', flush=True)
+            wait_event.wait(timeout=25)
+            fresh_entry = _load_ai_cache().get('tickers', {}).get(ticker)
+            if fresh_entry:
+                self._send_json({**fresh_entry, 'cached': True})
+            else:
+                self._send_json({'error': 'AI insight indisponível — tenta mais tarde',
+                                 'reason': 'gemini_unavailable'}, 503)
             return
 
-        now_iso = datetime.now(timezone.utc).isoformat().replace('+00:00', 'Z')
-        new_entry = {
-            'ticker':       ticker,
-            'name':         meta['name'],
-            'generated_at': now_iso,
-            'model':        AI_GEMINI_MODEL,
-            **result,
-        }
-        by_ticker[ticker] = new_entry
-        cache['generated_at'] = now_iso
-
+        # ── Owner path: this thread is responsible for calling Gemini ─────────
         try:
-            _save_ai_cache(cache)
-        except Exception as e:
-            print(f'[ai-insight] falha a guardar cache: {e}', flush=True)
+            print(f'[ai-insight] cache miss / stale para {ticker} — a chamar Gemini…', flush=True)
+            meta = _static_meta_from_symbol_cache(ticker)
+            result, reason = _call_gemini_insight(ticker, meta)
 
-        print(f'[ai-insight] {ticker} gerado e cacheado', flush=True)
-        self._send_json({**new_entry, 'cached': False})
+            if result is None:
+                # Re-read: a concurrent owner for a different ticker may have written by now
+                stale_entry = _load_ai_cache().get('tickers', {}).get(ticker)
+                if stale_entry and _is_insight_within_stale_max(stale_entry):
+                    self._send_json({**stale_entry, 'cached': True, 'stale': True})
+                else:
+                    self._send_json({'error': 'AI insight indisponível — tenta mais tarde',
+                                     'reason': reason}, 503)
+                return
+
+            now_iso = datetime.now(timezone.utc).isoformat().replace('+00:00', 'Z')
+            new_entry = {
+                'ticker':       ticker,
+                'name':         meta['name'],
+                'generated_at': now_iso,
+                'model':        AI_GEMINI_MODEL,
+                **result,
+            }
+
+            # Write lock: re-read inside lock so we never overwrite a sibling ticker's entry
+            with _CACHE_WRITE_LOCK:
+                merged = _load_ai_cache()
+                merged.setdefault('tickers', {})[ticker] = new_entry
+                merged['generated_at'] = now_iso
+                try:
+                    _save_ai_cache(merged)
+                except Exception as e:
+                    print(f'[ai-insight] falha a guardar cache: {e}', flush=True)
+
+            print(f'[ai-insight] {ticker} gerado e cacheado', flush=True)
+            self._send_json({**new_entry, 'cached': False})
+
+        finally:
+            # Always release waiters, even if Gemini threw an unexpected exception
+            with _INFLIGHT_LOCK:
+                ev = _INFLIGHT.pop(ticker, None)
+            if ev is not None:
+                ev.set()
 
     def _send_json(self, data, status=200):
         body = json.dumps(data).encode('utf-8')
