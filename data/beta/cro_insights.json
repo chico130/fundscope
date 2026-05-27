@@ -1,15 +1,16 @@
 {
-  "generated_at": "2026-05-27T16:34:41Z",
+  "generated_at": "2026-05-27T18:43:07Z",
   "regime": "bull_trending",
-  "risk_factor": 1.0417,
-  "win_rate_7d": 0.5,
+  "risk_factor": 1.2,
+  "win_rate_7d": 1.0,
   "drawdown_atual": 0.0,
-  "trades_analisados": 0,
-  "trades_recentes": 0,
+  "trades_analisados": 1,
+  "trades_recentes": 1,
   "insights": [
-    "Win rate 7d em 50.0% — acima do alvo elástico (48.0%). Factor de risco positivo: 104%.",
-    "Sem trades fechados — sem lições disponíveis ainda.",
-    "Tamanho máximo CRO: 11.5% da equity (base 11.0% × factor 104%).",
+    "Win rate 7d em 100.0% — acima do alvo elástico (48.0%). Factor de risco positivo: 120%.",
+    "Duração média dos trades vencedores: 4500min (todos: 4500min).",
+    "Melhor ticker acumulado: ARM_US_EQ (+9.86€).",
+    "Tamanho máximo CRO: 13.2% da equity (base 11.0% × factor 120%).",
     "Stop Loss (fixo (fallback)): 5.0% abaixo da entrada."
   ]
 }
