@@ -1,4 +1,4 @@
-const CACHE_NAME = 'fundscope-v2';
+const CACHE_NAME = 'fundscope-v3';
 
 const STATIC_ASSETS = [
   '/',
