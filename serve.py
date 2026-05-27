@@ -71,7 +71,6 @@ AI_INSIGHTS_PATH  = 'data/beta/ai_insights.json'
 AI_INSIGHTS_TTL_H = 8
 AI_GEMINI_MODEL   = 'gemini-2.5-flash'
 SYMBOL_CACHE_PATH = 'symbol_cache.json'
-GEMINI_API_KEY    = os.environ.get('GEMINI_API_KEY', '')
 
 
 def _strip_fences(text: str) -> str:
@@ -146,14 +145,15 @@ def _build_ai_prompt(ticker: str, meta: dict) -> str:
 
 
 def _call_gemini_insight(ticker: str, meta: dict) -> dict | None:
-    if not GEMINI_API_KEY:
+    api_key = os.environ.get('GEMINI_API_KEY', '')
+    if not api_key:
         print('[ai-insight] GEMINI_API_KEY não definido — sem chamada API', flush=True)
         return None
     raw_text = ''
     try:
         from google import genai
         from google.genai import types
-        client = genai.Client(api_key=GEMINI_API_KEY)
+        client = genai.Client(api_key=api_key)
         raw_text = ''
         resp = client.models.generate_content(
             model=AI_GEMINI_MODEL,

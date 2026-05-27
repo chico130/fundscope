@@ -225,8 +225,8 @@ Antes de fazer merge de qualquer alteração ao bot, confirmar:
 - Antes de correr: editar `LABEL_HORIZON_DAYS = 57` em retrain_bonnie.py (linha 68)
 
 ---
-## Auto-Sync: 2026-05-27 21:35
+## Auto-Sync: 2026-05-27 21:52
 - PC: DESKTOP-0514V9J
-- Ultimo commit: 4f29c28 - 2705(2)
+- Ultimo commit: 9e5bdd3 - 2705(3)
 - Learner: verificar data/beta/ para runs recentes
 ---

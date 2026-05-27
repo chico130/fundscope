@@ -128,5 +128,5 @@ jobs:
               -o StrictHostKeyChecking=no \
               -o ConnectTimeout=15 \
               ubuntu@134.98.141.58 \
-              "cd ~/fundscope && git fetch origin && git reset --hard origin/main && echo 'VPS actualizada'"
+              "cd ~/fundscope && git fetch origin && git reset --hard origin/main && sudo systemctl restart fundscope-web && echo 'VPS actualizada'"
           rm -f /tmp/vps_key.pem
