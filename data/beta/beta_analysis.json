@@ -1,20 +1,20 @@
 {
-  "timestamp": "2026-05-26T22:47:42.399019+00:00",
+  "timestamp": "2026-05-27T13:36:47.336533+00:00",
   "mode": "phase1_auto",
   "strategy_version": "v0.1.0",
   "note": "Fase 1 — execução automática activa. LIVE_TRADING=False (conta demo).",
   "regime": "bull_trending",
   "regime_alert": false,
   "regime_details": {
-    "spy_price": 750.59,
-    "ema200": 679.91,
-    "ema50": 711.56,
+    "spy_price": 750.89,
+    "ema200": 680.32,
+    "ema50": 713.1,
     "ema50_above_ema200": true,
-    "spy_pct_from_ema200": 10.4,
-    "atr_current": 7.3386,
-    "atr_ratio_vs_60d_mean": 0.8291,
-    "spy_return_20d": 0.0547,
-    "rsp_spy_ratio_chg_20d": -0.0193,
+    "spy_pct_from_ema200": 10.37,
+    "atr_current": 6.4548,
+    "atr_ratio_vs_60d_mean": 0.732,
+    "spy_return_20d": 0.0552,
+    "rsp_spy_ratio_chg_20d": -0.0153,
     "breadth_healthy": true
   },
   "watchlist_top5": [
@@ -86,32 +86,7 @@
   ],
   "barrier_exits": [],
   "buy_opportunities": [],
-  "near_misses": [
-    {
-      "ticker": "COST",
-      "sector": "XLP",
-      "watchlist_score": 0.201,
-      "rule": "A",
-      "blocking_reason": "RSI-14=44.0 — faltam 10.0 pts para ≤34",
-      "proximity_pct": 0,
-      "technicals": {
-        "rsi_14": 43.98,
-        "ema_20": 1030.3203,
-        "ema50": 1011.7842,
-        "ema200": 959.0521,
-        "ema20_above_ema50": true,
-        "ema50_above_ema200": true,
-        "price_above_ema20": false,
-        "volume_ratio_vs_avg": 1.35,
-        "volume_sma_10": 2163986.0,
-        "volume_ratio": 1.25,
-        "atr_14": 22.7874,
-        "last_price": 1002.93,
-        "rs_bullish": false
-      },
-      "last_price": 1002.93
-    }
-  ],
+  "near_misses": [],
   "n_positions": 0,
   "open_trades": 0,
   "risk_status": {
@@ -122,7 +97,7 @@
   "signals": [],
   "data_sources": {
     "prices": "finnhub+yfinance",
-    "t212_sync": "2026-05-26T22:25:01.870036+00:00",
+    "t212_sync": "2026-05-27T13:35:02.960445+00:00",
     "stale_prices": []
   },
   "cro": {
