@@ -1,7 +1,7 @@
 {
-  "updated": "2026-05-27T21:00:00Z",
+  "updated": "2026-05-27T14:55:13.107312Z",
   "slot": "meio-dia",
-  "marketOpen": false,
+  "marketOpen": true,
   "marketHoliday": false,
   "lastCloseDate": "2026-05-27",
   "sectors": {
@@ -10,69 +10,69 @@
       "icon": "💻",
       "color": "#4f98a3",
       "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
-      "avgChange": -0.3,
+      "avgChange": -0.31,
       "gainers": [
         {
-          "ticker": "MU",
-          "price": 927.38,
-          "changePct": 3.52,
-          "pc": 895.88
-        },
-        {
           "ticker": "NOW",
-          "price": 102.72,
-          "changePct": 2.8,
+          "price": 104.0,
+          "changePct": 4.08,
           "pc": 99.92
         },
         {
+          "ticker": "TSLA",
+          "price": 444.53,
+          "changePct": 2.52,
+          "pc": 433.59
+        },
+        {
           "ticker": "CRM",
-          "price": 183.04,
-          "changePct": 2.21,
+          "price": 182.33,
+          "changePct": 1.81,
           "pc": 179.08
         },
         {
           "ticker": "AAPL",
-          "price": 311.76,
-          "changePct": 1.11,
+          "price": 312.67,
+          "changePct": 1.41,
           "pc": 308.33
         },
         {
-          "ticker": "TSLA",
-          "price": 438.41,
-          "changePct": 1.11,
-          "pc": 433.59
+          "ticker": "MU",
+          "price": 908.3,
+          "changePct": 1.39,
+          "pc": 895.88
         }
       ],
       "losers": [
         {
           "ticker": "QCOM",
-          "price": 229.48,
-          "changePct": -7.77,
+          "price": 227.99,
+          "changePct": -8.37,
           "pc": 248.82
         },
         {
           "ticker": "INTC",
-          "price": 119.71,
-          "changePct": -3.08,
+          "price": 119.54,
+          "changePct": -3.22,
           "pc": 123.52
         },
         {
           "ticker": "NVDA",
-          "price": 210.74,
-          "changePct": -1.92,
+          "price": 210.02,
+          "changePct": -2.25,
           "pc": 214.86
         },
         {
-          "ticker": "ORCL",
-          "price": 189.83,
-          "changePct": -1.67,
-          "pc": 193.06
+          "ticker": "AMD",
+          "price": 496.0,
+          "changePct": -1.57,
+          "pc": 503.89
         },
         {
-          "ticker": "AMD",
-          "price": 496.91,
-          "changePct": -1.39,
-          "pc": 503.89
+          "ticker": "ORCL",
+          "price": 191.28,
+          "changePct": -0.92,
+          "pc": 193.06
         }
       ],
       "sentiment": {
@@ -163,69 +163,69 @@
       "icon": "🏦",
       "color": "#437a22",
       "image": "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&q=80",
-      "avgChange": -0.55,
+      "avgChange": -0.15,
       "gainers": [
         {
           "ticker": "COF",
-          "price": 189.53,
-          "changePct": 1.67,
+          "price": 190.64,
+          "changePct": 2.26,
           "pc": 186.42
         },
         {
           "ticker": "AXP",
-          "price": 314.61,
-          "changePct": 1.25,
+          "price": 315.21,
+          "changePct": 1.45,
           "pc": 310.72
         },
         {
           "ticker": "V",
-          "price": 330.07,
-          "changePct": 1.1,
+          "price": 329.96,
+          "changePct": 1.07,
           "pc": 326.48
         },
         {
           "ticker": "MA",
-          "price": 496.38,
-          "changePct": 0.68,
+          "price": 495.95,
+          "changePct": 0.6,
           "pc": 493.01
         },
         {
           "ticker": "PNC",
-          "price": 221.3,
-          "changePct": 0.22,
+          "price": 222.15,
+          "changePct": 0.6,
           "pc": 220.81
         }
       ],
       "losers": [
         {
           "ticker": "SCHW",
-          "price": 85.94,
-          "changePct": -3.87,
+          "price": 86.64,
+          "changePct": -3.09,
           "pc": 89.4
         },
         {
           "ticker": "JPM",
-          "price": 298.34,
-          "changePct": -2.74,
+          "price": 301.97,
+          "changePct": -1.56,
           "pc": 306.74
         },
         {
           "ticker": "WFC",
-          "price": 76.21,
-          "changePct": -1.69,
+          "price": 76.43,
+          "changePct": -1.41,
           "pc": 77.52
         },
         {
-          "ticker": "MS",
-          "price": 198.88,
-          "changePct": -1.42,
-          "pc": 201.76
+          "ticker": "C",
+          "price": 125.66,
+          "changePct": -0.95,
+          "pc": 126.86
         },
         {
-          "ticker": "C",
-          "price": 125.15,
-          "changePct": -1.35,
-          "pc": 126.86
+          "ticker": "MS",
+          "price": 200.62,
+          "changePct": -0.57,
+          "pc": 201.76
         }
       ],
       "sentiment": {
@@ -316,68 +316,68 @@
       "icon": "⚡",
       "color": "#c47d1a",
       "image": "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80",
-      "avgChange": -1.23,
+      "avgChange": -1.19,
       "gainers": [
         {
-          "ticker": "SO",
-          "price": 94.26,
-          "changePct": 0.18,
-          "pc": 94.09
-        },
-        {
           "ticker": "DUK",
-          "price": 125.13,
-          "changePct": 0.13,
+          "price": 124.91,
+          "changePct": -0.05,
           "pc": 124.97
         },
         {
+          "ticker": "SO",
+          "price": 94.03,
+          "changePct": -0.06,
+          "pc": 94.09
+        },
+        {
           "ticker": "D",
-          "price": 67.15,
-          "changePct": -0.19,
+          "price": 67.07,
+          "changePct": -0.31,
           "pc": 67.28
         },
         {
-          "ticker": "NEE",
-          "price": 87.33,
-          "changePct": -0.37,
-          "pc": 87.65
+          "ticker": "PSX",
+          "price": 173.22,
+          "changePct": -0.38,
+          "pc": 173.88
         },
         {
-          "ticker": "AEP",
-          "price": 130.27,
+          "ticker": "NEE",
+          "price": 87.22,
           "changePct": -0.48,
-          "pc": 130.9
+          "pc": 87.65
         }
       ],
       "losers": [
         {
           "ticker": "HAL",
-          "price": 39.18,
-          "changePct": -4.63,
+          "price": 39.44,
+          "changePct": -3.98,
           "pc": 41.08
         },
         {
           "ticker": "SLB",
-          "price": 56.36,
-          "changePct": -2.79,
+          "price": 55.89,
+          "changePct": -3.6,
           "pc": 57.98
         },
         {
           "ticker": "VLO",
-          "price": 236.32,
-          "changePct": -2.12,
+          "price": 237.03,
+          "changePct": -1.83,
           "pc": 241.45
         },
         {
-          "ticker": "OXY",
-          "price": 56.52,
-          "changePct": -1.64,
-          "pc": 57.46
+          "ticker": "XOM",
+          "price": 147.68,
+          "changePct": -1.42,
+          "pc": 149.81
         },
         {
           "ticker": "CVX",
-          "price": 181.98,
-          "changePct": -1.48,
+          "price": 182.23,
+          "changePct": -1.34,
           "pc": 184.71
         }
       ],
@@ -469,69 +469,69 @@
       "icon": "🏥",
       "color": "#a13544",
       "image": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80",
-      "avgChange": 0.81,
+      "avgChange": 0.56,
       "gainers": [
         {
-          "ticker": "LLY",
-          "price": 1088.34,
-          "changePct": 2.22,
-          "pc": 1064.74
-        },
-        {
           "ticker": "PFE",
-          "price": 26.37,
-          "changePct": 2.01,
+          "price": 26.42,
+          "changePct": 2.19,
           "pc": 25.85
         },
         {
+          "ticker": "LLY",
+          "price": 1086.42,
+          "changePct": 2.04,
+          "pc": 1064.74
+        },
+        {
           "ticker": "MRK",
-          "price": 121.89,
-          "changePct": 1.81,
+          "price": 121.37,
+          "changePct": 1.38,
           "pc": 119.72
         },
         {
           "ticker": "UNH",
-          "price": 383.23,
-          "changePct": 1.69,
+          "price": 381.8,
+          "changePct": 1.31,
           "pc": 376.86
         },
         {
           "ticker": "AMGN",
-          "price": 339.92,
-          "changePct": 1.19,
+          "price": 339.68,
+          "changePct": 1.11,
           "pc": 335.94
         }
       ],
       "losers": [
         {
           "ticker": "ISRG",
-          "price": 428.96,
-          "changePct": -1.76,
+          "price": 426.49,
+          "changePct": -2.32,
           "pc": 436.64
         },
         {
           "ticker": "ABT",
-          "price": 86.23,
-          "changePct": -0.51,
+          "price": 85.97,
+          "changePct": -0.81,
           "pc": 86.67
         },
         {
-          "ticker": "ABBV",
-          "price": 213.32,
-          "changePct": 0.1,
-          "pc": 213.12
-        },
-        {
           "ticker": "MDT",
-          "price": 77.85,
-          "changePct": 0.32,
+          "price": 77.45,
+          "changePct": -0.19,
           "pc": 77.6
         },
         {
-          "ticker": "BMY",
-          "price": 58.42,
-          "changePct": 0.67,
-          "pc": 58.03
+          "ticker": "DHR",
+          "price": 172.85,
+          "changePct": 0.02,
+          "pc": 172.81
+        },
+        {
+          "ticker": "TMO",
+          "price": 448.73,
+          "changePct": 0.12,
+          "pc": 448.18
         }
       ],
       "sentiment": {
@@ -582,6 +582,15 @@
         {
           "source": "SeekingAlpha",
           "ticker": "JNJ",
+          "headline": "Bristol-Myers Squibb Is Quietly Building Its Next Growth Cycle",
+          "summary": "Bristol-Myers Squibb Company targets upper-end 2026 guidance on Breyanzi, Camzyos & Reblozyl growth; ASCO 2026 catalysts ahead. Click for this BMY update.",
+          "url": "https://finnhub.io/api/news?id=eb835abc4a8cf892d36abcc8ce6798e1b478583487308e22ff961d34f31b780c",
+          "datetime": 1779876570,
+          "image": "https://static.seekingalpha.com/cdn/s3/uploads/getty_images/2212125572/image_2212125572.jpg?io=getty-c-w1536"
+        },
+        {
+          "source": "SeekingAlpha",
+          "ticker": "JNJ",
           "headline": "Best Dividend Aristocrats: May 2026",
           "summary": "The Dividend Aristocrats underperformed SPY YTD, returning 3.34% versus SPY's 10.39%, though 22 Aristocrats still posted double-digit gains.",
           "url": "https://finnhub.io/api/news?id=4f51e0755e4c6462f6df6804c20c6e71683e99076fdc3e862f826a60fbf02c75",
@@ -605,15 +614,6 @@
           "url": "https://finnhub.io/api/news?id=7569091814797156b9234a9f8d13a625e0ba2688d566103986f6a29c86cc864e",
           "datetime": 1779857038,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Yahoo",
-          "ticker": "PFE",
-          "headline": "3 Dividend Stocks Yielding Above 5% to Scoop Up Now",
-          "summary": "These three dividend stocks combine strong yields with resilient businesses.",
-          "url": "https://finnhub.io/api/news?id=50c8b2e292dfccbca4f94b335fa7a68203e302e00360955e6231c57c29f1e12b",
-          "datetime": 1779838202,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         }
       ]
     },
@@ -622,68 +622,68 @@
       "icon": "🛒",
       "color": "#7a5c9e",
       "image": "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&q=80",
-      "avgChange": 1.6,
+      "avgChange": 1.59,
       "gainers": [
         {
+          "ticker": "TGT",
+          "price": 130.31,
+          "changePct": 3.89,
+          "pc": 125.43
+        },
+        {
           "ticker": "PG",
-          "price": 148.07,
-          "changePct": 3.57,
+          "price": 147.72,
+          "changePct": 3.33,
           "pc": 142.96
         },
         {
           "ticker": "LOW",
-          "price": 219.37,
-          "changePct": 3.44,
+          "price": 218.07,
+          "changePct": 2.82,
           "pc": 212.08
         },
         {
           "ticker": "NKE",
-          "price": 46.35,
-          "changePct": 3.14,
+          "price": 46.19,
+          "changePct": 2.78,
           "pc": 44.94
         },
         {
-          "ticker": "TGT",
-          "price": 129.05,
-          "changePct": 2.89,
-          "pc": 125.43
-        },
-        {
           "ticker": "HD",
-          "price": 319.39,
-          "changePct": 2.85,
+          "price": 317.84,
+          "changePct": 2.35,
           "pc": 310.54
         }
       ],
       "losers": [
         {
           "ticker": "TJX",
-          "price": 158.18,
-          "changePct": -0.5,
+          "price": 158.4,
+          "changePct": -0.36,
           "pc": 158.97
         },
         {
           "ticker": "WMT",
-          "price": 118.47,
-          "changePct": -0.08,
+          "price": 118.26,
+          "changePct": -0.26,
           "pc": 118.57
         },
         {
           "ticker": "PM",
-          "price": 181.46,
-          "changePct": -0.04,
+          "price": 181.42,
+          "changePct": -0.06,
           "pc": 181.53
         },
         {
           "ticker": "COST",
-          "price": 1004.67,
+          "price": 1004.64,
           "changePct": 0.17,
           "pc": 1002.93
         },
         {
           "ticker": "SBUX",
-          "price": 101.74,
-          "changePct": 0.32,
+          "price": 102.09,
+          "changePct": 0.66,
           "pc": 101.42
         }
       ],
@@ -775,68 +775,68 @@
       "icon": "🪙",
       "color": "#8a7340",
       "image": "https://images.unsplash.com/photo-1610375461246-83df859d849d?w=800&q=80",
-      "avgChange": -0.81,
+      "avgChange": -0.46,
       "gainers": [
         {
           "ticker": "CLF",
-          "price": 12.52,
-          "changePct": 4.55,
+          "price": 12.88,
+          "changePct": 7.51,
           "pc": 11.98
         },
         {
           "ticker": "MOS",
-          "price": 23.13,
-          "changePct": 2.25,
+          "price": 23.31,
+          "changePct": 3.05,
           "pc": 22.62
         },
         {
           "ticker": "NUE",
-          "price": 241.69,
-          "changePct": 0.58,
+          "price": 242.48,
+          "changePct": 0.91,
           "pc": 240.29
         },
         {
           "ticker": "STLD",
-          "price": 251.41,
-          "changePct": 0.37,
+          "price": 251.28,
+          "changePct": 0.32,
           "pc": 250.49
         },
         {
-          "ticker": "RS",
-          "price": 375.64,
-          "changePct": -0.18,
-          "pc": 376.3
+          "ticker": "ATI",
+          "price": 169.29,
+          "changePct": 0.32,
+          "pc": 168.76
         }
       ],
       "losers": [
         {
-          "ticker": "AA",
-          "price": 71.74,
-          "changePct": -3.8,
-          "pc": 74.57
-        },
-        {
-          "ticker": "CF",
-          "price": 115.37,
-          "changePct": -3.18,
-          "pc": 119.16
-        },
-        {
           "ticker": "NEM",
-          "price": 108.41,
-          "changePct": -2.87,
+          "price": 107.96,
+          "changePct": -3.27,
           "pc": 111.61
         },
         {
           "ticker": "MP",
-          "price": 65.21,
-          "changePct": -2.66,
+          "price": 64.9,
+          "changePct": -3.12,
           "pc": 66.99
         },
         {
+          "ticker": "CF",
+          "price": 115.55,
+          "changePct": -3.03,
+          "pc": 119.16
+        },
+        {
+          "ticker": "AA",
+          "price": 72.42,
+          "changePct": -2.88,
+          "pc": 74.57
+        },
+        {
           "ticker": "AEM",
-          "price": 176.85,
-          "changePct": -2.06,
+          "price": 176.19,
+          "changePct": -2.43,
           "pc": 180.57
         }
       ],
@@ -888,6 +888,15 @@
         {
           "source": "Yahoo",
           "ticker": "AA",
+          "headline": "Alcoa to Participate in Wells Fargo Industrials and Materials Conference 2026",
+          "summary": "PITTSBURGH, May 27, 2026--Alcoa Corporation (\"Alcoa\") will participate in a live webcast session at the Wells Fargo Industrials and Materials Conference in Chicago on Wednesday, June 10, 2026.",
+          "url": "https://finnhub.io/api/news?id=e428d6b178d3733147ea2a2895a9c3bea34d051297e7354178a13a47000a7afc",
+          "datetime": 1779885000,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "ticker": "AA",
           "headline": "Will Softening Alumina Segment Limit Alcoa's Growth Potential?",
           "summary": "AA's Alumina segment faces shipment, pricing and cost pressure after Q1 declines, but maintained 2026 guidance points to expected improvement.",
           "url": "https://finnhub.io/api/news?id=75fe70b9f8de6cedb9e95538070aadcfb10b69d1e7744045a55f7bc06420d61d",
@@ -911,15 +920,6 @@
           "url": "https://finnhub.io/api/news?id=f96f9c0b4c8e7a71e0e89402d0b2bdbd5a5a824d6ba5e039609afd7987f277b9",
           "datetime": 1779773555,
           "image": "https://static.seekingalpha.com/cdn/s3/uploads/getty_images/2263930080/image_2263930080.jpg?io=getty-c-w1536"
-        },
-        {
-          "source": "Yahoo",
-          "ticker": "NEM",
-          "headline": "AEM vs. NEM: Which Gold Mining Giant Should You Invest in Now?",
-          "summary": "Agnico Eagle and Newmont strengthen their positions with rising cash flows and project expansions as gold prices stay elevated.",
-          "url": "https://finnhub.io/api/news?id=8433bcaf2ce52e0ade4cb7bf1c7bffcf5c50e2f888d75c034426f40bc190e8c7",
-          "datetime": 1779715140,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         }
       ]
     }
