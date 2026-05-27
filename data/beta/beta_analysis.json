@@ -1,19 +1,19 @@
 {
-  "timestamp": "2026-05-27T18:43:07.468920+00:00",
+  "timestamp": "2026-05-27T19:02:16.169833+00:00",
   "mode": "phase1_auto",
   "strategy_version": "v0.1.0",
   "note": "Fase 1 — execução automática activa. LIVE_TRADING=False (conta demo).",
   "regime": "bull_trending",
   "regime_alert": false,
   "regime_details": {
-    "spy_price": 750.71,
+    "spy_price": 750.84,
     "ema200": 680.32,
-    "ema50": 713.09,
+    "ema50": 713.1,
     "ema50_above_ema200": true,
-    "spy_pct_from_ema200": 10.35,
+    "spy_pct_from_ema200": 10.37,
     "atr_current": 6.7815,
     "atr_ratio_vs_60d_mean": 0.7686,
-    "spy_return_20d": 0.055,
+    "spy_return_20d": 0.0552,
     "rsp_spy_ratio_chg_20d": -0.0173,
     "breadth_healthy": true
   },
@@ -97,7 +97,7 @@
   "signals": [],
   "data_sources": {
     "prices": "finnhub+yfinance",
-    "t212_sync": "2026-05-27T18:41:23.193864+00:00",
+    "t212_sync": "2026-05-27T19:00:31.931847+00:00",
     "stale_prices": []
   },
   "cro": {
