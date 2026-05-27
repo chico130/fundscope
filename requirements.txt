@@ -16,3 +16,6 @@ vaderSentiment>=3.3.2
 # Calibração offline (bot/calibration)
 pyarrow>=14.0.0
 lxml>=4.9.0
+
+# AI Insights — Gemini
+google-genai>=0.3.0

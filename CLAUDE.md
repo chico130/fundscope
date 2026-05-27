@@ -225,8 +225,8 @@ Antes de fazer merge de qualquer alteração ao bot, confirmar:
 - Antes de correr: editar `LABEL_HORIZON_DAYS = 57` em retrain_bonnie.py (linha 68)
 
 ---
-## Auto-Sync: 2026-05-26 23:20
+## Auto-Sync: 2026-05-27 19:17
 - PC: DESKTOP-0514V9J
-- Ultimo commit: 2597466 - fix(ci): adicionar pytest.ini com pythonpath=. para resolver ModuleNotFoundError
+- Ultimo commit: 73ddb76 - fix: reconstruir trade ARM + corrigir stats + reporter no CI
 - Learner: verificar data/beta/ para runs recentes
 ---

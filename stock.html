@@ -201,6 +201,22 @@
     .ai-chip.neg{background:var(--color-error-bg);color:var(--color-error);}
     .ai-disclaimer{font-size:var(--text-xs);color:var(--color-text-faint);}
 
+    /* ── AI Market Insight ── */
+    .aimi-card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-lg);padding:var(--space-5);margin-bottom:var(--space-6);box-shadow:var(--shadow-sm);}
+    .aimi-header{display:flex;align-items:center;gap:var(--space-2);margin-bottom:var(--space-4);}
+    .aimi-title{font-weight:600;font-size:var(--text-sm);color:var(--color-text);}
+    .aimi-badge{font-size:10px;font-weight:600;padding:2px 6px;border-radius:var(--radius-full);background:var(--color-primary-highlight);color:var(--color-primary);text-transform:uppercase;letter-spacing:.04em;margin-left:auto;}
+    .aimi-block{margin-bottom:var(--space-3);}
+    .aimi-block:last-of-type{margin-bottom:0;}
+    .aimi-block-label{font-size:var(--text-xs);font-weight:600;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;}
+    .aimi-block-text{font-size:var(--text-sm);color:var(--color-text);line-height:1.6;}
+    .aimi-disclaimer{font-size:var(--text-xs);color:var(--color-text-faint);margin-top:var(--space-4);padding-top:var(--space-3);border-top:1px solid var(--color-divider);}
+    .aimi-skel-line{height:12px;border-radius:var(--radius-sm);background:linear-gradient(90deg,var(--color-surface-offset) 0%,var(--color-divider) 50%,var(--color-surface-offset) 100%);background-size:200% 100%;animation:aimiShimmer 1.4s ease-in-out infinite;margin-bottom:8px;}
+    .aimi-skel-line.short{width:40%;}
+    .aimi-skel-line.full{width:100%;}
+    .aimi-skel-line.mid{width:75%;}
+    @keyframes aimiShimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
+
     /* ── Footer ── */
     .footer{padding:var(--space-6);text-align:center;font-size:var(--text-xs);color:var(--color-text-faint);border-top:1px solid var(--color-divider);margin-top:auto;}
     .footer a{color:var(--color-text-muted);transition:color var(--transition);}
@@ -781,6 +797,7 @@ function renderStock(s){
     </div>
   </div>
   <div id="aiAnalystSection"></div>
+  <div id="aiMarketInsightSection"></div>
   <div id="analystSection"></div>
   <div id="newsSection"></div>`;
 
@@ -828,6 +845,7 @@ function renderStock(s){
   });
   workerProfile(ticker).then(profile => tryLoadClearbitLogo(ticker, profile, 'logoWrap'));
   fetchAIReview(ticker);
+  fetchAIMarketInsight(ticker);
 
   // Start 30s auto-refresh after render
   wireRefreshBtn(ticker);
@@ -1016,6 +1034,67 @@ async function fetchAIReview(ticker) {
     </div>`;
   } catch (e) {
     // Silently ignore if local server is not running
+  }
+}
+
+// ── AI Market Insight (Gemini, via static JSON) ──────────────
+function renderAIMarketInsightSkeleton() {
+  const sec = document.getElementById('aiMarketInsightSection');
+  if (!sec) return;
+  sec.innerHTML = `<div class="aimi-card">
+    <div class="aimi-header">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+      <span class="aimi-title">AI Market Insight</span>
+      <span class="aimi-badge">A gerar…</span>
+    </div>
+    <div class="aimi-skel-line short"></div>
+    <div class="aimi-skel-line full"></div>
+    <div class="aimi-skel-line mid"></div>
+    <div class="aimi-skel-line short" style="margin-top:14px;"></div>
+    <div class="aimi-skel-line full"></div>
+    <div class="aimi-skel-line mid"></div>
+  </div>`;
+}
+
+async function fetchAIMarketInsight(ticker) {
+  const sec = document.getElementById('aiMarketInsightSection');
+  if (!sec) return;
+  renderAIMarketInsightSkeleton();
+  try {
+    const r = await fetchTimeout('data/beta/ai_insights.json', 6000);
+    if (!r.ok) { sec.innerHTML = ''; return; }
+    const payload = await r.json();
+    const entry = payload?.tickers?.[ticker];
+    if (!entry || (!entry.sentiment && !entry.history && !entry.social)) {
+      sec.innerHTML = ''; return;
+    }
+    const blocks = [
+      ['Sentimento de mercado',       entry.sentiment],
+      ['Contexto histórico',          entry.history],
+      ['Perspectivas da comunidade',  entry.social],
+    ].filter(([, v]) => v && v.trim());
+
+    const gen = entry.generated_at
+      ? new Date(entry.generated_at).toLocaleDateString('pt-PT')
+      : '';
+    sec.innerHTML = `<div class="aimi-card">
+      <div class="aimi-header">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+        <span class="aimi-title">AI Market Insight</span>
+        <span class="aimi-badge">Gemini</span>
+      </div>
+      ${blocks.map(([label, text]) => `
+        <div class="aimi-block">
+          <div class="aimi-block-label">${esc(label)}</div>
+          <div class="aimi-block-text">${esc(text)}</div>
+        </div>`).join('')}
+      <div class="aimi-disclaimer">
+        Narrativa gerada por modelo de IA com base em dados de treino${gen ? ' &middot; actualizada ' + esc(gen) : ''}.
+        Não constitui conselho de investimento nem reflecte sentimento em tempo real.
+      </div>
+    </div>`;
+  } catch (e) {
+    sec.innerHTML = '';   // falha silenciosa (Regra 3: isolamento)
   }
 }
 
