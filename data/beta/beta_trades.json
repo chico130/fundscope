@@ -1,3 +1,26 @@
 {
-  "trades": []
+  "trades": [
+    {
+      "id": "reconstructed_ARM_US_EQ_BUY",
+      "datetime": "2026-05-22T14:00:00+00:00",
+      "ticker": "ARM_US_EQ",
+      "side": "BUY",
+      "qty": 0.4886,
+      "price": 289.75,
+      "env": "demo",
+      "strategy_version": "v0.1.0",
+      "reason": "reconstructed — posição aberta antes do Phase 1 tracking (avg_price T212 confirmado)",
+      "context": {},
+      "result_eur": 9.86,
+      "result_pct": 8.11,
+      "result_after_minutes": 4500,
+      "closed_at": "2026-05-25T21:00:00+00:00",
+      "postmortem": null,
+      "atr_at_entry": null,
+      "stop_loss_price": null,
+      "atr_trigger_price": null,
+      "atr_target_price": null,
+      "break_even_active": false
+    }
+  ]
 }

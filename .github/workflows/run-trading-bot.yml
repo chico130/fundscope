@@ -106,6 +106,16 @@ jobs:
           TELEGRAM_CHAT_ID:   ${{ secrets.TELEGRAM_CHAT_ID }}
         run: python -m bot.phase0 --once
 
+      - name: Run reporter — actualizar stats beta
+        if: steps.holiday_check.outputs.is_holiday != 'true'
+        env:
+          T212_API_ID:        ${{ secrets.T212_API_ID }}
+          T212_API_KEY:       ${{ secrets.T212_API_KEY }}
+          FINNHUB_API_KEY:    ${{ secrets.FINNHUB_TOKEN }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID:   ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python -c "from bot.reporter import run_all; run_all()" || echo "[WARN] reporter falhou mas continua"
+
       - name: Commit análise e push
         if: steps.holiday_check.outputs.is_holiday != 'true'
         run: |

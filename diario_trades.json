@@ -1,1 +1,22 @@
-[]
+[
+  {
+    "tipo": "entrada",
+    "ativo": "ARM_US_EQ",
+    "lado": "BUY",
+    "volume": 0.4886,
+    "preco": 289.75,
+    "resultado_eur": null,
+    "rsi": null,
+    "timestamp": "2026-05-22T14:00:00Z"
+  },
+  {
+    "tipo": "saida",
+    "ativo": "ARM_US_EQ",
+    "lado": "SELL",
+    "volume": 0.4886,
+    "preco": 313.45,
+    "resultado_eur": 9.86,
+    "rsi": 76.63,
+    "timestamp": "2026-05-25T21:00:00Z"
+  }
+]
