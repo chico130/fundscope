@@ -1,6 +1,5 @@
 {
   "generated_at": "2026-05-27T23:05:58.044676Z",
-  "ttl_hours": 24,
   "model": "gemini-2.5-flash",
   "tickers": {
     "VOO": {
@@ -65,6 +64,51 @@
       "sentiment": "O sentimento de mercado nos últimos meses tem sido geralmente positivo, impulsionado pela recuperação do mercado de smartphones e pelo crescimento em novos segmentos como o automóvel e a IoT. Há também otimismo em torno do seu posicionamento na inteligência artificial e na computação edge.",
       "history": "Historicamente, a Qualcomm tem sido um pilar na indústria de semicondutores, dominando o mercado de chips para smartphones e detendo uma vasta carteira de patentes em tecnologias de comunicação móvel. A empresa tem vindo a diversificar as suas operações para além dos smartphones, focando-se em mercados como o automóvel e a IoT.",
       "social": "Em fóruns de investidores, as discussões frequentemente abordam a dependência da Qualcomm do mercado de smartphones e o impacto da concorrência, incluindo os esforços da Apple para desenvolver os seus próprios chips. A diversificação para os setores automóvel e IoT, bem como o potencial da inteligência artificial, são temas recorrentes para o crescimento futuro."
+    },
+    "INTC": {
+      "ticker": "INTC",
+      "name": "INTC",
+      "generated_at": "2026-05-27T23:04:56.428990Z",
+      "model": "gemini-2.5-flash",
+      "sentiment": "O sentimento de mercado em relação à Intel tem sido misto nos últimos meses, refletindo desafios na execução e concorrência intensa. Existe alguma expectativa em torno das novas estratégias e roteiros de produtos, mas também cautela.",
+      "history": "A Intel foi historicamente dominante no mercado de processadores, mas enfrentou desafios na transição tecnológica e na concorrência. A empresa está agora focada em recuperar a liderança tecnológica e expandir os seus serviços de fabrico de chips.",
+      "social": "Em fóruns de investidores, as discussões centram-se na capacidade da Intel de executar a sua estratégia de recuperação e na competitividade dos seus produtos. A viabilidade e o sucesso da sua divisão de foundry são temas recorrentes de debate."
+    },
+    "ARM": {
+      "ticker": "ARM",
+      "name": "ARM",
+      "generated_at": "2026-05-27T23:05:01.520447Z",
+      "model": "gemini-2.5-flash",
+      "sentiment": "O sentimento de mercado em relação à ARM tem sido geralmente positivo nos últimos meses, impulsionado pelo otimismo em torno da inteligência artificial e pela sua posição dominante no design de chips. O forte crescimento das receitas e as perspetivas de expansão para novos mercados têm contribuído para esta perceção favorável.",
+      "history": "A ARM tem uma longa história como líder no design de arquiteturas de processadores, sendo fundamental para a revolução dos smartphones. Fundada em 1990, a empresa foi adquirida pela SoftBank em 2016 e voltou a ser cotada em bolsa em 2023, mantendo o seu modelo de licenciamento de propriedade intelectual.",
+      "social": "Em fóruns de investidores, discute-se frequentemente o potencial de crescimento da ARM face à expansão da IA e a sua capacidade de diversificar para além do mercado móvel. Há também debates sobre a sua avaliação, considerando o modelo de negócio de licenciamento e a concorrência no setor de semicondutores."
+    },
+    "DDOG": {
+      "ticker": "DDOG",
+      "name": "DDOG",
+      "generated_at": "2026-05-27T23:05:09.616741Z",
+      "model": "gemini-2.5-flash",
+      "sentiment": "O sentimento do mercado em relação à DDOG tem sido misto nos últimos meses, refletindo a volatilidade das ações de tecnologia e a avaliação da empresa. Contudo, a sua posição no setor de observabilidade cloud continua a ser vista como estratégica.",
+      "history": "A Datadog, fundada em 2010 e pública desde 2019, estabeleceu-se como um player chave em monitorização e segurança de aplicações cloud. A sua trajetória tem sido de forte crescimento, impulsionada pela adoção generalizada da nuvem.",
+      "social": "Em fóruns de investidores, discute-se frequentemente a avaliação da DDOG e a sua capacidade de inovar face à concorrência. A expansão da sua oferta de produtos e o impacto do ambiente macroeconómico no investimento em TI são temas recorrentes."
+    },
+    "FTNT": {
+      "ticker": "FTNT",
+      "name": "FTNT",
+      "generated_at": "2026-05-27T23:05:40.235237Z",
+      "model": "gemini-2.5-flash",
+      "sentiment": "O sentimento de mercado para a Fortinet tem sido misto nos últimos meses, com reações variadas aos relatórios de lucros e às perspetivas de crescimento. A intensa concorrência e as preocupações macroeconómicas podem influenciar o desempenho, apesar da robustez geral do setor.",
+      "history": "A Fortinet é um player estabelecido no setor da cibersegurança, com um histórico de crescimento impulsionado pela crescente procura por soluções de segurança. A empresa é conhecida pelos seus firewalls FortiGate e pela expansão contínua do seu portfólio de produtos.",
+      "social": "Em fóruns de investidores, as discussões frequentemente comparam a Fortinet com concorrentes e analisam a sua avaliação e perspetivas de crescimento. Debates sobre o impacto das tendências de gastos em TI e a transição para modelos de receita baseados em subscrição são comuns."
+    },
+    "PANW": {
+      "ticker": "PANW",
+      "name": "PANW",
+      "generated_at": "2026-05-27T23:05:46.062650Z",
+      "model": "gemini-2.5-flash",
+      "sentiment": "O sentimento do mercado em relação à PANW tem sido geralmente positivo nos últimos meses, impulsionado pela crescente procura por cibersegurança e pelos resultados financeiros da empresa. Contudo, houve alguma volatilidade devido a preocupações com a concorrência e a avaliação do setor.",
+      "history": "A Palo Alto Networks foi fundada em 2005 e estabeleceu-se como um líder no setor de cibersegurança, conhecida pelas suas plataformas de segurança de próxima geração. A empresa tem um histórico de crescimento robusto, impulsionado pela inovação e aquisições estratégicas.",
+      "social": "Em fóruns, discute-se frequentemente o potencial de crescimento da PANW no mercado de cibersegurança e a sua capacidade de manter a liderança tecnológica. Também são abordadas a sua avaliação, a eficácia das estratégias de vendas e a integração de novas tecnologias como a IA."
     }
   }
 }

@@ -71,7 +71,7 @@ ALLOWED_LOGS = {
 AI_INSIGHTS_PATH      = 'data/beta/ai_insights.json'
 AI_INSIGHTS_TTL_H     = 8
 AI_INSIGHTS_STALE_MAX_H = 72
-AI_GEMINI_MODEL       = 'gemini-2.5-flash'
+AI_GEMINI_MODEL       = 'gemini-2.0-flash-lite'
 SYMBOL_CACHE_PATH     = 'symbol_cache.json'
 
 # Single-flight: one Gemini call per ticker regardless of concurrent requests
