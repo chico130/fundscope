@@ -193,7 +193,7 @@ def _call_gemini_insight(ticker: str, meta: dict) -> tuple[dict | None, str | No
             model=AI_GEMINI_MODEL,
             contents=_build_ai_prompt(ticker, meta),
             config=types.GenerateContentConfig(
-                http_options=types.HttpOptions(timeout=20),  # 20 s hard ceiling
+                http_options=types.HttpOptions(timeout=20000),  # ms — 20 s hard ceiling
                 response_mime_type='application/json',
                 temperature=0.4,
                 max_output_tokens=1500,

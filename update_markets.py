@@ -10,11 +10,15 @@ Fixes:
   - changePct calcula sempre fecho[-1] vs fecho[-2] (dias de mercado aberto)
 """
 
-import json, os, time, datetime, requests
+import json, os, sys, time, datetime, traceback, requests
 import yfinance as yf
 
 FH_TOKEN = os.environ.get("FINNHUB_TOKEN", "")
 FH_BASE  = "https://finnhub.io/api/v1"
+
+if not FH_TOKEN:
+    print("[AVISO] FINNHUB_TOKEN ausente — sentiment/news ficam vazios mas o script continua",
+          flush=True)
 
 # ------------------------------------------------------------------ NYSE holidays
 # Feriados NYSE fixos e flutuantes (calculados)
@@ -303,15 +307,30 @@ def fetch_all_quotes():
     return quotes, last_close_date
 
 # ------------------------------------------------------------------ Finnhub
-def fh_get(endpoint, params):
-    params["token"] = FH_TOKEN
-    try:
-        r = requests.get(f"{FH_BASE}/{endpoint}", params=params, timeout=10)
-        r.raise_for_status()
-        return r.json()
-    except Exception as e:
-        print(f"  [WARN Finnhub] {endpoint} {params.get('symbol','')}: {e}")
+def fh_get(endpoint, params, retries=2):
+    if not FH_TOKEN:
         return None
+    params = {**params, "token": FH_TOKEN}
+    for attempt in range(retries + 1):
+        try:
+            r = requests.get(f"{FH_BASE}/{endpoint}", params=params, timeout=10)
+            if r.status_code == 429 and attempt < retries:
+                wait = 2 ** attempt
+                print(f"  [Finnhub] 429 rate-limit em {endpoint} — retry em {wait}s", flush=True)
+                time.sleep(wait)
+                continue
+            r.raise_for_status()
+            return r.json()
+        except requests.exceptions.Timeout:
+            if attempt < retries:
+                time.sleep(1)
+                continue
+            print(f"  [WARN Finnhub] {endpoint} {params.get('symbol','')}: timeout", flush=True)
+            return None
+        except Exception as e:
+            print(f"  [WARN Finnhub] {endpoint} {params.get('symbol','')}: {e}", flush=True)
+            return None
+    return None
 
 def fh_recommendation(ticker):
     d = fh_get("stock/recommendation", {"symbol": ticker})
@@ -396,9 +415,15 @@ def build_sector(name, cfg, all_quotes, frm, to):
     }
 
 # ------------------------------------------------------------------ main
+def _ts():
+    return datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
+
+
 def main():
+    t0 = time.monotonic()
     now_utc = datetime.datetime.utcnow()
     today   = now_utc.date()
+    print(f"[{_ts()}] === update_markets START ===", flush=True)
 
     # --- HOLIDAY GUARD ---
     # Se for fim de semana ou feriado NYSE, nao correr nem sobrescrever markets.json
@@ -461,9 +486,19 @@ def main():
         "lastCloseDate": last_close_date,
         "sectors":       sectors
     }
-    with open("markets.json", "w", encoding="utf-8") as f:
+    tmp = "markets.json.tmp"
+    with open(tmp, "w", encoding="utf-8") as f:
         json.dump(out, f, ensure_ascii=False, indent=2)
-    print(f"\nmarkets.json OK | slot={slot} | updated={updated_ts}")
+    os.replace(tmp, "markets.json")
+    elapsed = time.monotonic() - t0
+    print(f"\nmarkets.json OK | slot={slot} | updated={updated_ts} | elapsed={elapsed:.1f}s", flush=True)
+    print(f"[{_ts()}] === update_markets END ===", flush=True)
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception as exc:
+        print(f"[{_ts()}] === update_markets CRASH ===", flush=True)
+        print(f"[FATAL] {type(exc).__name__}: {exc}", flush=True)
+        traceback.print_exc()
+        sys.exit(1)

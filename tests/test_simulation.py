@@ -147,6 +147,10 @@ def sandbox(tmp_path, monkeypatch):
     monkeypatch.setattr(notif, "_TELEGRAM_ERROR_LOG",
                         logs / "errors" / "telegram_errors.json")
 
+    # Daily-flags (dedup persistente de despertar/boa_noite/resumo diário).
+    monkeypatch.setattr(notif, "_DAILY_FLAGS_PATH",
+                        tmp_path / "data" / "daily_flags.json")
+
     # CRO insights path lives inside a dict — use setitem so monkeypatch restores it.
     monkeypatch.setitem(cfg.CRO_CONFIG, "cro_insights_path",
                         beta / "cro_insights.json")

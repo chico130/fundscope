@@ -13,6 +13,7 @@ concurrency:
 jobs:
   update:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     permissions:
       contents: write
 
@@ -90,7 +91,7 @@ jobs:
         if: steps.holiday_check.outputs.is_holiday != 'true'
         run: |
           pip install --upgrade pip
-          pip install yfinance==0.2.54 requests google-genai>=1.10.0 python-dotenv
+          pip install "yfinance==0.2.54" "requests>=2.31" "google-genai>=1.10.0" "python-dotenv>=1.0" "pandas>=2.0" "numpy>=1.26"
 
       - name: Run portfolio update
         if: steps.holiday_check.outputs.is_holiday != 'true'
@@ -101,15 +102,35 @@ jobs:
           GEMINI_API_KEY:      ${{ secrets.GEMINI_API_KEY }}
           TELEGRAM_BOT_TOKEN:  ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID:    ${{ secrets.TELEGRAM_CHAT_ID }}
-        run: python update_portfolio.py
+          PYTHONUNBUFFERED: "1"
+        run: |
+          # Pre-flight: assinalar (sem expor) que secrets criticos estao presentes.
+          # Sem isto, um secret em falta produzia "SystemExit(1)" em <2s sem pista nos logs.
+          missing=""
+          [ -z "$T212_API_ID" ]  && missing="$missing T212_API_ID"
+          [ -z "$T212_API_KEY" ] && missing="$missing T212_API_KEY"
+          if [ -n "$missing" ]; then
+            echo "::error::Secrets em falta:$missing — abortar antes de chamar a T212"
+            exit 1
+          fi
+          echo "[preflight] T212_API_ID len=${#T212_API_ID} T212_API_KEY len=${#T212_API_KEY}"
+          echo "[preflight] FINNHUB_TOKEN ${FINNHUB_TOKEN:+presente}${FINNHUB_TOKEN:-AUSENTE} | GEMINI_API_KEY ${GEMINI_API_KEY:+presente}${GEMINI_API_KEY:-AUSENTE}"
+          python -u update_portfolio.py
 
       - name: Commit portfolio.json + symbol_cache.json
         if: steps.holiday_check.outputs.is_holiday != 'true'
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add portfolio.json symbol_cache.json
-          git diff --staged --quiet || git commit -m "chore: update portfolio [skip ci]"
+          # Adiciona so o que existe — evita "pathspec did not match" se o script abortou cedo.
+          for f in portfolio.json symbol_cache.json; do
+            [ -f "$f" ] && git add "$f"
+          done
+          if git diff --staged --quiet; then
+            echo "Sem alteracoes — nada para commitar"
+            exit 0
+          fi
+          git commit -m "chore: update portfolio [skip ci]"
           git push
 
       - name: Deploy to VPS (git pull)

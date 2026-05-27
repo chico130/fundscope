@@ -39,9 +39,11 @@ except ImportError:
 #   T212_API_ID (key ID) + T212_API_KEY (secret) — igual ao GitHub Actions.
 _t212_id     = os.getenv("T212_API_ID", "")
 _t212_secret = os.getenv("T212_API_KEY", "")
-if not _t212_id or not _t212_secret:
-    print("[ERRO] T212_API_ID e/ou T212_API_KEY não encontrados no .env")
+_missing = [n for n, v in (("T212_API_ID", _t212_id), ("T212_API_KEY", _t212_secret)) if not v]
+if _missing:
+    print(f"[ERRO FATAL] Secrets em falta: {', '.join(_missing)} — verifica GitHub Actions secrets ou .env local", flush=True)
     raise SystemExit(1)
+print(f"[init] T212_API_ID len={len(_t212_id)} | T212_API_KEY len={len(_t212_secret)}", flush=True)
 _creds    = base64.b64encode(f"{_t212_id}:{_t212_secret}".encode()).decode()
 T212_AUTH = f"Basic {_creds}"
 
@@ -373,6 +375,9 @@ def _send_telegram_alert(msg: str) -> None:
         print(f"  [Telegram] falha ao enviar alerta: {e}")
 
 
+_t212_last_error: str | None = None
+
+
 def fetch_t212_positions():
     """Devolve lista de posições T212 ou None em caso de falha de API.
 
@@ -380,14 +385,28 @@ def fetch_t212_positions():
     - None  → caller deve registar o erro e não actualizar portfolio.json
     - []    → carteira vazia, comportamento normal
     """
+    global _t212_last_error
     try:
         data = t212_get("/equity/portfolio")
     except requests.exceptions.HTTPError as e:
         status = e.response.status_code if e.response is not None else "?"
-        print(f"  [ERRO] T212 API HTTP {status}: {e}")
+        body = ""
+        if e.response is not None:
+            body = (e.response.text or "")[:200].replace("\n", " ")
+        _t212_last_error = f"HTTP {status}: {body or str(e)[:200]}"
+        print(f"  [ERRO] T212 /equity/portfolio {_t212_last_error}", flush=True)
+        return None
+    except requests.exceptions.Timeout as e:
+        _t212_last_error = f"timeout ({e})"
+        print(f"  [ERRO] T212 /equity/portfolio timeout: {e}", flush=True)
+        return None
+    except requests.exceptions.ConnectionError as e:
+        _t212_last_error = f"connection error ({type(e).__name__})"
+        print(f"  [ERRO] T212 /equity/portfolio connection: {e}", flush=True)
         return None
     except Exception as e:
-        print(f"  [ERRO] T212 API inacessível: {e}")
+        _t212_last_error = f"{type(e).__name__}: {e}"
+        print(f"  [ERRO] T212 /equity/portfolio inacessivel: {_t212_last_error}", flush=True)
         return None
     positions = []
     for p in data:
@@ -752,8 +771,11 @@ def main():
     frm   = (today - datetime.timedelta(days=7)).isoformat()
     to    = today.isoformat()
 
-    print("=== FundScope Portfolio Update ===")
-    print(f"UTC: {now.isoformat()}")
+    print("=== FundScope Portfolio Update ===", flush=True)
+    print(f"UTC: {now.isoformat()}", flush=True)
+    print(f"[env] FINNHUB_TOKEN={'set' if FH_TOKEN else 'MISSING'} | "
+          f"GEMINI_API_KEY={'set' if GEMINI_KEY else 'MISSING'} | "
+          f"TELEGRAM={'set' if os.getenv('TELEGRAM_BOT_TOKEN') else 'MISSING'}", flush=True)
 
     # Carregar cache de símbolos
     symbol_cache = load_symbol_cache()
@@ -765,13 +787,14 @@ def main():
     if positions is None:
         # Falha de API T212 — portfolio.json NÃO é actualizado para preservar os dados anteriores
         utc_str = now.strftime("%Y-%m-%d %H:%M UTC")
+        cause = _t212_last_error or "erro desconhecido (sem detalhe capturado)"
         err_msg = (
             f"⚠️ <b>FundScope — T212 API FALHOU</b>\n"
             f"portfolio.json <b>não foi actualizado</b> neste ciclo ({utc_str}).\n"
-            f"Causa: /equity/portfolio devolveu erro (401/timeout/503).\n"
+            f"Causa: /equity/portfolio devolveu <code>{cause}</code>.\n"
             f"O ficheiro anterior é mantido até à próxima run bem-sucedida."
         )
-        print(f"\n[ERRO CRÍTICO] {err_msg}")
+        print(f"\n[ERRO CRÍTICO] {err_msg}", flush=True)
         _send_telegram_alert(err_msg)
         return
 

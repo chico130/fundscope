@@ -1,0 +1,60 @@
+name: Update AI Insights
+
+on:
+  schedule:
+    # 2x/dia, fora dos horários de mercado intenso (Regra de Ouro: agentes
+    # Python cospem JSONs, frontend só lê). Cobre tickers da watchlist + user_universe.
+    - cron: '30 6 * * *'   # 06:30 UTC
+    - cron: '30 22 * * *'  # 22:30 UTC
+  workflow_dispatch:
+    inputs:
+      max:
+        description: 'Máximo de tickers a processar'
+        required: false
+        default: '25'
+      force:
+        description: 'Regenerar mesmo se fresco em cache'
+        required: false
+        default: 'false'
+
+concurrency:
+  group: fundscope-ai-insights
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install google-genai>=1.10.0 python-dotenv
+
+      - name: Generate AI insights
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          ARGS="--max ${{ github.event.inputs.max || '25' }}"
+          if [ "${{ github.event.inputs.force }}" = "true" ]; then
+            ARGS="$ARGS --force"
+          fi
+          python scripts/update_ai_insights.py $ARGS
+
+      - name: Commit ai_insights.json
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/beta/ai_insights.json
+          git diff --staged --quiet || git commit -m "chore: refresh AI insights [skip ci]"
+          git push

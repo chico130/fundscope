@@ -23,8 +23,44 @@ from pathlib import Path
 
 import requests
 
+from .market_hours import market_close_label_utc, market_open_label_utc
+
 _PROJECT_ROOT = Path(__file__).parent.parent
 _TELEGRAM_ERROR_LOG = _PROJECT_ROOT / "logs" / "errors" / "telegram_errors.json"
+_DAILY_FLAGS_PATH   = _PROJECT_ROOT / "data" / "daily_flags.json"
+
+
+def _today_utc() -> str:
+    return datetime.now(timezone.utc).strftime("%Y-%m-%d")
+
+
+def _read_daily_flags() -> dict:
+    try:
+        raw = json.loads(_DAILY_FLAGS_PATH.read_text(encoding="utf-8"))
+        return raw if isinstance(raw, dict) else {}
+    except (OSError, json.JSONDecodeError):
+        return {}
+
+
+def _already_sent_today(flag: str) -> bool:
+    """True se a flag foi marcada com a data UTC de hoje.
+
+    Reset implícito à meia-noite UTC: se a data armazenada != hoje, devolve False.
+    """
+    return _read_daily_flags().get(flag) == _today_utc()
+
+
+def _mark_sent_today(flag: str) -> None:
+    """Marca a flag com a data UTC de hoje. Escrita atómica (tmp + rename)."""
+    try:
+        _DAILY_FLAGS_PATH.parent.mkdir(parents=True, exist_ok=True)
+        flags = _read_daily_flags()
+        flags[flag] = _today_utc()
+        tmp = _DAILY_FLAGS_PATH.with_suffix(".tmp")
+        tmp.write_text(json.dumps(flags, indent=2, ensure_ascii=False), encoding="utf-8")
+        tmp.replace(_DAILY_FLAGS_PATH)
+    except OSError as exc:
+        print(f"[notifier] AVISO: falha a escrever daily_flags.json: {exc}")
 
 
 def _load_credentials() -> tuple[str | None, str | None]:
@@ -167,7 +203,14 @@ def enviar_oportunidade(oportunidades: list[dict], regime: str) -> None:
 
 
 def enviar_despertar(report: dict) -> None:
-    """Notificação de início de sessão — primeiro ciclo do dia (≈13:00 UTC)."""
+    """Notificação de início de sessão — primeiro ciclo do dia (≈13:00 UTC).
+
+    Dedup persistente via data/daily_flags.json — só envia uma vez por dia UTC,
+    independentemente de quantas vezes for chamada ou de restarts do processo.
+    """
+    if _already_sent_today("wake_sent_date"):
+        return
+
     regime   = report.get("regime", "?")
     n_pos    = report.get("n_positions", 0)
     equity   = report.get("risk_status", {}).get("total_equity_eur", 0)
@@ -195,13 +238,20 @@ def enviar_despertar(report: dict) -> None:
         f"• {opps_str}\n"
         f"• {entradas}\n"
         f"\n"
-        f"Ciclos a cada 15 min até às 21:00 UTC."
+        f"Ciclos a cada 15 min até às {market_close_label_utc()}."
     )
     enviar_alerta(texto, silencioso=True)
+    _mark_sent_today("wake_sent_date")
 
 
 def enviar_boa_noite(report: dict) -> None:
-    """Notificação de fim de sessão — último ciclo do dia (≈21:00 UTC)."""
+    """Notificação de fim de sessão — último ciclo do dia (fecho NYSE em UTC).
+
+    Dedup persistente via data/daily_flags.json — só envia uma vez por dia UTC.
+    """
+    if _already_sent_today("sleep_sent_date"):
+        return
+
     regime   = report.get("regime", "?")
     n_pos    = report.get("n_positions", 0)
     opps     = len(report.get("buy_opportunities", []))
@@ -232,13 +282,16 @@ def enviar_boa_noite(report: dict) -> None:
         f"CRO: risk factor {rf:.2f}×  ·  win rate {wr:.1f}%"
         f"{avisos}\n"
         f"\n"
-        f"Até amanhã às 13:00 UTC."
+        f"Até amanhã às {market_open_label_utc()}."
     )
     enviar_alerta(texto)
+    _mark_sent_today("sleep_sent_date")
 
 
 def enviar_resumo_diario(dados_resumo: dict) -> None:
     """Envia o relatório diário formatado em Markdown.
+
+    Dedup persistente via data/daily_flags.json — só envia uma vez por dia UTC.
 
     dados_resumo esperado:
         saldo            str  "10234.56"
@@ -249,6 +302,9 @@ def enviar_resumo_diario(dados_resumo: dict) -> None:
         poupanca         str  "150.00"
         regime           str  "bull_trending"
     """
+    if _already_sent_today("daily_summary_sent_date"):
+        return
+
     saldo    = str(dados_resumo.get("saldo", "N/D"))
     variacao = str(dados_resumo.get("variacao", "N/D"))
     sinais   = dados_resumo.get("sinais_contagem", 0)
@@ -274,6 +330,7 @@ def enviar_resumo_diario(dados_resumo: dict) -> None:
     )
 
     enviar_alerta(texto, silencioso=True)
+    _mark_sent_today("daily_summary_sent_date")
 
 
 def enviar_trade_executada(result: dict, modo: str = "phase1_auto") -> None:

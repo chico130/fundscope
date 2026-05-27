@@ -1056,18 +1056,41 @@ function renderAIMarketInsightSkeleton() {
   </div>`;
 }
 
+async function _fetchAIInsightEntry(ticker) {
+  // 1) On-demand endpoint (only available via serve.py on localhost).
+  //    On GitHub Pages this 404s or returns HTML — fall through to the static cache.
+  try {
+    const r = await fetchTimeout(`/api/ai-insight?ticker=${encodeURIComponent(ticker)}`, 30000);
+    if (r.ok) {
+      const ct = r.headers.get('content-type') || '';
+      if (ct.includes('application/json')) {
+        const entry = await r.json();
+        if (entry && !entry.error && (entry.sentiment || entry.history || entry.social)) {
+          return entry;
+        }
+      }
+    }
+  } catch (_) { /* fall through */ }
+
+  // 2) Static fallback: read the committed cache served by GitHub Pages.
+  //    Pre-populated by scripts/update_ai_insights.py via GitHub Action.
+  try {
+    const r = await fetchTimeout(`data/beta/ai_insights.json?t=${Date.now()}`, 8000);
+    if (!r.ok) return null;
+    const cache = await r.json();
+    const entry = cache && cache.tickers && cache.tickers[ticker];
+    if (entry && (entry.sentiment || entry.history || entry.social)) return entry;
+  } catch (_) { /* swallow */ }
+  return null;
+}
+
 async function fetchAIMarketInsight(ticker) {
   const sec = document.getElementById('aiMarketInsightSection');
   if (!sec) return;
   renderAIMarketInsightSkeleton();
   try {
-    // On-demand endpoint: serves cached entry (<8 h) or generates fresh via Gemini
-    const r = await fetchTimeout(`/api/ai-insight?ticker=${encodeURIComponent(ticker)}`, 30000);
-    if (!r.ok) { sec.innerHTML = ''; return; }
-    const entry = await r.json();
-    if (!entry || entry.error || (!entry.sentiment && !entry.history && !entry.social)) {
-      sec.innerHTML = ''; return;
-    }
+    const entry = await _fetchAIInsightEntry(ticker);
+    if (!entry) { sec.innerHTML = ''; return; }
     const blocks = [
       ['Sentimento de mercado',       entry.sentiment],
       ['Contexto histórico',          entry.history],

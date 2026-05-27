@@ -9,9 +9,10 @@ if hasattr(sys.stdout, "reconfigure"):
 if hasattr(sys.stderr, "reconfigure"):
     sys.stderr.reconfigure(encoding="utf-8")
 from .logger import log_info, log_error
-from .phase0 import run_phase0_cycle, _wake_already_sent_today, _mark_wake_sent_today
+from .phase0 import run_phase0_cycle
 from .reporter import run_all as reporter_run_all
 from .config import LOOP_INTERVAL_SECONDS
+from .market_hours import market_hours_utc
 from .notifier import enviar_resumo_diario, enviar_despertar, enviar_boa_noite
 
 try:
@@ -21,42 +22,13 @@ except ImportError:
 
 LOCK_FILE = "bot.lock"
 
-# Horário NYSE em UTC (hora de verão: UTC-4, hora de inverno: UTC-5)
-# Usamos sempre UTC e deixamos margem de 5 min na abertura/fecho
-_MARKET_OPEN_UTC_SUMMER  = (13, 35)   # 09:35 ET (verão)
-_MARKET_CLOSE_UTC_SUMMER = (19, 55)   # 15:55 ET (verão)
-_MARKET_OPEN_UTC_WINTER  = (14, 35)   # 09:35 ET (inverno)
-_MARKET_CLOSE_UTC_WINTER = (20, 55)   # 15:55 ET (inverno)
-
-
-def _is_dst_us() -> bool:
-    """Approxima se os EUA estão em horário de verão (DST).
-    DST começa 2.º domingo de Março e termina 1.º domingo de Novembro.
-    """
-    now = datetime.now(timezone.utc)
-    year = now.year
-    # 2.º domingo de Março
-    mar = datetime(year, 3, 8, 7, 0, tzinfo=timezone.utc)
-    dst_start = mar + timedelta(days=(6 - mar.weekday()) % 7)
-    # 1.º domingo de Novembro
-    nov = datetime(year, 11, 1, 6, 0, tzinfo=timezone.utc)
-    dst_end = nov + timedelta(days=(6 - nov.weekday()) % 7)
-    return dst_start <= now < dst_end
-
-
-def _market_hours_utc() -> tuple[tuple[int, int], tuple[int, int]]:
-    if _is_dst_us():
-        return _MARKET_OPEN_UTC_SUMMER, _MARKET_CLOSE_UTC_SUMMER
-    return _MARKET_OPEN_UTC_WINTER, _MARKET_CLOSE_UTC_WINTER
-
 
 def is_market_open() -> bool:
     """Devolve True se o mercado NYSE está aberto agora (sem feriados)."""
     now = datetime.now(timezone.utc)
     if now.weekday() >= 5:  # Sábado=5, Domingo=6
         return False
-    open_h, open_m = _market_hours_utc()[0]
-    close_h, close_m = _market_hours_utc()[1]
+    (open_h, open_m), (close_h, close_m) = market_hours_utc(now)
     open_time  = now.replace(hour=open_h,  minute=open_m,  second=0, microsecond=0)
     close_time = now.replace(hour=close_h, minute=close_m, second=0, microsecond=0)
     return open_time <= now <= close_time
@@ -65,7 +37,7 @@ def is_market_open() -> bool:
 def _seconds_until_next_open() -> int:
     """Calcula segundos até à próxima abertura do mercado."""
     now = datetime.now(timezone.utc)
-    open_h, open_m = _market_hours_utc()[0]
+    (open_h, open_m), _ = market_hours_utc(now)
 
     # Próximo dia útil
     candidate = now.replace(hour=open_h, minute=open_m, second=0, microsecond=0)
@@ -200,16 +172,13 @@ def run():
                 log_error("main_cycle_failed", {"cycle": cycle, "error": str(exc)})
                 print(f"Erro no ciclo {cycle}: {exc}")
 
-            # Despertar — uma vez por dia, com relatório fresco do 1.º ciclo (guard partilhado com phase0)
+            # Despertar — dedup é feita dentro de enviar_despertar via data/daily_flags.json
             if despertar_pendente and ultimo_report is not None:
-                now = datetime.now(timezone.utc)
-                if not _wake_already_sent_today(now):
-                    try:
-                        enviar_despertar(ultimo_report)
-                        _mark_wake_sent_today(now)
-                    except Exception as exc:
-                        log_error("despertar_failed", {"error": str(exc)})
-                        print(f"[Notifier] Erro ao enviar despertar: {exc}")
+                try:
+                    enviar_despertar(ultimo_report)
+                except Exception as exc:
+                    log_error("despertar_failed", {"error": str(exc)})
+                    print(f"[Notifier] Erro ao enviar despertar: {exc}")
 
             print(f"[{time.strftime('%H:%M:%S')} UTC] Próximo ciclo em {LOOP_INTERVAL_SECONDS // 60} minutos.\n")
             cycle += 1
