@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-05-27T21:10:53.382768+00:00",
+  "timestamp": "2026-05-27T22:29:59.461245+00:00",
   "mode": "phase1_auto",
   "strategy_version": "v0.1.0",
   "note": "Fase 1 — execução automática activa. LIVE_TRADING=False (conta demo).",
@@ -85,32 +85,7 @@
     }
   ],
   "barrier_exits": [],
-  "buy_opportunities": [
-    {
-      "ticker": "MGM",
-      "sector": "XLY",
-      "watchlist_score": 0.2298,
-      "mom_1m": 0.0702,
-      "mom_3m": 0.1907,
-      "signal_strength": 0.69,
-      "style": "MOMENTUM",
-      "reasons": [
-        "Breakout: RSI-14 69.8 ≥ 58 — momentum validado",
-        "Alinhamento total: price > EMA-20 > EMA-50 > EMA-200",
-        "Volume 1.9× ≥ 1.5× — confirmação de volume"
-      ],
-      "technicals": {
-        "rsi_14": 69.82,
-        "ema50_above_ema200": true,
-        "ema20_above_ema50": true,
-        "price_above_ema20": true,
-        "volume_ratio_vs_avg": 1.9,
-        "atr_14": 1.5185,
-        "rs_bullish": true
-      },
-      "last_price": 41.95
-    }
-  ],
+  "buy_opportunities": [],
   "near_misses": [],
   "n_positions": 0,
   "open_trades": 0,
@@ -122,7 +97,7 @@
   "signals": [],
   "data_sources": {
     "prices": "finnhub+yfinance",
-    "t212_sync": "2026-05-27T21:09:09.218616+00:00",
+    "t212_sync": "2026-05-27T22:28:16.258710+00:00",
     "stale_prices": []
   },
   "cro": {
