@@ -185,11 +185,28 @@ class CRO:
             "regime":            regime,
             "regime_multiplier": round(reg_factor, 4),
             "risk_factor":       risk_factor,
+            "wr_adj":            round(wr_adj, 4),
+            "dd_adj":            round(dd_adj, 4),
+            "win_rate_7d":       round(win_rate_7d, 4),
+            "elastic_target":    round(elastic_target, 4),
+            "drawdown_pct":      round(drawdown_pct, 2),
             "stop_loss_pct":     round(stop_loss_pct, 2),
             "atr_pct":           round(atr_pct * 100, 3),
             "assumed_risk_eur":  round(assumed_risk_eur, 2),
             "ticker":            proposed.ticker if proposed is not None else None,
         })
+
+        # Diagnóstico stdout — torna o cálculo do risk_factor rastreável no log
+        # do GitHub Actions. CRO NUNCA bloqueia por win_rate baixo: apenas escala
+        # via wr_adj ∈ [0.5, 1.2]. O bloqueio efectivo só pode acontecer
+        # indirectamente se size_eur cair abaixo de min_order_eur (50€) no
+        # phase0._execute_phase1 — esse caminho é loggado lá com [PHASE1 SKIP].
+        print(
+            f"[CRO] regime={regime} wr_7d={win_rate_7d:.3f} target={elastic_target:.3f} "
+            f"wr_adj={wr_adj:.3f} dd_adj={dd_adj:.3f} reg={reg_factor:.3f} "
+            f"→ risk_factor={risk_factor:.3f}",
+            flush=True,
+        )
 
         return Verdict(
             approved=approved,

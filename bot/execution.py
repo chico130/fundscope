@@ -197,10 +197,15 @@ def execute_trade(proposed: ProposedTrade, portfolio_state: dict) -> dict | None
                 "ticker": proposed.ticker,
                 "motivo": motivo,
             })
+            print(
+                f"[EXECUTE BLOCK] {proposed.ticker}: config_risco.permite_comprar=False "
+                f"(motivo={motivo})",
+                flush=True,
+            )
             enviar_alerta(
                 f"[BONNIE VETO] 🚨 Compra de {proposed.ticker} BLOQUEADA!"
-                f" Probabilidade de sucesso estimada abaixo do threshold"
-                f" (ou mercado em Bear regime)."
+                f" Motivo: {motivo}"
+                f" (probabilidade abaixo do threshold ou Bear regime)."
             )
             return None
 
@@ -225,6 +230,10 @@ def execute_trade(proposed: ProposedTrade, portfolio_state: dict) -> dict | None
     # ordens válidas silenciosamente.
     if proposed.qty <= 0:
         log_error("execution_zero_qty", {"ticker": proposed.ticker})
+        print(
+            f"[EXECUTE BLOCK] {proposed.ticker}: qty={proposed.qty} <= 0 — ordem ignorada",
+            flush=True,
+        )
         return None
 
     trade_id = f"{ts}_{proposed.ticker}_{proposed.side}"
@@ -256,11 +265,19 @@ def execute_trade(proposed: ProposedTrade, portfolio_state: dict) -> dict | None
             "id": trade_id,
             "ticker": proposed.ticker,
             "side": proposed.side,
+            "qty":  proposed.qty,
+            "price": proposed.price,
+            "order_type": proposed.order_type,
         })
+        print(
+            f"[EXECUTE BLOCK] {proposed.ticker}: T212 rejeitou ordem "
+            f"({proposed.side} {proposed.qty} @ {proposed.price}, type={proposed.order_type})",
+            flush=True,
+        )
         enviar_alerta(
             f"[CLYDE] ⚠️ Ordem {proposed.side} {proposed.ticker} rejeitada pela T212."
-            f" Detalhe no log do GitHub Actions."
-            f" Ciclo seguinte tentará novamente."
+            f" qty={proposed.qty} · type={proposed.order_type} · price={proposed.price}"
+            f"\nVer log do GitHub Actions para detalhes do erro HTTP."
         )
         return None
 

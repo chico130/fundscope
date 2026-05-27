@@ -498,11 +498,12 @@ def filter_proposals(
         # ── Veto por earnings (regra sistémica, corre antes de VALUE/MOMENTUM) ──
         if ticker_base in earnings_map:
             days_away, date_str = earnings_map[ticker_base]
-            vetoed.append((
-                trade,
+            reason = (
                 f"EARNINGS: {ticker_base} reporta em {days_away}d ({date_str}) "
-                f"<= janela de {threshold_days}d - compra vetada",
-            ))
+                f"<= janela de {threshold_days}d - compra vetada"
+            )
+            print(f"[BONNIE VETO] {ticker}: {reason}", flush=True)
+            vetoed.append((trade, reason))
             continue
 
         data   = market_data.get(ticker, {})
@@ -522,26 +523,34 @@ def filter_proposals(
                 "threshold":    smart_money_min_ratio,
                 "style":        style,
             })
-            vetoed.append((trade, (
+            reason = (
                 f"FAKEOUT: volume_ratio {vol_ratio:.2f}× < {smart_money_min_ratio}× "
                 f"— sem força institucional ({style})"
-            )))
+            )
+            print(f"[BONNIE VETO] {ticker}: {reason}", flush=True)
+            vetoed.append((trade, reason))
             continue
 
         if style == "MOMENTUM":
             if vol < vol_floor:
-                vetoed.append((trade, f"MOMENTUM: volume {vol:.2f}× < mínimo {vol_floor}× — liquidez insuficiente"))
+                reason = f"MOMENTUM: volume {vol:.2f}× < mínimo {vol_floor}× — liquidez insuficiente"
+                print(f"[BONNIE VETO] {ticker}: {reason}", flush=True)
+                vetoed.append((trade, reason))
                 continue
             if last and prev and prev > 0:
                 gap = (prev - last) / prev * 100
                 if gap > gap_pct:
-                    vetoed.append((trade, f"MOMENTUM: gap down {gap:.1f}% > {gap_pct}% — entrada suspensa"))
+                    reason = f"MOMENTUM: gap down {gap:.1f}% > {gap_pct}% — entrada suspensa"
+                    print(f"[BONNIE VETO] {ticker}: {reason}", flush=True)
+                    vetoed.append((trade, reason))
                     continue
 
         else:  # VALUE (ou fallback)
             strength = getattr(trade, "signal_strength", 0.0)
             if strength < base_threshold:
-                vetoed.append((trade, f"VALUE: força {strength:.2f} < limiar {base_threshold:.2f}"))
+                reason = f"VALUE: força {strength:.2f} < limiar {base_threshold:.2f}"
+                print(f"[BONNIE VETO] {ticker}: {reason}", flush=True)
+                vetoed.append((trade, reason))
                 continue
 
         approved.append(trade)

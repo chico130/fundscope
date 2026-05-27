@@ -362,14 +362,25 @@ def _execute_phase1(
     regime: str,
     cro_verdict,
     position_meta: dict | None = None,
-) -> list[dict]:
+) -> tuple[list[dict], list[dict]]:
     """Executa ordens de compra e venda de forma puramente matemática (Fase 1).
 
     Ordem de prioridade: (1) saídas urgentes ATR, (2) saídas RSI sobrecomprado,
     (3) entradas da watchlist. Respeita os limites de risco configurados.
     Envia alerta Telegram imediato por cada ordem executada (BUY ou SELL).
+
+    Devolve (executed, skips) — skips contém {"ticker", "reason", "details"}
+    para cada oportunidade rejeitada, permitindo rastreabilidade no relatório
+    e na notificação Telegram.
     """
     executed: list[dict] = []
+    skips:    list[dict] = []
+
+    def _skip(ticker: str, reason: str, **details) -> None:
+        record = {"ticker": ticker, "reason": reason, "details": details}
+        skips.append(record)
+        print(f"[PHASE1 SKIP] {ticker}: {reason} | {details}", flush=True)
+        log_decision("phase1_skip", reason, {"ticker": ticker, **details})
 
     regime_factor = _REGIME_ENTRY_FACTOR.get(regime, 0.0)
 
@@ -437,9 +448,12 @@ def _execute_phase1(
         if buy_opportunities:
             print(
                 f"  [phase1] Mercado NYSE fechado — {len(buy_opportunities)} oportunidade(s) "
-                f"adiada(s) para o próximo ciclo em horas de mercado."
+                f"adiada(s) para o próximo ciclo em horas de mercado.",
+                flush=True,
             )
-        return executed
+            for opp in buy_opportunities:
+                _skip(opp["ticker"], "market_closed", regime=regime)
+        return executed, skips
 
     # ── Entradas — gated por regime e style (CRO authority) ──────────────
     eurusd    = _fetch_eurusd()
@@ -474,7 +488,10 @@ def _execute_phase1(
             "positions_sample":    raw_positions_summary,
             "eurusd":              eurusd,
         })
-        return executed
+        for opp in buy_opportunities:
+            _skip(opp["ticker"], "zero_equity",
+                  cash_free=round(cash_free, 2), n_positions=len(positions))
+        return executed, skips
 
     max_trades    = RISK_CONFIG["max_trades_per_day"]
     min_order_eur = 50.0
@@ -490,11 +507,20 @@ def _execute_phase1(
 
     for opp in buy_opportunities:
         if len(executed) + _trades_today >= max_trades:
+            _skip(opp["ticker"], "max_trades_per_day_reached",
+                  trades_today=_trades_today, executed_this_cycle=len(executed),
+                  limit=max_trades)
+            # Marca os restantes (sem reanalizar) e sai do loop
+            for rest in buy_opportunities[buy_opportunities.index(opp) + 1:]:
+                _skip(rest["ticker"], "max_trades_per_day_reached",
+                      trades_today=_trades_today, executed_this_cycle=len(executed),
+                      limit=max_trades)
             break
 
         price_usd = opp.get("last_price")
         if not price_usd or price_usd <= 0:
             log_error("phase1_no_price", {"ticker": opp["ticker"]})
+            _skip(opp["ticker"], "no_price", price_usd=price_usd)
             continue
 
         opp_style = opp.get("style", "VALUE")
@@ -505,9 +531,8 @@ def _execute_phase1(
             if opp_style == "VALUE":
                 eff_regime = CRO_CONFIG.get("bear_value_multiplier", 0.25)
             else:
-                log_decision("phase1_skip", "bear_momentum_blocked", {
-                    "ticker": opp["ticker"], "regime": regime,
-                })
+                _skip(opp["ticker"], "bear_momentum_blocked",
+                      regime=regime, style=opp_style)
                 continue
 
         # ATR-based position sizing (CRO) — equaliza risco financeiro entre activos
@@ -515,27 +540,33 @@ def _execute_phase1(
         atr_14  = tech.get("atr_14") or 0.0
         atr_pct = atr_14 / price_usd if atr_14 > 0 and price_usd > 0 else 0.0
 
-        size_eur = _cro_atr_size(
+        raw_atr_size = _cro_atr_size(
             atr_pct, equity,
             CRO_CONFIG.get("atr_risk_target_pct", 1.0),
             RISK_CONFIG["max_position_pct"],
             opp_style,
-        ) * cro_verdict.risk_factor * eff_regime
+        )
+        size_eur = raw_atr_size * cro_verdict.risk_factor * eff_regime
         size_eur = min(size_eur, equity * max_pos_pct)
 
         stop_loss_pct = _cro_stop_pct(atr_pct, opp_style)
 
         if size_eur < min_order_eur:
-            log_decision("phase1_skip_small", "order_below_minimum", {
-                "ticker":   opp["ticker"],
-                "size_eur": round(size_eur, 2),
-                "min_eur":  min_order_eur,
-            })
+            _skip(opp["ticker"], "size_below_min_order",
+                  size_eur=round(size_eur, 2), min_eur=min_order_eur,
+                  raw_atr_size=round(raw_atr_size, 2),
+                  risk_factor=round(cro_verdict.risk_factor, 4),
+                  eff_regime=round(eff_regime, 4),
+                  equity=round(equity, 2), atr_pct=round(atr_pct * 100, 3),
+                  style=opp_style)
             continue
 
         price_eur = price_usd / eurusd if eurusd else price_usd
         qty = round(size_eur / price_eur, 4)
         if qty <= 0:
+            _skip(opp["ticker"], "qty_rounded_to_zero",
+                  size_eur=round(size_eur, 2), price_eur=round(price_eur, 4),
+                  eurusd=round(eurusd, 4))
             continue
 
         t212_ticker = _yf_to_t212(opp["ticker"])
@@ -589,10 +620,18 @@ def _execute_phase1(
                     enviar_trade_executada(result, modo="phase1_auto")
                 except Exception as _ne:
                     log_error("notify_trade_failed", {"error": str(_ne)})
+            else:
+                # execute_trade devolveu None: ou Bonnie via config_risco bloqueou,
+                # ou api_client.place_order_demo recusou. Em qualquer dos casos a
+                # função interna já loga; aqui agregamos para o report/Telegram.
+                _skip(t212_ticker, "execute_trade_returned_none",
+                      qty=qty, price_usd=price_usd, style=opp_style,
+                      size_eur=round(size_eur, 2))
         except Exception as exc:
             log_error("phase1_entry_failed", {"ticker": t212_ticker, "error": str(exc)})
+            _skip(t212_ticker, "exception_during_execute", error=str(exc)[:200])
 
-    return executed
+    return executed, skips
 
 
 # ---------------------------------------------------------------------------
@@ -746,8 +785,9 @@ def run(*, git_sync: bool = True) -> dict:
 
     # ── Fase 1: execução automática matemática ────────────────────────────────
     executed_trades: list[dict] = []
+    phase1_skips:    list[dict] = []
     if PHASE1_EXECUTION:
-        executed_trades = _execute_phase1(
+        executed_trades, phase1_skips = _execute_phase1(
             buy_opportunities, barrier_exits, signals,
             positions, state, regime, cro_verdict,
             position_meta=position_meta,
@@ -790,6 +830,7 @@ def run(*, git_sync: bool = True) -> dict:
             "insights":     cro_verdict.insights,
         },
         "executed_trades": executed_trades,
+        "phase1_skips":    phase1_skips,
     }
 
     _save_report(report)
@@ -1133,15 +1174,33 @@ def _mark_wake_sent_today(now: datetime) -> None:
 
 
 def _notify_opportunities(report: dict) -> None:
-    """Envia alerta sonoro ao Francisco quando o Clyde detecta sinais de entrada."""
+    """Envia alerta sonoro ao Francisco quando o Clyde detecta sinais de entrada.
+
+    Quando há oportunidades mas 0 ordens enviadas, anexa o motivo de bloqueio
+    por ticker (de `phase1_skips`) para tornar visível o gate que falhou.
+    """
     opps = report.get("buy_opportunities", [])
     if not opps:
         return
     try:
         from bot.notifier import enviar_oportunidade
         executed = report.get("executed_trades", [])
+        skips    = report.get("phase1_skips", [])
         regime   = report.get("regime", "?")
-        label    = f"{regime} | Fase 1 — {len(executed)} ordem(ns) enviada(s)" if PHASE1_EXECUTION else f"{regime} | Fase 0 — só leitura"
+
+        if PHASE1_EXECUTION:
+            label = f"{regime} | Fase 1 — {len(executed)} ordem(ns) enviada(s)"
+            # Se 0 enviadas e houve oportunidades, mostra porquê
+            if not executed and skips:
+                motivos = "; ".join(
+                    f"{s['ticker']}: {s['reason']}" for s in skips[:5]
+                )
+                label += f"\nBloqueios: {motivos}"
+                if len(skips) > 5:
+                    label += f" (+{len(skips) - 5} mais)"
+        else:
+            label = f"{regime} | Fase 0 — só leitura"
+
         enviar_oportunidade(opps, label)
     except Exception as exc:
         log_error("notify_opportunity_failed", {"error": str(exc)})
@@ -1255,6 +1314,15 @@ def _print_report(report: dict) -> None:
     elif report.get("mode") == "phase1_auto":
         print("\nFase 1: nenhuma ordem executada neste ciclo (critérios não cumpridos).")
 
+    # Bloqueios da Fase 1 — torna visível porque oportunidades não viraram ordens
+    skips = report.get("phase1_skips", [])
+    if skips:
+        print(f"\nFase 1 — {len(skips)} oportunidade(s) bloqueada(s):")
+        for s in skips:
+            details = s.get("details") or {}
+            detail_str = ", ".join(f"{k}={v}" for k, v in details.items())
+            print(f"  ✗ {s['ticker']}: {s['reason']} [{detail_str}]")
+
     print(f"\n{report['note']}")
     print(f"{sep}\n")
 
@@ -1333,10 +1401,10 @@ if __name__ == "__main__":
         report = run(git_sync=not ci)
 
         if ci:
+            # Dedup persistente é feita dentro das funções via data/daily_flags.json
             from bot.notifier import enviar_despertar, enviar_boa_noite
-            if is_wake and not _wake_already_sent_today(now):
+            if is_wake:
                 enviar_despertar(report)
-                _mark_wake_sent_today(now)
             if is_sleep:
                 enviar_boa_noite(report)
 
