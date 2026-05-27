@@ -128,22 +128,35 @@ Ticker: {ticker}
 Nome: {meta['name']}
 Moeda: {meta['currency']}
 
-Devolve estritamente um objecto JSON com estas chaves (strings curtas, 1-2 frases cada, sem markdown, sem listas, sem emojis):
+Devolve um objecto JSON com exactamente estas três chaves (cada valor é uma string curta, máximo 2 frases, sem markdown, sem listas, sem emojis):
+{{"sentiment": "...", "history": "...", "social": "..."}}
+
+Definições:
 - "sentiment": sentimento geral do mercado nos últimos meses sobre este ativo (com base no teu conhecimento até à data de treino).
 - "history": breve enquadramento histórico ou de longo prazo (papel no índice, característica estrutural, marcos relevantes).
 - "social": perspectivas tipicamente discutidas em fóruns e comunidade de investidores sobre este ativo.
 
 Regras obrigatórias:
 - Sê neutro, factual e prudente. Não dês recomendação de compra/venda.
-- Se não tens informação fiável, escreve "Informação limitada." nesse campo.
-- Devolve APENAS JSON válido, sem blocos ```json.
+- Se não tens informação fiável, usa "Informação limitada." nesse campo.
+- Responde APENAS com o objecto JSON — sem texto antes, sem texto depois, sem blocos de código.
 """
+
+
+def _strip_fences(text: str) -> str:
+    """Remove markdown code fences that some model versions add despite the mime-type hint."""
+    import re
+    # strip ```json ... ``` or ``` ... ```
+    text = re.sub(r"^```(?:json)?\s*", "", text.strip(), flags=re.IGNORECASE)
+    text = re.sub(r"\s*```$", "", text.strip())
+    return text.strip()
 
 
 def _call_gemini(client, ticker: str, meta: dict) -> dict | None:
     from google.genai import types  # importação local para falha não cascatear
 
     prompt = _build_prompt(ticker, meta)
+    raw_text = ""
     try:
         resp = client.models.generate_content(
             model=MODEL,
@@ -151,24 +164,37 @@ def _call_gemini(client, ticker: str, meta: dict) -> dict | None:
             config=types.GenerateContentConfig(
                 response_mime_type="application/json",
                 temperature=0.4,
-                max_output_tokens=600,
+                max_output_tokens=1500,   # 3 fields × ~400 chars + JSON overhead
             ),
         )
-        text = (resp.text or "").strip()
-        if not text:
+        raw_text = (resp.text or "").strip()
+        if not raw_text:
             print(f"[warn] resposta vazia para {ticker}", flush=True)
             return None
+
+        text = _strip_fences(raw_text)
         data = json.loads(text)
+
+        # Validate expected keys exist
+        if not isinstance(data, dict):
+            raise ValueError(f"resposta não é um objecto JSON: {type(data)}")
+
         return {
-            "sentiment": str(data.get("sentiment", "")).strip()[:600],
-            "history":   str(data.get("history",   "")).strip()[:600],
-            "social":    str(data.get("social",    "")).strip()[:600],
+            "sentiment": str(data.get("sentiment", "")).strip()[:500],
+            "history":   str(data.get("history",   "")).strip()[:500],
+            "social":    str(data.get("social",    "")).strip()[:500],
         }
     except json.JSONDecodeError as e:
+        # Log the raw text so the root cause is visible
+        preview = raw_text[:300].replace("\n", "\\n") if raw_text else "<vazio>"
         print(f"[error] JSON inválido de Gemini para {ticker}: {e}", flush=True)
+        print(f"[error] raw text ({len(raw_text)} chars): {preview}", flush=True)
         return None
     except Exception as e:
+        preview = raw_text[:300].replace("\n", "\\n") if raw_text else "<vazio>"
         print(f"[error] Gemini falhou para {ticker}: {e}", flush=True)
+        if raw_text:
+            print(f"[error] raw text ({len(raw_text)} chars): {preview}", flush=True)
         return None
 
 

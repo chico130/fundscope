@@ -1,6 +1,34 @@
 {
-  "generated_at": "2026-05-27T18:18:38.678420Z",
+  "generated_at": "2026-05-27T18:49:21.210368Z",
   "ttl_hours": 24,
   "model": "gemini-2.5-flash",
-  "tickers": {}
+  "tickers": {
+    "VOO": {
+      "ticker": "VOO",
+      "name": "VOO",
+      "generated_at": "2026-05-27T18:45:48.633667Z",
+      "model": "gemini-2.5-flash",
+      "sentiment": "O sentimento geral do mercado para o VOO tem sido maioritariamente positivo nos últimos meses, refletindo a performance robusta do mercado de ações dos EUA, impulsionada por expectativas de crescimento económico e resultados empresariais favoráveis.",
+      "history": "O VOO é um ETF da Vanguard que replica o desempenho do índice S&P 500, que inclui as 500 maiores empresas cotadas nos EUA. Lançado em 2010, é conhecido pela sua baixa taxa de despesas e pela exposição diversificada ao mercado de ações de grande capitalização dos EUA, sendo uma pedra angular para muitos investidores de longo prazo.",
+      "social": "Em fóruns e comunidades de investimento, o VOO é frequentemente discutido como uma forma simples e de baixo custo para obter exposição ao mercado acionista dos EUA. É comummente recomendado para a construção de carteiras de investimento passivas e de longo prazo, sendo comparado com outros ETFs que replicam o S&P 500 pela sua eficiência e diversificação."
+    },
+    "SPY": {
+      "ticker": "SPY",
+      "name": "SPY",
+      "generated_at": "2026-05-27T18:49:12.856363Z",
+      "model": "gemini-2.5-flash",
+      "sentiment": "O sentimento geral do mercado tem sido maioritariamente positivo nos últimos meses, impulsionado por resultados empresariais sólidos e o entusiasmo em torno da inteligência artificial. Contudo, persistem preocupações com a inflação e as taxas de juro, gerando alguma volatilidade.",
+      "history": "Lançado em 1993, o SPY é um dos ETFs mais antigos e maiores, replicando o desempenho do índice S&P 500. Serve como um barómetro amplamente reconhecido para o mercado de ações dos EUA, oferecendo exposição diversificada a grandes empresas.",
+      "social": "Em fóruns, o SPY é frequentemente discutido como um investimento central para diversificação de longo prazo ou como ferramenta para exposição tática ao mercado. Há também comparações frequentes com outros ETFs do S&P 500 e debates sobre a sua eficiência de custos."
+    },
+    "AAPL": {
+      "ticker": "AAPL",
+      "name": "AAPL",
+      "generated_at": "2026-05-27T18:49:19.709826Z",
+      "model": "gemini-2.5-flash",
+      "sentiment": "O sentimento geral do mercado em relação à Apple mantém-se maioritariamente positivo, impulsionado pela força da sua marca e ecossistema de produtos. No entanto, preocupações com o crescimento em mercados específicos e desafios regulatórios podem gerar alguma cautela.",
+      "history": "A Apple é uma das maiores empresas do mundo por capitalização de mercado e um componente chave de índices como o S&P 500. A sua história é marcada pela inovação em produtos como o iPhone e pelo desenvolvimento de um forte ecossistema de serviços.",
+      "social": "Em fóruns de investidores, as discussões sobre a Apple frequentemente focam-se nas vendas do iPhone, no crescimento do segmento de serviços e nas inovações de produtos. A estratégia de IA da empresa e o impacto da concorrência são temas recorrentes."
+    }
+  }
 }
