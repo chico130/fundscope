@@ -1061,11 +1061,11 @@ async function fetchAIMarketInsight(ticker) {
   if (!sec) return;
   renderAIMarketInsightSkeleton();
   try {
-    const r = await fetchTimeout('data/beta/ai_insights.json', 6000);
+    // On-demand endpoint: serves cached entry (<8 h) or generates fresh via Gemini
+    const r = await fetchTimeout(`/api/ai-insight?ticker=${encodeURIComponent(ticker)}`, 30000);
     if (!r.ok) { sec.innerHTML = ''; return; }
-    const payload = await r.json();
-    const entry = payload?.tickers?.[ticker];
-    if (!entry || (!entry.sentiment && !entry.history && !entry.social)) {
+    const entry = await r.json();
+    if (!entry || entry.error || (!entry.sentiment && !entry.history && !entry.social)) {
       sec.innerHTML = ''; return;
     }
     const blocks = [

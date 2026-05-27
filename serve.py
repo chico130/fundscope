@@ -10,12 +10,13 @@ Uso:
 import http.server
 import sys
 import os
+import re
 import json
 import urllib.parse
 import secrets
 import hashlib
 import time as _time
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 
 try:
     from dotenv import load_dotenv
@@ -62,6 +63,127 @@ ALLOWED_DATA = {
 ALLOWED_LOGS = {
     'bonnie_log.json',
 }
+
+# ---------------------------------------------------------------------------
+# AI Insights — on-demand Gemini endpoint (/api/ai-insight?ticker=XYZ)
+# ---------------------------------------------------------------------------
+AI_INSIGHTS_PATH  = 'data/beta/ai_insights.json'
+AI_INSIGHTS_TTL_H = 8
+AI_GEMINI_MODEL   = 'gemini-2.5-flash'
+SYMBOL_CACHE_PATH = 'symbol_cache.json'
+GEMINI_API_KEY    = os.environ.get('GEMINI_API_KEY', '')
+
+
+def _strip_fences(text: str) -> str:
+    text = re.sub(r'^```(?:json)?\s*', '', text.strip(), flags=re.IGNORECASE)
+    text = re.sub(r'\s*```$', '', text.strip())
+    return text.strip()
+
+
+def _parse_iso(s: str):
+    if not s:
+        return None
+    try:
+        return datetime.fromisoformat(s.replace('Z', '+00:00'))
+    except Exception:
+        return None
+
+
+def _is_insight_fresh(entry: dict) -> bool:
+    if not entry:
+        return False
+    dt = _parse_iso(entry.get('generated_at', ''))
+    if not dt:
+        return False
+    return (datetime.now(timezone.utc) - dt) < timedelta(hours=AI_INSIGHTS_TTL_H)
+
+
+def _load_ai_cache() -> dict:
+    try:
+        with open(AI_INSIGHTS_PATH, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except Exception:
+        return {'tickers': {}}
+
+
+def _save_ai_cache(cache: dict) -> None:
+    os.makedirs('data/beta', exist_ok=True)
+    tmp = AI_INSIGHTS_PATH + '.tmp'
+    with open(tmp, 'w', encoding='utf-8') as f:
+        json.dump(cache, f, ensure_ascii=False, indent=2)
+    os.replace(tmp, AI_INSIGHTS_PATH)
+
+
+def _static_meta_from_symbol_cache(ticker: str) -> dict:
+    try:
+        with open(SYMBOL_CACHE_PATH, 'r', encoding='utf-8') as f:
+            sym = json.load(f)
+        for _, v in sym.items():
+            if str(v.get('ticker_display', '')).upper() == ticker or \
+               str(v.get('yf_ticker', '')).upper() == ticker:
+                return {'name': v.get('display_name', ticker), 'currency': v.get('currency', 'USD')}
+    except Exception:
+        pass
+    return {'name': ticker, 'currency': 'USD'}
+
+
+def _build_ai_prompt(ticker: str, meta: dict) -> str:
+    return (
+        f"Resume em PORTUGUÊS de Portugal o contexto de mercado para o ativo abaixo.\n\n"
+        f"Ticker: {ticker}\nNome: {meta['name']}\nMoeda: {meta['currency']}\n\n"
+        f"Devolve um objecto JSON com exactamente estas três chaves "
+        f"(cada valor é uma string curta, máximo 2 frases, sem markdown, sem listas, sem emojis):\n"
+        f'{{\"sentiment\": \"...\", \"history\": \"...\", \"social\": \"...\"}}\n\n'
+        f"Definições:\n"
+        f"- \"sentiment\": sentimento geral do mercado nos últimos meses sobre este ativo.\n"
+        f"- \"history\": breve enquadramento histórico ou de longo prazo.\n"
+        f"- \"social\": perspectivas tipicamente discutidas em fóruns de investidores.\n\n"
+        f"Regras obrigatórias:\n"
+        f"- Sê neutro, factual e prudente. Não dês recomendação de compra/venda.\n"
+        f"- Se não tens informação fiável, usa \"Informação limitada.\" nesse campo.\n"
+        f"- Responde APENAS com o objecto JSON — sem texto antes, sem texto depois, sem blocos de código.\n"
+    )
+
+
+def _call_gemini_insight(ticker: str, meta: dict) -> dict | None:
+    if not GEMINI_API_KEY:
+        print('[ai-insight] GEMINI_API_KEY não definido — sem chamada API', flush=True)
+        return None
+    raw_text = ''
+    try:
+        from google import genai
+        from google.genai import types
+        client = genai.Client(api_key=GEMINI_API_KEY)
+        raw_text = ''
+        resp = client.models.generate_content(
+            model=AI_GEMINI_MODEL,
+            contents=_build_ai_prompt(ticker, meta),
+            config=types.GenerateContentConfig(
+                response_mime_type='application/json',
+                temperature=0.4,
+                max_output_tokens=1500,
+            ),
+        )
+        raw_text = (resp.text or '').strip()
+        if not raw_text:
+            print(f'[ai-insight] resposta vazia para {ticker}', flush=True)
+            return None
+        data = json.loads(_strip_fences(raw_text))
+        if not isinstance(data, dict):
+            raise ValueError(f'resposta não é um dict: {type(data)}')
+        return {
+            'sentiment': str(data.get('sentiment', '')).strip()[:500],
+            'history':   str(data.get('history',   '')).strip()[:500],
+            'social':    str(data.get('social',    '')).strip()[:500],
+        }
+    except json.JSONDecodeError as e:
+        preview = raw_text[:300].replace('\n', '\\n') if raw_text else '<vazio>'
+        print(f'[ai-insight] JSON inválido de Gemini para {ticker}: {e}', flush=True)
+        print(f'[ai-insight] raw ({len(raw_text)} chars): {preview}', flush=True)
+        return None
+    except Exception as e:
+        print(f'[ai-insight] Gemini falhou para {ticker}: {e}', flush=True)
+        return None
 
 
 def _verify_credentials(username: str, password: str) -> bool:
@@ -114,6 +236,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         parsed = urllib.parse.urlparse(self.path)
         if parsed.path == '/api/stock-review':
             self._handle_stock_review(parsed.query)
+        elif parsed.path == '/api/ai-insight':
+            self._handle_ai_insight(parsed.query)
         elif parsed.path == '/api/portfolio':
             self._handle_get_portfolio()
         elif parsed.path.startswith('/api/beta/'):
@@ -274,6 +398,53 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self._send_json({'found': True, 'rank': rank, 'total': len(candidates), **entry})
         except Exception as e:
             self._send_json({'error': str(e)}, 500)
+
+    def _handle_ai_insight(self, query_string: str):
+        params = urllib.parse.parse_qs(query_string)
+        raw = (params.get('ticker', [''])[0]).upper().strip()
+        ticker = ''.join(c for c in raw if c.isalnum() or c == '-')[:12]
+        if not ticker:
+            self._send_json({'error': 'ticker obrigatório'}, 400)
+            return
+
+        cache     = _load_ai_cache()
+        by_ticker = cache.setdefault('tickers', {})
+        entry     = by_ticker.get(ticker)
+
+        if _is_insight_fresh(entry):
+            self._send_json({**entry, 'cached': True})
+            return
+
+        print(f'[ai-insight] cache miss / stale para {ticker} — a chamar Gemini…', flush=True)
+        meta   = _static_meta_from_symbol_cache(ticker)
+        result = _call_gemini_insight(ticker, meta)
+
+        if result is None:
+            if entry:
+                # Return stale rather than nothing
+                self._send_json({**entry, 'cached': True, 'stale': True})
+            else:
+                self._send_json({'error': 'AI insight indisponível — tenta mais tarde'}, 503)
+            return
+
+        now_iso = datetime.now(timezone.utc).isoformat().replace('+00:00', 'Z')
+        new_entry = {
+            'ticker':       ticker,
+            'name':         meta['name'],
+            'generated_at': now_iso,
+            'model':        AI_GEMINI_MODEL,
+            **result,
+        }
+        by_ticker[ticker] = new_entry
+        cache['generated_at'] = now_iso
+
+        try:
+            _save_ai_cache(cache)
+        except Exception as e:
+            print(f'[ai-insight] falha a guardar cache: {e}', flush=True)
+
+        print(f'[ai-insight] {ticker} gerado e cacheado', flush=True)
+        self._send_json({**new_entry, 'cached': False})
 
     def _send_json(self, data, status=200):
         body = json.dumps(data).encode('utf-8')
