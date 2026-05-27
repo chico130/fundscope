@@ -225,8 +225,8 @@ Antes de fazer merge de qualquer alteração ao bot, confirmar:
 - Antes de correr: editar `LABEL_HORIZON_DAYS = 57` em retrain_bonnie.py (linha 68)
 
 ---
-## Auto-Sync: 2026-05-27 19:17
+## Auto-Sync: 2026-05-27 19:51
 - PC: DESKTOP-0514V9J
-- Ultimo commit: 73ddb76 - fix: reconstruir trade ARM + corrigir stats + reporter no CI
+- Ultimo commit: 5d26f71 - feat: resolve JSON parsing e limites de tokens da API do Gemini
 - Learner: verificar data/beta/ para runs recentes
 ---
