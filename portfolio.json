@@ -1,11 +1,11 @@
 {
-  "updated": "2026-05-28T21:39:03.013110Z",
+  "updated": "2026-05-28T22:33:30.584576Z",
   "t212_mode": "live",
   "summary": {
-    "total_value": 5007.73,
+    "total_value": 5007.76,
     "total_invested": 149.0,
-    "total_gain_eur": -1.91,
-    "total_gain_pct": -1.28,
+    "total_gain_eur": -1.88,
+    "total_gain_pct": -1.26,
     "daily_gain_eur": 0.0,
     "cash_available": 4860.64,
     "n_positions": 1
@@ -15,23 +15,31 @@
       "ticker_t212": "MRVL_US_EQ",
       "quantity": 0.8428,
       "avg_price": 206.0157,
-      "current_price": 203.39,
-      "ppl": -1.91,
-      "fx_ppl": -0.01,
+      "current_price": 203.4,
+      "ppl": -1.88,
+      "fx_ppl": 0.01,
       "ticker": "MRVL",
       "ticker_display": "MRVL",
       "display_name": "Marvell Technology",
       "currency": "USD",
       "change_pct": 0.0,
-      "gain_eur": -1.91,
+      "gain_eur": -1.88,
       "invested": 149.0,
-      "value_eur": 147.09,
-      "gain_pct": -1.28,
+      "value_eur": 147.12,
+      "gain_pct": -1.26,
       "fx_rate": 0.86081,
       "currency_native": "USD",
       "allocation_pct": 2.94,
       "clyde_forecast": null,
       "news": [
+        {
+          "source": "Yahoo",
+          "headline": "Marvell Lifts FY2027 Outlook As Revenue Growth Nears 40%",
+          "summary": "AI-related bookings pushed Marvell to raise revenue outlook as quarterly guidance topped estimates.",
+          "url": "https://finnhub.io/api/news?id=309de0b4473fd67c48b5c83be4fd1807f4a1b2058374096cb82e2d519ce47686",
+          "datetime": 1779999792,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
         {
           "source": "Yahoo",
           "headline": "Jim Cramer Won’t Touch POET. The Reddit Crowd Thinks He’s Wrong. Somebody’s About to Lose a Lot of Money",
@@ -63,14 +71,6 @@
           "url": "https://finnhub.io/api/news?id=8d16c816e98135d270d84613fd556ebb9cd8dab9646804f185c76d18e227f91f",
           "datetime": 1779983471,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Benzinga",
-          "headline": "Citigroup Maintains Buy on Marvell Technology, Raises Price Target to $225",
-          "summary": "Citigroup  analyst Atif Malik   maintains Marvell Technology (NASDAQ:MRVL) with a Buy and raises the price target from $215 to $225.",
-          "url": "https://finnhub.io/api/news?id=d2f1ed02042409f4494c76370be44b6d9b5008a4867b72285d4f1b4c51eff73b",
-          "datetime": 1779983236,
-          "image": ""
         }
       ],
       "earnings": [],
@@ -82,8 +82,8 @@
         "52WeekHighDate": "2026-05-27",
         "52WeekLowDate": "2025-05-30",
         "beta": 2.274549,
-        "peAnnual": 65.1558,
-        "peTTM": 65.1558,
+        "peAnnual": 67.1724,
+        "peTTM": 67.1724,
         "pbAnnual": 4.7977,
         "epsGrowthTTMYoy": null,
         "epsGrowth3Y": null,
@@ -96,7 +96,7 @@
         "currentRatioAnnual": 2.0061,
         "debtToEquityAnnual": 0.3124,
         "dividendYieldIndicated": 0.12078510317060896,
-        "marketCapitalization": 173972.4
+        "marketCapitalization": 179357.06
       },
       "analysts": {},
       "insider": {},
@@ -119,7 +119,7 @@
     },
     {
       "date": "2026-05-28",
-      "value": 5007.73
+      "value": 5007.76
     }
   ],
   "benchmark_metrics": {}
