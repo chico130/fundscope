@@ -1,4 +1,20 @@
+---
+id: t212-api-manual
+title: "Trading 212 API — Manual de Comportamento Real (Demo)"
+type: spec
+domain: infra
+regime: n/a
+tags: [spec, trading212, api, manual, infra]
+links_obrigatorios:
+  parent_moc: "[[MOC_Infraestrutura]]"
+  vizinhos: "[[atom-trading212]] [[MOC_Clyde]]"
+status: stable
+ultima_revisao: 2026-05-23
+---
+
 # Trading 212 API — Manual de Comportamento Real (Demo)
+
+> **Navegação:** [↑ Índice](../000-INDEX.md) · atom [Trading212](../vault/atoms/atom-trading212.md)
 
 > Documento baseado em testes empíricos contra `demo.trading212.com/api/v0`.
 > **Última verificação: 2026-05-23** (via `scripts/t212_contract_test.py`).

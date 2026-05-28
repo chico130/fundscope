@@ -1,4 +1,20 @@
+---
+id: prompt-trading-core
+title: "Prompt — Revisão e Correção do Trading Core"
+type: prompt
+domain: clyde
+regime: n/a
+tags: [prompt, trading-core, revisao, clyde]
+links_obrigatorios:
+  parent_moc: "[[MOC_Clyde]]"
+  vizinhos: "[[execution]] [[exit_manager]] [[api_client]]"
+status: stable
+ultima_revisao: 2026-05-23
+---
+
 # Prompt para Claude — Revisão e Correcção do Trading Core
+
+> **Navegação:** [↑ Índice](../000-INDEX.md) · [MOC Clyde](../vault/mocs/MOC_Clyde.md)
 
 > Copia este prompt na íntegra para o Claude. Inclui todo o contexto necessário.
 

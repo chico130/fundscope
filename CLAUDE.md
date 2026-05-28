@@ -1,4 +1,18 @@
-﻿# Diretrizes do FundScope
+﻿---
+id: claude-diretrizes
+title: "Diretrizes do FundScope"
+type: spec
+domain: geral
+regime: n/a
+tags: [diretrizes, claude-code, arquitetura, regras]
+links_obrigatorios:
+  parent_moc: "[[MOC_FundScope]]"
+  vizinhos: "[[README]] [[000-INDEX]] [[CRO_SPEC]]"
+status: stable
+ultima_revisao: 2026-05-28
+---
+
+# Diretrizes do FundScope
 
 > **Guia de arquitectura permanente do FundScope.** Este documento define princípios não-negociáveis para qualquer alteração ao bot, executor, notificador ou frontend. As regras abaixo têm precedência sobre qualquer outra secção deste ficheiro.
 

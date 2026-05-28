@@ -1,3 +1,17 @@
+---
+id: template-run
+title: "Template — Run de Backtest"
+type: template
+domain: geral
+regime: n/a
+tags: [template, run, backtest]
+links_obrigatorios:
+  parent_moc: "[[MOC_FundScope]]"
+  vizinhos: "[[runs-index]]"
+status: stable
+ultima_revisao: 2026-05-24
+---
+
 # Run NNN — [Título Curto]
 
 **Data:** YYYY-MM-DD  

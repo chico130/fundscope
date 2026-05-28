@@ -1,6 +1,21 @@
+---
+id: readme-fundscope
+title: "FundScope — Map of Content"
+type: moc
+domain: geral
+regime: n/a
+tags: [moc, readme, root, fundscope]
+links_obrigatorios:
+  parent_moc: "[[MOC_FundScope]]"
+  vizinhos: "[[000-INDEX]] [[CLAUDE]]"
+status: stable
+ultima_revisao: 2026-05-28
+---
+
 # FundScope — Map of Content
 
 > Hub de navegação central do projeto. Cada secção liga aos ficheiros vitais da arquitetura.
+> Índice completo do vault (todas as camadas): [000-INDEX](000-INDEX.md).
 
 ---
 

@@ -1,3 +1,17 @@
+---
+id: runs-index
+title: "Índice de Runs — Backtest / Optimização"
+type: moc
+domain: geral
+regime: n/a
+tags: [moc, runs, backtest, index]
+links_obrigatorios:
+  parent_moc: "[[MOC_FundScope]]"
+  vizinhos: "[[MOC_Bonnie]] [[SPEC_SP500_BACKTEST]]"
+status: stable
+ultima_revisao: 2026-05-24
+---
+
 # Backtest / Optimização — Índice de Runs
 
 Período de referência: **2024-05-23 → 2026-05-23** (2 anos)  
@@ -54,3 +68,18 @@ A run-002 é uma **regressão** vs run-001: adicionar Bonnie v1 com threshold 0.
 2. Preencher todos os campos com dados reais (sem arredondamentos, sem omissões)
 3. Atualizar a tabela neste README
 4. Commit: `docs(runs): add run-NNN — [título curto]`
+
+---
+
+## Runs posteriores (004–007)
+
+> A tabela acima cobre 001–003 (período 2 anos). As runs seguintes introduzem treino 7 anos, Kelly e Bonnie v4/v4-clean.
+
+| Run | Versão | Foco |
+|-----|--------|------|
+| [run-004](run-004.md) | v3.0 | Learner 7 anos + fitness adaptativa + `atr_tp_mult` |
+| [run-005](run-005.md) | v3.1 | Kelly fractional + Bonnie v3 |
+| [run-006](run-006.md) | v3.1 | Bonnie v4 (labels calibradas 4.25×ATR) |
+| [run-007](../run-007.md) | v3.1 | **Bonnie v4-clean** — correção de data leakage (**referência ativa**) |
+
+Modelo para novas runs: [RUN_TEMPLATE](RUN_TEMPLATE.md).

@@ -1,4 +1,20 @@
+---
+id: backlog
+title: "Backlog — Próximas Melhorias"
+type: spec
+domain: bonnie
+regime: n/a
+tags: [backlog, planeamento, bonnie-v5, draft]
+links_obrigatorios:
+  parent_moc: "[[MOC_FundScope]]"
+  vizinhos: "[[run-007]] [[MOC_Bonnie]]"
+status: draft
+ultima_revisao: 2026-05-24
+---
+
 # Backlog — Próximas Melhorias
+
+> **Navegação:** [↑ Índice](../000-INDEX.md) · ver também [run-007](run-007.md)
 **Data de desbloqueio: 24 Jun 2026**
 Não implementar antes de 30 dias de produção real.
 
