@@ -122,7 +122,6 @@ def sandbox(tmp_path, monkeypatch):
     # Module-level Path constants computed once at import time.
     monkeypatch.setattr(p0,  "STATUS_PATH",           beta / "status.json")
     monkeypatch.setattr(p0,  "POSITION_META_PATH",    beta / "position_meta.json")
-    monkeypatch.setattr(p0,  "_LAST_WAKE_PATH",       beta / "last_wake.txt")
     monkeypatch.setattr(p0,  "SOCIAL_SENTIMENT_PATH", beta / "social_sentiment.json")
     monkeypatch.setattr(p0,  "_ATTEMPTED_TODAY_PATH", beta / "attempted_today.json")
     monkeypatch.setattr(pl,  "LEDGER_PATH",           beta / "positions_ledger.json")
