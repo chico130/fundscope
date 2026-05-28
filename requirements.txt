@@ -7,13 +7,16 @@ yfinance>=0.2.36
 pandas>=2.0.0
 numpy>=1.26.0
 psutil>=5.9.0
-finnhub-python>=2.4.18
+
+# Bonnie ML (model_trainer, evaluate_bonnie, retrain_bonnie, backtest)
+scikit-learn>=1.3.0
+joblib>=1.3.0
 
 # Social Crawler (sentimento — passos 1-6, zero tokens)
 praw>=7.7.0
 vaderSentiment>=3.3.2
 
-# Calibração offline (bot/calibration)
+# Calibração offline (bot/calibration) — não necessário para o bot em produção
 pyarrow>=14.0.0
 lxml>=4.9.0
 
