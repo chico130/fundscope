@@ -1,20 +1,20 @@
 {
-  "timestamp": "2026-05-28T16:49:12.497648+00:00",
+  "timestamp": "2026-05-28T19:35:24.866044+00:00",
   "mode": "phase1_auto",
   "strategy_version": "v0.1.0",
   "note": "Fase 1 — execução automática activa. LIVE_TRADING=False (conta demo).",
   "regime": "bull_lateral",
   "regime_alert": false,
   "regime_details": {
-    "spy_price": 754.52,
+    "spy_price": 754.9,
     "ema200": 679.76,
-    "ema50": 714.7,
+    "ema50": 714.72,
     "ema50_above_ema200": true,
-    "spy_pct_from_ema200": 11.0,
-    "atr_current": 6.6266,
-    "atr_ratio_vs_60d_mean": 0.7553,
-    "spy_return_20d": 0.0499,
-    "rsp_spy_ratio_chg_20d": -0.0225,
+    "spy_pct_from_ema200": 11.05,
+    "atr_current": 6.6531,
+    "atr_ratio_vs_60d_mean": 0.7582,
+    "spy_return_20d": 0.0504,
+    "rsp_spy_ratio_chg_20d": -0.0245,
     "breadth_healthy": false
   },
   "watchlist_top5": [
@@ -86,18 +86,83 @@
   ],
   "barrier_exits": [],
   "buy_opportunities": [],
-  "near_misses": [],
-  "n_positions": 0,
+  "near_misses": [
+    {
+      "ticker": "UNP",
+      "sector": "XLI",
+      "watchlist_score": 0.1803,
+      "rule": "B",
+      "blocking_reason": "Volume 1.6× — falta 0.18× para ≥1.8",
+      "proximity_pct": 90,
+      "technicals": {
+        "rsi_14": 51.97,
+        "ema_20": 267.165,
+        "ema50": 260.3492,
+        "ema200": 238.2464,
+        "ema20_above_ema50": true,
+        "ema50_above_ema200": true,
+        "price_above_ema20": true,
+        "volume_ratio_vs_avg": 1.62,
+        "volume_sma_10": 3343740.0,
+        "volume_ratio": 1.36,
+        "atr_14": 6.3081,
+        "last_price": 267.32,
+        "rs_bullish": false
+      },
+      "last_price": 267.32
+    },
+    {
+      "ticker": "CARR",
+      "sector": "XLI",
+      "watchlist_score": 0.1861,
+      "rule": "B",
+      "blocking_reason": "Volume 1.4× — falta 0.36× para ≥1.8",
+      "proximity_pct": 80,
+      "technicals": {
+        "rsi_14": 50.04,
+        "ema_20": 63.9371,
+        "ema50": 62.4725,
+        "ema200": 59.6718,
+        "ema20_above_ema50": true,
+        "ema50_above_ema200": true,
+        "price_above_ema20": false,
+        "volume_ratio_vs_avg": 1.44,
+        "volume_sma_10": 6355524.0,
+        "volume_ratio": 1.49,
+        "atr_14": 2.2353,
+        "last_price": 63.62,
+        "rs_bullish": false
+      },
+      "last_price": 63.62
+    }
+  ],
+  "n_positions": 1,
   "open_trades": 0,
   "risk_status": {
     "ok": true,
-    "total_equity_eur": 5009.86,
+    "total_equity_eur": 5032.71,
     "warnings": []
   },
-  "signals": [],
+  "signals": [
+    {
+      "ticker": "MRVL_US_EQ",
+      "action": "hold",
+      "size_factor": 0.6,
+      "signals": [
+        "RSI-14 elevado (69.2) — monitorizar pressão de venda",
+        "Tendência ascendente: EMA-50 > EMA-200",
+        "Volume elevado: 1.7x acima da média"
+      ],
+      "technicals": {
+        "rsi_14": 69.25,
+        "ema50_above_ema200": true,
+        "volume_ratio_vs_avg": 1.69
+      }
+    }
+  ],
   "data_sources": {
     "prices": "finnhub+yfinance",
-    "t212_sync": "2026-05-28T16:47:28.250464+00:00",
+    "t212_sync": "2026-05-28T19:33:39.380977+00:00",
     "stale_prices": []
   },
   "cro": {
