@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-05-28T21:36:38.001115+00:00",
+  "timestamp": "2026-05-28T22:31:06.299375+00:00",
   "mode": "phase1_auto",
   "strategy_version": "v0.1.0",
   "note": "Fase 1 — execução automática activa. LIVE_TRADING=False (conta demo).",
@@ -85,56 +85,7 @@
     }
   ],
   "barrier_exits": [],
-  "buy_opportunities": [
-    {
-      "ticker": "D",
-      "sector": "XLU",
-      "watchlist_score": 0.2185,
-      "mom_1m": 0.0926,
-      "mom_3m": 0.0895,
-      "signal_strength": 0.66,
-      "style": "MOMENTUM",
-      "reasons": [
-        "Breakout: RSI-14 63.8 ≥ 58 — momentum validado",
-        "Alinhamento total: price > EMA-20 > EMA-50 > EMA-200",
-        "Volume 1.6× ≥ 1.5× — confirmação de volume"
-      ],
-      "technicals": {
-        "rsi_14": 63.82,
-        "ema50_above_ema200": true,
-        "ema20_above_ema50": true,
-        "price_above_ema20": true,
-        "volume_ratio_vs_avg": 1.6,
-        "atr_14": 1.4436,
-        "rs_bullish": true
-      },
-      "last_price": 67.38
-    },
-    {
-      "ticker": "H",
-      "sector": "XLY",
-      "watchlist_score": 0.2409,
-      "mom_1m": 0.1734,
-      "mom_3m": 0.1396,
-      "signal_strength": 0.653,
-      "style": "MOMENTUM",
-      "reasons": [
-        "Breakout: RSI-14 69.6 ≥ 58 — momentum validado",
-        "Alinhamento total: price > EMA-20 > EMA-50 > EMA-200",
-        "Volume 1.5× ≥ 1.5× — confirmação de volume"
-      ],
-      "technicals": {
-        "rsi_14": 69.63,
-        "ema50_above_ema200": true,
-        "ema20_above_ema50": true,
-        "price_above_ema20": true,
-        "volume_ratio_vs_avg": 1.53,
-        "atr_14": 5.8747,
-        "rs_bullish": true
-      },
-      "last_price": 185.46
-    }
-  ],
+  "buy_opportunities": [],
   "near_misses": [
     {
       "ticker": "CARR",
@@ -211,7 +162,7 @@
   ],
   "data_sources": {
     "prices": "finnhub+yfinance",
-    "t212_sync": "2026-05-28T21:34:53.197762+00:00",
+    "t212_sync": "2026-05-28T22:29:23.584793+00:00",
     "stale_prices": []
   },
   "cro": {
@@ -228,20 +179,5 @@
     ]
   },
   "executed_trades": [],
-  "phase1_skips": [
-    {
-      "ticker": "D",
-      "reason": "market_closed",
-      "details": {
-        "regime": "bull_lateral"
-      }
-    },
-    {
-      "ticker": "H",
-      "reason": "market_closed",
-      "details": {
-        "regime": "bull_lateral"
-      }
-    }
-  ]
+  "phase1_skips": []
 }

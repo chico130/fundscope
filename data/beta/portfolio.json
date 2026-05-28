@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-05-28T21:34:53Z",
-  "last_successful_sync": "2026-05-28T21:34:53Z",
+  "timestamp": "2026-05-28T22:29:23Z",
+  "last_successful_sync": "2026-05-28T22:29:23Z",
   "stale": false,
   "stale_reason": null,
   "positions": [
@@ -8,16 +8,16 @@
       "ticker": "MRVL_US_EQ",
       "quantity": 0.8428,
       "averagePrice": 206.01566208,
-      "currentPrice": 203.34,
-      "ppl": -1.95,
-      "fxPpl": -0.02
+      "currentPrice": 202.98,
+      "ppl": -2.19,
+      "fxPpl": 0.01
     }
   ],
   "cash": {
     "free": 4860.64,
     "invested": 149.0,
-    "ppl": -1.95,
-    "total": 5007.69
+    "ppl": -2.19,
+    "total": 5007.45
   },
-  "total_equity_eur": 5007.69
+  "total_equity_eur": 5007.45
 }
