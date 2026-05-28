@@ -1,0 +1,35 @@
+name: FundScope — Health Check
+
+# Confirma diariamente que o bot está vivo, ~10 min antes do primeiro ciclo,
+# mesmo que não haja sinais nem trades. Mensagem Telegram "Bot activo".
+on:
+  schedule:
+    - cron: '50 12 * * 1-5'   # 12:50 UTC, dias úteis (seg-sex)
+  workflow_dispatch:            # envio manual via GitHub UI
+
+concurrency:
+  group: fundscope-healthcheck
+  cancel-in-progress: false
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Send health check
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID:   ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python -m bot.phase0 --healthcheck

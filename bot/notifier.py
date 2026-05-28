@@ -333,6 +333,40 @@ def enviar_resumo_diario(dados_resumo: dict) -> None:
     _mark_sent_today("daily_summary_sent_date")
 
 
+def enviar_healthcheck(minutes_until_next: int | None = None) -> None:
+    """Health check diário (~12:50 UTC): confirma que o bot está vivo antes do
+    primeiro ciclo, mesmo que não haja sinais.
+
+    Dedup persistente via daily_flags.json — só envia uma vez por dia UTC.
+    Não faz chamadas externas: lê apenas o último status.json em disco.
+    """
+    if _already_sent_today("healthcheck_sent_date"):
+        return
+
+    if minutes_until_next is None:
+        prox = "em breve"
+    else:
+        prox = f"em {minutes_until_next} min"
+
+    last_check = "?"
+    try:
+        status_path = _PROJECT_ROOT / "data" / "beta" / "status.json"
+        raw = json.loads(status_path.read_text(encoding="utf-8"))
+        if isinstance(raw, dict):
+            last_check = raw.get("last_check", "?")
+    except (OSError, json.JSONDecodeError):
+        pass
+
+    texto = (
+        f"✅ Bot activo — próximo ciclo {prox}\n"
+        f"\n"
+        f"FundScope vivo e a postos para a sessão de hoje.\n"
+        f"Último ciclo registado: {last_check}"
+    )
+    enviar_alerta(texto, silencioso=True)
+    _mark_sent_today("healthcheck_sent_date")
+
+
 def enviar_trade_executada(result: dict, modo: str = "phase1_auto") -> None:
     """Alerta Telegram imediato após execução confirmada de um trade (BUY/SELL)."""
     try:

@@ -76,6 +76,35 @@ def is_market_open(now: datetime | None = None) -> bool:
     return open_time <= now <= close_time
 
 
+def minutes_until_next_cycle(now: datetime | None = None) -> int:
+    """Minutos até ao próximo ciclo agendado do bot (arredondado para cima).
+
+    Schedule GitHub Actions (run-trading-bot.yml): a cada 15 min entre 13:00 e
+    20:45 UTC + um último às 21:00 UTC, dias úteis (seg-sex). Fora dessa janela
+    conta até às 13:00 UTC do próximo dia útil. Devolve 0 se não houver candidato
+    nos próximos 8 dias (não deve acontecer).
+    """
+    now = now or datetime.now(timezone.utc)
+
+    def _slots(day: datetime) -> list[datetime]:
+        out = [
+            day.replace(hour=h, minute=m, second=0, microsecond=0)
+            for h in range(13, 21)          # 13:00 … 20:45
+            for m in (0, 15, 30, 45)
+        ]
+        out.append(day.replace(hour=21, minute=0, second=0, microsecond=0))
+        return out
+
+    for offset in range(0, 8):
+        day = now + timedelta(days=offset)
+        if day.weekday() >= 5:              # fim de semana
+            continue
+        for slot in _slots(day):
+            if slot > now:
+                return max(0, math.ceil((slot - now).total_seconds() / 60))
+    return 0
+
+
 def seconds_until_next_open(now: datetime | None = None) -> int:
     """Segundos até à próxima abertura do mercado NYSE."""
     now = now or datetime.now(timezone.utc)

@@ -1374,7 +1374,23 @@ if __name__ == "__main__":
         action="store_true",
         help="Execução única sem git sync (GitHub Actions CI mode)",
     )
+    parser.add_argument(
+        "--healthcheck",
+        action="store_true",
+        help="Envia o health check Telegram diário e termina (sem correr ciclo)",
+    )
     args = parser.parse_args()
+
+    if args.healthcheck:
+        if _is_nyse_holiday():
+            print("Healthcheck: feriado NYSE — sem envio.")
+            sys.exit(0)
+        from bot.notifier import enviar_healthcheck
+        from bot.market_hours import minutes_until_next_cycle
+        enviar_healthcheck(minutes_until_next_cycle())
+        print("Healthcheck enviado.")
+        sys.exit(0)
+
     ci   = args.once or bool(os.getenv("CI"))
 
     now      = datetime.now(timezone.utc)
