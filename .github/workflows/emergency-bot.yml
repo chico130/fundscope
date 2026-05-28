@@ -1,0 +1,74 @@
+name: FundScope — Emergency Run
+
+# Corre o ciclo do bot IMEDIATAMENTE, fora do schedule normal.
+# Disparo exclusivamente manual via GitHub UI (Actions → Run workflow).
+# Usar quando um ciclo agendado falhou/foi saltado e é preciso recuperar já.
+on:
+  workflow_dispatch:
+
+# Partilha o grupo de concorrência do ciclo agendado — evita duas execuções
+# em paralelo (ex: disparar isto a meio de um cron). Nunca cancela o que já corre.
+concurrency:
+  group: fundscope-bot
+  cancel-in-progress: false
+
+jobs:
+  cycle:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install yfinance==0.2.54 google-genai>=1.10.0 python-dotenv 2>/dev/null || true
+
+      - name: Run Clyde — ciclo de emergência
+        env:
+          T212_API_ID:        ${{ secrets.T212_API_ID }}
+          T212_API_KEY:       ${{ secrets.T212_API_KEY }}
+          FINNHUB_API_KEY:    ${{ secrets.FINNHUB_TOKEN }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID:   ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python -m bot.phase0 --once
+
+      - name: Run reporter — actualizar stats beta
+        env:
+          T212_API_ID:        ${{ secrets.T212_API_ID }}
+          T212_API_KEY:       ${{ secrets.T212_API_KEY }}
+          FINNHUB_API_KEY:    ${{ secrets.FINNHUB_TOKEN }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID:   ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python -c "from bot.reporter import run_all; run_all()" || echo "[WARN] reporter falhou mas continua"
+
+      - name: Update portfolio
+        env:
+          T212_API_ID:         ${{ secrets.T212_API_ID }}
+          T212_API_KEY:        ${{ secrets.T212_API_KEY }}
+          FINNHUB_TOKEN:       ${{ secrets.FINNHUB_TOKEN }}
+          GEMINI_API_KEY:      ${{ secrets.GEMINI_API_KEY }}
+          TELEGRAM_BOT_TOKEN:  ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID:    ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python ingest/update_portfolio.py || echo "[WARN] ingest/update_portfolio.py falhou mas continua"
+
+      - name: Commit e push
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/beta/ logs/ diario_trades.json portfolio.json symbol_cache.json || true
+          git diff --staged --quiet && echo "Sem alteracoes" && exit 0
+          git commit -m "bot: emergency cycle $(date -u '+%Y-%m-%d %H:%M') UTC [skip ci]"
+          git pull --rebase --autostash -X theirs origin main
+          git push || (git pull --rebase --autostash -X theirs origin main && git push)
