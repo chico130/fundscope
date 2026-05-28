@@ -1,21 +1,21 @@
 {
-  "timestamp": "2026-05-27T22:56:22.349348+00:00",
+  "timestamp": "2026-05-28T13:57:56.786631+00:00",
   "mode": "phase1_auto",
   "strategy_version": "v0.1.0",
   "note": "Fase 1 — execução automática activa. LIVE_TRADING=False (conta demo).",
-  "regime": "bull_trending",
+  "regime": "bull_lateral",
   "regime_alert": false,
   "regime_details": {
-    "spy_price": 750.46,
-    "ema200": 680.32,
-    "ema50": 713.08,
+    "spy_price": 749.89,
+    "ema200": 679.71,
+    "ema50": 714.52,
     "ema50_above_ema200": true,
-    "spy_pct_from_ema200": 10.31,
-    "atr_current": 6.7815,
-    "atr_ratio_vs_60d_mean": 0.7686,
-    "spy_return_20d": 0.0546,
-    "rsp_spy_ratio_chg_20d": -0.0183,
-    "breadth_healthy": true
+    "spy_pct_from_ema200": 10.32,
+    "atr_current": 6.0413,
+    "atr_ratio_vs_60d_mean": 0.6893,
+    "spy_return_20d": 0.0435,
+    "rsp_spy_ratio_chg_20d": -0.024,
+    "breadth_healthy": false
   },
   "watchlist_top5": [
     {
@@ -97,20 +97,22 @@
   "signals": [],
   "data_sources": {
     "prices": "finnhub+yfinance",
-    "t212_sync": "2026-05-27T22:28:16.258710+00:00",
+    "t212_sync": "2026-05-28T13:56:12.482890+00:00",
     "stale_prices": []
   },
   "cro": {
-    "risk_factor": 1.2,
+    "risk_factor": 0.6,
     "win_rate_7d": 1.0,
     "drawdown_pct": 0.0,
     "insights": [
-      "Win rate 7d em 100.0% — acima do alvo elástico (48.0%). Factor de risco positivo: 120%.",
+      "Win rate 7d em 100.0% — acima do alvo elástico (48.0%). Factor de risco positivo: 60%.",
       "Duração média dos trades vencedores: 4500min (todos: 4500min).",
       "Melhor ticker acumulado: ARM_US_EQ (+9.86€).",
-      "Tamanho máximo CRO: 13.2% da equity (base 11.0% × factor 120%).",
+      "Tamanho máximo CRO: 6.6% da equity (base 11.0% × factor 60%).",
+      "Regime bull_lateral: multiplicador CRO 0.50× — alocação reduzida.",
       "Stop Loss (fixo (fallback)): 5.0% abaixo da entrada."
     ]
   },
-  "executed_trades": []
+  "executed_trades": [],
+  "phase1_skips": []
 }
