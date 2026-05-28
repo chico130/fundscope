@@ -13,6 +13,7 @@ Damos 5 min de margem na abertura (evitar leilão de abertura) e fecho.
 """
 from __future__ import annotations
 
+import math
 from datetime import datetime, timedelta, timezone
 
 # (hora, minuto) UTC — margem de 5 min relativa ao sino real
@@ -62,3 +63,26 @@ def market_open_label_utc(now: datetime | None = None) -> str:
     real_open_h = open_h
     real_open_m = open_m - 5 if open_m >= 5 else open_m
     return f"{real_open_h:02d}:{real_open_m:02d} UTC"
+
+
+def is_market_open(now: datetime | None = None) -> bool:
+    """True se o mercado NYSE está aberto agora (sem feriados)."""
+    now = now or datetime.now(timezone.utc)
+    if now.weekday() >= 5:
+        return False
+    (open_h, open_m), (close_h, close_m) = market_hours_utc(now)
+    open_time  = now.replace(hour=open_h,  minute=open_m,  second=0, microsecond=0)
+    close_time = now.replace(hour=close_h, minute=close_m, second=0, microsecond=0)
+    return open_time <= now <= close_time
+
+
+def seconds_until_next_open(now: datetime | None = None) -> int:
+    """Segundos até à próxima abertura do mercado NYSE."""
+    now = now or datetime.now(timezone.utc)
+    (open_h, open_m), _ = market_hours_utc(now)
+    candidate = now.replace(hour=open_h, minute=open_m, second=0, microsecond=0)
+    if candidate <= now:
+        candidate += timedelta(days=1)
+    while candidate.weekday() >= 5:
+        candidate += timedelta(days=1)
+    return max(0, math.floor((candidate - now).total_seconds()))

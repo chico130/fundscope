@@ -346,8 +346,7 @@ def _fetch_eurusd() -> float:
 
 
 def _is_market_open() -> bool:
-    """True se NYSE está aberto agora. Lazy import evita circular com main.py."""
-    from .main import is_market_open
+    from .market_hours import is_market_open
     return is_market_open()
 
 

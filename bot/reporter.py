@@ -292,16 +292,6 @@ def write_account_metrics() -> bool:
     return True
 
 
-def run_all() -> None:
-    """Updates all four BETA JSON files in the correct order."""
-    update_beta_trades()     # close any triggered trades first
-    update_beta_positions()  # then refresh positions
-    update_beta_equity()     # append equity snapshot
-    update_beta_summary()    # recompute aggregate stats last
-    write_account_metrics()  # aggregate dashboard metrics
-    log_decision("reporter", "run_all_complete")
-
-
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
