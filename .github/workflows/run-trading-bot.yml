@@ -155,3 +155,16 @@ jobs:
           git commit -m "chore: portfolio sync $(date -u '+%Y-%m-%d %H:%M') UTC [skip ci]"
           git pull --rebase --autostash -X theirs origin main
           git push || (git pull --rebase --autostash -X theirs origin main && git push)
+
+      - name: Update CLAUDE.md
+        if: steps.holiday_check.outputs.is_holiday != 'true'
+        run: python scripts/update_claude_md.py || echo "[WARN] update_claude_md.py falhou mas continua"
+
+      - name: Commit CLAUDE.md actualizado
+        if: steps.holiday_check.outputs.is_holiday != 'true'
+        run: |
+          git add CLAUDE.md || true
+          git diff --staged --quiet && echo "Sem alteracoes no CLAUDE.md" && exit 0
+          git commit -m "chore: auto-update CLAUDE.md [skip ci]"
+          git pull --rebase --autostash -X theirs origin main
+          git push || (git pull --rebase --autostash -X theirs origin main && git push)

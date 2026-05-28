@@ -1,4 +1,4 @@
-﻿---
+---
 id: claude-diretrizes
 title: "Diretrizes do FundScope"
 type: spec
@@ -12,235 +12,296 @@ status: stable
 ultima_revisao: 2026-05-28
 ---
 
-# Diretrizes do FundScope
+# FundScope — Guia de Arquitectura para Claude Code
 
-> **Guia de arquitectura permanente do FundScope.** Este documento define princípios não-negociáveis para qualquer alteração ao bot, executor, notificador ou frontend. As regras abaixo têm precedência sobre qualquer outra secção deste ficheiro.
-
----
-
-## 1. Princípio Fundamental — Trading 212 API é a Única "Source of Truth"
-
-A **API da Trading 212 é a única fonte autoritativa** sobre o estado do portfolio, posições abertas, cash disponível, preços de execução e P&L realizado. Tudo o resto é cache ou derivado.
-
-### Proibições explícitas
-- **PROIBIDO** calcular o valor do portfolio, posições abertas, ou cash disponível **localmente no frontend**.
-- **PROIBIDO** recalcular o estado do portfolio em código pós-trade (ex.: `portfolio_value = cash + Σ(qty × last_price_local)`). Esse cálculo diverge sempre da T212 (slippage, fees, FX, settlements pendentes).
-- **PROIBIDO** o frontend (GitHub Pages) ler ficheiros locais como `position_ledger.json` como verdade absoluta. O ledger é apenas espelho da API.
-
-### Fluxo obrigatório
-1. Após **qualquer** trade executado (`execute_trade` ou `execute_exit` em `bot/execution.py`), chamar imediatamente `get_full_portfolio_state()` em `bot/data_layer.py` para resincronizar com a T212 API.
-2. O estado sincronizado é escrito em `data/beta/portfolio.json` (e equivalentes consumidos pelo site).
-3. O frontend lê apenas os JSONs gerados pelos agentes Python — **nunca calcula nada**. Aplica-se a Regra de Ouro do `ROADMAP_FRONTEND.md`: *"agentes Python cospem JSONs, frontend só lê"*.
-
-### Em caso de discrepância
-Se o ledger local divergir da T212 API, **a API ganha sempre**. Logar a discrepância em `data/beta/sync_warnings.json` e sobrescrever o ledger. Nunca o contrário.
+> **Le este ficheiro no inicio de cada sessao.** Contem todo o contexto necessario sem explorar o repo.
+> As seccoes "Estado Actual" e "Ultimas Alteracoes" sao auto-actualizadas por `scripts/update_claude_md.py` apos cada ciclo.
 
 ---
 
-## 2. Regra do `bot_status` — Heartbeat LED
+## 1. Arquitectura — Fluxo de Execucao
 
-O bot deve escrever **a cada ciclo** o ficheiro `data/beta/status.json` com o seguinte formato mínimo:
+O bot corre a cada 15 minutos via GitHub Actions (13:00-21:00 UTC, dias uteis, seg-sex).
 
+```
+Mercado (Finnhub + yfinance)
+        |
+phase0.py::run()            <- orquestrador principal (1396 linhas)
+        |
+        +- _get_regime_safe()          -> regime_detector.get_current_regime()
+        +- _get_watchlist_safe()       -> watchlist_manager.build_watchlist()
+        +- get_full_portfolio_state()  -> data_layer (T212 resync obrigatorio)
+        +- exit_manager.check_exit_barriers()      <- trailing stop / TP / SL
+        +- _check_momentum_exits()                 <- ATR trailing para MOMENTUM
+        +- _scan_watchlist_candidates()
+        |       +- strategy.generate_signals()     <- Clyde: RSI+EMA+volume+ATR
+        +- _apply_bonnie_filter()   -> bonnie.filter_proposals()   <- ML gate
+        +- _apply_social_veto()     -> social_sentiment.json       <- Reddit veto
+        +- cro.CRO.observe() + interpret()  <- risk_factor + regime multiplier
+        +- _execute_phase1()  [se PHASE1_EXECUTION=True]
+               +- execution.execute_exit()        <- SELL via T212 DELETE
+               +- execution.execute_trade()       <- BUY via T212 POST
+               +- notifier.enviar_trade_executada() <- Telegram imediato
+```
+
+**Cadeia de comando:** Clyde propoe -> Bonnie audita -> CRO dita alocacao -> Executor submete.
+
+**Regimes:** `bull_trending` (1.0x) | `bull_lateral` (0.5x) | `bear_correction` (0.0x) | `bear_capitulation` (0.0x)
+
+---
+
+## 2. Componentes e Responsabilidades
+
+| Ficheiro | Componente | Responsabilidade | Atencao ao editar |
+|---|---|---|---|
+| `bot/phase0.py` | Orquestrador | Ciclo principal, coordena todos os modulos | Ordem de chamadas e intencional; `PHASE1_EXECUTION` liga/desliga execucao real |
+| `bot/config.py` | Config central | `RISK_CONFIG`, `CRO_CONFIG`, `PHASE1_EXECUTION`, `LIVE_TRADING` | `LIVE_TRADING=False` permanente; alterar `CRO_CONFIG` afecta sizing de todas as ordens |
+| `bot/strategy.py` | Clyde | Sinais RSI-14, EMA-50/200, volume ratio, ATR | `ProposedTrade` e o DTO central; `generate_signals()` -> `propose_trades()` |
+| `bot/bonnie.py` | Bonnie ML | `filter_proposals()` — aprova/veta cada trade | Fail-open por design; carrega v4 > v3 > v2 por prioridade de ficheiro |
+| `bot/cro.py` | CRO | `observe()` -> `interpret()` -> `speak()` | `Verdict.risk_factor` multiplica size de todas as ordens |
+| `bot/execution.py` | Executor | `execute_trade()`, `execute_exit()` | SELL via DELETE (nao POST); log duplo: `diario_trades.json` + `data/beta/beta_trades.json` |
+| `bot/data_layer.py` | Data Layer | `get_full_portfolio_state()`, `enrich_with_technicals()` | T212 sync e oportunista (`_try_t212_sync`); Finnhub/yfinance para precos |
+| `bot/exit_manager.py` | Exit Manager | `check_exit_barriers()` — Three Barriers (TP/SL/Trailing) | Le `beta_trades.json`; patches atomicos de barrier fields |
+| `bot/notifier.py` | Whisper | Telegram: `enviar_trade_executada()`, `enviar_oportunidade()` | Sempre em `try/except` isolado — falha nunca aborta o ciclo |
+| `bot/learner.py` | Learner | `run_learner_cycle()` — analise de trades fechados | Corre silenciosamente no fim do ciclo; escreve `bonnie_log.json` |
+| `bot/regime_detector.py` | Regime | SPY vs EMA-200, breadth, ATR — 4 regimes | Cache em `data/beta/regime.json`; fallback conservador `bull_lateral` |
+| `bot/watchlist_manager.py` | Watchlist | Seleccao e scoring de candidatos (max 100) | Score: momentum1M(40%) + 3M(30%) + liquidez(20%) + qualidade(10%) |
+| `bot/position_ledger.py` | Ledger | Cache local de posicoes (espelho T212) | T212 API ganha sempre em divergencia; `positions_ledger.json` |
+| `bot/api_client.py` | API Client | HTTP calls a T212 demo API | Rate limit ~1 req/s; `reconcile_orphan_buy_orders()` cancela BUYs duplicados |
+| `bot/market_hours.py` | Market Hours | `is_market_open()` — NYSE hours + DST | Gate de entradas em `phase0.py` |
+| `bot/logger.py` | Logger | `log_decision()`, `log_error()` | JSON estruturado: `logs/trades/` + `logs/errors/` |
+| `bot/throttler.py` | Throttler | `WatchlistThrottler` — distribui fetches ao longo do ciclo | Cursor persiste entre ciclos em `throttler_state.json` |
+| `bot/watchdog.py` | Watchdog | `check_quarantine_and_abort()`, `quarantine()` | EMERGENCY_LOCK.txt -> git commit -> Telegram SOS |
+| `ingest/update_portfolio.py` | Ingest | Sincroniza `portfolio.json` (raiz) + `data/beta/` | Corre no fim do ciclo principal + workflow separado |
+| `ingest/update_prices.py` | Ingest | Actualiza `data.json` via yfinance | Workflow diario pos-fecho US |
+| `serve.py` | Dev Server | HTTP local com autenticacao e cache JSON RAM | `_JSON_CACHE` invalida a cada 60s |
+
+---
+
+## 3. JSONs — Pipeline de Dados
+
+```
+T212 API ────────────────────────+
+Finnhub / yfinance ──────────────+
+                                 v
+       Python agents (bot/ + ingest/)
+                                 |
+         +───────────────────────+────────────────────+
+         v                       v                    v
+   data/beta/               raiz/                 logs/
+   portfolio.json           portfolio.json        trades/YYYY-MM-DD.json
+   beta_trades.json         data.json             errors/YYYY-MM-DD.json
+   beta_positions.json      markets.json          bonnie_log.json
+   beta_equity.json         news.json
+   beta_analysis.json       earnings.json
+   cro_insights.json        diario_trades.json
+   status.json              config_risco.json
+                                 |
+                                 v
+               Frontend (GitHub Pages — SPA)
+               — apenas le, nunca calcula —
+```
+
+**JSONs criticos:**
+
+| JSON | Quem escreve | Conteudo |
+|---|---|---|
+| `data/beta/status.json` | `phase0.py` fim de cada ciclo | Heartbeat: `last_check`, `bot_status`, `regime`, `mode` |
+| `data/beta/beta_trades.json` | `execution.py` + `reporter.py` | Historico de trades (abertos + fechados) |
+| `data/beta/beta_analysis.json` | `phase0.py` | Resultado completo do ciclo (oportunidades, sinais, skips) |
+| `data/beta/portfolio.json` | `data_layer.py` + `ingest/update_portfolio.py` | Estado do portfolio T212 |
+| `data/beta/cro_insights.json` | `cro.speak()` | Narrativa do CRO e metricas de risco |
+| `config_risco.json` (raiz) | Manual ou Bonnie | `permite_comprar`, `tamanho_maximo_posicao` — gate de risco |
+| `data/beta/optimized_backtest_params.json` | `scripts/backtest.py` | Parametros activos (run-007) — nao editar manualmente |
+
+---
+
+## 4. Workflows GitHub Actions
+
+| Workflow | Cron | O que faz |
+|---|---|---|
+| `run-trading-bot.yml` | `*/15 13-20 * * 1-5` + `0 21 * * 1-5` | Ciclo principal (Clyde + Bonnie + CRO + Execution + Reporter) |
+| `update-portfolio.yml` | separado | Sync `portfolio.json` e `symbol_cache.json` |
+| `update-prices.yml` | diario pos-fecho | Actualiza `data.json` via yfinance |
+| `update-markets.yml` | separado | Actualiza `markets.json` |
+| `update-news.yml` | separado | Actualiza `news.json` via marketaux/newsapi |
+| `pages.yml` | push para main | Deploy GitHub Pages |
+
+Secrets: `T212_API_ID`, `T212_API_KEY`, `FINNHUB_TOKEN`, `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`, `GEMINI_API_KEY`.
+
+---
+
+## 5. Estado Actual
+
+<!-- ESTADO-ACTUAL-START -->
+**Actualizado em:** 2026-05-28 (seed manual — proxima actualizacao automatica no proximo ciclo)
+
+- **Bot status:** `active` | Ultimo ciclo: `2026-05-27T22:56Z`
+- **Regime:** `bull_trending` | Modo: `phase1_auto`
+- **Fase:** Fase 1 — execucao automatica em conta demo (`PHASE1_EXECUTION=True`, `LIVE_TRADING=False`)
+- **Modelo activo:** Bonnie v4-clean (`bonnie_model_v4.pkl`) — thresholds 0.30 por regime
+- **Parametros:** `atr_stop_mult=1.75` | `atr_tp_mult=4.25` | `max_position_pct=11%`
+- **OOS ref (run-007):** +62.2% vs SPY +45.2% | Alpha +17pp | Sharpe 2.09 | DD -10.8% | WR 38% | R:R 2.5:1
+- **Proximo passo:** Aguardar 30 dias de validacao real com v4-clean. **Sem optimizacoes adicionais.**
+- **Bonnie v5 identificada mas bloqueada:** aguarda validacao real (LABEL_HORIZON_DAYS 20->57)
+<!-- ESTADO-ACTUAL-END -->
+
+---
+
+## 6. Ultimas Alteracoes
+
+<!-- ULTIMAS-ALTERACOES-START -->
+| Data | Hash | Descricao |
+|---|---|---|
+| 2026-05-28 | `9bf04e5` | security: fix high severity issues in serve.py |
+| 2026-05-28 | `a96d488` | docs: update README with current architecture |
+| 2026-05-28 | `cbcdbeb` | docs: optimise all markdown for Obsidian vault |
+| 2026-05-28 | `36311cf` | refactor: move update_*.py to ingest/, update all workflow references |
+| 2026-05-28 | `bcb4e72` | refactor: move is_market_open to market_hours, retire main.py |
+| 2026-05-28 | `2bfe6db` | chore: add runtime artifacts to .gitignore |
+| 2026-05-28 | `77a83ae` | fix: add missing scikit-learn+joblib, remove unused finnhub-python |
+| 2026-05-28 | `d74cf77` | chore: remove unused imports |
+| 2026-05-28 | `ee89b5a` | chore: remove dead functions from active modules |
+| 2026-05-28 | `9877e63` | chore: remove dead files (archive, broken workflow, orphan data) |
+<!-- ULTIMAS-ALTERACOES-END -->
+
+---
+
+## 7. Regras de Edicao
+
+### Convencoes de codigo
+- Python 3.11, `from __future__ import annotations`, type hints onde pratico
+- Escrita de ficheiros sempre atomica: `.tmp` -> `rename` (padrao estabelecido em todo o codebase)
+- I/O lateral (Telegram, logs, ficheiros auxiliares) sempre em `try/except` isolado, sem `raise`
+- Timestamps sempre UTC com sufixo `Z`: `datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")`
+- `flush=True` em todos os `print()` do ciclo principal (sem ele, GitHub Actions perde ordem cronologica)
+- Sem comentarios obvios; comentar apenas quando o WHY e nao-obvio para o leitor
+
+### Formato de commits
+`type: descricao curta` — tipos: `feat`, `fix`, `refactor`, `docs`, `chore`, `security`, `bot`
+
+### O que nunca tocar sem confirmacao explicita do utilizador
+- `LIVE_TRADING = True` em `config.py` — permanece `False` ate decisao deliberada
+- `PHASE1_EXECUTION` — mudar isto liga/desliga execucao de ordens reais na conta demo
+- `bonnie_model_v4.pkl` e `bonnie_model_v4_orig.pkl` — modelos activos; nao apagar
+- `data/beta/optimized_backtest_params.json` — parametros calibrados do run-007
+- Qualquer logica de risco em `cro.py` sem rever primeiro `vault/specs/CRO_SPEC.md`
+- Frontend HTML/JS: nao adicionar calculos de estado (Regra de Ouro — ver R6)
+- `cancel-in-progress: false` nos workflows — intencional, nunca cancelar ciclo a meio
+
+### Antes de editar ficheiros frequentes
+- **`phase0.py`** — ler `_execute_phase1()` e `run()` completos antes de alterar; a ordem de chamadas e intencional
+- **`execution.py`** — SELL usa `api_client.cancel_order_demo()` (DELETE), nao POST; confirmar schema T212
+- **`config.py`** — qualquer alteracao ao `CRO_CONFIG` afecta sizing de todas as ordens; correr backtest depois
+- **`bonnie.py`** — fail-open por design; qualquer mudanca ao threshold afecta o filtro em producao imediatamente
+- **`data_layer.py`** — `get_full_portfolio_state()` e a unica fonte de verdade; nao introduzir calculos locais
+
+---
+
+## 8. Regras Nao-Negociaveis (Invariantes de Arquitectura)
+
+### R1 — T212 API e a unica Source of Truth
+- **PROIBIDO** calcular portfolio/posicoes localmente apos um trade
+- **PROIBIDO** usar `position_ledger.json` como verdade absoluta no frontend
+- Apos qualquer `execute_trade()`/`execute_exit()`: chamar `get_full_portfolio_state()` imediatamente
+- Se ledger local divergir da T212 API: **API ganha sempre**; logar em `data/beta/sync_warnings.json`
+
+### R2 — Heartbeat LED (status.json)
+`data/beta/status.json` escrito no **fim de cada ciclo** (sucesso ou erro controlado):
 ```json
-{
-  "last_check": "2026-05-26T14:30:00Z",
-  "bot_status": "active"
-}
+{"last_check": "2026-05-28T14:30:00Z", "bot_status": "active", "regime": "bull_trending", "mode": "phase1_auto"}
 ```
+- Verde no site = `now() - last_check < 15min` **e** `bot_status == "active"`
+- Em erro fatal: escrever `"bot_status": "error"` num `try/finally` no topo do ciclo
 
-### Onde escrever
-- Em `bot/phase0.py`, no **fim de cada ciclo** (sucesso ou falha controlada), antes do `return`.
-- Em modo de erro fatal (excepção não tratada que aborte o ciclo), escrever `"bot_status": "error"` num `try/finally` no topo do ciclo.
+### R3 — Falhas Nao-Cascateantes
+Todo o I/O lateral em `try/except` isolado. Hierarquia de prioridade:
+1. **Execucao T212** — falha aborta o trade
+2. **Resync T212** — falha marca ciclo como degradado, nao aborta
+3. **Persistencia local** — falha e loggada, nao aborta
+4. **Telegram** — falha e loggada, **nunca** aborta
 
-### Para que serve
-Este ficheiro alimenta o **"heartbeat LED" verde/vermelho** no site (GitHub Pages):
-- Verde → `now() - last_check < 15min` e `bot_status == "active"`.
-- Vermelho → caso contrário (bot caiu, GitHub Actions não correu, mercado fechado por demasiado tempo).
+### R4 — Notificacoes Imediatas
+`notifier.enviar_trade_executada(result, modo)` chamado **dentro** de `execute_trade()`/`execute_exit()`, apos confirmacao T212, antes do `return`. Nunca acumular para enviar no fim do ciclo.
 
-### Formato do timestamp
-ISO 8601 com sufixo `Z` (UTC). Usar `datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")`. Nunca usar timezone local.
-
----
-
-## 3. Regra de Isolamento — Falhas Não-Cascateantes
-
-**Telegram, logs locais, escrita de JSONs e API T212 são canais independentes.** A falha de um **nunca** pode abortar os outros.
-
-### Padrão obrigatório
-Todo o I/O lateral (Telegram, ficheiros de relatório, webhooks) deve estar embrulhado em `try/except` isolado, com log do erro e continuação:
-
+### R5 — Timestamps no Stdout
+`phase0.py` imprime com `flush=True`:
 ```python
-# Após executar um trade
-try:
-    enviar_trade_executada(result, modo="LIVE")
-except Exception as e:
-    logger.error(f"[notifier] falha enviar_trade_executada: {e}", exc_info=True)
-    # NÃO re-raise. O trade já foi executado. Continuar.
-
-try:
-    append_to_beta_trades(result)
-except Exception as e:
-    logger.error(f"[ledger] falha append_to_beta_trades: {e}", exc_info=True)
-    # Continuar mesmo assim. Resync com T212 corrigirá.
-```
-
-### Hierarquia de prioridade (mais crítico → menos crítico)
-1. **Execução T212** (ordem enviada) — falhar aqui aborta o trade.
-2. **Resync com API T212** (estado autoritativo) — falhar aqui marca o ciclo como degradado mas não aborta.
-3. **Persistência local** (ledger, beta_trades.json) — falhar aqui é loggado, não aborta.
-4. **Notificações Telegram** — falhar aqui é loggado, **nunca** aborta.
-
-### Anti-padrão
-**Nunca** usar `raise` dentro de blocos de notificação ou logging. **Nunca** depender de Telegram para o bot continuar.
-
----
-
-## 4. Regra de Notificações — Imediatas, Não Acumuladas
-
-Cada **BUY** ou **SELL** executado com sucesso (confirmado pela T212) deve disparar **imediatamente** a notificação correspondente.
-
-### Função canónica
-`bot/notifier.py::enviar_trade_executada(result, modo)`
-
-- `result`: dict retornado por `execute_trade()` ou `execute_exit()` com `ticker`, `side`, `qty`, `price`, `value`, `pnl` (se SELL), `order_id`, `timestamp`.
-- `modo`: string `"LIVE"` ou `"DRY-RUN"`.
-
-### Onde chamar
-- Em `bot/execution.py`, **dentro** de `execute_trade()` e `execute_exit()`, **após confirmação da T212** e **antes do `return`**.
-- **NUNCA** acumular trades para enviar no fim do ciclo (`phase0.py`). Isso introduz latência e perde notificações em caso de crash a meio do ciclo.
-
-### Outras notificações já existentes (manter)
-- `enviar_oportunidade(...)` — quando Bonnie aprova uma análise mas o trade ainda não foi executado.
-- `enviar_despertar()` — abertura de mercado.
-- `enviar_boa_noite()` — fecho de mercado / fim do dia.
-
-### Checklist ao adicionar nova lógica de trade
-- [ ] Chamei `enviar_trade_executada(result, modo)` imediatamente após confirmação?
-- [ ] A chamada está dentro de `try/except` (Regra 3)?
-- [ ] O `result` contém todos os campos esperados pelo notificador?
-
----
-
-## 5. Regra de Timestamps — Rastreabilidade em GitHub Actions
-
-No **início** e no **fim** de cada verificação de mercado em `bot/phase0.py`, escrever um timestamp formatado em `stdout` para que o log do GitHub Actions seja navegável.
-
-### Formato
-```python
-from datetime import datetime, timezone
-
-def _ts():
-    return datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
-
-# Início do ciclo
 print(f"[{_ts()}] === FundScope phase0 START ===", flush=True)
-
-# ... lógica do ciclo ...
-
-# Fim do ciclo
-print(f"[{_ts()}] === FundScope phase0 END (status={status}, trades={n_trades}) ===", flush=True)
+print(f"[{_ts()}] === FundScope phase0 END === {dur} | signals={n} | executed={n}", flush=True)
 ```
+Pontos obrigatorios: START, apos T212 sync, antes/apos cada ordem, END com resumo.
 
-### Pontos de log obrigatórios em `phase0.py`
-1. Entrada no ciclo (`START`).
-2. Após `get_full_portfolio_state()` (estado sincronizado).
-3. Antes de cada `execute_trade` / `execute_exit`.
-4. Após cada execução (com `order_id` retornado).
-5. Saída do ciclo (`END` com resumo).
-
-### Por que importa
-- O GitHub Actions log é a única caixa-preta quando algo falha em produção.
-- Sem timestamps, é impossível correlacionar com a T212 API (que devolve `executed_at`) ou com mensagens Telegram (que têm timestamp próprio).
-- `flush=True` é obrigatório — sem ele, o buffer só descarrega no fim do processo e perde-se ordem cronológica.
+### R6 — Frontend So Le (Regra de Ouro)
+O frontend (GitHub Pages) **nunca calcula estado**. Apenas le JSONs gerados pelos agentes Python.
+Aplica-se a: valor do portfolio, P&L, posicoes, cash disponivel, qualquer metrica derivada.
 
 ---
 
 ## Checklist de Code Review (qualquer PR ao bot)
 
-Antes de fazer merge de qualquer alteração ao bot, confirmar:
-
-- [ ] Nenhum cálculo de portfolio/posição é feito localmente após um trade — só resync via T212 API.
-- [ ] `data/beta/status.json` é actualizado no fim do ciclo.
-- [ ] Toda a chamada a `notifier`, escrita de ficheiro ou webhook está em `try/except` isolado.
-- [ ] Cada `execute_trade`/`execute_exit` chama `enviar_trade_executada` imediatamente após confirmação.
-- [ ] `phase0.py` tem `print(..., flush=True)` com timestamp no início e fim do ciclo.
-- [ ] Frontend (HTML/JS) não foi modificado para calcular estado — apenas lê JSONs.
+- [ ] Nenhum calculo de portfolio/posicao localmente apos trade — so resync via T212 API
+- [ ] `data/beta/status.json` actualizado no fim do ciclo
+- [ ] Todo o I/O lateral (Telegram, ficheiros, webhooks) em `try/except` isolado sem `raise`
+- [ ] `enviar_trade_executada()` chamado imediatamente apos confirmacao T212
+- [ ] `phase0.py` tem `print(..., flush=True)` com timestamp no inicio e fim do ciclo
+- [ ] Frontend HTML/JS nao foi modificado para calcular estado
 
 ---
 
-## Regra de Ouro de Infraestrutura (PoupanÃ§a de Tokens)
-1. Antes de responderes a qualquer questÃ£o sobre a arquitetura do robÃ´, o fluxo entre Clyde/Bonnie/CRO, ou dependÃªncias de ficheiros, deves consultar estritamente o [[GRAPH_REPORT.md]] gerado pelo Graphify.
-2. NÃƒO leias os ficheiros de cÃ³digo completos (como [[strategy.py]], [[cro.py]] ou [[bonnie.py]]) a menos que o utilizador te peÃ§a para alterar linhas de cÃ³digo especÃ­ficas desses ficheiros. Confia na estrutura do grafo para entenderes as dependÃªncias.
+## Comandos Uteis do Projecto
 
-## Comandos Ãšteis do Projeto
+```bash
+# Ciclo manual
+PYTHONPATH=. python -m bot.phase0
 
-### Backtest / Stress-test
-- **Backtest standard (4 variantes):** `PYTHONPATH=. python scripts/backtest.py --since 2019-01-01 --use-optimized`
-- **Kelly comparison (ON vs OFF):** `PYTHONPATH=. python scripts/backtest.py --since 2019-01-01 --use-optimized --kelly`
-- **Com Bonnie v3:** `PYTHONPATH=. python scripts/backtest.py --since 2024-05-23 --use-optimized --bonnie-v3`
-- **Stress-test 7 anos:** `PYTHONPATH=. python scripts/backtest.py --since 2019-01-01 --until 2026-05-24 --capital 5000 --use-optimized`
+# Backtest standard (4 variantes, parametros optimizados)
+PYTHONPATH=. python scripts/backtest.py --since 2019-01-01 --use-optimized
 
-### Learner
-- **Learner 7 anos (60 ciclos):** `PYTHONPATH=. python bot/learner_backtest.py --cycles 60 --since 2019-01-01`
-- **Learner rÃ¡pido (10 ciclos, 2 anos):** `PYTHONPATH=. python bot/learner_backtest.py --cycles 10`
+# Backtest OOS com Bonnie v4-clean (referencia actual)
+PYTHONPATH=. python scripts/backtest.py --since 2024-01-01 --use-optimized
 
-### Bonnie Retrain
-- **Retrain v2 (padrÃ£o):** `PYTHONPATH=. python scripts/retrain_bonnie.py`
-- **Retrain v3 (7 anos, labels calibradas):** `PYTHONPATH=. python scripts/retrain_bonnie.py --since 2017-01-01 --until 2026-05-01 --model-version v3`
+# Stress-test 7 anos
+PYTHONPATH=. python scripts/backtest.py --since 2019-01-01 --until 2026-05-24 --capital 5000 --use-optimized
 
-### Pipeline / Outros
-- **ExecuÃ§Ã£o Manual do Pipeline:** `python bot/phase0.py`
-- **AtualizaÃ§Ã£o do Grafo de Conhecimento:** `/graphify .`
-- **ValidaÃ§Ã£o de Sintaxe:** `python -c "import ast; ast.parse(open('bot/bonnie.py', encoding='utf-8').read())"`
-- **AnÃ¡lise EstatÃ­stica/Backtest:** `python -m bot.mass_backtest`
+# Learner 7 anos (60 ciclos)
+PYTHONPATH=. python bot/learner_backtest.py --cycles 60 --since 2019-01-01
 
-## Estado Atual â€” v3.1 (run-006, 2026-05-24)
+# Retrain Bonnie v4-clean (NAO CORRER antes de validacao real concluida)
+PYTHONPATH=. python scripts/retrain_bonnie.py --since 2017-01-01 --until 2026-05-01 --model-version v4-clean --tp-mult 4.25 --sl-mult 1.75
 
-### ParÃ¢metros ativos (optimized_backtest_params.json)
-- `atr_stop_mult_value`: 1.75 (era 3.0)
-- `atr_tp_mult`: 4.25 (era 3.0)
-- `value_trail_activation`: 3.0 (era 2.25)
-- `value_trail_distance`: 3.5 (era 2.0)
-- `max_position_pct`: 11.0% (era 10.0%)
+# Update CLAUDE.md manualmente
+python scripts/update_claude_md.py
 
-### Modelo ativo
-- **Bonnie v4** (`bonnie_model_v4.pkl`) â€” labels calibradas TP=4.25Ã—ATR / SL=1.75Ã—ATR
-- BonnieML auto-carrega v4 por prioridade de ficheiro (v4 > v3 > v2)
-- Thresholds: todos 0.30 per-regime (`bonnie_thresholds_v4.json`)
-- v3 REJEITADA+APAGADA; v2 mantido como fallback
+# Update grafo de conhecimento
+# /graphify .  (via Skill tool no Claude Code)
 
-### Kelly
-- Implementado (`_kelly_size_factor` em backtest.py + cro.py)
-- **DESACTIVADO** â€” WR=37.6% incompatÃ­vel com Quarter-Kelly
-- `CRO_CONFIG["enable_kelly_sizing"] = False` (default permanente)
+# Validacao de sintaxe
+python -c "import ast; ast.parse(open('bot/bonnie.py', encoding='utf-8').read())"
 
-### Resultados de referÃªncia
+# Servir o dashboard localmente
+python serve.py
 
-**7yr Full (2019-2026, Bonnie v2):**
-- **+224.5%** vs SPY +232.3% (alpha -7.8pp) | Sharpe 1.29 | DD -18.3%
-
-**OOS (2024-01-01â†’2026-05-01, Bonnie v4) â€” run-006 (com label leakage):**
-- +53.5% vs SPY +45.2% | Sharpe 1.94 | DD -9.6% | Bonnie filtra 32.6%
-
-**OOS (2024-01-01â†’2026-05-01, Bonnie v4-clean) â€” REFERÃŠNCIA ACTIVA (run-007):**
-- **+62.2% (+Bonnie)** vs SPY +45.2% | Alpha +17.0pp | Sharpe **2.09** | DD -10.8% | Calmar ~2.0 | filtra 34.9%
-- WR 38% | R:R 2.5:1 | Profit Factor 1.73
-- v4-clean substitui v4 como modelo activo (backup: bonnie_model_v4_orig.pkl)
-
-### PrÃ³ximos Passos â€” AGUARDAR 30 dias em produÃ§Ã£o (v4-clean)
-- Sistema v3+B4-clean em monitorizaÃ§Ã£o real. **Nenhuma optimizaÃ§Ã£o adicional antes de validaÃ§Ã£o real.**
-- MÃ©tricas alvo apÃ³s 30 dias: Sharpe â‰¥ 1.5, DD â‰¤ -15%, Bonnie filtra 25-40%
-
-### Bonnie v5 â€” IDENTIFICADA, AGUARDA VALIDAÃ‡ÃƒO
-- **NÃƒO CORRER** atÃ© validaÃ§Ã£o real de 30 dias com v4-clean estar concluÃ­da
-- Quando validar: aumentar `LABEL_HORIZON_DAYS` de 20 â†’ ~57 dias (`ceil(4.25/1.5 Ã— 20)`)
-- Objectivo: aumentar label balance de 15.8% â†’ ~30-40% (melhora F1 real â€” v4-clean tem F1=0.030)
-- Comando: `PYTHONPATH=. python scripts/retrain_bonnie.py --since 2017-01-01 --until 2026-05-01 --model-version v4-clean --tp-mult 4.25 --sl-mult 1.75`
-- Antes de correr: editar `LABEL_HORIZON_DAYS = 57` em retrain_bonnie.py (linha 68)
+# Analise em massa da Bonnie
+PYTHONPATH=. python -m bot.mass_backtest
+```
 
 ---
-## Auto-Sync: 2026-05-27 23:58
-- PC: DESKTOP-0514V9J
-- Ultimo commit: 65426d5 - debug: add gate-level skip logging to diagnose silent 0-order cycles
-- Learner: verificar data/beta/ para runs recentes
+
+## Regra de Infra (Poupanca de Tokens)
+
+1. Para questoes de arquitectura/fluxo/dependencias: consultar `graphify-out/GRAPH_REPORT.md` primeiro
+2. Nao ler ficheiros de codigo completos a menos que va alterar linhas especificas neles
+3. Confiar na estrutura do grafo para entender dependencias; so abrir ficheiros para edicao
+
 ---
+
+## Historico de Decisoes (nao alterar automaticamente)
+
+| Data | Decisao | Motivo |
+|---|---|---|
+| 2026-05-24 | Bonnie v4-clean activa (run-007) | Label leakage eliminado; OOS +62.2% vs SPY +45.2% |
+| 2026-05-24 | Kelly desactivado permanentemente | WR=37.6% incompativel com Quarter-Kelly |
+| 2026-05-24 | atr_stop_mult=1.75, atr_tp_mult=4.25 | Optimizacao run-006 (v3 params activos) |
+| 2026-05-24 | max_position_pct=11% | Subida de 10% pos-optimizacao |
+| 2026-05-28 | Bonnie v5 identificada mas bloqueada | Aguarda 30 dias de validacao real; LABEL_HORIZON_DAYS 20->57 |
