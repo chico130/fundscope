@@ -19,6 +19,7 @@ from .config import (
     LIVE_TRADING,
     REQUEST_DELAY_SECONDS,
 )
+from .retry_util import backoff_delay
 
 # T212 ticker suffix → yfinance market suffix
 _T212_MARKET_SUFFIX: dict[str, str] = {
@@ -69,8 +70,8 @@ _RETRIABLE = (
     req_exc.ReadTimeout,
     req_exc.ConnectionError,
 )
-_MAX_RETRY    = 3
-_RETRY_DELAYS = (5, 10)   # segundos entre tentativa 1→2 e 2→3
+_MAX_RETRY = 3
+# Espera entre tentativas calculada por retry_util.backoff_delay (5s → 10s → 20s).
 
 
 def _classify_error(exc: Exception) -> str:
@@ -107,8 +108,8 @@ def _get(endpoint: str) -> dict | list | None:
             return resp.json()
         except _RETRIABLE as exc:
             if attempt < _MAX_RETRY - 1:
-                wait = _RETRY_DELAYS[min(attempt, len(_RETRY_DELAYS) - 1)]
-                print(f"[api] GET {endpoint} — {type(exc).__name__}, retry {attempt + 1}/{_MAX_RETRY} em {wait}s")
+                wait = backoff_delay(attempt)
+                print(f"[api] GET {endpoint} — {type(exc).__name__}, retry {attempt + 1}/{_MAX_RETRY} em {wait:.0f}s")
                 time.sleep(wait)
             else:
                 log_error("api_get_failed", {
@@ -183,8 +184,8 @@ def _delete(endpoint: str) -> bool:
             return True
         except _RETRIABLE as exc:
             if attempt < _MAX_RETRY - 1:
-                wait = _RETRY_DELAYS[min(attempt, len(_RETRY_DELAYS) - 1)]
-                print(f"[api] DELETE {endpoint} — {type(exc).__name__}, retry {attempt + 1}/{_MAX_RETRY} em {wait}s")
+                wait = backoff_delay(attempt)
+                print(f"[api] DELETE {endpoint} — {type(exc).__name__}, retry {attempt + 1}/{_MAX_RETRY} em {wait:.0f}s")
                 time.sleep(wait)
             else:
                 log_error("api_delete_failed", {
@@ -255,7 +256,7 @@ def get_historical_data(ticker: str, days: int = 60) -> list[dict]:
             ]
         except Exception as exc:
             if attempt < _MAX_RETRY - 1:
-                time.sleep(_RETRY_DELAYS[min(attempt, len(_RETRY_DELAYS) - 1)])
+                time.sleep(backoff_delay(attempt))
             else:
                 from .logger import log_error
                 log_error("historical_data_failed", {

@@ -13,9 +13,14 @@ import time
 from datetime import datetime, timezone
 
 import requests
+import requests.exceptions as req_exc
 
 from .config import FINNHUB_API_KEY
 from .logger import log_error
+from .retry_util import backoff_delay
+
+_FINNHUB_RETRIES = 3
+_RETRIABLE = (req_exc.ConnectTimeout, req_exc.ReadTimeout, req_exc.ConnectionError)
 
 _FINNHUB_BASE = "https://finnhub.io/api/v1"
 _MIN_INTERVAL = 1.05          # 1 req/sec → ~57/min (safe margin)
@@ -84,31 +89,51 @@ def _rate_limit() -> None:
 
 
 def _from_finnhub(symbol: str) -> dict | None:
+    """Cotação Finnhub com retry + backoff exponencial (2s → 4s) em erros de rede.
+
+    Erros transitórios (timeout/conexão) e 429 são retentados; respostas HTTP de
+    lógica (símbolo inválido) ou payload vazio devolvem None de imediato para o
+    fallback yfinance entrar sem demora. Base curta porque há fallback a seguir.
+    """
     if not FINNHUB_API_KEY:
         return None
-    try:
-        _rate_limit()
-        resp = requests.get(
-            f"{_FINNHUB_BASE}/quote",
-            params={"symbol": symbol, "token": FINNHUB_API_KEY},
-            timeout=10,
-        )
-        resp.raise_for_status()
-        d = resp.json()
-        current = d.get("c")
-        prev = d.get("pc")
-        if not current:  # Finnhub returns 0 for unavailable symbols
+    for attempt in range(_FINNHUB_RETRIES):
+        try:
+            _rate_limit()
+            resp = requests.get(
+                f"{_FINNHUB_BASE}/quote",
+                params={"symbol": symbol, "token": FINNHUB_API_KEY},
+                timeout=10,
+            )
+            if resp.status_code == 429:
+                if attempt < _FINNHUB_RETRIES - 1:
+                    time.sleep(backoff_delay(attempt, base=2.0))
+                    continue
+                log_error("price_feed_finnhub_failed", {"symbol": symbol, "error": "429 rate-limit", "attempts": _FINNHUB_RETRIES})
+                return None
+            resp.raise_for_status()
+            d = resp.json()
+            current = d.get("c")
+            prev = d.get("pc")
+            if not current:  # Finnhub returns 0 for unavailable symbols
+                return None
+            return {
+                "price": round(float(current), 4),
+                "prev_close": round(float(prev), 4) if prev else None,
+                "change_pct": round((current - prev) / prev * 100, 2) if prev else None,
+                "timestamp": d.get("t"),
+                "source": "finnhub",
+            }
+        except _RETRIABLE as exc:
+            if attempt < _FINNHUB_RETRIES - 1:
+                time.sleep(backoff_delay(attempt, base=2.0))
+            else:
+                log_error("price_feed_finnhub_failed", {"symbol": symbol, "error": str(exc), "attempts": _FINNHUB_RETRIES})
+                return None
+        except Exception as exc:
+            log_error("price_feed_finnhub_failed", {"symbol": symbol, "error": str(exc)})
             return None
-        return {
-            "price": round(float(current), 4),
-            "prev_close": round(float(prev), 4) if prev else None,
-            "change_pct": round((current - prev) / prev * 100, 2) if prev else None,
-            "timestamp": d.get("t"),
-            "source": "finnhub",
-        }
-    except Exception as exc:
-        log_error("price_feed_finnhub_failed", {"symbol": symbol, "error": str(exc)})
-        return None
+    return None
 
 
 def _from_yfinance(symbol: str) -> dict | None:
