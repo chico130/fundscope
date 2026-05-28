@@ -20,6 +20,7 @@ from .config import (
     REQUEST_DELAY_SECONDS,
 )
 from .retry_util import backoff_delay
+from . import circuit_breaker
 
 # T212 ticker suffix → yfinance market suffix
 _T212_MARKET_SUFFIX: dict[str, str] = {
@@ -95,6 +96,10 @@ def _get(endpoint: str) -> dict | list | None:
 
     from .logger import log_error
 
+    if not circuit_breaker.allow("t212"):
+        log_error("api_get_circuit_open", {"endpoint": endpoint})
+        return None
+
     for attempt in range(_MAX_RETRY):
         time.sleep(REQUEST_DELAY_SECONDS)
         try:
@@ -105,13 +110,16 @@ def _get(endpoint: str) -> dict | list | None:
                 time.sleep(wait)
                 continue
             resp.raise_for_status()
-            return resp.json()
+            data = resp.json()
+            circuit_breaker.record_success("t212")
+            return data
         except _RETRIABLE as exc:
             if attempt < _MAX_RETRY - 1:
                 wait = backoff_delay(attempt)
                 print(f"[api] GET {endpoint} — {type(exc).__name__}, retry {attempt + 1}/{_MAX_RETRY} em {wait:.0f}s")
                 time.sleep(wait)
             else:
+                circuit_breaker.record_failure("t212", str(exc))
                 log_error("api_get_failed", {
                     "endpoint":   endpoint,
                     "error":      str(exc),
@@ -120,6 +128,7 @@ def _get(endpoint: str) -> dict | list | None:
                 })
                 return None
         except Exception as exc:
+            circuit_breaker.record_failure("t212", str(exc))
             log_error("api_get_failed", {
                 "endpoint":   endpoint,
                 "error":      str(exc),
@@ -141,14 +150,21 @@ def _post(endpoint: str, payload: dict) -> dict | None:
 
     from .logger import log_error
 
+    if not circuit_breaker.allow("t212"):
+        log_error("api_post_circuit_open", {"endpoint": endpoint})
+        return None
+
     time.sleep(REQUEST_DELAY_SECONDS)
     try:
         resp = _session.post(f"{T212_BASE_URL_DEMO}{endpoint}", json=payload, timeout=30)
         # Captura body antes do raise_for_status — T212 devolve detalhe do erro em JSON
         body_preview = resp.text[:600] if resp.text else ""
         resp.raise_for_status()
-        return resp.json()
+        result = resp.json()
+        circuit_breaker.record_success("t212")
+        return result
     except Exception as exc:
+        circuit_breaker.record_failure("t212", str(exc))
         err_str = str(exc)
         status_code: int | None = getattr(getattr(exc, "response", None), "status_code", None)
         body_preview = locals().get("body_preview", "")
@@ -176,11 +192,16 @@ def _delete(endpoint: str) -> bool:
 
     from .logger import log_error
 
+    if not circuit_breaker.allow("t212"):
+        log_error("api_delete_circuit_open", {"endpoint": endpoint})
+        return False
+
     for attempt in range(_MAX_RETRY):
         time.sleep(REQUEST_DELAY_SECONDS)
         try:
             resp = _session.delete(f"{T212_BASE_URL_DEMO}{endpoint}", timeout=30)
             resp.raise_for_status()
+            circuit_breaker.record_success("t212")
             return True
         except _RETRIABLE as exc:
             if attempt < _MAX_RETRY - 1:
@@ -188,6 +209,7 @@ def _delete(endpoint: str) -> bool:
                 print(f"[api] DELETE {endpoint} — {type(exc).__name__}, retry {attempt + 1}/{_MAX_RETRY} em {wait:.0f}s")
                 time.sleep(wait)
             else:
+                circuit_breaker.record_failure("t212", str(exc))
                 log_error("api_delete_failed", {
                     "endpoint":   endpoint,
                     "error":      str(exc),
@@ -196,6 +218,7 @@ def _delete(endpoint: str) -> bool:
                 })
                 return False
         except Exception as exc:
+            circuit_breaker.record_failure("t212", str(exc))
             status_code: int | None = getattr(getattr(exc, "response", None), "status_code", None)
             log_error("api_delete_failed", {
                 "endpoint":    endpoint,
@@ -238,12 +261,18 @@ def get_historical_data(ticker: str, days: int = 60) -> list[dict]:
         log_error("missing_dependency", {"package": "yfinance", "pip": "pip install yfinance"})
         return []
 
+    if not circuit_breaker.allow("yfinance"):
+        from .logger import log_error
+        log_error("historical_data_circuit_open", {"ticker": ticker})
+        return []
+
     for attempt in range(_MAX_RETRY):
         try:
             df = yf.Ticker(_t212_to_yfinance(ticker)).history(period=f"{days}d", interval="1d")
             if df.empty:
+                # Ticker sem dados (ex: delisted) não é falha de feed — neutro para o breaker.
                 return []
-            return [
+            bars = [
                 {
                     "date":   dt.strftime("%Y-%m-%d"),
                     "open":   round(float(row["Open"]),   4),
@@ -254,10 +283,13 @@ def get_historical_data(ticker: str, days: int = 60) -> list[dict]:
                 }
                 for dt, row in df.iterrows()
             ]
+            circuit_breaker.record_success("yfinance")
+            return bars
         except Exception as exc:
             if attempt < _MAX_RETRY - 1:
                 time.sleep(backoff_delay(attempt))
             else:
+                circuit_breaker.record_failure("yfinance", str(exc))
                 from .logger import log_error
                 log_error("historical_data_failed", {
                     "ticker": ticker, "days": days,

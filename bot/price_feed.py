@@ -18,6 +18,7 @@ import requests.exceptions as req_exc
 from .config import FINNHUB_API_KEY
 from .logger import log_error
 from .retry_util import backoff_delay
+from . import circuit_breaker
 
 _FINNHUB_RETRIES = 3
 _RETRIABLE = (req_exc.ConnectTimeout, req_exc.ReadTimeout, req_exc.ConnectionError)
@@ -97,6 +98,8 @@ def _from_finnhub(symbol: str) -> dict | None:
     """
     if not FINNHUB_API_KEY:
         return None
+    if not circuit_breaker.allow("finnhub"):
+        return None
     for attempt in range(_FINNHUB_RETRIES):
         try:
             _rate_limit()
@@ -109,12 +112,14 @@ def _from_finnhub(symbol: str) -> dict | None:
                 if attempt < _FINNHUB_RETRIES - 1:
                     time.sleep(backoff_delay(attempt, base=2.0))
                     continue
+                circuit_breaker.record_failure("finnhub", "429 rate-limit")
                 log_error("price_feed_finnhub_failed", {"symbol": symbol, "error": "429 rate-limit", "attempts": _FINNHUB_RETRIES})
                 return None
             resp.raise_for_status()
             d = resp.json()
             current = d.get("c")
             prev = d.get("pc")
+            circuit_breaker.record_success("finnhub")
             if not current:  # Finnhub returns 0 for unavailable symbols
                 return None
             return {
@@ -128,6 +133,7 @@ def _from_finnhub(symbol: str) -> dict | None:
             if attempt < _FINNHUB_RETRIES - 1:
                 time.sleep(backoff_delay(attempt, base=2.0))
             else:
+                circuit_breaker.record_failure("finnhub", str(exc))
                 log_error("price_feed_finnhub_failed", {"symbol": symbol, "error": str(exc), "attempts": _FINNHUB_RETRIES})
                 return None
         except Exception as exc:
