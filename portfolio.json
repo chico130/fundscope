@@ -1,11 +1,11 @@
 {
-  "updated": "2026-05-28T21:11:07.853794Z",
+  "updated": "2026-05-28T21:39:03.013110Z",
   "t212_mode": "live",
   "summary": {
-    "total_value": 5007.54,
+    "total_value": 5007.73,
     "total_invested": 149.0,
-    "total_gain_eur": -2.1,
-    "total_gain_pct": -1.41,
+    "total_gain_eur": -1.91,
+    "total_gain_pct": -1.28,
     "daily_gain_eur": 0.0,
     "cash_available": 4860.64,
     "n_positions": 1
@@ -15,21 +15,21 @@
       "ticker_t212": "MRVL_US_EQ",
       "quantity": 0.8428,
       "avg_price": 206.0157,
-      "current_price": 203.16,
-      "ppl": -2.1,
-      "fx_ppl": -0.04,
+      "current_price": 203.39,
+      "ppl": -1.91,
+      "fx_ppl": -0.01,
       "ticker": "MRVL",
       "ticker_display": "MRVL",
       "display_name": "Marvell Technology",
       "currency": "USD",
       "change_pct": 0.0,
-      "gain_eur": -2.1,
+      "gain_eur": -1.91,
       "invested": 149.0,
-      "value_eur": 146.9,
-      "gain_pct": -1.41,
+      "value_eur": 147.09,
+      "gain_pct": -1.28,
       "fx_rate": 0.86081,
       "currency_native": "USD",
-      "allocation_pct": 2.93,
+      "allocation_pct": 2.94,
       "clyde_forecast": null,
       "news": [
         {
@@ -39,6 +39,14 @@
           "url": "https://finnhub.io/api/news?id=e61a7aa1b39565f9a88478cd3b1634aec08a0be4fbe790f168b9a87a74b80f71",
           "datetime": 1779992106,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Benzinga",
+          "headline": "UBS Maintains Buy on Marvell Technology, Raises Price Target to $230",
+          "summary": "UBS  analyst Timothy Arcuri   maintains Marvell Technology (NASDAQ:MRVL) with a Buy and raises the price target from $195 to $230.",
+          "url": "https://finnhub.io/api/news?id=bd840d01e61c8d7b4dd5c46104a32ca770ba29785d090a7d3c35a2de48ef5907",
+          "datetime": 1779985777,
+          "image": ""
         },
         {
           "source": "Yahoo",
@@ -57,20 +65,12 @@
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
-          "source": "Yahoo",
-          "headline": "Marvell Technology Sees Stronger AI-Driven Growth Outlook on Accelerating Interconnect Demand, Morgan Stanley Says",
-          "summary": "Marvell Technology (MRVL) is seeing a stronger long-term growth outlook driven by accelerating artif",
-          "url": "https://finnhub.io/api/news?id=3f3bc4cac366aa3efd7a64a1b9b8f8b751b1672ad781847f3bcf868c730d4b75",
-          "datetime": 1779980754,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "SeekingAlpha",
-          "headline": "Semis Race Past Analysts",
-          "summary": "Average stock in the Russell 1000 trades about 15% below its consensus analyst price target, but the semis have rallied so far so fast that the group has raced past Wall Street expectations.",
-          "url": "https://finnhub.io/api/news?id=cf128028ab4bf992327959029ee2d57a924fed4f2e5eaf18ceccc45f52c6884a",
-          "datetime": 1779980400,
-          "image": "https://static.seekingalpha.com/cdn/s3/uploads/getty_images/1218383090/image_1218383090.jpg?io=getty-c-w1536"
+          "source": "Benzinga",
+          "headline": "Citigroup Maintains Buy on Marvell Technology, Raises Price Target to $225",
+          "summary": "Citigroup  analyst Atif Malik   maintains Marvell Technology (NASDAQ:MRVL) with a Buy and raises the price target from $215 to $225.",
+          "url": "https://finnhub.io/api/news?id=d2f1ed02042409f4494c76370be44b6d9b5008a4867b72285d4f1b4c51eff73b",
+          "datetime": 1779983236,
+          "image": ""
         }
       ],
       "earnings": [],
@@ -119,7 +119,7 @@
     },
     {
       "date": "2026-05-28",
-      "value": 5007.54
+      "value": 5007.73
     }
   ],
   "benchmark_metrics": {}
