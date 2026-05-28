@@ -1363,8 +1363,10 @@ run_phase0_cycle = run  # alias used by main.py
 if __name__ == "__main__":
     import sys
     from bot.watchdog import check_quarantine_and_abort, quarantine
+    from bot.state_guard import validate_and_repair_state
 
     check_quarantine_and_abort()
+    validate_and_repair_state()
 
     parser = argparse.ArgumentParser(description="FundScope Bot — Fase 0")
     parser.add_argument(
