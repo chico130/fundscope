@@ -159,7 +159,3 @@ class WatchlistThrottler:
             yield ticker, data
 
 
-def is_fresh(record: dict, max_age_seconds: float = 90.0) -> bool:
-    """True se o registo foi buscado há menos de max_age_seconds."""
-    ts = record.get("_fetched_at")
-    return ts is not None and (time.time() - ts) < max_age_seconds

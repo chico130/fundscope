@@ -85,16 +85,6 @@ def train(verbose: bool = True) -> "GradientBoostingClassifier":
     return model
 
 
-def load_model() -> "GradientBoostingClassifier":
-    """Carrega o modelo treinado do disco."""
-    if not MODEL_PATH.exists():
-        raise FileNotFoundError(
-            f"Modelo não encontrado: {MODEL_PATH}\n"
-            "Corre primeiro: python -m bot.model_trainer"
-        )
-    return joblib.load(MODEL_PATH)
-
-
 if __name__ == "__main__":
     print("=" * 55)
     print("  Bonnie — Treino do Modelo")

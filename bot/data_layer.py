@@ -362,33 +362,6 @@ def fetch_single_ticker(ticker: str) -> dict | None:
         return None
 
 
-def fetch_candidate_market_data(tickers: list[str]) -> dict[str, dict]:
-    """Fetch technical indicators for watchlist candidate tickers (parallel).
-
-    Returns a market_data dict compatible with strategy.generate_signals():
-      {ticker: {"technicals": {...}, "last_price": float}}
-
-    Uses ThreadPoolExecutor for parallel yfinance fetches. Tickers that fail or
-    return insufficient data are silently omitted (partial-success semantics).
-
-    Note: for throttled/streaming fetches use WatchlistThrottler.stream()
-    with fetch_single_ticker instead.
-    """
-    from concurrent.futures import ThreadPoolExecutor, as_completed
-    from .config import SCAN_WORKERS_YF
-
-    result: dict[str, dict] = {}
-    with ThreadPoolExecutor(max_workers=SCAN_WORKERS_YF) as pool:
-        futures = {pool.submit(fetch_single_ticker, t): t for t in tickers}
-        for future in as_completed(futures):
-            ticker = futures[future]
-            data = future.result()
-            if data is not None:
-                result[ticker] = data
-
-    return result
-
-
 # ---------------------------------------------------------------------------
 # Beta JSON readers
 # ---------------------------------------------------------------------------
@@ -407,10 +380,6 @@ def _read_json(path: Path) -> dict | None:
 
 def read_beta_summary() -> dict | None:
     return _read_json(DATA_BETA_DIR / "beta_summary.json")
-
-
-def read_beta_positions() -> dict | None:
-    return _read_json(DATA_BETA_DIR / "beta_positions.json")
 
 
 def read_beta_equity() -> dict | None:

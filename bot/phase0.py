@@ -33,7 +33,6 @@ from .learner import run_learner_cycle
 from . import exit_manager, position_ledger
 
 POSITION_META_PATH    = DATA_BETA_DIR / "position_meta.json"
-_LAST_WAKE_PATH       = DATA_BETA_DIR / "last_wake.txt"
 SOCIAL_SENTIMENT_PATH = DATA_BETA_DIR / "social_sentiment.json"
 _ATTEMPTED_TODAY_PATH = DATA_BETA_DIR / "attempted_today.json"
 STATUS_PATH           = DATA_BETA_DIR / "status.json"
@@ -1157,21 +1156,6 @@ def _count_open_trades() -> int:
 # ---------------------------------------------------------------------------
 # Output
 # ---------------------------------------------------------------------------
-
-def _wake_already_sent_today(now: datetime) -> bool:
-    try:
-        return _LAST_WAKE_PATH.read_text(encoding="utf-8").strip() == now.strftime("%Y-%m-%d")
-    except OSError:
-        return False
-
-
-def _mark_wake_sent_today(now: datetime) -> None:
-    try:
-        _LAST_WAKE_PATH.parent.mkdir(parents=True, exist_ok=True)
-        _LAST_WAKE_PATH.write_text(now.strftime("%Y-%m-%d"), encoding="utf-8")
-    except OSError as exc:
-        log_error("last_wake_write_failed", {"error": str(exc)})
-
 
 def _notify_opportunities(report: dict) -> None:
     """Envia alerta sonoro ao Francisco quando o Clyde detecta sinais de entrada.

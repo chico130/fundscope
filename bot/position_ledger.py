@@ -140,22 +140,6 @@ def sync_from_t212(t212_positions: list[dict], cash: dict | None = None) -> None
     _save(ledger)
 
 
-def add_or_update(ticker: str, quantity: float, avg_price: float,
-                  display_name: str = "", currency: str = "USD") -> None:
-    """Manually add or update a position in the ledger."""
-    ledger = _load_raw()
-    sym = _to_price_symbol(ticker)
-    ledger["positions"][ticker] = {
-        "ticker":       ticker,
-        "price_symbol": sym,
-        "display_name": display_name or ticker,
-        "quantity":     quantity,
-        "avg_price":    avg_price,
-        "currency":     currency,
-    }
-    _save(ledger)
-
-
 def remove(ticker: str) -> None:
     """Remove a closed position from the ledger."""
     ledger = _load_raw()

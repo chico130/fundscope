@@ -71,12 +71,6 @@ def get_quotes(symbols: list[str]) -> dict[str, dict]:
     return out
 
 
-def last_known_price(symbol: str) -> float | None:
-    """Returns the last cached price for a symbol, regardless of TTL."""
-    cached = _cache.get(symbol)
-    return cached["price"] if cached else None
-
-
 # ---------------------------------------------------------------------------
 # Providers
 # ---------------------------------------------------------------------------

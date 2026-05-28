@@ -197,11 +197,6 @@ def stub_externals(monkeypatch):
     # --- api_client yfinance wrappers (module attribute, visible to data_layer) ---
     monkeypatch.setattr(api, "get_historical_data",
                         lambda ticker, days=60: list(_BARS))
-    monkeypatch.setattr(api, "get_market_snapshot",
-                        lambda tickers: {t: {"last_price": 180.0,
-                                             "previous_close": 175.0,
-                                             "change_pct": 2.86}
-                                         for t in tickers})
 
     # --- price_feed quotes (position_ledger calls via module reference) ---
     _q = {"price": 180.0, "prev_close": 175.0, "change_pct": 2.86, "source": "mock"}

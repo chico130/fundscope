@@ -21,7 +21,7 @@ Fitness:   Profit Factor × Calmar Factor × regularização L2 vs. defaults.
 Anti-overfitting: walk-forward 85/15, EMA smooth, L2 penalty, mínimos amostrais por horizonte.
 
 Fase 2 preservada: analyse_recent_trades(), detect_error_patterns(),
-                   suggest_parameter_adjustments(), generate_weekly_report().
+                   suggest_parameter_adjustments().
 """
 from __future__ import annotations
 
@@ -639,14 +639,6 @@ def _would_momentum_enter(trade: dict, params: dict) -> bool:
             and ema20_above_ema50 and price_above_ema20 and vol >= m_vol)
 
 
-def _fitness_momentum(params: dict, trades: list[dict]) -> float:
-    """Profit Factor × Calmar Factor para trades MOMENTUM com trailing stop."""
-    accepted = [t for t in trades if _would_momentum_enter(t, params)]
-    if len(accepted) < _min_acceptable_trades(trades):
-        return 0.01  # anti-overfitting: parâmetros MOMENTUM demasiado restritivos
-    return _profit_factor_calmar(accepted)
-
-
 def _evaluate_style_toggle(trades: list[dict], stored: dict) -> bool:
     """Actualiza enabled_styles com base no Calmar Ratio por estilo.
 
@@ -1052,80 +1044,6 @@ def suggest_parameter_adjustments() -> list[dict]:
     return suggestions
 
 
-def generate_weekly_report() -> str:
-    """Gera e guarda o relatório semanal de performance em data/beta/beta_weekly_report.txt."""
-    stats       = analyse_recent_trades(days=7)
-    patterns    = detect_error_patterns()
-    adjustments = suggest_parameter_adjustments()
-
-    lines = [
-        "=" * 60,
-        "FundScope Bot — Relatório Semanal",
-        "Período: últimos 7 dias",
-        "=" * 60,
-        "",
-    ]
-
-    if stats.get("n_closed", 0) == 0:
-        lines += ["Sem trades fechados neste período.", ""]
-    else:
-        lines += [
-            "PERFORMANCE",
-            f"  Trades fechados : {stats['n_closed']}",
-            f"  Vitórias        : {stats['n_wins']} ({stats['win_rate_pct']}%)",
-            f"  Derrotas        : {stats['n_losses']}",
-            f"  P&L total       : {stats['total_pnl_eur']:+.2f}€",
-            f"  Ganho médio     : +{stats['avg_win_eur']:.2f}€",
-            f"  Perda média     : {stats['avg_loss_eur']:.2f}€",
-            f"  Melhor trade    : {stats['best_trade']['ticker']} "
-            f"{stats['best_trade']['result_eur']:+.2f}€",
-            f"  Pior trade      : {stats['worst_trade']['ticker']} "
-            f"{stats['worst_trade']['result_eur']:+.2f}€",
-            "",
-        ]
-        if stats.get("by_ticker"):
-            lines.append("POR TICKER")
-            for tk, ts in stats["by_ticker"].items():
-                lines.append(
-                    f"  {tk:<8} {ts['n_trades']} trades · "
-                    f"win {ts['win_rate_pct']}% · P&L {ts['total_pnl']:+.2f}€"
-                )
-            lines.append("")
-
-    if patterns:
-        lines.append("PADRÕES DE ERRO DETECTADOS")
-        for p in patterns:
-            lines.append(f"  ⚠ {p['description']}")
-            lines.append(f"    → {p['suggestion']}")
-        lines.append("")
-    else:
-        lines += ["PADRÕES DE ERRO: Nenhum padrão significativo detectado.", ""]
-
-    if adjustments:
-        lines.append("AJUSTES SUGERIDOS (requerem aprovação manual ou run_learner_cycle)")
-        for a in adjustments:
-            lines.append(f"  {a['parameter']}: {a['current_value']} → {a['proposed_value']}")
-            lines.append(f"    Razão     : {a['reason']}")
-            lines.append(f"    Confiança : {a['confidence']}")
-        lines.append("")
-    else:
-        lines += ["AJUSTES: Nenhum ajuste sugerido neste ciclo.", ""]
-
-    lines += [
-        "Nota: ajustes automáticos requerem trade suficientes para activar o Learner.",
-        "=" * 60,
-    ]
-
-    report = "\n".join(lines)
-    _save_weekly_report(report)
-    log_decision("learner_weekly_report", "generated", {
-        "n_patterns":    len(patterns),
-        "n_suggestions": len(adjustments),
-        "win_rate_pct":  stats.get("win_rate_pct"),
-    })
-    return report
-
-
 # ---------------------------------------------------------------------------
 # Helpers de I/O (Fase 2)
 # ---------------------------------------------------------------------------
@@ -1148,11 +1066,3 @@ def _load_log_trades(days: int) -> list[dict]:
     return all_trades
 
 
-def _save_weekly_report(text: str) -> None:
-    path = DATA_BETA_DIR / "beta_weekly_report.txt"
-    try:
-        path.parent.mkdir(parents=True, exist_ok=True)
-        with open(path, "w", encoding="utf-8") as f:
-            f.write(text)
-    except OSError as exc:
-        log_error("weekly_report_save_error", {"error": str(exc)})

@@ -224,66 +224,6 @@ def get_portfolio_state_demo() -> dict | None:
     return {"positions": positions, "cash": cash}
 
 
-def get_account_cash_demo() -> dict | None:
-    """Returns cash balance from T212 demo account.
-
-    Shape: {"free": float, "invested": float, "ppl": float, "total": float}
-    Convenience wrapper for callers that need a cash-only refresh without
-    re-fetching all positions (e.g. pós-trade portfolio snapshot updates).
-    Returns None if the call fails.
-    """
-    raw = _get("/equity/account/cash")
-    if raw is None:
-        return None
-    return {
-        "free":     round(float(raw.get("free")     or 0), 2),
-        "invested": round(float(raw.get("invested") or 0), 2),
-        "ppl":      round(float(raw.get("ppl")      or 0), 2),
-        "total":    round(float(raw.get("total")    or 0), 2),
-    }
-
-
-def get_market_snapshot(tickers: list[str]) -> dict[str, dict]:
-    """Returns {ticker: {last_price, previous_close, change_pct}} via yfinance.
-
-    Any ticker that fails is omitted from the result rather than crashing.
-    """
-    try:
-        import yfinance as yf
-    except ImportError:
-        from .logger import log_error
-        log_error("missing_dependency", {"package": "yfinance", "pip": "pip install yfinance"})
-        return {}
-
-    result: dict[str, dict] = {}
-    for ticker in tickers:
-        for attempt in range(_MAX_RETRY):
-            try:
-                time.sleep(0.25)
-                info = yf.Ticker(_t212_to_yfinance(ticker)).fast_info
-                last = getattr(info, "last_price", None)
-                prev = getattr(info, "previous_close", None)
-                change_pct = None
-                if last is not None and prev:
-                    change_pct = round((last - prev) / prev * 100, 2)
-                result[ticker] = {
-                    "last_price":     last,
-                    "previous_close": prev,
-                    "change_pct":     change_pct,
-                }
-                break  # sucesso
-            except Exception as exc:
-                if attempt < _MAX_RETRY - 1:
-                    time.sleep(_RETRY_DELAYS[min(attempt, len(_RETRY_DELAYS) - 1)])
-                else:
-                    from .logger import log_error
-                    log_error("market_snapshot_ticker_failed", {
-                        "ticker": ticker, "error": str(exc), "attempts": _MAX_RETRY,
-                    })
-
-    return result
-
-
 def get_historical_data(ticker: str, days: int = 60) -> list[dict]:
     """Returns daily OHLCV bars for ticker via yfinance.
 
