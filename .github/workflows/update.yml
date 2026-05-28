@@ -29,7 +29,7 @@ jobs:
         run: pip install yfinance
 
       - name: Buscar preços e gerar data.json
-        run: python update_prices.py
+        run: python ingest/update_prices.py
 
       - name: Commit data.json
         run: |

@@ -145,7 +145,7 @@ jobs:
           TELEGRAM_BOT_TOKEN:  ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID:    ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
-          python update_portfolio.py || echo "[WARN] update_portfolio.py falhou mas continua"
+          python ingest/update_portfolio.py || echo "[WARN] ingest/update_portfolio.py falhou mas continua"
 
       - name: Commit portfolio
         if: steps.holiday_check.outputs.is_holiday != 'true'

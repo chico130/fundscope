@@ -98,7 +98,7 @@ jobs:
           if [ -z "$FINNHUB_TOKEN" ]; then
             echo "::warning::FINNHUB_TOKEN ausente — sentiment/news vao ficar vazios"
           fi
-          python -u update_markets.py
+          python -u ingest/update_markets.py
 
       - name: Commit markets.json
         if: steps.holiday_check.outputs.is_holiday != 'true'

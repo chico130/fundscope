@@ -40,7 +40,7 @@ jobs:
           NEWSAPI_TOKEN:      ${{ secrets.NEWSAPI_TOKEN }}
         run: |
           set +e
-          timeout 900 python update_news.py
+          timeout 900 python ingest/update_news.py
           EXIT_CODE=$?
           if [ $EXIT_CODE -ne 0 ]; then
             echo "[WARN] update_news.py terminou com exit $EXIT_CODE (pode ser timeout de API) -- continua"
