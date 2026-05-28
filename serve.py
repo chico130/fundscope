@@ -85,6 +85,22 @@ _CACHE_WRITE_LOCK = threading.Lock()
 _AI_CACHE: dict | None = None
 _AI_CACHE_MTIME: float = 0.0
 
+# Per-IP rate limit for the Gemini endpoint — each cache-miss costs real money.
+# Sliding window: at most _AI_RATE_MAX_RPM requests per _AI_RATE_WINDOW_S seconds per IP.
+_AI_RATE_LIMIT: dict[str, list[float]] = {}
+_AI_RATE_LIMIT_LOCK = threading.Lock()
+_AI_RATE_WINDOW_S = 60
+_AI_RATE_MAX_RPM  = 10
+
+# Origins allowed for CORS. Restricts cross-origin access to localhost only;
+# prevents arbitrary browser pages from triggering paid Gemini calls.
+_CORS_ALLOWED_ORIGINS = {
+    'http://localhost:8080',
+    'http://127.0.0.1:8080',
+    'http://localhost',
+    'http://127.0.0.1',
+}
+
 
 def _strip_fences(text: str) -> str:
     text = re.sub(r'^```(?:json)?\s*', '', text.strip(), flags=re.IGNORECASE)
@@ -265,7 +281,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         self.send_response(204)
         self.send_header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
         self.send_header('Access-Control-Allow-Headers', 'Content-Type, Authorization')
-        self.end_headers()
+        self.end_headers()  # ACAO header added by end_headers based on Origin allowlist
 
     def do_GET(self):
         parsed = urllib.parse.urlparse(self.path)
@@ -416,6 +432,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self._send_json({'error': str(e)}, 500)
 
     def _handle_stock_review(self, query_string):
+        if not self._require_auth():
+            return
         params = urllib.parse.parse_qs(query_string)
         ticker = (params.get('ticker', [''])[0]).upper().strip()
         if not ticker:
@@ -435,6 +453,27 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self._send_json({'error': str(e)}, 500)
 
     def _handle_ai_insight(self, query_string: str):
+        if not self._require_auth():
+            return
+
+        # Rate-limit: each cache-miss triggers a paid Gemini call.
+        # Cached hits are cheap (disk read only) so we only enforce the limit
+        # before we know whether this is a cache hit — conservative but simple.
+        client_ip = self.client_address[0]
+        with _AI_RATE_LIMIT_LOCK:
+            now = _time.time()
+            timestamps = [t for t in _AI_RATE_LIMIT.get(client_ip, [])
+                          if now - t < _AI_RATE_WINDOW_S]
+            if len(timestamps) >= _AI_RATE_MAX_RPM:
+                retry_after = max(1, int(_AI_RATE_WINDOW_S - (now - timestamps[0])))
+                self._send_json(
+                    {'error': f'Demasiados pedidos — tenta novamente em {retry_after}s'},
+                    429,
+                )
+                return
+            timestamps.append(now)
+            _AI_RATE_LIMIT[client_ip] = timestamps
+
         params = urllib.parse.parse_qs(query_string)
         raw = (params.get('ticker', [''])[0]).upper().strip()
         ticker = ''.join(c for c in raw if c.isalnum() or c == '-')[:12]
@@ -524,7 +563,12 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 
     def end_headers(self):
         self.send_header("Cache-Control", "no-cache, no-store, must-revalidate")
-        self.send_header("Access-Control-Allow-Origin", "*")
+        origin = self.headers.get('Origin', '')
+        if origin in _CORS_ALLOWED_ORIGINS:
+            self.send_header("Access-Control-Allow-Origin", origin)
+        # Requests with no Origin header are same-origin (direct browser navigation,
+        # curl, the bot itself) — no ACAO header needed.
+        # Unknown cross-origins receive no ACAO header → browser blocks them.
         super().end_headers()
 
     def log_message(self, fmt, *args):
