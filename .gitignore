@@ -37,6 +37,11 @@ data/calibration/
 logs/trades/
 logs/errors/
 
+# Artefactos de backtest e learner commitados por engano (não são código)
+data/*.log
+data/*.csv
+data/learner_corpus/
+
 # Artifacts de desenvolvimento local
 backtest_run.log
 prompt-*.txt
