@@ -133,3 +133,14 @@ CRO_CONFIG = {
     "value_trail_distance":       3.5,   # trailing stop a 3.5× ATR do peak (v3 params)
     "atr_fallback_stop_pct":      5.0,   # % de stop fixo quando ATR não disponível
 }
+
+# API rate limits — used by bot/rate_limiter.py
+# per_day: hard daily cap (None = no known cap); per_min: max calls per minute.
+# Block threshold: 95% of limit. Warning threshold: 80% of daily limit.
+API_RATE_LIMITS: dict[str, dict] = {
+    "t212":     {"per_min": 50,   "per_day": None},   # ~1 req/s; no public daily cap
+    "finnhub":  {"per_min": 60,   "per_day": 5_000},  # free tier: 60/min, ~5k/day
+    "telegram": {"per_min": 20,   "per_day": None},   # ~1 msg/s per chat (conservative)
+    "gemini":   {"per_min": 15,   "per_day": 1_500},  # flash free: 15 RPM, 1500 RPD
+    "yfinance": {"per_min": 60,   "per_day": None},   # no hard cap; soft throttle only
+}

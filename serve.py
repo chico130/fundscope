@@ -200,6 +200,14 @@ def _call_gemini_insight(ticker: str, meta: dict) -> tuple[dict | None, str | No
     if not api_key:
         print('[ai-insight] GEMINI_API_KEY não definido — sem chamada API', flush=True)
         return None, 'no_api_key'
+
+    try:
+        from bot import rate_limiter as _rl
+        if not _rl.check_and_consume("gemini"):
+            print(f'[ai-insight] Gemini rate limit reached — skipping {ticker}', flush=True)
+            return None, 'rate_limited'
+    except Exception:
+        pass  # rate_limiter unavailable — proceed anyway
     raw_text = ''
     try:
         from google import genai

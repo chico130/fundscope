@@ -126,6 +126,17 @@ def enviar_alerta(mensagem: str, silencioso: bool = False) -> None:
     Rejeições da API (token/chat_id inválidos) não são retentadas.
     Nunca lança excepção.
     """
+    try:
+        from . import rate_limiter as _rl
+        if not _rl.check_and_consume("telegram"):
+            print(
+                f"[notifier] Telegram rate limit reached — dropping: {mensagem[:80]}",
+                flush=True,
+            )
+            return
+    except Exception:
+        pass  # rate_limiter failure must never suppress notifications
+
     token, chat_id = _load_credentials()
     if not token or not chat_id:
         return

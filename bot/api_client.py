@@ -20,7 +20,7 @@ from .config import (
     REQUEST_DELAY_SECONDS,
 )
 from .retry_util import backoff_delay
-from . import circuit_breaker
+from . import circuit_breaker, rate_limiter
 
 # T212 ticker suffix → yfinance market suffix
 _T212_MARKET_SUFFIX: dict[str, str] = {
@@ -100,6 +100,10 @@ def _get(endpoint: str) -> dict | list | None:
         log_error("api_get_circuit_open", {"endpoint": endpoint})
         return None
 
+    if not rate_limiter.check_and_consume("t212"):
+        log_error("api_get_rate_limited", {"endpoint": endpoint})
+        return None
+
     for attempt in range(_MAX_RETRY):
         time.sleep(REQUEST_DELAY_SECONDS)
         try:
@@ -154,6 +158,10 @@ def _post(endpoint: str, payload: dict) -> dict | None:
         log_error("api_post_circuit_open", {"endpoint": endpoint})
         return None
 
+    if not rate_limiter.check_and_consume("t212"):
+        log_error("api_post_rate_limited", {"endpoint": endpoint})
+        return None
+
     time.sleep(REQUEST_DELAY_SECONDS)
     try:
         resp = _session.post(f"{T212_BASE_URL_DEMO}{endpoint}", json=payload, timeout=30)
@@ -194,6 +202,10 @@ def _delete(endpoint: str) -> bool:
 
     if not circuit_breaker.allow("t212"):
         log_error("api_delete_circuit_open", {"endpoint": endpoint})
+        return False
+
+    if not rate_limiter.check_and_consume("t212"):
+        log_error("api_delete_rate_limited", {"endpoint": endpoint})
         return False
 
     for attempt in range(_MAX_RETRY):

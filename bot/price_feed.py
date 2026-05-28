@@ -18,7 +18,7 @@ import requests.exceptions as req_exc
 from .config import FINNHUB_API_KEY
 from .logger import log_error
 from .retry_util import backoff_delay
-from . import circuit_breaker
+from . import circuit_breaker, rate_limiter
 
 _FINNHUB_RETRIES = 3
 _RETRIABLE = (req_exc.ConnectTimeout, req_exc.ReadTimeout, req_exc.ConnectionError)
@@ -99,6 +99,8 @@ def _from_finnhub(symbol: str) -> dict | None:
     if not FINNHUB_API_KEY:
         return None
     if not circuit_breaker.allow("finnhub"):
+        return None
+    if not rate_limiter.check_and_consume("finnhub"):
         return None
     for attempt in range(_FINNHUB_RETRIES):
         try:

@@ -34,6 +34,15 @@ except ImportError:
     GEMINI_AVAILABLE = False
     print("[AVISO] google-genai não instalado")
 
+try:
+    import sys as _sys
+    import os as _os
+    _sys.path.insert(0, _os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))))
+    from bot import rate_limiter as _rl
+    _RL_AVAILABLE = True
+except Exception:
+    _RL_AVAILABLE = False
+
 # Trading 212 API: HTTP Basic Auth — Authorization: Basic base64(API_ID:API_SECRET).
 # Confirmado contra demo.trading212.com: só o esquema id:secret autentica (200).
 #   T212_API_ID (key ID) + T212_API_KEY (secret) — igual ao GitHub Actions.
@@ -195,6 +204,9 @@ def gemini_resolve_symbol(ticker_t212, isin, t212_name, currency_code, exchange)
     Devolve dict: {yf_ticker, display_name, currency, exchange_std}
     """
     if not gemini_client:
+        return None
+    if _RL_AVAILABLE and not _rl.check_and_consume("gemini"):
+        print(f"  [Gemini] rate limit reached — skipping resolve for {ticker_t212}", flush=True)
         return None
 
     prompt = f"""Tens um instrumento financeiro da corretora Trading212 com os seguintes dados:
@@ -506,6 +518,9 @@ def get_display_name_yf(ticker_yf):
 
 def _fh_get(endpoint, params, retries=3):
     """Finnhub GET with exponential backoff on 429 rate-limit responses."""
+    if _RL_AVAILABLE and not _rl.check_and_consume("finnhub"):
+        print(f"  [Finnhub] rate limit reached — skipping {endpoint}", flush=True)
+        return None
     for attempt in range(retries):
         try:
             r = requests.get(f"{FH_BASE}{endpoint}", params={**params, "token": FH_TOKEN}, timeout=10)
@@ -666,6 +681,10 @@ def gemini_analyze(ticker, name, news_list, earnings_list, ppl, pct_change):
     if not gemini_client:
         return {"sentiment": "neutro", "news_comment": "Gemini indisponível.",
                 "earnings_comment": "Gemini indisponível.", "watch_points": []}
+    if _RL_AVAILABLE and not _rl.check_and_consume("gemini"):
+        print(f"  [Gemini] rate limit reached — skipping analysis for {ticker}", flush=True)
+        return {"sentiment": "neutro", "news_comment": "Rate limit atingido.",
+                "earnings_comment": "Rate limit atingido.", "watch_points": []}
     news_text = "\n".join([f"- {n['headline']}" for n in news_list]) or "Sem notícias."
     earn_text = "\n".join([
         f"- {e['period']}: real={e['actual']} est={e['estimate']} {'BEAT' if e.get('beat') else 'MISS'}"
