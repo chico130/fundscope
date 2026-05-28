@@ -33,9 +33,8 @@ import math
 import pickle
 import sys
 import time
-from dataclasses import dataclass, field, asdict
+from dataclasses import dataclass, field
 from datetime import datetime, timedelta
-from pathlib import Path
 from typing import Optional
 
 import numpy as np
@@ -55,7 +54,6 @@ import bot.logger as _bot_logger
 _bot_logger._append_to_json_list = lambda *a, **k: None  # type: ignore
 
 from bot.config import BASE_DIR, RISK_CONFIG, CRO_CONFIG
-from bot.data_layer import compute_ema
 from bot.backtest import prime_regime_cache, _regime_cache
 from bot.cro import CRO
 import bot.strategy as strategy

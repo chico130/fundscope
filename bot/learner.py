@@ -31,7 +31,6 @@ import json
 import random
 from collections import defaultdict
 from datetime import date, datetime, timedelta, timezone
-from pathlib import Path
 from typing import Any
 
 from .config import DATA_BETA_DIR, LOGS_TRADES_DIR, RISK_CONFIG

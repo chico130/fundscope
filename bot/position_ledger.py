@@ -13,7 +13,6 @@ from __future__ import annotations
 
 import json
 from datetime import datetime, timezone
-from pathlib import Path
 
 from .config import DATA_BETA_DIR
 from . import price_feed

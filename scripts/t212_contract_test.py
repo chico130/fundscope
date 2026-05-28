@@ -22,7 +22,6 @@ Não toca em posições reais — ordens de teste são canceladas imediatamente.
 from __future__ import annotations
 
 import argparse
-import json
 import sys
 import time
 

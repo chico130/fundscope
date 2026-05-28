@@ -19,8 +19,7 @@ import os
 import sys
 import time
 from collections import defaultdict
-from datetime import datetime, timezone, timedelta
-from pathlib import Path
+from datetime import datetime, timezone
 
 from .config import (
     DIARIO_TRADES_PATH,

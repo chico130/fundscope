@@ -6,9 +6,6 @@ Definições alinhadas com atom-profit-factor e MOC_CRO.
 """
 from __future__ import annotations
 
-import math
-
-import numpy as np
 import pandas as pd
 
 _INF_MARKER = 999.0     # substitui +inf no CSV (PF quando não há perdas)

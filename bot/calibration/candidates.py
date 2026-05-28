@@ -14,9 +14,6 @@ O sweep de parâmetros opera sobre esta tabela (máscara + groupby).
 """
 from __future__ import annotations
 
-from pathlib import Path
-
-import numpy as np
 import pandas as pd
 
 from bot.config import BASE_DIR

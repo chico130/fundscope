@@ -9,7 +9,6 @@ Uso:
     python test_ordem_demo.py --cancelar   # cancela a última ordem de teste
 """
 import sys, json, argparse
-from datetime import datetime, timezone
 
 sys.stdout.reconfigure(encoding="utf-8")
 

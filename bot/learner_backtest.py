@@ -19,13 +19,11 @@ Tempo estimado: ~6s por evaluation. 6 params x 5 valores x N cycles x 6s.
 from __future__ import annotations
 
 import argparse
-import copy
 import json
 import sys
 import time
 from dataclasses import asdict, replace
 from datetime import datetime, timedelta
-from pathlib import Path
 
 import numpy as np
 
@@ -41,9 +39,6 @@ from scripts.backtest import (
     BonnieML, load_data_for_backtest, prime_regimes,
     build_earnings_calendar, run_event_loop,
 )
-from bot.backtest import _regime_cache
-
-
 OPT_PARAMS_PATH = BASE_DIR / "data" / "beta" / "optimized_backtest_params.json"
 
 # Espaco de parametros (start, stop, step)
@@ -93,7 +88,6 @@ def dominant_regime(result: BacktestResult) -> str:
 
 def compute_spy_return(spy_closes: np.ndarray, spy_index, start, end) -> float:
     """Total return % do SPY no periodo do backtest."""
-    import pandas as pd
     mask = (spy_index >= start) & (spy_index <= end)
     series = spy_closes[mask]
     if len(series) < 2:

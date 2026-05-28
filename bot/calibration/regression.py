@@ -22,7 +22,6 @@ import pandas as pd
 
 from bot.calibration.sweep import ParamSet, _build_mask
 from bot.calibration.metrics import compute_metrics_full
-from bot.calibration.universe import get_sp500_tickers
 from bot.calibration.cache import ensure_ohlcv_cache
 from bot.calibration.candidates import build_candidate_table
 

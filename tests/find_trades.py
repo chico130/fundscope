@@ -1,5 +1,4 @@
 import glob
-import os
 
 ficheiros = (
     glob.glob('data/**/*.json', recursive=True) +

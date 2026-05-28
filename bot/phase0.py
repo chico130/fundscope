@@ -112,7 +112,6 @@ def _get_nyse_holidays(year: int) -> set[str]:
 
 
 def _is_nyse_holiday() -> bool:
-    from datetime import date as _date
     today = datetime.now(timezone.utc).date()
     return today.strftime("%Y-%m-%d") in _get_nyse_holidays(today.year)
 

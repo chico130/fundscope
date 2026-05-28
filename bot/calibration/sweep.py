@@ -11,7 +11,7 @@ Parâmetros de produção atuais (hardcoded para destaque no relatório):
 from __future__ import annotations
 
 import itertools
-from dataclasses import dataclass, field, asdict
+from dataclasses import dataclass, asdict
 
 import pandas as pd
 

@@ -14,7 +14,6 @@ from __future__ import annotations
 
 import json
 from datetime import datetime, timezone
-from pathlib import Path
 
 from . import api_client
 from .config import (
@@ -27,7 +26,6 @@ from .config import (
 from .logger import log_decision, log_error, log_trade
 from .notifier import enviar_alerta
 from .strategy import ProposedTrade
-from .config import RISK_CONFIG
 
 _DEFAULT_CONFIG_RISCO: dict = {
     "permite_comprar": True,

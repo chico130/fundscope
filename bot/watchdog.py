@@ -26,7 +26,6 @@ import time
 import traceback
 from datetime import datetime, timezone
 from functools import wraps
-from pathlib import Path
 
 from .config import BASE_DIR
 

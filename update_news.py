@@ -7,8 +7,6 @@ Gera: news.json
 
 import json, os, re, sys, time, datetime, traceback
 import xml.etree.ElementTree as ET
-from html.parser import HTMLParser
-from urllib.parse import urlparse
 
 try:
     import requests

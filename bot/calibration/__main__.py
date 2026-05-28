@@ -25,7 +25,7 @@ if hasattr(sys.stderr, "reconfigure"):
 from bot.calibration.universe   import get_sp500_tickers
 from bot.calibration.cache      import ensure_ohlcv_cache
 from bot.calibration.candidates import build_candidate_table, _CACHE_PATH as CAND_CACHE
-from bot.calibration.sweep      import run_sweep, run_sweep_oos, DEFAULT_GRID
+from bot.calibration.sweep      import run_sweep, run_sweep_oos
 from bot.calibration.report     import write_report, write_oos_report
 from bot.calibration.adaptive   import AdaptiveCalibrator, DEFAULT_BASELINE_PATH, DEFAULT_LOG_PATH
 from bot.calibration.regression import (
