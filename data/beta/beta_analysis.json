@@ -1,20 +1,20 @@
 {
-  "timestamp": "2026-05-28T19:35:24.866044+00:00",
+  "timestamp": "2026-05-28T21:36:38.001115+00:00",
   "mode": "phase1_auto",
   "strategy_version": "v0.1.0",
   "note": "Fase 1 — execução automática activa. LIVE_TRADING=False (conta demo).",
   "regime": "bull_lateral",
   "regime_alert": false,
   "regime_details": {
-    "spy_price": 754.9,
+    "spy_price": 754.6,
     "ema200": 679.76,
-    "ema50": 714.72,
+    "ema50": 714.71,
     "ema50_above_ema200": true,
-    "spy_pct_from_ema200": 11.05,
-    "atr_current": 6.6531,
-    "atr_ratio_vs_60d_mean": 0.7582,
-    "spy_return_20d": 0.0504,
-    "rsp_spy_ratio_chg_20d": -0.0245,
+    "spy_pct_from_ema200": 11.01,
+    "atr_current": 6.6666,
+    "atr_ratio_vs_60d_mean": 0.7598,
+    "spy_return_20d": 0.05,
+    "rsp_spy_ratio_chg_20d": -0.0251,
     "breadth_healthy": false
   },
   "watchlist_top5": [
@@ -85,62 +85,111 @@
     }
   ],
   "barrier_exits": [],
-  "buy_opportunities": [],
-  "near_misses": [
+  "buy_opportunities": [
     {
-      "ticker": "UNP",
-      "sector": "XLI",
-      "watchlist_score": 0.1803,
-      "rule": "B",
-      "blocking_reason": "Volume 1.6× — falta 0.18× para ≥1.8",
-      "proximity_pct": 90,
+      "ticker": "D",
+      "sector": "XLU",
+      "watchlist_score": 0.2185,
+      "mom_1m": 0.0926,
+      "mom_3m": 0.0895,
+      "signal_strength": 0.66,
+      "style": "MOMENTUM",
+      "reasons": [
+        "Breakout: RSI-14 63.8 ≥ 58 — momentum validado",
+        "Alinhamento total: price > EMA-20 > EMA-50 > EMA-200",
+        "Volume 1.6× ≥ 1.5× — confirmação de volume"
+      ],
       "technicals": {
-        "rsi_14": 51.97,
-        "ema_20": 267.165,
-        "ema50": 260.3492,
-        "ema200": 238.2464,
-        "ema20_above_ema50": true,
+        "rsi_14": 63.82,
         "ema50_above_ema200": true,
+        "ema20_above_ema50": true,
         "price_above_ema20": true,
-        "volume_ratio_vs_avg": 1.62,
-        "volume_sma_10": 3343740.0,
-        "volume_ratio": 1.36,
-        "atr_14": 6.3081,
-        "last_price": 267.32,
-        "rs_bullish": false
+        "volume_ratio_vs_avg": 1.6,
+        "atr_14": 1.4436,
+        "rs_bullish": true
       },
-      "last_price": 267.32
+      "last_price": 67.38
     },
+    {
+      "ticker": "H",
+      "sector": "XLY",
+      "watchlist_score": 0.2409,
+      "mom_1m": 0.1734,
+      "mom_3m": 0.1396,
+      "signal_strength": 0.653,
+      "style": "MOMENTUM",
+      "reasons": [
+        "Breakout: RSI-14 69.6 ≥ 58 — momentum validado",
+        "Alinhamento total: price > EMA-20 > EMA-50 > EMA-200",
+        "Volume 1.5× ≥ 1.5× — confirmação de volume"
+      ],
+      "technicals": {
+        "rsi_14": 69.63,
+        "ema50_above_ema200": true,
+        "ema20_above_ema50": true,
+        "price_above_ema20": true,
+        "volume_ratio_vs_avg": 1.53,
+        "atr_14": 5.8747,
+        "rs_bullish": true
+      },
+      "last_price": 185.46
+    }
+  ],
+  "near_misses": [
     {
       "ticker": "CARR",
       "sector": "XLI",
       "watchlist_score": 0.1861,
       "rule": "B",
-      "blocking_reason": "Volume 1.4× — falta 0.36× para ≥1.8",
-      "proximity_pct": 80,
+      "blocking_reason": "Volume 1.6× — falta 0.17× para ≥1.8",
+      "proximity_pct": 91,
       "technicals": {
-        "rsi_14": 50.04,
-        "ema_20": 63.9371,
-        "ema50": 62.4725,
-        "ema200": 59.6718,
+        "rsi_14": 50.58,
+        "ema_20": 63.9552,
+        "ema50": 62.48,
+        "ema200": 59.6736,
         "ema20_above_ema50": true,
         "ema50_above_ema200": true,
         "price_above_ema20": false,
-        "volume_ratio_vs_avg": 1.44,
-        "volume_sma_10": 6355524.0,
-        "volume_ratio": 1.49,
+        "volume_ratio_vs_avg": 1.63,
+        "volume_sma_10": 6493584.0,
+        "volume_ratio": 1.67,
         "atr_14": 2.2353,
-        "last_price": 63.62,
+        "last_price": 63.81,
         "rs_bullish": false
       },
-      "last_price": 63.62
+      "last_price": 63.81
+    },
+    {
+      "ticker": "COST",
+      "sector": "XLP",
+      "watchlist_score": 0.1867,
+      "rule": "A",
+      "blocking_reason": "RSI-14=42.1 — faltam 8.1 pts para ≤34",
+      "proximity_pct": 19,
+      "technicals": {
+        "rsi_14": 42.13,
+        "ema_20": 1024.6808,
+        "ema50": 1010.8326,
+        "ema200": 959.3456,
+        "ema20_above_ema50": true,
+        "ema50_above_ema200": true,
+        "price_above_ema20": false,
+        "volume_ratio_vs_avg": 1.33,
+        "volume_sma_10": 2302770.0,
+        "volume_ratio": 1.21,
+        "atr_14": 21.8314,
+        "last_price": 995.2,
+        "rs_bullish": false
+      },
+      "last_price": 995.2
     }
   ],
   "n_positions": 1,
   "open_trades": 0,
   "risk_status": {
     "ok": true,
-    "total_equity_eur": 5032.71,
+    "total_equity_eur": 5033.27,
     "warnings": []
   },
   "signals": [
@@ -149,20 +198,20 @@
       "action": "hold",
       "size_factor": 0.6,
       "signals": [
-        "RSI-14 elevado (69.2) — monitorizar pressão de venda",
+        "RSI-14 elevado (69.4) — monitorizar pressão de venda",
         "Tendência ascendente: EMA-50 > EMA-200",
-        "Volume elevado: 1.7x acima da média"
+        "Volume elevado: 1.9x acima da média"
       ],
       "technicals": {
-        "rsi_14": 69.25,
+        "rsi_14": 69.44,
         "ema50_above_ema200": true,
-        "volume_ratio_vs_avg": 1.69
+        "volume_ratio_vs_avg": 1.94
       }
     }
   ],
   "data_sources": {
     "prices": "finnhub+yfinance",
-    "t212_sync": "2026-05-28T19:33:39.380977+00:00",
+    "t212_sync": "2026-05-28T21:34:53.197762+00:00",
     "stale_prices": []
   },
   "cro": {
@@ -179,5 +228,20 @@
     ]
   },
   "executed_trades": [],
-  "phase1_skips": []
+  "phase1_skips": [
+    {
+      "ticker": "D",
+      "reason": "market_closed",
+      "details": {
+        "regime": "bull_lateral"
+      }
+    },
+    {
+      "ticker": "H",
+      "reason": "market_closed",
+      "details": {
+        "regime": "bull_lateral"
+      }
+    }
+  ]
 }
