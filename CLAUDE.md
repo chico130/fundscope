@@ -15,7 +15,44 @@ ultima_revisao: 2026-05-28
 # FundScope — Guia de Arquitectura para Claude Code
 
 > **Le este ficheiro no inicio de cada sessao.** Contem todo o contexto necessario sem explorar o repo.
-> As seccoes "Estado Actual" e "Ultimas Alteracoes" sao auto-actualizadas por `scripts/update_claude_md.py` apos cada ciclo.
+> As seccoes "Estado Actual", "Ultimas Alteracoes" e "O Que Ja Existe" sao auto-actualizadas por `scripts/update_claude_md.py` apos cada ciclo.
+
+---
+
+## O QUE JÁ EXISTE
+
+<!-- O-QUE-JA-EXISTE-START -->
+### Implementado e a funcionar
+- Ciclo principal phase0 (orquestrador, 15min via GitHub Actions)
+- Clyde: sinais RSI-14, EMA-50/200, volume ratio, ATR
+- Bonnie v4-clean: filtro ML (threshold 0.30 por regime, fail-open)
+- CRO: sizing por regime (bull_trending=1.0x, bull_lateral=0.5x, bear=0.0x)
+- Executor: BUY via POST + SELL via DELETE na T212 demo API
+- Exit Manager: Three Barriers (TP atr_tp_mult=4.25, SL atr_stop_mult=1.75, trailing ATR)
+- Regime Detector: 4 regimes via SPY EMA-200 + breadth + ATR (cache regime.json)
+- Watchlist Manager: scoring momentum1M(40%)+3M(30%)+liquidez(20%)+qualidade(10%)
+- Throttler: distribui fetches de watchlist entre ciclos (cursor persistente)
+- Watchdog: quarentena + EMERGENCY_LOCK.txt + commit + Telegram SOS
+- Learner: analise de trades fechados + bonnie_log.json (corre no fim do ciclo)
+- Notifier: Telegram imediato apos cada trade (enviar_trade_executada)
+- Frontend GitHub Pages: dashboard SPA read-only (sem calculos no browser)
+- Rate limiter centralizado com alertas Telegram (bot/throttler.py)
+- Workflow health check diario (data/beta/status.json)
+- Workflow emergency run manual (.github/workflows/)
+- Data Layer: get_full_portfolio_state() como unica source of truth
+- Logger estruturado JSON (logs/trades/ + logs/errors/)
+- Ingest: update_portfolio.py + update_prices.py (workflows separados)
+
+### Em desenvolvimento
+- Validacao real 30 dias de Bonnie v4-clean (iniciada ~2026-05-24, termina ~2026-06-24)
+
+### Planeado (nao iniciado)
+- Live trading em conta real (aguarda validacao demo de 30 dias concluida)
+- Bonnie v5: LABEL_HORIZON_DAYS 20->57 (identificada e bloqueada ate validacao real)
+
+**Ultimo trade executado:** `ARM` em `2026-05-22T14:00`
+**Ultimo ciclo:** `2026-05-28T22:52Z` | status: `active` | regime: `bull_lateral`
+<!-- O-QUE-JA-EXISTE-END -->
 
 ---
 
@@ -134,16 +171,16 @@ Secrets: `T212_API_ID`, `T212_API_KEY`, `FINNHUB_TOKEN`, `TELEGRAM_BOT_TOKEN`, `
 ## 5. Estado Actual
 
 <!-- ESTADO-ACTUAL-START -->
-**Actualizado em:** 2026-05-28 (seed manual — proxima actualizacao automatica no proximo ciclo)
+**Actualizado em:** 2026-05-28 23:51 UTC
 
-- **Bot status:** `active` | Ultimo ciclo: `2026-05-27T22:56Z`
-- **Regime:** `bull_trending` | Modo: `phase1_auto`
+- **Bot status:** `active` | Ultimo ciclo: `2026-05-28T22:52Z`
+- **Regime:** `bull_lateral` | Modo: `phase1_auto`
+- **Posicoes abertas:** 1 | **Trades abertos:** 0 | **Trades hoje:** 0
 - **Fase:** Fase 1 — execucao automatica em conta demo (`PHASE1_EXECUTION=True`, `LIVE_TRADING=False`)
 - **Modelo activo:** Bonnie v4-clean (`bonnie_model_v4.pkl`) — thresholds 0.30 por regime
 - **Parametros:** `atr_stop_mult=1.75` | `atr_tp_mult=4.25` | `max_position_pct=11%`
 - **OOS ref (run-007):** +62.2% vs SPY +45.2% | Alpha +17pp | Sharpe 2.09 | DD -10.8% | WR 38% | R:R 2.5:1
 - **Proximo passo:** Aguardar 30 dias de validacao real com v4-clean. **Sem optimizacoes adicionais.**
-- **Bonnie v5 identificada mas bloqueada:** aguarda validacao real (LABEL_HORIZON_DAYS 20->57)
 <!-- ESTADO-ACTUAL-END -->
 
 ---
@@ -153,16 +190,16 @@ Secrets: `T212_API_ID`, `T212_API_KEY`, `FINNHUB_TOKEN`, `TELEGRAM_BOT_TOKEN`, `
 <!-- ULTIMAS-ALTERACOES-START -->
 | Data | Hash | Descricao |
 |---|---|---|
-| 2026-05-28 | `9bf04e5` | security: fix high severity issues in serve.py |
-| 2026-05-28 | `a96d488` | docs: update README with current architecture |
-| 2026-05-28 | `cbcdbeb` | docs: optimise all markdown for Obsidian vault |
-| 2026-05-28 | `36311cf` | refactor: move update_*.py to ingest/, update all workflow references |
-| 2026-05-28 | `bcb4e72` | refactor: move is_market_open to market_hours, retire main.py |
-| 2026-05-28 | `2bfe6db` | chore: add runtime artifacts to .gitignore |
-| 2026-05-28 | `77a83ae` | fix: add missing scikit-learn+joblib, remove unused finnhub-python |
-| 2026-05-28 | `d74cf77` | chore: remove unused imports |
-| 2026-05-28 | `ee89b5a` | chore: remove dead functions from active modules |
-| 2026-05-28 | `9877e63` | chore: remove dead files (archive, broken workflow, orphan data) |
+| 2026-05-29 | `b4b45ac` | feat: centralised API rate limiter with Telegram alerts |
+| 2026-05-29 | `4ed2320` | docs: add API capabilities and limits documentation |
+| 2026-05-29 | `06b495b` | fix: remove stale _LAST_WAKE_PATH monkeypatch from simulation tests |
+| 2026-05-29 | `d87e087` | feat: manual emergency-run workflow |
+| 2026-05-29 | `a64aaa5` | feat: daily health check |
+| 2026-05-29 | `e52055a` | feat: validate and auto-repair state files on startup |
+| 2026-05-29 | `74a70ad` | feat: circuit breaker for failing external APIs |
+| 2026-05-29 | `72f54bb` | feat: exponential backoff on API calls |
+| 2026-05-29 | `b4adee2` | feat: self-updating CLAUDE.md with change tracking |
+| 2026-05-28 | `47fd797` | security: fix high severity issues in serve.py |
 <!-- ULTIMAS-ALTERACOES-END -->
 
 ---

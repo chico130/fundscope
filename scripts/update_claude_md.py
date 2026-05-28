@@ -54,6 +54,63 @@ def _read_json(path: Path) -> dict:
         return {}
 
 
+def _build_o_que_ja_existe() -> str:
+    features = _read_json(ROOT / "scripts" / "features_state.json")
+    status = _read_json(DATA_BETA / "status.json")
+    trades_data = _read_json(DATA_BETA / "beta_trades.json")
+
+    lines: list[str] = []
+
+    implementadas = features.get("implementadas", [])
+    if implementadas:
+        lines.append("### Implementado e a funcionar")
+        for f in implementadas:
+            lines.append(f"- {f}")
+        lines.append("")
+
+    em_dev = features.get("em_desenvolvimento", [])
+    if em_dev:
+        lines.append("### Em desenvolvimento")
+        for f in em_dev:
+            lines.append(f"- {f}")
+        lines.append("")
+
+    planeadas = features.get("planeadas", [])
+    if planeadas:
+        lines.append("### Planeado (nao iniciado)")
+        for f in planeadas:
+            lines.append(f"- {f}")
+        lines.append("")
+
+    problemas = features.get("problemas_conhecidos", [])
+    if problemas:
+        lines.append("### Problemas conhecidos activos")
+        for p in problemas:
+            lines.append(f"- {p}")
+        lines.append("")
+
+    trades = trades_data.get("trades", []) if isinstance(trades_data, dict) else []
+    last_buy = next(
+        (t for t in reversed(trades) if t.get("side", "").upper() == "BUY"),
+        None,
+    )
+    if last_buy:
+        ticker = last_buy.get("ticker", "—").replace("_US_EQ", "")
+        dt = (last_buy.get("datetime") or last_buy.get("created_at") or "—")[:16]
+        lines.append(f"**Ultimo trade executado:** `{ticker}` em `{dt}`")
+    else:
+        lines.append("**Ultimo trade executado:** —")
+
+    last_check = (status.get("last_check") or "—")[:16]
+    regime = status.get("regime", "—")
+    bot_status = status.get("bot_status", "—")
+    lines.append(
+        f"**Ultimo ciclo:** `{last_check}Z` | status: `{bot_status}` | regime: `{regime}`"
+    )
+
+    return "\n".join(lines)
+
+
 def _build_estado_actual() -> str:
     now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
 
@@ -125,6 +182,7 @@ def main() -> int:
     content = CLAUDE_MD.read_text(encoding="utf-8")
     original = content
 
+    content = _replace_section(content, "O-QUE-JA-EXISTE", _build_o_que_ja_existe())
     content = _replace_section(content, "ESTADO-ACTUAL", _build_estado_actual())
     content = _replace_section(content, "ULTIMAS-ALTERACOES", _build_ultimas_alteracoes())
 

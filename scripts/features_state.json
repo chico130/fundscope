@@ -1,0 +1,31 @@
+{
+  "implementadas": [
+    "Ciclo principal phase0 (orquestrador, 15min via GitHub Actions)",
+    "Clyde: sinais RSI-14, EMA-50/200, volume ratio, ATR",
+    "Bonnie v4-clean: filtro ML (threshold 0.30 por regime, fail-open)",
+    "CRO: sizing por regime (bull_trending=1.0x, bull_lateral=0.5x, bear=0.0x)",
+    "Executor: BUY via POST + SELL via DELETE na T212 demo API",
+    "Exit Manager: Three Barriers (TP atr_tp_mult=4.25, SL atr_stop_mult=1.75, trailing ATR)",
+    "Regime Detector: 4 regimes via SPY EMA-200 + breadth + ATR (cache regime.json)",
+    "Watchlist Manager: scoring momentum1M(40%)+3M(30%)+liquidez(20%)+qualidade(10%)",
+    "Throttler: distribui fetches de watchlist entre ciclos (cursor persistente)",
+    "Watchdog: quarentena + EMERGENCY_LOCK.txt + commit + Telegram SOS",
+    "Learner: analise de trades fechados + bonnie_log.json (corre no fim do ciclo)",
+    "Notifier: Telegram imediato apos cada trade (enviar_trade_executada)",
+    "Frontend GitHub Pages: dashboard SPA read-only (sem calculos no browser)",
+    "Rate limiter centralizado com alertas Telegram (bot/throttler.py)",
+    "Workflow health check diario (data/beta/status.json)",
+    "Workflow emergency run manual (.github/workflows/)",
+    "Data Layer: get_full_portfolio_state() como unica source of truth",
+    "Logger estruturado JSON (logs/trades/ + logs/errors/)",
+    "Ingest: update_portfolio.py + update_prices.py (workflows separados)"
+  ],
+  "em_desenvolvimento": [
+    "Validacao real 30 dias de Bonnie v4-clean (iniciada ~2026-05-24, termina ~2026-06-24)"
+  ],
+  "planeadas": [
+    "Live trading em conta real (aguarda validacao demo de 30 dias concluida)",
+    "Bonnie v5: LABEL_HORIZON_DAYS 20->57 (identificada e bloqueada ate validacao real)"
+  ],
+  "problemas_conhecidos": []
+}
