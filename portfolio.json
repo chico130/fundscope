@@ -1,16 +1,169 @@
 {
-  "updated": "2026-05-28T16:52:40.802278Z",
+  "updated": "2026-05-28T19:37:49.006035Z",
   "t212_mode": "live",
   "summary": {
-    "total_value": 5009.86,
-    "total_invested": 0,
-    "total_gain_eur": 0,
-    "total_gain_pct": 0,
-    "daily_gain_eur": 0,
-    "cash_available": 5009.86,
-    "n_positions": 0
+    "total_value": 5009.19,
+    "total_invested": 149.0,
+    "total_gain_eur": -0.45,
+    "total_gain_pct": -0.3,
+    "daily_gain_eur": 4.83,
+    "cash_available": 4860.64,
+    "n_positions": 1
   },
-  "positions": [],
+  "positions": [
+    {
+      "ticker_t212": "MRVL_US_EQ",
+      "quantity": 0.8428,
+      "avg_price": 206.0157,
+      "current_price": 205.3684,
+      "ppl": -0.45,
+      "fx_ppl": 0.02,
+      "ticker": "MRVL",
+      "ticker_display": "MRVL",
+      "display_name": "Marvell Technology",
+      "currency": "USD",
+      "change_pct": 3.36,
+      "gain_eur": -0.45,
+      "invested": 149.0,
+      "value_eur": 148.55,
+      "gain_pct": -0.3,
+      "fx_rate": 0.858074,
+      "currency_native": "USD",
+      "allocation_pct": 2.97,
+      "clyde_forecast": null,
+      "news": [
+        {
+          "source": "Yahoo",
+          "headline": "After Comparing Every Generative AI ETF These 3 Capture the Software Layer Most Investors Miss",
+          "summary": "Most capital chasing the generative AI theme has flowed into chips. Semiconductor funds have absorbed the bulk of inflows, and the price action shows it: the iShares Semiconductor ETF (NASDAQ:SOXX) is up 87% year to date. The software layer, where applications, model providers, and enterprise platfo",
+          "url": "https://finnhub.io/api/news?id=c8ab3c9639e97f12da4030a3cf45120bde78bb9d06044910e90f9706d039b2b4",
+          "datetime": 1779984721,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "headline": "Top Midday Stories: US Reportedly Reaches Deal With Iran, Needs Trump's Approval; Caesars to be Acquired by Fertitta for $17.6 Billion",
+          "summary": "The S&P 500 and Nasdaq Composite were up, while the Dow Jones Industrial Average was down slightly i",
+          "url": "https://finnhub.io/api/news?id=8d16c816e98135d270d84613fd556ebb9cd8dab9646804f185c76d18e227f91f",
+          "datetime": 1779983471,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "headline": "Marvell Technology Sees Stronger AI-Driven Growth Outlook on Accelerating Interconnect Demand, Morgan Stanley Says",
+          "summary": "Marvell Technology (MRVL) is seeing a stronger long-term growth outlook driven by accelerating artif",
+          "url": "https://finnhub.io/api/news?id=3f3bc4cac366aa3efd7a64a1b9b8f8b751b1672ad781847f3bcf868c730d4b75",
+          "datetime": 1779980754,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "SeekingAlpha",
+          "headline": "Semis Race Past Analysts",
+          "summary": "Average stock in the Russell 1000 trades about 15% below its consensus analyst price target, but the semis have rallied so far so fast that the group has raced past Wall Street expectations.",
+          "url": "https://finnhub.io/api/news?id=cf128028ab4bf992327959029ee2d57a924fed4f2e5eaf18ceccc45f52c6884a",
+          "datetime": 1779980400,
+          "image": "https://static.seekingalpha.com/cdn/s3/uploads/getty_images/1218383090/image_1218383090.jpg?io=getty-c-w1536"
+        },
+        {
+          "source": "Yahoo",
+          "headline": "Marvell Technology Q1 Earnings Match Estimates, Revenues Rise Y/Y",
+          "summary": "MRVL's AI-fueled data center growth drives record Q1 revenues as MRVL raises fiscal 2027 and 2028 outlooks.",
+          "url": "https://finnhub.io/api/news?id=0188bfcd5d4ba6c4538aac044ffe3b0d5e0a31d8fc2fe60c93d46db8feeb925c",
+          "datetime": 1779979080,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        }
+      ],
+      "earnings": [
+        {
+          "period": "",
+          "estimate": 0.673,
+          "actual": 0.67,
+          "surprise": -0.01,
+          "beat": false
+        },
+        {
+          "period": "",
+          "estimate": 0.738,
+          "actual": 0.76,
+          "surprise": 0.03,
+          "beat": true
+        },
+        {
+          "period": "",
+          "estimate": 0.792,
+          "actual": 0.8,
+          "surprise": 0.01,
+          "beat": true
+        },
+        {
+          "period": "",
+          "estimate": 0.795,
+          "actual": 0.8,
+          "surprise": 0.01,
+          "beat": true
+        }
+      ],
+      "dividends": [
+        {
+          "date": "2026-04-10",
+          "amount": 0.06
+        },
+        {
+          "date": "2026-01-09",
+          "amount": 0.06
+        },
+        {
+          "date": "2025-10-10",
+          "amount": 0.06
+        },
+        {
+          "date": "2025-07-11",
+          "amount": 0.06
+        }
+      ],
+      "ticker_info": {
+        "trailingPE": 66.64286,
+        "forwardPE": 37.10721,
+        "marketCap": 179716030464,
+        "beta": 2.251,
+        "fiftyTwoWeekHigh": 218.26,
+        "fiftyTwoWeekLow": 58.61,
+        "pctFromHigh": -5.85,
+        "shortRatio": 1.24,
+        "dividendYield": 0.12
+      },
+      "fh_fundamentals": {
+        "52WeekHigh": 218.2599,
+        "52WeekLow": 58.61,
+        "52WeekHighDate": "2026-05-27",
+        "52WeekLowDate": "2025-05-30",
+        "beta": 2.274549,
+        "peAnnual": 65.1558,
+        "peTTM": 65.1558,
+        "pbAnnual": 4.7977,
+        "epsGrowthTTMYoy": null,
+        "epsGrowth3Y": null,
+        "revenueGrowthTTMYoy": 42.09,
+        "revenueGrowth3Y": 11.45,
+        "grossMarginTTM": 51.02,
+        "netMarginTTM": null,
+        "roeTTM": 19.38,
+        "roaRfy": 11.98,
+        "currentRatioAnnual": 2.0061,
+        "debtToEquityAnnual": 0.3124,
+        "dividendYieldIndicated": 0.12078510317060896,
+        "marketCapitalization": 173972.4
+      },
+      "analysts": {},
+      "insider": {},
+      "analysis": {
+        "sentiment": "neutro",
+        "news_comment": "Indisponível.",
+        "earnings_comment": "Indisponível.",
+        "watch_points": []
+      }
+    }
+  ],
   "history": [
     {
       "date": "2026-05-26",
@@ -22,7 +175,7 @@
     },
     {
       "date": "2026-05-28",
-      "value": 5009.86
+      "value": 5009.19
     }
   ],
   "benchmark_metrics": {}
