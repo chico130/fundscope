@@ -269,15 +269,14 @@ class CRO:
     def speak(self) -> None:
         """Persiste cro_insights.json e envia narrativa cognitiva via Whisper (Telegram).
 
-        O _whisper() só é chamado UMA vez por dia — guard baseado na data do ficheiro
-        existente antes de o sobreescrever.
+        O _whisper() só é chamado UMA vez por dia — guard via daily_flags.json centralizado
+        (mesma fonte de verdade que o notifier.py usa para todas as flags de dedup).
         """
         if not self._state:
             log_error("cro_speak", {"error": "observe() não foi chamado antes de speak()"})
             return
 
-        today              = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-        already_whispered  = _already_whispered_today(today)
+        from .notifier import _already_sent_today, _mark_sent_today
 
         payload = {
             "generated_at":      datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
@@ -291,8 +290,9 @@ class CRO:
         }
 
         _write_insights(payload)
-        if self._insights and not already_whispered:
+        if self._insights and not _already_sent_today("cro_whispered_date"):
             _whisper(payload)
+            _mark_sent_today("cro_whispered_date")
 
 
 # ---------------------------------------------------------------------------
@@ -660,17 +660,6 @@ def _max_loss_streak(results: list[float]) -> int:
         else:
             cur_s  = 0
     return max_s
-
-
-def _already_whispered_today(today: str) -> bool:
-    """Devolve True se o cro_insights.json já foi gerado hoje (guard anti-spam)."""
-    path = CRO_CONFIG["cro_insights_path"]
-    try:
-        with open(path, "r", encoding="utf-8") as f:
-            data = json.load(f)
-        return data.get("generated_at", "").startswith(today)
-    except (OSError, json.JSONDecodeError):
-        return False
 
 
 def _write_insights(payload: dict) -> None:
