@@ -138,12 +138,13 @@ def _load_credentials() -> tuple[str | None, str | None]:
     return (token or None), (chat_id or None)
 
 
-def _log_telegram_error(kind: str, detail: str) -> None:
+def _log_telegram_error(kind: str, detail: str, message_preview: str = "") -> None:
     """Persiste erros de Telegram em logs/errors/telegram_errors.json (escrita atómica)."""
     entry = {
-        "timestamp": datetime.now(timezone.utc).isoformat(),
-        "kind":      kind,
-        "detail":    detail,
+        "timestamp":       datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z"),
+        "kind":            kind,
+        "detail":          detail,
+        "message_preview": message_preview[:200] if message_preview else "",
     }
     try:
         _TELEGRAM_ERROR_LOG.parent.mkdir(parents=True, exist_ok=True)
@@ -178,7 +179,8 @@ def enviar_alerta(mensagem: str, silencioso: bool = False) -> None:
         if not _rl.check_and_consume("telegram"):
             _log_telegram_error(
                 "rate_limit_drop",
-                f"mensagem truncada: {mensagem[:200]}",
+                "rate limit reached",
+                mensagem,
             )
             print(
                 f"[notifier] Telegram rate limit reached — dropping: {mensagem[:80]}",
@@ -211,7 +213,7 @@ def enviar_alerta(mensagem: str, silencioso: bool = False) -> None:
             if not data.get("ok"):
                 detail = r.text[:500]
                 print(f"[notifier] API rejeitou alerta (HTTP {r.status_code}): {detail}")
-                _log_telegram_error("api_rejection", detail)
+                _log_telegram_error("api_rejection", detail, mensagem)
             else:
                 print(f"[notifier] Alerta enviado com sucesso (tentativa {attempt + 1}).")
             return
@@ -222,7 +224,7 @@ def enviar_alerta(mensagem: str, silencioso: bool = False) -> None:
             else:
                 detail = str(exc)
                 print(f"[notifier] Falha ao enviar alerta Telegram após 3 tentativas: {detail}")
-                _log_telegram_error("network_error", detail)
+                _log_telegram_error("network_error", detail, mensagem)
 
 
 def enviar_oportunidade(oportunidades: list[dict], regime: str) -> None:
