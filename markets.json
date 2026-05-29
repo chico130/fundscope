@@ -1,6 +1,6 @@
 {
-  "updated": "2026-05-29T14:40:11.401960Z",
-  "slot": "meio-dia",
+  "updated": "2026-05-29T18:19:26.720779Z",
+  "slot": "fecho",
   "marketOpen": true,
   "marketHoliday": false,
   "lastCloseDate": null,
@@ -50,21 +50,48 @@
       },
       "news": [
         {
+          "source": "ChartMill",
+          "ticker": "NVDA",
+          "headline": "What's going on in today's session: S&P500 most active stocks",
+          "summary": "Curious about the most active S&P500 stocks in today's session? Join us as we explore the US markets on Friday and uncover the stocks that are leading the way in terms of trading volume and market attention.",
+          "url": "https://finnhub.io/api/news?id=c3dc9c75fb6c144e76df2d8f94be7b0001c42c0eeb5ae94d3e5187224f5ba38f",
+          "datetime": 1780077900,
+          "image": "https://www.chartmill.com/images/uploads/CM_Most_Active_Stocks_Small_free_fec0650b7f.webp"
+        },
+        {
+          "source": "ChartMill",
+          "ticker": "NVDA",
+          "headline": "Check out the stocks that are attracting the most attention and driving market activity.",
+          "summary": "Stay updated with the latest market activity on Friday. Explore the most active stocks in today's session and stay informed about the stocks that are in the spotlight.",
+          "url": "https://finnhub.io/api/news?id=f6b5a115623f68bda4beec6557703689c4fa1c8264dc9e18444160f9ab754de3",
+          "datetime": 1780077600,
+          "image": "https://www.chartmill.com/images/uploads/CM_Most_Active_Stocks_Small_free_fec0650b7f.webp"
+        },
+        {
           "source": "Yahoo",
-          "ticker": "META",
-          "headline": "Meta Reaffirms Shareholder Returns With Stable Dividend",
-          "summary": "Social media giant maintains its quarterly payout as it continues investing heavily in AI infrastructure.",
-          "url": "https://finnhub.io/api/news?id=9c0370fad6dab4b044be5dc94bc477a2eb4710238b416bcffe9336d24961f0c5",
-          "datetime": 1780062004,
+          "ticker": "MSFT",
+          "headline": "Equity Markets Rise Intraday as Trump Sets Out Conditions For Iran Deal",
+          "summary": "Equities on Wall Street rose intraday as President Donald Trump laid out conditions that Iran must a",
+          "url": "https://finnhub.io/api/news?id=54d6af133a8379288dbfef1d743479f146a6c928cd0ffc79b5a95142e860b83b",
+          "datetime": 1780076472,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
           "source": "Yahoo",
-          "ticker": "META",
-          "headline": "Stock Price Prediction: Arm Holdings Has Limited Upside Despite 177% Rally",
-          "summary": "I’ll cut to the chase. Arm Holdings (NASDAQ:ARM) has more than doubled year-to-date, and our proprietary model now sees only a sliver of upside left in the near term. Our 24/7 Wall St. price target for Arm is $314.30 ove",
-          "url": "https://finnhub.io/api/news?id=4b9783c2afb5f5ac1c72dab51a193ad84716e0ca917d34c68c8a87abb2746ab0",
-          "datetime": 1780061562,
+          "ticker": "MSFT",
+          "headline": "One Reason I Can’t Stop Buying Microsoft Stock",
+          "summary": "I keep hitting the buy button on Microsoft (NASDAQ:MSFT) because the stock has gotten cheaper while the business has gotten stronger. The shares are down 13.06% year to date and down 7.24% over the past year, sitting at ",
+          "url": "https://finnhub.io/api/news?id=d35768bb757bd8ea15c08bf09c98c5d0b37a817bfcabaf1c4392ff0f9e872d01",
+          "datetime": 1780076236,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "ticker": "AAPL",
+          "headline": "Sell in May? You Would’ve Missed One of the S&P 500’s Best Mays Since the ‘50s.",
+          "summary": "The S&P 500, driven by tech stocks, is on pace to power more than 5% higher this month, marking one of the best performances in May since the 1950s.",
+          "url": "https://finnhub.io/api/news?id=d20785a014d189667ede86657aa3a62ff4452dd6cbf6424fb6ad52f2a12535d9",
+          "datetime": 1780071300,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         }
       ]
@@ -115,47 +142,47 @@
       "news": [
         {
           "source": "Yahoo",
-          "ticker": "JPM",
-          "headline": "JPMorgan could spend up to $20bn on acquisition, says Jamie Dimon",
-          "summary": "Dimon said: “I do think there might be, in the next couple years, a chance to put $10 or $20bn to work buying something.”",
-          "url": "https://finnhub.io/api/news?id=d30d0a7bd2ec49f81fb2fdd5fea28b6adcf8a1c4eaadb57123e40f65c1271c8b",
-          "datetime": 1780061953,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Yahoo",
-          "ticker": "JPM",
-          "headline": "Sector Update: Financial Stocks Edge Higher Premarket Friday",
-          "summary": "Financial stocks were edging higher premarket Friday, with the State Street Financial Select Sector",
-          "url": "https://finnhub.io/api/news?id=06716ba7771ebb64464d35e1dd43ce964ed1d0ef79b65af05717689c9ea60a08",
-          "datetime": 1780060608,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Yahoo",
           "ticker": "GS",
-          "headline": "Equity Data Science (EDS) Appoints Sebastian Lonza as Chief Revenue Officer to Accelerate Growth Across Institutional Markets",
-          "summary": "NEW YORK, May 29, 2026--Equity Data Science (EDS), a leading provider of Investment Process Management (IPM) solutions for hedge funds and asset managers, today announced the appointment of Sebastian Lonza, CFA, CAIA as ",
-          "url": "https://finnhub.io/api/news?id=1e2f2bad6a02f979d31e4bc9027b1635fbc344ec3680603e2d296c32d0720319",
-          "datetime": 1780060500,
+          "headline": "India Doubled Tariffs on Silver and Gold Imports To Protect a Plunging Rupee; Will Foreign US Treasury Bond Dumping Cause the US To Follow Suit?",
+          "summary": "In Mid-May, India’s Prime Minister Narendra Modi publicly urged Indian citizens to avoid buying physical gold and silver for a year. Soon afterwards, India increased its import tariffs on precious metals from 6% to 15%. ",
+          "url": "https://finnhub.io/api/news?id=e23b0a1b9169309920fa68dd65b62d42b0bfa2c97078380e9df1f91ec529c520",
+          "datetime": 1780074314,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "ChartMill",
+          "ticker": "GS",
+          "headline": "Explore the top gainers and losers within the dow jones index in today's session.",
+          "summary": "Curious about the top performers within the dow jones index in the middle of the day on Friday? Dive into the list of today's session's top gainers and losers for a comprehensive overview.",
+          "url": "https://finnhub.io/api/news?id=22f3e9ef1a2169ce514dbb7c7454e2bae9ccf3d3f8337352f134252bbd9d5406",
+          "datetime": 1780072802,
+          "image": "https://www.chartmill.com/images/uploads/CM_Top_Movers_Small_free_2b4ff2fc22.webp"
+        },
+        {
+          "source": "Yahoo",
+          "ticker": "JPM",
+          "headline": "Umicore - Transparency notification by JP Morgan Asset Management Holdings Inc.",
+          "summary": "Transparency notification byJP Morgan Asset Management Holdings Inc. In accordance with article 14, § 1 of the law of 2 May 2007 on the disclosure of major holdings, Umicore was recently notified by JP Morgan Asset Manag",
+          "url": "https://finnhub.io/api/news?id=e24a7939d399cb0fa99ef7e57f54d4ee3929a2fa35f49b558efffdc1d9517e25",
+          "datetime": 1780072200,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "ticker": "JPM",
+          "headline": "Umicore - Transparency notifications by JP Morgan Chase & Co.",
+          "summary": "Transparency notifications byJP Morgan Chase & Co. In accordance with article 14, § 1 of the law of 2 May 2007 on the disclosure of major holdings, Umicore was recently notified by JP Morgan Chase & Co. that it has cross",
+          "url": "https://finnhub.io/api/news?id=105970dd08ea64dfe9fbf30754ed856785d68011b17218be263e9ff7a5a346da",
+          "datetime": 1780072200,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
           "source": "Yahoo",
           "ticker": "BAC",
-          "headline": "Bank of America Deepens Support for the Arts in Canada",
-          "summary": "Bank of America today announced three major initiatives supporting the arts in Canada, including recent funding for restoration projects in Montreal and Toronto, as well as lead sponsorship of the American Institute for ",
-          "url": "https://finnhub.io/api/news?id=0492a9e9067dee7bb37084d19ec139dbaa6e1e3d6d20f6621bb4ceecfc9a62d7",
-          "datetime": 1780059600,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Yahoo",
-          "ticker": "GS",
-          "headline": "GS Expects Record Global M&A in 2026: Will This Boost Its IB Business?",
-          "summary": "Goldman forecasts near-record 2026 M&A activity as rising corporate deals and private equity exits support investment banking growth.",
-          "url": "https://finnhub.io/api/news?id=4c82f484ba13a701a2aa57b2d9073f20d0216a2dd1cff0b66b124c31620ed7b0",
-          "datetime": 1780058280,
+          "headline": "Bank of America has stark message for silver investors in 2026",
+          "summary": "Silver hit $120 an ounce at the start of 2026. It is now stuck below $75. The metal has given back more than a third of its peak value, and the debate is whether that is a buying opportunity or a warning sign. Bank of Am",
+          "url": "https://finnhub.io/api/news?id=10438ab0a6bea55b287c8c5f003d98838458e346ac1cd7c9a0070e049f337534",
+          "datetime": 1780069238,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         }
       ]
@@ -205,21 +232,30 @@
       },
       "news": [
         {
+          "source": "ChartMill",
+          "ticker": "CVX",
+          "headline": "Explore the top gainers and losers within the dow jones index in today's session.",
+          "summary": "Curious about the top performers within the dow jones index in the middle of the day on Friday? Dive into the list of today's session's top gainers and losers for a comprehensive overview.",
+          "url": "https://finnhub.io/api/news?id=22f3e9ef1a2169ce514dbb7c7454e2bae9ccf3d3f8337352f134252bbd9d5406",
+          "datetime": 1780072802,
+          "image": "https://www.chartmill.com/images/uploads/CM_Top_Movers_Small_free_2b4ff2fc22.webp"
+        },
+        {
           "source": "Yahoo",
           "ticker": "XOM",
-          "headline": "Exxon warns oil inventories near record lows, price spike ahead",
-          "summary": "An Exxon executive said physical Brent crude could hit $150 to $160 a barrel once stockpiles are exhausted",
-          "url": "https://finnhub.io/api/news?id=166facbb5bec7ddfceab04fe81004864f1e9c8f281ff1702be4b275aa81ac304",
-          "datetime": 1780061263,
+          "headline": "Here's Why SM Energy's 2026 Production Outlook Looks Strong",
+          "summary": "SM's Civitas merger expands its Permian footprint, lifts Q1 2026 output above guidance and raises production targets for 2026.",
+          "url": "https://finnhub.io/api/news?id=571f28627bbcc0f041ff903593feb564e45dce8786a26a9874c0e557f3a60386",
+          "datetime": 1780068300,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
           "source": "Yahoo",
-          "ticker": "CVX",
-          "headline": "Sector Update: Energy Stocks Decline Premarket Friday",
-          "summary": "Energy stocks were declining premarket Friday, with the State Street Energy Select Sector SPDR ETF (",
-          "url": "https://finnhub.io/api/news?id=db37f7a585994a0f72f9f8d20224b32873b75a2b14e5ec61c2fa2813aa4d8e54",
-          "datetime": 1780061054,
+          "ticker": "XOM",
+          "headline": "Oil Prices Slip Amid Trump Demands; Exxon Warns Of Nasty Surprise",
+          "summary": "Oil prices remained lower on Friday morning after President Donald Trump laid out his demands for an Iran deal ahead of his \"final determination.\"  Markets have been anticipating agreement on a 60-day U.S.-Iran ceasefire",
+          "url": "https://finnhub.io/api/news?id=de6b4910aa3736833f369e09d42383e0fc37db780be9f94dcfed63f470f2b99f",
+          "datetime": 1780068102,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
@@ -229,15 +265,6 @@
           "summary": "The end of the earnings season is always a good time to take a step back and see who shined (and who didn’t). Let’s take a look at how diversified upstream e&p stocks fared in Q1, starting with ConocoPhillips (NYSE:COP).",
           "url": "https://finnhub.io/api/news?id=21c24596ae3cac67024916670654c7d639533eaf1616482cdbb1b165e00036ef",
           "datetime": 1780060358,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Yahoo",
-          "ticker": "XOM",
-          "headline": "Update: Market Chatter: Chevron's Tengiz Oilfield Output Drops After Accident",
-          "summary": "(Updates with Chevron's statement in the fourth and fifth paragraphs, adds details on Tengizchevroil",
-          "url": "https://finnhub.io/api/news?id=e1ec9109eed09acc757f3a7ef65184c9ca8aaf11f66e704cfdb3e31ca448f612",
-          "datetime": 1780059069,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
@@ -296,48 +323,48 @@
       },
       "news": [
         {
+          "source": "ChartMill",
+          "ticker": "JNJ",
+          "headline": "Explore the top gainers and losers within the dow jones index in today's session.",
+          "summary": "Curious about the top performers within the dow jones index in the middle of the day on Friday? Dive into the list of today's session's top gainers and losers for a comprehensive overview.",
+          "url": "https://finnhub.io/api/news?id=22f3e9ef1a2169ce514dbb7c7454e2bae9ccf3d3f8337352f134252bbd9d5406",
+          "datetime": 1780072802,
+          "image": "https://www.chartmill.com/images/uploads/CM_Top_Movers_Small_free_2b4ff2fc22.webp"
+        },
+        {
+          "source": "Yahoo",
+          "ticker": "LLY",
+          "headline": "LLY Stock Gains 4% to All-Time High: Is Obesity Access the Catalyst?",
+          "summary": "Eli Lilly hits a record high after CVS expands coverage for Foundayo and Zepbound, boosting obesity drug access and raising the stakes in its rivalry with NVO.",
+          "url": "https://finnhub.io/api/news?id=d79c9f499047eeb8fde8a9274b99889686bbd9b2c08456a76c1eae87dcc510f6",
+          "datetime": 1780066140,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "ticker": "LLY",
+          "headline": "Lilly Reopens Zepbound Access For 10 Million US Patients",
+          "summary": "CVS restores broader Zepbound coverage after price cuts, putting Wegovy and Zepbound on equal footing.",
+          "url": "https://finnhub.io/api/news?id=44b0307ccfb868fb4adca14f13f243cdd52d76f2a3e3fe864721cc63715161d1",
+          "datetime": 1780064536,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "ticker": "JNJ",
+          "headline": "VYM Climbs 26% In a Year While Its Core Dividend Payers Extend Their Streaks",
+          "summary": "The Vanguard High Dividend Yield Index Fund ETF Shares (NYSEARCA:VYM) is one of the simplest income vehicles in the market: it owns roughly 500 U.S. stocks that pay above-average dividends, weights them by market cap, an",
+          "url": "https://finnhub.io/api/news?id=b31a879e347c2aac414fb18eb63f5895f0d5725b4abebace00f63eb0621b6ba2",
+          "datetime": 1780063298,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
           "source": "Yahoo",
           "ticker": "PFE",
           "headline": "Pfizer Expands Oncology Pipeline in $10.5B Innovent Deal",
           "summary": "Pfizer and Innovent signed a global oncology deal worth up to $10.5 billion.",
           "url": "https://finnhub.io/api/news?id=0402113ecf698ce12daadc4cc7ced9cdda4300a95151d18aeb71549d32428303",
           "datetime": 1780062348,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Yahoo",
-          "ticker": "JNJ",
-          "headline": "Want $1,400 in Passive Income? Invest $10,000 Into These 4 Dividend Stocks",
-          "summary": "Passive income arrives on its own schedule, no effort required. Dividends keep landing in the brokerage account on a predictable schedule, regardless of headlines or market moves. High-yield, blue-chip dividend stocks of",
-          "url": "https://finnhub.io/api/news?id=ace2a5c2124877d78025c435183a931c6ec84aafc1b036002c737555e30aed44",
-          "datetime": 1780057801,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Yahoo",
-          "ticker": "JNJ",
-          "headline": "New TECVAYLI®▼ (teclistamab) data demonstrate superior progression-free and overall survival versus standard of care as early as first relapse in multiple myelo",
-          "summary": "MajesTEC-9 is the second positive Phase 3 study to reinforce the strength of Johnson & Johnson’s TECVAYLI® as early as second line1TECVAYLI® delivered deep and durable responses, with nearly two-thirds of patients achiev",
-          "url": "https://finnhub.io/api/news?id=bcd87e73ccb96ebe29e4d606be57a6a75733267bccb0025e1f66c524ca8ed8ba",
-          "datetime": 1780057440,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Yahoo",
-          "ticker": "PFE",
-          "headline": "Seven-Year Analysis from Pfizer’s LORBRENA CROWN Trial Shows Longest Progression-Free Survival Reported to Date in Advanced Non-Small Cell Lung Cancer",
-          "summary": "NEW YORK, May 29, 2026--Pfizer Inc. (NYSE: PFE) today announced unprecedented seven-year follow-up results from the Phase 3 CROWN trial evaluating LORBRENA® (lorlatinib, a third-generation ALK inhibitor, available in Eur",
-          "url": "https://finnhub.io/api/news?id=b0825986dc237cb54014813a736f5192ee7c8fcbf1304072b21d7c65d511d1fd",
-          "datetime": 1780056000,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Yahoo",
-          "ticker": "LLY",
-          "headline": "Jim Cramer on Eli Lilly: “Brilliant Management”",
-          "summary": "Eli Lilly and Company (NYSE:LLY) was among the stocks Jim Cramer discussed on Mad Money, highlighting several companies with market caps over a trillion dollars. Cramer highlighted the company’s new cholesterol drug’s Ph",
-          "url": "https://finnhub.io/api/news?id=e90b6d062241ffdcc59dbf98cb68f112a8cd5eef7f9bf363f93c83770df6a4cb",
-          "datetime": 1780051807,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         }
       ]
@@ -388,48 +415,48 @@
       "news": [
         {
           "source": "Yahoo",
-          "ticker": "AMZN",
-          "headline": "Walmart Worth Less Than Anthropic",
-          "summary": "It is a staggering valuation. AI superstar Anthropic raised $65 billion with a post-money valuation of $965 billion. That pushed it ahead of arch-rival OpenAI, which was most recently valued at $852 billion. It also puts",
-          "url": "https://finnhub.io/api/news?id=80b87c16541934a37b8e58c06fc4e369ca5f6c9bbe8b4c5def568ee3169bfed3",
-          "datetime": 1780062019,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Yahoo",
-          "ticker": "AMZN",
-          "headline": "Anthropic's $965 Billion Valuation Eclipses OpenAI",
-          "summary": "The round nearly triples Anthropic's February valuation as chip partners and hyperscalers join the round.",
-          "url": "https://finnhub.io/api/news?id=b9d1ad782508d969bbfd05ecf849c23b2c2142c596eb89a398fbf237cbdde061",
-          "datetime": 1780061446,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Yahoo",
           "ticker": "WMT",
-          "headline": "Costco’s Premium Valuation Makes More Sense Than You Think",
-          "summary": "Costco Wholesale (COST) stock is down 7.3% in just the last five trading days. When a move like that happens, the instinct for many investors is obvious: panic about the short term or assume the story is broken.",
-          "url": "https://finnhub.io/api/news?id=0600b7738879a0764142515ede204a5b737d2076b112b9376ff1dd782c600a2a",
-          "datetime": 1780059861,
+          "headline": "Walmart Expands Supplier Access to Consolidation Network in First-Mile Overhaul",
+          "summary": "Walmart's new Prepaid Consolidation Program aims to give suppliers a lower-cost path to its 42 regional DCs via three automated consolidation centers.",
+          "url": "https://finnhub.io/api/news?id=21487e8b388a665f12cbe705d297febcaf165c30313b3a00a872e82014bd40e2",
+          "datetime": 1780076886,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "ChartMill",
+          "ticker": "WMT",
+          "headline": "Explore the top gainers and losers within the dow jones index in today's session.",
+          "summary": "Curious about the top performers within the dow jones index in the middle of the day on Friday? Dive into the list of today's session's top gainers and losers for a comprehensive overview.",
+          "url": "https://finnhub.io/api/news?id=22f3e9ef1a2169ce514dbb7c7454e2bae9ccf3d3f8337352f134252bbd9d5406",
+          "datetime": 1780072802,
+          "image": "https://www.chartmill.com/images/uploads/CM_Top_Movers_Small_free_2b4ff2fc22.webp"
+        },
+        {
+          "source": "Yahoo",
+          "ticker": "AMZN",
+          "headline": "Did Anthropic Just Say \"Checkmate\" to OpenAI?",
+          "summary": "Anthropic just announced a Series H round that values the company higher than OpenAI.",
+          "url": "https://finnhub.io/api/news?id=0b0e847cb1fe1941843b00bbe36356d8c48ef4a8110cc6110167c65719f0fda4",
+          "datetime": 1780071439,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "ticker": "AMZN",
+          "headline": "GOOGL Rides on Surging Google Cloud Demand: More Upside Ahead?",
+          "summary": "Alphabet's Google Cloud posts a monster Q1'26: revenues rise 63% to $20B, margin 32.9%, and backlog hits $462B.",
+          "url": "https://finnhub.io/api/news?id=e94503ee7f5ee4284d6f8888dfa4ada330fcb79c5acb3c640c1fef1eeb9b22a6",
+          "datetime": 1780071240,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
           "source": "Yahoo",
           "ticker": "MCD",
-          "headline": "Final Sponsorship Opportunities for Sustainability LIVE @ London Climate Action Week",
-          "summary": "London, 29 May 2026 – BizClik Media and Sustainability Magazine calls on sustainability leaders to secure the final sponsorship opportunities for Sustainability LIVE: The Leadership Summit at London Climate Action Week, ",
-          "url": "https://finnhub.io/api/news?id=b8077f0a7e7a6bc70115702aa2b000f85e86bfad94a042e532935364ed239edd",
-          "datetime": 1780045980,
+          "headline": "Nuclear Stock Face-Off: Is Oklo or NuScale Power the Better Buy Right Now?",
+          "summary": "NuScale and Oklo could both thrive in the AI era. Only one looks truly suited for data center clients.",
+          "url": "https://finnhub.io/api/news?id=ea9a14b629abf3eec04ff135b2e53cc76f94ffb0213234bcd0063f47237f350d",
+          "datetime": 1780068000,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "SeekingAlpha",
-          "ticker": "MCD",
-          "headline": "I'm Betting Big On This Near-Perfect Retirement Strategy That Most Investors Miss",
-          "summary": "Discover hidden risks in index, dividend ETF, and covered call retirement fundsâand a unique income strategy for dividend growth and market-beating returns.",
-          "url": "https://finnhub.io/api/news?id=454704f875749790eaafe6d1a33a096ad35454463b028f771b47a341628d25e5",
-          "datetime": 1780038300,
-          "image": "https://static.seekingalpha.com/cdn/s3/uploads/getty_images/693349866/image_693349866.jpg?io=getty-c-w1536"
         }
       ]
     },
