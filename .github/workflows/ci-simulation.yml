@@ -33,4 +33,4 @@ jobs:
           pip install pytest requests-mock
 
       - name: Run dry-run simulation
-        run: pytest tests/test_simulation.py -v --tb=short
+        run: pytest tests/test_simulation.py -v --tb=short --cov=bot --cov-report=json:data/beta/coverage.json --cov-report=term-missing

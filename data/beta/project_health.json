@@ -1,0 +1,165 @@
+{
+  "updated": "2026-05-29T12:08:20.120276Z",
+  "cycle_ts": "2026-05-28T22:52:40Z",
+  "regime": "bull_lateral",
+  "overall": {
+    "score": 40,
+    "grade": "D",
+    "trend": "flat",
+    "delta_vs_prev": null,
+    "capped_reason": "heartbeat"
+  },
+  "dimensions": {
+    "performance": {
+      "score": 51,
+      "confidence": 0.05,
+      "n_closed_trades": 1,
+      "components": {
+        "pnl_pct": 0.16,
+        "pnl_score": 51,
+        "drawdown_pct": -0.04,
+        "drawdown_score": 100,
+        "expectancy_eur": 9.86,
+        "expectancy_score": 75,
+        "win_rate_pct": 100.0,
+        "sharpe": null,
+        "sharpe_score": null
+      },
+      "notes": [
+        "amostra insuficiente (1 trade(s) fechado(s) de 20): score amortecido",
+        "Sharpe indisponível"
+      ],
+      "trend": "flat"
+    },
+    "technical_health": {
+      "score": 40,
+      "components": {
+        "heartbeat_age_min": 795.7,
+        "heartbeat_score": 0,
+        "bot_status": "active",
+        "errors_7d": 8,
+        "errors_critical": 0,
+        "errors_serious": 0,
+        "errors_warning": 8,
+        "error_score": 60,
+        "open_circuits": [],
+        "api_score": 100,
+        "workflow_score": null,
+        "workflow_window": 0
+      },
+      "notes": [
+        "8 aviso(s) nos últimos 7 dias",
+        "gh CLI indisponível — workflow_score N/D"
+      ],
+      "trend": "flat"
+    },
+    "code_quality": {
+      "score": 41,
+      "mode": "proxy",
+      "components": {
+        "coverage_pct": null,
+        "coverage_score": null,
+        "coverage_age_days": null,
+        "tested_modules": 0,
+        "total_modules": 31,
+        "test_presence_pct": 0.0,
+        "test_presence_score": 0,
+        "untested_modules": [
+          "api_client",
+          "backtest",
+          "bonnie",
+          "circuit_breaker",
+          "config",
+          "cro",
+          "data_layer",
+          "evaluate_bonnie",
+          "execution",
+          "exit_manager",
+          "feature_builder",
+          "learner",
+          "learner_backtest",
+          "logger",
+          "market_hours",
+          "mass_backtest",
+          "model_trainer",
+          "notifier",
+          "phase0",
+          "position_ledger",
+          "price_feed",
+          "rate_limiter",
+          "regime_detector",
+          "reporter",
+          "retry_util",
+          "state_guard",
+          "strategy",
+          "stress_test_10x",
+          "throttler",
+          "watchdog",
+          "watchlist_manager"
+        ],
+        "todo_count": 10,
+        "todo_score": 80,
+        "syntax_ok": true,
+        "syntax_errors": []
+      },
+      "notes": [
+        "pytest-cov não instalado ou cobertura não medida: a usar proxy test-presence",
+        "31 módulos sem teste: api_client, backtest, bonnie, circuit_breaker, config, cro +25 mais"
+      ],
+      "trend": "flat"
+    }
+  },
+  "strengths": {
+    "score": 100,
+    "bullets": [
+      {
+        "label": "Drawdown",
+        "score": 100,
+        "dimension": "performance"
+      },
+      {
+        "label": "APIs / circuit breakers",
+        "score": 100,
+        "dimension": "technical_health"
+      },
+      {
+        "label": "Sintaxe",
+        "score": 100,
+        "dimension": "code_quality"
+      }
+    ],
+    "trend": "flat"
+  },
+  "weaknesses": {
+    "score": 17,
+    "bullets": [
+      {
+        "label": "Heartbeat",
+        "score": 0,
+        "dimension": "technical_health"
+      },
+      {
+        "label": "Test presence",
+        "score": 0,
+        "dimension": "code_quality"
+      },
+      {
+        "label": "P&L acumulado",
+        "score": 51,
+        "dimension": "performance"
+      }
+    ],
+    "trend": "flat"
+  },
+  "history": [
+    {
+      "ts": "2026-05-29T12:08:20.120276Z",
+      "overall": 40,
+      "performance": 51,
+      "technical_health": 40,
+      "code_quality": 41,
+      "strengths": 100,
+      "weaknesses": 17
+    }
+  ]
+}

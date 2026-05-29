@@ -22,3 +22,6 @@ lxml>=4.9.0
 
 # AI Insights — Gemini
 google-genai>=0.3.0
+
+# Test coverage (CI + health report)
+pytest-cov>=4.1.0
