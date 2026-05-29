@@ -1530,7 +1530,10 @@ if __name__ == "__main__":
     ci   = args.once or bool(os.getenv("CI"))
 
     now      = datetime.now(timezone.utc)
-    is_wake  = ci and now.hour == 13 and now.minute < 45
+    is_wake  = ci and (
+        (now.hour == 13 and now.minute < 59)
+        or now.hour == 14
+    )
     is_sleep = ci and now.hour == 21
 
     try:
