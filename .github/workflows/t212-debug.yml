@@ -1,0 +1,37 @@
+name: FundScope — T212 Debug
+
+# Diagnóstico manual da ligação à API Trading 212 (demo).
+# Corre t212_debug.py (raiz do repo) — verifica autenticação e endpoints.
+#
+# Secrets necessários:
+#   T212_API_ID        — ID de autenticação Basic (obrigatório)
+#   T212_API_KEY       — chave da T212 demo API (obrigatório)
+#   EU_PROXY_URL       — proxy EU opcional (opcional; omitir se não estiver configurado)
+on:
+  workflow_dispatch:
+
+jobs:
+  debug:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Run T212 debug
+        env:
+          T212_API_ID:  ${{ secrets.T212_API_ID }}
+          T212_API_KEY: ${{ secrets.T212_API_KEY }}
+          EU_PROXY_URL: ${{ secrets.EU_PROXY_URL }}
+        run: python t212_debug.py
