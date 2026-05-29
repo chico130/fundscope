@@ -64,6 +64,12 @@ def _clamp(v: float, lo: float = 0.0, hi: float = 100.0) -> int:
     return int(max(lo, min(hi, round(v))))
 
 
+def _in_bot_window() -> bool:
+    """True if the bot's scheduled window is currently active (Mon-Fri 13:00-21:00 UTC)."""
+    now = datetime.now(timezone.utc)
+    return now.weekday() < 5 and 13 <= now.hour < 21
+
+
 # ── performance ───────────────────────────────────────────────────────────────
 
 def _score_performance() -> dict:
@@ -149,15 +155,19 @@ def _score_technical_health() -> dict:
         except ValueError:
             pass
 
+    idle = not _in_bot_window()  # outside Mon-Fri 13-21 UTC: stale heartbeat is expected
+
     if heartbeat_age_min is not None:
         if heartbeat_age_min <= 15 and bot_status == "active":
             heartbeat_score = 100
         elif heartbeat_age_min <= 45:
             heartbeat_score = _clamp(100 - (heartbeat_age_min - 15) * 3)
+        elif idle:
+            heartbeat_score = 75  # gap is expected outside the trading window
         else:
             heartbeat_score = 0
     else:
-        heartbeat_score = 0
+        heartbeat_score = 75 if idle else 0
     if bot_status == "error":
         heartbeat_score = 0
 
@@ -242,6 +252,9 @@ def _score_technical_health() -> dict:
         notes.append(f"Circuitos abertos: {', '.join(open_circuits)}")
     if workflow_score is None:
         notes.append("gh CLI indisponível — workflow_score N/D")
+    if (not idle and (heartbeat_age_min or 0) > 45
+            and bot_status == "active"):
+        notes.append("status.json pode estar desactualizado — considera git pull para reflectir ciclos recentes")
 
     return {
         "score": round(raw),
@@ -249,6 +262,7 @@ def _score_technical_health() -> dict:
             "heartbeat_age_min": heartbeat_age_min,
             "heartbeat_score": heartbeat_score,
             "bot_status": bot_status,
+            "idle": idle,
             "errors_7d": len(errors_7d),
             "errors_critical": n_crit,
             "errors_serious": n_ser,
@@ -283,9 +297,25 @@ def _score_code_quality() -> dict:
         except Exception:
             pass
 
-    # test presence: bot/X.py → tests/test_X.py
+    # test presence: filename match OR import reference in any test file
     bot_modules = sorted(f.stem for f in BOT_DIR.glob("*.py") if f.stem != "__init__")
-    tested = [m for m in bot_modules if (TESTS_DIR / f"test_{m}.py").exists()]
+    tested_set: set[str] = set()
+    # 1. classic test_<module>.py filename
+    for m in bot_modules:
+        if (TESTS_DIR / f"test_{m}.py").exists():
+            tested_set.add(m)
+    # 2. scan test files for "import bot.<module>" or "from bot.<module>"
+    import_pats = {m: re.compile(rf"\b(?:import|from)\s+(?:bot\.)?{re.escape(m)}\b")
+                   for m in bot_modules}
+    for tf in TESTS_DIR.glob("*.py"):
+        try:
+            content = tf.read_text(encoding="utf-8", errors="ignore")
+        except OSError:
+            continue
+        for m, pat in import_pats.items():
+            if pat.search(content):
+                tested_set.add(m)
+    tested = sorted(tested_set)
     test_presence_pct = round(len(tested) / len(bot_modules) * 100, 1) if bot_modules else 0.0
     test_presence_score = _clamp(test_presence_pct)
 
@@ -405,11 +435,15 @@ def _compute_overall(perf: int, tech: int, qual: int,
                 + WEIGHTS["code_quality"] * qual)
 
     capped_reason = None
+    tc = tech_dim["components"]
     if (ROOT / "EMERGENCY_LOCK.txt").exists():
         raw = min(raw, 25)
         capped_reason = "quarantine"
-    elif (tech_dim["components"]["bot_status"] == "error"
-          or (tech_dim["components"]["heartbeat_age_min"] or 0) > 45):
+    elif tc["bot_status"] == "error" or (
+        not tc.get("idle", False)
+        and (tc["heartbeat_age_min"] or 0) > 45
+    ):
+        # only cap when inside the trading window — outside it a stale heartbeat is normal
         raw = min(raw, 40)
         capped_reason = "heartbeat"
 
@@ -508,10 +542,11 @@ def _render_md(data: dict) -> str:
     L.append("")
 
     # technical health
+    idle_tag = " · _idle (fora janela de mercado)_" if tc.get("idle") else ""
     age_str = f"{tc['heartbeat_age_min']} min" if tc["heartbeat_age_min"] is not None else "N/D"
     L += [
         f"### 🔧 Saúde Técnica — {tech['score']}/100",
-        f"- Heartbeat: `{age_str}` ({tc['bot_status']}) → {_ge(tc['heartbeat_score'])} {tc['heartbeat_score']}",
+        f"- Heartbeat: `{age_str}` ({tc['bot_status']}){idle_tag} → {_ge(tc['heartbeat_score'])} {tc['heartbeat_score']}",
         f"- Erros (7d): `{tc['errors_7d']}` total"
         f" ({tc['errors_critical']} críticos · {tc['errors_serious']} graves · {tc['errors_warning']} avisos)"
         f" → {_ge(tc['error_score'])} {tc['error_score']}",
