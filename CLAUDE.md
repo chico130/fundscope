@@ -53,7 +53,7 @@ ultima_revisao: 2026-05-28
 - Bonnie v5: LABEL_HORIZON_DAYS 20->57 (identificada e bloqueada ate validacao real)
 
 **Ultimo trade executado:** `ARM` em `2026-05-22T14:00`
-**Ultimo ciclo:** `2026-05-29T21:21Z` | status: `active` | regime: `bull_trending`
+**Ultimo ciclo:** `2026-05-29T22:26Z` | status: `active` | regime: `bull_trending`
 <!-- O-QUE-JA-EXISTE-END -->
 
 ---
@@ -173,9 +173,9 @@ Secrets: `T212_API_ID`, `T212_API_KEY`, `FINNHUB_TOKEN`, `TELEGRAM_BOT_TOKEN`, `
 ## 5. Estado Actual
 
 <!-- ESTADO-ACTUAL-START -->
-**Actualizado em:** 2026-05-29 21:22 UTC
+**Actualizado em:** 2026-05-29 22:27 UTC
 
-- **Bot status:** `active` | Ultimo ciclo: `2026-05-29T21:21Z`
+- **Bot status:** `active` | Ultimo ciclo: `2026-05-29T22:26Z`
 - **Regime:** `bull_trending` | Modo: `phase1_auto`
 - **Posicoes abertas:** 1 | **Trades abertos:** 0 | **Trades hoje:** 0
 - **Fase:** Fase 1 — execucao automatica em conta demo (`PHASE1_EXECUTION=True`, `LIVE_TRADING=False`)
