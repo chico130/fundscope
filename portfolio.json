@@ -1,11 +1,11 @@
 {
-  "updated": "2026-05-28T22:33:30.584576Z",
+  "updated": "2026-05-29T12:09:33.384501Z",
   "t212_mode": "live",
   "summary": {
-    "total_value": 5007.76,
+    "total_value": 5006.85,
     "total_invested": 149.0,
-    "total_gain_eur": -1.88,
-    "total_gain_pct": -1.26,
+    "total_gain_eur": -2.79,
+    "total_gain_pct": -1.87,
     "daily_gain_eur": 0.0,
     "cash_available": 4860.64,
     "n_positions": 1
@@ -15,23 +15,47 @@
       "ticker_t212": "MRVL_US_EQ",
       "quantity": 0.8428,
       "avg_price": 206.0157,
-      "current_price": 203.4,
-      "ppl": -1.88,
-      "fx_ppl": 0.01,
+      "current_price": 202.02,
+      "ppl": -2.79,
+      "fx_ppl": 0.1,
       "ticker": "MRVL",
       "ticker_display": "MRVL",
       "display_name": "Marvell Technology",
       "currency": "USD",
       "change_pct": 0.0,
-      "gain_eur": -1.88,
+      "gain_eur": -2.79,
       "invested": 149.0,
-      "value_eur": 147.12,
-      "gain_pct": -1.26,
+      "value_eur": 146.21,
+      "gain_pct": -1.87,
       "fx_rate": 0.86081,
       "currency_native": "USD",
-      "allocation_pct": 2.94,
+      "allocation_pct": 2.92,
       "clyde_forecast": null,
       "news": [
+        {
+          "source": "ChartMill",
+          "headline": "When Diplomacy and Earnings Align; Wall Street Writes New Records",
+          "summary": "Peace talk optimism and a parade of earnings results ranging from spectacular to sobering pushed all three major US indices to record highs on Thursday. One stock jumped 37%. Another quietly rewrote its own history after the close.",
+          "url": "https://finnhub.io/api/news?id=fc2f8d57b1b33f47e0a638509aca401ad2120a875422e1ae605a1b56e8ceda43",
+          "datetime": 1780037554,
+          "image": "https://www.chartmill.com/images/uploads/THUMBNAILS_CHARTMILL_1000_528_70_e3a6929239.webp"
+        },
+        {
+          "source": "Yahoo",
+          "headline": "Barclays resets Marvell stock price target after earnings",
+          "summary": "Marvell Technology has gained more than 200% in the past 12 months. It just reported record revenue, guided above expectations, and told investors that growth would accelerate every single quarter through the rest of the fiscal year. For Barclays analyst Tom O'Malley, that was enough to nearly ...",
+          "url": "https://finnhub.io/api/news?id=62d6c0814baaa028adcc1899404fe4d3b2b90929b16ab192e0322f9970f0b70f",
+          "datetime": 1780025580,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "headline": "S&P 500 and Nasdaq 100 Post Record Highs on US-Iran Truce Reports",
+          "summary": "The S&P 500 Index ($SPX ) (SPY ) on Thursday closed up +0.58%, the Dow Jones Industrial Average ($DOWI ) (DIA ) closed up +0.05%, and the Nasdaq 100 Index ($IUXX ) (QQQ ) closed up +0.84%. June E-mini S&P futures (ESM26 ) rose +0.59%, and June E-mini Nasdaq futures...",
+          "url": "https://finnhub.io/api/news?id=507bc839accaa44ad48faf87551c2cc3de0e7eb9332cefa3d24301be12c519a2",
+          "datetime": 1780000598,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
         {
           "source": "Yahoo",
           "headline": "Marvell Lifts FY2027 Outlook As Revenue Growth Nears 40%",
@@ -42,34 +66,10 @@
         },
         {
           "source": "Yahoo",
-          "headline": "Jim Cramer Won’t Touch POET. The Reddit Crowd Thinks He’s Wrong. Somebody’s About to Lose a Lot of Money",
-          "summary": "Jim Cramer has been circling POET Technologies (NASDAQ:POET) for months, intrigued by the pitch but refusing to bite. On the April 21, 2026 episode of Mad Money, he walked through the optical interposer story, the Lighteon collaboration, even the Wolfpack Research short report and the CFO rebuttal, ",
-          "url": "https://finnhub.io/api/news?id=e61a7aa1b39565f9a88478cd3b1634aec08a0be4fbe790f168b9a87a74b80f71",
-          "datetime": 1779992106,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Benzinga",
-          "headline": "UBS Maintains Buy on Marvell Technology, Raises Price Target to $230",
-          "summary": "UBS  analyst Timothy Arcuri   maintains Marvell Technology (NASDAQ:MRVL) with a Buy and raises the price target from $195 to $230.",
-          "url": "https://finnhub.io/api/news?id=bd840d01e61c8d7b4dd5c46104a32ca770ba29785d090a7d3c35a2de48ef5907",
-          "datetime": 1779985777,
-          "image": ""
-        },
-        {
-          "source": "Yahoo",
-          "headline": "After Comparing Every Generative AI ETF These 3 Capture the Software Layer Most Investors Miss",
-          "summary": "Most capital chasing the generative AI theme has flowed into chips. Semiconductor funds have absorbed the bulk of inflows, and the price action shows it: the iShares Semiconductor ETF (NASDAQ:SOXX) is up 87% year to date. The software layer, where applications, model providers, and enterprise platfo",
-          "url": "https://finnhub.io/api/news?id=c8ab3c9639e97f12da4030a3cf45120bde78bb9d06044910e90f9706d039b2b4",
-          "datetime": 1779984721,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Yahoo",
-          "headline": "Top Midday Stories: US Reportedly Reaches Deal With Iran, Needs Trump's Approval; Caesars to be Acquired by Fertitta for $17.6 Billion",
-          "summary": "The S&P 500 and Nasdaq Composite were up, while the Dow Jones Industrial Average was down slightly i",
-          "url": "https://finnhub.io/api/news?id=8d16c816e98135d270d84613fd556ebb9cd8dab9646804f185c76d18e227f91f",
-          "datetime": 1779983471,
+          "headline": "RBC Just Upped Its Price Target on Marvell Technology Stock. Here's Why",
+          "summary": "Marvell stock gains as robust Q1 earnings makes RBC raise its price target to $240. Here’s why the investment firm is bullish on MRVL shares.",
+          "url": "https://finnhub.io/api/news?id=da1f2006e2e38373c74e96b09f321f3afad643d9cae1ff9ce3c6d7c7b468e08b",
+          "datetime": 1779995679,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         }
       ],
@@ -81,9 +81,9 @@
         "52WeekLow": 58.61,
         "52WeekHighDate": "2026-05-27",
         "52WeekLowDate": "2025-05-30",
-        "beta": 2.274549,
-        "peAnnual": 67.1724,
-        "peTTM": 67.1724,
+        "beta": 2.286647,
+        "peAnnual": 67.1659,
+        "peTTM": 67.1659,
         "pbAnnual": 4.7977,
         "epsGrowthTTMYoy": null,
         "epsGrowth3Y": null,
@@ -95,8 +95,8 @@
         "roaRfy": 11.98,
         "currentRatioAnnual": 2.0061,
         "debtToEquityAnnual": 0.3124,
-        "dividendYieldIndicated": 0.12078510317060896,
-        "marketCapitalization": 179357.06
+        "dividendYieldIndicated": 0.11717033637650733,
+        "marketCapitalization": 179339.55
       },
       "analysts": {},
       "insider": {},
@@ -120,6 +120,10 @@
     {
       "date": "2026-05-28",
       "value": 5007.76
+    },
+    {
+      "date": "2026-05-29",
+      "value": 5006.85
     }
   ],
   "benchmark_metrics": {}
