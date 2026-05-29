@@ -199,20 +199,42 @@ def flush_pending_trades(portfolio_state: dict) -> list[dict]:
     executed: list[dict] = []
     remaining: list[dict] = []
 
+    # Build a ticker→quantity map from the live portfolio for SELL qty resolution.
+    live_positions: dict[str, float] = {
+        p["ticker"]: float(p.get("quantity") or 0)
+        for p in (portfolio_state.get("positions") or [])
+        if p.get("ticker") and float(p.get("quantity") or 0) > 0
+    }
+
     for rec in records:
         retry_count = rec.get("retry_count", 0)
+        ticker      = rec.get("ticker", "")
+        side        = rec.get("side", "BUY").upper()
+
         if retry_count >= _PENDING_MAX_RETRIES:
             log_error("pending_trade_expired", {
-                "ticker": rec.get("ticker"),
+                "ticker":    ticker,
+                "side":      side,
                 "queued_at": rec.get("queued_at"),
-                "retries": retry_count,
+                "retries":   retry_count,
             })
             continue
 
+        # For SELL retries use the live position quantity instead of the
+        # stored qty — the position size may have changed since queuing.
+        if side == "SELL":
+            live_qty = live_positions.get(ticker)
+            if not live_qty:
+                log_decision("pending_sell_skipped", "position_gone", {"ticker": ticker})
+                continue  # position already closed; discard entry
+            qty = live_qty
+        else:
+            qty = rec.get("qty", 0)
+
         proposed = ProposedTrade(
-            ticker=rec["ticker"],
-            side=rec.get("side", "BUY"),
-            qty=rec.get("qty", 0),
+            ticker=ticker,
+            side=side,
+            qty=qty,
             order_type=rec.get("order_type", "MARKET"),
             price=rec.get("price"),
             reason=f"[retry {retry_count + 1}/{_PENDING_MAX_RETRIES}] {rec.get('reason', '')}",
@@ -371,10 +393,11 @@ def execute_trade(proposed: ProposedTrade, portfolio_state: dict) -> dict | None
             f"({proposed.side} {proposed.qty} @ {proposed.price}, type={proposed.order_type})",
             flush=True,
         )
-        # Queue BUY failures for next-cycle retry; SELLs are re-proposed
-        # naturally by the exit manager on every cycle, so no queue needed.
+        # Queue both BUY and SELL failures; flush_pending_trades() will
+        # re-attempt them at the start of the next cycle.  For SELLs the flush
+        # uses the current live position quantity to avoid qty drift.
+        _queue_pending_trade(proposed)
         if proposed.side.upper() == "BUY":
-            _queue_pending_trade(proposed)
             enviar_alerta(
                 f"[CLYDE] ⚠️ Ordem BUY {proposed.ticker} falhou na T212 — intenção guardada.\n"
                 f"qty={proposed.qty} · type={proposed.order_type} · price={proposed.price}\n"
@@ -382,9 +405,9 @@ def execute_trade(proposed: ProposedTrade, portfolio_state: dict) -> dict | None
             )
         else:
             enviar_alerta(
-                f"[CLYDE] ⚠️ Ordem {proposed.side} {proposed.ticker} rejeitada pela T212."
-                f" qty={proposed.qty} · type={proposed.order_type} · price={proposed.price}"
-                f"\nVer log do GitHub Actions para detalhes do erro HTTP."
+                f"[CLYDE] ⚠️ Ordem SELL {proposed.ticker} falhou na T212 — intenção guardada.\n"
+                f"qty={proposed.qty} · type={proposed.order_type}\n"
+                f"Será retentada no próximo ciclo (máx. {_PENDING_MAX_RETRIES} tentativas)."
             )
         return None
 
