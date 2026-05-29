@@ -1,9 +1,9 @@
 {
   "finnhub": {
     "day": "2026-05-29",
-    "day_count": 40,
-    "min_bucket": "2026-05-29T19:18",
-    "min_count": 8,
+    "day_count": 42,
+    "min_bucket": "2026-05-29T21:20",
+    "min_count": 2,
     "alerted_80": false,
     "alerted_95": false
   },
@@ -25,16 +25,16 @@
   },
   "telegram": {
     "day": "2026-05-29",
-    "day_count": 10,
-    "min_bucket": "2026-05-29T19:18",
-    "min_count": 3,
+    "day_count": 15,
+    "min_bucket": "2026-05-29T21:21",
+    "min_count": 5,
     "alerted_80": false,
     "alerted_95": false
   },
   "t212": {
     "day": "2026-05-29",
-    "day_count": 7,
-    "min_bucket": "2026-05-29T19:16",
+    "day_count": 10,
+    "min_bucket": "2026-05-29T21:20",
     "min_count": 3,
     "alerted_80": false,
     "alerted_95": false

@@ -1,20 +1,20 @@
 {
-  "timestamp": "2026-05-29T19:18:39.796622+00:00",
+  "timestamp": "2026-05-29T21:21:58.701308+00:00",
   "mode": "phase1_auto",
   "strategy_version": "v0.1.0",
   "note": "Fase 1 — execução automática activa. LIVE_TRADING=False (conta demo).",
   "regime": "bull_trending",
   "regime_alert": false,
   "regime_details": {
-    "spy_price": 756.26,
+    "spy_price": 756.48,
     "ema200": 681.7,
-    "ema50": 716.34,
+    "ema50": 716.35,
     "ema50_above_ema200": true,
-    "spy_pct_from_ema200": 10.94,
+    "spy_pct_from_ema200": 10.97,
     "atr_current": 6.2411,
     "atr_ratio_vs_60d_mean": 0.7154,
-    "spy_return_20d": 0.0494,
-    "rsp_spy_ratio_chg_20d": -0.0187,
+    "spy_return_20d": 0.0497,
+    "rsp_spy_ratio_chg_20d": -0.0191,
     "breadth_healthy": true
   },
   "watchlist_top5": [
@@ -85,15 +85,303 @@
     }
   ],
   "barrier_exits": [],
-  "buy_opportunities": [],
-  "near_misses": [],
+  "buy_opportunities": [
+    {
+      "ticker": "ROST",
+      "sector": "XLY",
+      "watchlist_score": 0.2078,
+      "mom_1m": 0.0173,
+      "mom_3m": 0.175,
+      "signal_strength": 0.781,
+      "style": "MOMENTUM",
+      "reasons": [
+        "Breakout: RSI-14 59.5 ≥ 58 — momentum validado",
+        "Alinhamento total: price > EMA-20 > EMA-50 > EMA-200",
+        "Volume 2.8× ≥ 1.5× — confirmação de volume"
+      ],
+      "technicals": {
+        "rsi_14": 59.47,
+        "ema50_above_ema200": true,
+        "ema20_above_ema50": true,
+        "price_above_ema20": true,
+        "volume_ratio_vs_avg": 2.81,
+        "atr_14": 6.4129,
+        "rs_bullish": true
+      },
+      "last_price": 231.73
+    },
+    {
+      "ticker": "TXN",
+      "sector": "XLK",
+      "watchlist_score": 0.2901,
+      "mom_1m": 0.1002,
+      "mom_3m": 0.5258,
+      "signal_strength": 0.722,
+      "style": "MOMENTUM",
+      "reasons": [
+        "Breakout: RSI-14 61.0 ≥ 58 — momentum validado",
+        "Alinhamento total: price > EMA-20 > EMA-50 > EMA-200",
+        "Volume 2.2× ≥ 1.5× — confirmação de volume"
+      ],
+      "technicals": {
+        "rsi_14": 61.05,
+        "ema50_above_ema200": true,
+        "ema20_above_ema50": true,
+        "price_above_ema20": true,
+        "volume_ratio_vs_avg": 2.22,
+        "atr_14": 11.4203,
+        "rs_bullish": true
+      },
+      "last_price": 305.68
+    },
+    {
+      "ticker": "GM",
+      "sector": "XLY",
+      "watchlist_score": 0.2024,
+      "mom_1m": 0.0899,
+      "mom_3m": 0.0871,
+      "signal_strength": 0.715,
+      "style": "MOMENTUM",
+      "reasons": [
+        "Breakout: RSI-14 63.1 ≥ 58 — momentum validado",
+        "Alinhamento total: price > EMA-20 > EMA-50 > EMA-200",
+        "Volume 2.1× ≥ 1.5× — confirmação de volume"
+      ],
+      "technicals": {
+        "rsi_14": 63.07,
+        "ema50_above_ema200": true,
+        "ema20_above_ema50": true,
+        "price_above_ema20": true,
+        "volume_ratio_vs_avg": 2.15,
+        "atr_14": 2.5941,
+        "rs_bullish": true
+      },
+      "last_price": 83.24
+    },
+    {
+      "ticker": "AVGO",
+      "sector": "XLK",
+      "watchlist_score": 0.3009,
+      "mom_1m": 0.0483,
+      "mom_3m": 0.3972,
+      "signal_strength": 0.713,
+      "style": "MOMENTUM",
+      "reasons": [
+        "Breakout: RSI-14 65.9 ≥ 58 — momentum validado",
+        "Alinhamento total: price > EMA-20 > EMA-50 > EMA-200",
+        "Volume 2.1× ≥ 1.5× — confirmação de volume"
+      ],
+      "technicals": {
+        "rsi_14": 65.92,
+        "ema50_above_ema200": true,
+        "ema20_above_ema50": true,
+        "price_above_ema20": true,
+        "volume_ratio_vs_avg": 2.13,
+        "atr_14": 15.7728,
+        "rs_bullish": true
+      },
+      "last_price": 446.77
+    },
+    {
+      "ticker": "F",
+      "sector": "XLY",
+      "watchlist_score": 0.3895,
+      "mom_1m": 0.4791,
+      "mom_3m": 0.4069,
+      "signal_strength": 0.682,
+      "style": "MOMENTUM",
+      "reasons": [
+        "Breakout: RSI-14 80.4 ≥ 58 — momentum validado",
+        "Alinhamento total: price > EMA-20 > EMA-50 > EMA-200",
+        "Volume 1.8× ≥ 1.5× — confirmação de volume"
+      ],
+      "technicals": {
+        "rsi_14": 80.39,
+        "ema50_above_ema200": true,
+        "ema20_above_ema50": true,
+        "price_above_ema20": true,
+        "volume_ratio_vs_avg": 1.82,
+        "atr_14": 0.6974,
+        "rs_bullish": true
+      },
+      "last_price": 17.44
+    },
+    {
+      "ticker": "GE",
+      "sector": "XLI",
+      "watchlist_score": 0.2281,
+      "mom_1m": 0.1155,
+      "mom_3m": -0.0307,
+      "signal_strength": 0.675,
+      "style": "MOMENTUM",
+      "reasons": [
+        "Breakout: RSI-14 66.1 ≥ 58 — momentum validado",
+        "Alinhamento total: price > EMA-20 > EMA-50 > EMA-200",
+        "Volume 1.8× ≥ 1.5× — confirmação de volume"
+      ],
+      "technicals": {
+        "rsi_14": 66.12,
+        "ema50_above_ema200": true,
+        "ema20_above_ema50": true,
+        "price_above_ema20": true,
+        "volume_ratio_vs_avg": 1.75,
+        "atr_14": 9.4898,
+        "rs_bullish": true
+      },
+      "last_price": 323.76
+    },
+    {
+      "ticker": "PANW",
+      "sector": "XLK",
+      "watchlist_score": 0.4877,
+      "mom_1m": 0.5559,
+      "mom_3m": 0.7874,
+      "signal_strength": 0.672,
+      "style": "MOMENTUM",
+      "reasons": [
+        "Breakout: RSI-14 80.5 ≥ 58 — momentum validado",
+        "Alinhamento total: price > EMA-20 > EMA-50 > EMA-200",
+        "Volume 1.7× ≥ 1.5× — confirmação de volume"
+      ],
+      "technicals": {
+        "rsi_14": 80.47,
+        "ema50_above_ema200": true,
+        "ema20_above_ema50": true,
+        "price_above_ema20": true,
+        "volume_ratio_vs_avg": 1.72,
+        "atr_14": 11.667,
+        "rs_bullish": true
+      },
+      "last_price": 281.69
+    },
+    {
+      "ticker": "MAR",
+      "sector": "XLY",
+      "watchlist_score": 0.1984,
+      "mom_1m": 0.0407,
+      "mom_3m": 0.1206,
+      "signal_strength": 0.664,
+      "style": "MOMENTUM",
+      "reasons": [
+        "Breakout: RSI-14 60.8 ≥ 58 — momentum validado",
+        "Alinhamento total: price > EMA-20 > EMA-50 > EMA-200",
+        "Volume 1.6× ≥ 1.5× — confirmação de volume"
+      ],
+      "technicals": {
+        "rsi_14": 60.82,
+        "ema50_above_ema200": true,
+        "ema20_above_ema50": true,
+        "price_above_ema20": true,
+        "volume_ratio_vs_avg": 1.64,
+        "atr_14": 8.9504,
+        "rs_bullish": true
+      },
+      "last_price": 375.6
+    },
+    {
+      "ticker": "GILD",
+      "sector": "XLV",
+      "watchlist_score": 0.1728,
+      "mom_1m": 0.0275,
+      "mom_3m": -0.0854,
+      "signal_strength": 0.621,
+      "style": "VALUE",
+      "reasons": [
+        "RSI-14 neutro (52.2) em tendência ascendente",
+        "Volume excepcional 2.5× — sinal de momentum"
+      ],
+      "technicals": {
+        "rsi_14": 52.22,
+        "ema50_above_ema200": true,
+        "ema20_above_ema50": false,
+        "price_above_ema20": true,
+        "volume_ratio_vs_avg": 2.51,
+        "atr_14": 3.2599,
+        "rs_bullish": false
+      },
+      "last_price": 134.43
+    },
+    {
+      "ticker": "SLB",
+      "sector": "XLE",
+      "watchlist_score": 0.1687,
+      "mom_1m": -0.0337,
+      "mom_3m": 0.1314,
+      "signal_strength": 0.61,
+      "style": "VALUE",
+      "reasons": [
+        "RSI-14 neutro (46.4) em tendência ascendente",
+        "Volume excepcional 2.4× — sinal de momentum"
+      ],
+      "technicals": {
+        "rsi_14": 46.35,
+        "ema50_above_ema200": true,
+        "ema20_above_ema50": true,
+        "price_above_ema20": false,
+        "volume_ratio_vs_avg": 2.4,
+        "atr_14": 1.5721,
+        "rs_bullish": false
+      },
+      "last_price": 54.55
+    }
+  ],
+  "near_misses": [
+    {
+      "ticker": "GOOGL",
+      "sector": "XLC",
+      "watchlist_score": 0.2654,
+      "rule": "B",
+      "blocking_reason": "Volume 1.6× — falta 0.18× para ≥1.8",
+      "proximity_pct": 90,
+      "technicals": {
+        "rsi_14": 52.9,
+        "ema_20": 382.5228,
+        "ema50": 359.7709,
+        "ema200": 299.4547,
+        "ema20_above_ema50": true,
+        "ema50_above_ema200": true,
+        "price_above_ema20": false,
+        "volume_ratio_vs_avg": 1.62,
+        "volume_sma_10": 28317372.0,
+        "volume_ratio": 1.56,
+        "atr_14": 9.499,
+        "last_price": 380.34,
+        "rs_bullish": false
+      },
+      "last_price": 380.34
+    },
+    {
+      "ticker": "NVDA",
+      "sector": "XLK",
+      "watchlist_score": 0.4517,
+      "rule": "B",
+      "blocking_reason": "Volume 1.4× — falta 0.39× para ≥1.8",
+      "proximity_pct": 78,
+      "technicals": {
+        "rsi_14": 49.41,
+        "ema_20": 214.1203,
+        "ema50": 204.6655,
+        "ema200": 188.782,
+        "ema20_above_ema50": true,
+        "ema50_above_ema200": true,
+        "price_above_ema20": false,
+        "volume_ratio_vs_avg": 1.41,
+        "volume_sma_10": 175433131.0,
+        "volume_ratio": 1.31,
+        "atr_14": 7.1347,
+        "last_price": 211.14,
+        "rs_bullish": false
+      },
+      "last_price": 211.14
+    }
+  ],
   "n_positions": 2,
   "open_trades": 0,
   "risk_status": {
     "ok": false,
-    "total_equity_eur": 5124.56,
+    "total_equity_eur": 5127.8,
     "warnings": [
-      "COST_US_EQ representa 12.2% da carteira (limite: 11.0%)"
+      "COST_US_EQ representa 12.3% da carteira (limite: 11.0%)"
     ]
   },
   "signals": [
@@ -102,14 +390,14 @@
       "action": "hold",
       "size_factor": 1.0,
       "signals": [
-        "RSI-14 baixo (33.5) — zona de suporte, aguardar confirmação",
+        "RSI-14 baixo (34.2) — zona de suporte, aguardar confirmação",
         "Tendência ascendente: EMA-50 > EMA-200",
-        "Volume elevado: 1.7x acima da média"
+        "Volume excepcional: 2.7x acima da média — sinal de confirmação"
       ],
       "technicals": {
-        "rsi_14": 33.54,
+        "rsi_14": 34.19,
         "ema50_above_ema200": true,
-        "volume_ratio_vs_avg": 1.7
+        "volume_ratio_vs_avg": 2.67
       }
     },
     {
@@ -117,19 +405,19 @@
       "action": "hold",
       "size_factor": 1.0,
       "signals": [
-        "RSI-14 elevado (69.0) — monitorizar pressão de venda",
+        "RSI-14 elevado (69.5) — monitorizar pressão de venda",
         "Tendência ascendente: EMA-50 > EMA-200"
       ],
       "technicals": {
-        "rsi_14": 69.0,
+        "rsi_14": 69.5,
         "ema50_above_ema200": true,
-        "volume_ratio_vs_avg": 0.72
+        "volume_ratio_vs_avg": 1.09
       }
     }
   ],
   "data_sources": {
     "prices": "finnhub+yfinance",
-    "t212_sync": "2026-05-29T19:16:53.046451+00:00",
+    "t212_sync": "2026-05-29T21:20:12.915141+00:00",
     "stale_prices": []
   },
   "cro": {
@@ -145,5 +433,76 @@
     ]
   },
   "executed_trades": [],
-  "phase1_skips": []
+  "phase1_skips": [
+    {
+      "ticker": "ROST",
+      "reason": "market_closed",
+      "details": {
+        "regime": "bull_trending"
+      }
+    },
+    {
+      "ticker": "TXN",
+      "reason": "market_closed",
+      "details": {
+        "regime": "bull_trending"
+      }
+    },
+    {
+      "ticker": "GM",
+      "reason": "market_closed",
+      "details": {
+        "regime": "bull_trending"
+      }
+    },
+    {
+      "ticker": "AVGO",
+      "reason": "market_closed",
+      "details": {
+        "regime": "bull_trending"
+      }
+    },
+    {
+      "ticker": "F",
+      "reason": "market_closed",
+      "details": {
+        "regime": "bull_trending"
+      }
+    },
+    {
+      "ticker": "GE",
+      "reason": "market_closed",
+      "details": {
+        "regime": "bull_trending"
+      }
+    },
+    {
+      "ticker": "PANW",
+      "reason": "market_closed",
+      "details": {
+        "regime": "bull_trending"
+      }
+    },
+    {
+      "ticker": "MAR",
+      "reason": "market_closed",
+      "details": {
+        "regime": "bull_trending"
+      }
+    },
+    {
+      "ticker": "GILD",
+      "reason": "market_closed",
+      "details": {
+        "regime": "bull_trending"
+      }
+    },
+    {
+      "ticker": "SLB",
+      "reason": "market_closed",
+      "details": {
+        "regime": "bull_trending"
+      }
+    }
+  ]
 }
