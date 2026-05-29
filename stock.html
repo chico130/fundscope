@@ -217,6 +217,27 @@
     .aimi-skel-line.mid{width:75%;}
     @keyframes aimiShimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
 
+    /* ── Gains History (per-stock permanent insights) ── */
+    .gh-card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-lg);margin-bottom:var(--space-4);box-shadow:var(--shadow-sm);overflow:hidden;}
+    .gh-header{display:flex;align-items:center;justify-content:space-between;padding:var(--space-4) var(--space-5);cursor:pointer;user-select:none;gap:var(--space-3);}
+    .gh-header:hover{background:var(--color-surface-offset);}
+    .gh-header-left{display:flex;align-items:baseline;gap:var(--space-3);}
+    .gh-dates{font-size:var(--text-xs);color:var(--color-text-faint);}
+    .gh-gain{font-size:var(--text-sm);font-weight:700;color:var(--color-success);}
+    .gh-chevron{width:16px;height:16px;color:var(--color-text-faint);flex-shrink:0;transition:transform var(--transition);}
+    .gh-chevron.open{transform:rotate(180deg);}
+    .gh-new-badge{font-size:.6rem;font-weight:700;text-transform:uppercase;padding:2px 6px;border-radius:var(--radius-full);background:var(--color-primary-highlight);color:var(--color-primary);letter-spacing:.04em;flex-shrink:0;}
+    .gh-body{padding:0 var(--space-5) var(--space-4);display:none;}
+    .gh-body.open{display:block;}
+    .gh-field{margin-bottom:var(--space-3);}
+    .gh-field-label{font-size:var(--text-xs);font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--color-text-faint);margin-bottom:3px;}
+    .gh-field-text{font-size:var(--text-sm);color:var(--color-text);line-height:1.6;}
+    .gh-comparison{background:var(--color-primary-highlight);border-left:3px solid var(--color-primary);border-radius:0 var(--radius-md) var(--radius-md) 0;padding:var(--space-3) var(--space-4);margin-top:var(--space-3);}
+    .gh-comparison-label{font-size:var(--text-xs);font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--color-primary);margin-bottom:4px;}
+    .gh-comparison-text{font-size:var(--text-sm);color:var(--color-text);line-height:1.6;}
+    .gh-section{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-5);margin-bottom:var(--space-6);box-shadow:var(--shadow-sm);}
+    .gh-section-title{font-size:var(--text-xs);font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--color-text-faint);margin-bottom:var(--space-4);}
+
     /* ── Footer ── */
     .footer{padding:var(--space-6);text-align:center;font-size:var(--text-xs);color:var(--color-text-faint);border-top:1px solid var(--color-divider);margin-top:auto;}
     .footer a{color:var(--color-text-muted);transition:color var(--transition);}
@@ -799,7 +820,8 @@ function renderStock(s){
   <div id="aiAnalystSection"></div>
   <div id="aiMarketInsightSection"></div>
   <div id="analystSection"></div>
-  <div id="newsSection"></div>`;
+  <div id="newsSection"></div>
+  <div id="gainsHistorySection"></div>`;
 
   document.getElementById('stockContent').style.display='block';
   window._histCache={
@@ -846,6 +868,7 @@ function renderStock(s){
   workerProfile(ticker).then(profile => tryLoadClearbitLogo(ticker, profile, 'logoWrap'));
   fetchAIReview(ticker);
   fetchAIMarketInsight(ticker);
+  fetchGainsHistory(ticker);
 
   // Start 30s auto-refresh after render
   wireRefreshBtn(ticker);
@@ -1119,6 +1142,88 @@ async function fetchAIMarketInsight(ticker) {
   } catch (e) {
     sec.innerHTML = '';   // falha silenciosa (Regra 3: isolamento)
   }
+}
+
+// ── Gains History (permanent per-stock insights) ─────────────
+async function fetchGainsHistory(ticker) {
+  const sec = document.getElementById('gainsHistorySection');
+  if (!sec) return;
+  try {
+    const r = await fetchTimeout(`data/beta/gains_insights.json?t=${Date.now()}`, 8000);
+    if (!r.ok) return;
+    const data = await r.json();
+    renderGainsHistory(sec, ticker, data);
+  } catch (_) { /* silent — optional section */ }
+}
+
+function renderGainsHistory(sec, ticker, data) {
+  const allEntries = data && data.insights ? Object.values(data.insights) : [];
+  const tickerUp   = (ticker || '').toUpperCase();
+  const sevenDaysAgo = Date.now() - 7 * 86400_000;
+
+  const entries = allEntries
+    .filter(e => e.status === 'ok' && e.permanent && (e.ticker || '').toUpperCase() === tickerUp)
+    .sort((a, b) => (b.exit_date || '').localeCompare(a.exit_date || ''));
+
+  if (!entries.length) return; // no history for this ticker — silent
+
+  const fmtD  = s => (s || '').slice(0, 10);
+  const fmtN  = v => v != null ? `+${Number(v).toFixed(2)}` : '+0.00';
+
+  const cards = entries.map((e, idx) => {
+    const ins     = e.gemini_insight || {};
+    const isNew   = e.comparison_generated_at && new Date(e.comparison_generated_at).getTime() > sevenDaysAgo;
+    const cardId  = `gh-body-${idx}`;
+    const chevId  = `gh-chev-${idx}`;
+    const isOpen  = idx === 0;
+
+    const compHtml = e.comparison_insight ? `
+      <div class="gh-comparison">
+        <div class="gh-comparison-label">Comparação com operação anterior</div>
+        <div class="gh-comparison-text">${esc(e.comparison_insight)}</div>
+      </div>` : '';
+
+    const fields = [
+      ['O que correu bem',    ins.what_went_well,     'color:var(--color-success)'],
+      ['O que podia melhorar',ins.what_could_improve, 'color:var(--color-warn)'],
+      ['Padrão identificado', ins.pattern,             'color:var(--color-primary)'],
+    ].filter(([, v]) => v).map(([label, text, color]) => `
+      <div class="gh-field">
+        <div class="gh-field-label" style="${color}">${label}</div>
+        <div class="gh-field-text">${esc(text)}</div>
+      </div>`).join('');
+
+    return `
+    <div class="gh-card">
+      <div class="gh-header" onclick="
+        var b=document.getElementById('${cardId}');
+        var c=document.getElementById('${chevId}');
+        var open=b.classList.toggle('open');
+        c.classList.toggle('open',open);">
+        <div class="gh-header-left">
+          <span class="gh-gain">${fmtN(e.gain_pct)}% &nbsp;·&nbsp; ${fmtN(e.gain_eur)} €</span>
+          <span class="gh-dates">${fmtD(e.entry_date)} → ${fmtD(e.exit_date)}</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:var(--space-2)">
+          ${isNew ? '<span class="gh-new-badge">Novo</span>' : ''}
+          <svg id="${chevId}" class="gh-chevron${isOpen ? ' open' : ''}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+      </div>
+      <div id="${cardId}" class="gh-body${isOpen ? ' open' : ''}">
+        ${fields}
+        ${compHtml}
+        <div style="margin-top:var(--space-3);font-size:10px;color:var(--color-text-faint)">
+          Gerado ${(e.generated_at || '').replace('T',' ').slice(0,16)} UTC · Gemini
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  sec.innerHTML = `
+    <div class="gh-section">
+      <div class="gh-section-title">Histórico de Ganhos (${entries.length} operação${entries.length !== 1 ? 'ões' : ''})</div>
+      ${cards}
+    </div>`;
 }
 
 // ── Error state ──────────────────────────────────────────────

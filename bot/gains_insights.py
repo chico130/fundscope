@@ -3,7 +3,14 @@ Generates and persists Gemini post-trade insights for realised gains.
 
 Called from ingest/update_portfolio.py step [8b] after each portfolio update.
 Reads beta_trades.json, generates Gemini insights for newly closed positive
-trades, and stores them in data/beta/gains_insights.json with a 63-day TTL.
+trades, and stores them in data/beta/gains_insights.json.
+
+TTL behaviour:
+- entries without permanent=True expire after RETENTION_DAYS (63 days)
+- entries with permanent=True are never pruned (shown on per-stock page)
+
+Comparison insights are generated when a ticker has a previous permanent entry,
+up to COMPARISON_MAX_PER_RUN per execution (shares gemini_gains rate budget).
 """
 from __future__ import annotations
 
@@ -14,10 +21,11 @@ from pathlib import Path
 
 from .config import DATA_BETA_DIR
 
-GAINS_INSIGHTS_PATH = DATA_BETA_DIR / "gains_insights.json"
-GEMINI_MODEL        = "gemini-2.0-flash-lite"
-RETENTION_DAYS      = 63
-MAX_PER_RUN         = 5
+GAINS_INSIGHTS_PATH    = DATA_BETA_DIR / "gains_insights.json"
+GEMINI_MODEL           = "gemini-2.0-flash-lite"
+RETENTION_DAYS         = 63
+MAX_PER_RUN            = 5
+COMPARISON_MAX_PER_RUN = 3
 
 
 def _ts() -> str:
@@ -88,6 +96,45 @@ def _build_prompt(trade: dict, display_name: str) -> str:
     )
 
 
+def _build_comparison_prompt(new_entry: dict, prev_entry: dict, months_ago: int) -> str:
+    ticker      = new_entry["ticker"]
+    dname       = new_entry.get("display_name", ticker)
+    months_label = f"{months_ago} mês" if months_ago == 1 else f"{months_ago} meses"
+
+    def _fmt(e: dict) -> str:
+        ins   = e.get("gemini_insight") or {}
+        lines = [
+            f"  Entrada: {(e.get('entry_date') or '')[:10]} a {e.get('entry_price', 0):.2f}",
+            f"  Saída:   {(e.get('exit_date') or '')[:10]}",
+            f"  Resultado: +{e.get('gain_pct', 0):.2f}% (+{e.get('gain_eur', 0):.2f}€)",
+        ]
+        if ins.get("what_went_well"):
+            lines.append(f"  O que correu bem: {ins['what_went_well']}")
+        if ins.get("pattern"):
+            lines.append(f"  Padrão: {ins['pattern']}")
+        return "\n".join(lines)
+
+    return (
+        "Compara duas operações de acções fechadas com ganho no mesmo ticker "
+        "e devolve uma análise comparativa em PORTUGUÊS de Portugal.\n\n"
+        f"Ticker: {ticker}\nNome: {dname}\n\n"
+        f"OPERAÇÃO ACTUAL:\n{_fmt(new_entry)}\n\n"
+        f"OPERAÇÃO ANTERIOR (há {months_label}):\n{_fmt(prev_entry)}\n\n"
+        "Devolve um objecto JSON com EXACTAMENTE esta chave "
+        "(valor: string, máximo 3 frases, sem markdown, sem listas, sem emojis):\n"
+        '{"comparison": "..."}\n\n'
+        "O texto deve, quando possível:\n"
+        f'- Começar com "Comparando com a operação de há {months_label}:"\n'
+        "- Contrastar resultado %, duração e padrão técnico/comportamental;\n"
+        "- Notar se o setup melhorou, piorou ou repete o mesmo padrão.\n\n"
+        "Regras obrigatórias:\n"
+        "- Sê neutro, factual e prudente. Não faças recomendações de compra/venda.\n"
+        "- Não inventes números que não estejam acima.\n"
+        '- Se informação insuficiente, usa {"comparison": "Informação limitada para comparação."}.\n'
+        "- Responde APENAS com o objecto JSON — sem texto antes, sem texto depois.\n"
+    )
+
+
 def _make_base(trade: dict, display_name: str) -> dict:
     ticker_raw = trade.get("ticker", "")
     closed_raw = trade.get("closed_at") or ""
@@ -133,11 +180,12 @@ def generate_for_closed_trades(
     store = _load()
     store.setdefault("insights", {})
 
-    # Prune entries past their 63-day window
+    # Prune entries past their 63-day window; permanent=True entries are never pruned
     now_iso = now.isoformat().replace("+00:00", "Z")
     expired = [
         tid for tid, e in store["insights"].items()
-        if (e.get("expires_at") or "") < now_iso
+        if not e.get("permanent")
+        and (e.get("expires_at") or "") < now_iso
     ]
     for tid in expired:
         del store["insights"][tid]
@@ -170,7 +218,7 @@ def generate_for_closed_trades(
     print(f"   [gains_insights] {len(candidates)} candidato(s) encontrado(s)", flush=True)
 
     sc = symbol_cache or {}
-    n_ok = n_fail = n_limited = 0
+    n_ok = n_fail = n_limited = n_compare = 0
 
     for trade in candidates[:MAX_PER_RUN]:
         trade_id = trade["id"]
@@ -191,7 +239,7 @@ def generate_for_closed_trades(
             except Exception:
                 pass
 
-        # Gemini call
+        # Gemini call — base insight
         raw_text = ""
         try:
             from google.genai import types as _gt
@@ -210,21 +258,90 @@ def generate_for_closed_trades(
             if not isinstance(parsed, dict):
                 raise ValueError("resposta não é dict")
 
-            closed_dt = datetime.fromisoformat(trade["closed_at"].replace("Z", "+00:00"))
+            closed_dt  = datetime.fromisoformat(trade["closed_at"].replace("Z", "+00:00"))
             expires_at = (closed_dt + timedelta(days=RETENTION_DAYS)).isoformat().replace("+00:00", "Z")
 
-            store["insights"][trade_id] = {
+            new_entry: dict = {
                 **base,
                 "expires_at": expires_at,
-                "status": "ok",
+                "status":     "ok",
+                "permanent":  True,
                 "gemini_insight": {
                     "what_went_well":     str(parsed.get("what_went_well", "")).strip()[:400],
                     "what_could_improve": str(parsed.get("what_could_improve", "")).strip()[:400],
                     "pattern":            str(parsed.get("pattern", "")).strip()[:400],
                 },
             }
+            store["insights"][trade_id] = new_entry
             n_ok += 1
             print(f"   [gains_insights] {base['ticker']} ({trade_id}): insight gerado", flush=True)
+
+            # ── Comparison with most recent previous gain on same ticker ──
+            if n_compare < COMPARISON_MAX_PER_RUN:
+                current_ticker = base["ticker"]
+                current_exit   = base["exit_date"]
+                prev_candidates = [
+                    e for tid2, e in store["insights"].items()
+                    if tid2 != trade_id
+                    and e.get("ticker") == current_ticker
+                    and e.get("status") == "ok"
+                    and e.get("gemini_insight")
+                    and (e.get("exit_date") or "") < current_exit
+                ]
+                if prev_candidates:
+                    prev_entry = max(prev_candidates, key=lambda x: x.get("exit_date", ""))
+                    try:
+                        prev_dt    = datetime.fromisoformat(prev_entry["exit_date"].replace("Z", "+00:00"))
+                        curr_dt    = datetime.fromisoformat(current_exit.replace("Z", "+00:00"))
+                        months_ago = max(1, round((curr_dt - prev_dt).days / 30))
+                    except Exception:
+                        months_ago = 1
+
+                    rl_ok_cmp = True
+                    if rl_available:
+                        try:
+                            rl_ok_cmp = _rl.check_and_consume("gemini_gains")
+                        except Exception:
+                            pass
+
+                    if rl_ok_cmp:
+                        raw_cmp = ""
+                        try:
+                            resp_cmp = gemini_client.models.generate_content(
+                                model=GEMINI_MODEL,
+                                contents=_build_comparison_prompt(new_entry, prev_entry, months_ago),
+                                config=_gt.GenerateContentConfig(
+                                    http_options=_gt.HttpOptions(timeout=20_000),
+                                    response_mime_type="application/json",
+                                    temperature=0.4,
+                                    max_output_tokens=400,
+                                ),
+                            )
+                            raw_cmp  = (resp_cmp.text or "").strip()
+                            parsed_cmp = json.loads(_strip_fences(raw_cmp))
+                            cmp_text = str(parsed_cmp.get("comparison", "")).strip()[:600]
+                            if cmp_text:
+                                store["insights"][trade_id]["comparison_with"]         = prev_entry["trade_id"]
+                                store["insights"][trade_id]["comparison_insight"]      = cmp_text
+                                store["insights"][trade_id]["comparison_generated_at"] = _ts()
+                                n_compare += 1
+                                print(
+                                    f"   [gains_insights] {base['ticker']}: comparação gerada"
+                                    f" (vs {prev_entry['trade_id']})",
+                                    flush=True,
+                                )
+                        except Exception as exc_cmp:
+                            preview_cmp = raw_cmp[:120].replace("\n", "\\n") if raw_cmp else "<vazio>"
+                            print(
+                                f"   [gains_insights] {base['ticker']}: comparação falhou"
+                                f" — {exc_cmp} | raw: {preview_cmp}",
+                                flush=True,
+                            )
+                    else:
+                        print(
+                            f"   [gains_insights] {base['ticker']}: rate limit para comparação — skip",
+                            flush=True,
+                        )
 
         except Exception as exc:
             preview = raw_text[:200].replace("\n", "\\n") if raw_text else "<vazio>"
@@ -242,4 +359,7 @@ def generate_for_closed_trades(
         except Exception as exc:
             print(f"   [gains_insights] aviso: falha ao gravar: {exc}", flush=True)
 
-    print(f"   [gains_insights] ok={n_ok} limitados={n_limited} fail={n_fail}", flush=True)
+    print(
+        f"   [gains_insights] ok={n_ok} comparações={n_compare} limitados={n_limited} fail={n_fail}",
+        flush=True,
+    )
