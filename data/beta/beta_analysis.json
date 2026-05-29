@@ -1,31 +1,31 @@
 {
-  "timestamp": "2026-05-29T16:38:24.810102+00:00",
+  "timestamp": "2026-05-29T19:18:39.796622+00:00",
   "mode": "phase1_auto",
   "strategy_version": "v0.1.0",
   "note": "Fase 1 — execução automática activa. LIVE_TRADING=False (conta demo).",
   "regime": "bull_trending",
   "regime_alert": false,
   "regime_details": {
-    "spy_price": 757.36,
-    "ema200": 681.71,
-    "ema50": 716.38,
+    "spy_price": 756.26,
+    "ema200": 681.7,
+    "ema50": 716.34,
     "ema50_above_ema200": true,
-    "spy_pct_from_ema200": 11.1,
+    "spy_pct_from_ema200": 10.94,
     "atr_current": 6.2411,
     "atr_ratio_vs_60d_mean": 0.7154,
-    "spy_return_20d": 0.0509,
-    "rsp_spy_ratio_chg_20d": -0.0184,
+    "spy_return_20d": 0.0494,
+    "rsp_spy_ratio_chg_20d": -0.0187,
     "breadth_healthy": true
   },
   "watchlist_top5": [
     {
       "ticker": "MU",
       "sector": "XLK",
-      "price": 943.27,
-      "mom_1m": 0.8194,
-      "mom_3m": 1.4854,
-      "liq_usd_avg": 25296372499.0,
-      "score": 0.8735,
+      "price": 946.89,
+      "mom_1m": 0.8309,
+      "mom_3m": 1.495,
+      "liq_usd_avg": 25808057295.0,
+      "score": 0.8608,
       "target_mean": 613.225,
       "target_median": 550.0,
       "target_high": 1100.0,
@@ -34,89 +34,64 @@
     {
       "ticker": "ARM",
       "sector": "XLK",
-      "price": 345.45,
-      "mom_1m": 0.7128,
-      "mom_3m": 1.8381,
-      "liq_usd_avg": 1807109886.0,
-      "score": 0.7112,
+      "price": 351.66,
+      "mom_1m": 0.672,
+      "mom_3m": 1.8891,
+      "liq_usd_avg": 1853658476.0,
+      "score": 0.6823,
       "target_mean": 232.13568,
       "target_median": 250.0,
       "target_high": 326.0,
       "target_low": 125.0
     },
     {
-      "ticker": "AMD",
-      "sector": "XLK",
-      "price": 520.53,
-      "mom_1m": 0.5441,
-      "mom_3m": 1.726,
-      "liq_usd_avg": 11506638737.0,
-      "score": 0.6968,
-      "target_mean": 472.16666,
-      "target_median": 482.5,
-      "target_high": 625.0,
-      "target_low": 225.0
-    },
-    {
       "ticker": "DDOG",
       "sector": "XLK",
-      "price": 229.05,
-      "mom_1m": 0.7096,
-      "mom_3m": 1.0493,
-      "liq_usd_avg": 793053451.0,
-      "score": 0.5967,
+      "price": 243.25,
+      "mom_1m": 0.8402,
+      "mom_3m": 1.1763,
+      "liq_usd_avg": 807524136.0,
+      "score": 0.6455,
       "target_mean": 223.01941,
       "target_median": 225.0,
       "target_high": 320.0,
       "target_low": 128.85
     },
     {
-      "ticker": "INTC",
+      "ticker": "AMD",
       "sector": "XLK",
-      "price": 121.28,
-      "mom_1m": 0.28,
-      "mom_3m": 1.8139,
-      "liq_usd_avg": 9481967500.0,
-      "score": 0.5768,
-      "target_mean": 87.8619,
-      "target_median": 84.0,
-      "target_high": 150.0,
-      "target_low": 20.4
+      "price": 505.19,
+      "mom_1m": 0.4251,
+      "mom_3m": 1.6457,
+      "liq_usd_avg": 11552808196.0,
+      "score": 0.6237,
+      "target_mean": 472.16666,
+      "target_median": 482.5,
+      "target_high": 625.0,
+      "target_low": 225.0
+    },
+    {
+      "ticker": "SNOW",
+      "sector": "XLK",
+      "price": 253.9,
+      "mom_1m": 0.8605,
+      "mom_3m": 0.5315,
+      "liq_usd_avg": 1245431636.0,
+      "score": 0.5506,
+      "target_mean": 229.65916,
+      "target_median": 228.0,
+      "target_high": 500.0,
+      "target_low": 110.0
     }
   ],
   "barrier_exits": [],
-  "buy_opportunities": [
-    {
-      "ticker": "HPE",
-      "sector": "XLK",
-      "watchlist_score": 0.3962,
-      "mom_1m": 0.327,
-      "mom_3m": 0.7466,
-      "signal_strength": 0.716,
-      "style": "MOMENTUM",
-      "reasons": [
-        "Breakout: RSI-14 83.7 ≥ 58 — momentum validado",
-        "Alinhamento total: price > EMA-20 > EMA-50 > EMA-200",
-        "Volume 2.2× ≥ 1.5× — confirmação de volume"
-      ],
-      "technicals": {
-        "rsi_14": 83.66,
-        "ema50_above_ema200": true,
-        "ema20_above_ema50": true,
-        "price_above_ema20": true,
-        "volume_ratio_vs_avg": 2.16,
-        "atr_14": 1.7964,
-        "rs_bullish": true
-      },
-      "last_price": 43.561
-    }
-  ],
+  "buy_opportunities": [],
   "near_misses": [],
   "n_positions": 2,
   "open_trades": 0,
   "risk_status": {
     "ok": false,
-    "total_equity_eur": 5120.52,
+    "total_equity_eur": 5124.56,
     "warnings": [
       "COST_US_EQ representa 12.2% da carteira (limite: 11.0%)"
     ]
@@ -127,13 +102,14 @@
       "action": "hold",
       "size_factor": 1.0,
       "signals": [
-        "RSI-14 baixo (32.9) — zona de suporte, aguardar confirmação",
-        "Tendência ascendente: EMA-50 > EMA-200"
+        "RSI-14 baixo (33.5) — zona de suporte, aguardar confirmação",
+        "Tendência ascendente: EMA-50 > EMA-200",
+        "Volume elevado: 1.7x acima da média"
       ],
       "technicals": {
-        "rsi_14": 32.93,
+        "rsi_14": 33.54,
         "ema50_above_ema200": true,
-        "volume_ratio_vs_avg": 1.31
+        "volume_ratio_vs_avg": 1.7
       }
     },
     {
@@ -141,19 +117,19 @@
       "action": "hold",
       "size_factor": 1.0,
       "signals": [
-        "RSI-14 elevado (67.6) — monitorizar pressão de venda",
+        "RSI-14 elevado (69.0) — monitorizar pressão de venda",
         "Tendência ascendente: EMA-50 > EMA-200"
       ],
       "technicals": {
-        "rsi_14": 67.56,
+        "rsi_14": 69.0,
         "ema50_above_ema200": true,
-        "volume_ratio_vs_avg": 0.55
+        "volume_ratio_vs_avg": 0.72
       }
     }
   ],
   "data_sources": {
     "prices": "finnhub+yfinance",
-    "t212_sync": "2026-05-29T16:36:35.864067+00:00",
+    "t212_sync": "2026-05-29T19:16:53.046451+00:00",
     "stale_prices": []
   },
   "cro": {
@@ -169,16 +145,5 @@
     ]
   },
   "executed_trades": [],
-  "phase1_skips": [
-    {
-      "ticker": "HPE_US_EQ",
-      "reason": "execute_trade_returned_none",
-      "details": {
-        "qty": 12.7522,
-        "price_usd": 43.561,
-        "style": "MOMENTUM",
-        "size_eur": 475.73
-      }
-    }
-  ]
+  "phase1_skips": []
 }
