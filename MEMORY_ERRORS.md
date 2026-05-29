@@ -20,22 +20,26 @@ e garantir que não reintroduz nenhum dos erros abaixo.
 **Solução aplicada:** [a preencher após fix]
 **Prevenção futura:** Nunca calcular estado/avaliação no browser. Sempre pré-calcular nos scripts Python e servir via JSON.
 
-### [2026-05-xx] Ordens BUY rejeitadas pela T212 (HPE_US_EQ a $42.94)
-**Sintoma:** Clyde detecta sinal válido, Bonnie aprova, mas a ordem é rejeitada pela API T212. Mensagem Telegram: "Ordem BUY HPE_US_EQ rejeitada pela T212. Detalhe no log do GitHub Actions."
-**Causa raiz:** [a diagnosticar — ver secção INVESTIGAÇÃO ACTIVA]
-**Solução aplicada:** [pendente]
-**Prevenção futura:** [pendente após diagnóstico]
+### [2026-05-22] Ordens BUY rejeitadas pela T212 (HPE_US_EQ a $42.94 + ARM_US_EQ)
+**Sintoma:** Clyde detecta sinal válido, Bonnie aprova, mas a ordem é rejeitada pela API T212. Mensagem Telegram genérica sem código HTTP.
+**Causa raiz (duas causas simultâneas):**
+1. Payload MARKET incluía `"timeValidity": "DAY"` — campo não aceite pelo endpoint `/equity/orders/market` da T212, que devolve HTTP 400 "Invalid payload". Confirmado via `git show 8a6b27d^:bot/api_client.py` (linhas 325-329 do estado anterior).
+2. Para ARM_US_EQ, os logs mostram HTTP 401 Unauthorized — segredo `T212_API_ID` ou `T212_API_KEY` ausente/errado no GitHub Actions nessa data (a autenticação exige `Basic base64(id:secret)`, não chave única).
+**Solução aplicada:**
+- `8a6b27d` (2026-05-23): `timeValidity` removido de todos os payloads MARKET em `api_client.py`.
+- `bcfa30b` (2026-05-22): erros T212 expostos no stdout e no Telegram.
+- Série de commits 2026-05-29: `_post()` agora captura `status_code` + body JSON da T212, expõe via `get_last_order_error()`; mensagens Telegram incluem motivo exacto (ex: "HTTP 400 — InsufficientResources: ..."); 429 recebe retry único após 60 s; `InstrumentNotFound` não entra na fila de retry.
+- `phase0.py`: validação `insufficient_cash` pré-ordem (cash livre vs tamanho calculado) evita submeter ordens que a T212 vai rejeitar por saldo.
+**Prevenção futura:**
+- Nunca adicionar `timeValidity` ao endpoint `/equity/orders/market` (só LIMIT o aceita, e apenas `"DAY"`).
+- Verificar que `T212_API_ID` **e** `T212_API_KEY` estão ambos definidos nos GitHub Actions secrets.
+- Ao adicionar novos campos ao payload T212: testar contra conta demo antes de fazer push.
 
 ---
 
 ## INVESTIGAÇÃO ACTIVA
 
-### Ordens BUY rejeitadas pela T212
-- Último caso: HPE_US_EQ, $42.94, RSI=83.0, vol=2.5×, força=75%, regime bull_trending
-- Mensagem exacta recebida: "Ordem BUY HPE_US_EQ rejeitada pela T212. Detalhe no log do GitHub Actions."
-- Ciclo seguinte tentou novamente? Sim (confirmado pela mensagem Telegram)
-- Resultado do ciclo seguinte: desconhecido
-- Próximo passo: ler o log do GitHub Actions do ciclo em que ocorreu e identificar o código de erro HTTP devolvido pela T212
+_(nenhuma em curso)_
 
 ---
 
