@@ -1,4 +1,4 @@
-const CACHE_NAME = 'fundscope-v3';
+const CACHE_NAME = 'fundscope-v4';
 
 const STATIC_ASSETS = [
   '/',
@@ -14,14 +14,6 @@ const STATIC_ASSETS = [
   '/favicon.svg',
   '/icon-192.png',
   '/icon-512.png',
-];
-
-// Only cache public, non-authenticated data endpoints
-const DATA_URLS = [
-  '/markets.json',
-  '/earnings.json',
-  '/news.json',
-  '/data.json',
 ];
 
 // ── Install: pre-cache static shell ──────────────────────────────────────────
@@ -50,7 +42,8 @@ self.addEventListener('fetch', event => {
   // Never intercept API endpoints — they require auth and vary per request
   if (url.pathname.startsWith('/api/')) return;
 
-  const isDataRequest = DATA_URLS.some(d => url.pathname === d || url.pathname.startsWith(d + '?'));
+  // Any .json except manifest.json is dynamic data → network-first
+  const isDataRequest = url.pathname.endsWith('.json') && url.pathname !== '/manifest.json';
 
   if (isDataRequest) {
     // Network First, Cache Fallback (timeout 4 s)

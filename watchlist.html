@@ -439,7 +439,7 @@
     let _dataJson = null;
     async function loadDataJson() {
       try {
-        const r = await fetch('data.json');
+        const r = await fetch(`data.json?v=${Date.now()}`);
         if (r.ok) _dataJson = await r.json();
       } catch {}
     }

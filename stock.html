@@ -550,7 +550,7 @@ function tryLoadClearbitLogo(ticker, profile, wrapId){
 
 async function fetchNews(ticker){
   try{
-    const r = await fetchTimeout('news.json', 6000);
+    const r = await fetchTimeout(`news.json?v=${Date.now()}`, 6000);
     if(!r.ok) return [];
     const j = await r.json();
     const articles = Array.isArray(j?.articles) ? j.articles : [];
@@ -652,7 +652,7 @@ async function fetchLiveQuote(ticker){
   const [chartData, stats, staticDataRaw] = await Promise.all([
     workerChart(ticker,'1d','5m'),
     workerStats(ticker),
-    fetchTimeout('data.json', 4000).then(r=>r.json()).catch(()=>null)
+    fetchTimeout(`data.json?v=${Date.now()}`, 4000).then(r=>r.json()).catch(()=>null)
   ]);
   const chartResult = chartData?.chart?.result?.[0];
   const meta        = chartResult?.meta || {};

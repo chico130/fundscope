@@ -7,12 +7,12 @@ e garantir que não reintroduz nenhum dos erros abaixo.
 
 ## ERROS CONHECIDOS E RESOLVIDOS
 
-### [2026-05-xx] Cache agressiva no iPhone 13 — stock.html e home não actualizam
+### [2026-05-29] Cache agressiva no iPhone 13 — stock.html e home não actualizam
 **Sintoma:** Página mostra dados desactualizados. Home desactualizada (não mostra ganhos). stock.html consome dados estáticos de data/beta.
-**Causa raiz:** Service Worker (sw.js) com estratégia cache-first. Ficheiros servidos da cache sem verificar se há versão mais recente no servidor.
-**Solução aplicada:** Adicionar cache-busting com parâmetro `?v=${Date.now()}` em todos os fetch() dinâmicos. Mudar estratégia do sw.js para network-first (ou stale-while-revalidate) para ficheiros JSON de dados.
-**Prevenção futura:** Nunca usar cache-first para ficheiros .json de dados. Sempre usar network-first ou adicionar `?v=` timestamp.
-**Ficheiros afectados:** sw.js, stock.html, index.html (home), watchlist.html
+**Causa raiz:** Service Worker (sw.js) com estratégia cache-first para todos os `.json` que não estavam na lista `DATA_URLS` explícita (incluindo `data/beta/*.json`, `gains_insights.json`, `ai_insights.json`). Três `fetch()` sem `?t=` caíam em cache-first por acidente mesmo para JSONs dinâmicos.
+**Solução aplicada:** (1) `sw.js`: `CACHE_NAME` bumpado para `fundscope-v4`; regra de routing simplificada — qualquer `.json` que não seja `/manifest.json` usa network-first (elimina necessidade de manter lista `DATA_URLS`). (2) `stock.html:553` — `fetchTimeout('news.json')` → `?v=${Date.now()}`. (3) `stock.html:655` — `fetchTimeout('data.json')` → `?v=${Date.now()}`. (4) `watchlist.html:442` — `fetch('data.json')` → `` `data.json?v=${Date.now()}` ``.
+**Prevenção futura:** Nunca usar cache-first para `.json` de dados. Regra em sw.js agora é automática: qualquer `.json` ≠ `manifest.json` → network-first. Ao fazer bump de HTML/CSS: incrementar `CACHE_NAME`. Ao adicionar novo `fetch()` de dados: sempre incluir `?v=${Date.now()}` como redundância defensiva.
+**Ficheiros afectados:** sw.js, stock.html, watchlist.html
 
 ### [2026-05-xx] Watchlist não mostra avaliação do CRO/Clyde
 **Sintoma:** A coluna "Avaliação" aparece vazia ou desaparece da watchlist.
