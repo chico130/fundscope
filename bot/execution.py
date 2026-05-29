@@ -380,32 +380,56 @@ def execute_trade(proposed: ProposedTrade, portfolio_state: dict) -> dict | None
         )
 
     if response is None:
+        order_err = api_client.get_last_order_error()
+        t212_code = (order_err or {}).get("t212_code", "unknown")
+        t212_msg  = (order_err or {}).get("t212_message", "")
+        http_code = (order_err or {}).get("status_code", "?")
+        err_detail = f"HTTP {http_code} — {t212_code}"
+        if t212_msg:
+            err_detail += f": {t212_msg}"
+
         log_error("execution_failed", {
-            "id": trade_id,
-            "ticker": proposed.ticker,
-            "side": proposed.side,
-            "qty":  proposed.qty,
-            "price": proposed.price,
+            "id":         trade_id,
+            "ticker":     proposed.ticker,
+            "side":       proposed.side,
+            "qty":        proposed.qty,
+            "price":      proposed.price,
             "order_type": proposed.order_type,
+            "t212_code":  t212_code,
+            "http_code":  http_code,
         })
         print(
             f"[EXECUTE BLOCK] {proposed.ticker}: T212 rejeitou ordem "
-            f"({proposed.side} {proposed.qty} @ {proposed.price}, type={proposed.order_type})",
+            f"({proposed.side} {proposed.qty} @ {proposed.price}, type={proposed.order_type})\n"
+            f"  Motivo: {err_detail}",
             flush=True,
         )
+
+        # Instrument unknown is a config error — retrying won't fix it
+        if t212_code in ("InstrumentNotFound", "InvalidInstrument") or "nstrument" in t212_code:
+            enviar_alerta(
+                f"[CLYDE] ❌ Ticker inválido: {proposed.ticker}\n"
+                f"A T212 não reconhece este instrumento. Verificar mapeamento de tickers.\n"
+                f"Motivo: {err_detail}"
+            )
+            return None
+
         # Queue both BUY and SELL failures; flush_pending_trades() will
         # re-attempt them at the start of the next cycle.  For SELLs the flush
         # uses the current live position quantity to avoid qty drift.
         _queue_pending_trade(proposed)
+        _price_str = f" · price=${proposed.price:.2f}" if proposed.price else ""
         if proposed.side.upper() == "BUY":
             enviar_alerta(
-                f"[CLYDE] ⚠️ Ordem BUY {proposed.ticker} falhou na T212 — intenção guardada.\n"
-                f"qty={proposed.qty} · type={proposed.order_type} · price={proposed.price}\n"
+                f"[CLYDE] ⚠️ Ordem BUY {proposed.ticker} rejeitada pela T212 — intenção guardada.\n"
+                f"Motivo: {err_detail}\n"
+                f"qty={proposed.qty} · type={proposed.order_type}{_price_str}\n"
                 f"Será retentada no próximo ciclo (máx. {_PENDING_MAX_RETRIES} tentativas)."
             )
         else:
             enviar_alerta(
-                f"[CLYDE] ⚠️ Ordem SELL {proposed.ticker} falhou na T212 — intenção guardada.\n"
+                f"[CLYDE] ⚠️ Ordem SELL {proposed.ticker} rejeitada pela T212 — intenção guardada.\n"
+                f"Motivo: {err_detail}\n"
                 f"qty={proposed.qty} · type={proposed.order_type}\n"
                 f"Será retentada no próximo ciclo (máx. {_PENDING_MAX_RETRIES} tentativas)."
             )

@@ -95,6 +95,23 @@ def _classify_error(exc: Exception) -> str:
     return "unknown"
 
 
+# Last POST failure detail — set by _post() on error, cleared on each new call.
+_last_order_error: dict | None = None
+
+
+def _parse_t212_error(body: str) -> tuple[str, str]:
+    """Extract (code, message) from a T212 JSON error body."""
+    if not body:
+        return "unknown", ""
+    try:
+        data = json.loads(body)
+        code = str(data.get("code") or data.get("error") or "unknown")
+        msg  = str(data.get("message") or data.get("error_description") or "")
+        return code, msg
+    except (json.JSONDecodeError, AttributeError):
+        return "unknown", body[:120]
+
+
 # ---------------------------------------------------------------------------
 # Internal helpers
 # ---------------------------------------------------------------------------
@@ -158,7 +175,12 @@ def _post(endpoint: str, payload: dict) -> dict | None:
     Uma falha de rede no momento exacto de uma ordem é ambígua: a ordem pode
     ter chegado ao servidor ou não. Retentar arriscaria executar a mesma ordem
     duas vezes. Retorna None e deixa o ciclo seguinte reconciliar o estado.
+    Excepção: 429 rate-limit — a T212 rejeitou antes de processar, por isso
+    um único retry após 60 s é seguro.
     """
+    global _last_order_error
+    _last_order_error = None
+
     if LIVE_TRADING:
         raise RuntimeError("LIVE_TRADING is True — aborting to protect live account.")
 
@@ -177,6 +199,14 @@ def _post(endpoint: str, payload: dict) -> dict | None:
         resp = _session.post(f"{T212_BASE_URL_DEMO}{endpoint}", json=payload, timeout=30)
         # Captura body antes do raise_for_status — T212 devolve detalhe do erro em JSON
         body_preview = resp.text[:600] if resp.text else ""
+
+        if resp.status_code == 429:
+            wait = 60
+            print(f"[api] POST {endpoint} — 429 rate-limit, retry após {wait}s", flush=True)
+            time.sleep(wait)
+            resp = _session.post(f"{T212_BASE_URL_DEMO}{endpoint}", json=payload, timeout=30)
+            body_preview = resp.text[:600] if resp.text else ""
+
         resp.raise_for_status()
         result = resp.json()
         circuit_breaker.record_success("t212")
@@ -186,13 +216,23 @@ def _post(endpoint: str, payload: dict) -> dict | None:
         err_str = str(exc)
         status_code: int | None = getattr(getattr(exc, "response", None), "status_code", None)
         body_preview = locals().get("body_preview", "")
-        log_error("api_post_failed", {
-            "endpoint":     endpoint,
-            "payload":      payload,
-            "error":        err_str,
-            "error_type":   _classify_error(exc),
+        t212_code, t212_msg = _parse_t212_error(body_preview)
+
+        _last_order_error = {
             "status_code":  status_code,
+            "body":         body_preview,
+            "t212_code":    t212_code,
+            "t212_message": t212_msg,
+        }
+
+        log_error("api_post_failed", {
+            "endpoint":      endpoint,
+            "payload":       payload,
+            "error":         err_str,
+            "error_type":    _classify_error(exc),
+            "status_code":   status_code,
             "response_body": body_preview,
+            "t212_code":     t212_code,
         })
         print(
             f"[T212] POST {endpoint} falhou (HTTP {status_code}): {err_str}\n"
@@ -256,6 +296,15 @@ def _delete(endpoint: str) -> bool:
 # ---------------------------------------------------------------------------
 # Public interface
 # ---------------------------------------------------------------------------
+
+def get_last_order_error() -> dict | None:
+    """Last POST failure detail for order endpoints. Cleared on each new _post() call.
+
+    Returns dict with keys: status_code, body, t212_code, t212_message.
+    Returns None if the last order succeeded or no order has been placed yet.
+    """
+    return _last_order_error
+
 
 def get_portfolio_state_demo() -> dict | None:
     """Returns combined positions + cash balance from T212 demo account.
