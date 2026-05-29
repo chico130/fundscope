@@ -664,6 +664,31 @@ def run(*, git_sync: bool = True) -> dict:
     regime_payload = load_regime_metrics()  # full metrics written by regime_detector
     watchlist      = _get_watchlist_safe()
 
+    # Regime change detection — alerta em transições (bear sonoro, bull silencioso)
+    try:
+        from bot.notifier import enviar_alerta, _already_sent_this_hour, _mark_sent_this_hour
+        _prev_regime: str | None = None
+        try:
+            _prev_status = json.loads(STATUS_PATH.read_text(encoding="utf-8"))
+            _prev_regime = _prev_status.get("regime")
+        except (OSError, json.JSONDecodeError):
+            pass
+        if _prev_regime and _prev_regime != regime:
+            _flag_rc = f"regime_change_to_{regime}"
+            if not _already_sent_this_hour(_flag_rc):
+                _rl = {"bull_trending": "Bull Trending", "bull_lateral": "Bull Lateral",
+                       "bear_correction": "Bear Correction", "bear_capitulation": "Bear Capitulation"}
+                _is_bear_now = regime in _BEAR_REGIMES
+                enviar_alerta(
+                    f"{'🔴 AVISO' if _is_bear_now else '🟢 INFO'} — Mudança de Regime\n\n"
+                    f"{_rl.get(_prev_regime, _prev_regime)} → {_rl.get(regime, regime)}\n"
+                    f"{'⛔ Novas entradas bloqueadas.' if _is_bear_now else '✅ Entradas abertas.'}",
+                    silencioso=not _is_bear_now,
+                )
+                _mark_sent_this_hour(_flag_rc)
+    except Exception:
+        pass
+
     # Heartbeat: escreve status.json logo após regime conhecido
     _write_status_atomic(
         "active",
@@ -686,6 +711,18 @@ def run(*, git_sync: bool = True) -> dict:
             "note":         "Posições baseadas em ledger cached — decisões podem usar dados velhos",
             "n_positions":  len(positions),
         })
+        try:
+            from bot.notifier import enviar_alerta, _already_sent_this_hour, _mark_sent_this_hour
+            if not _already_sent_this_hour("t212_sync_failed"):
+                enviar_alerta(
+                    f"🔴 ERRO — T212 Sync Falhou\n\n"
+                    f"Portfolio baseado em ledger cached ({len(positions)} posição(ões)).\n"
+                    "Decisões podem usar dados desactualizados.",
+                    silencioso=False,
+                )
+                _mark_sent_this_hour("t212_sync_failed")
+        except Exception:
+            pass
 
     # Reconcilia ordens BUY órfãs: cancela ordens pendentes para tickers já em
     # carteira (artefactos de fechamentos antigos que criavam BUY em vez de SELL).
@@ -776,9 +813,48 @@ def run(*, git_sync: bool = True) -> dict:
     risk_status = _risk_snapshot(positions, cash)
     open_trades = _count_open_trades()
 
+    if not risk_status.get("ok"):
+        try:
+            from bot.notifier import enviar_alerta, _already_sent_this_hour, _mark_sent_this_hour
+            if not _already_sent_this_hour("position_concentration"):
+                _warn_lines = "\n".join(f"• {w}" for w in risk_status.get("warnings", []))
+                enviar_alerta(
+                    f"🟡 AVISO — Concentração de Posição\n\n{_warn_lines}\n\n"
+                    f"Equity: €{risk_status.get('total_equity_eur', 0):,.2f}",
+                    silencioso=False,
+                )
+                _mark_sent_this_hour("position_concentration")
+        except Exception:
+            pass
+
     cro         = CRO()
     cro.observe(DATA_BETA_DIR / "beta_trades.json", state)
     cro_verdict = cro.interpret(state, regime=regime)
+
+    try:
+        from bot.notifier import enviar_alerta, _already_sent_this_hour, _mark_sent_this_hour
+        _dd = cro_verdict.drawdown_pct
+        _wr = cro_verdict.win_rate_7d
+        if _dd > 7.0 and not _already_sent_this_hour("drawdown_alert"):
+            enviar_alerta(
+                f"🟡 AVISO — Drawdown Elevado\n\n"
+                f"Drawdown: {_dd:.1f}%  (referência OOS: −10.8%)\n"
+                f"Win Rate 7d: {_wr:.1f}%  ·  Risk Factor: {cro_verdict.risk_factor:.2f}×\n"
+                f"Regime: {regime}",
+                silencioso=False,
+            )
+            _mark_sent_this_hour("drawdown_alert")
+        if _wr < 25.0 and not _already_sent_this_hour("win_rate_alert"):
+            enviar_alerta(
+                f"🟡 AVISO — Win Rate Baixo\n\n"
+                f"Win Rate 7d: {_wr:.1f}%  (referência OOS: 38%)\n"
+                f"Drawdown: {_dd:.1f}%  ·  Risk Factor: {cro_verdict.risk_factor:.2f}×\n"
+                f"Regime: {regime}",
+                silencioso=True,
+            )
+            _mark_sent_this_hour("win_rate_alert")
+    except Exception:
+        pass
 
     # ── Fase 1: execução automática matemática ────────────────────────────────
     executed_trades: list[dict] = []
@@ -878,6 +954,18 @@ def _get_regime_safe() -> str:
         return get_current_regime()
     except Exception as exc:
         log_error("regime_detection_failed", {"error": str(exc)})
+        try:
+            from bot.notifier import enviar_alerta, _already_sent_this_hour, _mark_sent_this_hour
+            if not _already_sent_this_hour("regime_detection_failed"):
+                enviar_alerta(
+                    f"🟡 AVISO — Regime Detection Falhou\n\n"
+                    f"{type(exc).__name__}: {str(exc)[:200]}\n"
+                    "A usar regime em cache ou fallback conservador.",
+                    silencioso=True,
+                )
+                _mark_sent_this_hour("regime_detection_failed")
+        except Exception:
+            pass
         cached = load_cached_regime()
         if cached:
             log_decision("regime_fallback", "using_cached", {"regime": cached})
@@ -890,6 +978,18 @@ def _get_watchlist_safe() -> list[dict]:
         return build_watchlist()
     except Exception as exc:
         log_error("watchlist_build_failed", {"error": str(exc)})
+        try:
+            from bot.notifier import enviar_alerta, _already_sent_this_hour, _mark_sent_this_hour
+            if not _already_sent_this_hour("watchlist_build_failed"):
+                enviar_alerta(
+                    f"🟡 AVISO — Watchlist Build Falhou\n\n"
+                    f"{type(exc).__name__}: {str(exc)[:200]}\n"
+                    "Sem candidatos para análise neste ciclo.",
+                    silencioso=True,
+                )
+                _mark_sent_this_hour("watchlist_build_failed")
+        except Exception:
+            pass
         return []
 
 
@@ -1347,6 +1447,17 @@ def _git_sync(timestamp: str) -> None:
             log_error("git_sync_rebase_conflict", {"stderr": rebase.stderr[-500:]})
             print(f"Git: conflito no rebase — a abortar e adiar push. {rebase.stderr[-200:]}")
             _git(root, "rebase", "--abort", check=False)
+            try:
+                from bot.notifier import enviar_alerta, _already_sent_this_hour, _mark_sent_this_hour
+                if not _already_sent_this_hour("git_sync_failed"):
+                    enviar_alerta(
+                        "🟡 AVISO — Git Sync: Conflito de Rebase\n\n"
+                        "Push adiado. GitHub Pages pode mostrar dados desactualizados.",
+                        silencioso=True,
+                    )
+                    _mark_sent_this_hour("git_sync_failed")
+            except Exception:
+                pass
             return
 
         _git(root, "push", "origin", "main")
@@ -1356,6 +1467,18 @@ def _git_sync(timestamp: str) -> None:
     except subprocess.CalledProcessError as exc:
         log_error("git_sync_failed", {"error": str(exc), "stderr": getattr(exc, "stderr", "")})
         print(f"Git: erro no push — {exc}")
+        try:
+            from bot.notifier import enviar_alerta, _already_sent_this_hour, _mark_sent_this_hour
+            if not _already_sent_this_hour("git_sync_failed"):
+                enviar_alerta(
+                    f"🟡 AVISO — Git Push Falhou\n\n"
+                    f"{str(exc)[:200]}\n"
+                    "GitHub Pages pode mostrar dados desactualizados.",
+                    silencioso=True,
+                )
+                _mark_sent_this_hour("git_sync_failed")
+        except Exception:
+            pass
 
 
 run_phase0_cycle = run  # alias used by main.py

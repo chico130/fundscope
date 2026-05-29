@@ -63,6 +63,28 @@ def _mark_sent_today(flag: str) -> None:
         print(f"[notifier] AVISO: falha a escrever daily_flags.json: {exc}")
 
 
+def _this_hour_utc() -> str:
+    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H")
+
+
+def _already_sent_this_hour(flag: str) -> bool:
+    """True se o alerta já foi enviado na hora UTC actual (reset à hora seguinte)."""
+    return _read_daily_flags().get(flag, "").startswith(_this_hour_utc())
+
+
+def _mark_sent_this_hour(flag: str) -> None:
+    """Marca o alerta com a hora UTC actual. Escrita atómica."""
+    try:
+        _DAILY_FLAGS_PATH.parent.mkdir(parents=True, exist_ok=True)
+        flags = _read_daily_flags()
+        flags[flag] = _this_hour_utc()
+        tmp = _DAILY_FLAGS_PATH.with_suffix(".tmp")
+        tmp.write_text(json.dumps(flags, indent=2, ensure_ascii=False), encoding="utf-8")
+        tmp.replace(_DAILY_FLAGS_PATH)
+    except OSError as exc:
+        print(f"[notifier] AVISO: falha a escrever daily_flags.json: {exc}")
+
+
 def _load_credentials() -> tuple[str | None, str | None]:
     """Resolve TOKEN/CHAT_ID a partir de env vars, com fallback .env opcional.
 
