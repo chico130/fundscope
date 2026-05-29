@@ -114,7 +114,7 @@ def _load_credentials() -> tuple[str | None, str | None]:
 
 
 def _log_telegram_error(kind: str, detail: str) -> None:
-    """Persiste erros de Telegram em logs/errors/telegram_errors.json."""
+    """Persiste erros de Telegram em logs/errors/telegram_errors.json (escrita atómica)."""
     entry = {
         "timestamp": datetime.now(timezone.utc).isoformat(),
         "kind":      kind,
@@ -131,9 +131,9 @@ def _log_telegram_error(kind: str, detail: str) -> None:
             except (json.JSONDecodeError, OSError):
                 existing = []
         existing.append(entry)
-        _TELEGRAM_ERROR_LOG.write_text(
-            json.dumps(existing, indent=2, ensure_ascii=False), encoding="utf-8"
-        )
+        tmp = _TELEGRAM_ERROR_LOG.with_suffix(".tmp")
+        tmp.write_text(json.dumps(existing, indent=2, ensure_ascii=False), encoding="utf-8")
+        tmp.replace(_TELEGRAM_ERROR_LOG)
     except Exception:
         pass
 
@@ -151,6 +151,10 @@ def enviar_alerta(mensagem: str, silencioso: bool = False) -> None:
     try:
         from . import rate_limiter as _rl
         if not _rl.check_and_consume("telegram"):
+            _log_telegram_error(
+                "rate_limit_drop",
+                f"mensagem truncada: {mensagem[:200]}",
+            )
             print(
                 f"[notifier] Telegram rate limit reached — dropping: {mensagem[:80]}",
                 flush=True,
