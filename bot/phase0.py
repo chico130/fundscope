@@ -502,6 +502,8 @@ def _execute_phase1(
         if t.get("side", "").upper() == "BUY" and t.get("datetime", "").startswith(_today)
     ) if _bt else 0
 
+    remaining_cash = cash_free  # decremented as orders are committed within this cycle
+
     for opp in buy_opportunities:
         if len(executed) + _trades_today >= max_trades:
             _skip(opp["ticker"], "max_trades_per_day_reached",
@@ -558,6 +560,12 @@ def _execute_phase1(
                   style=opp_style)
             continue
 
+        if remaining_cash < size_eur:
+            _skip(opp["ticker"], "insufficient_cash",
+                  available_eur=round(remaining_cash, 2),
+                  required_eur=round(size_eur, 2))
+            continue
+
         price_eur = price_usd / eurusd if eurusd else price_usd
         qty = round(size_eur / price_eur, 4)
         if qty <= 0:
@@ -595,6 +603,7 @@ def _execute_phase1(
             result = execute_trade(proposed, state)
             if result:
                 executed.append(result)
+                remaining_cash -= size_eur
                 _meta[t212_ticker] = {
                     "style":      opp_style,
                     "peak_high":  price_usd,
