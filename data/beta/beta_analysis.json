@@ -1,21 +1,21 @@
 {
-  "timestamp": "2026-05-29T13:36:49.139001+00:00",
+  "timestamp": "2026-05-29T13:55:58.343577+00:00",
   "mode": "phase1_auto",
   "strategy_version": "v0.1.0",
   "note": "Fase 1 — execução automática activa. LIVE_TRADING=False (conta demo).",
-  "regime": "bull_trending",
+  "regime": "bull_lateral",
   "regime_alert": false,
   "regime_details": {
-    "spy_price": 756.02,
-    "ema200": 681.7,
-    "ema50": 716.33,
+    "spy_price": 757.79,
+    "ema200": 681.72,
+    "ema50": 716.4,
     "ema50_above_ema200": true,
-    "spy_pct_from_ema200": 10.9,
-    "atr_current": 6.0031,
-    "atr_ratio_vs_60d_mean": 0.6884,
-    "spy_return_20d": 0.0491,
-    "rsp_spy_ratio_chg_20d": -0.0191,
-    "breadth_healthy": true
+    "spy_pct_from_ema200": 11.16,
+    "atr_current": 6.2137,
+    "atr_ratio_vs_60d_mean": 0.7123,
+    "spy_return_20d": 0.0515,
+    "rsp_spy_ratio_chg_20d": -0.0209,
+    "breadth_healthy": false
   },
   "watchlist_top5": [
     {
@@ -98,33 +98,34 @@
     {
       "ticker": "MRVL_US_EQ",
       "action": "hold",
-      "size_factor": 1.0,
+      "size_factor": 0.6,
       "signals": [
-        "RSI-14 elevado (65.8) — monitorizar pressão de venda",
+        "RSI-14 elevado (70.3) — monitorizar pressão de venda",
         "Tendência ascendente: EMA-50 > EMA-200",
-        "Volume reduzido: 0.1x da média — movimento sem convicção"
+        "Volume reduzido: 0.2x da média — movimento sem convicção"
       ],
       "technicals": {
-        "rsi_14": 65.81,
+        "rsi_14": 70.34,
         "ema50_above_ema200": true,
-        "volume_ratio_vs_avg": 0.09
+        "volume_ratio_vs_avg": 0.19
       }
     }
   ],
   "data_sources": {
     "prices": "finnhub+yfinance",
-    "t212_sync": "2026-05-29T13:35:03.648819+00:00",
+    "t212_sync": "2026-05-29T13:54:13.701930+00:00",
     "stale_prices": []
   },
   "cro": {
-    "risk_factor": 1.2,
+    "risk_factor": 0.6,
     "win_rate_7d": 1.0,
     "drawdown_pct": 0.0,
     "insights": [
-      "Win rate 7d em 100.0% — acima do alvo elástico (48.0%). Factor de risco positivo: 120%.",
+      "Win rate 7d em 100.0% — acima do alvo elástico (48.0%). Factor de risco positivo: 60%.",
       "Duração média dos trades vencedores: 4500min (todos: 4500min).",
       "Melhor ticker acumulado: ARM_US_EQ (+9.86€).",
-      "Tamanho máximo CRO: 13.2% da equity (base 11.0% × factor 120%).",
+      "Tamanho máximo CRO: 6.6% da equity (base 11.0% × factor 60%).",
+      "Regime bull_lateral: multiplicador CRO 0.50× — alocação reduzida.",
       "Stop Loss (fixo (fallback)): 5.0% abaixo da entrada."
     ]
   },
