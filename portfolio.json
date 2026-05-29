@@ -1,11 +1,11 @@
 {
-  "updated": "2026-05-29T21:22:03.102503Z",
+  "updated": "2026-05-29T22:26:50.195785Z",
   "t212_mode": "live",
   "summary": {
-    "total_value": 5013.28,
+    "total_value": 5013.03,
     "total_invested": 684.02,
-    "total_gain_eur": 4.44,
-    "total_gain_pct": 0.65,
+    "total_gain_eur": 4.19,
+    "total_gain_pct": 0.61,
     "daily_gain_eur": 0.0,
     "cash_available": 4324.82,
     "n_positions": 2
@@ -15,18 +15,18 @@
       "ticker_t212": "COST_US_EQ",
       "quantity": 0.659,
       "avg_price": 947.39,
-      "current_price": 956.9,
-      "ppl": 5.58,
+      "current_price": 957.29,
+      "ppl": 5.8,
       "fx_ppl": 0.21,
       "ticker": "COST",
       "ticker_display": "COST",
       "display_name": "Costco Wholesale",
       "currency": "USD",
       "change_pct": 0.0,
-      "gain_eur": 5.58,
+      "gain_eur": 5.8,
       "invested": 535.18,
-      "value_eur": 540.76,
-      "gain_pct": 1.04,
+      "value_eur": 540.98,
+      "gain_pct": 1.08,
       "fx_rate": 0.85881,
       "currency_native": "USD",
       "allocation_pct": 10.79,
@@ -34,42 +34,42 @@
       "news": [
         {
           "source": "Yahoo",
+          "headline": "Stock Market Today, May 29: Markets Extend Gains as Dell Soars 33%",
+          "summary": "On May 29, 2026, Dell’s AI-fueled surge boosted major U.S. indexes as investors piled into infrastructure winners.",
+          "url": "https://finnhub.io/api/news?id=5d41571e6f3207569d8aac77a7f7c9a586f0bb5e42b20d8db893ee9ec409dff2",
+          "datetime": 1780090696,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "headline": "News of the day: Canada's shrinking economy, a technical recession, Scotiabank expands south, Costco tariff refunds, early retirement and more",
+          "summary": "Catch up on the stories we’re following today",
+          "url": "https://finnhub.io/api/news?id=c682d6c3a8a8e683d25f5f8e23105f24691f4d37c1a98cfc59d2779e337ae897",
+          "datetime": 1780090232,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "headline": "US Equity Indexes Scale New Peaks Ahead of Trump's Decision on Iran Peace Agreement",
+          "summary": "US equity indexes touched all-time highs as technology soared ahead of President Donald Trump's deci",
+          "url": "https://finnhub.io/api/news?id=88ba2a098b6f7324f1fd2e59b710cd7f98b7c754c4ed8a016933cdccb1f249ef",
+          "datetime": 1780087389,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "headline": "Bonds May Finally Be Ready to Give Stocks a Run for Their Money",
+          "summary": "Long-term yields remain elevated as investors bet that higher oil prices could keep the Fed on the sidelines...or force it to raise rates. The bond vigilantes have returned.",
+          "url": "https://finnhub.io/api/news?id=841471232a4f5e1148c48da1214fc948b73916b98c9fe22635e2fe9e471dd438",
+          "datetime": 1780085640,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
           "headline": "Sector Update: Consumer Stocks Decline Late Afternoon",
           "summary": "Consumer stocks were lower late Friday afternoon, with the State Street Consumer Staples Select Sect",
           "url": "https://finnhub.io/api/news?id=e8aef5f2933a0a528929e2b3dfc636d0f7408e1ed5ffd8e5f2602adfb9de070f",
           "datetime": 1780083688,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Yahoo",
-          "headline": "3 Cash-Heavy Stocks Worth Your Attention",
-          "summary": "Companies with more cash than debt often have stronger financial flexibility, making them attractive in uncertain markets. With interest payments less of a worry, these businesses can invest more in growth, innovation, or buybacks and dividends.",
-          "url": "https://finnhub.io/api/news?id=0a70ecb58034d6332e23aa1c91ce8a964e3890d56cc2ff362eb8e9f9342b6408",
-          "datetime": 1780081958,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "ChartMill",
-          "headline": "Friday's session: top gainers and losers in the S&P500 index",
-          "summary": "Let's have a look at the top S&P500 gainers and losers one hour before the close of the markets of today's session.",
-          "url": "https://finnhub.io/api/news?id=75b1e5e27491a5d27ccd54b59dea78f536eea94135b3396059dd717198fb6682",
-          "datetime": 1780081500,
-          "image": "https://www.chartmill.com/images/uploads/CM_Top_Movers_Small_free_2b4ff2fc22.webp"
-        },
-        {
-          "source": "Yahoo",
-          "headline": "More Drivers Are Joining the High Miles Club. This Stock Could Pull Ahead.",
-          "summary": "Sales for AutoZone have expanded from $12.6 billion in the fiscal year ended in August 2020 to an estimated $20.5 billion this fiscal year.",
-          "url": "https://finnhub.io/api/news?id=8cd97e4a4bc6185676dba05603e014cad0923d9f63329a07567bdc3d07034e35",
-          "datetime": 1780080540,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Yahoo",
-          "headline": "Costco Sales Jump 9.8% As Tariff Refund Plan Takes Shape",
-          "summary": "Costco says approved tariff refunds could start arriving over the following 2 to 3 months.",
-          "url": "https://finnhub.io/api/news?id=dd1f6e7a1e664420157950204cf308f4727ac81e6f8c950d36ee3c0f6ab0d626",
-          "datetime": 1780080079,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         }
       ],
@@ -111,29 +111,45 @@
       "ticker_t212": "MRVL_US_EQ",
       "quantity": 0.8428,
       "avg_price": 206.0157,
-      "current_price": 204.65,
-      "ppl": -1.14,
+      "current_price": 204.0,
+      "ppl": -1.61,
       "fx_ppl": -0.15,
       "ticker": "MRVL",
       "ticker_display": "MRVL",
       "display_name": "Marvell Technology",
       "currency": "USD",
       "change_pct": 0.0,
-      "gain_eur": -1.14,
+      "gain_eur": -1.61,
       "invested": 148.84,
-      "value_eur": 147.7,
-      "gain_pct": -0.77,
+      "value_eur": 147.23,
+      "gain_pct": -1.08,
       "fx_rate": 0.85881,
       "currency_native": "USD",
-      "allocation_pct": 2.95,
+      "allocation_pct": 2.94,
       "clyde_forecast": null,
       "news": [
+        {
+          "source": "SeekingAlpha",
+          "headline": "Marvell: Probably Short-Term Peaking After Solid Earnings Results (Downgrade)",
+          "summary": "Marvell Technology, Inc. is downgraded to a Hold due to demanding valuation and the high free cash flow growth. Learn more about MRVL stock here.",
+          "url": "https://finnhub.io/api/news?id=a3cfa347ee1c2dac6880fac1888f5a6a2ec353be97928437c49cd8955193780b",
+          "datetime": 1780077591,
+          "image": "https://static.seekingalpha.com/cdn/s3/uploads/getty_images/1679337219/image_1679337219.jpg?io=getty-c-w1536"
+        },
         {
           "source": "Yahoo",
           "headline": "Stock Market Hits Highs On Iran Deal Hopes; Dell, NetApp, Okta Lead Earnings Winners: Weekly Review",
           "summary": "The stock market hit new highs on all the key indexes this past week, buoyed by Iran optimism, tumbling oil prices and mostly positive earnings. Snowflake, Dell Technologies, NetApp, Okta, Dycom Industries and Best Buy were notable earnings winners, though there were a number of losers too.",
           "url": "https://finnhub.io/api/news?id=0b1df80aca62bcdfce204540f85a0fdc7d6dd2ffdfb350c14807d8eac5098b26",
           "datetime": 1780071368,
+          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
+        },
+        {
+          "source": "Yahoo",
+          "headline": "Marvell Stock Looks Built for a Massive Multi-Year Run",
+          "summary": "Marvell's first-quarter earnings are turning heads on Wall Street, which prompted many analysts to raise price targets.",
+          "url": "https://finnhub.io/api/news?id=2d5ad5f4f490c15874097b236bde59f5e6633724423129a22e10fa74c5f65087",
+          "datetime": 1780069851,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         },
         {
@@ -151,22 +167,6 @@
           "url": "https://finnhub.io/api/news?id=bacefd6b3725a4c4ee8e04b9f3618b19f068165992c9b623a48133681560bad0",
           "datetime": 1780063800,
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Yahoo",
-          "headline": "Strong Q1 Says Marvell Is Becoming Broadcom's Most Credible Rival",
-          "summary": "Marvell Technology (MRVL) is emerging as one of the most important behind-the-scenes architects of next-generation AI infrastructure. The market has noticed. The stock is up more than 2.3x year to date, and the valuation has re-rated, moving from under 10x trailing sales in early January to near 22x",
-          "url": "https://finnhub.io/api/news?id=b9b5a3e736d1e88c26e1d967fed1abeeb8969f17b508e949618e4f096cdfdfff",
-          "datetime": 1780063714,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
-        },
-        {
-          "source": "Yahoo",
-          "headline": "Nvidia Bets Big on Photonics as AI Infrastructure Needs Grow",
-          "summary": "Photonics could help AI data centers move data faster while using less energy.",
-          "url": "https://finnhub.io/api/news?id=c62e37bb9624fce7475cd2fe5cc2c0ddd58b8cbc391ee917971010a5ed6e4c32",
-          "datetime": 1780063376,
-          "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         }
       ],
       "earnings": [],
@@ -178,21 +178,21 @@
         "52WeekHighDate": "2026-05-27",
         "52WeekLowDate": "2025-05-30",
         "beta": 2.286647,
-        "peAnnual": 67.1659,
-        "peTTM": 67.1659,
+        "peAnnual": 66.5248,
+        "peTTM": 70.3003,
         "pbAnnual": 4.7977,
         "epsGrowthTTMYoy": null,
         "epsGrowth3Y": null,
-        "revenueGrowthTTMYoy": 42.09,
+        "revenueGrowthTTMYoy": 34.07,
         "revenueGrowth3Y": 11.45,
-        "grossMarginTTM": 51.02,
+        "grossMarginTTM": 51.5,
         "netMarginTTM": null,
-        "roeTTM": 19.38,
+        "roeTTM": 16.84,
         "roaRfy": 11.98,
         "currentRatioAnnual": 2.0061,
         "debtToEquityAnnual": 0.3124,
         "dividendYieldIndicated": 0.11717033637650733,
-        "marketCapitalization": 179339.55
+        "marketCapitalization": 177627.84
       },
       "analysts": {},
       "insider": {},
@@ -219,7 +219,7 @@
     },
     {
       "date": "2026-05-29",
-      "value": 5013.28
+      "value": 5013.03
     }
   ],
   "benchmark_metrics": {}

@@ -1,17 +1,17 @@
 {
   "finnhub": {
     "day": "2026-05-29",
-    "day_count": 52,
-    "min_bucket": "2026-05-29T22:25",
-    "min_count": 2,
+    "day_count": 60,
+    "min_bucket": "2026-05-29T22:27",
+    "min_count": 3,
     "alerted_80": false,
     "alerted_95": false
   },
   "gemini": {
     "day": "2026-05-29",
-    "day_count": 11,
-    "min_bucket": "2026-05-29T21:22",
-    "min_count": 2,
+    "day_count": 13,
+    "min_bucket": "2026-05-29T22:27",
+    "min_count": 1,
     "alerted_80": false,
     "alerted_95": false
   },
