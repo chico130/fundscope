@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-05-29T21:20:12Z",
-  "last_successful_sync": "2026-05-29T21:20:12Z",
+  "timestamp": "2026-05-29T22:25:10Z",
+  "last_successful_sync": "2026-05-29T22:25:10Z",
   "stale": false,
   "stale_reason": null,
   "positions": [
@@ -8,24 +8,24 @@
       "ticker": "COST_US_EQ",
       "quantity": 0.659,
       "averagePrice": 947.38998483,
-      "currentPrice": 956.99,
-      "ppl": 5.63,
+      "currentPrice": 957.21,
+      "ppl": 5.76,
       "fxPpl": 0.21
     },
     {
       "ticker": "MRVL_US_EQ",
       "quantity": 0.8428,
       "averagePrice": 206.01566208,
-      "currentPrice": 204.74,
-      "ppl": -1.07,
+      "currentPrice": 203.85,
+      "ppl": -1.71,
       "fxPpl": -0.15
     }
   ],
   "cash": {
     "free": 4324.82,
     "invested": 684.02,
-    "ppl": 4.55,
-    "total": 5013.39
+    "ppl": 4.05,
+    "total": 5012.89
   },
-  "total_equity_eur": 5013.39
+  "total_equity_eur": 5012.89
 }
