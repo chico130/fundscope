@@ -296,9 +296,15 @@ def _patch_beta_analysis_regime(regime: Regime, metrics: dict) -> None:
 def _save_regime(regime: Regime, metrics: dict) -> None:
     DATA_BETA_DIR.mkdir(parents=True, exist_ok=True)
     payload = {
-        "last_updated": datetime.now(timezone.utc).isoformat(),
+        "last_updated": datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z"),
         "regime":       regime,
         "metrics":      metrics,
     }
-    REGIME_PATH.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+    tmp = REGIME_PATH.with_suffix(".tmp")
+    try:
+        tmp.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+        tmp.replace(REGIME_PATH)
+    except OSError as exc:
+        logger.warning("Could not persist regime.json: %s — cache may be stale", exc)
+        log_error("regime_save_failed", {"error": str(exc), "regime": regime})
     _patch_beta_analysis_regime(regime, metrics)
