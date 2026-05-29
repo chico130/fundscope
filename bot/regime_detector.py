@@ -7,6 +7,7 @@ import pandas as pd
 import yfinance as yf
 
 from bot.config import DATA_BETA_DIR, REGIME_CONFIG
+from bot.logger import log_error
 
 logger = logging.getLogger(__name__)
 
@@ -16,6 +17,27 @@ BETA_ANALYSIS_PATH = DATA_BETA_DIR / "beta_analysis.json"
 _BEAR_REGIMES = {"bear_correction", "bear_capitulation"}
 
 Regime = Literal["bull_trending", "bull_lateral", "bear_correction", "bear_capitulation"]
+
+
+def _alert_regime_fallback(regime: str, cause: str, source: str) -> None:
+    """Log + Telegram alert when regime falls back to cache or hard default."""
+    log_error("regime_detector_fallback", {
+        "regime":  regime,
+        "source":  source,  # "cache" or "default"
+        "cause":   cause,
+    })
+    try:
+        from bot.notifier import enviar_alerta
+        label = {"cache": "último regime em cache", "default": "padrão conservador"}.get(source, source)
+        enviar_alerta(
+            f"⚠️ Regime Detector — Fallback Activado\n\n"
+            f"yfinance falhou: {cause[:200]}\n"
+            f"Regime usado: {regime} ({label})\n"
+            f"{'⛔ Entradas bloqueadas.' if regime in _BEAR_REGIMES else '⚠️ Entradas com cautela.'}",
+            silencioso=False,
+        )
+    except Exception:
+        pass
 
 
 # ---------------------------------------------------------------------------
@@ -151,8 +173,10 @@ def get_current_regime() -> Regime:
         cached = load_cached_regime()
         if cached:
             logger.warning("Using last cached regime: %s", cached)
+            _alert_regime_fallback(regime=cached, cause=str(exc), source="cache")
             return cached
         logger.warning("No cached regime available — defaulting to bear_correction (safe mode).")
+        _alert_regime_fallback(regime="bear_correction", cause=str(exc), source="default")
         return "bear_correction"
 
     spy_close = spy["Close"]
