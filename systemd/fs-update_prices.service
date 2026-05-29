@@ -1,0 +1,18 @@
+[Unit]
+Description=FundScope: update prices (yfinance)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=ubuntu
+WorkingDirectory=/home/ubuntu/fundscope
+EnvironmentFile=/home/ubuntu/fundscope/.env
+ExecStartPre=/bin/test -x /home/ubuntu/fundscope/.venv/bin/python
+ExecStart=/usr/local/bin/fs-run ingest/update_prices.py
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=fs-update_prices
+MemoryMax=600M
+CPUQuota=80%
+TimeoutStartSec=20min

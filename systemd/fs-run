@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+# /usr/local/bin/fs-run
+# Wrapper: corre um script Python do FundScope com venv + .env + alertas Telegram.
+set -euo pipefail
+
+SCRIPT="${1:?usage: fs-run <script.py>}"
+FS_DIR="${FS_DIR:-/home/ubuntu/fundscope}"
+VENV_PYTHON="${FS_DIR}/.venv/bin/python"
+ENV_FILE="${FS_DIR}/.env"
+
+# Guarda explícita antes de qualquer exec — mensagem clara no journalctl
+if [ ! -x "${VENV_PYTHON}" ]; then
+    echo "[fs-run] ERRO: venv partido ou ausente — ${VENV_PYTHON} não existe ou não é executável." >&2
+    echo "[fs-run] Solução: cd ${FS_DIR} && python3 -m venv --upgrade .venv && .venv/bin/pip install -r requirements.txt" >&2
+    exit 1
+fi
+
+if [ ! -f "${ENV_FILE}" ]; then
+    echo "[fs-run] ERRO: ficheiro .env não encontrado em ${ENV_FILE}" >&2
+    exit 1
+fi
+
+cd "${FS_DIR}"
+set -a
+# shellcheck source=/dev/null
+source "${ENV_FILE}"
+set +a
+
+LOGTAG="fs-$(basename "${SCRIPT}" .py)"
+START=$(date +%s)
+
+if ! "${VENV_PYTHON}" "${FS_DIR}/${SCRIPT}"; then
+    DUR=$(( $(date +%s) - START ))
+    MSG="🔴 FundScope FALHA: $(basename "${SCRIPT}") apos ${DUR}s. Ver: journalctl -u ${LOGTAG}.service -n 100"
+    echo "[fs-run] ${MSG}" >&2
+    if [ -n "${TELEGRAM_BOT_TOKEN:-}" ] && [ -n "${TELEGRAM_CHAT_ID:-}" ]; then
+        curl -fsS -X POST \
+          "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+          -d "chat_id=${TELEGRAM_CHAT_ID}" \
+          -d "text=${MSG}" > /dev/null || true
+    fi
+    exit 1
+fi

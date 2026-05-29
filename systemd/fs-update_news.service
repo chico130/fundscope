@@ -1,0 +1,18 @@
+[Unit]
+Description=FundScope: update news feeds
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=ubuntu
+WorkingDirectory=/home/ubuntu/fundscope
+EnvironmentFile=/home/ubuntu/fundscope/.env
+ExecStartPre=/bin/test -x /home/ubuntu/fundscope/.venv/bin/python
+ExecStart=/usr/local/bin/fs-run ingest/update_news.py
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=fs-update_news
+MemoryMax=400M
+CPUQuota=60%
+TimeoutStartSec=10min

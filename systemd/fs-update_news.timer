@@ -1,0 +1,11 @@
+[Unit]
+Description=Timer: FundScope update news (every 30 min)
+
+[Timer]
+OnCalendar=*:00,30:00
+Persistent=true
+RandomizedDelaySec=30s
+Unit=fs-update_news.service
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,11 @@
+[Unit]
+Description=Timer: FundScope update prices (US market hours)
+
+[Timer]
+OnCalendar=Mon..Fri 14:30..21:00:00/15min
+Persistent=true
+RandomizedDelaySec=30s
+Unit=fs-update_prices.service
+
+[Install]
+WantedBy=timers.target

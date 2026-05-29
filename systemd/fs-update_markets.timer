@@ -1,0 +1,11 @@
+[Unit]
+Description=Timer: FundScope refresh sector markets (hourly)
+
+[Timer]
+OnCalendar=*:10:00
+Persistent=true
+RandomizedDelaySec=30s
+Unit=fs-update_markets.service
+
+[Install]
+WantedBy=timers.target

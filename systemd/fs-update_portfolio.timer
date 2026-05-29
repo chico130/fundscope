@@ -1,0 +1,11 @@
+[Unit]
+Description=Timer: FundScope T212 portfolio sync (hourly on market days)
+
+[Timer]
+OnCalendar=Mon..Fri *:05:00
+Persistent=true
+RandomizedDelaySec=30s
+Unit=fs-update_portfolio.service
+
+[Install]
+WantedBy=timers.target
