@@ -349,8 +349,8 @@ PYTHONPATH=. python -m bot.mass_backtest
 | 2026-05-28 | Bonnie v5 identificada mas bloqueada | Aguarda 30 dias de validacao real; LABEL_HORIZON_DAYS 20->57 |
 
 ---
-## Auto-Sync: 2026-05-29 13:24
+## Auto-Sync: 2026-05-29 22:12
 - PC: DESKTOP-0514V9J
-- Ultimo commit: d3c1599 - feat: realised gains tab with Gemini insights (9-week retention)
+- Ultimo commit: 0feef56 - fix: HTTP error handling for T212 API responses
 - Learner: verificar data/beta/ para runs recentes
 ---
