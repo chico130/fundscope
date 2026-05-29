@@ -16,6 +16,8 @@ ultima_revisao: 2026-05-28
 
 > **Le este ficheiro no inicio de cada sessao.** Contem todo o contexto necessario sem explorar o repo.
 > As seccoes "Estado Actual", "Ultimas Alteracoes" e "O Que Ja Existe" sao auto-actualizadas por `scripts/update_claude_md.py` apos cada ciclo.
+>
+> **ANTES DE ALTERAR QUALQUER CODIGO: ler `MEMORY_ERRORS.md` na raiz.** Politica de zero erros repetidos â€” nao reintroduzir nenhum erro ja documentado e registar cada nova fix.
 
 ---
 
@@ -205,6 +207,9 @@ Secrets: `T212_API_ID`, `T212_API_KEY`, `FINNHUB_TOKEN`, `TELEGRAM_BOT_TOKEN`, `
 ---
 
 ## 7. Regras de Edicao
+
+### Pre-requisito obrigatorio
+- **Ler `MEMORY_ERRORS.md` (raiz) ANTES de alterar codigo.** Confirmar que nenhuma alteracao reintroduz um erro ja documentado; apos qualquer fix nova, adicionar entrada (data, sintoma, causa, solucao).
 
 ### Convencoes de codigo
 - Python 3.11, `from __future__ import annotations`, type hints onde pratico
