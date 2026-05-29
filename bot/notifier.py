@@ -30,6 +30,9 @@ _PROJECT_ROOT = Path(__file__).parent.parent
 _TELEGRAM_ERROR_LOG = _PROJECT_ROOT / "logs" / "errors" / "telegram_errors.json"
 _DAILY_FLAGS_PATH   = _PROJECT_ROOT / "data" / "daily_flags.json"
 
+# Guard against re-entering enviar_alerta() while handling daily_flags failures.
+_daily_flags_alert_sent = False
+
 
 def _today_utc() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%d")
@@ -55,8 +58,10 @@ def _mark_sent_today(flag: str) -> None:
     """Marca a flag com a data UTC de hoje. Escrita atómica (tmp + rename).
 
     Em caso de falha de escrita, continua sem dedup para esse envio — o
-    ciclo não é abortado.  A falha é registada em logs/errors/ para diagnóstico.
+    ciclo não é abortado.  A falha é registada em logs/errors/ e um alerta
+    Telegram é enviado uma vez por processo.
     """
+    global _daily_flags_alert_sent
     try:
         _DAILY_FLAGS_PATH.parent.mkdir(parents=True, exist_ok=True)
         flags = _read_daily_flags()
@@ -74,6 +79,17 @@ def _mark_sent_today(flag: str) -> None:
             })
         except Exception:
             pass
+        if not _daily_flags_alert_sent:
+            _daily_flags_alert_sent = True
+            try:
+                enviar_alerta(
+                    f"⚠️ Notifier — daily_flags.json inacessível\n\n"
+                    f"Falha ao escrever {_DAILY_FLAGS_PATH.name}: {str(exc)[:200]}\n"
+                    f"Dedup de alertas diários desactivado. Ciclo continua.",
+                    silencioso=True,
+                )
+            except Exception:
+                pass
 
 
 def _this_hour_utc() -> str:
@@ -89,8 +105,10 @@ def _mark_sent_this_hour(flag: str) -> None:
     """Marca o alerta com a hora UTC actual. Escrita atómica.
 
     Em caso de falha de escrita, continua sem dedup para esse envio — o
-    ciclo não é abortado.  A falha é registada em logs/errors/ para diagnóstico.
+    ciclo não é abortado.  A falha é registada em logs/errors/ e um alerta
+    Telegram é enviado uma vez por processo.
     """
+    global _daily_flags_alert_sent
     try:
         _DAILY_FLAGS_PATH.parent.mkdir(parents=True, exist_ok=True)
         flags = _read_daily_flags()
@@ -108,6 +126,17 @@ def _mark_sent_this_hour(flag: str) -> None:
             })
         except Exception:
             pass
+        if not _daily_flags_alert_sent:
+            _daily_flags_alert_sent = True
+            try:
+                enviar_alerta(
+                    f"⚠️ Notifier — daily_flags.json inacessível\n\n"
+                    f"Falha ao escrever {_DAILY_FLAGS_PATH.name}: {str(exc)[:200]}\n"
+                    f"Dedup de alertas horários desactivado. Ciclo continua.",
+                    silencioso=True,
+                )
+            except Exception:
+                pass
 
 
 def _load_credentials() -> tuple[str | None, str | None]:
