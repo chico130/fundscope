@@ -323,6 +323,9 @@ def fetch_single_ticker(ticker: str) -> dict | None:
     try:
         history = api_client.get_historical_data(ticker, days=210)
         if len(history) < min_pts:
+            cached_price = api_client.get_last_known_price(ticker)
+            if cached_price is not None:
+                return {"technicals": None, "last_price": cached_price, "_price_stale": True}
             return None
 
         highs   = [bar["high"]   for bar in history]

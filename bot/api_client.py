@@ -9,7 +9,11 @@ does not expose a price-quote or candlestick endpoint for arbitrary tickers.
 """
 from __future__ import annotations
 
+import json
 import time
+from datetime import datetime, timezone
+from pathlib import Path
+
 import requests
 import requests.exceptions as req_exc
 
@@ -21,6 +25,12 @@ from .config import (
 )
 from .retry_util import backoff_delay
 from . import circuit_breaker, rate_limiter
+
+_PRICE_CACHE_PATH = Path(__file__).parent.parent / "data" / "price_cache.json"
+_PRICE_CACHE_MAX_AGE_SECONDS = 900  # 15 minutes
+
+# Per-process dedup: only alert once per ticker when cache fallback is activated.
+_price_fallback_alerted: set[str] = set()
 
 # T212 ticker suffix → yfinance market suffix
 _T212_MARKET_SUFFIX: dict[str, str] = {
@@ -260,6 +270,81 @@ def get_portfolio_state_demo() -> dict | None:
     return {"positions": positions, "cash": cash}
 
 
+def _write_price_cache(ticker: str, last_price: float) -> None:
+    """Persist last known price to data/price_cache.json (atomic write)."""
+    try:
+        cache: dict = {}
+        if _PRICE_CACHE_PATH.exists():
+            try:
+                cache = json.loads(_PRICE_CACHE_PATH.read_text(encoding="utf-8"))
+                if not isinstance(cache, dict):
+                    cache = {}
+            except (json.JSONDecodeError, OSError):
+                cache = {}
+        cache[ticker] = {
+            "last_price": last_price,
+            "cached_at": datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z"),
+        }
+        _PRICE_CACHE_PATH.parent.mkdir(parents=True, exist_ok=True)
+        tmp = _PRICE_CACHE_PATH.with_suffix(".tmp")
+        tmp.write_text(json.dumps(cache, indent=2, ensure_ascii=False), encoding="utf-8")
+        tmp.replace(_PRICE_CACHE_PATH)
+    except Exception:
+        pass  # cache write failure must never crash the cycle
+
+
+def _get_cached_price(ticker: str) -> float | None:
+    """Return cached price if it exists and is younger than 15 minutes."""
+    try:
+        if not _PRICE_CACHE_PATH.exists():
+            return None
+        cache = json.loads(_PRICE_CACHE_PATH.read_text(encoding="utf-8"))
+        entry = cache.get(ticker) if isinstance(cache, dict) else None
+        if not entry:
+            return None
+        cached_at = datetime.fromisoformat(entry["cached_at"].replace("Z", "+00:00"))
+        age = (datetime.now(timezone.utc) - cached_at).total_seconds()
+        if age <= _PRICE_CACHE_MAX_AGE_SECONDS:
+            return float(entry["last_price"])
+        return None
+    except Exception:
+        return None
+
+
+def get_last_known_price(ticker: str) -> float | None:
+    """Return last known price from price_cache.json (max 15 min old), or None.
+
+    Called by callers of get_historical_data() when that function returns []
+    to provide at minimum the last cached price.  Sends a Telegram alert the
+    first time per ticker per process run so the operator knows data is stale.
+    """
+    price = _get_cached_price(ticker)
+    if price is None:
+        return None
+
+    if ticker not in _price_fallback_alerted:
+        _price_fallback_alerted.add(ticker)
+        from .logger import log_error
+        log_error("price_cache_fallback_activated", {
+            "ticker":       ticker,
+            "cached_price": price,
+            "note":         "yfinance falhou — usando último preço em cache (max 15 min)",
+        })
+        try:
+            from .notifier import enviar_alerta
+            enviar_alerta(
+                f"⚠️ Price Feed — Fallback Cache\n\n"
+                f"yfinance falhou para {ticker}.\n"
+                f"Usando último preço em cache: ${price:.2f}\n"
+                f"Indicadores técnicos indisponíveis. Ciclo continua.",
+                silencioso=True,
+            )
+        except Exception:
+            pass
+
+    return price
+
+
 def get_historical_data(ticker: str, days: int = 60) -> list[dict]:
     """Returns daily OHLCV bars for ticker via yfinance.
 
@@ -296,6 +381,8 @@ def get_historical_data(ticker: str, days: int = 60) -> list[dict]:
                 for dt, row in df.iterrows()
             ]
             circuit_breaker.record_success("yfinance")
+            if bars:
+                _write_price_cache(ticker, bars[-1]["close"])
             return bars
         except Exception as exc:
             if attempt < _MAX_RETRY - 1:
