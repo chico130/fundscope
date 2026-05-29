@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # /usr/local/bin/fs-run
 # Wrapper: corre um script Python do FundScope com venv + .env + alertas Telegram.
+# Auto-repara o venv se o python3 foi actualizado pelo unattended-upgrades.
 set -euo pipefail
 
 SCRIPT="${1:?usage: fs-run <script.py>}"
@@ -8,15 +9,18 @@ FS_DIR="${FS_DIR:-/home/ubuntu/fundscope}"
 VENV_PYTHON="${FS_DIR}/.venv/bin/python"
 ENV_FILE="${FS_DIR}/.env"
 
-# Guarda explícita antes de qualquer exec — mensagem clara no journalctl
+# Auto-repair: se o venv estiver partido, recria antes de tentar executar.
+# Evita falhas silenciosas após upgrades do python3 pelo unattended-upgrades.
 if [ ! -x "${VENV_PYTHON}" ]; then
-    echo "[fs-run] ERRO: venv partido ou ausente — ${VENV_PYTHON} não existe ou não é executável." >&2
-    echo "[fs-run] Solução: cd ${FS_DIR} && python3 -m venv --upgrade .venv && .venv/bin/pip install -r requirements.txt" >&2
-    exit 1
+    echo "[fs-run] venv partido (${VENV_PYTHON} ausente) — a recriar..." >&2
+    python3 -m venv "${FS_DIR}/.venv"
+    "${FS_DIR}/.venv/bin/pip" install --upgrade pip wheel -q
+    "${FS_DIR}/.venv/bin/pip" install -r "${FS_DIR}/requirements.txt" -q
+    echo "[fs-run] venv recriado com $(${VENV_PYTHON} --version)" >&2
 fi
 
 if [ ! -f "${ENV_FILE}" ]; then
-    echo "[fs-run] ERRO: ficheiro .env não encontrado em ${ENV_FILE}" >&2
+    echo "[fs-run] ERRO: .env não encontrado em ${ENV_FILE}" >&2
     exit 1
 fi
 
