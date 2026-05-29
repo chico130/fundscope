@@ -34,6 +34,9 @@ _DEFAULT_CONFIG_RISCO: dict = {
     "estado_emocional": "neutro",
 }
 
+_PENDING_TRADES_PATH = DATA_BETA_DIR.parent / "pending_trades.json"
+_PENDING_MAX_RETRIES = 3
+
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -139,6 +142,102 @@ def _append_to_beta_trades(trade_record: dict) -> None:
         log_error("beta_trades_write_error", {"error": str(exc)})
         if tmp.exists():
             tmp.unlink(missing_ok=True)
+
+
+# ---------------------------------------------------------------------------
+# Pending trades queue — BUY orders that failed due to T212 API errors
+# are persisted here and retried on the next cycle.
+# ---------------------------------------------------------------------------
+
+def _queue_pending_trade(proposed: ProposedTrade) -> None:
+    """Append a failed BUY intent to data/pending_trades.json for next-cycle retry."""
+    try:
+        records: list = []
+        if _PENDING_TRADES_PATH.exists():
+            try:
+                records = json.loads(_PENDING_TRADES_PATH.read_text(encoding="utf-8"))
+                if not isinstance(records, list):
+                    records = []
+            except (json.JSONDecodeError, OSError):
+                records = []
+        records.append({
+            "queued_at":    datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "ticker":       proposed.ticker,
+            "side":         proposed.side,
+            "qty":          proposed.qty,
+            "order_type":   proposed.order_type,
+            "price":        proposed.price,
+            "reason":       proposed.reason,
+            "context":      proposed.context,
+            "signal_strength": proposed.signal_strength,
+            "retry_count":  0,
+        })
+        _PENDING_TRADES_PATH.parent.mkdir(parents=True, exist_ok=True)
+        tmp = _PENDING_TRADES_PATH.with_suffix(".tmp")
+        tmp.write_text(json.dumps(records, indent=2, ensure_ascii=False), encoding="utf-8")
+        tmp.replace(_PENDING_TRADES_PATH)
+    except Exception as exc:
+        log_error("pending_trades_write_error", {"ticker": proposed.ticker, "error": str(exc)})
+
+
+def flush_pending_trades(portfolio_state: dict) -> list[dict]:
+    """Re-attempt queued BUY trades.  Called at the start of each cycle.
+
+    Returns list of successfully executed trade records.
+    Removes executed and exhausted entries from the queue.
+    Increments retry_count and drops entries that exceed _PENDING_MAX_RETRIES.
+    """
+    if not _PENDING_TRADES_PATH.exists():
+        return []
+    try:
+        records = json.loads(_PENDING_TRADES_PATH.read_text(encoding="utf-8"))
+        if not isinstance(records, list) or not records:
+            return []
+    except (json.JSONDecodeError, OSError):
+        return []
+
+    executed: list[dict] = []
+    remaining: list[dict] = []
+
+    for rec in records:
+        retry_count = rec.get("retry_count", 0)
+        if retry_count >= _PENDING_MAX_RETRIES:
+            log_error("pending_trade_expired", {
+                "ticker": rec.get("ticker"),
+                "queued_at": rec.get("queued_at"),
+                "retries": retry_count,
+            })
+            continue
+
+        proposed = ProposedTrade(
+            ticker=rec["ticker"],
+            side=rec.get("side", "BUY"),
+            qty=rec.get("qty", 0),
+            order_type=rec.get("order_type", "MARKET"),
+            price=rec.get("price"),
+            reason=f"[retry {retry_count + 1}/{_PENDING_MAX_RETRIES}] {rec.get('reason', '')}",
+            context=rec.get("context"),
+            signal_strength=rec.get("signal_strength", 1.0),
+        )
+        result = execute_trade(proposed, portfolio_state)
+        if result:
+            executed.append(result)
+            print(
+                f"[PENDING] {proposed.ticker}: retry {retry_count + 1} OK — ordem enviada.",
+                flush=True,
+            )
+        else:
+            rec["retry_count"] = retry_count + 1
+            remaining.append(rec)
+
+    try:
+        tmp = _PENDING_TRADES_PATH.with_suffix(".tmp")
+        tmp.write_text(json.dumps(remaining, indent=2, ensure_ascii=False), encoding="utf-8")
+        tmp.replace(_PENDING_TRADES_PATH)
+    except Exception as exc:
+        log_error("pending_trades_write_error", {"error": str(exc)})
+
+    return executed
 
 
 # ---------------------------------------------------------------------------
@@ -272,11 +371,21 @@ def execute_trade(proposed: ProposedTrade, portfolio_state: dict) -> dict | None
             f"({proposed.side} {proposed.qty} @ {proposed.price}, type={proposed.order_type})",
             flush=True,
         )
-        enviar_alerta(
-            f"[CLYDE] ⚠️ Ordem {proposed.side} {proposed.ticker} rejeitada pela T212."
-            f" qty={proposed.qty} · type={proposed.order_type} · price={proposed.price}"
-            f"\nVer log do GitHub Actions para detalhes do erro HTTP."
-        )
+        # Queue BUY failures for next-cycle retry; SELLs are re-proposed
+        # naturally by the exit manager on every cycle, so no queue needed.
+        if proposed.side.upper() == "BUY":
+            _queue_pending_trade(proposed)
+            enviar_alerta(
+                f"[CLYDE] ⚠️ Ordem BUY {proposed.ticker} falhou na T212 — intenção guardada.\n"
+                f"qty={proposed.qty} · type={proposed.order_type} · price={proposed.price}\n"
+                f"Será retentada no próximo ciclo (máx. {_PENDING_MAX_RETRIES} tentativas)."
+            )
+        else:
+            enviar_alerta(
+                f"[CLYDE] ⚠️ Ordem {proposed.side} {proposed.ticker} rejeitada pela T212."
+                f" qty={proposed.qty} · type={proposed.order_type} · price={proposed.price}"
+                f"\nVer log do GitHub Actions para detalhes do erro HTTP."
+            )
         return None
 
     fill_price = proposed.price or _fill_price(response)

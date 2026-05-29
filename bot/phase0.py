@@ -28,7 +28,7 @@ from .watchlist_manager import build_watchlist
 from .strategy import generate_signals, propose_trades, ProposedTrade
 from .cro import CRO, _atr_size_eur as _cro_atr_size, _atr_stop_loss_pct as _cro_stop_pct
 from .config import CRO_CONFIG
-from .execution import execute_trade, execute_exit
+from .execution import execute_trade, execute_exit, flush_pending_trades
 from .learner import run_learner_cycle
 from . import exit_manager, position_ledger
 
@@ -705,6 +705,19 @@ def run(*, git_sync: bool = True) -> dict:
     state     = get_full_portfolio_state()
     positions = state.get("positions", [])
     cash      = state.get("cash", {})
+
+    # Retry BUY orders that failed in a previous cycle due to T212 API errors
+    if PHASE1_EXECUTION:
+        try:
+            _retried = flush_pending_trades(state)
+            if _retried:
+                print(
+                    f"[{_ts()}] [PENDING] {len(_retried)} ordem(ns) pendente(s) reexecutada(s).",
+                    flush=True,
+                )
+                log_decision("pending_trades_flushed", "retried", {"n": len(_retried)})
+        except Exception as _pe:
+            log_error("pending_trades_flush_failed", {"error": str(_pe)})
 
     if state.get("t212_sync_failed"):
         log_error("phase0_t212_sync_failed", {
