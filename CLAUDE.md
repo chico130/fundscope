@@ -51,7 +51,7 @@ ultima_revisao: 2026-05-28
 - Bonnie v5: LABEL_HORIZON_DAYS 20->57 (identificada e bloqueada ate validacao real)
 
 **Ultimo trade executado:** `ARM` em `2026-05-22T14:00`
-**Ultimo ciclo:** `2026-05-28T22:52Z` | status: `active` | regime: `bull_lateral`
+**Ultimo ciclo:** `2026-05-29T16:38Z` | status: `active` | regime: `bull_trending`
 <!-- O-QUE-JA-EXISTE-END -->
 
 ---
@@ -171,13 +171,13 @@ Secrets: `T212_API_ID`, `T212_API_KEY`, `FINNHUB_TOKEN`, `TELEGRAM_BOT_TOKEN`, `
 ## 5. Estado Actual
 
 <!-- ESTADO-ACTUAL-START -->
-**Actualizado em:** 2026-05-28 23:51 UTC
+**Actualizado em:** 2026-05-29 16:38 UTC
 
-- **Bot status:** `active` | Ultimo ciclo: `2026-05-28T22:52Z`
-- **Regime:** `bull_lateral` | Modo: `phase1_auto`
+- **Bot status:** `active` | Ultimo ciclo: `2026-05-29T16:38Z`
+- **Regime:** `bull_trending` | Modo: `phase1_auto`
 - **Posicoes abertas:** 1 | **Trades abertos:** 0 | **Trades hoje:** 0
-- **Fase:** Fase 1 â€” execucao automatica em conta demo (`PHASE1_EXECUTION=True`, `LIVE_TRADING=False`)
-- **Modelo activo:** Bonnie v4-clean (`bonnie_model_v4.pkl`) â€” thresholds 0.30 por regime
+- **Fase:** Fase 1 — execucao automatica em conta demo (`PHASE1_EXECUTION=True`, `LIVE_TRADING=False`)
+- **Modelo activo:** Bonnie v4-clean (`bonnie_model_v4.pkl`) — thresholds 0.30 por regime
 - **Parametros:** `atr_stop_mult=1.75` | `atr_tp_mult=4.25` | `max_position_pct=11%`
 - **OOS ref (run-007):** +62.2% vs SPY +45.2% | Alpha +17pp | Sharpe 2.09 | DD -10.8% | WR 38% | R:R 2.5:1
 - **Proximo passo:** Aguardar 30 dias de validacao real com v4-clean. **Sem optimizacoes adicionais.**
@@ -190,16 +190,16 @@ Secrets: `T212_API_ID`, `T212_API_KEY`, `FINNHUB_TOKEN`, `TELEGRAM_BOT_TOKEN`, `
 <!-- ULTIMAS-ALTERACOES-START -->
 | Data | Hash | Descricao |
 |---|---|---|
-| 2026-05-29 | `b4b45ac` | feat: centralised API rate limiter with Telegram alerts |
-| 2026-05-29 | `4ed2320` | docs: add API capabilities and limits documentation |
-| 2026-05-29 | `06b495b` | fix: remove stale _LAST_WAKE_PATH monkeypatch from simulation tests |
-| 2026-05-29 | `d87e087` | feat: manual emergency-run workflow |
-| 2026-05-29 | `a64aaa5` | feat: daily health check |
-| 2026-05-29 | `e52055a` | feat: validate and auto-repair state files on startup |
-| 2026-05-29 | `74a70ad` | feat: circuit breaker for failing external APIs |
-| 2026-05-29 | `72f54bb` | feat: exponential backoff on API calls |
-| 2026-05-29 | `b4adee2` | feat: self-updating CLAUDE.md with change tracking |
-| 2026-05-28 | `47fd797` | security: fix high severity issues in serve.py |
+| 2026-05-29 | `7dd47c3` | chore: update markets.json [skip ci] |
+| 2026-05-29 | `0e80b27` | chore: update news.json [skip ci] |
+| 2026-05-29 | `0fbf5e7` | 2905 |
+| 2026-05-29 | `feff0e0` | feat: realised gains tab with Gemini insights (9-week retention) |
+| 2026-05-29 | `47dba92` | feat: automated project health dashboard |
+| 2026-05-29 | `4aa1b3e` | chore: update portfolio [skip ci] |
+| 2026-05-29 | `965db8a` | fix: verify t212-debug workflow references correct script path |
+| 2026-05-29 | `d8a8ded` | fix: use centralised daily_flags for CRO speak deduplication |
+| 2026-05-29 | `8206569` | fix: extend wake message window to recover from missed first cycle |
+| 2026-05-29 | `5777362` | chore: update markets.json [skip ci] |
 <!-- ULTIMAS-ALTERACOES-END -->
 
 ---
