@@ -123,7 +123,7 @@ jobs:
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           # Adiciona so o que existe — evita "pathspec did not match" se o script abortou cedo.
-          for f in portfolio.json symbol_cache.json; do
+          for f in portfolio.json symbol_cache.json data/beta/gains_insights.json; do
             [ -f "$f" ] && git add "$f"
           done
           if git diff --staged --quiet; then

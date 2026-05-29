@@ -141,6 +141,7 @@ API_RATE_LIMITS: dict[str, dict] = {
     "t212":     {"per_min": 50,   "per_day": None},   # ~1 req/s; no public daily cap
     "finnhub":  {"per_min": 60,   "per_day": 5_000},  # free tier: 60/min, ~5k/day
     "telegram": {"per_min": 20,   "per_day": None},   # ~1 msg/s per chat (conservative)
-    "gemini":   {"per_min": 15,   "per_day": 1_500},  # flash free: 15 RPM, 1500 RPD
-    "yfinance": {"per_min": 60,   "per_day": None},   # no hard cap; soft throttle only
+    "gemini":        {"per_min": 15,  "per_day": 1_500},  # flash free: 15 RPM, 1500 RPD
+    "gemini_gains":  {"per_min": 5,   "per_day": 5},    # sub-budget for realised-gains insights
+    "yfinance":      {"per_min": 60,  "per_day": None},  # no hard cap; soft throttle only
 }

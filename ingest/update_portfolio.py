@@ -983,6 +983,12 @@ def main():
     print("\n[8] Análise de Gains (CRO)...")
     _maybe_regenerate_gains_analysis()
 
+    print("\n[8b] Insights de Ganhos Realizados (Gemini)...")
+    try:
+        _maybe_generate_gains_insights()
+    except Exception as _exc:
+        print(f"   [gains_insights] erro inesperado: {_exc}", flush=True)
+
     print(f"\n✅ Concluído!")
     print(f"   Valor: {total_value:.2f}€ | P&L: {total_gain:+.2f}€ | Posições: {len(positions)}")
     print("\n   Mapeamento final:")
@@ -1056,6 +1062,44 @@ def _maybe_regenerate_gains_analysis():
         print(f"   [gains] erro a escrever ficheiro: {exc}")
         if tmp.exists():
             tmp.unlink(missing_ok=True)
+
+
+def _maybe_generate_gains_insights():
+    """Gera insights Gemini para trades positivos fechados recentemente.
+
+    Lê beta_trades.json + symbol_cache e delega em bot.gains_insights.
+    Wrapped em try/except — nunca aborta o ciclo (R3).
+    """
+    from pathlib import Path as _Path
+    try:
+        from bot import gains_insights as _gi
+    except ImportError as exc:
+        print(f"   [gains_insights] módulo não importável: {exc}", flush=True)
+        return
+
+    beta_path = _Path("data/beta/beta_trades.json")
+    if not beta_path.exists():
+        print("   [gains_insights] beta_trades.json não existe — skip", flush=True)
+        return
+
+    try:
+        data = json.loads(beta_path.read_text(encoding="utf-8"))
+    except Exception as exc:
+        print(f"   [gains_insights] erro a ler beta_trades.json: {exc}", flush=True)
+        return
+
+    trades = data.get("trades", []) if isinstance(data, dict) else []
+
+    sc: dict = {}
+    try:
+        sc = load_symbol_cache()
+    except Exception:
+        pass
+
+    try:
+        _gi.generate_for_closed_trades(trades, gemini_client, symbol_cache=sc)
+    except Exception as exc:
+        print(f"   [gains_insights] falha inesperada: {exc}", flush=True)
 
 
 if __name__ == "__main__":

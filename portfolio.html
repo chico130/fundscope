@@ -94,6 +94,9 @@
     .tab-btn{font-size:var(--text-xs);padding:var(--space-2) var(--space-5);border-radius:var(--radius-full);border:1.5px solid var(--color-border);background:var(--color-surface);color:var(--color-text-muted);font-weight:500;font-family:var(--font-body);transition:all var(--transition);white-space:nowrap;cursor:pointer;}
     .tab-btn:hover{border-color:var(--color-primary);color:var(--color-primary);background:var(--color-primary-highlight);}
     .tab-btn.active{border-color:var(--color-primary);color:var(--color-primary);background:var(--color-primary-highlight);font-weight:600;}
+    .sub-tab-btn{font-size:var(--text-xs);padding:var(--space-1) var(--space-4);border-radius:var(--radius-full);border:1.5px solid var(--color-border);background:var(--color-surface);color:var(--color-text-muted);font-weight:500;font-family:var(--font-body);transition:all var(--transition);white-space:nowrap;cursor:pointer;}
+    .sub-tab-btn:hover{border-color:var(--color-primary);color:var(--color-primary);background:var(--color-primary-highlight);}
+    .sub-tab-btn.active{border-color:var(--color-primary);color:var(--color-primary);background:var(--color-primary-highlight);font-weight:600;}
 
     /* ── Cards ── */
     .card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-5);box-shadow:var(--shadow-sm);}
@@ -766,46 +769,64 @@
     <!-- ══ GAINS TAB ══ -->
     <div id="tabGains" style="display:none">
 
-      <!-- Secção 1: Gains Passados -->
-      <div class="card" style="margin-bottom:var(--space-5)">
-        <div class="card-label">Gains Passados — Posições Fechadas</div>
-        <div class="table-wrap">
-          <div class="table-scroll">
-            <table id="gainsClosedTable" style="width:100%;border-collapse:collapse;font-size:var(--text-sm)">
-              <thead>
-                <tr style="text-align:left;color:var(--color-text-muted);border-bottom:1px solid var(--color-border)">
-                  <th style="padding:var(--space-2)">Ticker</th>
-                  <th style="padding:var(--space-2)">Entrada</th>
-                  <th style="padding:var(--space-2)">Saída</th>
-                  <th style="padding:var(--space-2);text-align:right">P. Entrada</th>
-                  <th style="padding:var(--space-2);text-align:right">P. Saída</th>
-                  <th style="padding:var(--space-2);text-align:right">%</th>
-                  <th style="padding:var(--space-2);text-align:right">€</th>
-                </tr>
-              </thead>
-              <tbody id="gainsClosedBody">
-                <tr><td colspan="7" style="padding:var(--space-3);color:var(--color-text-muted)">A carregar…</td></tr>
-              </tbody>
-            </table>
+      <!-- Sub-tab bar -->
+      <div style="display:flex;gap:var(--space-2);margin-bottom:var(--space-5)">
+        <button class="sub-tab-btn active" data-gains-tab="summary">Resumo</button>
+        <button class="sub-tab-btn" data-gains-tab="realised">Ganhos Realizados</button>
+      </div>
+
+      <!-- Sub-tab: Resumo (existing sections) -->
+      <div id="gainsTabSummary">
+
+        <!-- Secção 1: Gains Passados -->
+        <div class="card" style="margin-bottom:var(--space-5)">
+          <div class="card-label">Gains Passados — Posições Fechadas</div>
+          <div class="table-wrap">
+            <div class="table-scroll">
+              <table id="gainsClosedTable" style="width:100%;border-collapse:collapse;font-size:var(--text-sm)">
+                <thead>
+                  <tr style="text-align:left;color:var(--color-text-muted);border-bottom:1px solid var(--color-border)">
+                    <th style="padding:var(--space-2)">Ticker</th>
+                    <th style="padding:var(--space-2)">Entrada</th>
+                    <th style="padding:var(--space-2)">Saída</th>
+                    <th style="padding:var(--space-2);text-align:right">P. Entrada</th>
+                    <th style="padding:var(--space-2);text-align:right">P. Saída</th>
+                    <th style="padding:var(--space-2);text-align:right">%</th>
+                    <th style="padding:var(--space-2);text-align:right">€</th>
+                  </tr>
+                </thead>
+                <tbody id="gainsClosedBody">
+                  <tr><td colspan="7" style="padding:var(--space-3);color:var(--color-text-muted)">A carregar…</td></tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
-      </div>
 
-      <!-- Secção 2: Análise AI (CRO) -->
-      <div class="card" style="margin-bottom:var(--space-5)">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--space-3)">
-          <div class="card-label" style="margin:0">Análise AI dos Resultados <span style="font-size:var(--text-xs);color:var(--color-primary);font-weight:500">· CRO</span></div>
-          <button id="btnGenerateAnalysis" class="tab-btn" style="display:none">Gerar Análise AI</button>
+        <!-- Secção 2: Análise AI (CRO) -->
+        <div class="card" style="margin-bottom:var(--space-5)">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--space-3)">
+            <div class="card-label" style="margin:0">Análise AI dos Resultados <span style="font-size:var(--text-xs);color:var(--color-primary);font-weight:500">· CRO</span></div>
+            <button id="btnGenerateAnalysis" class="tab-btn" style="display:none">Gerar Análise AI</button>
+          </div>
+          <div id="gainsAnalysisBlock" style="color:var(--color-text-muted);font-size:var(--text-sm)">A carregar…</div>
         </div>
-        <div id="gainsAnalysisBlock" style="color:var(--color-text-muted);font-size:var(--text-sm)">A carregar…</div>
-      </div>
 
-      <!-- Secção 3: Previsões -->
-      <div class="card">
-        <div class="card-label">Previsões de Gains Futuros — Posições Abertas</div>
-        <ul id="gainsForecastList" style="list-style:none;padding:0;margin:var(--space-3) 0 0 0;font-size:var(--text-sm)">
-          <li style="color:var(--color-text-muted)">A carregar…</li>
-        </ul>
+        <!-- Secção 3: Previsões -->
+        <div class="card">
+          <div class="card-label">Previsões de Gains Futuros — Posições Abertas</div>
+          <ul id="gainsForecastList" style="list-style:none;padding:0;margin:var(--space-3) 0 0 0;font-size:var(--text-sm)">
+            <li style="color:var(--color-text-muted)">A carregar…</li>
+          </ul>
+        </div>
+
+      </div><!-- /#gainsTabSummary -->
+
+      <!-- Sub-tab: Ganhos Realizados (Gemini insights, 63-day retention) -->
+      <div id="gainsTabRealised" style="display:none">
+        <div id="gainsRealisedList">
+          <p style="color:var(--color-text-muted)">A carregar…</p>
+        </div>
       </div>
 
     </div>
@@ -858,8 +879,9 @@ let activeTab    = 'live';
 let liveLoaded   = false;
 let clydeLoaded  = false;
 let bonnieLoaded = false;
-let gainsLoaded  = false;
-let pollingTimer = null;
+let gainsLoaded          = false;
+let gainsInsightsLoaded  = false;
+let pollingTimer         = null;
 
 // ── Live tab helpers ──────────────────────────────────────────────────────────
 const fmtEur  = v => v != null
@@ -981,6 +1003,21 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
 });
 
 document.getElementById('btnLiveRefresh').addEventListener('click', () => loadLive());
+
+// ── Gains sub-tabs ────────────────────────────────────────────────────────────
+document.querySelectorAll('[data-gains-tab]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('[data-gains-tab]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const which = btn.dataset.gainsTab;
+    document.getElementById('gainsTabSummary').style.display  = which === 'summary'  ? '' : 'none';
+    document.getElementById('gainsTabRealised').style.display = which === 'realised' ? '' : 'none';
+    if (which === 'realised' && !gainsInsightsLoaded) {
+      loadGainsInsights();
+      gainsInsightsLoaded = true;
+    }
+  });
+});
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 const n2   = (v, d=2) => new Intl.NumberFormat('pt-PT',{minimumFractionDigits:d,maximumFractionDigits:d}).format(v ?? 0);
@@ -1947,6 +1984,71 @@ function renderGainsForecast(portfolio) {
 
 function escapeHtml(s) {
   return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+// ── Ganhos Realizados ─────────────────────────────────────────────────────────
+async function loadGainsInsights() {
+  try {
+    const data = await authFetch('data/beta/gains_insights.json').catch(() => null);
+    renderGainsInsights(data);
+  } catch (e) {
+    console.error('[gains-insights] erro', e);
+    renderGainsInsights(null);
+  }
+}
+
+function renderGainsInsights(data) {
+  const el = document.getElementById('gainsRealisedList');
+  if (!el) return;
+
+  const allInsights = data && data.insights ? Object.values(data.insights) : [];
+  const now = Date.now();
+  const active = allInsights
+    .filter(e => e.status === 'ok' && new Date(e.expires_at).getTime() > now)
+    .sort((a, b) => (b.exit_date || '').localeCompare(a.exit_date || ''));
+
+  if (!active.length) {
+    el.innerHTML = '<p style="color:var(--color-text-muted);padding:var(--space-3) 0">Sem ganhos realizados nas últimas 9 semanas.</p>';
+    return;
+  }
+
+  const fmtDt  = s => (s || '').replace('T', ' ').slice(0, 10);
+  const fmtNum = (v, d=2) => v != null ? Number(v).toFixed(d) : '—';
+
+  el.innerHTML = active.map(e => {
+    const ins  = e.gemini_insight || {};
+    const sign = (e.gain_pct || 0) >= 0 ? '+' : '';
+    return `
+      <div class="card" style="margin-bottom:var(--space-4)">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:var(--space-2)">
+          <div>
+            <span style="font-size:var(--text-base);font-weight:700">${escapeHtml(e.ticker)}</span>
+            <span style="color:var(--color-text-muted);font-size:var(--text-xs);margin-left:var(--space-2)">${escapeHtml(e.display_name || '')}</span>
+          </div>
+          <div style="text-align:right">
+            <span class="up" style="font-size:var(--text-sm);font-weight:700">${sign}${fmtNum(e.gain_pct)}% &nbsp;·&nbsp; ${sign}${fmtNum(e.gain_eur)} €</span>
+          </div>
+        </div>
+        <div style="color:var(--color-text-faint);font-size:var(--text-xs);margin-bottom:var(--space-3)">
+          Entrada ${fmtDt(e.entry_date)} &nbsp;→&nbsp; Saída ${fmtDt(e.exit_date)}
+        </div>
+        ${ins.what_went_well ? `<div style="margin-bottom:var(--space-3)">
+          <div style="font-size:var(--text-xs);font-weight:600;color:var(--color-success);margin-bottom:2px">O que correu bem</div>
+          <em style="font-size:var(--text-sm)">${escapeHtml(ins.what_went_well)}</em>
+        </div>` : ''}
+        ${ins.what_could_improve ? `<div style="margin-bottom:var(--space-3)">
+          <div style="font-size:var(--text-xs);font-weight:600;color:#f59e0b;margin-bottom:2px">O que podia melhorar</div>
+          <em style="font-size:var(--text-sm)">${escapeHtml(ins.what_could_improve)}</em>
+        </div>` : ''}
+        ${ins.pattern ? `<div style="margin-bottom:var(--space-2)">
+          <div style="font-size:var(--text-xs);font-weight:600;color:var(--color-primary);margin-bottom:2px">Padrão identificado</div>
+          <em style="font-size:var(--text-sm)">${escapeHtml(ins.pattern)}</em>
+        </div>` : ''}
+        <div style="margin-top:var(--space-3);font-size:10px;color:var(--color-text-faint)">
+          Gerado ${(e.generated_at || '').replace('T', ' ').slice(0, 16)} UTC · expira ${fmtDt(e.expires_at)}
+        </div>
+      </div>`;
+  }).join('');
 }
   </script>
   <script>
