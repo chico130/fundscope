@@ -1,0 +1,33 @@
+{
+  "generated_at": "2026-05-28T22:05:14Z",
+  "trades_analysed": 1,
+  "last_closed_trade_id": "reconstructed_ARM_US_EQ_BUY",
+  "summary": {
+    "total_pnl_eur": 9.86,
+    "total_pnl_pct": 8.11,
+    "win_rate": 1.0,
+    "best_trade": {
+      "ticker": "ARM_US_EQ",
+      "gain_pct": 8.11,
+      "gain_eur": 9.86
+    },
+    "worst_trade": {
+      "ticker": "ARM_US_EQ",
+      "gain_pct": 8.11,
+      "gain_eur": 9.86
+    }
+  },
+  "patterns": [
+    "Histórico ainda curto — padrões consolidados requerem >10 trades."
+  ],
+  "recurring_errors": [],
+  "sector_performance": [
+    {
+      "sector": "XLK",
+      "n_trades": 1,
+      "win_rate": 1.0,
+      "pnl_pct": 8.11
+    }
+  ],
+  "cro_verdict": "Performance positiva (P&L +9.86€, WR 100%). Manter estratégia."
+}

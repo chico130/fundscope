@@ -1,21 +1,21 @@
 {
-  "timestamp": "2026-05-28T22:52:40.868557+00:00",
+  "timestamp": "2026-05-29T13:36:49.139001+00:00",
   "mode": "phase1_auto",
   "strategy_version": "v0.1.0",
   "note": "Fase 1 — execução automática activa. LIVE_TRADING=False (conta demo).",
-  "regime": "bull_lateral",
+  "regime": "bull_trending",
   "regime_alert": false,
   "regime_details": {
-    "spy_price": 754.6,
-    "ema200": 679.76,
-    "ema50": 714.71,
+    "spy_price": 756.02,
+    "ema200": 681.7,
+    "ema50": 716.33,
     "ema50_above_ema200": true,
-    "spy_pct_from_ema200": 11.01,
-    "atr_current": 6.6666,
-    "atr_ratio_vs_60d_mean": 0.7598,
-    "spy_return_20d": 0.05,
-    "rsp_spy_ratio_chg_20d": -0.0251,
-    "breadth_healthy": false
+    "spy_pct_from_ema200": 10.9,
+    "atr_current": 6.0031,
+    "atr_ratio_vs_60d_mean": 0.6884,
+    "spy_return_20d": 0.0491,
+    "rsp_spy_ratio_chg_20d": -0.0191,
+    "breadth_healthy": true
   },
   "watchlist_top5": [
     {
@@ -86,98 +86,47 @@
   ],
   "barrier_exits": [],
   "buy_opportunities": [],
-  "near_misses": [
-    {
-      "ticker": "CARR",
-      "sector": "XLI",
-      "watchlist_score": 0.1861,
-      "rule": "B",
-      "blocking_reason": "Volume 1.6× — falta 0.17× para ≥1.8",
-      "proximity_pct": 91,
-      "technicals": {
-        "rsi_14": 50.58,
-        "ema_20": 63.9552,
-        "ema50": 62.48,
-        "ema200": 59.6736,
-        "ema20_above_ema50": true,
-        "ema50_above_ema200": true,
-        "price_above_ema20": false,
-        "volume_ratio_vs_avg": 1.63,
-        "volume_sma_10": 6493584.0,
-        "volume_ratio": 1.67,
-        "atr_14": 2.2353,
-        "last_price": 63.81,
-        "rs_bullish": false
-      },
-      "last_price": 63.81
-    },
-    {
-      "ticker": "COST",
-      "sector": "XLP",
-      "watchlist_score": 0.1867,
-      "rule": "A",
-      "blocking_reason": "RSI-14=42.1 — faltam 8.1 pts para ≤34",
-      "proximity_pct": 19,
-      "technicals": {
-        "rsi_14": 42.13,
-        "ema_20": 1024.6808,
-        "ema50": 1010.8326,
-        "ema200": 959.3456,
-        "ema20_above_ema50": true,
-        "ema50_above_ema200": true,
-        "price_above_ema20": false,
-        "volume_ratio_vs_avg": 1.33,
-        "volume_sma_10": 2302770.0,
-        "volume_ratio": 1.21,
-        "atr_14": 21.8314,
-        "last_price": 995.2,
-        "rs_bullish": false
-      },
-      "last_price": 995.2
-    }
-  ],
+  "near_misses": [],
   "n_positions": 1,
   "open_trades": 0,
   "risk_status": {
     "ok": true,
-    "total_equity_eur": 5033.27,
+    "total_equity_eur": 5029.89,
     "warnings": []
   },
   "signals": [
     {
       "ticker": "MRVL_US_EQ",
       "action": "hold",
-      "size_factor": 0.6,
+      "size_factor": 1.0,
       "signals": [
-        "RSI-14 elevado (69.4) — monitorizar pressão de venda",
+        "RSI-14 elevado (65.8) — monitorizar pressão de venda",
         "Tendência ascendente: EMA-50 > EMA-200",
-        "Volume elevado: 1.9x acima da média"
+        "Volume reduzido: 0.1x da média — movimento sem convicção"
       ],
       "technicals": {
-        "rsi_14": 69.44,
+        "rsi_14": 65.81,
         "ema50_above_ema200": true,
-        "volume_ratio_vs_avg": 1.94
+        "volume_ratio_vs_avg": 0.09
       }
     }
   ],
   "data_sources": {
     "prices": "finnhub+yfinance",
-    "t212_sync": "2026-05-28T22:29:23.584793+00:00",
+    "t212_sync": "2026-05-29T13:35:03.648819+00:00",
     "stale_prices": []
   },
   "cro": {
-    "risk_factor": 0.6,
+    "risk_factor": 1.2,
     "win_rate_7d": 1.0,
     "drawdown_pct": 0.0,
     "insights": [
-      "Win rate 7d em 100.0% — acima do alvo elástico (48.0%). Factor de risco positivo: 60%.",
+      "Win rate 7d em 100.0% — acima do alvo elástico (48.0%). Factor de risco positivo: 120%.",
       "Duração média dos trades vencedores: 4500min (todos: 4500min).",
       "Melhor ticker acumulado: ARM_US_EQ (+9.86€).",
-      "Tamanho máximo CRO: 6.6% da equity (base 11.0% × factor 60%).",
-      "Regime bull_lateral: multiplicador CRO 0.50× — alocação reduzida.",
+      "Tamanho máximo CRO: 13.2% da equity (base 11.0% × factor 120%).",
       "Stop Loss (fixo (fallback)): 5.0% abaixo da entrada."
     ]
   },
-  "executed_trades": [],
-  "phase1_skips": []
+  "executed_trades": []
 }
