@@ -1,24 +1,24 @@
 {
   "finnhub": {
     "day": "2026-05-29",
-    "day_count": 22,
-    "min_bucket": "2026-05-29T16:36",
-    "min_count": 2,
+    "day_count": 30,
+    "min_bucket": "2026-05-29T16:38",
+    "min_count": 8,
     "alerted_80": false,
     "alerted_95": false
   },
   "gemini": {
     "day": "2026-05-29",
-    "day_count": 5,
-    "min_bucket": "2026-05-29T13:05",
-    "min_count": 1,
+    "day_count": 7,
+    "min_bucket": "2026-05-29T16:38",
+    "min_count": 2,
     "alerted_80": false,
     "alerted_95": false
   },
   "gemini_gains": {
     "day": "2026-05-29",
-    "day_count": 1,
-    "min_bucket": "2026-05-29T13:05",
+    "day_count": 2,
+    "min_bucket": "2026-05-29T16:38",
     "min_count": 1,
     "alerted_80": false,
     "alerted_95": false
