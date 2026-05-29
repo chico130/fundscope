@@ -53,7 +53,7 @@ ultima_revisao: 2026-05-28
 - Bonnie v5: LABEL_HORIZON_DAYS 20->57 (identificada e bloqueada ate validacao real)
 
 **Ultimo trade executado:** `ARM` em `2026-05-22T14:00`
-**Ultimo ciclo:** `2026-05-29T19:18Z` | status: `active` | regime: `bull_trending`
+**Ultimo ciclo:** `2026-05-29T21:21Z` | status: `active` | regime: `bull_trending`
 <!-- O-QUE-JA-EXISTE-END -->
 
 ---
@@ -173,9 +173,9 @@ Secrets: `T212_API_ID`, `T212_API_KEY`, `FINNHUB_TOKEN`, `TELEGRAM_BOT_TOKEN`, `
 ## 5. Estado Actual
 
 <!-- ESTADO-ACTUAL-START -->
-**Actualizado em:** 2026-05-29 19:19 UTC
+**Actualizado em:** 2026-05-29 21:22 UTC
 
-- **Bot status:** `active` | Ultimo ciclo: `2026-05-29T19:18Z`
+- **Bot status:** `active` | Ultimo ciclo: `2026-05-29T21:21Z`
 - **Regime:** `bull_trending` | Modo: `phase1_auto`
 - **Posicoes abertas:** 1 | **Trades abertos:** 0 | **Trades hoje:** 0
 - **Fase:** Fase 1 — execucao automatica em conta demo (`PHASE1_EXECUTION=True`, `LIVE_TRADING=False`)
@@ -192,16 +192,16 @@ Secrets: `T212_API_ID`, `T212_API_KEY`, `FINNHUB_TOKEN`, `TELEGRAM_BOT_TOKEN`, `
 <!-- ULTIMAS-ALTERACOES-START -->
 | Data | Hash | Descricao |
 |---|---|---|
-| 2026-05-29 | `67549e1` | chore: update markets.json [skip ci] |
-| 2026-05-29 | `0cfdd85` | chore: update news.json [skip ci] |
-| 2026-05-29 | `7dd47c3` | chore: update markets.json [skip ci] |
-| 2026-05-29 | `0e80b27` | chore: update news.json [skip ci] |
-| 2026-05-29 | `0fbf5e7` | 2905 |
-| 2026-05-29 | `feff0e0` | feat: realised gains tab with Gemini insights (9-week retention) |
-| 2026-05-29 | `47dba92` | feat: automated project health dashboard |
-| 2026-05-29 | `4aa1b3e` | chore: update portfolio [skip ci] |
-| 2026-05-29 | `965db8a` | fix: verify t212-debug workflow references correct script path |
-| 2026-05-29 | `d8a8ded` | fix: use centralised daily_flags for CRO speak deduplication |
+| 2026-05-29 | `f27a89c` | 2905 |
+| 2026-05-29 | `841c57c` | fix: HTTP error handling for T212 API responses |
+| 2026-05-29 | `63e2c6f` | fix: pre-order validation (market hours + minimum cash check) |
+| 2026-05-29 | `37f4f08` | fix: capture and log T212 rejection reason in Telegram alert |
+| 2026-05-29 | `068986c` | fix: network-first cache strategy + cache-busting for all dynamic JSON fetches |
+| 2026-05-29 | `c4006b8` | chore: update portfolio [skip ci] |
+| 2026-05-29 | `919b90b` | docs: reference MEMORY_ERRORS.md in CLAUDE.md (zero repeated errors policy) |
+| 2026-05-29 | `91c9ca3` | docs: create MEMORY_ERRORS.md — zero repeated errors policy |
+| 2026-05-29 | `ecacc3a` | feat: permanent gain insights on stock page with Gemini comparison |
+| 2026-05-29 | `64330c5` | feat: automated project health dashboard |
 <!-- ULTIMAS-ALTERACOES-END -->
 
 ---
