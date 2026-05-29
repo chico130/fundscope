@@ -51,7 +51,7 @@ ultima_revisao: 2026-05-28
 - Bonnie v5: LABEL_HORIZON_DAYS 20->57 (identificada e bloqueada ate validacao real)
 
 **Ultimo trade executado:** `ARM` em `2026-05-22T14:00`
-**Ultimo ciclo:** `2026-05-29T16:38Z` | status: `active` | regime: `bull_trending`
+**Ultimo ciclo:** `2026-05-29T19:18Z` | status: `active` | regime: `bull_trending`
 <!-- O-QUE-JA-EXISTE-END -->
 
 ---
@@ -171,9 +171,9 @@ Secrets: `T212_API_ID`, `T212_API_KEY`, `FINNHUB_TOKEN`, `TELEGRAM_BOT_TOKEN`, `
 ## 5. Estado Actual
 
 <!-- ESTADO-ACTUAL-START -->
-**Actualizado em:** 2026-05-29 16:38 UTC
+**Actualizado em:** 2026-05-29 19:19 UTC
 
-- **Bot status:** `active` | Ultimo ciclo: `2026-05-29T16:38Z`
+- **Bot status:** `active` | Ultimo ciclo: `2026-05-29T19:18Z`
 - **Regime:** `bull_trending` | Modo: `phase1_auto`
 - **Posicoes abertas:** 1 | **Trades abertos:** 0 | **Trades hoje:** 0
 - **Fase:** Fase 1 — execucao automatica em conta demo (`PHASE1_EXECUTION=True`, `LIVE_TRADING=False`)
@@ -190,6 +190,8 @@ Secrets: `T212_API_ID`, `T212_API_KEY`, `FINNHUB_TOKEN`, `TELEGRAM_BOT_TOKEN`, `
 <!-- ULTIMAS-ALTERACOES-START -->
 | Data | Hash | Descricao |
 |---|---|---|
+| 2026-05-29 | `67549e1` | chore: update markets.json [skip ci] |
+| 2026-05-29 | `0cfdd85` | chore: update news.json [skip ci] |
 | 2026-05-29 | `7dd47c3` | chore: update markets.json [skip ci] |
 | 2026-05-29 | `0e80b27` | chore: update news.json [skip ci] |
 | 2026-05-29 | `0fbf5e7` | 2905 |
@@ -198,8 +200,6 @@ Secrets: `T212_API_ID`, `T212_API_KEY`, `FINNHUB_TOKEN`, `TELEGRAM_BOT_TOKEN`, `
 | 2026-05-29 | `4aa1b3e` | chore: update portfolio [skip ci] |
 | 2026-05-29 | `965db8a` | fix: verify t212-debug workflow references correct script path |
 | 2026-05-29 | `d8a8ded` | fix: use centralised daily_flags for CRO speak deduplication |
-| 2026-05-29 | `8206569` | fix: extend wake message window to recover from missed first cycle |
-| 2026-05-29 | `5777362` | chore: update markets.json [skip ci] |
 <!-- ULTIMAS-ALTERACOES-END -->
 
 ---
