@@ -23,6 +23,7 @@ from pathlib import Path
 
 import requests
 
+from .logger import log_error as _log_error
 from .market_hours import market_close_label_utc, market_open_label_utc
 
 _PROJECT_ROOT = Path(__file__).parent.parent
@@ -51,7 +52,11 @@ def _already_sent_today(flag: str) -> bool:
 
 
 def _mark_sent_today(flag: str) -> None:
-    """Marca a flag com a data UTC de hoje. Escrita atómica (tmp + rename)."""
+    """Marca a flag com a data UTC de hoje. Escrita atómica (tmp + rename).
+
+    Em caso de falha de escrita, continua sem dedup para esse envio — o
+    ciclo não é abortado.  A falha é registada em logs/errors/ para diagnóstico.
+    """
     try:
         _DAILY_FLAGS_PATH.parent.mkdir(parents=True, exist_ok=True)
         flags = _read_daily_flags()
@@ -60,7 +65,15 @@ def _mark_sent_today(flag: str) -> None:
         tmp.write_text(json.dumps(flags, indent=2, ensure_ascii=False), encoding="utf-8")
         tmp.replace(_DAILY_FLAGS_PATH)
     except OSError as exc:
-        print(f"[notifier] AVISO: falha a escrever daily_flags.json: {exc}")
+        print(f"[notifier] AVISO: falha a escrever daily_flags.json: {exc}", flush=True)
+        try:
+            _log_error("daily_flags_write_failed", {
+                "flag":  flag,
+                "error": str(exc),
+                "note":  "dedup desactivado para este envio; ciclo continua",
+            })
+        except Exception:
+            pass
 
 
 def _this_hour_utc() -> str:
@@ -73,7 +86,11 @@ def _already_sent_this_hour(flag: str) -> bool:
 
 
 def _mark_sent_this_hour(flag: str) -> None:
-    """Marca o alerta com a hora UTC actual. Escrita atómica."""
+    """Marca o alerta com a hora UTC actual. Escrita atómica.
+
+    Em caso de falha de escrita, continua sem dedup para esse envio — o
+    ciclo não é abortado.  A falha é registada em logs/errors/ para diagnóstico.
+    """
     try:
         _DAILY_FLAGS_PATH.parent.mkdir(parents=True, exist_ok=True)
         flags = _read_daily_flags()
@@ -82,7 +99,15 @@ def _mark_sent_this_hour(flag: str) -> None:
         tmp.write_text(json.dumps(flags, indent=2, ensure_ascii=False), encoding="utf-8")
         tmp.replace(_DAILY_FLAGS_PATH)
     except OSError as exc:
-        print(f"[notifier] AVISO: falha a escrever daily_flags.json: {exc}")
+        print(f"[notifier] AVISO: falha a escrever daily_flags.json: {exc}", flush=True)
+        try:
+            _log_error("daily_flags_write_failed", {
+                "flag":  flag,
+                "error": str(exc),
+                "note":  "dedup desactivado para este envio; ciclo continua",
+            })
+        except Exception:
+            pass
 
 
 def _load_credentials() -> tuple[str | None, str | None]:
