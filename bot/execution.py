@@ -24,7 +24,7 @@ from .config import (
     STRATEGY_VERSION,
 )
 from .logger import log_decision, log_error, log_trade
-from .notifier import enviar_alerta
+from .notifier import enviar_alerta, _already_sent_today, _mark_sent_today
 from .strategy import ProposedTrade
 
 _DEFAULT_CONFIG_RISCO: dict = {
@@ -407,11 +407,14 @@ def execute_trade(proposed: ProposedTrade, portfolio_state: dict) -> dict | None
 
         # Instrument unknown is a config error — retrying won't fix it
         if t212_code in ("InstrumentNotFound", "InvalidInstrument") or "nstrument" in t212_code:
-            enviar_alerta(
-                f"[CLYDE] ❌ Ticker inválido: {proposed.ticker}\n"
-                f"A T212 não reconhece este instrumento. Verificar mapeamento de tickers.\n"
-                f"Motivo: {err_detail}"
-            )
+            _flag = f"invalid_ticker_{proposed.ticker}"
+            if not _already_sent_today(_flag):
+                enviar_alerta(
+                    f"[CLYDE] ❌ Ticker inválido: {proposed.ticker}\n"
+                    f"A T212 não reconhece este instrumento. Verificar mapeamento de tickers.\n"
+                    f"Motivo: {err_detail}"
+                )
+                _mark_sent_today(_flag)
             return None
 
         # Queue both BUY and SELL failures; flush_pending_trades() will

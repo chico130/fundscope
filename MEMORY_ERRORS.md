@@ -80,6 +80,18 @@ e garantir que não reintroduz nenhum dos erros abaixo.
 
 ---
 
+### [2026-05-30] Alerta "Ticker inválido" (InstrumentNotFound) disparava a cada ciclo de 15 min
+**Sintoma:** Alerta Telegram "[CLYDE] ❌ Ticker inválido: XYZ" repetido a cada ciclo enquanto o mesmo ticker inválido continuar a ser proposto por Clyde (condições técnicas persistentes na watchlist).
+**Causa raiz:** `bot/execution.py` — na detecção de `InstrumentNotFound` (T212 não reconhece o instrumento), `enviar_alerta` era chamado directamente sem guard. Clyde pode propor o mesmo ticker em ciclos consecutivos se as condições RSI/EMA se mantiverem. Cada ciclo = novo run GitHub Actions = sem estado in-memory = guard `_already_sent_today` necessário.
+**Solução aplicada:**
+- `bot/execution.py`: importados `_already_sent_today` e `_mark_sent_today` de `notifier`; alerta `InstrumentNotFound` agora protegido por `_already_sent_today(f"invalid_ticker_{ticker}")` / `_mark_sent_today(...)` — máximo 1 alerta por ticker por dia.
+**Prevenção futura:**
+- Qualquer alerta ligado a estado persistente (ticker inválido, posição acima do limite, etc.) deve usar guard diário via `daily_flags.json`. Alertas de evento único genuíno (BUY executado, SELL executado) não precisam de guard.
+- `invalid_ticker_{ticker}` usa 1 flag por ticker — não flag genérica única.
+**Ficheiros afectados:** bot/execution.py
+
+---
+
 ## INVESTIGAÇÃO ACTIVA
 
 _(nenhuma em curso)_

@@ -65,7 +65,7 @@ def colocar_ordem():
     verdict = cro.interpret(state, regime="bull_lateral")
 
     print(f"   Risk factor:  {verdict.risk_factor:.2f}×")
-    print(f"   Win rate 7d:  {verdict.win_rate_7d:.1f}%")
+    print(f"   Win rate 7d:  {verdict.win_rate_7d*100:.1f}%")
     print(f"   Drawdown:     {verdict.drawdown_pct:.2f}%")
     print(f"   Aprovado CRO: {'SIM' if verdict.approved else 'NAO'}")
     print("   Insights:")
@@ -83,7 +83,7 @@ def colocar_ordem():
     print(f"   Ordem:        BUY {QTY} × {TICKER} @ ${LIMIT_PRICE:.2f}")
     print(f"   Valor aprox:  €{order_value_eur:.2f} ({pct_carteira:.1f}% da carteira)")
     print(f"   Limite máx:   {max_pct}% por posição")
-    print(f"   Win rate ok:  {'SIM' if verdict.win_rate_7d >= 40 else 'NAO (abaixo de 40%)'}")
+    print(f"   Win rate ok:  {'SIM' if verdict.win_rate_7d >= 0.40 else 'NAO (abaixo de 40%)'}")
     print(f"   Dimensão ok:  {'SIM' if pct_carteira <= max_pct else 'NAO'}")
     print(f"   BONNIE:       {'APROVARIA ✓' if bonnie_ok else 'VETARIA ✗'}")
 
