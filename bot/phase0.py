@@ -853,6 +853,20 @@ def run(*, git_sync: bool = True) -> dict:
     cro.observe(DATA_BETA_DIR / "beta_trades.json", state)
     cro_verdict = cro.interpret(state, regime=regime)
 
+    # Veredito CRO advisory por candidato da watchlist (alimenta watchlist.html).
+    # I/O lateral — try/except isolado, nunca aborta o ciclo (R3).
+    try:
+        from bot.cro import evaluate_watchlist_candidates
+        _save_cro_watchlist({
+            "generated_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+            "regime":       regime,
+            "risk_factor":  cro_verdict.risk_factor,
+            "verdicts":     evaluate_watchlist_candidates(
+                watchlist, state, cro_verdict.risk_factor, regime),
+        })
+    except Exception as exc:
+        log_error("cro_watchlist_write", {"error": str(exc)})
+
     try:
         from bot.notifier import enviar_alerta, _already_sent_this_hour, _mark_sent_this_hour
         _dd = cro_verdict.drawdown_pct
@@ -1318,6 +1332,19 @@ def _save_report(report: dict) -> None:
             json.dump(report, f, indent=2, ensure_ascii=False)
     except OSError as exc:
         log_error("phase0_save_error", {"path": str(path), "error": str(exc)})
+
+
+def _save_cro_watchlist(payload: dict) -> None:
+    """Escrita atómica de cro_watchlist.json — veredito CRO por candidato (frontend)."""
+    path = DATA_BETA_DIR / "cro_watchlist.json"
+    tmp  = path.with_suffix(".tmp")
+    try:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        with open(tmp, "w", encoding="utf-8") as f:
+            json.dump(payload, f, indent=2, ensure_ascii=False)
+        tmp.replace(path)
+    except OSError as exc:
+        log_error("cro_watchlist_save_error", {"path": str(path), "error": str(exc)})
 
 
 def _print_report(report: dict) -> None:

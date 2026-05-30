@@ -444,6 +444,18 @@
       } catch {}
     }
 
+    // ── cro_watchlist.json (veredito CRO por ticker) ─────────────────
+    let _croWL = null;
+    async function loadCroWatchlist() {
+      try {
+        const r = await fetch(`data/beta/cro_watchlist.json?v=${Date.now()}`);
+        if (!r.ok) return;
+        const j = await r.json();
+        _croWL = { regime: j.regime, map: Object.fromEntries((j.verdicts || []).map(v => [v.ticker, v])) };
+      } catch {}
+    }
+    function croVerdict(ticker) { return _croWL?.map?.[String(ticker || '').toUpperCase()] || null; }
+
     // ── Sparkline (inline SVG from data.json history.1D) ────────────
     function makeSVGSparkline(history1D, up) {
       if (!Array.isArray(history1D) || history1D.length < 2) return '';
@@ -632,6 +644,20 @@
         <div class="kpi-card"><div class="kpi-icon worst">${ICON_DOWN}</div><div class="kpi-label">Pior do Dia</div><div class="kpi-val">${worst ? esc(worst.ticker) : '—'}</div><div class="kpi-sub" style="color:${worst ? (worst.changePct>=0?'var(--color-success)':'var(--color-notification)') : 'var(--color-text-faint)'};">${worst ? sign(worst.changePct)+worst.changePct.toFixed(2)+'%' : '—'}</div></div>`;
     }
 
+    // ── CRO verdict chip ─────────────────────────────────────────────
+    function croChip(ticker) {
+      const v = croVerdict(ticker);
+      if (!v) return '';   // candidato fora do universo do bot → sem avaliação
+      const ok = v.approved;
+      const bg = ok ? 'var(--color-success-bg)' : 'var(--color-notification-bg)';
+      const fg = ok ? 'var(--color-success)'    : 'var(--color-notification)';
+      const label = ok ? `CRO ✓ ${v.size_pct}%` : 'CRO ✕';
+      const title = ok
+        ? `Aprovado · size ${v.size_pct}% da equity · stop ${v.stop_pct}% · risk ${v.risk_factor}× · regime ${v.regime_mult}×`
+        : `Vetado pelo CRO: ${v.reason}`;
+      return `<div class="cro-chip" title="${esc(title)}" style="background:${bg};color:${fg};font-size:var(--text-xs);font-weight:600;padding:2px 8px;border-radius:var(--radius-full);white-space:nowrap;flex-shrink:0;">${label}</div>`;
+    }
+
     // ── Card building ────────────────────────────────────────────────
     function buildCard(ticker) {
       const d = _dataJson?.stocks?.[ticker];
@@ -655,6 +681,7 @@
             <div class="wl-name" id="name-${ticker}"></div>
           </div>
           <div class="sparkline-wrap" id="spark-${ticker}">${sparkHTML}</div>
+          ${croChip(ticker)}
           <div class="wl-price-block">
             <div class="wl-price" id="price-${ticker}">${priceStr}</div>
             <div class="wl-change ${changeClass}" id="change-${ticker}" ${changeStyle}>${changeStr}</div>
@@ -807,7 +834,7 @@
       _loaded[ticker] = true;
       const base = _priceData[ticker];
       let price = _dataJson?.stocks?.[ticker]?.price;
-      fetchStats(ticker).then(ext   => { const el = document.getElementById('panel-stats-'+ticker);   if (el) el.innerHTML = buildStatsHTML(base, ext); });
+      fetchStats(ticker).then(ext   => { const el = document.getElementById('panel-stats-'+ticker);   if (el) el.innerHTML = buildStatsHTML(base, ext, ticker); });
       fetchNews(ticker).then(news   => { const el = document.getElementById('panel-news-'+ticker);    if (el) el.innerHTML = buildNewsHTML(news); });
       fetchAnalysts(ticker).then(d  => { const el = document.getElementById('panel-targets-'+ticker); if (el) el.innerHTML = buildTargetsHTML(d, price); });
       fetchEarningsAI(ticker).then(d => { const el = document.getElementById('panel-ai-'+ticker);    if (el) el.innerHTML = buildAIHTML(d); });
@@ -908,14 +935,22 @@
     function tryLoadClearbitLogo(ticker, profile, wrapId) { if (profile?.website) { try { const domain = new URL(profile.website).hostname.replace(/^www\./,''); const img = new Image(); img.onload = () => _setLogoImg(wrapId,`https://logo.clearbit.com/${domain}`,ticker); img.onerror = () => tryParqetLogo(ticker, wrapId); img.src = `https://logo.clearbit.com/${domain}`; return; } catch(e) {} } tryParqetLogo(ticker, wrapId); }
 
     // ── Panel builders (expand panel) ────────────────────────────────
-    function buildStatsHTML(base, ext) {
+    function buildStatsHTML(base, ext, ticker) {
       const p=base?.price||{}, s=ext?.summaryDetail||{}, k=ext?.defaultKeyStatistics||{};
       const pe=rawVal(s.trailingPE)??rawVal(k.trailingPE)??rawVal(p.trailingPE);
       const eps=rawVal(k.trailingEps), beta=rawVal(k.beta)??rawVal(s.beta)??rawVal(p.beta);
       const mktCap=rawVal(p.marketCap), w52h=rawVal(s.fiftyTwoWeekHigh)??rawVal(p.fiftyTwoWeekHigh), w52l=rawVal(s.fiftyTwoWeekLow)??rawVal(p.fiftyTwoWeekLow);
       const divRate=rawVal(s.dividendRate), divYield=rawVal(s.dividendYield);
       let divStr='—'; if(divRate&&divRate>0){const pct=divYield?(divYield<1?divYield*100:divYield):null; divStr='$'+divRate.toFixed(2)+(pct?' ('+pct.toFixed(2)+'%)':'');}
-      return `<div class="stat-row">
+      const v = croVerdict(ticker);
+      const croBlock = v ? `<div class="stat-row" style="margin-bottom:var(--space-4);">
+        <div class="stat-item"><span class="stat-label">Avaliação CRO</span><span class="stat-value" style="color:${v.approved?'var(--color-success)':'var(--color-notification)'}">${v.approved?'Aprovado':'Vetado'}</span></div>
+        <div class="stat-item"><span class="stat-label">Size sugerido</span><span class="stat-value">${v.approved?v.size_pct+'% da equity':'—'}</span></div>
+        <div class="stat-item"><span class="stat-label">Stop Loss</span><span class="stat-value">${v.stop_pct}%</span></div>
+        <div class="stat-item"><span class="stat-label">Risk factor</span><span class="stat-value">${v.risk_factor}× · regime ${v.regime_mult}×</span></div>
+        ${v.approved?'':`<div class="stat-item"><span class="stat-label">Motivo do veto</span><span class="stat-value" style="color:var(--color-notification)">${esc(v.reason)}</span></div>`}
+      </div>` : '';
+      return croBlock + `<div class="stat-row">
         <div class="stat-item"><span class="stat-label">Cap. Mercado</span><span class="stat-value">${fmtLarge(mktCap)}</span></div>
         <div class="stat-item"><span class="stat-label">P/E (trailing)</span><span class="stat-value">${pe!=null?parseFloat(Number(pe).toFixed(1)):'—'}</span></div>
         <div class="stat-item"><span class="stat-label">EPS (trailing)</span><span class="stat-value">${eps!=null?'$'+parseFloat(Number(eps).toFixed(2)):'—'}</span></div>
@@ -976,7 +1011,7 @@
 
     // ── Init ─────────────────────────────────────────────────────────
     async function init() {
-      await loadDataJson();
+      await Promise.all([loadDataJson(), loadCroWatchlist()]);
       renderPage();
       document.getElementById('updatedLabel').textContent = _dataJson?.updated
         ? 'Dados de ' + new Date(_dataJson.updated).toLocaleTimeString('pt', {hour:'2-digit', minute:'2-digit'})

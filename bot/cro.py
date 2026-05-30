@@ -485,6 +485,64 @@ def _validate_proposal(
     return True, "approved", max_pos_eur, assumed_risk
 
 
+def evaluate_watchlist_candidates(
+    candidates:      list[dict],
+    portfolio_state: dict,
+    risk_factor:     float,
+    regime:          str,
+) -> list[dict]:
+    """Veredito CRO advisory por candidato da watchlist — NÃO submete ordens.
+
+    Aplica as mesmas regras de gate que _validate_proposal (regime + concentração
+    sectorial), mas com sizing fallback não-ATR, para cobrir todos os candidatos
+    e não apenas os scanneados no ciclo. Keyed por símbolo simples (MU, ARM) para
+    lookup directo no frontend. Puramente derivado do verdict global — não altera
+    nenhum cálculo de risco real.
+    """
+    try:
+        from .watchlist_manager import _TICKER_TO_SECTOR as _T2S
+    except ImportError:
+        _T2S = {}
+
+    positions    = portfolio_state.get("positions", [])
+    max_pos      = RISK_CONFIG["max_position_pct"]
+    sector_limit = RISK_CONFIG["max_positions_per_sector"]
+
+    sector_count: dict[str, int] = {}
+    for p in positions:
+        sec = _T2S.get(p.get("ticker", "").split("_")[0], "UNKNOWN")
+        if sec != "UNKNOWN":
+            sector_count[sec] = sector_count.get(sec, 0) + 1
+
+    reg_factor = CRO_CONFIG.get("regime_multiplier", {}).get(regime, 1.0)
+    stop_pct   = round(CRO_CONFIG.get("atr_fallback_stop_pct", 5.0), 2)
+
+    out: list[dict] = []
+    for c in candidates:
+        symbol = str(c.get("ticker", "")).split("_")[0]
+        if not symbol:
+            continue
+        sector = c.get("sector") or _T2S.get(symbol, "UNKNOWN")
+
+        approved, reason = True, "approved"
+        if reg_factor == 0.0:
+            approved, reason = False, "regime_bear_momentum_blocked"
+        elif sector != "UNKNOWN" and sector_count.get(sector, 0) >= sector_limit:
+            approved, reason = False, f"sector_full_{sector}"
+
+        out.append({
+            "ticker":      symbol,
+            "approved":    approved,
+            "reason":      reason,
+            "size_pct":    round(max_pos * risk_factor * reg_factor, 2) if approved else 0.0,
+            "stop_pct":    stop_pct,
+            "risk_factor": round(risk_factor, 4),
+            "regime_mult": round(reg_factor, 4),
+            "sector":      sector,
+        })
+    return out
+
+
 def _atr_size_eur(
     atr_pct:         float,
     equity:          float,
