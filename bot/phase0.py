@@ -849,6 +849,13 @@ def run(*, git_sync: bool = True) -> dict:
         except Exception:
             pass
 
+    # Alertas por ticker — uma vez por dia, via flag overweight_{ticker} (daily_flags.json).
+    try:
+        from bot.cro import check_overweight_positions
+        check_overweight_positions(state)
+    except Exception:
+        pass
+
     cro         = CRO()
     cro.observe(DATA_BETA_DIR / "beta_trades.json", state)
     cro_verdict = cro.interpret(state, regime=regime)

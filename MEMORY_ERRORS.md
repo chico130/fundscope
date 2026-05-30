@@ -54,6 +54,21 @@ e garantir que não reintroduz nenhum dos erros abaixo.
 
 ---
 
+### [2026-05-30] CRO vetava novas entradas apenas por cash/sector, não por posição existente acima do limite
+**Sintoma:** Alerta "COST_US_EQ representa 12.3% da carteira (limite: 11.0%)" surge no Telegram/log, mas o CRO continua a aprovar novas ordens BUY no mesmo ticker porque a verificação de `max_position_pct` em `_validate_proposal()` comparava apenas o `free_cash` disponível, sem considerar o valor actual da posição existente.
+**Causa raiz:** Em `bot/cro.py::_validate_proposal()`, o bloco `if proposed.side == "BUY"` verificava `max_pos_eur > free_cash * 0.95` (cash insuficiente) e concentração sectorial, mas nunca calculava `existing_pct = existing_value / total_equity * 100` nem comparava com `max_pos`. Qualquer nova ordem num ticker já a 12.3% passava o gate.
+**Solução aplicada:**
+- `bot/cro.py::_validate_proposal()`: antes do check de cash, calcula `existing_value` somando `value`/`value_eur` de todas as posições com o mesmo ticker; se `existing_pct >= max_pos`, devolve `(False, "position_overweight", 0.0, 0.0)`.
+- `bot/cro.py`: nova função pública `check_overweight_positions(portfolio_state)` que itera todas as posições, e para cada uma acima do limite envia um alerta Telegram por ticker com dedup diário via `daily_flags.json` (flag `overweight_{ticker}`).
+- `bot/phase0.py`: chamada a `check_overweight_positions(state)` em try/except isolado, logo após o bloco `position_concentration` existente.
+**Prevenção futura:**
+- Em `_validate_proposal()`, a verificação de excesso de posição deve sempre comparar com o valor **actual** da posição existente, não apenas com o tamanho da nova ordem ou com o `free_cash`.
+- Qualquer novo gate de risco em `_validate_proposal()` deve ser adicionado **antes** do check de cash (que é o último gate de sizing, não de concentração).
+- `check_overweight_positions()` usa flags `overweight_{ticker}` — um flag por ticker por dia. Não usar flag genérica única para múltiplos tickers (perderia especificidade).
+**Ficheiros afectados:** bot/cro.py, bot/phase0.py
+
+---
+
 ## INVESTIGAÇÃO ACTIVA
 
 _(nenhuma em curso)_

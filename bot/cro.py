@@ -448,6 +448,22 @@ def _validate_proposal(
         return False, "max_trades_per_day", 0.0, 0.0
 
     if proposed.side == "BUY":
+        # Veta BUY se posição existente já excede o limite — comparar valor actual,
+        # não apenas o tamanho da nova ordem.
+        existing_value = sum(
+            (p.get("value") or p.get("value_eur") or 0)
+            for p in positions if p.get("ticker") == proposed.ticker
+        )
+        if existing_value > 0:
+            existing_pct = existing_value / total_equity * 100
+            if existing_pct >= max_pos:
+                log_decision("cro_block", "position_overweight", {
+                    "ticker":      proposed.ticker,
+                    "current_pct": round(existing_pct, 2),
+                    "limit_pct":   max_pos,
+                })
+                return False, "position_overweight", 0.0, 0.0
+
         if max_pos_eur > free_cash * 0.95:
             log_decision("cro_block", "insufficient_cash", {
                 "max_pos_eur": round(max_pos_eur, 2), "free_cash": round(free_cash, 2)
@@ -765,6 +781,46 @@ def _whisper(payload: dict) -> None:
 
     enviar_alerta("\n".join(linhas), silencioso=True)
     print(f"[CRO] Narrativa enviada para Telegram ({len(payload.get('insights', []))} insights).")
+
+
+def check_overweight_positions(portfolio_state: dict) -> list[str]:
+    """Verifica posições existentes acima de max_position_pct.
+
+    Envia alerta Telegram por ticker, uma vez por dia (daily_flags.json).
+    Devolve lista de tickers em excesso (para logging pelo caller).
+    I/O em try/except isolado — nunca aborta o ciclo (R3).
+    """
+    from .notifier import _already_sent_today, _mark_sent_today, enviar_alerta
+
+    positions    = portfolio_state.get("positions", [])
+    free_cash    = (portfolio_state.get("cash") or {}).get("free") or 0
+    total_equity = sum((p.get("value") or p.get("value_eur") or 0) for p in positions) + free_cash
+    max_pos      = RISK_CONFIG["max_position_pct"]
+
+    if total_equity <= 0:
+        return []
+
+    overweight: list[str] = []
+    for pos in positions:
+        val = (pos.get("value") or pos.get("value_eur") or 0)
+        pct = val / total_equity * 100
+        if pct > max_pos:
+            ticker = pos.get("ticker", "?")
+            overweight.append(ticker)
+            try:
+                flag = f"overweight_{ticker}"
+                if not _already_sent_today(flag):
+                    enviar_alerta(
+                        f"⚠️ {ticker} acima do limite de posição "
+                        f"({pct:.1f}% > {max_pos:.1f}%). Considera reduzir.\n\n"
+                        f"Equity total: €{total_equity:,.2f}",
+                        silencioso=False,
+                    )
+                    _mark_sent_today(flag)
+            except Exception:
+                pass
+
+    return overweight
 
 
 # ---------------------------------------------------------------------------
