@@ -38,6 +38,8 @@ class Verdict:
     stop_loss_pct:     float     = 5.0   # stop loss em % do preço de entrada (ATR-based)
     atr_pct:           float     = 0.0   # ATR como % do preço (0 = não disponível)
     assumed_risk_eur:  float     = 0.0   # risco assumido em EUR se stop for atingido
+    vix:               float | None = None   # VIX no momento do interpret()
+    macro_mode:        str          = "normal"  # normal|caution|cash_is_king|total_kill|offline
 
 
 # ---------------------------------------------------------------------------
@@ -48,10 +50,12 @@ class CRO:
     """Chief Risk Officer — valida alocação dinâmica e gera narrativa cognitiva."""
 
     def __init__(self) -> None:
-        self._state:       dict      = {}
-        self._insights:    list[str] = []
-        self._risk_factor: float     = 1.0
-        self._regime:      str       = "bull_lateral"
+        self._state:       dict       = {}
+        self._insights:    list[str]  = []
+        self._risk_factor: float      = 1.0
+        self._regime:      str        = "bull_lateral"
+        self._vix:         float | None = None
+        self._macro_mode:  str          = "normal"
 
     # ------------------------------------------------------------------
     # 1. Observe — lê trades fechados e estado do portfólio
@@ -134,12 +138,41 @@ class CRO:
         wr_adj = max(0.5, min(1.2, win_rate_7d / elastic_target if elastic_target > 0 else 1.0))
         dd_adj = max(0.3, min(1.0, 1.0 - drawdown_pct / max_dd))
 
+        # Macro context — VIX + SPY SMA-200 (fail-open se offline)
+        try:
+            from .macro_sensor import get_macro_context
+            macro = get_macro_context()
+        except Exception as exc:
+            log_error("cro_macro_context_failed", {"error": str(exc)})
+            macro = {
+                "vix": None, "kill_switch": False, "total_kill": False,
+                "cash_is_king": False, "spy_below_sma200": False,
+                "macro_mode": "offline", "from_cache": False,
+                "cash_is_king_multiplier": 0.25,
+            }
+
+        # Force regime downgrade se SPY abaixo do SMA-200 e classificado como bull
+        effective_regime = regime
+        if macro.get("spy_below_sma200") and regime.startswith("bull"):
+            effective_regime = "bear_correction"
+
         # Multiplicador de Regime — autoridade exclusiva CRO
         proposed_style = (proposed.style if proposed is not None else None) or "MOMENTUM"
         regime_mults   = CRO_CONFIG.get("regime_multiplier", {})
-        reg_factor     = regime_mults.get(regime, 1.0)
+        reg_factor     = regime_mults.get(effective_regime, 1.0)
         if reg_factor == 0.0 and proposed_style == "VALUE":
             reg_factor = CRO_CONFIG.get("bear_value_multiplier", 0.25)
+
+        # Macro kill switch — sobrepõe multiplicador de regime
+        _cik_mult = float(macro.get("cash_is_king_multiplier") or 0.25)
+        if macro.get("total_kill"):
+            reg_factor = 0.0
+        elif macro.get("kill_switch"):
+            if proposed_style == "MOMENTUM":
+                reg_factor = 0.0
+            else:
+                # VALUE / MEAN_REVERSION: cap a cash_is_king_multiplier (0.25×)
+                reg_factor = min(reg_factor, _cik_mult)
 
         risk_factor = round(wr_adj * dd_adj * reg_factor, 4)
 
@@ -157,10 +190,11 @@ class CRO:
         insights = _generate_insights(
             win_rate_7d, drawdown_pct, risk_factor,
             round(RISK_CONFIG["max_position_pct"] * risk_factor, 2),
-            elastic_target, max_dd, regime,
+            elastic_target, max_dd, effective_regime,
             self._state.get("sector_exposure", {}),
             all_closed, bonnie_thr,
             regime_mult=reg_factor, stop_loss_pct=stop_loss_pct,
+            macro=macro,
         )
 
         approved         = True
@@ -172,17 +206,20 @@ class CRO:
             approved, reason, final_size_eur, assumed_risk_eur = _validate_proposal(
                 proposed, portfolio_state, risk_factor, trades_today,
                 atr_pct=atr_pct, regime_mult=reg_factor,
-                all_closed=all_closed,
+                all_closed=all_closed, macro=macro,
             )
             if not approved:
                 insights.insert(0, f"VETO CRO: {reason} — proposta bloqueada para {proposed.ticker}.")
 
         self._insights    = insights
         self._risk_factor = risk_factor
-        self._regime      = regime
+        self._regime      = effective_regime
+        self._vix         = macro.get("vix")
+        self._macro_mode  = macro.get("macro_mode", "normal")
 
         log_decision("cro_interpret", "risk_verdict", {
-            "regime":            regime,
+            "regime":            effective_regime,
+            "regime_original":   regime,
             "regime_multiplier": round(reg_factor, 4),
             "risk_factor":       risk_factor,
             "wr_adj":            round(wr_adj, 4),
@@ -193,20 +230,26 @@ class CRO:
             "stop_loss_pct":     round(stop_loss_pct, 2),
             "atr_pct":           round(atr_pct * 100, 3),
             "assumed_risk_eur":  round(assumed_risk_eur, 2),
+            "vix":               macro.get("vix"),
+            "macro_mode":        macro.get("macro_mode", "normal"),
             "ticker":            proposed.ticker if proposed is not None else None,
         })
 
-        # Diagnóstico stdout — torna o cálculo do risk_factor rastreável no log
-        # do GitHub Actions. CRO NUNCA bloqueia por win_rate baixo: apenas escala
-        # via wr_adj ∈ [0.5, 1.2]. O bloqueio efectivo só pode acontecer
-        # indirectamente se size_eur cair abaixo de min_order_eur (50€) no
-        # phase0._execute_phase1 — esse caminho é loggado lá com [PHASE1 SKIP].
+        # Diagnóstico stdout — CRO NUNCA bloqueia por win_rate baixo: apenas escala
+        # via wr_adj ∈ [0.5, 1.2]. Bloqueio efectivo só acontece se size_eur cair
+        # abaixo de min_order_eur (50€) no phase0._execute_phase1 [PHASE1 SKIP].
+        vix_str = f"{macro.get('vix'):.1f}" if macro.get("vix") is not None else "?"
         print(
-            f"[CRO] regime={regime} wr_7d={win_rate_7d:.3f} target={elastic_target:.3f} "
+            f"[CRO] VIX={vix_str} kill_switch={macro.get('kill_switch')} "
+            f"macro_mode={macro.get('macro_mode')} regime={effective_regime} "
+            f"wr_7d={win_rate_7d:.3f} target={elastic_target:.3f} "
             f"wr_adj={wr_adj:.3f} dd_adj={dd_adj:.3f} reg={reg_factor:.3f} "
             f"→ risk_factor={risk_factor:.3f}",
             flush=True,
         )
+
+        # Alerta Telegram kill switch — 1×/dia via daily_flags.json
+        _send_kill_switch_alert(macro, effective_regime)
 
         return Verdict(
             approved=approved,
@@ -222,6 +265,8 @@ class CRO:
             stop_loss_pct=stop_loss_pct,
             atr_pct=atr_pct,
             assumed_risk_eur=assumed_risk_eur,
+            vix=macro.get("vix"),
+            macro_mode=macro.get("macro_mode", "normal"),
         )
 
     # ------------------------------------------------------------------
@@ -286,6 +331,8 @@ class CRO:
             "drawdown_atual":    self._state.get("drawdown_pct", 0.0),
             "trades_analisados": self._state.get("closed_count", 0),
             "trades_recentes":   self._state.get("recent_count", 0),
+            "vix":               self._vix,
+            "macro_mode":        self._macro_mode,
             "insights":          self._insights,
         }
 
@@ -409,8 +456,25 @@ def _validate_proposal(
     atr_pct:         float = 0.0,
     regime_mult:     float = 1.0,
     all_closed:      "list[dict] | None" = None,
+    macro:           "dict | None" = None,
 ) -> tuple[bool, str, float, float]:
     """Valida proposta concreta. Devolve (approved, reason, final_size_eur, assumed_risk_eur)."""
+    _macro = macro or {}
+
+    # Macro kill switch — bloqueia antes de qualquer cálculo de sizing
+    if _macro.get("total_kill"):
+        log_decision("cro_block", "macro_total_kill_switch", {
+            "ticker": proposed.ticker, "vix": _macro.get("vix"),
+        })
+        return False, "macro_total_kill_switch", 0.0, 0.0
+
+    style = getattr(proposed, "style", "VALUE")
+    if _macro.get("kill_switch") and style == "MOMENTUM":
+        log_decision("cro_block", "cash_is_king_momentum_blocked", {
+            "ticker": proposed.ticker, "vix": _macro.get("vix"),
+        })
+        return False, "cash_is_king_momentum_blocked", 0.0, 0.0
+
     positions    = portfolio_state.get("positions", [])
     free_cash    = portfolio_state.get("cash", {}).get("free") or 0
     total_equity = sum(p.get("value", p.get("value_eur", 0)) for p in positions) + free_cash
@@ -419,7 +483,6 @@ def _validate_proposal(
         log_decision("cro_block", "zero_equity", {"ticker": proposed.ticker})
         return False, "zero_equity", 0.0, 0.0
 
-    style   = getattr(proposed, "style", "VALUE")
     max_pos = RISK_CONFIG["max_position_pct"]
 
     # ATR-based sizing: equaliza risco financeiro entre activos de diferente volatilidade
@@ -586,11 +649,40 @@ def _generate_insights(
     bonnie_thr:      float = 0.60,
     regime_mult:     float = 1.0,
     stop_loss_pct:   float = 5.0,
+    macro:           "dict | None" = None,
 ) -> list[str]:
     insights: list[str] = []
     wr_pct = round(win_rate_7d * 100, 1)
     tg_pct = round(elastic_target * 100, 1)
     rf_pct = round(risk_factor * 100)
+
+    # Macro context — VIX + kill switch
+    _macro = macro or {}
+    _vix   = _macro.get("vix")
+    _mode  = _macro.get("macro_mode", "normal")
+    if _mode == "total_kill":
+        insights.append(
+            f"🚨 KILL SWITCH TOTAL — VIX {_vix:.1f} ≥ limite absoluto (45). "
+            "Todas as novas entradas VETADAS (MOMENTUM + VALUE)."
+        )
+    elif _mode == "cash_is_king":
+        insights.append(
+            f"💰 CASH IS KING — VIX {_vix:.1f} (limite: 35). "
+            "MOMENTUM vetado. VALUE/MEAN_REVERSION permitido a 0.25× máximo."
+        )
+    elif _mode == "caution":
+        insights.append(
+            f"⚠️ Cautela macro — VIX {_vix:.1f} (zona de atenção: 20–35). "
+            "Mercado volátil mas entradas ainda permitidas."
+        )
+    elif _vix is not None:
+        insights.append(f"Macro OK — VIX {_vix:.1f} (zona normal < 20).")
+    if _macro.get("spy_below_sma200"):
+        spy_pct = _macro.get("spy_vs_sma200_pct")
+        insights.append(
+            f"SPY abaixo do SMA-200 ({spy_pct:+.1f}%) — regime forçado para bear_correction "
+            "independente do classificador."
+        )
 
     # Win rate vs alvo elástico
     if wr_pct < 40:
@@ -751,10 +843,23 @@ def _whisper(payload: dict) -> None:
         "bear_capitulation": "Bear Capitulation",
     }.get(regime, regime)
 
+    vix_val    = payload.get("vix")
+    macro_mode = payload.get("macro_mode", "normal")
+    vix_str    = f"{vix_val:.1f}" if vix_val is not None else "?"
+    macro_icons = {
+        "total_kill":   "🚨 KILL SWITCH TOTAL",
+        "cash_is_king": "💰 CASH IS KING",
+        "caution":      "⚠️ Cautela",
+        "offline":      "📡 Offline",
+        "normal":       "✅ Normal",
+    }
+    macro_label = macro_icons.get(macro_mode, macro_mode)
+
     linhas = [
         "🧠 Relatório Cognitivo CRO",
         "",
         f"Regime: {regime_label}  ·  Factor de risco: {rf_pct}%",
+        f"VIX: {vix_str}  ·  Macro: {macro_label}",
         f"Win Rate 7d: {wr_pct}%  ·  Drawdown: {dd_pct:.1f}%",
         f"Trades analisados: {n}",
         "",
@@ -765,6 +870,53 @@ def _whisper(payload: dict) -> None:
 
     enviar_alerta("\n".join(linhas), silencioso=True)
     print(f"[CRO] Narrativa enviada para Telegram ({len(payload.get('insights', []))} insights).")
+
+
+def _send_kill_switch_alert(macro: dict, regime: str) -> None:
+    """Alerta Telegram quando Kill Switch activa — máximo 1×/dia por modo (daily_flags.json).
+
+    Segue a regra MEMORY_ERRORS [2026-05-30]: guards de eventos inter-ciclo devem usar
+    _already_sent_today e nunca estado in-memory (que reseta a cada GitHub Actions run).
+    I/O em try/except isolado — nunca aborta o ciclo (R3).
+    """
+    mode = macro.get("macro_mode", "normal")
+    if mode not in ("cash_is_king", "total_kill"):
+        return
+
+    try:
+        from .notifier import _already_sent_today, _mark_sent_today, enviar_alerta
+
+        flag = f"macro_kill_{mode}"
+        if _already_sent_today(flag):
+            return
+
+        vix      = macro.get("vix")
+        vix_str  = f"{vix:.1f}" if vix is not None else "?"
+        thr_str  = "45" if mode == "total_kill" else "35"
+
+        if mode == "total_kill":
+            msg = (
+                "🚨 KILL SWITCH TOTAL\n\n"
+                f"VIX: {vix_str} (limite absoluto: {thr_str})\n"
+                "Novas entradas MOMENTUM: VETADAS\n"
+                "Novas entradas VALUE: VETADAS\n"
+                f"Regime efectivo: {regime}\n"
+                "Modo: CASH IS KING — PROTECÇÃO MÁXIMA"
+            )
+        else:
+            msg = (
+                "🚨 KILL SWITCH ACTIVO\n\n"
+                f"VIX: {vix_str} (limite: {thr_str})\n"
+                "Novas entradas MOMENTUM: VETADAS\n"
+                "VALUE/MEAN_REVERSION: permitido a 0.25× máximo\n"
+                f"Regime efectivo: {regime}\n"
+                "Modo: CASH IS KING"
+            )
+
+        enviar_alerta(msg, silencioso=False)
+        _mark_sent_today(flag)
+    except Exception:
+        pass
 
 
 def check_overweight_positions(portfolio_state: dict) -> list[str]:

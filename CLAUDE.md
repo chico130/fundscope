@@ -358,6 +358,20 @@ PYTHONPATH=. python -m bot.mass_backtest
 
 ---
 
+## CRO Dinamico
+
+- **Macro sensor:** `bot/macro_sensor.py` (VIX + SPY SMA-200 via yfinance, cache 15 min em `data/macro_cache.json`)
+- **Kill Switch:** VIX ≥ 35 → veta MOMENTUM (Cash is King); VIX ≥ 45 → veta tudo (Kill Switch Total)
+- **SPY abaixo SMA-200:** regime forçado para `bear_correction` independente do classificador
+- **Thresholds:** nunca hardcodar — todos em `config_risco.json` (`vix_kill_switch_threshold`, `vix_total_kill_threshold`, `vix_caution_threshold`, `cash_is_king_multiplier`)
+- **Alerta Telegram:** `_send_kill_switch_alert()` em `bot/cro.py` — 1×/dia via `daily_flags.json` (flag `macro_kill_{mode}`)
+- **Fail-open:** offline sem cache → `kill_switch=False`, bot continua normalmente
+- **Log obrigatório:** `[CRO] VIX={x} kill_switch={y} macro_mode={z} regime={r} → risk_factor={f}`
+- **MEAN_REVERSION:** estratégia VALUE com RSI < 35 — permitida em `bear_correction` a 0.25×; bloqueada se VIX ≥ 35
+- **`data/macro_cache.json`** deve estar no `git add` do workflow `run-trading-bot.yml`
+
+---
+
 ## Historico de Decisoes (nao alterar automaticamente)
 
 | Data | Decisao | Motivo |

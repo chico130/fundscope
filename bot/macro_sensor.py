@@ -161,16 +161,17 @@ def _build_verdict(
         macro_mode = "normal"
 
     return {
-        "vix":               vix,
-        "spy_vs_sma200_pct": spy_vs_sma200,
-        "market_atr_pct":    market_atr_pct,
-        "kill_switch":       kill_switch,
-        "total_kill":        total_kill,
-        "cash_is_king":      cash_is_king,
-        "spy_below_sma200":  spy_below_sma200,
-        "macro_mode":        macro_mode,
-        "from_cache":        from_cache,
-        "cache_age_s":       round(cache_age_s, 1) if cache_age_s is not None else None,
+        "vix":                    vix,
+        "spy_vs_sma200_pct":      spy_vs_sma200,
+        "market_atr_pct":         market_atr_pct,
+        "kill_switch":            kill_switch,
+        "total_kill":             total_kill,
+        "cash_is_king":           cash_is_king,
+        "spy_below_sma200":       spy_below_sma200,
+        "macro_mode":             macro_mode,
+        "cash_is_king_multiplier": cfg["cash_is_king_multiplier"],
+        "from_cache":             from_cache,
+        "cache_age_s":            round(cache_age_s, 1) if cache_age_s is not None else None,
     }
 
 

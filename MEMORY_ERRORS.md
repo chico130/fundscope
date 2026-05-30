@@ -98,6 +98,18 @@ _(nenhuma em curso)_
 
 ---
 
+## REGRAS DO CRO DINÂMICO
+
+**REGRA: O CRO nunca é estático. Verificar sempre VIX antes de ajustar multiplicadores.**
+- `bot/macro_sensor.py` é a única fonte de VIX e SPY SMA-200 — nunca duplicar esta lógica noutros módulos.
+- Thresholds de kill switch (`vix_kill_switch_threshold`, `vix_total_kill_threshold`) estão em `config_risco.json` — nunca hardcodar em código Python.
+- Alertas de kill switch usam `_already_sent_today(f"macro_kill_{mode}")` — 1×/dia por modo, nunca estado in-memory (reseta a cada GitHub Actions run).
+- `data/macro_cache.json` deve estar no `git add` do workflow `run-trading-bot.yml` para persistir entre ciclos.
+- A cache do macro sensor tem TTL de 15 min — se vazia ou expirada, o sensor faz fetch live; se yfinance falhar, usa cache stale + alerta Telegram.
+- Modo fail-open: se macro sensor offline sem cache, `kill_switch=False` — o bot continua sem kill switch ativo (nunca bloquear por ausência de dados).
+
+---
+
 ## REGRAS DE EDIÇÃO OBRIGATÓRIAS
 
 1. Antes de editar sw.js: confirmar que a estratégia de cache para ficheiros .json é network-first

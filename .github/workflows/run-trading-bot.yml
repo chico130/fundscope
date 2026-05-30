@@ -121,7 +121,7 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/beta/ logs/ diario_trades.json docs/project-health.md data/daily_flags.json
+          git add data/beta/ logs/ diario_trades.json docs/project-health.md data/daily_flags.json data/macro_cache.json
           git diff --staged --quiet && exit 0
           git commit -m "bot: cycle $(date -u '+%Y-%m-%d %H:%M') UTC [skip ci]"
           git pull --rebase --autostash -X theirs origin main
