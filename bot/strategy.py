@@ -250,7 +250,14 @@ def generate_signals(
 
         # ── Entradas (posição nova ou add abaixo do meio do máximo) ─────
         if ticker not in held or _below_half_max(ticker, portfolio_state):
-            if regime in _BEAR_REGIMES:
+            # bear_capitulation: sem entradas de qualquer tipo
+            if regime == "bear_capitulation":
+                continue
+            # bear_correction: só MEAN_REVERSION (RSI sobrevendido) se VIX < limite
+            if regime == "bear_correction":
+                sig = _mean_reversion_signal(ticker, rsi, ema50_above, vol_ratio, atr=atr)
+                if sig:
+                    signals.append(sig)
                 continue
             sig = _entry_signal(
                 ticker, rsi, ema50_above, vol_ratio, atr=atr,
@@ -350,6 +357,80 @@ def _entry_signal(
             "volume_ratio_vs_avg": vol_ratio,
             "atr_14":              atr,
             "rs_bullish":          rs_bullish,
+        },
+    )
+
+
+def _mean_reversion_signal(
+    ticker:    str,
+    rsi:       float,
+    ema50_above: bool,
+    vol_ratio: float,
+    atr:       float | None = None,
+) -> Signal | None:
+    """Sinal MEAN_REVERSION para bear_correction — RSI sobrevendido + mercado calmo (VIX < 20).
+
+    Condições (lidas de config_risco.json com fallback a defaults):
+      - RSI ≤ mean_reversion_rsi_max (35)
+      - EMA-50 > EMA-200 (tendência de longo prazo ainda bullish)
+      - VIX < mean_reversion_max_vix (20) — só entra quando pânico é baixo
+      - Bloqueado em bear_capitulation (chamado apenas em bear_correction)
+
+    O CRO aplica o sizing a 0.25× (bear_value_multiplier) — não precisa de ser
+    feito aqui. O estilo "VALUE" preserva compatibilidade com Bonnie e execution.
+    """
+    import json
+    from pathlib import Path
+
+    _cfg_path = Path(__file__).parent.parent / "config_risco.json"
+    try:
+        _cfg = json.loads(_cfg_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        _cfg = {}
+
+    rsi_max  = float(_cfg.get("mean_reversion_rsi_max", 35.0))
+    max_vix  = float(_cfg.get("mean_reversion_max_vix", 20.0))
+    vol_min  = _PC.get("vol_ratio_oversold_min", 0.8)
+
+    if rsi > rsi_max:
+        return None
+    if not ema50_above:
+        return None
+    if vol_ratio < vol_min:
+        return None
+
+    # Gate VIX — só entra quando o mercado está calmo (não durante pânico activo)
+    try:
+        from .macro_sensor import get_macro_context
+        _macro = get_macro_context()
+        _vix   = _macro.get("vix")
+        if _vix is not None and _vix >= max_vix:
+            log_decision(
+                "clyde_mean_reversion_blocked", "vix_too_high",
+                {"ticker": ticker, "vix": _vix, "max_vix": max_vix},
+            )
+            return None
+    except Exception:
+        pass  # fail-open: sem VIX, permite entrada
+
+    strength = min(1.0, 0.65 + (rsi_max - rsi) / 100)
+    return Signal(
+        ticker=ticker,
+        signal_type="ENTRY",
+        direction="LONG",
+        strength=strength,
+        style="VALUE",
+        reasons=[
+            f"MEAN_REVERSION: RSI-14 {rsi:.1f} ≤ {rsi_max} em bear_correction",
+            "EMA-50 > EMA-200 — tendência de longo prazo intacta",
+            f"Volume {vol_ratio:.1f}× confirmado  ·  Mercado calmo (VIX < {max_vix})",
+        ],
+        context={
+            "rsi_14":             rsi,
+            "ema50_above_ema200": ema50_above,
+            "volume_ratio_vs_avg": vol_ratio,
+            "atr_14":             atr,
+            "signal_subtype":     "MEAN_REVERSION",
         },
     )
 
