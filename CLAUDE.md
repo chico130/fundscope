@@ -1,4 +1,12 @@
 ﻿---
+## ⚠️ LEITURA OBRIGATÓRIA ANTES DE EDITAR CÓDIGO
+
+Antes de fazer qualquer alteração a este repositório, lê o ficheiro MEMORY_ERRORS.md na raiz.
+Contém erros já conhecidos e resolvidos — não os reintroduza.
+Regra: se a tua alteração toca em sw.js, qualquer HTML, ou bot/api_client.py, verifica primeiro o MEMORY_ERRORS.md.
+---
+
+---
 id: claude-diretrizes
 title: "Diretrizes do FundScope"
 type: spec
