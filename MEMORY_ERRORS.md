@@ -69,24 +69,6 @@ e garantir que não reintroduz nenhum dos erros abaixo.
 
 ---
 
-### [2026-05-30] Alertas Telegram repetidos em cada ciclo de 15 minutos
-**Sintoma:** Mesma mensagem (Concentração de Posição, Win Rate Baixo) recebida múltiplas vezes por dia.
-**Causa raiz:** Vários alertas em notifier.py não usavam `_already_sent_today()` — disparavam em cada ciclo.
-**Solução aplicada:** Adicionado guard diário com chave única para cada tipo de alerta.
-**Prevenção futura:** Qualquer novo alerta DEVE usar `_already_sent_today(chave_única)` antes de enviar. Nunca chamar `enviar_alerta()` directamente sem guard.
-**Ver também:** entrada detalhada `[2026-05-30] Guards de dedup (daily_flags.json) não persistiam entre ciclos`
-
----
-
-### [2026-05-30] Circuit breaker em loop — T212 falha repetida
-**Sintoma:** "Circuit breaker — T212: 3 falhas consecutivas" repetido em cada ciclo enquanto a API está em baixo.
-**Causa raiz:** Estado do circuit breaker não persistia entre ciclos — recomeçava a contagem em cada run do GitHub Actions.
-**Solução aplicada:** Estado persistido em `data/circuit_breaker_state.json`. Alerta enviado apenas ao abrir/fechar o circuit, não em cada ciclo.
-**Prevenção futura:** Qualquer estado que precisa de persistir entre ciclos DEVE ser escrito em ficheiro JSON. Nunca usar variáveis em memória para estado inter-ciclo.
-**Ver também:** entrada detalhada `[2026-05-30] Guards de dedup (daily_flags.json) não persistiam entre ciclos`
-
----
-
 ### [2026-05-30] Sessão termina às 20h UTC perdendo 1h de mercado NYSE
 **Sintoma:** Bot para às 20h UTC (21h Lisboa) mas o mercado NYSE fecha às 21h UTC.
 **Causa raiz:** Schedule do workflow ou lógica `is_market_open` com horário de fecho incorrecto (20h em vez de 21h UTC).
@@ -95,13 +77,6 @@ e garantir que não reintroduz nenhum dos erros abaixo.
 **Ficheiros afectados:** .github/workflows/run-trading-bot.yml, bot/market_hours.py
 
 ---
-
-### [2026-05-30] Win Rate exibido como 1.0% em vez de 100%
-**Sintoma:** Mensagem Telegram mostra "Win Rate 7d: 1.0%" quando o valor real é 100% (1 trade, 1 vitória).
-**Causa raiz:** `win_rate` armazena valor entre 0 e 1 (ex: 1.0 = 100%). Nalgum sítio estava a ser exibida directamente sem multiplicar por 100. O threshold de alerta `_wr < 25.0` comparava fracção com percentagem → era sempre `True`.
-**Solução aplicada:** Todas as formatações de `win_rate` verificadas — usar sempre `f"{win_rate * 100:.1f}%"`. Threshold corrigido para `_wr < 0.25`.
-**Prevenção futura:** `win_rate` é sempre float [0,1]. Display é sempre `win_rate * 100`. Threshold de alerta é sempre `< 0.25` (não `< 25.0`). Nunca exibir directamente.
-**Ver também:** entrada detalhada `[2026-05-30] Guards de dedup (daily_flags.json) não persistiam entre ciclos`
 
 ---
 
