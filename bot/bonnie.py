@@ -39,6 +39,14 @@ _DEFAULT_CONFIG_RISCO: dict = {
     "tamanho_maximo_posicao": 1.0,
     "motivo_bloqueio": "",
     "estado_emocional": "neutro",
+    "vix_kill_switch_threshold": 35.0,
+    "vix_total_kill_threshold":  45.0,
+    "vix_caution_threshold":     20.0,
+    "cash_is_king_multiplier":   0.25,
+    "mean_reversion_rsi_max":    35.0,
+    "mean_reversion_sma_period": 50,
+    "mean_reversion_max_vix":    20.0,
+    "mean_reversion_allow_bear_correction": True,
 }
 
 # Janela máxima para correlacionar notícia com trade (segundos)
