@@ -372,7 +372,7 @@ def enviar_boa_noite(report: dict) -> None:
         f"• Sinais detectados: {opps}\n"
         f"• Near-misses: {nm}\n"
         f"\n"
-        f"CRO: risk factor {rf:.2f}×  ·  win rate {wr:.1f}%"
+        f"CRO: risk factor {rf:.2f}×  ·  win rate {wr*100:.1f}%"
         f"{avisos}\n"
         f"\n"
         f"Até amanhã às {market_open_label_utc()}."

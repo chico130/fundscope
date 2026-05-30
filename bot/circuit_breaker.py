@@ -83,14 +83,16 @@ def _trip_alert(name: str, failures: int, error: str) -> None:
     _log("circuit_open", name, {"failures": failures, "error": error[:200]})
     print(f"[circuit] {name.upper()} ABERTO — {failures} falhas consecutivas. Bot continua sem esta API.", flush=True)
     try:
-        from .notifier import enviar_alerta
-        enviar_alerta(
-            f"⚠️ Circuit breaker — {name.upper()}\n"
-            f"\n"
-            f"{failures} falhas consecutivas. O bot continua SEM esta API neste ciclo.\n"
-            f"{datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')}",
-            silencioso=False,
-        )
+        from .notifier import enviar_alerta, _already_sent_this_hour, _mark_sent_this_hour
+        if not _already_sent_this_hour(f"circuit_{name}"):
+            enviar_alerta(
+                f"⚠️ Circuit breaker — {name.upper()}\n"
+                f"\n"
+                f"{failures} falhas consecutivas. O bot continua SEM esta API neste ciclo.\n"
+                f"{datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')}",
+                silencioso=False,
+            )
+            _mark_sent_this_hour(f"circuit_{name}")
     except Exception as exc:
         print(f"[circuit] falha ao enviar alerta Telegram: {exc}", flush=True)
 

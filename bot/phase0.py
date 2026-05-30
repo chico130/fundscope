@@ -837,15 +837,15 @@ def run(*, git_sync: bool = True) -> dict:
 
     if not risk_status.get("ok"):
         try:
-            from bot.notifier import enviar_alerta, _already_sent_this_hour, _mark_sent_this_hour
-            if not _already_sent_this_hour("position_concentration"):
+            from bot.notifier import enviar_alerta, _already_sent_today, _mark_sent_today, _already_sent_this_hour, _mark_sent_this_hour
+            if not _already_sent_today("position_concentration"):
                 _warn_lines = "\n".join(f"• {w}" for w in risk_status.get("warnings", []))
                 enviar_alerta(
                     f"🟡 AVISO — Concentração de Posição\n\n{_warn_lines}\n\n"
                     f"Equity: €{risk_status.get('total_equity_eur', 0):,.2f}",
                     silencioso=False,
                 )
-                _mark_sent_this_hour("position_concentration")
+                _mark_sent_today("position_concentration")
         except Exception:
             pass
 
@@ -875,15 +875,15 @@ def run(*, git_sync: bool = True) -> dict:
             enviar_alerta(
                 f"🟡 AVISO — Drawdown Elevado\n\n"
                 f"Drawdown: {_dd:.1f}%  (referência OOS: −10.8%)\n"
-                f"Win Rate 7d: {_wr:.1f}%  ·  Risk Factor: {cro_verdict.risk_factor:.2f}×\n"
+                f"Win Rate 7d: {_wr*100:.1f}%  ·  Risk Factor: {cro_verdict.risk_factor:.2f}×\n"
                 f"Regime: {regime}",
                 silencioso=False,
             )
             _mark_sent_this_hour("drawdown_alert")
-        if _wr < 25.0 and not _already_sent_this_hour("win_rate_alert"):
+        if _wr < 0.25 and not _already_sent_this_hour("win_rate_alert"):
             enviar_alerta(
                 f"🟡 AVISO — Win Rate Baixo\n\n"
-                f"Win Rate 7d: {_wr:.1f}%  (referência OOS: 38%)\n"
+                f"Win Rate 7d: {_wr*100:.1f}%  (referência OOS: 38%)\n"
                 f"Drawdown: {_dd:.1f}%  ·  Risk Factor: {cro_verdict.risk_factor:.2f}×\n"
                 f"Regime: {regime}",
                 silencioso=True,

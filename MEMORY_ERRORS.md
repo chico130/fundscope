@@ -37,6 +37,23 @@ e garantir que não reintroduz nenhum dos erros abaixo.
 
 ---
 
+### [2026-05-30] Guards de dedup (daily_flags.json) não persistiam entre ciclos — mensagens Telegram repetidas
+**Sintoma:** Mesmas mensagens Telegram (concentração de posição, circuit breaker, relatório CRO, alertas de drawdown/win rate) a chegar múltiplas vezes por dia — até 1×/ciclo de 15 min.
+**Causa raiz:** `data/daily_flags.json` (ficheiro de estado de dedup do notifier) nunca estava incluído no `git add` do workflow `run-trading-bot.yml`. Como cada ciclo de 15 min é um runner independente com fresh checkout, o ficheiro era criado em disco, escrito, mas descartado no fim do job. No ciclo seguinte `_read_daily_flags()` devolvia `{}` e todos os guards (`_already_sent_today`, `_already_sent_this_hour`) retornavam sempre `False`. **Bug adicional 1:** `circuit_breaker._trip_alert` chamava `enviar_alerta` directamente, sem guard persistente — ao estado ser por-processo, em cada ciclo o breaker re-abria e re-enviava. **Bug adicional 2:** Alerta de concentração de posição usava guard horário (`_this_hour`) em vez de diário — um estado persistente durante o dia estava a ser enviado até 8×/sessão mesmo com persistência. **Bug adicional 3:** `win_rate_7d` é fracção 0.0–1.0 mas era formatado com `{_wr:.1f}%` sem `×100` em 3 locais → reportava "1.0%" em vez de "100.0%". O threshold de alerta `_wr < 25.0` comparava fracção com percentagem → era sempre `True`, disparando o alerta em todos os ciclos.
+**Solução aplicada:**
+- `run-trading-bot.yml`: adicionado `data/daily_flags.json` ao `git add` do step "Commit análise e push".
+- `data/daily_flags.json`: criado ficheiro inicial `{}` para bootstrapping.
+- `bot/circuit_breaker.py`: `_trip_alert` passa agora por `_already_sent_this_hour(f"circuit_{name}")` / `_mark_sent_this_hour(...)` antes de enviar Telegram.
+- `bot/phase0.py`: concentração muda de `_already_sent_this_hour` → `_already_sent_today`; win rate formatação `{_wr:.1f}%` → `{_wr*100:.1f}%` em 2 locais; threshold `_wr < 25.0` → `_wr < 0.25`.
+- `bot/notifier.py`: `enviar_boa_noite` formata win rate com `{wr*100:.1f}%`.
+**Prevenção futura:**
+- `win_rate_7d` é **sempre fracção** (0.0–1.0) em todo o codebase — multiplicar por 100 **apenas na formatação**.
+- Qualquer novo ficheiro de estado escrito pelo bot em `data/` (fora de `data/beta/`) deve ser adicionado ao `git add` do workflow, caso contrário não persiste entre ciclos.
+- Guards de dedup para eventos inter-ciclo devem usar `_already_sent_this_hour` ou `_already_sent_today` — nunca estado in-memory (que reset a cada GitHub Actions run).
+**Ficheiros afectados:** run-trading-bot.yml, data/daily_flags.json, bot/circuit_breaker.py, bot/phase0.py, bot/notifier.py
+
+---
+
 ## INVESTIGAÇÃO ACTIVA
 
 _(nenhuma em curso)_
