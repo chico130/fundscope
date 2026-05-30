@@ -513,3 +513,74 @@ def enviar_trade_executada(result: dict, modo: str = "phase1_auto") -> None:
     except Exception as exc:
         print(f"[notifier] Falha em enviar_trade_executada: {exc}")
         _log_telegram_error("trade_format_error", f"{type(exc).__name__}: {exc}")
+
+
+def enviar_auditoria_semanal(audit: dict) -> None:
+    """Resumo Telegram do auditor semanal. Falha silenciosa — nunca aborta o auditor."""
+    try:
+        s = audit.get("summary", {})
+        w = audit.get("window", {})
+        patterns = audit.get("patterns", [])
+        suggestions = audit.get("param_suggestions", [])
+
+        # Datas da janela
+        try:
+            from datetime import datetime, timezone as _tz
+            d_start = datetime.fromisoformat(w["start"].replace("Z", "+00:00"))
+            d_end   = datetime.fromisoformat(w["end"].replace("Z", "+00:00"))
+            semana  = f"{d_start.strftime('%-d %b')}–{d_end.strftime('%-d %b %Y')}"
+        except Exception:
+            semana = f"{w.get('start','?')} → {w.get('end','?')}"
+
+        trades     = s.get("trades_closed", 0)
+        wins       = s.get("wins", 0)
+        losses     = s.get("losses", 0)
+        # win_rate é fracção 0.0–1.0 — multiplicar por 100 apenas na formatação
+        wr_pct     = s.get("win_rate", 0.0) * 100
+        pnl        = s.get("pnl_eur", 0.0)
+        regime     = s.get("regime_dominant", "?")
+        sharpe     = s.get("sharpe_weekly")
+        max_dd     = s.get("max_drawdown_pct")
+
+        sharpe_s = f"{sharpe:.2f}" if sharpe is not None else "N/A"
+        max_dd_s = f"{max_dd:.2f}%" if max_dd is not None else "N/A"
+        pnl_s    = f"{pnl:+.2f}€"
+
+        linhas = [
+            "📊 Auditoria Semanal FundScope",
+            f"Semana: {semana}",
+            f"Trades analisados: {trades} | Win Rate: {wr_pct:.1f}%",
+            f"Sharpe: {sharpe_s} | Max Drawdown: {max_dd_s}",
+            f"Resultado: {pnl_s} | Regime: {regime}",
+            "",
+            "Padrões encontrados:",
+        ]
+
+        for p in patterns:
+            finding = p.get("finding", "")
+            if finding:
+                linhas.append(f"• {finding}")
+
+        if suggestions:
+            linhas.append("")
+            linhas.append("Sugestões de ajuste (apenas informativo):")
+            for sg in suggestions:
+                param   = sg.get("param", "?")
+                current = sg.get("current", "?")
+                sugg    = sg.get("suggested", "?")
+                rationale = sg.get("rationale", "")
+                linhas.append(f"• {param}: {current} → {sugg}")
+                if rationale:
+                    linhas.append(f"  {rationale}")
+        else:
+            linhas.append("")
+            linhas.append("Sugestões de ajuste: nenhuma com confiança suficiente.")
+
+        linhas.append("")
+        linhas.append("⚠️ Sugestões nunca aplicadas automaticamente — requerem decisão manual.")
+
+        enviar_alerta("\n".join(linhas), silencioso=False)
+
+    except Exception as exc:
+        print(f"[notifier] Falha em enviar_auditoria_semanal: {exc}")
+        _log_telegram_error("auditoria_format_error", f"{type(exc).__name__}: {exc}")

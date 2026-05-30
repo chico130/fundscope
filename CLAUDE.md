@@ -52,6 +52,7 @@ ultima_revisao: 2026-05-28
 - Data Layer: get_full_portfolio_state() como unica source of truth
 - Logger estruturado JSON (logs/trades/ + logs/errors/)
 - Ingest: update_portfolio.py + update_prices.py (workflows separados)
+- Auditor Semanal: deteccao de padroes semanais + relatorio Telegram (bot/auditor.py, sabados 06:00 UTC)
 
 ### Em desenvolvimento
 - Validacao real 30 dias de Bonnie v4-clean (iniciada ~2026-05-24, termina ~2026-06-24)
@@ -343,6 +344,17 @@ PYTHONPATH=. python -m bot.mass_backtest
 1. Para questoes de arquitectura/fluxo/dependencias: consultar `graphify-out/GRAPH_REPORT.md` primeiro
 2. Nao ler ficheiros de codigo completos a menos que va alterar linhas especificas neles
 3. Confiar na estrutura do grafo para entender dependencias; so abrir ficheiros para edicao
+
+---
+
+## Agente Auditor
+
+- Script: `bot/auditor.py`
+- Workflow: `.github/workflows/weekly-audit.yml` (sabados 06:00 UTC)
+- Output: `data/audit_weekly.json` (escrita atomica; commitado com `[skip ci]`)
+- REGRA: o auditor NUNCA escreve em `config_risco.json` directamente
+- Padroes detectados: sinais fortes perdedores, Bonnie-aprovados negativos, CRO vs outcome, regime vs SPY, hora do dia
+- `param_suggestions[].auto_apply` e sempre `False` — qualquer ajuste requer decisao manual
 
 ---
 

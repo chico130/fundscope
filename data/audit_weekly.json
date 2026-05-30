@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-05-30T23:22:29.372890Z",
+  "window": {
+    "start": "2026-05-23T00:00:00Z",
+    "end": "2026-05-30T00:00:00Z",
+    "trading_days": 5
+  },
+  "summary": {
+    "trades_closed": 1,
+    "wins": 1,
+    "losses": 0,
+    "win_rate": 1.0,
+    "pnl_eur": 9.86,
+    "regime_dominant": "bull_trending",
+    "sharpe_weekly": 0.32,
+    "max_drawdown_pct": 0.06,
+    "data_gaps": []
+  },
+  "patterns": [
+    {
+      "id": "strong_signal_losers",
+      "title": "Sinais fortes (>70%) que perderam",
+      "n_samples": 0,
+      "confidence": "low",
+      "evidence": [],
+      "finding": "Nenhum trade com sinal forte (>70%) perdeu esta semana.",
+      "suggestion": null,
+      "data_gaps": 0
+    },
+    {
+      "id": "bonnie_approved_losers",
+      "title": "Bonnie aprovou mas resultado negativo",
+      "n_samples": 0,
+      "confidence": "low",
+      "evidence": [],
+      "bonnie_vetos_this_week": [],
+      "finding": "Todos os trades Bonnie-aprovados desta semana foram positivos.",
+      "suggestion": null
+    },
+    {
+      "id": "cro_vs_outcome",
+      "title": "CRO risk_factor vs resultado da semana",
+      "n_samples": 1,
+      "confidence": "low",
+      "avg_risk_factor": 1.042,
+      "regime_blocks": 0,
+      "wins": 1,
+      "losses": 0,
+      "finding": "CRO avg risk_factor esta semana: 1.042. Win rate: 100%.",
+      "suggestion": null
+    },
+    {
+      "id": "regime_accuracy",
+      "title": "Regime detectado vs SPY real",
+      "n_samples": 1,
+      "confidence": "low",
+      "declared_regime": "bull_trending",
+      "spy_weekly_pct": 1.44,
+      "aligned": true,
+      "finding": "Regime 'bull_trending' declarado. SPY semana: +1.44%. Alinhado [OK]",
+      "suggestion": null
+    },
+    {
+      "id": "hour_of_day",
+      "title": "Hora de entrada — vencedores vs perdedores",
+      "n_samples": 1,
+      "confidence": "low",
+      "buckets": {
+        "14": {
+          "wins": 1,
+          "losses": 0
+        }
+      },
+      "finding": "Sem perdas registadas - sem padrao de hora a reportar.",
+      "suggestion": null
+    }
+  ],
+  "param_suggestions": [],
+  "notes": [
+    "Amostra semanal pequena — sugestões são indicativas, não accionáveis até acumular ≥20 trades.",
+    "O auditor NUNCA escreve em config_risco.json — apenas sugere ajustes.",
+    "param_suggestions[].auto_apply é sempre False — requer decisão manual."
+  ]
+}
