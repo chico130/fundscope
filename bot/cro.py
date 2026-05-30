@@ -448,22 +448,6 @@ def _validate_proposal(
         return False, "max_trades_per_day", 0.0, 0.0
 
     if proposed.side == "BUY":
-        # Veta BUY se posição existente já excede o limite — comparar valor actual,
-        # não apenas o tamanho da nova ordem.
-        existing_value = sum(
-            (p.get("value") or p.get("value_eur") or 0)
-            for p in positions if p.get("ticker") == proposed.ticker
-        )
-        if existing_value > 0:
-            existing_pct = existing_value / total_equity * 100
-            if existing_pct >= max_pos:
-                log_decision("cro_block", "position_overweight", {
-                    "ticker":      proposed.ticker,
-                    "current_pct": round(existing_pct, 2),
-                    "limit_pct":   max_pos,
-                })
-                return False, "position_overweight", 0.0, 0.0
-
         if max_pos_eur > free_cash * 0.95:
             log_decision("cro_block", "insufficient_cash", {
                 "max_pos_eur": round(max_pos_eur, 2), "free_cash": round(free_cash, 2)
