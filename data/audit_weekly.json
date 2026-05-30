@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-05-30T23:22:29.372890Z",
+  "generated_at": "2026-05-30T23:25:45.522686Z",
   "window": {
     "start": "2026-05-23T00:00:00Z",
     "end": "2026-05-30T00:00:00Z",
@@ -43,11 +43,11 @@
       "title": "CRO risk_factor vs resultado da semana",
       "n_samples": 1,
       "confidence": "low",
-      "avg_risk_factor": 1.042,
+      "avg_risk_factor": null,
       "regime_blocks": 0,
       "wins": 1,
       "losses": 0,
-      "finding": "CRO avg risk_factor esta semana: 1.042. Win rate: 100%.",
+      "finding": "CRO avg risk_factor esta semana: None. Win rate: 100%.",
       "suggestion": null
     },
     {
