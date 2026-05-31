@@ -1,0 +1,115 @@
+name: FundScope — Aplicar Config Sugerida
+
+# Trigger apenas manual — requer confirmação explícita.
+# Lê data/suggested_config.json e aplica os ajustes em config_risco.json.
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: "Escreve APLICAR para confirmar (qualquer outro valor cancela)"
+        required: true
+        type: string
+
+concurrency:
+  group: fundscope-apply-config
+  cancel-in-progress: false
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verificar confirmação
+        run: |
+          if [ "${{ github.event.inputs.confirm }}" != "APLICAR" ]; then
+            echo "❌ Confirmação inválida. Escreve exactamente APLICAR para confirmar."
+            exit 1
+          fi
+          echo "✅ Confirmação válida — a prosseguir com a aplicação."
+
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Verificar e aplicar sugestão
+        run: |
+          python - <<'PYEOF'
+          import json, sys
+          from pathlib import Path
+
+          ROOT           = Path(".")
+          suggested_path = ROOT / "data" / "suggested_config.json"
+          config_path    = ROOT / "config_risco.json"
+
+          # Carregar ficheiros
+          try:
+              suggested = json.loads(suggested_path.read_text(encoding="utf-8"))
+          except FileNotFoundError:
+              print("❌ data/suggested_config.json não encontrado — nada a aplicar.")
+              sys.exit(1)
+          except json.JSONDecodeError as e:
+              print(f"❌ suggested_config.json inválido: {e}")
+              sys.exit(1)
+
+          try:
+              config = json.loads(config_path.read_text(encoding="utf-8"))
+          except Exception as e:
+              print(f"❌ config_risco.json ilegível: {e}")
+              sys.exit(1)
+
+          adjustments = suggested.get("adjustments", [])
+          if not adjustments:
+              print("ℹ️  Sem ajustes em suggested_config.json — nada a aplicar.")
+              sys.exit(0)
+
+          print(f"A aplicar {len(adjustments)} ajuste(s)...")
+          applied = []
+          for adj in adjustments:
+              param         = adj.get("param", "")
+              suggested_val = adj.get("suggested")
+              if not param or suggested_val is None:
+                  print(f"  ⚠️  Ajuste ignorado (incompleto): {adj}")
+                  continue
+              if param not in config:
+                  print(f"  ⚠️  Parâmetro '{param}' não existe em config_risco.json — ignorado.")
+                  continue
+              # Nunca alterar campos de controlo nem _absolute_limits
+              protected = {"permite_comprar", "motivo_bloqueio", "estado_emocional", "_absolute_limits"}
+              if param in protected:
+                  print(f"  ⚠️  '{param}' é protegido — ignorado.")
+                  continue
+              old = config[param]
+              config[param] = suggested_val
+              applied.append(f"  {param}: {old} → {suggested_val}")
+              print(f"  ✅ {param}: {old} → {suggested_val}")
+
+          if not applied:
+              print("ℹ️  Nenhum parâmetro válido — nada a alterar.")
+              sys.exit(0)
+
+          # Escrita atómica
+          tmp = config_path.with_suffix(".tmp")
+          tmp.write_text(json.dumps(config, indent=2, ensure_ascii=False), encoding="utf-8")
+          tmp.replace(config_path)
+          print(f"\nconfig_risco.json actualizado com {len(applied)} ajuste(s).")
+          PYEOF
+
+      - name: Commit
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add config_risco.json
+          git diff --staged --quiet && echo "ℹ️  Sem alterações a commitar." && exit 0
+          VERSION=$(date -u '+%Y%m%d')
+          git commit -m "config: apply Gemini self-heal suggestion v${VERSION} [skip ci]"
+          git pull --rebase --autostash -X theirs origin main
+          git push || (git pull --rebase --autostash -X theirs origin main && git push)
+          echo "✅ config_risco.json commitado."

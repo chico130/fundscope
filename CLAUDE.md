@@ -358,6 +358,27 @@ PYTHONPATH=. python -m bot.mass_backtest
 
 ---
 
+## Self-Healing
+
+- Script: `scripts/self_heal.py` (corre apos o auditor semanal, sabados ~06:05 UTC)
+- Sugestoes: `data/suggested_config.json` — **nunca aplicar automaticamente**
+- Estado: `data/beta/self_heal_state.json` — gate semanal (minimo 6 dias entre execucoes)
+- Limites absolutos: `config_risco.json/_absolute_limits` — **NUNCA alterar**
+- Workflow de promocao: `.github/workflows/apply-suggested-config.yml` — trigger apenas manual; requer input "APLICAR"
+- REGRA: Gemini sugere dentro de limites. Humano aprova. Sistema aplica.
+- Parametros que o Gemini pode afinar (jaula hardcoded em `PARAM_BOUNDS`):
+  - `tamanho_maximo_posicao` [0.40, 1.00]
+  - `vix_caution_threshold` [15, 25]
+  - `vix_kill_switch_threshold` [30, 40]
+  - `vix_total_kill_threshold` [42, 50]
+  - `cash_is_king_multiplier` [0.10, 0.50]
+  - `mean_reversion_rsi_max` [25, 40]
+  - `mean_reversion_max_vix` [15, 25]
+- O Gemini NUNCA toca em: `permite_comprar`, `motivo_bloqueio`, `estado_emocional`, `_absolute_limits`, nem em `optimized_backtest_params.json`
+- Validacao em 3 camadas: allowlist → range/magnitude → sanity (baseline anti-alucinacao + ordenacao VIX)
+
+---
+
 ## CRO Dinamico
 
 - **Macro sensor:** `bot/macro_sensor.py` (VIX + SPY SMA-200 via yfinance, cache 15 min em `data/macro_cache.json`)
