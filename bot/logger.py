@@ -11,7 +11,7 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 
-from .config import LOGS_TRADES_DIR, LOGS_ERRORS_DIR
+from .config import LOGS_TRADES_DIR, LOGS_ERRORS_DIR, DATA_BETA_DIR
 
 
 # ---------------------------------------------------------------------------
@@ -95,4 +95,53 @@ def log_error(error_type: str, detail: dict | None = None) -> None:
     path = LOGS_ERRORS_DIR / f"{_today()}.json"
     _append_to_json_list(path, entry)
 
+
+def log_shadow_rejected(
+    rejected_by: str,
+    rejection_reason: str,
+    features: dict,
+    signal: dict,
+) -> None:
+    """Appends a shadow_rejected record to data/beta/shadow_ledger.json.
+
+    I/O lateral — never raises (R3). All veto points call this so every
+    signal the Clyde generated but the system discarded is preserved with
+    its full 8-feature vector for future ML training.
+    """
+    record = {
+        "datetime":         _now_iso(),
+        "type":             "shadow_rejected",
+        "execution_type":   "shadow_rejected",
+        "rejected_by":      rejected_by,
+        "rejection_reason": rejection_reason,
+        "features":         features or {},
+        "signal":           signal or {},
+        "shadow_result":    None,
+    }
+    path = DATA_BETA_DIR / "shadow_ledger.json"
+    try:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        existing: dict = {}
+        if path.exists():
+            try:
+                with open(path, "r", encoding="utf-8") as f:
+                    existing = json.load(f)
+                if not isinstance(existing, dict):
+                    existing = {}
+            except (json.JSONDecodeError, OSError):
+                existing = {}
+        trades = existing.get("shadow_trades", [])
+        if not isinstance(trades, list):
+            trades = []
+        trades.append(record)
+        payload = {
+            "shadow_trades": trades,
+            "last_updated":  _now_iso(),
+        }
+        tmp = path.with_suffix(".tmp")
+        with open(tmp, "w", encoding="utf-8") as f:
+            json.dump(payload, f, indent=2, ensure_ascii=False)
+        tmp.replace(path)
+    except Exception as exc:
+        log_error("shadow_ledger_write", {"error": str(exc)})
 

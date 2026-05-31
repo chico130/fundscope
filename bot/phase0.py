@@ -21,7 +21,7 @@ if hasattr(sys.stderr, "reconfigure"):
 
 from .data_layer import get_full_portfolio_state, enrich_with_technicals, read_beta_trades
 from .throttler import WatchlistThrottler
-from .logger import log_decision, log_error
+from .logger import log_decision, log_error, log_shadow_rejected
 from .config import DATA_BETA_DIR, RISK_CONFIG, STRATEGY_VERSION, PHASE1_EXECUTION
 from .regime_detector import get_current_regime, load_cached_regime, load_regime_metrics
 from .watchlist_manager import build_watchlist
@@ -55,6 +55,20 @@ _REGIME_ENTRY_FACTOR: dict[str, float] = {
     "bull_lateral":      0.6,
     "bear_correction":   0.0,
     "bear_capitulation": 0.0,
+}
+
+# Mapeamento de skip reason → rejected_by para o Shadow Ledger
+_SKIP_TO_REJECTED_BY: dict[str, str] = {
+    "market_closed":               "market_closed",
+    "max_trades_per_day_reached":  "max_trades",
+    "no_price":                    "data",
+    "bear_momentum_blocked":       "cro_regime",
+    "size_below_min_order":        "cro_sizing",
+    "insufficient_cash":           "liquidity",
+    "qty_rounded_to_zero":         "data",
+    "zero_equity":                 "liquidity",
+    "execute_trade_returned_none": "t212_rejection",
+    "exception_during_execute":    "error",
 }
 
 
@@ -265,9 +279,28 @@ def _apply_bonnie_filter(opportunities: list[dict]) -> list[dict]:
         approved_trades, vetoed = filter_proposals(proposals, market_data, bonnie_params)
         approved_tickers = {t.ticker for t in approved_trades}
 
+        opp_by_ticker = {o["ticker"]: o for o in opportunities}
         for trade, reason in vetoed:
             log_decision("bonnie_veto", "opportunity_filtered",
                          {"ticker": trade.ticker, "reason": reason})
+            try:
+                _opp = opp_by_ticker.get(trade.ticker)
+                if _opp:
+                    log_shadow_rejected(
+                        rejected_by="bonnie",
+                        rejection_reason=reason,
+                        features=_opp.get("features", {}),
+                        signal={
+                            "ticker":   trade.ticker,
+                            "side":     "BUY",
+                            "price":    _opp.get("last_price"),
+                            "strength": _opp.get("signal_strength"),
+                            "style":    _opp.get("style", "VALUE"),
+                            "regime":   _opp.get("regime", "unknown"),
+                        },
+                    )
+            except Exception as _se:
+                log_error("shadow_bonnie_log_failed", {"ticker": trade.ticker, "error": str(_se)})
 
         return [opp for opp in opportunities if opp["ticker"] in approved_tickers]
 
@@ -318,6 +351,22 @@ def _apply_social_veto(opportunities: list[dict]) -> list[dict]:
             if veto:
                 log_decision("social_veto", "opportunity_filtered",
                              {"ticker": opp["ticker"], "reason": veto})
+                try:
+                    log_shadow_rejected(
+                        rejected_by="social",
+                        rejection_reason=str(veto),
+                        features=opp.get("features", {}),
+                        signal={
+                            "ticker":   opp["ticker"],
+                            "side":     "BUY",
+                            "price":    opp.get("last_price"),
+                            "strength": opp.get("signal_strength"),
+                            "style":    opp.get("style", "VALUE"),
+                            "regime":   opp.get("regime", "unknown"),
+                        },
+                    )
+                except Exception as _se:
+                    log_error("shadow_social_log_failed", {"ticker": opp["ticker"], "error": str(_se)})
             else:
                 kept.append(opp)
         return kept
@@ -369,6 +418,22 @@ def _apply_manual_block(opportunities: list[dict]) -> list[dict]:
                 log_decision("manual_block", "opportunity_filtered",
                              {"ticker": opp["ticker"], "t212": t212_ticker})
                 print(f"[MANUAL BLOCK] {opp['ticker']} bloqueado manualmente → skipping", flush=True)
+                try:
+                    log_shadow_rejected(
+                        rejected_by="manual_block",
+                        rejection_reason=f"manual_block: {t212_ticker}",
+                        features=opp.get("features", {}),
+                        signal={
+                            "ticker":   opp["ticker"],
+                            "side":     "BUY",
+                            "price":    opp.get("last_price"),
+                            "strength": opp.get("signal_strength"),
+                            "style":    opp.get("style", "VALUE"),
+                            "regime":   opp.get("regime", "unknown"),
+                        },
+                    )
+                except Exception as _se:
+                    log_error("shadow_manual_log_failed", {"ticker": opp["ticker"], "error": str(_se)})
             else:
                 kept.append(opp)
         return kept
@@ -426,12 +491,32 @@ def _execute_phase1(
     """
     executed: list[dict] = []
     skips:    list[dict] = []
+    _opp_map  = {o["ticker"]: o for o in buy_opportunities}
 
     def _skip(ticker: str, reason: str, **details) -> None:
         record = {"ticker": ticker, "reason": reason, "details": details}
         skips.append(record)
         print(f"[PHASE1 SKIP] {ticker}: {reason} | {details}", flush=True)
         log_decision("phase1_skip", reason, {"ticker": ticker, **details})
+        try:
+            _yf_tk = ticker.split("_")[0]
+            _opp = _opp_map.get(ticker) or _opp_map.get(_yf_tk)
+            if _opp:
+                log_shadow_rejected(
+                    rejected_by=_SKIP_TO_REJECTED_BY.get(reason, "other"),
+                    rejection_reason=reason,
+                    features=_opp.get("features", {}),
+                    signal={
+                        "ticker":   _opp["ticker"],
+                        "side":     "BUY",
+                        "price":    _opp.get("last_price"),
+                        "strength": _opp.get("signal_strength"),
+                        "style":    _opp.get("style", "VALUE"),
+                        "regime":   regime,
+                    },
+                )
+        except Exception as _se:
+            log_error("shadow_skip_log_failed", {"ticker": ticker, "error": str(_se)})
 
     regime_factor = _REGIME_ENTRY_FACTOR.get(regime, 0.0)
 
@@ -1093,6 +1178,29 @@ def _get_watchlist_safe() -> list[dict]:
         return []
 
 
+def _build_feature_vector(tech: dict, mom_1m: float = 0.0, mom_3m: float = 0.0) -> dict:
+    """Builds the 8-feature vector for shadow ledger from raw technicals + watchlist momentum.
+
+    Must be called with data["technicals"] (raw from fetch_single_ticker), NOT sig.context,
+    because sig.context strips the EMA float values needed for price_vs_emaXX.
+    """
+    last   = tech.get("last_price") or 0.0
+    ema20  = tech.get("ema_20")
+    ema50  = tech.get("ema50")
+    ema200 = tech.get("ema200")
+    atr    = tech.get("atr_14") or 0.0
+    return {
+        "rsi_14":          tech.get("rsi_14"),
+        "volume_ratio":    tech.get("volume_ratio") or tech.get("volume_ratio_vs_avg"),
+        "atr_pct":         round(atr / last, 6)          if last > 0 else None,
+        "price_vs_ema20":  round(last / ema20 - 1, 6)   if (ema20  and last) else None,
+        "price_vs_ema50":  round(last / ema50 - 1, 6)   if (ema50  and last) else None,
+        "price_vs_ema200": round(last / ema200 - 1, 6)  if (ema200 and last) else None,
+        "momentum_1m":     round(float(mom_1m), 6)       if mom_1m  is not None else None,
+        "momentum_3m":     round(float(mom_3m), 6)       if mom_3m  is not None else None,
+    }
+
+
 def _scan_watchlist_candidates(
     watchlist: list[dict], held_symbols: set[str], regime: str
 ) -> tuple[list[dict], list[dict]]:
@@ -1157,6 +1265,14 @@ def _scan_watchlist_candidates(
                 "reasons":         sig.reasons,
                 "technicals":      sig.context,
                 "last_price":      data.get("last_price"),
+                # Shadow Ledger: 8-feature vector from raw technicals (not sig.context,
+                # which strips EMA float values needed for price_vs_emaXX).
+                "features":        _build_feature_vector(
+                                       data.get("technicals") or {},
+                                       mom_1m=mom1m_map.get(sig.ticker, 0.0),
+                                       mom_3m=mom3m_map.get(sig.ticker, 0.0),
+                                   ),
+                "regime":          regime,
             })
 
     opportunities.sort(key=lambda x: x["signal_strength"], reverse=True)
