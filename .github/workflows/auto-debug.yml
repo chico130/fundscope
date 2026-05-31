@@ -1,0 +1,57 @@
+name: FundScope — Auto-Debug (Ciclo de Castigo)
+
+# Dispara quando qualquer outro workflow termina com falha.
+# Captura logs, lê contexto de git, pede diagnóstico ao Gemini e cria issue.
+# NUNCA aplica código automaticamente — apenas cria issues com sugestões.
+on:
+  workflow_run:
+    workflows:
+      - "FundScope — Trading Bot (Phase 0)"
+      - "FundScope — Update Portfolio"
+      - "FundScope — Update Prices"
+      - "FundScope — Update Markets"
+      - "FundScope — Update News"
+      - "FundScope — Auditor Semanal"
+      - "FundScope — Daily Briefing"
+      - "FundScope — Train Bonnie"
+    types:
+      - completed
+
+concurrency:
+  group: fundscope-auto-debug
+  cancel-in-progress: false
+
+jobs:
+  diagnose:
+    # Só corre quando o workflow falhou
+    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+
+    steps:
+      - name: Checkout (com histórico para git log)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 20
+
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install requests google-generativeai 2>/dev/null || pip install requests
+
+      - name: Capturar logs e diagnosticar
+        env:
+          GH_TOKEN:            ${{ secrets.GITHUB_TOKEN }}
+          GEMINI_API_KEY:      ${{ secrets.GEMINI_API_KEY }}
+          TELEGRAM_BOT_TOKEN:  ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID:    ${{ secrets.TELEGRAM_CHAT_ID }}
+          FAILED_RUN_ID:       ${{ github.event.workflow_run.id }}
+          FAILED_WORKFLOW:     ${{ github.event.workflow_run.name }}
+          FAILED_HEAD_SHA:     ${{ github.event.workflow_run.head_sha }}
+          REPO:                ${{ github.repository }}
+        run: python scripts/code_heal.py
