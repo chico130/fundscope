@@ -32,8 +32,25 @@ O Modo Observação (log ML sem vetar) é obrigatório antes de activar inferên
 no momento da rejeição. É matematicamente impossível treinar a Bonnie sem estes dados.
 **Causa raiz:** logs/trades/YYYY-MM-DD.json grava apenas "Decision Event" genérico
 sem o vector de features completo.
-**Solução aplicada:** [a preencher na Fase 1]
-**Prevenção futura:** Ver REGRA DE ARQUITECTURA no CLAUDE.md — NO GHOST VETOES.
+**Solução aplicada (2026-05-31):**
+- `bot/phase0.py`: `_build_feature_vector(tech, mom_1m, mom_3m)` calcula as 8 features
+  a partir de `data["technicals"]` cru (não de `sig.context`, que perde os EMA floats).
+  Adicionado `"features"` e `"regime"` a cada oportunidade em `_scan_watchlist_candidates`.
+- `bot/logger.py`: `log_shadow_rejected(rejected_by, rejection_reason, features, signal)`
+  escreve `data/beta/shadow_ledger.json` (schema `{"shadow_trades": [...], "last_updated": ...}`)
+  atomicamente. Chamado em todos os pontos de veto: Bonnie (`_apply_bonnie_filter`),
+  social (`_apply_social_veto`), bloqueio manual (`_apply_manual_block`), e todos os
+  skips da Fase 1 (`_execute_phase1._skip` via `_SKIP_TO_REJECTED_BY` map).
+- `scripts/simulate_shadow_exits.py`: preenche `shadow_result` para registos expirados,
+  simulando TP/SL bar a bar com multiplicadores de `optimized_backtest_params.json`.
+- `.github/workflows/weekly-audit.yml`: step "Simulate shadow exits" adicionado (sábados).
+**Prevenção futura:**
+- `_build_feature_vector` DEVE receber `data["technicals"]` (raw de `fetch_single_ticker`),
+  NUNCA `sig.context` — este perde os EMA float values usados em `price_vs_emaXX`.
+- `simulate_shadow_exits.py` lê multiplicadores ATR de `optimized_backtest_params.json`
+  em runtime — nunca hardcodar (ver erro "Desalinhamento de parâmetros ATR" acima).
+- `shadow_ledger.json` é ficheiro de estado em `data/beta/` — incluído no `git add data/beta/`
+  do `run-trading-bot.yml` (persiste entre ciclos) e no commit do `weekly-audit.yml`.
 
 ### [2026-05-29] Cache agressiva no iPhone 13 — stock.html e home não actualizam
 **Sintoma:** Página mostra dados desactualizados. Home desactualizada (não mostra ganhos). stock.html consome dados estáticos de data/beta.
