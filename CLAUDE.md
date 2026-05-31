@@ -347,6 +347,16 @@ PYTHONPATH=. python -m bot.mass_backtest
 
 ---
 
+## Daily Briefing
+
+- Script: `scripts/daily_briefing.py`
+- Workflow: `.github/workflows/daily-briefing.yml` (dias úteis 13:30 UTC)
+- Bloqueio manual: `data/blocked_tickers.json` (ticker em formato T212, ex: `HPE_US_EQ`)
+- Gate no bot: `_apply_manual_block()` em `bot/phase0.py` a seguir ao social veto
+- REGRA: rate limit Finnhub news — máximo 5 chamadas por briefing (1 por ticker top 5)
+- Secrets necessários: `SMTP_USER`, `SMTP_PASS` (Gmail App Password), `BRIEFING_EMAIL`
+- Fail-open: erros de email/API nunca abortam — `_apply_manual_block` devolve todas as oportunidades se ficheiro ausente/corrompido
+
 ## Agente Auditor
 
 - Script: `bot/auditor.py`

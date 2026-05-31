@@ -1,0 +1,64 @@
+name: FundScope — Scout Daily Briefing
+
+on:
+  schedule:
+    - cron: '30 13 * * 1-5'   # dias úteis às 13:30 UTC (60 min antes abertura NYSE)
+  workflow_dispatch:            # execução manual via GitHub UI
+
+concurrency:
+  group: fundscope-briefing
+  cancel-in-progress: true     # se disparado duas vezes, cancela o anterior
+
+jobs:
+  briefing:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run Scout — Daily Briefing
+        env:
+          FINNHUB_TOKEN:      ${{ secrets.FINNHUB_TOKEN }}
+          SMTP_HOST:          smtp.gmail.com
+          SMTP_PORT:          "587"
+          SMTP_USER:          ${{ secrets.SMTP_USER }}
+          SMTP_PASS:          ${{ secrets.SMTP_PASS }}
+          BRIEFING_EMAIL:     ${{ secrets.BRIEFING_EMAIL }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID:   ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python scripts/daily_briefing.py
+
+      - name: Notificar falha via Telegram
+        if: failure()
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID:   ${{ secrets.TELEGRAM_CHAT_ID }}
+          GH_RUN_URL: "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+        run: |
+          python3 - <<'EOF'
+          import os, urllib.request, json as _j
+          token   = os.environ.get("TELEGRAM_BOT_TOKEN", "")
+          chat_id = os.environ.get("TELEGRAM_CHAT_ID", "")
+          run_url = os.environ.get("GH_RUN_URL", "")
+          if token and chat_id:
+              msg = f"⚠️ Scout Briefing falhou\ndaily-briefing.yml terminou com erro.\n{run_url}"
+              payload = _j.dumps({"chat_id": chat_id, "text": msg}).encode()
+              req = urllib.request.Request(
+                  f"https://api.telegram.org/bot{token}/sendMessage",
+                  data=payload, headers={"Content-Type": "application/json"},
+              )
+              try:
+                  urllib.request.urlopen(req, timeout=8)
+              except Exception as e:
+                  print(f"Falha ao enviar alerta: {e}")
+          EOF
