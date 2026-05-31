@@ -81,6 +81,12 @@ jobs:
             --n-trials "$N_TRIALS" \
             $SKIP_FLAG
 
+      - name: Avaliar Desafiante vs Campeão (O Juiz)
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID:   ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: PYTHONPATH=. python scripts/evaluate_challenger.py
+
       - name: Commit artefactos
         run: |
           git config user.name  "github-actions[bot]"
@@ -90,6 +96,11 @@ jobs:
             models/registry.json \
             "models/bonnie_params_v*.json" \
             "models/bonnie_train_report_v*.md" \
+            "models/bonnie_challenger_v*.pkl" \
+            "models/bonnie_challenger_thresholds_v*.json" \
+            "models/bonnie_challenger_v*_meta.json" \
+            models/bonnie_champion.pkl \
+            models/bonnie_champion_meta.json \
             "data/models/bonnie_model_v*.pkl" \
             "data/beta/bonnie_thresholds_v*.json" \
             data/beta/optimized_backtest_params.json \

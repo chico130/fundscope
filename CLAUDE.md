@@ -502,12 +502,20 @@ PYTHONPATH=. python -m bot.mass_backtest
 - **Shadow Mode:** `data/beta/shadow_mode.json` — `{"active": true, "model": "vN", "start": "..."}` activo após promoção
 - **Alvo de promoção:** `data/beta/optimized_backtest_params.json` (nunca `config_risco.json`)
 
+### Dataset e Promoção ML (Fase 3)
+- **Dataset:** MISTO (histórico + reais + shadow) — ver `load_mixed_dataset()` em `train_bonnie.py`
+- **Pesos de penalização:** `config_risco.json/training_weights` (real_sl_hit=3.0, shadow_sl_hit=1.5…)
+- **Promoção ML:** `scripts/evaluate_challenger.py` (O Juiz) — corre após o treino no workflow
+- **OOS set:** shadow trades dos últimos 30 dias (isolados do treino — garantia de pureza)
+- **Campeão activo:** `models/bonnie_champion.pkl` + `models/bonnie_champion_meta.json`
+- **Critérios:** `config_risco.json/challenger_promotion_criteria` (gates + ≥2 métricas sem piorar)
+
 ### Regras do pipeline
 - `models/bonnie_params_vN.json` são **imutáveis** após escrita — qualquer re-treino gera vN+1
 - `promote_model.py` **nunca** escreve em `config_risco.json`
 - Quando `shadow_mode.json` está activo, não editar `optimized_backtest_params.json` manualmente — gerido automaticamente
 - O Optuna usa EMA fixo (50/200) — apenas RSI, vol, ATR stop/TP, trail e Bonnie threshold são optimizados
-- Fase 1 (Optuna) usa Bonnie v4-clean fixo; Fase 2 retreina Bonnie com TP/SL vencedores
+- Fase 1 (Optuna) usa Bonnie v4-clean fixo; Fase 2 treina challenger com dataset misto + sample_weight
 - Fitness = `median(Sharpe OOS) − 0.5 × std(Sharpe OOS)` — penaliza instabilidade entre regimes
 
 ---
