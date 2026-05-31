@@ -52,7 +52,6 @@ ultima_revisao: 2026-05-31
 - Data Layer: get_full_portfolio_state() como unica source of truth
 - Logger estruturado JSON (logs/trades/ + logs/errors/)
 - Ingest: update_portfolio.py + update_prices.py (workflows separados)
-- Auditor Semanal: deteccao de padroes semanais + relatorio Telegram (bot/auditor.py, sabados 06:00 UTC)
 
 ### Em desenvolvimento
 - Validacao real 30 dias de Bonnie v4-clean (iniciada ~2026-05-24, termina ~2026-06-24)
@@ -62,7 +61,7 @@ ultima_revisao: 2026-05-31
 - Bonnie v5: LABEL_HORIZON_DAYS 20->57 (identificada e bloqueada ate validacao real)
 
 **Ultimo trade executado:** `ARM` em `2026-05-22T14:00`
-**Ultimo ciclo:** `2026-05-29T22:26Z` | status: `active` | regime: `bull_trending`
+**Ultimo ciclo:** `2026-05-31T16:43Z` | status: `active` | regime: `bull_trending`
 <!-- O-QUE-JA-EXISTE-END -->
 
 ---
@@ -197,9 +196,9 @@ Secrets: `T212_API_ID`, `T212_API_KEY`, `FINNHUB_TOKEN`, `TELEGRAM_BOT_TOKEN`, `
 ## 5. Estado Actual
 
 <!-- ESTADO-ACTUAL-START -->
-**Actualizado em:** 2026-05-29 22:27 UTC
+**Actualizado em:** 2026-05-31 16:44 UTC
 
-- **Bot status:** `active` | Ultimo ciclo: `2026-05-29T22:26Z`
+- **Bot status:** `active` | Ultimo ciclo: `2026-05-31T16:43Z`
 - **Regime:** `bull_trending` | Modo: `phase1_auto`
 - **Posicoes abertas:** 1 | **Trades abertos:** 0 | **Trades hoje:** 0
 - **Fase:** Fase 1 — execucao automatica em conta demo (`PHASE1_EXECUTION=True`, `LIVE_TRADING=False`)
@@ -216,16 +215,16 @@ Secrets: `T212_API_ID`, `T212_API_KEY`, `FINNHUB_TOKEN`, `TELEGRAM_BOT_TOKEN`, `
 <!-- ULTIMAS-ALTERACOES-START -->
 | Data | Hash | Descricao |
 |---|---|---|
-| 2026-05-29 | `f27a89c` | 2905 |
-| 2026-05-29 | `841c57c` | fix: HTTP error handling for T212 API responses |
-| 2026-05-29 | `63e2c6f` | fix: pre-order validation (market hours + minimum cash check) |
-| 2026-05-29 | `37f4f08` | fix: capture and log T212 rejection reason in Telegram alert |
-| 2026-05-29 | `068986c` | fix: network-first cache strategy + cache-busting for all dynamic JSON fetches |
-| 2026-05-29 | `c4006b8` | chore: update portfolio [skip ci] |
-| 2026-05-29 | `919b90b` | docs: reference MEMORY_ERRORS.md in CLAUDE.md (zero repeated errors policy) |
-| 2026-05-29 | `91c9ca3` | docs: create MEMORY_ERRORS.md — zero repeated errors policy |
-| 2026-05-29 | `ecacc3a` | feat: permanent gain insights on stock page with Gemini comparison |
-| 2026-05-29 | `64330c5` | feat: automated project health dashboard |
+| 2026-05-31 | `c153e6e` | feat: sample_weight punishment logic for SL hits |
+| 2026-05-31 | `3ddc597` | feat: evaluate_challenger.py — The Judge (champion vs challenger) |
+| 2026-05-31 | `3421001` | feat: mixed dataset training — historical + real + shadow trades |
+| 2026-05-31 | `0046af3` | feat: Bonnie observation mode — ML inference logged without veto power |
+| 2026-05-31 | `86c2136` | fix: align ATR multipliers in retrain_bonnie.py with production config |
+| 2026-05-31 | `dec6202` | chore: update news.json [skip ci] |
+| 2026-05-31 | `dfd2ee2` | feat: simulate_shadow_exits — compute outcomes for shadow trades |
+| 2026-05-31 | `682442e` | feat: shadow ledger — capture 8 features for all vetoed signals |
+| 2026-05-31 | `c3f452c` | docs: add critical architectural rules to MEMORY_ERRORS.md and CLAUDE.md |
+| 2026-05-31 | `a50bb68` | docs: update CLAUDE.md with complete architecture v2 |
 <!-- ULTIMAS-ALTERACOES-END -->
 
 ---
