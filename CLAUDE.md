@@ -61,7 +61,7 @@ ultima_revisao: 2026-05-31
 - Bonnie v5: LABEL_HORIZON_DAYS 20->57 (identificada e bloqueada ate validacao real)
 
 **Ultimo trade executado:** `ARM` em `2026-05-22T14:00`
-**Ultimo ciclo:** `2026-05-31T16:43Z` | status: `active` | regime: `bull_trending`
+**Ultimo ciclo:** `2026-05-31T18:10Z` | status: `active` | regime: `bull_trending`
 <!-- O-QUE-JA-EXISTE-END -->
 
 ---
@@ -196,9 +196,9 @@ Secrets: `T212_API_ID`, `T212_API_KEY`, `FINNHUB_TOKEN`, `TELEGRAM_BOT_TOKEN`, `
 ## 5. Estado Actual
 
 <!-- ESTADO-ACTUAL-START -->
-**Actualizado em:** 2026-05-31 16:44 UTC
+**Actualizado em:** 2026-05-31 18:10 UTC
 
-- **Bot status:** `active` | Ultimo ciclo: `2026-05-31T16:43Z`
+- **Bot status:** `active` | Ultimo ciclo: `2026-05-31T18:10Z`
 - **Regime:** `bull_trending` | Modo: `phase1_auto`
 - **Posicoes abertas:** 1 | **Trades abertos:** 0 | **Trades hoje:** 0
 - **Fase:** Fase 1 — execucao automatica em conta demo (`PHASE1_EXECUTION=True`, `LIVE_TRADING=False`)
@@ -215,6 +215,7 @@ Secrets: `T212_API_ID`, `T212_API_KEY`, `FINNHUB_TOKEN`, `TELEGRAM_BOT_TOKEN`, `
 <!-- ULTIMAS-ALTERACOES-START -->
 | Data | Hash | Descricao |
 |---|---|---|
+| 2026-05-31 | `fed02bf` | bot: emergency cycle 2026-05-31 17:10 UTC [skip ci] |
 | 2026-05-31 | `c153e6e` | feat: sample_weight punishment logic for SL hits |
 | 2026-05-31 | `3ddc597` | feat: evaluate_challenger.py — The Judge (champion vs challenger) |
 | 2026-05-31 | `3421001` | feat: mixed dataset training — historical + real + shadow trades |
@@ -224,7 +225,6 @@ Secrets: `T212_API_ID`, `T212_API_KEY`, `FINNHUB_TOKEN`, `TELEGRAM_BOT_TOKEN`, `
 | 2026-05-31 | `dfd2ee2` | feat: simulate_shadow_exits — compute outcomes for shadow trades |
 | 2026-05-31 | `682442e` | feat: shadow ledger — capture 8 features for all vetoed signals |
 | 2026-05-31 | `c3f452c` | docs: add critical architectural rules to MEMORY_ERRORS.md and CLAUDE.md |
-| 2026-05-31 | `a50bb68` | docs: update CLAUDE.md with complete architecture v2 |
 <!-- ULTIMAS-ALTERACOES-END -->
 
 ---
