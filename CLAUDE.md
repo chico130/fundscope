@@ -17,7 +17,7 @@ links_obrigatorios:
   parent_moc: "[[MOC_FundScope]]"
   vizinhos: "[[README]] [[000-INDEX]] [[CRO_SPEC]]"
 status: stable
-ultima_revisao: 2026-05-28
+ultima_revisao: 2026-05-31
 ---
 
 # FundScope â€” Guia de Arquitectura para Claude Code
@@ -123,6 +123,14 @@ phase0.py::run()            <- orquestrador principal (1396 linhas)
 | `ingest/update_portfolio.py` | Ingest | Sincroniza `portfolio.json` (raiz) + `data/beta/` | Corre no fim do ciclo principal + workflow separado |
 | `ingest/update_prices.py` | Ingest | Actualiza `data.json` via yfinance | Workflow diario pos-fecho US |
 | `serve.py` | Dev Server | HTTP local com autenticacao e cache JSON RAM | `_JSON_CACHE` invalida a cada 60s |
+| `bot/auditor.py` | Agente Auditor | Deteccao de padroes semanais + relatorio Telegram (sabados 06:00 UTC) | NUNCA escreve em `config_risco.json`; `param_suggestions[].auto_apply` sempre `False` |
+| `bot/macro_sensor.py` | Macro Sensor | VIX + SPY SMA-200 via yfinance; kill switch CRO dinamico | Fail-open; thresholds em `config_risco.json`; cache 15 min em `data/macro_cache.json` |
+| `scripts/train_bonnie.py` | Pipeline WFO | Walk-Forward Optimization + Optuna; ~14 folds desde 2017 | Cada treino gera vN+1; versoes antigas imutaveis; EMA fixo (50/200) |
+| `scripts/promote_model.py` | Model Promoter | Promocao automatica: Sharpe OOS > activo + 0.10; activa shadow mode | NUNCA escreve `config_risco.json`; shadow mode activo bloqueia edicao manual de params |
+| `scripts/self_heal.py` | Self-Heal | Gemini sugere parametros dentro de PARAM_BOUNDS; gate semanal | Sugestoes em `data/suggested_config.json` — **nunca aplicar automaticamente** |
+| `scripts/daily_briefing.py` | Daily Briefing | Top 5 oportunidades por email (dias uteis 13:30 UTC) | Maximo 5 chamadas Finnhub por briefing |
+| `scripts/criteria_review.py` | Criteria Review | Correlacoes de trades reais — bot autodidata (sabados) | NUNCA escreve `config_risco.json`; so analise descritiva |
+| `scripts/code_heal.py` | Code Heal | Diagnostico Gemini → GitHub Issue (Ciclo de Castigo) | NUNCA aplica codigo; max 3 tentativas por fingerprint; sanitizacao obrigatoria |
 
 ---
 
@@ -174,8 +182,15 @@ Finnhub / yfinance â”€â”€â”€â”€â”€â”€â”€â”
 | `update-markets.yml` | separado | Actualiza `markets.json` |
 | `update-news.yml` | separado | Actualiza `news.json` via marketaux/newsapi |
 | `pages.yml` | push para main | Deploy GitHub Pages |
+| `weekly-audit.yml` | sabados 06:00 UTC | Auditor semanal + criteria review + self-heal |
+| `train-bonnie.yml` | domingos 02:00 UTC (timeout 360min) | WFO treino Bonnie + Optuna (~14 folds) |
+| `daily-briefing.yml` | dias uteis 13:30 UTC | Briefing diario por email (top 5 oportunidades) |
+| `auto-debug.yml` | trigger em falha de qualquer workflow | Ciclo de castigo: diagnostico Gemini → GitHub Issue |
+| `daily-report.yml` | 21:15 UTC seg-sex | Relatorio diario Telegram para o Francisco |
+| `security-report.yml` | 21:30 UTC sextas | Relatorio de seguranca semanal |
+| `apply-suggested-config.yml` | manual (requer input "APLICAR") | Promocao de sugestoes do self-heal; trigger apenas manual |
 
-Secrets: `T212_API_ID`, `T212_API_KEY`, `FINNHUB_TOKEN`, `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`, `GEMINI_API_KEY`.
+Secrets: `T212_API_ID`, `T212_API_KEY`, `FINNHUB_TOKEN`, `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`, `GEMINI_API_KEY`, `SMTP_USER`, `SMTP_PASS`, `BRIEFING_EMAIL`.
 
 ---
 
@@ -286,6 +301,40 @@ Pontos obrigatorios: START, apos T212 sync, antes/apos cada ordem, END com resum
 ### R6 â€” Frontend So Le (Regra de Ouro)
 O frontend (GitHub Pages) **nunca calcula estado**. Apenas le JSONs gerados pelos agentes Python.
 Aplica-se a: valor do portfolio, P&L, posicoes, cash disponivel, qualquer metrica derivada.
+
+---
+
+## 9. Regras Absolutas
+
+Estas regras nao podem ser violadas por nenhum agente, script ou PR — nem sequer com boas intencoes:
+
+1. **LLM sugere, humano aprova, sistema aplica.** O Gemini/qualquer LLM apenas propoe parametros dentro de limites pre-definidos (`PARAM_BOUNDS`). Nenhuma sugestao e aplicada automaticamente.
+2. **`config_risco.json/_absolute_limits` e sagrado.** Nenhum codigo (self-heal, auditor, ciclo de castigo) escreve neste bloco. So o Francisco, manualmente.
+3. **Ciclo de castigo: zero auto-merge.** `auto-debug.yml` cria issues e comenta — nunca abre PRs, nunca aplica patches. Cada fix requer aprovacao manual.
+4. **Relatorios para o Francisco: zero jargao tecnico.** Sharpe → "qualidade dos lucros"; drawdown → "pior queda"; win rate → "taxa de acerto". Ver tabela em "Relatorios para o Francisco".
+5. **O bot opera dentro das regras do mercado.** Nenhuma logica pode explorar falhas de mercado, ordens manipulativas, ou qualquer pratica contraria a teoria economica consolidada.
+6. **Shadow mode activo = sem promocao manual.** Se `data/beta/shadow_mode.json` tem `"active": true`, nao editar `optimized_backtest_params.json` manualmente — o pipeline gere automaticamente.
+
+---
+
+## 10. Ficheiros de Estado
+
+Ficheiros que persistem estado entre ciclos — **nao apagar manualmente**:
+
+| Ficheiro | Quem escreve | Para que serve |
+|---|---|---|
+| `data/daily_flags.json` | `bot/cro.py`, `bot/notifier.py` | Guards anti-spam Telegram (1 alerta/dia por flag) |
+| `data/circuit_breaker_state.json` | `bot/watchdog.py` | Estado dos circuit breakers (contadores de falha) |
+| `data/macro_cache.json` | `bot/macro_sensor.py` | Cache VIX + SPY SMA-200 (TTL 15 min) |
+| `data/beta/shadow_mode.json` | `scripts/promote_model.py` | Estado do shadow mode: modelo em teste + data de inicio |
+| `data/suggested_config.json` | `scripts/self_heal.py` | Sugestao pending do Gemini (aguarda aprovacao manual) |
+| `data/audit_weekly.json` | `bot/auditor.py` | Ultimo relatorio do auditor semanal |
+| `data/criteria_insights.json` | `scripts/criteria_review.py` | Correlacoes do bot autodidata (trades reais) |
+| `data/blocked_tickers.json` | Manual (Francisco) | Tickers bloqueados manualmente (formato T212, ex: `HPE_US_EQ`) |
+| `data/beta/code_heal_state.json` | `scripts/code_heal.py` | Fingerprints de erros + contagem de tentativas (max 3) |
+| `data/beta/self_heal_state.json` | `scripts/self_heal.py` | Gate semanal (minimo 6 dias entre execucoes) |
+| `data/throttler_state.json` | `bot/throttler.py` | Cursor do WatchlistThrottler (persiste entre ciclos) |
+| `models/registry.json` | `scripts/promote_model.py` | Versao activa + historico de todas as versoes Bonnie |
 
 ---
 
