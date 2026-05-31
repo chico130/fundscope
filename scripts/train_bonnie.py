@@ -563,8 +563,20 @@ def main() -> None:
     objective  = build_objective(full_calendar, histories, earnings_cal, bonnie_ml, wfo_folds)
     n_trials_arg = args.n_trials if args.n_trials > 0 else None
 
+    def _log_progress(study, trial) -> None:
+        if trial.state.name != "COMPLETE":
+            return
+        done = sum(1 for t in study.trials if t.state.name == "COMPLETE")
+        if done % 10 == 0 or done <= 5:
+            print(
+                f"  [{datetime.now(timezone.utc).isoformat()[:19]}Z] "
+                f"Trial {trial.number} | fitness={trial.value:.4f} | "
+                f"best={study.best_value:.4f} | completos={done}",
+                flush=True,
+            )
+
     study.optimize(objective, timeout=args.timeout_min * 60, n_trials=n_trials_arg,
-                   show_progress_bar=False)
+                   show_progress_bar=False, callbacks=[_log_progress])
 
     best    = study.best_params
     fitness = study.best_value

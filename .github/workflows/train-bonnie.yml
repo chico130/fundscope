@@ -45,7 +45,12 @@ jobs:
           cache: 'pip'
 
       - name: Install dependencies
-        run: pip install -r requirements.txt optuna>=3.5.0
+        run: pip install -r requirements.txt "optuna>=3.5.0"
+
+      # Calcula mês corrente ANTES da step de cache (o step id só fica disponível depois de correr)
+      - name: Get current month (cache key)
+        id: date
+        run: echo "month=$(date +%Y-%m)" >> $GITHUB_OUTPUT
 
       # Cache OHLCV mensal — evita rate-limit do yfinance (100+ tickers)
       - name: Cache OHLCV
@@ -55,10 +60,6 @@ jobs:
           key: ohlcv-${{ runner.os }}-${{ hashFiles('bot/watchlist_manager.py') }}-${{ steps.date.outputs.month }}
           restore-keys: |
             ohlcv-${{ runner.os }}-
-
-      - name: Get current month (cache key)
-        id: date
-        run: echo "month=$(date +%Y-%m)" >> $GITHUB_OUTPUT
 
       - name: Run training pipeline
         env:
