@@ -38,12 +38,19 @@ jobs:
           TELEGRAM_CHAT_ID:   ${{ secrets.TELEGRAM_CHAT_ID }}
         run: PYTHONPATH=. python -m bot.auditor
 
-      - name: Commit audit report
+      - name: Run self-healing tuner
+        env:
+          GEMINI_API_KEY:     ${{ secrets.GEMINI_API_KEY }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID:   ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: PYTHONPATH=. python scripts/self_heal.py
+
+      - name: Commit audit report + suggested config
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/audit_weekly.json
+          git add data/audit_weekly.json data/suggested_config.json data/beta/self_heal_state.json
           git diff --staged --quiet && echo "Sem alterações no relatório" && exit 0
-          git commit -m "chore: weekly audit $(date -u '+%Y-%m-%d') [skip ci]"
+          git commit -m "chore: weekly audit + self-heal $(date -u '+%Y-%m-%d') [skip ci]"
           git pull --rebase --autostash -X theirs origin main
           git push || (git pull --rebase --autostash -X theirs origin main && git push)
