@@ -13,7 +13,15 @@ que nunca acontece em produção.
 **Causa raiz:** scripts/retrain_bonnie.py usa TP_ATR_MULT=1.5 e SL_ATR_MULT=1.0.
 A produção (config_risco.json / CRO) usa atr_tp_mult=4.25 e atr_stop_mult_value=1.75.
 O modelo está a aprender a bater num alvo de lucro que o bot nunca usa na realidade.
-**Solução aplicada:** [a preencher na Fase 2]
+**Solução aplicada (2026-05-31):**
+- `scripts/retrain_bonnie.py`: removidos `TP_ATR_MULT=1.5` e `SL_ATR_MULT=1.0` hardcoded.
+  Substituídos por leitura de `config_risco.json` no topo do módulo:
+  `_cfg = json.loads(...)` → `TP_ATR_MULT = _cfg.get("atr_tp_mult", 4.25)`,
+  `SL_ATR_MULT_VALUE = _cfg.get("atr_stop_mult_value", 1.75)`,
+  `SL_ATR_MULT_MOMENTUM = _cfg.get("atr_stop_mult_momentum", 2.0)`.
+  `label_for_observation` usa agora `SL_ATR_MULT_VALUE` (alinhado com a produção VALUE).
+- `scripts/train_bonnie.py`: `retrain_bonnie_phase2` actualizado — `rb.SL_ATR_MULT = sl_mult`
+  → `rb.SL_ATR_MULT_VALUE = sl_mult` (mantém o alinhamento após a Fase 1 Optuna).
 **Prevenção futura:** Qualquer script de treino DEVE ler os multiplicadores ATR
 directamente de config_risco.json. Nunca hardcodar TP_ATR_MULT ou SL_ATR_MULT
 em scripts de treino. Antes de qualquer refactoring de bonnie.py ou retrain_bonnie.py,
@@ -23,7 +31,16 @@ verificar que os multiplicadores estão sincronizados com config_risco.json.
 **Sintoma:** O modelo ML treinado em backtest.py nunca opera dinheiro real.
 Em produção, a Bonnie usa apenas regras estáticas hardcoded (volume_ratio < 1.2, etc.).
 **Causa raiz:** Desconexão arquitectural entre bot/bonnie.py (regras) e o .pkl treinado.
-**Solução aplicada:** [a preencher na Fase 2 — Modo Observação]
+**Solução aplicada (2026-05-31):**
+- `bot/bonnie.py`: adicionada classe `Bonnie` com singleton `_bonnie`.
+  Modo controlado por `config_risco.json → "bonnie_ml_mode"` (`"static"` por defeito).
+  Em modo `"observe"`: carrega `models/bonnie_champion.pkl` (se existir) e corre
+  `predict_proba` para cada BUY aprovado pelas regras estáticas, logando
+  `[BONNIE-ML] ticker=X proba={y:.3f} static_verdict=approved threshold={z}`.
+  Se o .pkl não existir, cai silenciosamente para `"static"`.
+  Regras estáticas em `filter_proposals` inalteradas — produção não é afectada.
+- `bot/phase0.py`: `market_data` em `_apply_bonnie_filter` inclui agora `"features"` por opp,
+  propagando o vector de 8 features calculado por `_build_feature_vector` até à Bonnie.
 **Prevenção futura:** bot/bonnie.py deve sempre ser capaz de carregar o .pkl activo.
 O Modo Observação (log ML sem vetar) é obrigatório antes de activar inferência real.
 

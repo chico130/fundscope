@@ -314,8 +314,8 @@ def retrain_bonnie_phase2(
     print(f"\n[Fase 2] Retrain Bonnie v{version}: TP={tp_mult:.2f}x SL={sl_mult:.2f}x", flush=True)
 
     # Alinha labels com os vencedores (evita o model pass-through documentado)
-    rb.TP_ATR_MULT = tp_mult
-    rb.SL_ATR_MULT = sl_mult
+    rb.TP_ATR_MULT       = tp_mult
+    rb.SL_ATR_MULT_VALUE = sl_mult
     rb.TRAIN_START = data_start
     rb.VAL_END     = data_end
     # TRAIN_END e VAL_START mantêm-se (gap anti-leakage do retrain_bonnie.py)

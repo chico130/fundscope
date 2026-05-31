@@ -33,6 +33,9 @@ import pandas as pd
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
 
+# Lê multiplicadores ATR directamente de config_risco.json (nunca hardcodar)
+_cfg = json.loads((Path(__file__).parent.parent / "config_risco.json").read_text(encoding="utf-8"))
+
 # Silencia loggers do bot antes de importar
 import bot.logger as _bot_logger
 _bot_logger._append_to_json_list = lambda *a, **k: None  # type: ignore
@@ -65,10 +68,9 @@ VAL_END     = datetime(2026, 5, 23)
 MODEL_OUT      = MODEL_OUT_V2
 THRESHOLDS_OUT = THRESHOLDS_OUT_V2
 LABEL_HORIZON_DAYS = 20
-# CRITICAL: label_atr_mult deve coincidir com atr_tp_mult dos params activos (actualmente 4.25)
-# Retreinar com label errado (ex: 1.5 vs 4.25) = modelo pass-through (filtra <0.3% dos sinais)
-TP_ATR_MULT  = 1.5   # TODO: actualizar para 4.25 no próximo retrain (Bonnie v4)
-SL_ATR_MULT  = 1.0   # TODO: actualizar para 1.75 no próximo retrain (Bonnie v4)
+TP_ATR_MULT          = _cfg.get("atr_tp_mult", 4.25)
+SL_ATR_MULT_VALUE    = _cfg.get("atr_stop_mult_value", 1.75)
+SL_ATR_MULT_MOMENTUM = _cfg.get("atr_stop_mult_momentum", 2.0)
 
 # Clyde-equivalent entry rule (matches strategy.py defaults para gerar candidatos)
 RSI_CEILING       = 35.0
@@ -158,12 +160,12 @@ def compute_atr_percentile_series(atr: np.ndarray, window: int = 60) -> np.ndarr
 
 def label_for_observation(df: pd.DataFrame, idx: int, atr_at_entry: float,
                           horizon: int = LABEL_HORIZON_DAYS) -> Optional[int]:
-    """1 se atingiu entry+1.5xATR antes de entry-1.0xATR em <=20 dias uteis."""
+    """1 se atingiu entry+TP_ATR_MULTxATR antes de entry-SL_ATR_MULT_VALUExATR em <=horizon dias uteis."""
     if atr_at_entry <= 0 or idx + 1 >= len(df):
         return None
     entry_price = float(df["Close"].iloc[idx])
     tp_level = entry_price + TP_ATR_MULT * atr_at_entry
-    sl_level = entry_price - SL_ATR_MULT * atr_at_entry
+    sl_level = entry_price - SL_ATR_MULT_VALUE * atr_at_entry
     end_idx = min(idx + 1 + horizon, len(df))
     for i in range(idx + 1, end_idx):
         lo = float(df["Low"].iloc[i])
@@ -180,7 +182,7 @@ def generate_corpus(verbose: bool = True) -> list[dict]:
     print(f"\n[1/3] A gerar corpus com {len(WATCHLIST)} tickers, "
           f"{TRAIN_START.date()} -> {VAL_END.date()} "
           f"[treino<{TRAIN_END.date()} | gap | val>={VAL_START.date()}] "
-          f"({TP_ATR_MULT}xATR TP / {SL_ATR_MULT}xATR SL / {LABEL_HORIZON_DAYS}d)...")
+          f"(TP={TP_ATR_MULT}xATR / SL_VALUE={SL_ATR_MULT_VALUE}xATR / SL_MOM={SL_ATR_MULT_MOMENTUM}xATR / {LABEL_HORIZON_DAYS}d)...")
 
     fetch_start = TRAIN_START - timedelta(days=400)
     earnings_cal = build_earnings_calendar(TRAIN_START, VAL_END)
