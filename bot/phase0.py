@@ -36,6 +36,7 @@ POSITION_META_PATH    = DATA_BETA_DIR / "position_meta.json"
 SOCIAL_SENTIMENT_PATH = DATA_BETA_DIR / "social_sentiment.json"
 _ATTEMPTED_TODAY_PATH = DATA_BETA_DIR / "attempted_today.json"
 STATUS_PATH           = DATA_BETA_DIR / "status.json"
+_BLOCKED_TICKERS_PATH = DATA_BETA_DIR.parent / "blocked_tickers.json"
 
 _BEAR_REGIMES = {"bear_correction", "bear_capitulation"}
 _LATERAL_SIZE_FACTOR = 0.6   # redução de posição sugerida em bull_lateral (secção 4, FASE-1.md)
@@ -323,6 +324,59 @@ def _apply_social_veto(opportunities: list[dict]) -> list[dict]:
 
     except Exception as exc:
         log_error("social_veto_failed", {"error": str(exc)})
+        return opportunities  # fail-open
+
+
+def _apply_manual_block(opportunities: list[dict]) -> list[dict]:
+    """Remove oportunidades com ticker bloqueado manualmente em data/blocked_tickers.json.
+
+    Espelha _apply_social_veto: fail-open e loga cada bloqueio.
+    blocked_tickers.json usa símbolo T212 (ex: HPE_US_EQ); opp["ticker"] é yfinance →
+    converte com _yf_to_t212() antes de comparar.
+    Entradas com expires_at no passado são ignoradas.
+    """
+    if not opportunities:
+        return opportunities
+    try:
+        raw = json.loads(_BLOCKED_TICKERS_PATH.read_text(encoding="utf-8"))
+        blocked_list = raw.get("blocked", []) if isinstance(raw, dict) else []
+        if not blocked_list:
+            return opportunities
+
+        now = datetime.now(timezone.utc)
+        blocked_set: set[str] = set()
+        for entry in blocked_list:
+            ticker  = entry.get("ticker", "")
+            expires = entry.get("expires_at")
+            if not ticker:
+                continue
+            if expires:
+                try:
+                    exp_dt = datetime.fromisoformat(str(expires).replace("Z", "+00:00"))
+                    if now >= exp_dt:
+                        continue
+                except (ValueError, TypeError):
+                    pass
+            blocked_set.add(ticker.upper())
+
+        if not blocked_set:
+            return opportunities
+
+        kept: list[dict] = []
+        for opp in opportunities:
+            t212_ticker = _yf_to_t212(opp["ticker"]).upper()
+            if t212_ticker in blocked_set:
+                log_decision("manual_block", "opportunity_filtered",
+                             {"ticker": opp["ticker"], "t212": t212_ticker})
+                print(f"[MANUAL BLOCK] {opp['ticker']} bloqueado manualmente → skipping", flush=True)
+            else:
+                kept.append(opp)
+        return kept
+
+    except (OSError, json.JSONDecodeError):
+        return opportunities  # fail-open: ficheiro ausente ou corrompido
+    except Exception as exc:
+        log_error("manual_block_failed", {"error": str(exc)})
         return opportunities  # fail-open
 
 
@@ -826,6 +880,9 @@ def run(*, git_sync: bool = True) -> dict:
 
     # Filtro social: veto por pânico (Reddit) ou divergência extrema (analistas)
     buy_opportunities = _apply_social_veto(buy_opportunities)
+
+    # Filtro manual: tickers bloqueados pelo Francisco em data/blocked_tickers.json
+    buy_opportunities = _apply_manual_block(buy_opportunities)
 
     # Persiste tickers que chegaram a buy_opportunities como "tentados hoje".
     # No próximo ciclo são excluídos de held_symbols → não geram sinal novamente.

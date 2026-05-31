@@ -1,0 +1,5 @@
+{
+  "schema_version": 1,
+  "_comment": "Tickers bloqueados manualmente. O campo 'ticker' usa o símbolo T212 (ex: HPE_US_EQ). expires_at em ISO-8601 UTC; null = bloqueio permanente até remoção manual. Entradas expiradas são ignoradas automaticamente pelo bot.",
+  "blocked": []
+}
