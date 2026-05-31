@@ -14,6 +14,24 @@
   "mean_reversion_max_vix": 20.0,
   "mean_reversion_allow_bear_correction": true,
 
+  "training_weights": {
+    "real_sl_hit":    3.0,
+    "shadow_sl_hit":  1.5,
+    "real_tp_hit":    1.0,
+    "shadow_tp_hit":  0.75,
+    "shadow_expired": 0.25,
+    "historical":     1.0
+  },
+
+  "challenger_promotion_criteria": {
+    "min_oos_trades":       20,
+    "metrics_to_beat":      2,
+    "min_win_rate":         0.45,
+    "min_profit_factor":    1.1,
+    "max_drawdown_ceiling": 0.25,
+    "oos_window_days":      30
+  },
+
   "_absolute_limits": {
     "max_position_pct":   {"min": 5,  "max": 15},
     "stop_loss_pct":      {"min": 2,  "max": 10},
