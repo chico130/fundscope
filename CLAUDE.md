@@ -317,6 +317,45 @@ Estas regras nao podem ser violadas por nenhum agente, script ou PR — nem sequ
 
 ---
 
+## REGRAS DE ARQUITECTURA
+
+### NO GHOST VETOES (Regra de Ouro do Motor Autodidata)
+Se um sinal for gerado pelo Clyde e depois vetado por qualquer razão
+(Bonnie estática, CRO, falta de liquidez, Social Veto), o sistema é
+OBRIGADO a registar as 8 features técnicas desse sinal no log com
+"execution_type": "shadow_rejected".
+A perda do contexto de um sinal falhado é tratada como fatal exception
+na arquitectura. Nunca criar regras de exclusão que não preservem o
+estado técnico completo do momento da rejeição.
+
+As 8 FEATURE_COLS obrigatórias a preservar:
+["rsi_14", "volume_ratio", "atr_pct", "price_vs_ema20",
+ "price_vs_ema50", "price_vs_ema200", "momentum_1m", "momentum_3m"]
+
+### ALINHAMENTO ATR OBRIGATÓRIO
+Qualquer script de treino (retrain_bonnie.py, train_bonnie.py, learner.py)
+DEVE ler os multiplicadores ATR de config_risco.json:
+  TP: config["atr_tp_mult"] (actualmente 4.25)
+  SL momentum: config["atr_stop_mult_momentum"] (actualmente 2.0)
+  SL value: config["atr_stop_mult_value"] (actualmente 1.75)
+Nunca hardcodar estes valores. Verificar alinhamento antes de qualquer
+refactoring que toque em ficheiros de treino.
+
+### CAMPEÃO vs DESAFIANTE
+O modelo activo em produção é o "Campeão". Qualquer novo modelo treinado
+é o "Desafiante" e corre em Shadow Mode antes de ser promovido.
+Promoção apenas via scripts/evaluate_challenger.py (O Juiz).
+Nunca substituir ficheiros de produção manualmente.
+
+### DATASET DE TREINO MISTO
+O dataset de treino da Bonnie tem 3 fontes, todas obrigatórias:
+1. Dados históricos (corpus yfinance)
+2. Trades reais (beta_trades.json)
+3. Shadow trades (execution_type: "shadow_rejected" + resultado simulado)
+Treinar apenas com dados históricos é considerado regressão arquitectural.
+
+---
+
 ## 10. Ficheiros de Estado
 
 Ficheiros que persistem estado entre ciclos — **nao apagar manualmente**:

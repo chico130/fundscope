@@ -7,6 +7,34 @@ e garantir que não reintroduz nenhum dos erros abaixo.
 
 ## ERROS CONHECIDOS E RESOLVIDOS
 
+### [2026-05] CRÍTICO — Desalinhamento de parâmetros ATR entre treino e produção
+**Sintoma:** O modelo ML treina com alvos irreais e aprende a optimizar um cenário
+que nunca acontece em produção.
+**Causa raiz:** scripts/retrain_bonnie.py usa TP_ATR_MULT=1.5 e SL_ATR_MULT=1.0.
+A produção (config_risco.json / CRO) usa atr_tp_mult=4.25 e atr_stop_mult_value=1.75.
+O modelo está a aprender a bater num alvo de lucro que o bot nunca usa na realidade.
+**Solução aplicada:** [a preencher na Fase 2]
+**Prevenção futura:** Qualquer script de treino DEVE ler os multiplicadores ATR
+directamente de config_risco.json. Nunca hardcodar TP_ATR_MULT ou SL_ATR_MULT
+em scripts de treino. Antes de qualquer refactoring de bonnie.py ou retrain_bonnie.py,
+verificar que os multiplicadores estão sincronizados com config_risco.json.
+
+### [2026-05] CRÍTICO — Esquizofrenia da Bonnie (ML em backtest, regras em produção)
+**Sintoma:** O modelo ML treinado em backtest.py nunca opera dinheiro real.
+Em produção, a Bonnie usa apenas regras estáticas hardcoded (volume_ratio < 1.2, etc.).
+**Causa raiz:** Desconexão arquitectural entre bot/bonnie.py (regras) e o .pkl treinado.
+**Solução aplicada:** [a preencher na Fase 2 — Modo Observação]
+**Prevenção futura:** bot/bonnie.py deve sempre ser capaz de carregar o .pkl activo.
+O Modo Observação (log ML sem vetar) é obrigatório antes de activar inferência real.
+
+### [2026-05] CRÍTICO — Amnésia de Dados (features perdidas nos sinais vetados)
+**Sintoma:** O sistema rejeita dezenas de sinais mas não guarda as 8 features técnicas
+no momento da rejeição. É matematicamente impossível treinar a Bonnie sem estes dados.
+**Causa raiz:** logs/trades/YYYY-MM-DD.json grava apenas "Decision Event" genérico
+sem o vector de features completo.
+**Solução aplicada:** [a preencher na Fase 1]
+**Prevenção futura:** Ver REGRA DE ARQUITECTURA no CLAUDE.md — NO GHOST VETOES.
+
 ### [2026-05-29] Cache agressiva no iPhone 13 — stock.html e home não actualizam
 **Sintoma:** Página mostra dados desactualizados. Home desactualizada (não mostra ganhos). stock.html consome dados estáticos de data/beta.
 **Causa raiz:** Service Worker (sw.js) com estratégia cache-first para todos os `.json` que não estavam na lista `DATA_URLS` explícita (incluindo `data/beta/*.json`, `gains_insights.json`, `ai_insights.json`). Três `fetch()` sem `?t=` caíam em cache-first por acidente mesmo para JSONs dinâmicos.
