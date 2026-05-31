@@ -435,6 +435,32 @@ PYTHONPATH=. python -m bot.mass_backtest
 | 2026-05-28 | Bonnie v5 identificada mas bloqueada | Aguarda 30 dias de validacao real; LABEL_HORIZON_DAYS 20->57 |
 
 ---
+
+## Ciclos de Aprendizagem
+
+### Bot Autodidata (Romaria de Fim de Semana)
+
+- **Script:** `scripts/criteria_review.py` (sábados, após auditor semanal)
+- **Workflow:** `.github/workflows/weekly-audit.yml` — step "Run criteria review"
+- **Output:** `data/criteria_insights.json` (escrita atómica; commitado com `[skip ci]`)
+- **Correlações analisadas:** RSI de entrada, volume multiplier, hora UTC, regime
+- **REGRA:** nunca escreve em `config_risco.json` — apenas análise descritiva
+- **REGRA:** todas as correlações são baseadas em trades **reais** (`beta_trades.json`), sem backtesting
+
+### Claude Autodidata (Ciclo de Castigo)
+
+- **Script:** `scripts/code_heal.py`
+- **Workflow:** `.github/workflows/auto-debug.yml`
+- **Trigger:** qualquer workflow de produção que falha (`workflow_run: completed, conclusion: failure`)
+- **Output:** GitHub Issue com label `auto-debug` e diagnóstico do Gemini
+- **Estado:** `data/beta/code_heal_state.json` — fingerprints e contagem de tentativas
+- **REGRA:** nunca aplica código automaticamente — apenas cria/comenta issues
+- **REGRA:** máximo 3 tentativas por erro (fingerprint estável); ao 3.º, Telegram SOS + status `escalated`
+- **REGRA:** nunca se dispara sobre si próprio (guard explícito no workflow)
+- **REGRA:** sanitização obrigatória antes de enviar logs ao LLM (remove tokens/segredos)
+- **Fingerprint:** `sha256(workflow + step + normalized_error)[:16]` — estável independente de timestamps/paths
+
+---
 ## Auto-Sync: 2026-05-29 22:12
 - PC: DESKTOP-0514V9J
 - Ultimo commit: 0feef56 - fix: HTTP error handling for T212 API responses
