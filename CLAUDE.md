@@ -372,6 +372,27 @@ PYTHONPATH=. python -m bot.mass_backtest
 
 ---
 
+## Pipeline de Treino Offline
+
+- **Script:** `scripts/train_bonnie.py` (WFO 36m treino / 6m teste / passo 6m, ~14 folds desde 2017)
+- **Workflow:** `.github/workflows/train-bonnie.yml` (domingos 02:00 UTC, timeout 360min)
+- **Modelos:** `models/bonnie_params_vN.json` — imutáveis, nunca editar versões antigas
+- **Relatórios:** `models/bonnie_train_report_vN.md` — tabela por fold, métricas OOS
+- **Índice:** `models/registry.json` — versão activa + histórico de todas as versões
+- **Promoção:** `scripts/promote_model.py` — critério: Sharpe OOS > activo + 0.10 E gates passados
+- **Shadow Mode:** `data/beta/shadow_mode.json` — `{"active": true, "model": "vN", "start": "..."}` activo após promoção
+- **Alvo de promoção:** `data/beta/optimized_backtest_params.json` (nunca `config_risco.json`)
+
+### Regras do pipeline
+- `models/bonnie_params_vN.json` são **imutáveis** após escrita — qualquer re-treino gera vN+1
+- `promote_model.py` **nunca** escreve em `config_risco.json`
+- Quando `shadow_mode.json` está activo, não editar `optimized_backtest_params.json` manualmente — gerido automaticamente
+- O Optuna usa EMA fixo (50/200) — apenas RSI, vol, ATR stop/TP, trail e Bonnie threshold são optimizados
+- Fase 1 (Optuna) usa Bonnie v4-clean fixo; Fase 2 retreina Bonnie com TP/SL vencedores
+- Fitness = `median(Sharpe OOS) − 0.5 × std(Sharpe OOS)` — penaliza instabilidade entre regimes
+
+---
+
 ## Historico de Decisoes (nao alterar automaticamente)
 
 | Data | Decisao | Motivo |

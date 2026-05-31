@@ -1,0 +1,121 @@
+name: FundScope — Treino Bonnie (WFO + Optuna)
+
+# Domingo 02:00 UTC — zero colisão com o bot de trading (seg-sex 13-20 UTC).
+# workflow_dispatch permite lançar manualmente a qualquer momento.
+on:
+  schedule:
+    - cron: '0 2 * * 0'   # Domingo 02:00 UTC
+  workflow_dispatch:
+    inputs:
+      timeout_min:
+        description: 'Timeout Optuna (minutos)'
+        default: '340'
+        required: false
+      n_trials:
+        description: 'Nº máximo de trials (0=até timeout)'
+        default: '0'
+        required: false
+      skip_phase2:
+        description: 'Saltar retrain Bonnie (true/false)'
+        default: 'false'
+        required: false
+
+concurrency:
+  group: fundscope-train-bonnie
+  cancel-in-progress: false   # NUNCA cancelar treino a meio — regra do projecto
+
+jobs:
+  train:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360   # hard cap GitHub; Optuna pára sozinho a --timeout-min
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt optuna>=3.5.0
+
+      # Cache OHLCV mensal — evita rate-limit do yfinance (100+ tickers)
+      - name: Cache OHLCV
+        uses: actions/cache@v4
+        with:
+          path: data/backtest_cache
+          key: ohlcv-${{ runner.os }}-${{ hashFiles('bot/watchlist_manager.py') }}-${{ steps.date.outputs.month }}
+          restore-keys: |
+            ohlcv-${{ runner.os }}-
+
+      - name: Get current month (cache key)
+        id: date
+        run: echo "month=$(date +%Y-%m)" >> $GITHUB_OUTPUT
+
+      - name: Run training pipeline
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID:   ${{ secrets.TELEGRAM_CHAT_ID }}
+          FINNHUB_TOKEN:      ${{ secrets.FINNHUB_TOKEN }}
+        run: |
+          TIMEOUT=${{ github.event.inputs.timeout_min || '340' }}
+          N_TRIALS=${{ github.event.inputs.n_trials || '0' }}
+          SKIP_P2=${{ github.event.inputs.skip_phase2 || 'false' }}
+
+          SKIP_FLAG=""
+          if [ "$SKIP_P2" = "true" ]; then
+            SKIP_FLAG="--skip-phase2"
+          fi
+
+          PYTHONPATH=. python scripts/train_bonnie.py \
+            --timeout-min "$TIMEOUT" \
+            --n-trials "$N_TRIALS" \
+            $SKIP_FLAG
+
+      - name: Commit artefactos
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add \
+            models/registry.json \
+            "models/bonnie_params_v*.json" \
+            "models/bonnie_train_report_v*.md" \
+            "data/models/bonnie_model_v*.pkl" \
+            "data/beta/bonnie_thresholds_v*.json" \
+            data/beta/optimized_backtest_params.json \
+            data/beta/shadow_mode.json \
+            || true
+
+          git diff --staged --quiet && echo "Sem alterações" && exit 0
+
+          VERSION=$(python -c "
+          import json, pathlib
+          reg = pathlib.Path('models/registry.json')
+          if reg.exists():
+              d = json.loads(reg.read_text())
+              vs = [v['version'] for v in d.get('versions', [])]
+              print(max(vs) if vs else '?')
+          else:
+              print('?')
+          ")
+
+          git commit -m "feat: bonnie WFO run v${VERSION} $(date -u '+%Y-%m-%d') [skip ci]"
+          git pull --rebase --autostash -X theirs origin main
+          git push || (git pull --rebase --autostash -X theirs origin main && git push)
+
+      - name: Upload relatório de treino
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bonnie-train-report
+          path: models/bonnie_train_report_v*.md
+          retention-days: 90
