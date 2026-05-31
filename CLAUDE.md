@@ -461,6 +461,35 @@ PYTHONPATH=. python -m bot.mass_backtest
 - **Fingerprint:** `sha256(workflow + step + normalized_error)[:16]` — estável independente de timestamps/paths
 
 ---
+
+## Relatórios para o Francisco
+
+**REGRA ABSOLUTA:** relatórios Telegram/email para o Francisco são em linguagem de leigo. Zero jargão técnico. Zero teoria económica.
+
+**Glossário proibido nos relatórios** (usar sempre a descrição em português simples):
+
+| Termo técnico | Substituição obrigatória |
+|---|---|
+| Sharpe Ratio | Qualidade dos lucros (quanto ganha por cada euro arriscado) |
+| Max Drawdown | Pior queda da carteira no período |
+| Win Rate | Taxa de acerto (em X negócios, Y correram bem) |
+| OOS (Out-of-Sample) | Remover completamente dos relatórios |
+| ATR | volatilidade do preço |
+| EMA / RSI | indicadores técnicos (não mencionar) |
+| VIX | nível de agitação do mercado |
+| Bear / Bull | Em queda / Em alta |
+| Regime | Estado do mercado |
+
+**Scripts de relatório:**
+- `scripts/daily_report_francisco.py` — resumo diário Telegram (21:15 UTC, dias úteis)
+- `scripts/security_report.py` — relatório de segurança semanal (sextas 21:30 UTC)
+- `bot/notifier.py::enviar_auditoria_semanal()` — auditoria semanal em linguagem simples
+
+**Workflows:**
+- `.github/workflows/daily-report.yml` — 21:15 UTC seg-sex
+- `.github/workflows/security-report.yml` — 21:30 UTC sextas
+
+---
 ## Auto-Sync: 2026-05-29 22:12
 - PC: DESKTOP-0514V9J
 - Ultimo commit: 0feef56 - fix: HTTP error handling for T212 API responses

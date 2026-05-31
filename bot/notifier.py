@@ -516,7 +516,7 @@ def enviar_trade_executada(result: dict, modo: str = "phase1_auto") -> None:
 
 
 def enviar_auditoria_semanal(audit: dict) -> None:
-    """Resumo Telegram do auditor semanal. Falha silenciosa — nunca aborta o auditor."""
+    """Resumo Telegram do auditor semanal em linguagem simples. Falha silenciosa."""
     try:
         s = audit.get("summary", {})
         w = audit.get("window", {})
@@ -532,28 +532,61 @@ def enviar_auditoria_semanal(audit: dict) -> None:
         except Exception:
             semana = f"{w.get('start','?')} → {w.get('end','?')}"
 
-        trades     = s.get("trades_closed", 0)
-        wins       = s.get("wins", 0)
-        losses     = s.get("losses", 0)
+        trades  = s.get("trades_closed", 0)
+        wins    = s.get("wins", 0)
+        losses  = s.get("losses", 0)
         # win_rate é fracção 0.0–1.0 — multiplicar por 100 apenas na formatação
-        wr_pct     = s.get("win_rate", 0.0) * 100
-        pnl        = s.get("pnl_eur", 0.0)
-        regime     = s.get("regime_dominant", "?")
-        sharpe     = s.get("sharpe_weekly")
-        max_dd     = s.get("max_drawdown_pct")
+        wr_pct  = s.get("win_rate", 0.0) * 100
+        pnl     = s.get("pnl_eur", 0.0)
+        regime  = s.get("regime_dominant", "?")
+        sharpe  = s.get("sharpe_weekly")
+        max_dd  = s.get("max_drawdown_pct")
+        pnl_s   = f"{pnl:+.2f}€"
 
-        sharpe_s = f"{sharpe:.2f}" if sharpe is not None else "N/A"
+        _regime_labels = {
+            "bull_trending":     "mercado em alta",
+            "bull_lateral":      "mercado lateral",
+            "bear_correction":   "mercado em queda",
+            "bear_capitulation": "queda forte",
+        }
+        _param_labels = {
+            "bonnie.threshold.bull_trending":     "filtro de segurança (mercado em alta)",
+            "bonnie.threshold.bull_lateral":      "filtro de segurança (mercado lateral)",
+            "bonnie.threshold.bear_correction":   "filtro de segurança (mercado em queda)",
+            "bonnie.threshold.bear_capitulation": "filtro de segurança (queda forte)",
+            "regime_detector.sensitivity":        "sensibilidade do detector de tendência",
+        }
+
+        regime_label = _regime_labels.get(regime, regime)
+
+        # "Qualidade dos lucros" — quanto ganha por cada euro arriscado
+        if sharpe is not None:
+            if sharpe > 1.5:
+                qualidade = f"{sharpe:.2f} (boa)"
+            elif sharpe > 0.5:
+                qualidade = f"{sharpe:.2f} (razoável)"
+            elif sharpe > 0:
+                qualidade = f"{sharpe:.2f} (fraca)"
+            else:
+                qualidade = f"{sharpe:.2f} (negativa)"
+        else:
+            qualidade = "N/A"
+
+        # "Pior queda da carteira esta semana"
         max_dd_s = f"{max_dd:.2f}%" if max_dd is not None else "N/A"
-        pnl_s    = f"{pnl:+.2f}€"
 
         linhas = [
-            "📊 Auditoria Semanal FundScope",
+            "📊 Resumo Semanal — FundScope",
             f"Semana: {semana}",
-            f"Trades analisados: {trades} | Win Rate: {wr_pct:.1f}%",
-            f"Sharpe: {sharpe_s} | Max Drawdown: {max_dd_s}",
-            f"Resultado: {pnl_s} | Regime: {regime}",
             "",
-            "Padrões encontrados:",
+            f"📈 Negócios da semana: {trades} ({wins} ganharam, {losses} perderam)",
+            f"🎯 Taxa de acerto: {wr_pct:.1f}% (em {trades} negócios, {wins} correram bem)",
+            f"💰 Resultado total: {pnl_s}",
+            f"📉 Pior queda da semana: {max_dd_s}",
+            f"🌡 Qualidade dos lucros: {qualidade}",
+            f"Estado do mercado: {regime_label}",
+            "",
+            "O que aconteceu esta semana:",
         ]
 
         for p in patterns:
@@ -563,21 +596,30 @@ def enviar_auditoria_semanal(audit: dict) -> None:
 
         if suggestions:
             linhas.append("")
-            linhas.append("Sugestões de ajuste (apenas informativo):")
+            linhas.append("Possíveis melhorias (precisam da tua aprovação — nunca automáticas):")
             for sg in suggestions:
-                param   = sg.get("param", "?")
-                current = sg.get("current", "?")
-                sugg    = sg.get("suggested", "?")
+                param     = sg.get("param", "?")
                 rationale = sg.get("rationale", "")
-                linhas.append(f"• {param}: {current} → {sugg}")
+                label     = _param_labels.get(param, param)
+                linhas.append(f"• {label.capitalize()} poderia ser ajustado")
                 if rationale:
-                    linhas.append(f"  {rationale}")
+                    plain = (
+                        rationale
+                        .replace("threshold", "filtro")
+                        .replace("falsos positivos", "negócios aprovados que depois perderam")
+                        .replace("bull_trending", "mercado em alta")
+                        .replace("bull_lateral", "mercado lateral")
+                        .replace("bear_correction", "mercado em queda")
+                        .replace("bear_capitulation", "queda forte")
+                        .replace("regime_detector", "detector de tendência")
+                    )
+                    linhas.append(f"  Motivo: {plain}")
         else:
             linhas.append("")
-            linhas.append("Sugestões de ajuste: nenhuma com confiança suficiente.")
+            linhas.append("Sem ajustes recomendados esta semana.")
 
         linhas.append("")
-        linhas.append("⚠️ Sugestões nunca aplicadas automaticamente — requerem decisão manual.")
+        linhas.append("⚠️ Qualquer ajuste precisa da tua aprovação antes de ser aplicado.")
 
         enviar_alerta("\n".join(linhas), silencioso=False)
 
