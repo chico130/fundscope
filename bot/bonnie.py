@@ -434,7 +434,84 @@ def write_bonnie_log(
 
 
 # ---------------------------------------------------------------------------
-# 7. Filtro activo de propostas em tempo real
+# 7. Classe Bonnie — modo estático + modo observação ML
+# ---------------------------------------------------------------------------
+
+# Ordem das features DEVE coincidir com o treino de bonnie_champion.pkl
+_ML_FEATURE_COLS = [
+    "rsi_14", "volume_ratio", "atr_pct", "price_vs_ema20",
+    "price_vs_ema50", "price_vs_ema200", "momentum_1m", "momentum_3m",
+]
+
+
+class Bonnie:
+    """Gestão do modo ML da Bonnie.
+
+    Modos (config_risco.json → "bonnie_ml_mode"):
+      "static"  — apenas regras estáticas; sem inferência ML (padrão seguro)
+      "observe" — corre predict_proba e loga, mas não veta
+      "active"  — ML também pode vetar se proba < threshold (fase futura)
+    """
+
+    def __init__(self) -> None:
+        self._mode: str = "static"
+        self._model = None
+        self._threshold: float = 0.30
+        self._loaded: bool = False
+
+    def _ensure_loaded(self) -> None:
+        if self._loaded:
+            return
+        self._loaded = True
+        try:
+            cfg = json.loads(CONFIG_RISCO_PATH.read_text(encoding="utf-8"))
+        except Exception:
+            cfg = {}
+        self._mode      = cfg.get("bonnie_ml_mode", "static")
+        self._threshold = cfg.get("bonnie_ml_threshold", 0.30)
+
+        if self._mode not in ("observe", "active"):
+            return
+
+        try:
+            from .config import BASE_DIR
+            champion = BASE_DIR / "models" / "bonnie_champion.pkl"
+            if champion.exists():
+                import joblib
+                self._model = joblib.load(champion)
+                print(f"[BONNIE-ML] Modelo carregado: {champion.name}", flush=True)
+            else:
+                # champion.pkl ausente — fallback silencioso para static
+                self._mode = "static"
+        except Exception as exc:
+            print(f"[BONNIE-ML] Falha ao carregar modelo: {exc}", flush=True)
+            self._mode = "static"
+
+    def observe(self, ticker: str, features: dict, static_approved: bool) -> None:
+        """Corre predict_proba e loga o resultado sem bloquear."""
+        self._ensure_loaded()
+        if self._mode not in ("observe", "active") or self._model is None:
+            return
+        try:
+            import numpy as np
+            row = [float(features.get(f, 0.0)) for f in _ML_FEATURE_COLS]
+            proba = float(self._model.predict_proba([row])[0][1])
+            verdict = "approved" if static_approved else "vetoed"
+            print(
+                f"[BONNIE-ML] ticker={ticker} proba={proba:.3f} "
+                f"static_verdict={verdict} threshold={self._threshold:.2f}",
+                flush=True,
+            )
+        except Exception as exc:
+            print(f"[BONNIE-ML] Erro em observe({ticker}): {exc}", flush=True)
+
+
+# Singleton — instanciado uma vez por processo
+_bonnie = Bonnie()
+
+
+# ---------------------------------------------------------------------------
+# 8. Filtro activo de propostas em tempo real
 # ---------------------------------------------------------------------------
 
 def _earnings_window_map() -> dict[str, tuple[int, str]]:
@@ -513,12 +590,13 @@ def filter_proposals(
             vetoed.append((trade, reason))
             continue
 
-        data   = market_data.get(ticker, {})
-        t      = data.get("technicals", {}) or {}
-        vol    = t.get("volume_ratio_vs_avg") or 1.0
-        last   = t.get("last_price") or data.get("last_price")
-        prev   = data.get("previous_close")
-        style  = getattr(trade, "style", "VALUE")
+        data     = market_data.get(ticker, {})
+        features = data.get("features", {})
+        t        = data.get("technicals", {}) or {}
+        vol      = t.get("volume_ratio_vs_avg") or 1.0
+        last     = t.get("last_price") or data.get("last_price")
+        prev     = data.get("previous_close")
+        style    = getattr(trade, "style", "VALUE")
 
         # Smart Money gate — universal para todos os BUY (VALUE e MOMENTUM)
         # Usa volume_ratio (SMA-10) e cai para volume_ratio_vs_avg (SMA-20) se ausente
@@ -560,6 +638,7 @@ def filter_proposals(
                 vetoed.append((trade, reason))
                 continue
 
+        _bonnie.observe(ticker, features, True)
         approved.append(trade)
 
     return approved, vetoed

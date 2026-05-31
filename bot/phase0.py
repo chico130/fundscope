@@ -272,6 +272,7 @@ def _apply_bonnie_filter(opportunities: list[dict]) -> list[dict]:
             opp["ticker"]: {
                 "technicals": opp.get("technicals", {}),
                 "last_price": opp.get("last_price"),
+                "features":   opp.get("features", {}),
             }
             for opp in opportunities
         }
