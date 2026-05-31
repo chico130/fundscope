@@ -493,7 +493,215 @@
         "regime": "bull_trending"
       },
       "shadow_result": null
+    },
+    {
+      "datetime": "2026-05-31T17:09:52.888665+00:00",
+      "type": "shadow_rejected",
+      "execution_type": "shadow_rejected",
+      "rejected_by": "bonnie",
+      "rejection_reason": "EARNINGS: HPE reporta em 1d (2026-06-01) <= janela de 2d - compra vetada",
+      "features": {
+        "rsi_14": 83.15,
+        "volume_ratio": 3.56,
+        "atr_pct": 0.041747,
+        "price_vs_ema20": 0.260304,
+        "price_vs_ema50": 0.43687,
+        "price_vs_ema200": 0.7497,
+        "momentum_1m": 0.496,
+        "momentum_3m": 1.0017
+      },
+      "signal": {
+        "ticker": "HPE",
+        "side": "BUY",
+        "price": 43.04,
+        "strength": 0.92,
+        "style": "MOMENTUM",
+        "regime": "bull_trending"
+      },
+      "shadow_result": null
+    },
+    {
+      "datetime": "2026-05-31T17:09:52.890379+00:00",
+      "type": "shadow_rejected",
+      "execution_type": "shadow_rejected",
+      "rejected_by": "bonnie",
+      "rejection_reason": "EARNINGS: PANW reporta em 2d (2026-06-02) <= janela de 2d - compra vetada",
+      "features": {
+        "rsi_14": 80.47,
+        "volume_ratio": 1.68,
+        "atr_pct": 0.041488,
+        "price_vs_ema20": 0.204878,
+        "price_vs_ema50": 0.372121,
+        "price_vs_ema200": 0.468266,
+        "momentum_1m": 0.5709,
+        "momentum_3m": 0.8047
+      },
+      "signal": {
+        "ticker": "PANW",
+        "side": "BUY",
+        "price": 281.69,
+        "strength": 0.677,
+        "style": "MOMENTUM",
+        "regime": "bull_trending"
+      },
+      "shadow_result": null
+    },
+    {
+      "datetime": "2026-05-31T17:09:52.891705+00:00",
+      "type": "shadow_rejected",
+      "execution_type": "shadow_rejected",
+      "rejected_by": "bonnie",
+      "rejection_reason": "VALUE: força 0.59 < limiar 0.60",
+      "features": {
+        "rsi_14": 47.47,
+        "volume_ratio": 2.02,
+        "atr_pct": 0.016373,
+        "price_vs_ema20": -0.011092,
+        "price_vs_ema50": 0.007809,
+        "price_vs_ema200": 0.088277,
+        "momentum_1m": 0.0032,
+        "momentum_3m": 0.0027
+      },
+      "signal": {
+        "ticker": "KO",
+        "side": "BUY",
+        "price": 79.01,
+        "strength": 0.59,
+        "style": "VALUE",
+        "regime": "bull_trending"
+      },
+      "shadow_result": null
+    },
+    {
+      "datetime": "2026-05-31T17:09:52.893066+00:00",
+      "type": "shadow_rejected",
+      "execution_type": "shadow_rejected",
+      "rejected_by": "bonnie",
+      "rejection_reason": "VALUE: força 0.58 < limiar 0.60",
+      "features": {
+        "rsi_14": 52.33,
+        "volume_ratio": 2.03,
+        "atr_pct": 0.020331,
+        "price_vs_ema20": -0.000909,
+        "price_vs_ema50": 0.034278,
+        "price_vs_ema200": 0.183806,
+        "momentum_1m": -0.0007,
+        "momentum_3m": 0.0642
+      },
+      "signal": {
+        "ticker": "CSX",
+        "side": "BUY",
+        "price": 45.26,
+        "strength": 0.578,
+        "style": "VALUE",
+        "regime": "bull_trending"
+      },
+      "shadow_result": null
+    },
+    {
+      "datetime": "2026-05-31T17:09:52.894502+00:00",
+      "type": "shadow_rejected",
+      "execution_type": "shadow_rejected",
+      "rejected_by": "bonnie",
+      "rejection_reason": "VALUE: força 0.57 < limiar 0.60",
+      "features": {
+        "rsi_14": 52.32,
+        "volume_ratio": 1.87,
+        "atr_pct": 0.031551,
+        "price_vs_ema20": -0.00156,
+        "price_vs_ema50": 0.056706,
+        "price_vs_ema200": 0.376178,
+        "momentum_1m": -0.016,
+        "momentum_3m": 0.2151
+      },
+      "signal": {
+        "ticker": "CAT",
+        "side": "BUY",
+        "price": 875.87,
+        "strength": 0.567,
+        "style": "VALUE",
+        "regime": "bull_trending"
+      },
+      "shadow_result": null
+    },
+    {
+      "datetime": "2026-05-31T17:09:52.895967+00:00",
+      "type": "shadow_rejected",
+      "execution_type": "shadow_rejected",
+      "rejected_by": "bonnie",
+      "rejection_reason": "VALUE: força 0.56 < limiar 0.60",
+      "features": {
+        "rsi_14": 46.47,
+        "volume_ratio": 1.85,
+        "atr_pct": 0.028752,
+        "price_vs_ema20": -0.025217,
+        "price_vs_ema50": 0.0181,
+        "price_vs_ema200": 0.274383,
+        "momentum_1m": -0.0193,
+        "momentum_3m": 0.0504
+      },
+      "signal": {
+        "ticker": "TRGP",
+        "side": "BUY",
+        "price": 255.07,
+        "strength": 0.56,
+        "style": "VALUE",
+        "regime": "bull_trending"
+      },
+      "shadow_result": null
+    },
+    {
+      "datetime": "2026-05-31T17:09:52.897467+00:00",
+      "type": "shadow_rejected",
+      "execution_type": "shadow_rejected",
+      "rejected_by": "bonnie",
+      "rejection_reason": "VALUE: força 0.55 < limiar 0.60",
+      "features": {
+        "rsi_14": 49.75,
+        "volume_ratio": 1.62,
+        "atr_pct": 0.022748,
+        "price_vs_ema20": 0.000202,
+        "price_vs_ema50": -0.003247,
+        "price_vs_ema200": 0.039021,
+        "momentum_1m": -0.0095,
+        "momentum_3m": -0.0279
+      },
+      "signal": {
+        "ticker": "TJX",
+        "side": "BUY",
+        "price": 154.75,
+        "strength": 0.554,
+        "style": "VALUE",
+        "regime": "bull_trending"
+      },
+      "shadow_result": null
+    },
+    {
+      "datetime": "2026-05-31T17:09:52.899580+00:00",
+      "type": "shadow_rejected",
+      "execution_type": "shadow_rejected",
+      "rejected_by": "bonnie",
+      "rejection_reason": "VALUE: força 0.55 < limiar 0.60",
+      "features": {
+        "rsi_14": 54.75,
+        "volume_ratio": 1.78,
+        "atr_pct": 0.023385,
+        "price_vs_ema20": 0.013568,
+        "price_vs_ema50": 0.028931,
+        "price_vs_ema200": 0.122584,
+        "momentum_1m": 0.0115,
+        "momentum_3m": 0.0715
+      },
+      "signal": {
+        "ticker": "HLT",
+        "side": "BUY",
+        "price": 327.66,
+        "strength": 0.551,
+        "style": "VALUE",
+        "regime": "bull_trending"
+      },
+      "shadow_result": null
     }
   ],
-  "last_updated": "2026-05-31T16:43:50.271142+00:00"
+  "last_updated": "2026-05-31T17:09:52.899821+00:00"
 }

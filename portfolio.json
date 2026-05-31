@@ -1,12 +1,12 @@
 {
-  "updated": "2026-05-31T16:43:54.300842Z",
+  "updated": "2026-05-31T17:09:54.757270Z",
   "t212_mode": "live",
   "summary": {
     "total_value": 5013.49,
     "total_invested": 684.02,
     "total_gain_eur": 4.65,
     "total_gain_pct": 0.68,
-    "daily_gain_eur": 0.0,
+    "daily_gain_eur": -21.91,
     "cash_available": 4324.82,
     "n_positions": 2
   },
@@ -15,19 +15,19 @@
       "ticker_t212": "COST_US_EQ",
       "quantity": 0.659,
       "avg_price": 947.39,
-      "current_price": 958.09,
+      "current_price": 956.32,
       "ppl": 6.26,
       "fx_ppl": 0.22,
       "ticker": "COST",
       "ticker_display": "COST",
       "display_name": "Costco Wholesale",
       "currency": "USD",
-      "change_pct": 0.0,
+      "change_pct": -3.91,
       "gain_eur": 6.26,
       "invested": 535.18,
       "value_eur": 541.44,
       "gain_pct": 1.17,
-      "fx_rate": 0.85881,
+      "fx_rate": 0.857706,
       "currency_native": "USD",
       "allocation_pct": 10.8,
       "clyde_forecast": null,
@@ -73,9 +73,65 @@
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         }
       ],
-      "earnings": [],
-      "dividends": [],
-      "ticker_info": {},
+      "earnings": [
+        {
+          "period": "",
+          "estimate": 4.228,
+          "actual": 4.28,
+          "surprise": 0.01,
+          "beat": true
+        },
+        {
+          "period": "",
+          "estimate": 5.804,
+          "actual": 5.87,
+          "surprise": 0.01,
+          "beat": true
+        },
+        {
+          "period": "",
+          "estimate": 4.277,
+          "actual": 4.5,
+          "surprise": 0.05,
+          "beat": true
+        },
+        {
+          "period": "",
+          "estimate": 4.545,
+          "actual": 4.58,
+          "surprise": 0.01,
+          "beat": true
+        }
+      ],
+      "dividends": [
+        {
+          "date": "2026-05-01",
+          "amount": 1.47
+        },
+        {
+          "date": "2026-01-30",
+          "amount": 1.3
+        },
+        {
+          "date": "2025-10-31",
+          "amount": 1.3
+        },
+        {
+          "date": "2025-08-01",
+          "amount": 1.3
+        }
+      ],
+      "ticker_info": {
+        "trailingPE": 49.756504,
+        "forwardPE": 42.29425,
+        "marketCap": 424273805312,
+        "beta": 0.908,
+        "fiftyTwoWeekHigh": 1096.5,
+        "fiftyTwoWeekLow": 844.06,
+        "pctFromHigh": -12.78,
+        "shortRatio": 4.15,
+        "dividendYield": 0.61
+      },
       "fh_fundamentals": {
         "52WeekHigh": 1096.5,
         "52WeekLow": 844.06,
@@ -111,19 +167,19 @@
       "ticker_t212": "MRVL_US_EQ",
       "quantity": 0.8428,
       "avg_price": 206.0157,
-      "current_price": 204.0,
+      "current_price": 205.0,
       "ppl": -1.61,
       "fx_ppl": -0.15,
       "ticker": "MRVL",
       "ticker_display": "MRVL",
       "display_name": "Marvell Technology",
       "currency": "USD",
-      "change_pct": 0.0,
+      "change_pct": 0.08,
       "gain_eur": -1.61,
       "invested": 148.84,
       "value_eur": 147.23,
       "gain_pct": -1.08,
-      "fx_rate": 0.85881,
+      "fx_rate": 0.857706,
       "currency_native": "USD",
       "allocation_pct": 2.94,
       "clyde_forecast": null,
@@ -169,9 +225,65 @@
           "image": "https://s.yimg.com/rz/stage/p/yahoo_finance_en-US_h_p_finance_2.png"
         }
       ],
-      "earnings": [],
-      "dividends": [],
-      "ticker_info": {},
+      "earnings": [
+        {
+          "period": "",
+          "estimate": 0.673,
+          "actual": 0.67,
+          "surprise": -0.01,
+          "beat": false
+        },
+        {
+          "period": "",
+          "estimate": 0.738,
+          "actual": 0.76,
+          "surprise": 0.03,
+          "beat": true
+        },
+        {
+          "period": "",
+          "estimate": 0.792,
+          "actual": 0.8,
+          "surprise": 0.01,
+          "beat": true
+        },
+        {
+          "period": "",
+          "estimate": 0.795,
+          "actual": 0.8,
+          "surprise": 0.01,
+          "beat": true
+        }
+      ],
+      "dividends": [
+        {
+          "date": "2026-04-10",
+          "amount": 0.06
+        },
+        {
+          "date": "2026-01-09",
+          "amount": 0.06
+        },
+        {
+          "date": "2025-10-10",
+          "amount": 0.06
+        },
+        {
+          "date": "2025-07-11",
+          "amount": 0.06
+        }
+      ],
+      "ticker_info": {
+        "trailingPE": 70.44673,
+        "forwardPE": 33.7438,
+        "marketCap": 179488391168,
+        "beta": 2.251,
+        "fiftyTwoWeekHigh": 218.26,
+        "fiftyTwoWeekLow": 59.53,
+        "pctFromHigh": -6.08,
+        "shortRatio": 1.24,
+        "dividendYield": 0.12
+      },
       "fh_fundamentals": {
         "52WeekHigh": 218.2599,
         "52WeekLow": 58.61,
