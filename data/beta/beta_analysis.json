@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-05-29T22:49:09.428171+00:00",
+  "timestamp": "2026-05-31T16:43:50.272023+00:00",
   "mode": "phase1_auto",
   "strategy_version": "v0.1.0",
   "note": "Fase 1 — execução automática activa. LIVE_TRADING=False (conta demo).",
@@ -11,8 +11,8 @@
     "ema50": 716.35,
     "ema50_above_ema200": true,
     "spy_pct_from_ema200": 10.97,
-    "atr_current": 6.2411,
-    "atr_ratio_vs_60d_mean": 0.7154,
+    "atr_current": 6.2417,
+    "atr_ratio_vs_60d_mean": 0.7155,
     "spy_return_20d": 0.0497,
     "rsp_spy_ratio_chg_20d": -0.0191,
     "breadth_healthy": true
@@ -21,38 +21,38 @@
     {
       "ticker": "MU",
       "sector": "XLK",
-      "price": 946.89,
-      "mom_1m": 0.8309,
-      "mom_3m": 1.495,
-      "liq_usd_avg": 25808057295.0,
-      "score": 0.8608,
-      "target_mean": 613.225,
+      "price": 971.0,
+      "mom_1m": 0.8776,
+      "mom_3m": 1.5585,
+      "liq_usd_avg": 26089558639.0,
+      "score": 0.8777,
+      "target_mean": 702.975,
       "target_median": 550.0,
-      "target_high": 1100.0,
+      "target_high": 1750.0,
       "target_low": 249.0
     },
     {
       "ticker": "ARM",
       "sector": "XLK",
-      "price": 351.66,
-      "mom_1m": 0.672,
-      "mom_3m": 1.8891,
-      "liq_usd_avg": 1853658476.0,
-      "score": 0.6823,
-      "target_mean": 232.13568,
+      "price": 353.29,
+      "mom_1m": 0.6798,
+      "mom_3m": 1.9025,
+      "liq_usd_avg": 1863686039.0,
+      "score": 0.68,
+      "target_mean": 234.02757,
       "target_median": 250.0,
-      "target_high": 326.0,
+      "target_high": 360.0,
       "target_low": 125.0
     },
     {
       "ticker": "DDOG",
       "sector": "XLK",
-      "price": 243.25,
-      "mom_1m": 0.8402,
-      "mom_3m": 1.1763,
-      "liq_usd_avg": 807524136.0,
-      "score": 0.6455,
-      "target_mean": 223.01941,
+      "price": 247.35,
+      "mom_1m": 0.8712,
+      "mom_3m": 1.213,
+      "liq_usd_avg": 828636372.0,
+      "score": 0.6545,
+      "target_mean": 225.33856,
       "target_median": 225.0,
       "target_high": 320.0,
       "target_low": 128.85
@@ -60,11 +60,11 @@
     {
       "ticker": "AMD",
       "sector": "XLK",
-      "price": 505.19,
-      "mom_1m": 0.4251,
-      "mom_3m": 1.6457,
-      "liq_usd_avg": 11552808196.0,
-      "score": 0.6237,
+      "price": 516.1,
+      "mom_1m": 0.4559,
+      "mom_3m": 1.7028,
+      "liq_usd_avg": 11666778282.0,
+      "score": 0.6371,
       "target_mean": 472.16666,
       "target_median": 482.5,
       "target_high": 625.0,
@@ -73,24 +73,456 @@
     {
       "ticker": "SNOW",
       "sector": "XLK",
-      "price": 253.9,
-      "mom_1m": 0.8605,
-      "mom_3m": 0.5315,
-      "liq_usd_avg": 1245431636.0,
-      "score": 0.5506,
-      "target_mean": 229.65916,
-      "target_median": 228.0,
+      "price": 255.55,
+      "mom_1m": 0.8726,
+      "mom_3m": 0.5414,
+      "liq_usd_avg": 1268807818.0,
+      "score": 0.5507,
+      "target_mean": 280.26334,
+      "target_median": 285.0,
       "target_high": 500.0,
       "target_low": 110.0
     }
   ],
   "barrier_exits": [],
-  "buy_opportunities": [],
+  "buy_opportunities": [
+    {
+      "ticker": "ROST",
+      "sector": "XLY",
+      "watchlist_score": 0.2069,
+      "mom_1m": 0.0173,
+      "mom_3m": 0.175,
+      "signal_strength": 0.82,
+      "style": "MOMENTUM",
+      "reasons": [
+        "Breakout: RSI-14 59.5 ≥ 58 — momentum validado",
+        "Alinhamento total: price > EMA-20 > EMA-50 > EMA-200",
+        "Volume 3.2× ≥ 1.5× — confirmação de volume"
+      ],
+      "technicals": {
+        "rsi_14": 59.47,
+        "ema50_above_ema200": true,
+        "ema20_above_ema50": true,
+        "price_above_ema20": true,
+        "volume_ratio_vs_avg": 3.2,
+        "atr_14": 6.4126,
+        "rs_bullish": true
+      },
+      "last_price": 231.73,
+      "features": {
+        "rsi_14": 59.47,
+        "volume_ratio": 2.71,
+        "atr_pct": 0.027673,
+        "price_vs_ema20": 0.034563,
+        "price_vs_ema50": 0.056338,
+        "price_vs_ema200": 0.254264,
+        "momentum_1m": 0.0173,
+        "momentum_3m": 0.175
+      },
+      "regime": "bull_trending"
+    },
+    {
+      "ticker": "TXN",
+      "sector": "XLK",
+      "watchlist_score": 0.2845,
+      "mom_1m": 0.093,
+      "mom_3m": 0.5159,
+      "signal_strength": 0.722,
+      "style": "MOMENTUM",
+      "reasons": [
+        "Breakout: RSI-14 61.0 ≥ 58 — momentum validado",
+        "Alinhamento total: price > EMA-20 > EMA-50 > EMA-200",
+        "Volume 2.2× ≥ 1.5× — confirmação de volume"
+      ],
+      "technicals": {
+        "rsi_14": 61.05,
+        "ema50_above_ema200": true,
+        "ema20_above_ema50": true,
+        "price_above_ema20": true,
+        "volume_ratio_vs_avg": 2.22,
+        "atr_14": 11.4224,
+        "rs_bullish": true
+      },
+      "last_price": 305.68,
+      "features": {
+        "rsi_14": 61.05,
+        "volume_ratio": 2.13,
+        "atr_pct": 0.037367,
+        "price_vs_ema20": 0.030834,
+        "price_vs_ema50": 0.152491,
+        "price_vs_ema200": 0.48577,
+        "momentum_1m": 0.093,
+        "momentum_3m": 0.5159
+      },
+      "regime": "bull_trending"
+    },
+    {
+      "ticker": "GM",
+      "sector": "XLY",
+      "watchlist_score": 0.1973,
+      "mom_1m": 0.0826,
+      "mom_3m": 0.0798,
+      "signal_strength": 0.717,
+      "style": "MOMENTUM",
+      "reasons": [
+        "Breakout: RSI-14 63.1 ≥ 58 — momentum validado",
+        "Alinhamento total: price > EMA-20 > EMA-50 > EMA-200",
+        "Volume 2.2× ≥ 1.5× — confirmação de volume"
+      ],
+      "technicals": {
+        "rsi_14": 63.07,
+        "ema50_above_ema200": true,
+        "ema20_above_ema50": true,
+        "price_above_ema20": true,
+        "volume_ratio_vs_avg": 2.17,
+        "atr_14": 2.5955,
+        "rs_bullish": true
+      },
+      "last_price": 83.24,
+      "features": {
+        "rsi_14": 63.07,
+        "volume_ratio": 1.93,
+        "atr_pct": 0.031181,
+        "price_vs_ema20": 0.058283,
+        "price_vs_ema50": 0.070955,
+        "price_vs_ema200": 0.15858,
+        "momentum_1m": 0.0826,
+        "momentum_3m": 0.0798
+      },
+      "regime": "bull_trending"
+    },
+    {
+      "ticker": "AVGO",
+      "sector": "XLK",
+      "watchlist_score": 0.3117,
+      "mom_1m": 0.0703,
+      "mom_3m": 0.4265,
+      "signal_strength": 0.713,
+      "style": "MOMENTUM",
+      "reasons": [
+        "Breakout: RSI-14 65.9 ≥ 58 — momentum validado",
+        "Alinhamento total: price > EMA-20 > EMA-50 > EMA-200",
+        "Volume 2.1× ≥ 1.5× — confirmação de volume"
+      ],
+      "technicals": {
+        "rsi_14": 65.92,
+        "ema50_above_ema200": true,
+        "ema20_above_ema50": true,
+        "price_above_ema20": true,
+        "volume_ratio_vs_avg": 2.13,
+        "atr_14": 15.7743,
+        "rs_bullish": true
+      },
+      "last_price": 446.77,
+      "features": {
+        "rsi_14": 65.92,
+        "volume_ratio": 2.04,
+        "atr_pct": 0.035307,
+        "price_vs_ema20": 0.065647,
+        "price_vs_ema50": 0.128871,
+        "price_vs_ema200": 0.267286,
+        "momentum_1m": 0.0703,
+        "momentum_3m": 0.4265
+      },
+      "regime": "bull_trending"
+    },
+    {
+      "ticker": "F",
+      "sector": "XLY",
+      "watchlist_score": 0.3766,
+      "mom_1m": 0.4619,
+      "mom_3m": 0.3905,
+      "signal_strength": 0.687,
+      "style": "MOMENTUM",
+      "reasons": [
+        "Breakout: RSI-14 80.4 ≥ 58 — momentum validado",
+        "Alinhamento total: price > EMA-20 > EMA-50 > EMA-200",
+        "Volume 1.9× ≥ 1.5× — confirmação de volume"
+      ],
+      "technicals": {
+        "rsi_14": 80.39,
+        "ema50_above_ema200": true,
+        "ema20_above_ema50": true,
+        "price_above_ema20": true,
+        "volume_ratio_vs_avg": 1.87,
+        "atr_14": 0.6974,
+        "rs_bullish": true
+      },
+      "last_price": 17.44,
+      "features": {
+        "rsi_14": 80.39,
+        "volume_ratio": 1.76,
+        "atr_pct": 0.039989,
+        "price_vs_ema20": 0.237599,
+        "price_vs_ema50": 0.32672,
+        "price_vs_ema200": 0.392738,
+        "momentum_1m": 0.4619,
+        "momentum_3m": 0.3905
+      },
+      "regime": "bull_trending"
+    },
+    {
+      "ticker": "GE",
+      "sector": "XLI",
+      "watchlist_score": 0.2271,
+      "mom_1m": 0.1167,
+      "mom_3m": -0.0297,
+      "signal_strength": 0.675,
+      "style": "MOMENTUM",
+      "reasons": [
+        "Breakout: RSI-14 66.1 ≥ 58 — momentum validado",
+        "Alinhamento total: price > EMA-20 > EMA-50 > EMA-200",
+        "Volume 1.8× ≥ 1.5× — confirmação de volume"
+      ],
+      "technicals": {
+        "rsi_14": 66.12,
+        "ema50_above_ema200": true,
+        "ema20_above_ema50": true,
+        "price_above_ema20": true,
+        "volume_ratio_vs_avg": 1.75,
+        "atr_14": 9.4898,
+        "rs_bullish": true
+      },
+      "last_price": 323.76,
+      "features": {
+        "rsi_14": 66.12,
+        "volume_ratio": 1.74,
+        "atr_pct": 0.029311,
+        "price_vs_ema20": 0.069836,
+        "price_vs_ema50": 0.077105,
+        "price_vs_ema200": 0.08122,
+        "momentum_1m": 0.1167,
+        "momentum_3m": -0.0297
+      },
+      "regime": "bull_trending"
+    },
+    {
+      "ticker": "D",
+      "sector": "XLU",
+      "watchlist_score": 0.1952,
+      "mom_1m": 0.0482,
+      "mom_3m": 0.0787,
+      "signal_strength": 0.67,
+      "style": "MOMENTUM",
+      "reasons": [
+        "Breakout: RSI-14 64.7 ≥ 58 — momentum validado",
+        "Alinhamento total: price > EMA-20 > EMA-50 > EMA-200",
+        "Volume 1.7× ≥ 1.5× — confirmação de volume"
+      ],
+      "technicals": {
+        "rsi_14": 64.69,
+        "ema50_above_ema200": true,
+        "ema20_above_ema50": true,
+        "price_above_ema20": true,
+        "volume_ratio_vs_avg": 1.7,
+        "atr_14": 1.4189,
+        "rs_bullish": true
+      },
+      "last_price": 66.94,
+      "features": {
+        "rsi_14": 64.69,
+        "volume_ratio": 1.14,
+        "atr_pct": 0.021197,
+        "price_vs_ema20": 0.03164,
+        "price_vs_ema50": 0.057601,
+        "price_vs_ema200": 0.110378,
+        "momentum_1m": 0.0482,
+        "momentum_3m": 0.0787
+      },
+      "regime": "bull_trending"
+    },
+    {
+      "ticker": "MAR",
+      "sector": "XLY",
+      "watchlist_score": 0.197,
+      "mom_1m": 0.0405,
+      "mom_3m": 0.1204,
+      "signal_strength": 0.664,
+      "style": "MOMENTUM",
+      "reasons": [
+        "Breakout: RSI-14 60.8 ≥ 58 — momentum validado",
+        "Alinhamento total: price > EMA-20 > EMA-50 > EMA-200",
+        "Volume 1.6× ≥ 1.5× — confirmação de volume"
+      ],
+      "technicals": {
+        "rsi_14": 60.82,
+        "ema50_above_ema200": true,
+        "ema20_above_ema50": true,
+        "price_above_ema20": true,
+        "volume_ratio_vs_avg": 1.64,
+        "atr_14": 8.9504,
+        "rs_bullish": true
+      },
+      "last_price": 375.6,
+      "features": {
+        "rsi_14": 60.82,
+        "volume_ratio": 1.58,
+        "atr_pct": 0.02383,
+        "price_vs_ema20": 0.027567,
+        "price_vs_ema50": 0.058733,
+        "price_vs_ema200": 0.210899,
+        "momentum_1m": 0.0405,
+        "momentum_3m": 0.1204
+      },
+      "regime": "bull_trending"
+    },
+    {
+      "ticker": "ELV",
+      "sector": "XLV",
+      "watchlist_score": 0.2296,
+      "mom_1m": 0.0446,
+      "mom_3m": 0.3929,
+      "signal_strength": 0.655,
+      "style": "MOMENTUM",
+      "reasons": [
+        "Breakout: RSI-14 64.1 ≥ 58 — momentum validado",
+        "Alinhamento total: price > EMA-20 > EMA-50 > EMA-200",
+        "Volume 1.6× ≥ 1.5× — confirmação de volume"
+      ],
+      "technicals": {
+        "rsi_14": 64.11,
+        "ema50_above_ema200": true,
+        "ema20_above_ema50": true,
+        "price_above_ema20": true,
+        "volume_ratio_vs_avg": 1.55,
+        "atr_14": 9.6208,
+        "rs_bullish": true
+      },
+      "last_price": 393.19,
+      "features": {
+        "rsi_14": 64.11,
+        "volume_ratio": 1.58,
+        "atr_pct": 0.024469,
+        "price_vs_ema20": 0.026202,
+        "price_vs_ema50": 0.094014,
+        "price_vs_ema200": 0.180497,
+        "momentum_1m": 0.0446,
+        "momentum_3m": 0.3929
+      },
+      "regime": "bull_trending"
+    },
+    {
+      "ticker": "GILD",
+      "sector": "XLV",
+      "watchlist_score": 0.1719,
+      "mom_1m": 0.0274,
+      "mom_3m": -0.0855,
+      "signal_strength": 0.632,
+      "style": "VALUE",
+      "reasons": [
+        "RSI-14 neutro (52.2) em tendência ascendente",
+        "Volume excepcional 2.6× — sinal de momentum"
+      ],
+      "technicals": {
+        "rsi_14": 52.22,
+        "ema50_above_ema200": true,
+        "ema20_above_ema50": false,
+        "price_above_ema20": true,
+        "volume_ratio_vs_avg": 2.62,
+        "atr_14": 3.2599,
+        "rs_bullish": false
+      },
+      "last_price": 134.43,
+      "features": {
+        "rsi_14": 52.22,
+        "volume_ratio": 2.58,
+        "atr_pct": 0.02425,
+        "price_vs_ema20": 0.009022,
+        "price_vs_ema50": -0.002842,
+        "price_vs_ema200": 0.056272,
+        "momentum_1m": 0.0274,
+        "momentum_3m": -0.0855
+      },
+      "regime": "bull_trending"
+    },
+    {
+      "ticker": "SLB",
+      "sector": "XLE",
+      "watchlist_score": 0.1642,
+      "mom_1m": -0.041,
+      "mom_3m": 0.1229,
+      "signal_strength": 0.616,
+      "style": "VALUE",
+      "reasons": [
+        "RSI-14 neutro (46.4) em tendência ascendente",
+        "Volume excepcional 2.5× — sinal de momentum"
+      ],
+      "technicals": {
+        "rsi_14": 46.35,
+        "ema50_above_ema200": true,
+        "ema20_above_ema50": true,
+        "price_above_ema20": false,
+        "volume_ratio_vs_avg": 2.46,
+        "atr_14": 1.5722,
+        "rs_bullish": false
+      },
+      "last_price": 54.55,
+      "features": {
+        "rsi_14": 46.35,
+        "volume_ratio": 2.11,
+        "atr_pct": 0.028821,
+        "price_vs_ema20": -0.020715,
+        "price_vs_ema50": 0.015165,
+        "price_vs_ema200": 0.257295,
+        "momentum_1m": -0.041,
+        "momentum_3m": 0.1229
+      },
+      "regime": "bull_trending"
+    }
+  ],
   "near_misses": [
+    {
+      "ticker": "NVDA",
+      "sector": "XLK",
+      "watchlist_score": 0.4337,
+      "rule": "B",
+      "blocking_reason": "Volume 1.7× — falta 0.07× para ≥1.8",
+      "proximity_pct": 96,
+      "technicals": {
+        "rsi_14": 49.41,
+        "ema_20": 214.1203,
+        "ema50": 204.6655,
+        "ema200": 188.782,
+        "ema20_above_ema50": true,
+        "ema50_above_ema200": true,
+        "price_above_ema20": false,
+        "volume_ratio_vs_avg": 1.73,
+        "volume_sma_10": 181215710.0,
+        "volume_ratio": 1.59,
+        "atr_14": 7.1347,
+        "last_price": 211.14,
+        "rs_bullish": false
+      },
+      "last_price": 211.14
+    },
+    {
+      "ticker": "JPM",
+      "sector": "XLF",
+      "watchlist_score": 0.1635,
+      "rule": "B",
+      "blocking_reason": "Volume 1.6× — falta 0.17× para ≥1.8",
+      "proximity_pct": 91,
+      "technicals": {
+        "rsi_14": 45.8,
+        "ema_20": 302.6058,
+        "ema50": 303.0002,
+        "ema200": 302.7117,
+        "ema20_above_ema50": false,
+        "ema50_above_ema200": true,
+        "price_above_ema20": false,
+        "volume_ratio_vs_avg": 1.63,
+        "volume_sma_10": 9071910.0,
+        "volume_ratio": 1.54,
+        "atr_14": 6.0898,
+        "last_price": 299.31,
+        "rs_bullish": false
+      },
+      "last_price": 299.31
+    },
     {
       "ticker": "GOOGL",
       "sector": "XLC",
-      "watchlist_score": 0.2654,
+      "watchlist_score": 0.2622,
       "rule": "B",
       "blocking_reason": "Volume 1.6× — falta 0.18× para ≥1.8",
       "proximity_pct": 90,
@@ -103,8 +535,8 @@
         "ema50_above_ema200": true,
         "price_above_ema20": false,
         "volume_ratio_vs_avg": 1.62,
-        "volume_sma_10": 28317372.0,
-        "volume_ratio": 1.56,
+        "volume_sma_10": 28327910.0,
+        "volume_ratio": 1.57,
         "atr_14": 9.499,
         "last_price": 380.34,
         "rs_bullish": false
@@ -112,35 +544,59 @@
       "last_price": 380.34
     },
     {
-      "ticker": "NVDA",
-      "sector": "XLK",
-      "watchlist_score": 0.4517,
+      "ticker": "PSX",
+      "sector": "XLE",
+      "watchlist_score": 0.1732,
       "rule": "B",
-      "blocking_reason": "Volume 1.4× — falta 0.39× para ≥1.8",
-      "proximity_pct": 78,
+      "blocking_reason": "Volume 1.4× — falta 0.45× para ≥1.8",
+      "proximity_pct": 75,
       "technicals": {
-        "rsi_14": 49.41,
-        "ema_20": 214.1203,
-        "ema50": 204.6655,
-        "ema200": 188.782,
+        "rsi_14": 53.67,
+        "ema_20": 174.1081,
+        "ema50": 169.7035,
+        "ema200": 146.103,
+        "ema20_above_ema50": true,
+        "ema50_above_ema200": true,
+        "price_above_ema20": true,
+        "volume_ratio_vs_avg": 1.35,
+        "volume_sma_10": 2341870.0,
+        "volume_ratio": 1.41,
+        "atr_14": 5.6503,
+        "last_price": 175.88,
+        "rs_bullish": false
+      },
+      "last_price": 175.88
+    },
+    {
+      "ticker": "VLO",
+      "sector": "XLE",
+      "watchlist_score": 0.173,
+      "rule": "B",
+      "blocking_reason": "Volume 1.3× — falta 0.50× para ≥1.8",
+      "proximity_pct": 72,
+      "technicals": {
+        "rsi_14": 50.86,
+        "ema_20": 244.8506,
+        "ema50": 237.9707,
+        "ema200": 191.567,
         "ema20_above_ema50": true,
         "ema50_above_ema200": true,
         "price_above_ema20": false,
-        "volume_ratio_vs_avg": 1.41,
-        "volume_sma_10": 175433131.0,
-        "volume_ratio": 1.31,
-        "atr_14": 7.1347,
-        "last_price": 211.14,
+        "volume_ratio_vs_avg": 1.3,
+        "volume_sma_10": 3097910.0,
+        "volume_ratio": 1.29,
+        "atr_14": 8.5225,
+        "last_price": 244.82,
         "rs_bullish": false
       },
-      "last_price": 211.14
+      "last_price": 244.82
     }
   ],
   "n_positions": 2,
   "open_trades": 0,
   "risk_status": {
     "ok": false,
-    "total_equity_eur": 5127.8,
+    "total_equity_eur": 5127.84,
     "warnings": [
       "COST_US_EQ representa 12.3% da carteira (limite: 11.0%)"
     ]
@@ -153,12 +609,12 @@
       "signals": [
         "RSI-14 baixo (34.2) — zona de suporte, aguardar confirmação",
         "Tendência ascendente: EMA-50 > EMA-200",
-        "Volume excepcional: 2.7x acima da média — sinal de confirmação"
+        "Volume excepcional: 3.0x acima da média — sinal de confirmação"
       ],
       "technicals": {
         "rsi_14": 34.19,
         "ema50_above_ema200": true,
-        "volume_ratio_vs_avg": 2.67
+        "volume_ratio_vs_avg": 3.0
       }
     },
     {
@@ -172,13 +628,13 @@
       "technicals": {
         "rsi_14": 69.5,
         "ema50_above_ema200": true,
-        "volume_ratio_vs_avg": 1.09
+        "volume_ratio_vs_avg": 1.22
       }
     }
   ],
   "data_sources": {
     "prices": "finnhub+yfinance",
-    "t212_sync": "2026-05-29T22:25:10.463542+00:00",
+    "t212_sync": "2026-05-31T16:42:03.183057+00:00",
     "stale_prices": []
   },
   "cro": {
@@ -186,6 +642,7 @@
     "win_rate_7d": 1.0,
     "drawdown_pct": 0.0,
     "insights": [
+      "Macro OK — VIX 15.3 (zona normal < 20).",
       "Win rate 7d em 100.0% — acima do alvo elástico (48.0%). Factor de risco positivo: 120%.",
       "Duração média dos trades vencedores: 4500min (todos: 4500min).",
       "Melhor ticker acumulado: ARM_US_EQ (+9.86€).",
@@ -194,5 +651,83 @@
     ]
   },
   "executed_trades": [],
-  "phase1_skips": []
+  "phase1_skips": [
+    {
+      "ticker": "ROST",
+      "reason": "market_closed",
+      "details": {
+        "regime": "bull_trending"
+      }
+    },
+    {
+      "ticker": "TXN",
+      "reason": "market_closed",
+      "details": {
+        "regime": "bull_trending"
+      }
+    },
+    {
+      "ticker": "GM",
+      "reason": "market_closed",
+      "details": {
+        "regime": "bull_trending"
+      }
+    },
+    {
+      "ticker": "AVGO",
+      "reason": "market_closed",
+      "details": {
+        "regime": "bull_trending"
+      }
+    },
+    {
+      "ticker": "F",
+      "reason": "market_closed",
+      "details": {
+        "regime": "bull_trending"
+      }
+    },
+    {
+      "ticker": "GE",
+      "reason": "market_closed",
+      "details": {
+        "regime": "bull_trending"
+      }
+    },
+    {
+      "ticker": "D",
+      "reason": "market_closed",
+      "details": {
+        "regime": "bull_trending"
+      }
+    },
+    {
+      "ticker": "MAR",
+      "reason": "market_closed",
+      "details": {
+        "regime": "bull_trending"
+      }
+    },
+    {
+      "ticker": "ELV",
+      "reason": "market_closed",
+      "details": {
+        "regime": "bull_trending"
+      }
+    },
+    {
+      "ticker": "GILD",
+      "reason": "market_closed",
+      "details": {
+        "regime": "bull_trending"
+      }
+    },
+    {
+      "ticker": "SLB",
+      "reason": "market_closed",
+      "details": {
+        "regime": "bull_trending"
+      }
+    }
+  ]
 }

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-30T15:18:25.527439Z",
+  "generated_at": "2026-05-31T16:43:50.256334Z",
   "regime": "bull_trending",
   "risk_factor": 1.2,
   "verdicts": [
@@ -54,7 +54,7 @@
       "sector": "XLK"
     },
     {
-      "ticker": "INTC",
+      "ticker": "CRWD",
       "approved": true,
       "reason": "approved",
       "size_pct": 13.2,
@@ -64,7 +64,7 @@
       "sector": "XLK"
     },
     {
-      "ticker": "CRWD",
+      "ticker": "INTC",
       "approved": true,
       "reason": "approved",
       "size_pct": 13.2,
@@ -204,7 +204,7 @@
       "sector": "XLV"
     },
     {
-      "ticker": "LRCX",
+      "ticker": "NOW",
       "approved": true,
       "reason": "approved",
       "size_pct": 13.2,
@@ -214,7 +214,7 @@
       "sector": "XLK"
     },
     {
-      "ticker": "NOW",
+      "ticker": "LRCX",
       "approved": true,
       "reason": "approved",
       "size_pct": 13.2,
@@ -234,16 +234,6 @@
       "sector": "XLK"
     },
     {
-      "ticker": "IBM",
-      "approved": true,
-      "reason": "approved",
-      "size_pct": 13.2,
-      "stop_pct": 5.0,
-      "risk_factor": 1.2,
-      "regime_mult": 1.0,
-      "sector": "XLK"
-    },
-    {
       "ticker": "HOOD",
       "approved": true,
       "reason": "approved",
@@ -254,7 +244,7 @@
       "sector": "XLF"
     },
     {
-      "ticker": "MSFT",
+      "ticker": "IBM",
       "approved": true,
       "reason": "approved",
       "size_pct": 13.2,
@@ -274,7 +264,7 @@
       "sector": "XLK"
     },
     {
-      "ticker": "TXN",
+      "ticker": "MSFT",
       "approved": true,
       "reason": "approved",
       "size_pct": 13.2,
@@ -294,7 +284,17 @@
       "sector": "XLK"
     },
     {
-      "ticker": "S",
+      "ticker": "LLY",
+      "approved": true,
+      "reason": "approved",
+      "size_pct": 13.2,
+      "stop_pct": 5.0,
+      "risk_factor": 1.2,
+      "regime_mult": 1.0,
+      "sector": "XLV"
+    },
+    {
+      "ticker": "TXN",
       "approved": true,
       "reason": "approved",
       "size_pct": 13.2,
@@ -304,14 +304,14 @@
       "sector": "XLK"
     },
     {
-      "ticker": "LLY",
+      "ticker": "NET",
       "approved": true,
       "reason": "approved",
       "size_pct": 13.2,
       "stop_pct": 5.0,
       "risk_factor": 1.2,
       "regime_mult": 1.0,
-      "sector": "XLV"
+      "sector": "XLK"
     },
     {
       "ticker": "AMZN",
@@ -325,16 +325,6 @@
     },
     {
       "ticker": "AMAT",
-      "approved": true,
-      "reason": "approved",
-      "size_pct": 13.2,
-      "stop_pct": 5.0,
-      "risk_factor": 1.2,
-      "regime_mult": 1.0,
-      "sector": "XLK"
-    },
-    {
-      "ticker": "NET",
       "approved": true,
       "reason": "approved",
       "size_pct": 13.2,
@@ -374,6 +364,16 @@
       "sector": "XLV"
     },
     {
+      "ticker": "TSM",
+      "approved": true,
+      "reason": "approved",
+      "size_pct": 13.2,
+      "stop_pct": 5.0,
+      "risk_factor": 1.2,
+      "regime_mult": 1.0,
+      "sector": "XLK"
+    },
+    {
       "ticker": "CDNS",
       "approved": true,
       "reason": "approved",
@@ -384,7 +384,7 @@
       "sector": "XLK"
     },
     {
-      "ticker": "TSM",
+      "ticker": "S",
       "approved": true,
       "reason": "approved",
       "size_pct": 13.2,
@@ -444,7 +444,7 @@
       "sector": "XLY"
     },
     {
-      "ticker": "IQV",
+      "ticker": "ELV",
       "approved": true,
       "reason": "approved",
       "size_pct": 13.2,
@@ -454,7 +454,17 @@
       "sector": "XLV"
     },
     {
-      "ticker": "ELV",
+      "ticker": "GE",
+      "approved": true,
+      "reason": "approved",
+      "size_pct": 13.2,
+      "stop_pct": 5.0,
+      "risk_factor": 1.2,
+      "regime_mult": 1.0,
+      "sector": "XLI"
+    },
+    {
+      "ticker": "IQV",
       "approved": true,
       "reason": "approved",
       "size_pct": 13.2,
@@ -484,36 +494,6 @@
       "sector": "XLI"
     },
     {
-      "ticker": "GE",
-      "approved": true,
-      "reason": "approved",
-      "size_pct": 13.2,
-      "stop_pct": 5.0,
-      "risk_factor": 1.2,
-      "regime_mult": 1.0,
-      "sector": "XLI"
-    },
-    {
-      "ticker": "SPOT",
-      "approved": true,
-      "reason": "approved",
-      "size_pct": 13.2,
-      "stop_pct": 5.0,
-      "risk_factor": 1.2,
-      "regime_mult": 1.0,
-      "sector": "XLC"
-    },
-    {
-      "ticker": "CVS",
-      "approved": true,
-      "reason": "approved",
-      "size_pct": 13.2,
-      "stop_pct": 5.0,
-      "risk_factor": 1.2,
-      "regime_mult": 1.0,
-      "sector": "XLV"
-    },
-    {
       "ticker": "ADI",
       "approved": true,
       "reason": "approved",
@@ -534,14 +514,34 @@
       "sector": "XLI"
     },
     {
-      "ticker": "GWW",
+      "ticker": "CVS",
       "approved": true,
       "reason": "approved",
       "size_pct": 13.2,
       "stop_pct": 5.0,
       "risk_factor": 1.2,
       "regime_mult": 1.0,
-      "sector": "XLI"
+      "sector": "XLV"
+    },
+    {
+      "ticker": "SPOT",
+      "approved": true,
+      "reason": "approved",
+      "size_pct": 13.2,
+      "stop_pct": 5.0,
+      "risk_factor": 1.2,
+      "regime_mult": 1.0,
+      "sector": "XLC"
+    },
+    {
+      "ticker": "SM",
+      "approved": true,
+      "reason": "approved",
+      "size_pct": 13.2,
+      "stop_pct": 5.0,
+      "risk_factor": 1.2,
+      "regime_mult": 1.0,
+      "sector": "XLE"
     },
     {
       "ticker": "CVI",
@@ -554,6 +554,16 @@
       "sector": "XLE"
     },
     {
+      "ticker": "GWW",
+      "approved": true,
+      "reason": "approved",
+      "size_pct": 13.2,
+      "stop_pct": 5.0,
+      "risk_factor": 1.2,
+      "regime_mult": 1.0,
+      "sector": "XLI"
+    },
+    {
       "ticker": "ROST",
       "approved": true,
       "reason": "approved",
@@ -562,16 +572,6 @@
       "risk_factor": 1.2,
       "regime_mult": 1.0,
       "sector": "XLY"
-    },
-    {
-      "ticker": "CRM",
-      "approved": true,
-      "reason": "approved",
-      "size_pct": 13.2,
-      "stop_pct": 5.0,
-      "risk_factor": 1.2,
-      "regime_mult": 1.0,
-      "sector": "XLK"
     },
     {
       "ticker": "HON",
@@ -584,14 +584,24 @@
       "sector": "XLI"
     },
     {
-      "ticker": "SM",
+      "ticker": "CRM",
       "approved": true,
       "reason": "approved",
       "size_pct": 13.2,
       "stop_pct": 5.0,
       "risk_factor": 1.2,
       "regime_mult": 1.0,
-      "sector": "XLE"
+      "sector": "XLK"
+    },
+    {
+      "ticker": "SHOP",
+      "approved": true,
+      "reason": "approved",
+      "size_pct": 13.2,
+      "stop_pct": 5.0,
+      "risk_factor": 1.2,
+      "regime_mult": 1.0,
+      "sector": "XLY"
     },
     {
       "ticker": "MRK",
@@ -614,16 +624,6 @@
       "sector": "XLY"
     },
     {
-      "ticker": "H",
-      "approved": true,
-      "reason": "approved",
-      "size_pct": 13.2,
-      "stop_pct": 5.0,
-      "risk_factor": 1.2,
-      "regime_mult": 1.0,
-      "sector": "XLY"
-    },
-    {
       "ticker": "MAR",
       "approved": true,
       "reason": "approved",
@@ -634,27 +634,7 @@
       "sector": "XLY"
     },
     {
-      "ticker": "MPC",
-      "approved": true,
-      "reason": "approved",
-      "size_pct": 13.2,
-      "stop_pct": 5.0,
-      "risk_factor": 1.2,
-      "regime_mult": 1.0,
-      "sector": "XLE"
-    },
-    {
-      "ticker": "V",
-      "approved": true,
-      "reason": "approved",
-      "size_pct": 13.2,
-      "stop_pct": 5.0,
-      "risk_factor": 1.2,
-      "regime_mult": 1.0,
-      "sector": "XLF"
-    },
-    {
-      "ticker": "SHOP",
+      "ticker": "H",
       "approved": true,
       "reason": "approved",
       "size_pct": 13.2,
@@ -662,26 +642,6 @@
       "risk_factor": 1.2,
       "regime_mult": 1.0,
       "sector": "XLY"
-    },
-    {
-      "ticker": "CL",
-      "approved": true,
-      "reason": "approved",
-      "size_pct": 13.2,
-      "stop_pct": 5.0,
-      "risk_factor": 1.2,
-      "regime_mult": 1.0,
-      "sector": "XLP"
-    },
-    {
-      "ticker": "BA",
-      "approved": true,
-      "reason": "approved",
-      "size_pct": 13.2,
-      "stop_pct": 5.0,
-      "risk_factor": 1.2,
-      "regime_mult": 1.0,
-      "sector": "XLI"
     },
     {
       "ticker": "ADBE",
@@ -694,6 +654,26 @@
       "sector": "XLK"
     },
     {
+      "ticker": "D",
+      "approved": true,
+      "reason": "approved",
+      "size_pct": 13.2,
+      "stop_pct": 5.0,
+      "risk_factor": 1.2,
+      "regime_mult": 1.0,
+      "sector": "XLU"
+    },
+    {
+      "ticker": "MPC",
+      "approved": true,
+      "reason": "approved",
+      "size_pct": 13.2,
+      "stop_pct": 5.0,
+      "risk_factor": 1.2,
+      "regime_mult": 1.0,
+      "sector": "XLE"
+    },
+    {
       "ticker": "VST",
       "approved": true,
       "reason": "approved",
@@ -704,14 +684,34 @@
       "sector": "XLU"
     },
     {
-      "ticker": "SNPS",
+      "ticker": "BA",
       "approved": true,
       "reason": "approved",
       "size_pct": 13.2,
       "stop_pct": 5.0,
       "risk_factor": 1.2,
       "regime_mult": 1.0,
-      "sector": "XLK"
+      "sector": "XLI"
+    },
+    {
+      "ticker": "V",
+      "approved": true,
+      "reason": "approved",
+      "size_pct": 13.2,
+      "stop_pct": 5.0,
+      "risk_factor": 1.2,
+      "regime_mult": 1.0,
+      "sector": "XLF"
+    },
+    {
+      "ticker": "CL",
+      "approved": true,
+      "reason": "approved",
+      "size_pct": 13.2,
+      "stop_pct": 5.0,
+      "risk_factor": 1.2,
+      "regime_mult": 1.0,
+      "sector": "XLP"
     },
     {
       "ticker": "MMM",
@@ -724,14 +724,24 @@
       "sector": "XLI"
     },
     {
-      "ticker": "D",
+      "ticker": "SNPS",
       "approved": true,
       "reason": "approved",
       "size_pct": 13.2,
       "stop_pct": 5.0,
       "risk_factor": 1.2,
       "regime_mult": 1.0,
-      "sector": "XLU"
+      "sector": "XLK"
+    },
+    {
+      "ticker": "FDX",
+      "approved": true,
+      "reason": "approved",
+      "size_pct": 13.2,
+      "stop_pct": 5.0,
+      "risk_factor": 1.2,
+      "regime_mult": 1.0,
+      "sector": "XLI"
     },
     {
       "ticker": "KO",
@@ -754,26 +764,6 @@
       "sector": "XLY"
     },
     {
-      "ticker": "FDX",
-      "approved": true,
-      "reason": "approved",
-      "size_pct": 13.2,
-      "stop_pct": 5.0,
-      "risk_factor": 1.2,
-      "regime_mult": 1.0,
-      "sector": "XLI"
-    },
-    {
-      "ticker": "TTWO",
-      "approved": true,
-      "reason": "approved",
-      "size_pct": 13.2,
-      "stop_pct": 5.0,
-      "risk_factor": 1.2,
-      "regime_mult": 1.0,
-      "sector": "XLC"
-    },
-    {
       "ticker": "BIIB",
       "approved": true,
       "reason": "approved",
@@ -782,86 +772,6 @@
       "risk_factor": 1.2,
       "regime_mult": 1.0,
       "sector": "XLV"
-    },
-    {
-      "ticker": "DRI",
-      "approved": true,
-      "reason": "approved",
-      "size_pct": 13.2,
-      "stop_pct": 5.0,
-      "risk_factor": 1.2,
-      "regime_mult": 1.0,
-      "sector": "XLY"
-    },
-    {
-      "ticker": "VRTX",
-      "approved": true,
-      "reason": "approved",
-      "size_pct": 13.2,
-      "stop_pct": 5.0,
-      "risk_factor": 1.2,
-      "regime_mult": 1.0,
-      "sector": "XLV"
-    },
-    {
-      "ticker": "BAX",
-      "approved": true,
-      "reason": "approved",
-      "size_pct": 13.2,
-      "stop_pct": 5.0,
-      "risk_factor": 1.2,
-      "regime_mult": 1.0,
-      "sector": "XLV"
-    },
-    {
-      "ticker": "AES",
-      "approved": true,
-      "reason": "approved",
-      "size_pct": 13.2,
-      "stop_pct": 5.0,
-      "risk_factor": 1.2,
-      "regime_mult": 1.0,
-      "sector": "XLU"
-    },
-    {
-      "ticker": "VLO",
-      "approved": true,
-      "reason": "approved",
-      "size_pct": 13.2,
-      "stop_pct": 5.0,
-      "risk_factor": 1.2,
-      "regime_mult": 1.0,
-      "sector": "XLE"
-    },
-    {
-      "ticker": "TMO",
-      "approved": true,
-      "reason": "approved",
-      "size_pct": 13.2,
-      "stop_pct": 5.0,
-      "risk_factor": 1.2,
-      "regime_mult": 1.0,
-      "sector": "XLV"
-    },
-    {
-      "ticker": "BKNG",
-      "approved": true,
-      "reason": "approved",
-      "size_pct": 13.2,
-      "stop_pct": 5.0,
-      "risk_factor": 1.2,
-      "regime_mult": 1.0,
-      "sector": "XLY"
-    },
-    {
-      "ticker": "MSTR",
-      "approved": true,
-      "reason": "approved",
-      "size_pct": 13.2,
-      "stop_pct": 5.0,
-      "risk_factor": 1.2,
-      "regime_mult": 1.0,
-      "sector": "XLK"
     },
     {
       "ticker": "ZS",
@@ -874,17 +784,7 @@
       "sector": "XLK"
     },
     {
-      "ticker": "MA",
-      "approved": true,
-      "reason": "approved",
-      "size_pct": 13.2,
-      "stop_pct": 5.0,
-      "risk_factor": 1.2,
-      "regime_mult": 1.0,
-      "sector": "XLF"
-    },
-    {
-      "ticker": "ABBV",
+      "ticker": "VRTX",
       "approved": true,
       "reason": "approved",
       "size_pct": 13.2,
@@ -894,7 +794,47 @@
       "sector": "XLV"
     },
     {
-      "ticker": "GILD",
+      "ticker": "MSTR",
+      "approved": true,
+      "reason": "approved",
+      "size_pct": 13.2,
+      "stop_pct": 5.0,
+      "risk_factor": 1.2,
+      "regime_mult": 1.0,
+      "sector": "XLK"
+    },
+    {
+      "ticker": "TTWO",
+      "approved": true,
+      "reason": "approved",
+      "size_pct": 13.2,
+      "stop_pct": 5.0,
+      "risk_factor": 1.2,
+      "regime_mult": 1.0,
+      "sector": "XLC"
+    },
+    {
+      "ticker": "DRI",
+      "approved": true,
+      "reason": "approved",
+      "size_pct": 13.2,
+      "stop_pct": 5.0,
+      "risk_factor": 1.2,
+      "regime_mult": 1.0,
+      "sector": "XLY"
+    },
+    {
+      "ticker": "AES",
+      "approved": true,
+      "reason": "approved",
+      "size_pct": 13.2,
+      "stop_pct": 5.0,
+      "risk_factor": 1.2,
+      "regime_mult": 1.0,
+      "sector": "XLU"
+    },
+    {
+      "ticker": "ABBV",
       "approved": true,
       "reason": "approved",
       "size_pct": 13.2,
@@ -914,14 +854,24 @@
       "sector": "XLE"
     },
     {
-      "ticker": "MDLZ",
+      "ticker": "VLO",
       "approved": true,
       "reason": "approved",
       "size_pct": 13.2,
       "stop_pct": 5.0,
       "risk_factor": 1.2,
       "regime_mult": 1.0,
-      "sector": "XLP"
+      "sector": "XLE"
+    },
+    {
+      "ticker": "BAX",
+      "approved": true,
+      "reason": "approved",
+      "size_pct": 13.2,
+      "stop_pct": 5.0,
+      "risk_factor": 1.2,
+      "regime_mult": 1.0,
+      "sector": "XLV"
     },
     {
       "ticker": "CSX",
@@ -932,6 +882,46 @@
       "risk_factor": 1.2,
       "regime_mult": 1.0,
       "sector": "XLI"
+    },
+    {
+      "ticker": "BKNG",
+      "approved": true,
+      "reason": "approved",
+      "size_pct": 13.2,
+      "stop_pct": 5.0,
+      "risk_factor": 1.2,
+      "regime_mult": 1.0,
+      "sector": "XLY"
+    },
+    {
+      "ticker": "TMO",
+      "approved": true,
+      "reason": "approved",
+      "size_pct": 13.2,
+      "stop_pct": 5.0,
+      "risk_factor": 1.2,
+      "regime_mult": 1.0,
+      "sector": "XLV"
+    },
+    {
+      "ticker": "GILD",
+      "approved": true,
+      "reason": "approved",
+      "size_pct": 13.2,
+      "stop_pct": 5.0,
+      "risk_factor": 1.2,
+      "regime_mult": 1.0,
+      "sector": "XLV"
+    },
+    {
+      "ticker": "MA",
+      "approved": true,
+      "reason": "approved",
+      "size_pct": 13.2,
+      "stop_pct": 5.0,
+      "risk_factor": 1.2,
+      "regime_mult": 1.0,
+      "sector": "XLF"
     },
     {
       "ticker": "TJX",
@@ -954,7 +944,27 @@
       "sector": "XLI"
     },
     {
-      "ticker": "SLB",
+      "ticker": "MELI",
+      "approved": true,
+      "reason": "approved",
+      "size_pct": 13.2,
+      "stop_pct": 5.0,
+      "risk_factor": 1.2,
+      "regime_mult": 1.0,
+      "sector": "XLY"
+    },
+    {
+      "ticker": "MDLZ",
+      "approved": true,
+      "reason": "approved",
+      "size_pct": 13.2,
+      "stop_pct": 5.0,
+      "risk_factor": 1.2,
+      "regime_mult": 1.0,
+      "sector": "XLP"
+    },
+    {
+      "ticker": "TRGP",
       "approved": true,
       "reason": "approved",
       "size_pct": 13.2,
@@ -974,7 +984,7 @@
       "sector": "XLF"
     },
     {
-      "ticker": "TRGP",
+      "ticker": "SLB",
       "approved": true,
       "reason": "approved",
       "size_pct": 13.2,
@@ -984,24 +994,14 @@
       "sector": "XLE"
     },
     {
-      "ticker": "MELI",
+      "ticker": "JPM",
       "approved": true,
       "reason": "approved",
       "size_pct": 13.2,
       "stop_pct": 5.0,
       "risk_factor": 1.2,
       "regime_mult": 1.0,
-      "sector": "XLY"
-    },
-    {
-      "ticker": "ETN",
-      "approved": true,
-      "reason": "approved",
-      "size_pct": 13.2,
-      "stop_pct": 5.0,
-      "risk_factor": 1.2,
-      "regime_mult": 1.0,
-      "sector": "XLI"
+      "sector": "XLF"
     }
   ]
 }
